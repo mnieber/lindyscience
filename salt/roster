@@ -1,0 +1,4 @@
+panstaging:
+    host: 163.172.138.137
+    priv: /root/.ssh/id_vegtech_rsa
+

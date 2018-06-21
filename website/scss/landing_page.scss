@@ -1,0 +1,253 @@
+@tailwind preflight;
+@tailwind components;
+@tailwind utilities;
+
+$panGreen: #3AB080;
+$panBlue: #006397;
+$panGrey: #BBBBBB;
+
+@responsive {
+  .w-128 {
+    width: 32rem;
+  }
+}
+
+.landing__header {
+  @apply flex flex-col flex-1 justify-between;
+
+  .landing__menuBar {
+    @apply flex justify-between;
+  }
+
+  .nav {
+    @apply flex flex-wrap;
+
+    .nav__item {
+      @apply mx-4 no-underline text-blue-dark;
+      text-transform: uppercase;
+    }
+  }
+
+  .nav--defaultPos {
+    margin-top: 3rem;
+  }
+}
+
+.landing__header--start {
+  .landing__logo--start {
+    width: 151px;
+    height: 179px;
+  }
+
+  .landing__logo--scrolled {
+    @apply hidden;
+  }
+}
+
+.landing__header--scrolled {
+  @apply bg-white;
+
+  .landing__logo--start {
+    @apply hidden;
+  }
+
+  .landing__logo--scrolled {
+    width: 151px;
+    height: 120px;
+  }
+}
+
+.landing__topPanel {
+  height: 900px;
+
+  @apply flex flex-col;
+  @apply bg-no-repeat bg-cover;
+  background-origin: padding-box;
+  background-position-x: 50%;
+  background-position-y: 0%;
+}
+
+.landing__subtitle {
+  @apply my-8 self-center text-center text-blue-dark text-3xl;
+}
+
+.landing__body {
+  @apply flex flex-col;
+}
+
+.sectionHeader {
+  @apply my-4 text-center;
+  color: $panGreen;
+  font-size: 30px;
+}
+
+.paragraph {
+  @apply mx-auto my-4;
+}
+
+.eventAnnouncement {
+  @apply flex justify-around pt-4 pb-4 text-3xl;
+  border-top: thick solid $panGrey;
+  border-bottom: thick solid $panGrey;
+
+  .eventAnnouncement__row {
+    @apply flex;
+
+    .eventAnnouncement__title {
+      color: $panBlue;
+    }
+
+    .eventAnnouncement__date {
+      @apply ml-4;
+      color: $panGreen;
+    }
+
+    .eventAnnouncement__location {
+      @apply ml-4;
+      color: $panGreen;
+    }
+  }
+}
+
+.missionList {
+  @apply flex flex-col;
+
+  ul {
+    @apply pl-0;
+  }
+
+  .mission__image {
+    @apply self-center;
+  }
+
+  .mission__text {
+    @apply self-center;
+  }
+
+  .mission__title {
+    @apply self-center my-4 text-3xl;
+    color: $panBlue;
+  }
+}
+
+.quote {
+  @apply bg-no-repeat bg-left-top;
+
+  height: 400px;
+  border-top: solid $panGrey;
+  border-bottom: solid $panGrey;
+
+  .quote__frame {
+    @apply flex flex-col justify-center bg-black text-white;
+    padding: 3rem;
+  }
+
+  .quote__text {
+    @apply text-xl my-2 mx-4;
+  }
+
+  .quote__source {
+    @apply font-bold my-2 mx-4;
+  }
+}
+
+.boardMember {
+
+  .boardMember__imageFrame {
+    @apply flex flex-col float-left mr-4;
+  }
+
+  .boardMember__image {
+    @apply mb-2 rounded-full;
+    height: 140px;
+    width: 140px;
+  }
+
+  .boardMember__readMore {
+    @apply mt-2 pt-2;
+    cursor: default;
+  }
+
+  .boardMember__name {
+    color: $panBlue;
+    font-size: 20px;
+  }
+}
+
+.boardMember--brief {
+  @apply pr-4 pb-4;
+}
+
+.boardMember--full {
+  @apply pb-4;
+}
+
+.teamMember {
+
+  .teamMember__imageFrame {
+    @apply flex flex-col float-left mr-4;
+  }
+
+  .teamMember__image {
+    @apply mb-2 rounded-full;
+    height: 140px;
+    width: 140px;
+  }
+
+  .teamMember__readMore {
+    @apply mt-2 pt-2;
+    cursor: default;
+  }
+
+  .teamMember__name {
+    color: $panBlue;
+    font-size: 20px;
+  }
+}
+
+.teamMember--brief {
+  @apply pr-4 pb-4;
+}
+
+.teamMember--full {
+  @apply pb-4;
+}
+
+.job {
+  @apply px-2 my-4;
+}
+
+.job__title {
+  @apply text-3xl text-center my-4;
+}
+
+.skillList__title {
+  @apply text-3xl text-center my-4;
+}
+
+.skill {
+  @apply my-4;
+  word-wrap: break-word;
+}
+
+.contactForm {
+  label {
+    @apply mt-2;
+  }
+
+  button {
+    @apply my-2 text-white font-bold py-2 px-4 rounded;
+  }
+}
+
+.formField__label {
+  @apply font-bold text-blue;
+}
+
+.formField__field {
+  @apply w-full mb-2 max-w-sm;
+}
+
+.formField__error {
+  @apply text-red text-sm;
+}

@@ -1,0 +1,3 @@
+SALT:
+  target_docker_image: ${/DOCKER/images/base/image}
+

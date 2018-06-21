@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+
+{% with move_page=page.specific %}
+
+<h1>{{ move_page.name }}</h1>
+
+{% include_block move_page.description %}
+
+{% endwith %}
+
+{% endblock %}

@@ -1,0 +1,7 @@
+file_roots:
+  base:
+    - /srv/pan/src/salt
+
+pillar_roots:
+  base:
+    - /srv/pan/src/salt/pillar

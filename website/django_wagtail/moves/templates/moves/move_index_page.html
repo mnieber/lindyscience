@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}{% endblock %}
+
+{% block content %}
+
+<h1>Moves</h1>
+
+{% for move_page in page.get_children %}
+    <h2><a href="{% pageurl move_page %}">{{ move_page.title }}</a></h2>
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,14 @@
+.idea
+__pycache__
+*.retry
+*.pyc
+
+migrations_local
+db.sqlite3
+static_page.html
+django_wagtail/media
+django_wagtail/static
+todo.txt
+webpack-stats.json
+debug.sls
+website/node_modules

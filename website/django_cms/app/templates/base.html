@@ -1,4 +1,4 @@
-{% load static wagtailuserbar %}
+{% load cms_tags menu_tags sekizai_tags %}
 {% load render_bundle from webpack_loader %}
 
 <!DOCTYPE html>
@@ -9,38 +9,26 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>
-            {% block title %}
-                {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
-            {% endblock %}
-            {% block title_suffix %}
-                {% with self.get_site.site_name as site_name %}
-                    {% if site_name %}- {{ site_name }}{% endif %}
-                {% endwith %}
-            {% endblock %}
-        </title>
+        <title>{% block title %}Lindy Science{% endblock title %}</title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 
-        {% block extra_css %}
-            {# Override this in templates to add extra stylesheets #}
-        {% endblock %}
+        {% render_block "css" %}
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% wagtailuserbar %}
-
-        {% block content %}{% endblock %}
+        {% cms_toolbar %}
+        <div class="container">
+            <ul class="nav">
+                {% show_menu 0 100 100 100 %}
+            </ul>
+            {% block content %}{% endblock content %}
+        </div>
+        {% render_block "js" %}
 
         {# render_bundle 'main' #}
-
-        {# Global javascript #}
-
-        {% block extra_js %}
-            {# Override this in templates to add extra javascript #}
-        {% endblock %}
     </body>
 </html>

@@ -2,29 +2,26 @@ from cms.models.fields import PlaceholderField
 from cms.models.pluginmodel import CMSPlugin
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from django.core.exceptions import ValidationError
 from django.contrib import admin
 from django.db import models
 from enumfields import Enum, EnumField
 from taggit.managers import TaggableManager
-from urllib.parse import urlparse, parse_qs
+from .utils import validate_video_url
 
 
 class MoveVideoLink(models.Model):
-    move = models.ForeignKey('Move', on_delete=models.CASCADE)
+    class Meta:
+        verbose_name = 'Video Link'
+        verbose_name_plural = 'Video Links'
+
+    move = models.ForeignKey(
+        'Move', on_delete=models.CASCADE, related_name='video_links')
     url = models.URLField()
     nr_votes = models.IntegerField(default=0, editable=False)
 
     def clean_fields(self, exclude=None):
         super().clean_fields(exclude=exclude)
-        parsed_url = urlparse(self.url)
-        if parsed_url.netloc in ('youtube', 'youtu.be'):
-            query = parse_qs(parsed_url.query)
-            if 't' not in query:
-                raise ValidationError({
-                    'url':
-                    'Youtube urls should have a t=<timestamp> parameter'
-                })
+        validate_video_url(self.url)
 
 
 class MoveVideoLinkInline(admin.StackedInline):
@@ -43,13 +40,31 @@ class Difficulty(Enum):
 class Move(CMSPlugin):
     name = models.CharField(max_length=200, unique=True)
     difficulty = EnumField(Difficulty, max_length=7)
-    description = PlaceholderField('description')
+    description = PlaceholderField('description', related_name="description")
+    foo = PlaceholderField('foo', related_name="foo")
     tags = TaggableManager()
+
+    def save(self, *args, **kwargs):
+        from cms.api import add_plugin
+
+        if self.pk:
+            super().save(*args, **kwargs)  # Call the "real" save() method.
+            add_plugin(
+                self.description,
+                'TextPlugin',
+                'en',
+                body="<p>Biography coming soon.</p>")
+        else:
+            super().save(*args, **kwargs)  # Call the "real" save() method.
 
 
 @plugin_pool.register_plugin
-class MoveListPlugin(CMSPluginBase):
+class MovePlugin(CMSPluginBase):
     model = Move
-    render_template = "moves/movelist.html"
+    name = 'Move'
+    render_template = "moves/move.html"
     cache = False
     inlines = (MoveVideoLinkInline, )
+
+    def __str__(self):  # noqa
+        return self.move.name

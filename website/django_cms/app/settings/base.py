@@ -102,6 +102,7 @@ TEMPLATES = [
                 'sekizai.context_processors.sekizai',
                 'cms.context_processors.cms_settings'
             ],
+            # 'string_if_invalid': 'DEBUG WARNING: undefined template variable [%s] not found'
             # 'loaders': [
             #     'django.template.loaders.filesystem.Loader',
             # 'django.template.loaders.app_directories.Loader',

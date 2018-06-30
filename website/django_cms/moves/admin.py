@@ -1,10 +1,16 @@
 from django.contrib import admin
-from moves.models import MovesPage
 from cms.admin.placeholderadmin import PlaceholderAdminMixin
+from moves.models import Move, MoveVideoLink
 
 
-class MovesPageAdmin(PlaceholderAdminMixin, admin.ModelAdmin):
-    exclude = ['user']
+class MoveVideoLinkInline(admin.StackedInline):
+    model = MoveVideoLink
+    extra = 1
 
 
-admin.site.register(MovesPage, MovesPageAdmin)
+class MoveAdmin(PlaceholderAdminMixin, admin.ModelAdmin):
+    model = Move
+    inlines = (MoveVideoLinkInline, )
+
+
+admin.site.register(Move, MoveAdmin)

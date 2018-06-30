@@ -4,6 +4,9 @@
 {% block content %}
 <h1>Moves</h1>
 
-{% render_placeholder page.moves %}
+{% for move in moves %}
+<a href='/moves/basic'>{{ move.name }}</a>
+{% endfor %}
+
 
 {% endblock %}

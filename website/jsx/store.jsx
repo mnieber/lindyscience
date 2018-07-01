@@ -2,6 +2,7 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import {reducer as toastrReducer} from 'react-redux-toastr'
+import {linsciReducer} from 'jsx/reducers'
 import jQuery from 'jquery';
 import Cookies from 'js-cookie'
 
@@ -37,7 +38,8 @@ const configureStore = () => {
 
   const store = createStore(
     combineReducers({
-      toastr: toastrReducer
+      toastr: toastrReducer,
+      linsci: linsciReducer
     }),
     applyMiddleware(...middleware)
   )

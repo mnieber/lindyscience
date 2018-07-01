@@ -12,6 +12,10 @@ $panGrey: #BBBBBB;
   }
 }
 
+.move__header {
+  @apply mb-4;
+}
+
 .videolink {
   @apply flex items-center h-8;
 }

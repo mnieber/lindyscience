@@ -5,4 +5,4 @@ require('jsx/utils')
 require('jsx/form_utils')
 require('jsx/api')
 
-export const videolink = require('jsx/videolink')
+export const videolinks = require('jsx/videolinks')

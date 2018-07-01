@@ -8,9 +8,12 @@
 {% render_placeholder move.description %}
 
 <h2 class="mt-4">Links</h2>
+<div id="move__videoLinks"/>
 
-{% for video_link in move.video_links.all %}
-{% with instance=video_link %}{% include 'moves/_videolink.html' %}{% endwith %}
-{% endfor %}
+<script type='text/javascript'>
+    window.addEventListener("load", function() {
+        var id = 'move__videoLinks', data_str = '{{ videolinks_json|safe }}';
+        App.videolinks.render(document.getElementById(id), data_str)});
+</script>
 
 {% endblock %}

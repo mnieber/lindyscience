@@ -1,6 +1,8 @@
 from django.views import View
 from django.shortcuts import render
 from .models import Move
+from .serializers import MoveVideoLinkSerializer
+import json
 
 
 class MovesView(View):
@@ -14,7 +16,10 @@ class MovesView(View):
 class MoveView(View):
     # TODO look up the correct url in the template
     def get(self, request, move_name):
+        move = Move.objects.get(name=move_name)
         context = {}
-        context['move'] = Move.objects.get(name=move_name)
+        context['move'] = move
+        context['videolinks_json'] = json.dumps(
+            MoveVideoLinkSerializer(move.video_links.all(), many=True).data)
 
         return render(request, 'moves/move.html', context=context)

@@ -8,6 +8,10 @@ const config = {
     app: './jsx/css/app.jsx',
   },
 
+  output: {
+    library: 'App'
+  },
+
   resolve: {
     modules: [
       './node_modules',

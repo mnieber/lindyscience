@@ -1,0 +1,5 @@
+<div class='videolink'>
+<div class='videolink__nrVotes'>{{ instance.votes.count }}</div>
+<div class='videolink__likeBtn' onclick='App.videolink.toggleLike({{ instance.id }})'>+</div>
+<a class='videolink__url' href='{{ instance.url }}'' target='blank'>{{ instance.default_title }}</a>
+</div>

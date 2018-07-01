@@ -7,4 +7,13 @@
 
 {% render_placeholder move.description %}
 
+<h2>Links</h2>
+
+{% for video_link in move.video_links.all %}
+<div class='videolink'>
+<div class='videolink__nrVotes'>{{ video_link.votes.count }}</div>
+<a class='videolink__url' href='{{ video_link.url }}'>{{ video_link.default_title }}</a>
+</div>
+{% endfor %}
+
 {% endblock %}

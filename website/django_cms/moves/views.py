@@ -12,9 +12,8 @@ class MovesView(View):
 
 
 class MoveView(View):
-    # TODO use regex in url
     # TODO look up the correct url in the template
-    def get(self, request, move_name='Basic'):
+    def get(self, request, move_name):
         context = {}
         context['move'] = Move.objects.get(name=move_name)
 

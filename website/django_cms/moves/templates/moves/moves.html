@@ -5,8 +5,7 @@
 <h1>Moves</h1>
 
 {% for move in moves %}
-<a href='/moves/basic'>{{ move.name }}</a>
+<a href='{% url "move" move.name %}'>{{ move.name }}</a>
 {% endfor %}
-
 
 {% endblock %}

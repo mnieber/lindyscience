@@ -7,3 +7,10 @@ export function setMoveVideoLinks(moveVideoLinks) {
     moveVideoLinks: moveVideoLinks,
   }
 }
+
+export function toggleLikeMoveVideoLink(id) {
+  return {
+    type: 'TOGGLE_LIKE_MOVE_VIDEO_LINK',
+    id: id,
+  }
+}

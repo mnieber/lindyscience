@@ -5554,6 +5554,10 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
+recase@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/recase/-/recase-1.0.4.tgz#6aca05f06155e6ed1b6362e621050a11dbd9f851"
+
 recast@^0.12.5:
   version "0.12.9"
   resolved "https://registry.yarnpkg.com/recast/-/recast-0.12.9.tgz#e8e52bdb9691af462ccbd7c15d5a5113647a15f1"

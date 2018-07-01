@@ -2,17 +2,29 @@ import React from 'react'
 import {VideoLinkList} from 'jsx/presentation/videolinklist'
 import * as fromStore from 'jsx/reducers'
 import * as actions from 'jsx/actions'
+import * as api from 'jsx/api'
 import { connect } from 'react-redux'
 
 class VideoLinks extends React.Component {
   componentWillMount() {
-    this.props.setMoveVideoLinks(this.props.items);
+    const moveVideoLinks = {};
+    this.props.items.forEach(item => {
+      moveVideoLinks[item.id] = item;
+    })
+    this.props.setMoveVideoLinks(moveVideoLinks);
+  }
+
+  toggleLike = (id) => {
+    const isLiked = this.props.getMoveVideoLink(id).isLikedByCurrentUser;
+    api.setLikeMoveVideoLink(id, !isLiked);
+    this.props.toggleLikeMoveVideoLink(id);
   }
 
   render() {
     return (
       <VideoLinkList
         items={this.props.moveVideoLinks}
+        toggleLike={this.toggleLike}
       />
     )
   }
@@ -21,6 +33,7 @@ class VideoLinks extends React.Component {
 VideoLinks = connect(
   (state) => ({
     moveVideoLinks: fromStore.getMoveVideoLinks(state.linsci),
+    getMoveVideoLink: id => fromStore.getMoveVideoLink(state.linsci, id),
   }),
   actions
 )(VideoLinks)

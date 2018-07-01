@@ -13,10 +13,16 @@ $panGrey: #BBBBBB;
 }
 
 .videolink {
-  @apply flex;
+  @apply flex items-center h-8;
 }
 
 .videolink__nrVotes {
+}
+
+.videolink__nrVotes--liked {
+}
+
+.videolink__nrVotes--notLiked {
 }
 
 .videolink__url {
@@ -24,5 +30,13 @@ $panGrey: #BBBBBB;
 }
 
 .videolink__likeBtn {
-  @apply ml-2;
+  @apply ml-2 bg-cover w-6 h-6;
+}
+
+.videolink__likeBtn--liked {
+  background-image: url('/static/img/like_1.png');
+}
+
+.videolink__likeBtn--notLiked {
+  background-image: url('/static/img/like_0.png');
 }

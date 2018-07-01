@@ -22,3 +22,13 @@ function get(url, data) {
     }
   })
 }
+
+
+export function setLikeMoveVideoLink(id, value) {
+  if (value) {
+    return post(`/votes/up/?model=movevideolink&id=${id}&vote=true`)
+  }
+  else {
+    return post(`/votes/down/?model=movevideolink&id=${id}`)
+  }
+}

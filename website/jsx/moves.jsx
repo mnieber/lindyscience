@@ -6,10 +6,10 @@ import * as actions from 'jsx/actions'
 import VideoLinks from 'jsx/containers/videolinks'
 import {toCamelCase} from 'jsx/utils'
 
-export function render(rootElement, dataStr, moveName) {
+export function render(rootElement, data_str) {
   ReactDOM.render(
     <Provider store={getStore()}>
-      <VideoLinks moveName={moveName} items={toCamelCase(JSON.parse(dataStr))}/>
+      <Moves items={toCamelCase(JSON.parse(data_str))}/>
     </Provider>
     , rootElement
   );

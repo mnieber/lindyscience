@@ -7,7 +7,6 @@
 <a href='/moves'>Back to all moves</a>
 </div>
 
-{% render_placeholder move.description %}
 <h1>{{ move.name }}</h1>
 
 <h2 class="mt-4">Links</h2>
@@ -15,8 +14,14 @@
 
 <script type='text/javascript'>
     window.addEventListener("load", function() {
-        var id = 'move__videoLinks', data_str = '{{ videolinks_json|safe }}';
-        App.videolinks.render(document.getElementById(id), data_str)});
+        var id = 'move__videoLinks';
+        var videolinksJson = '{{ videolinks_json|safe }}';
+        App.videolinks.render(
+            document.getElementById(id),
+            videolinksJson,
+            "{{ move.name }}"
+        )
+    });
 </script>
 
 {% endblock %}

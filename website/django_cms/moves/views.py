@@ -14,7 +14,6 @@ class MovesView(View):
 
 
 class MoveView(View):
-    # TODO look up the correct url in the template
     def get(self, request, move_name):
         move = Move.objects.get(name=move_name)
         context = {}
@@ -23,3 +22,10 @@ class MoveView(View):
             MoveVideoLinkSerializer(move.video_links.all(), many=True).data)
 
         return render(request, 'moves/move.html', context=context)
+
+
+class MoveDescriptionView(View):
+    def get(self, request, move_name):
+        move = Move.objects.get(name=move_name)
+        context = dict(placeholder=move.description)
+        return render(request, 'moves/placeholder.html', context=context)

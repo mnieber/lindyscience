@@ -13,7 +13,7 @@ function post(url, data) {
 }
 
 
-function get(url, data) {
+function get(url) {
   return jquery.ajax({
     type: "GET",
     url: url,
@@ -23,7 +23,6 @@ function get(url, data) {
   })
 }
 
-
 export function setLikeMoveVideoLink(id, value) {
   if (value) {
     return post(`/votes/up/?model=movevideolink&id=${id}&vote=true`)
@@ -31,4 +30,11 @@ export function setLikeMoveVideoLink(id, value) {
   else {
     return post(`/votes/down/?model=movevideolink&id=${id}`)
   }
+}
+
+export function loadMoveDescription(moveName) {
+  return jquery.ajax({
+    type: 'GET',
+    url: `/moves/${moveName}/description`
+  });
 }

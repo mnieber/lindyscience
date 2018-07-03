@@ -7,6 +7,9 @@ urlpatterns = [
     url(r'^move-video-links/?$',
         api.MoveVideoLinksView.as_view(),
         name='moves'),
-    url(r'^moves/(?P<move_name>[^/]+)/description?$',
+    url(r'^moves/(?P<move_name>[^/]+)/description/?$',
         views.MoveDescriptionView.as_view()),
+    url(r'^moves/(?P<move_name>[^/]+)/edit/?$',
+        views.EditMoveView.as_view(),
+        name='edit_move'),
 ]

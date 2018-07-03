@@ -8,7 +8,8 @@ class MoveSerializer(serializers.ModelSerializer):  # noqa
         model = models.Move
         exclude = ['description']
 
-    difficulty = serializers.CharField(source='difficulty.value')
+    difficulty = serializers.CharField()
+    tags = serializers.CharField()
 
 
 class MoveVideoLinkSerializer(serializers.ModelSerializer):  # noqa

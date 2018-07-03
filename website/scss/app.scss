@@ -53,3 +53,29 @@ $panGrey: #BBBBBB;
 .moveList__item {
   @apply mt-2;
 }
+
+.move__header {
+  @apply flex flex-col;
+}
+
+.editMoveForm {
+  .videoLinkPanel {
+    @apply bg-grey p-2 mb-8;
+
+    input {
+      @apply w-full bg-transparent;
+    }
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .formField {
+    margin-top: 2rem;
+  }
+
+  .foo {
+    width: 16rem;
+  }
+}

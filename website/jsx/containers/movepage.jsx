@@ -1,6 +1,5 @@
 import React from 'react'
-import {Move} from 'jsx/presentation/move'
-import { Link } from 'react-router'
+import { MoveHeader, Move } from 'jsx/presentation/move'
 import * as fromStore from 'jsx/reducers'
 import * as actions from 'jsx/actions'
 import * as api from 'jsx/api'
@@ -21,7 +20,7 @@ class MovePage extends React.Component {
 
     return (
       <div>
-        <Link to='/app/moves'>All moves</Link>
+        <MoveHeader move={this.props.move}/>
         <Move
           move={this.props.move}
           loadDescription={() => api.loadMoveDescription(this.props.move.name)}

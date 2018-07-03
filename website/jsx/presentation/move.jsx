@@ -1,6 +1,20 @@
 import React from 'react'
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import {Placeholder} from 'jsx/presentation/placeholder'
+
+
+export class MoveHeader extends React.Component {
+  render() {
+    return (
+      <div className = {"move__header"}>
+        <Link to='/app/moves'>All moves</Link>
+        <a href={`/moves/${this.props.move.name}/edit`}>Edit move</a>
+      </div>
+    )
+  }
+}
+
 
 class VideoLinkList extends React.Component {
   render() {

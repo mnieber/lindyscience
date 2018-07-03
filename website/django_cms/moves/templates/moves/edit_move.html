@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load cms_tags %}
+
+{% block extra_head %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+
+<form class="editMoveForm" action='' method='post'>{% csrf_token %}
+    <div class="flex flex-col">
+        {{ form }}
+    </div>
+
+    <div class="formField"><label>Description</label></div>
+    <div>
+        {% render_placeholder move.description %}
+    </div>
+
+    <div><button type='submit'>Save</button>
+</form>
+
+{% endblock %}

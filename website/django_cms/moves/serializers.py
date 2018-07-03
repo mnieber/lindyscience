@@ -1,11 +1,19 @@
 from rest_framework import serializers
-from .models import MoveVideoLink
+from . import models
 from app.middleware import get_current_user
+
+
+class MoveSerializer(serializers.ModelSerializer):  # noqa
+    class Meta:  # noqa
+        model = models.Move
+        exclude = ['description']
+
+    difficulty = serializers.CharField(source='difficulty.value')
 
 
 class MoveVideoLinkSerializer(serializers.ModelSerializer):  # noqa
     class Meta:  # noqa
-        model = MoveVideoLink
+        model = models.MoveVideoLink
         exclude = []
 
     nr_votes = serializers.IntegerField(source='votes.count')

@@ -1,4 +1,5 @@
 import jquery from 'jquery';
+import { toCamelCase } from 'jsx/utils'
 
 
 function post(url, data) {
@@ -37,4 +38,20 @@ export function loadMoveDescription(moveName) {
     type: 'GET',
     url: `/moves/${moveName}/description`
   });
+}
+
+export function loadMoves() {
+  return jquery.ajax({
+    type: 'GET',
+    url: `/moves`
+  })
+  .then(response => toCamelCase(response));
+}
+
+export function loadMoveVideoLinks() {
+  return jquery.ajax({
+    type: 'GET',
+    url: `/move-video-links`
+  })
+  .then(response => toCamelCase(response));
 }

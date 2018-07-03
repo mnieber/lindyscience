@@ -6,6 +6,7 @@ from django.conf.urls import include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
+from .views import AppView
 
 admin.autodiscover()
 
@@ -25,7 +26,8 @@ if settings.DEBUG:
 
 urlpatterns += i18n_patterns(
     url(r'^admin/', include(admin.site.urls)),  # NOQA
-    url(r'^moves/', include('moves.urls')),
+    url(r'^app/', AppView.as_view()),
+    url(r'^', include('moves.urls')),
     url(r'^', include('votes.urls')),
     url(r'^', include('cms.urls')),
 )

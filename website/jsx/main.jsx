@@ -1,8 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
+import { getStore } from 'jsx/store'
+import { Provider } from 'react-redux'
+import UrlRouter from 'jsx/containers/urlrouter'
 
-require('jsx/store')
-require('jsx/utils')
-require('jsx/form_utils')
-require('jsx/api')
-
-export const videolinks = require('jsx/videolinks')
+ReactDOM.render(
+  <Provider store={getStore()}>
+    <UrlRouter/>
+  </Provider>
+  , document.getElementById('root')
+);

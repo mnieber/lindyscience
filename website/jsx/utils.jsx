@@ -24,3 +24,16 @@ export function createToastr() {
     progressBar={false}
   />
 }
+
+export function querySetListToDict(qsList) {
+  const result = {};
+  qsList.forEach(item => {
+    result[item.id] = item;
+  })
+  return result;
+}
+
+export function toTitleCase(str)
+{
+  return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+}

@@ -1,7 +1,8 @@
 import React from 'react'
 import classnames from 'classnames';
+import {Placeholder} from 'jsx/presentation/placeholder'
 
-export class VideoLinkList extends React.Component {
+class VideoLinkList extends React.Component {
   render() {
     const items = this.props.items.map((item, idx) => {
       return (
@@ -33,5 +34,22 @@ export class VideoLinkList extends React.Component {
     })
 
     return <div>{items}</div>
+  }
+}
+
+export class Move extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>{this.props.move.name}</h1>
+        <Placeholder
+          loadPlaceholder={this.props.loadDescription}
+        />
+        <VideoLinkList
+          items={this.props.videoLinks}
+          toggleLike={this.props.toggleLikeVideoLink}
+        />
+      </div>
+    )
   }
 }

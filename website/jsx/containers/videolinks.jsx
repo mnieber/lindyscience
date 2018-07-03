@@ -1,24 +1,13 @@
 import React from 'react'
 import {VideoLinkList} from 'jsx/presentation/videolinklist'
+import {Placeholder} from 'jsx/presentation/placeholder'
 import * as fromStore from 'jsx/reducers'
 import * as actions from 'jsx/actions'
 import * as api from 'jsx/api'
 import { connect } from 'react-redux'
 
 class VideoLinks extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      innerHtml: {__html: ''}
-    }
-  }
-
   componentWillMount() {
-    api.loadMoveDescription(
-      this.props.moveName
-    )
-    .then(innerHtml => this.setState({innerHtml: {__html: innerHtml}}));
-
     const moveVideoLinks = {};
     this.props.items.forEach(item => {
       moveVideoLinks[item.id] = item;
@@ -34,7 +23,10 @@ class VideoLinks extends React.Component {
 
   render() {
     return ([
-      <div key='1' dangerouslySetInnerHTML={this.state.innerHtml}/>,
+      <Placeholder
+        key='1'
+        loadPlaceholder={() => api.loadMoveDescription(this.props.moveName)}
+      />,
       <VideoLinkList
         key='2'
         items={this.props.moveVideoLinks}

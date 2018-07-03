@@ -2,8 +2,8 @@ from django.db import models
 from cms.models.fields import PlaceholderField
 from .utils import validate_video_url
 from enumfields import Enum, EnumField
-from taggit.managers import TaggableManager
 from votes.managers import VotableManager
+from tagulous.models import TagField
 
 
 class MoveVideoLink(models.Model):
@@ -37,7 +37,7 @@ class Move(models.Model):
     name = models.CharField(max_length=200, unique=True)
     difficulty = EnumField(Difficulty, max_length=7)
     description = PlaceholderField('description', related_name="description")
-    tags = TaggableManager()
+    tags = TagField(force_lowercase=True, max_count=10)
 
     def __str__(self):  # noqa
         return self.name

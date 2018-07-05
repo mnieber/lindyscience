@@ -49,3 +49,7 @@ $panGrey: #BBBBBB;
   height: 200px;
   width: 200px;
 }
+
+.moveList__item {
+  @apply mt-2;
+}

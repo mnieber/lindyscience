@@ -15,12 +15,18 @@ export class MoveList extends React.Component {
   render() {
     const items = this.props.moves.map((move, idx) => {
       return (
-        <Link key={idx} to={`/app/moves/${move.name}`}>
-          {move.name}
-        </Link>
+        <div key={idx} className = {"moveList__item"}>
+          <Link to={`/app/moves/${move.name}`}>
+            {move.name}
+          </Link>
+        </div>
       )
     })
 
-    return items
+    return (
+      <div className = {"flex flex-col"}>
+        {items}
+      </div>
+    )
   }
 }

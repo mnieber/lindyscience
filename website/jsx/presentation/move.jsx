@@ -41,7 +41,7 @@ class VideoLink extends React.Component {
             'videolink__nrVotes',
             {
               'videolink__nrVotes--liked': this.props.item.isLikedByCurrentUser,
-              'videolink__nrVotes--notLiked': !this.props.item.isLikedByCurrentUser,
+              'videolink__nrVotes--notVoted': !this.props.item.isLikedByCurrentUser,
             }
           )
         }>{this.props.item.nrVotes}</div>
@@ -51,7 +51,7 @@ class VideoLink extends React.Component {
               'videolink__likeBtn',
               {
                 'videolink__likeBtn--liked': this.props.item.isLikedByCurrentUser,
-                'videolink__likeBtn--notLiked': !this.props.item.isLikedByCurrentUser,
+                'videolink__likeBtn--notVoted': !this.props.item.isLikedByCurrentUser,
               }
             )
           }

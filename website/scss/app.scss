@@ -26,7 +26,7 @@ $panGrey: #BBBBBB;
 .videolink__nrVotes--liked {
 }
 
-.videolink__nrVotes--notLiked {
+.videolink__nrVotes--notVoted {
 }
 
 .videolink__url {
@@ -41,7 +41,7 @@ $panGrey: #BBBBBB;
   background-image: url('/static/img/like_1.png');
 }
 
-.videolink__likeBtn--notLiked {
+.videolink__likeBtn--notVoted {
   background-image: url('/static/img/like_0.png');
 }
 

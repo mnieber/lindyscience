@@ -16,6 +16,22 @@ export class MoveHeader extends React.Component {
 }
 
 
+class Tags extends React.Component {
+  render() {
+    const tagNames = this.props.tagNamesStr.split(',');
+    const items = tagNames.map((tagName, idx) => {
+      return <div key={idx} className="moveTag">{tagName}</div>;
+    });
+
+    return (
+      <div className = {"move__tags"}>
+        {items}
+      </div>
+    )
+  }
+}
+
+
 class VideoLinkList extends React.Component {
   render() {
     const items = this.props.items.map((item, idx) => {
@@ -56,6 +72,7 @@ export class Move extends React.Component {
     return (
       <div>
         <h1>{this.props.move.name}</h1>
+        <Tags tagNamesStr={this.props.move.tags}/>
         <Placeholder
           loadPlaceholder={this.props.loadDescription}
         />

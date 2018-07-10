@@ -7,6 +7,8 @@
 
 {% block content %}
 
+<a href='/app/moves'>All moves</a>
+
 <form class="editMoveForm" action='' method='post'>{% csrf_token %}
     <div class="flex flex-col">
         {{ form }}

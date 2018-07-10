@@ -74,8 +74,12 @@ $panGrey: #BBBBBB;
   .formField {
     margin-top: 2rem;
   }
+}
 
-  .foo {
-    width: 16rem;
-  }
+.move__tags {
+  @apply flex;
+}
+
+.moveTag {
+  @apply mr-2 text-blue;
 }

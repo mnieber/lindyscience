@@ -40,26 +40,42 @@ class VideoLink extends React.Component {
           classnames(
             'videolink__nrVotes',
             {
-              'videolink__nrVotes--liked': this.props.item.isLikedByCurrentUser,
-              'videolink__nrVotes--notVoted': !this.props.item.isLikedByCurrentUser,
+              'videolink__nrVotes--voted': this.props.vote != 0,
+              'videolink__nrVotes--notVoted': this.props.vote == 0,
             }
           )
         }>{this.props.item.nrVotes}</div>
         <div
           className={
             classnames(
-              'videolink__likeBtn',
+              'videolink__upVoteBtn',
               {
-                'videolink__likeBtn--liked': this.props.item.isLikedByCurrentUser,
-                'videolink__likeBtn--notVoted': !this.props.item.isLikedByCurrentUser,
+              'videolink__upVoteBtn--voted': this.props.vote == 1,
+              'videolink__upVoteBtn--notVoted': this.props.vote != 1,
               }
             )
           }
-          onClick={() => this.props.toggleLike(this.props.item.id)}
+          onClick={() => {
+            this.props.setVote(this.props.item.id, this.props.vote == 1 ? 0 : 1)
+          }}
+        />
+        <div
+          className={
+            classnames(
+              'videolink__downVoteBtn',
+              {
+              'videolink__downVoteBtn--voted': this.props.vote == -1,
+              'videolink__downVoteBtn--notVoted': this.props.vote != -1,
+              }
+            )
+          }
+          onClick={() => {
+            this.props.setVote(this.props.item.id, this.props.vote == -1 ? 0 : -1)
+          }}
         />
         <a
           className='videolink__url'
-          href='{this.props.item.url}'
+          href={this.props.item.url}
           target='blank'
         >
           {this.props.item.defaultTitle}
@@ -75,7 +91,11 @@ class VideoLinkList extends React.Component {
   render() {
     const items = this.props.items.map((item, idx) => {
       return (
-        <VideoLink item={item} key={idx} toggleLike={this.props.toggleLike}/>
+        <VideoLink
+          item={item}
+          vote={this.props.getMoveVideoLinkVoteById(item.id)}
+          key={idx} setVote={this.props.setVote}
+        />
       );
     })
 
@@ -94,7 +114,8 @@ export class Move extends React.Component {
         />
         <VideoLinkList
           items={this.props.videoLinks}
-          toggleLike={this.props.toggleLikeVideoLink}
+          setVote={this.props.voteVideoLink}
+          getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
         />
       </div>
     )

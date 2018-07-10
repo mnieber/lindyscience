@@ -20,29 +20,32 @@ $panGrey: #BBBBBB;
   @apply flex items-center h-8;
 }
 
-.videolink__nrVotes {
-}
-
-.videolink__nrVotes--liked {
-}
-
-.videolink__nrVotes--notVoted {
-}
-
 .videolink__url {
   @apply ml-2;
 }
 
-.videolink__likeBtn {
+.videolink__upVoteBtn {
   @apply ml-2 bg-cover w-6 h-6;
 }
 
-.videolink__likeBtn--liked {
-  background-image: url('/static/img/like_1.png');
+.videolink__upVoteBtn--voted {
+  background-image: url('/static/img/upvote_1.png');
 }
 
-.videolink__likeBtn--notVoted {
-  background-image: url('/static/img/like_0.png');
+.videolink__upVoteBtn--notVoted {
+  background-image: url('/static/img/upvote_0.png');
+}
+
+.videolink__downVoteBtn {
+  @apply ml-2 bg-cover w-6 h-6;
+}
+
+.videolink__downVoteBtn--voted {
+  background-image: url('/static/img/downvote_1.png');
+}
+
+.videolink__downVoteBtn--notVoted {
+  background-image: url('/static/img/downvote_0.png');
 }
 
 .move__description {

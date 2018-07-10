@@ -24,9 +24,10 @@ function get(url) {
   })
 }
 
-export function setLikeMoveVideoLink(id, value) {
-  if (value) {
-    return post(`/votes/up/?model=movevideolink&id=${id}&vote=true`)
+export function voteMoveVideoLink(id, value) {
+  if (value != 0) {
+    const vote = value == 1 ? 'true' : 'false';
+    return post(`/votes/up/?model=movevideolink&id=${id}&vote=${vote}`)
   }
   else {
     return post(`/votes/down/?model=movevideolink&id=${id}`)
@@ -46,6 +47,23 @@ export function loadMoves() {
     url: `/moves`
   })
   .then(response => toCamelCase(response));
+}
+
+export function loadVotes() {
+  return jquery.ajax({
+    type: 'GET',
+    url: `/votes`
+  })
+  .then(response => toCamelCase(response))
+  .then(response => response.map(x => {
+    x.vote = (x.vote ? 1 : -1);
+    return x;
+  }))
+  .then(response => {
+    const votes = {};
+    votes.moveVideoLinks = response.filter(x => x.model='MoveVideoLink');
+    return votes;
+  });
 }
 
 export function loadMoveVideoLinks() {

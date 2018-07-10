@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^moves/(?P<move_name>[^/]+)/edit/?$',
         views.EditMoveView.as_view(),
         name='edit_move'),
+    url(r'^votes/?$', api.CurrentUserVotesView.as_view(), name='votes'),
 ]

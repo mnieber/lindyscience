@@ -7,10 +7,9 @@ import { connect } from 'react-redux'
 
 
 class MovePage extends React.Component {
-  toggleLike = (id) => {
-    const isLiked = this.props.getMoveVideoLinkById(id).isLikedByCurrentUser;
-    api.setLikeMoveVideoLink(id, !isLiked);
-    this.props.toggleLikeMoveVideoLink(id);
+  voteVideoLink = (id, vote) => {
+    api.voteMoveVideoLink(id, vote);
+    this.props.voteMoveVideoLink(id, vote);
   }
 
   render() {
@@ -25,7 +24,8 @@ class MovePage extends React.Component {
           move={this.props.move}
           loadDescription={() => api.loadMoveDescription(this.props.move.name)}
           videoLinks={this.props.getVideoLinksByMoveId(this.props.move.id)}
-          toggleLikeVideoLink={this.toggleLike}
+          voteVideoLink={this.voteVideoLink}
+          getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
         />
       </div>
     )
@@ -37,6 +37,7 @@ MovePage = connect(
     getMoveByName: x => fromStore.getMoveByName(state.linsci, x),
     getVideoLinksByMoveId: x => fromStore.getVideoLinksByMoveId(state.linsci, x),
     getMoveVideoLinkById: id => fromStore.getMoveVideoLinkById(state.linsci, id),
+    getMoveVideoLinkVoteById: id => fromStore.getMoveVideoLinkVoteById(state.linsci, id),
   }),
   actions,
   (state, actions, {children, params}) => { return({

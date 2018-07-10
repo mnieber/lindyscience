@@ -7,10 +7,6 @@ from tagulous.models import TagField
 
 
 class MoveVideoLink(models.Model):
-    class Meta:
-        verbose_name = 'Video Link'
-        verbose_name_plural = 'Video Links'
-
     move = models.ForeignKey(
         'Move', on_delete=models.CASCADE, related_name='video_links')
     url = models.URLField()

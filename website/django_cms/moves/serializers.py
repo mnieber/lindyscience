@@ -1,6 +1,7 @@
-from rest_framework import serializers
 from . import models
-from app.middleware import get_current_user
+from collections import Counter
+from rest_framework import serializers
+from votes.models import Vote
 
 
 class MoveSerializer(serializers.ModelSerializer):  # noqa
@@ -17,10 +18,22 @@ class MoveVideoLinkSerializer(serializers.ModelSerializer):  # noqa
         model = models.MoveVideoLink
         exclude = []
 
-    nr_votes = serializers.IntegerField(source='votes.count')
-    is_liked_by_current_user = serializers.SerializerMethodField()
+    nr_votes = serializers.SerializerMethodField()
     default_title = serializers.CharField()
 
-    def get_is_liked_by_current_user(self, obj):
-        votes = obj.votes.all(get_current_user()).filter(pk=obj.pk)
-        return votes.exists()
+    def get_nr_votes(self, obj):
+        likes = obj.votes.likes()
+        counts = Counter(likes)
+        count = counts.get(True, 0) - counts.get(False, 0)
+        return count if count else 0
+
+
+class VoteSerializer(serializers.ModelSerializer):  # noqa
+    class Meta:  # noqa
+        model = Vote
+        exclude = []
+
+    model = serializers.SerializerMethodField()
+
+    def get_model(self, obj):
+        return obj.content_type.name

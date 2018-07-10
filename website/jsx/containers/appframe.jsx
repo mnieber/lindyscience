@@ -23,10 +23,12 @@ class AppFrame extends React.Component {
     jquery.when(
       api.loadMoves(),
       api.loadMoveVideoLinks(),
+      api.loadVotes(),
     )
-    .done((moves, moveVideoLinks) => {
+    .done((moves, moveVideoLinks, votes) => {
       this.props.setMoves(querySetListToDict(moves));
       this.props.addMoveVideoLinks(querySetListToDict(moveVideoLinks));
+      this.props.setVotes(votes);
       this.props.setIOStatus("ok");
     })
     .catch(() => {

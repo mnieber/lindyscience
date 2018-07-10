@@ -16,17 +16,29 @@ export function setMoves(moves) {
   }
 }
 
-export function toggleLikeMoveVideoLink(id) {
+export function setVotes(votes) {
   return {
-    type: 'TOGGLE_LIKE_MOVE_VIDEO_LINK',
-    id: id,
+    type: 'SET_VOTES',
+    votes: votes,
+  }
+}
+
+export function voteMoveVideoLink(id, vote) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const prevVote = fromStore.getMoveVideoLinkVoteById(state.linsci, id);
+
+    dispatch({
+      type: 'VOTE_MOVE_VIDEO_LINK',
+      id: id,
+      vote: vote,
+      prevVote: prevVote,
+    });
   }
 }
 
 export function setIOStatus(value) {
   return (dispatch, getState) => {
-    const state = getState().faq;
-
     dispatch({
       type: 'SET_IO_STATUS',
       value: "before" + toTitleCase(value),

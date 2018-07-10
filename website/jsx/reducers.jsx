@@ -24,15 +24,40 @@ const moveVideoLinksReducer = function(
         ...state,
         ...action.moveVideoLinks
       }
-    case 'TOGGLE_LIKE_MOVE_VIDEO_LINK':
-      const wasLiked = state[action.id].isLikedByCurrentUser;
-      const nrVotes = state[action.id].nrVotes;
+    case 'VOTE_MOVE_VIDEO_LINK':
       return {
         ...state,
         [action.id]: {
           ...state[action.id],
-          isLikedByCurrentUser: !wasLiked,
-          nrVotes: nrVotes + (wasLiked ? -1 : 1),
+          nrVotes: state[action.id].nrVotes + (action.vote - action.prevVote),
+        }
+      }
+    default:
+      return state
+  }
+}
+
+const votesReducer = function(
+  state = {
+    moveVideoLinks: {}
+  },
+  action
+)
+{
+  switch (action.type) {
+    case 'SET_VOTES':
+      const votes = {};
+      action.votes.moveVideoLinks.forEach(vote => {
+        votes[vote.objectId] = vote.vote;
+      })
+      return {...state,
+        moveVideoLinks: votes
+      };
+    case 'VOTE_MOVE_VIDEO_LINK':
+      return {
+        ...state,
+        moveVideoLinks: {...state.moveVideoLinks,
+          [action.id]: action.vote
         }
       }
     default:
@@ -61,6 +86,7 @@ const statusReducer = function(
 export const linsciReducer = combineReducers({
   moves: movesReducer,
   moveVideoLinks: moveVideoLinksReducer,
+  votes: votesReducer,
   status: statusReducer,
 });
 
@@ -83,6 +109,11 @@ export function getVideoLinksByMoveId(state, moveId) {
 
 export function getMoveVideoLinkById(state, id) {
   return state.moveVideoLinks[id];
+}
+
+export function getMoveVideoLinkVoteById(state, id) {
+  const result = state.votes.moveVideoLinks[id];
+  return result ? result : 0;
 }
 
 export const getIOStatus = (state) => state.status.ioStatus;

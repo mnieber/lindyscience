@@ -100,3 +100,8 @@ $panGrey: #BBBBBB;
 .button--wide {
   @apply w-32;
 }
+
+.editVideoLinkBtn {
+  @apply cursor-pointer underline;
+
+}

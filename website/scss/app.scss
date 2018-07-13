@@ -86,3 +86,17 @@ $panGrey: #BBBBBB;
 .moveTag {
   @apply mr-2 text-blue;
 }
+
+.panel {
+  @apply my-2 p-2 bg-grey-light;
+}
+
+.button {
+  @apply p-1 my-auto cursor-pointer;
+  @apply bg-blue-light text-white;
+  @apply rounded text-center;
+}
+
+.button--wide {
+  @apply w-32;
+}

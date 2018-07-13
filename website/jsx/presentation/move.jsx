@@ -9,7 +9,6 @@ export class MoveHeader extends React.Component {
     return (
       <div className = {"move__header"}>
         <Link to='/app/moves'>All moves</Link>
-        <a href={`/moves/${this.props.move.name}/edit`}>Edit move</a>
       </div>
     )
   }
@@ -105,18 +104,38 @@ class VideoLinkList extends React.Component {
 
 export class Move extends React.Component {
   render() {
+    const editMoveBtn = (
+      <div className={"button button--wide ml-2"} onClick={() => {
+        window.location=`/moves/${this.props.move.name}/edit`
+      }}
+      >
+      Edit move
+      </div>
+    );
+
+    const nameDiv = (
+      <div className= {"flex flex-wrap"}>
+        <h1>{this.props.move.name}</h1>
+        {editMoveBtn}
+      </div>
+    )
     return (
       <div>
-        <h1>{this.props.move.name}</h1>
+        {nameDiv}
         <Tags tagNamesStr={this.props.move.tags}/>
+        <div className={"panel"}>
         <Placeholder
           loadPlaceholder={this.props.loadDescription}
         />
-        <VideoLinkList
-          items={this.props.videoLinks}
-          setVote={this.props.voteVideoLink}
-          getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
-        />
+        </div>
+        <div className={"panel"}>
+          <h2>Video links</h2>
+          <VideoLinkList
+            items={this.props.videoLinks}
+            setVote={this.props.voteVideoLink}
+            getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
+          />
+        </div>
       </div>
     )
   }

@@ -1,5 +1,7 @@
 import React from 'react'
 import classnames from 'classnames';
+import { isNone } from 'jsx/utils/utils'
+import parse from 'url-parse'
 
 
 export function formField(errors, label, field) {
@@ -69,7 +71,7 @@ export function FormField({formProps, fieldName, label, type, placeholder, class
 
     return (
         <div className={`my-2 ${classNames}`}>
-            {formFieldLabel(fieldName, label, ['formField__label'])}
+            {label && formFieldLabel(fieldName, label, ['formField__label'])}
             {textField}
             {formFieldError(formProps, fieldName, ['formField__error'])}
         </div>
@@ -87,4 +89,19 @@ export function Row2({w1, w2, padding=1}) {
             </div>
         </div>
     );
+}
+
+export function validateVideoLinkUrl(url) {
+  const parsedUrl = parse(url);
+  var netloc = parsedUrl.hostname;
+  if (netloc.startsWith('www.')) {
+    netloc = netloc.substring(4);
+  }
+  if (netloc.startsWith('youtube') || netloc.startsWith('youtu.be')) {
+      const query = parse.qs.parse(parsedUrl.query)
+      if (isNone(query['t'])) {
+        return 'Missing t=<timestamp> parameter in youtube url';
+      }
+  }
+  return undefined;
 }

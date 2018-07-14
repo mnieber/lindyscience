@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import jquery from 'jquery';
 import { browserHistory } from 'react-router'
-import {querySetListToDict} from 'jsx/utils'
+import {querySetListToDict} from 'jsx/utils/utils'
 
 import * as actions from 'jsx/actions'
 import * as fromStore from 'jsx/reducers'

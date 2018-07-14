@@ -37,3 +37,7 @@ export function toTitleCase(str)
 {
   return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 }
+
+export function isNone(x) {
+  return typeof x == 'undefined' || x === null
+}

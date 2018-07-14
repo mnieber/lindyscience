@@ -1,6 +1,6 @@
 import React from 'react'
 import * as fromStore from 'jsx/reducers'
-import {toTitleCase} from 'jsx/utils'
+import {toTitleCase} from 'jsx/utils/utils'
 
 export function addMoveVideoLinks(moveVideoLinks) {
   return {

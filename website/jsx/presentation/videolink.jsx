@@ -1,6 +1,69 @@
 import React from 'react'
 import classnames from 'classnames';
+import { withFormik } from 'formik';
+import * as yup from 'yup';
+import { FormField, validateVideoLinkUrl } from 'jsx/utils/form_utils'
 
+
+class VideoLinkForm extends React.Component {
+  _form = () => {
+    const InnerForm = props => {
+
+      return (
+        <form className="videoLinkForm w-full" onSubmit={props.handleSubmit}>
+          <div className={"flex flex-wrap"}>
+            <FormField
+              classNames="w-64"
+              formProps={props}
+              fieldName='url'
+              type='text'
+              placeholder="Link"
+            />
+            <button
+              className="editVideoLinkBtn ml-2"
+              type="submit"
+              disabled={props.isSubmitting}
+            >
+              save
+            </button>
+            <button
+              className="editVideoLinkBtn ml-2"
+              onClick={this.props.onCancel}
+            >
+              cancel
+            </button>
+          </div>
+        </form>
+      )
+    }
+
+    const EnhancedForm = withFormik({
+      mapPropsToValues: () => ({ url: this.props.values.url }),
+      validationSchema: yup.object().shape({
+        url: yup.string()
+          .required('This field is required'),
+      }),
+      validate: (values, props) => {
+        let errors = {};
+        const urlError = validateVideoLinkUrl(values.url);
+        if (urlError) {
+          errors['url'] = urlError;
+        }
+        return errors;
+      },
+      handleSubmit: (values, { setSubmitting }) => {
+        this.props.onSubmit(values);
+      },
+      displayName: 'BasicForm', // helps with React DevTools
+    })(InnerForm);
+
+    return <EnhancedForm/>;
+  }
+
+  render() {
+    return this._form();
+  }
+}
 
 export class VideoLink extends React.Component {
   constructor(props) {
@@ -106,30 +169,19 @@ export class VideoLink extends React.Component {
       </input>
     );
 
-    const saveBtn = (
-      <div
-        className="editVideoLinkBtn ml-2"
-        onClick={() => this.setState({isEditing: false})}
-      >
-      save
-      </div>
-    );
-
-    const cancelBtn = (
-      <div
-        className="editVideoLinkBtn ml-2"
-        onClick={() => this.setState({isEditing: false})}
-      >
-      cancel
-      </div>
+    const form = (
+      <VideoLinkForm
+        values={{
+          url: this.props.item.url,
+        }}
+        onSubmit={() => this.setState({isEditing: false})}
+        onCancel={() => this.setState({isEditing: false})}
+      />
     );
 
     return (
       <div className='videolink'>
-        {link}
-        {title}
-        {saveBtn}
-        {cancelBtn}
+        {form}
       </div>
     );
   }

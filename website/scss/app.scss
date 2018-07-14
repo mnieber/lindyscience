@@ -17,15 +17,15 @@ $panGrey: #BBBBBB;
 }
 
 .videolink {
-  @apply flex items-center h-8;
+  @apply flex h-8;
 }
 
 .videolink__url {
-  @apply ml-2;
+  @apply mx-1;
 }
 
 .videolink__upVoteBtn {
-  @apply ml-2 bg-cover w-6 h-6;
+  @apply mx-1 bg-cover w-6 h-6;
 }
 
 .videolink__upVoteBtn--voted {
@@ -37,7 +37,7 @@ $panGrey: #BBBBBB;
 }
 
 .videolink__downVoteBtn {
-  @apply ml-2 bg-cover w-6 h-6;
+  @apply mx-1 bg-cover w-6 h-6;
 }
 
 .videolink__downVoteBtn--voted {
@@ -54,7 +54,7 @@ $panGrey: #BBBBBB;
 }
 
 .moveList__item {
-  @apply mt-2;
+  @apply my-1;
 }
 
 .move__header {

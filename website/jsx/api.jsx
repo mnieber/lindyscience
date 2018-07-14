@@ -1,5 +1,5 @@
 import jquery from 'jquery';
-import { toCamelCase } from 'jsx/utils'
+import { toCamelCase } from 'jsx/utils/utils'
 
 
 function post(url, data) {

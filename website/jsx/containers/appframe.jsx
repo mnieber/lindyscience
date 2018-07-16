@@ -1,8 +1,8 @@
-import React from 'react'
-import { connect } from 'react-redux'
 import jquery from 'jquery';
+import React from 'react'
 import { browserHistory } from 'react-router'
-import {querySetListToDict} from 'jsx/utils/utils'
+import { connect } from 'react-redux'
+import { querySetListToDict, createToastr } from 'jsx/utils/utils'
 
 import * as actions from 'jsx/actions'
 import * as fromStore from 'jsx/reducers'
@@ -39,6 +39,7 @@ class AppFrame extends React.Component {
   render() {
     return (
       <div>
+        {createToastr()}
         {this.props.children}
       </div>
     );

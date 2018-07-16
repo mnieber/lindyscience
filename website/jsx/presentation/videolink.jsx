@@ -19,6 +19,13 @@ class VideoLinkForm extends React.Component {
               type='text'
               placeholder="Link"
             />
+            <FormField
+              classNames="w-64"
+              formProps={props}
+              fieldName='title'
+              type='text'
+              placeholder="Title"
+            />
             <button
               className="editVideoLinkBtn ml-2"
               type="submit"
@@ -38,9 +45,14 @@ class VideoLinkForm extends React.Component {
     }
 
     const EnhancedForm = withFormik({
-      mapPropsToValues: () => ({ url: this.props.values.url }),
+      mapPropsToValues: () => ({
+        url: this.props.values.url,
+        title: this.props.values.title,
+      }),
       validationSchema: yup.object().shape({
         url: yup.string()
+          .required('This field is required'),
+        title: yup.string()
           .required('This field is required'),
       }),
       validate: (values, props) => {
@@ -133,7 +145,7 @@ export class VideoLink extends React.Component {
     const editBtn = (
       <div
         className="editVideoLinkBtn ml-2"
-        onClick={() => this.setState({isEditing: true})}
+        onClick={() => this._setIsEditing(true)}
       >
       edit
       </div>
@@ -150,32 +162,20 @@ export class VideoLink extends React.Component {
     );
   }
 
+  _setIsEditing = flag => {this.setState({isEditing: flag})}
+
   _renderEdit = () => {
-    const link = (
-      <input
-        type='text'
-        defaultValue={this.props.item.url}
-        placeholder={'Link'}
-      >
-      </input>
-    );
-
-    const title = (
-      <input
-        type='text'
-        defaultValue={this.props.item.defaultTitle}
-        placeholder={'Description'}
-      >
-      </input>
-    );
-
     const form = (
       <VideoLinkForm
         values={{
           url: this.props.item.url,
+          title: this.props.item.title,
         }}
-        onSubmit={() => this.setState({isEditing: false})}
-        onCancel={() => this.setState({isEditing: false})}
+        onSubmit={values => {
+          this.props.saveVideoLink(this.props.item.id, values);
+          this._setIsEditing(false);
+        }}
+        onCancel={() => this._setIsEditing(false)}
       />
     );
 
@@ -202,9 +202,11 @@ export class VideoLinkList extends React.Component {
     const items = this.props.items.map((item, idx) => {
       return (
         <VideoLink
+          key={idx}
           item={item}
           vote={this.props.getMoveVideoLinkVoteById(item.id)}
-          key={idx} setVote={this.props.setVote}
+          setVote={this.props.setVote}
+          saveVideoLink={this.props.saveVideoLink}
         />
       );
     })

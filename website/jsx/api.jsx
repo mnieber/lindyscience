@@ -1,28 +1,7 @@
 import jquery from 'jquery';
 import { toCamelCase } from 'jsx/utils/utils'
+import { get, post, patch } from 'jsx/utils/api_utils'
 
-
-function post(url, data) {
-  return jquery.ajax({
-    type: "POST",
-    url: url,
-    data: JSON.stringify(data),
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-}
-
-
-function get(url) {
-  return jquery.ajax({
-    type: "GET",
-    url: url,
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-}
 
 export function voteMoveVideoLink(id, value) {
   if (value != 0) {
@@ -34,26 +13,21 @@ export function voteMoveVideoLink(id, value) {
   }
 }
 
+export function patchMoveVideoLink(id, values) {
+  return patch(`/move-video-link/${id}/`, values);
+}
+
 export function loadMoveDescription(moveName) {
-  return jquery.ajax({
-    type: 'GET',
-    url: `/moves/${moveName}/description`
-  });
+  return get(`/moves/${moveName}/description`);
 }
 
 export function loadMoves() {
-  return jquery.ajax({
-    type: 'GET',
-    url: `/moves`
-  })
+  return get(`/moves`)
   .then(response => toCamelCase(response));
 }
 
 export function loadVotes() {
-  return jquery.ajax({
-    type: 'GET',
-    url: `/votes`
-  })
+  return get(`/votes`)
   .then(response => toCamelCase(response))
   .then(response => response.map(x => {
     x.vote = (x.vote ? 1 : -1);
@@ -67,9 +41,6 @@ export function loadVotes() {
 }
 
 export function loadMoveVideoLinks() {
-  return jquery.ajax({
-    type: 'GET',
-    url: `/move-video-links`
-  })
+  return get(`/move-video-links`)
   .then(response => toCamelCase(response));
 }

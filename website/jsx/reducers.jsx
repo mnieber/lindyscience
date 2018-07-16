@@ -32,6 +32,14 @@ const moveVideoLinksReducer = function(
           nrVotes: state[action.id].nrVotes + (action.vote - action.prevVote),
         }
       }
+    case 'PATCH_MOVE_VIDEO_LINK':
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          ...action.videoLink,
+        }
+      }
     default:
       return state
   }

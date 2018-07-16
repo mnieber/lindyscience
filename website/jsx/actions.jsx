@@ -23,6 +23,14 @@ export function setVotes(votes) {
   }
 }
 
+export function patchMoveVideoLink(id, videoLink) {
+  return {
+    type: 'PATCH_MOVE_VIDEO_LINK',
+    id: id,
+    videoLink: videoLink,
+  }
+}
+
 export function voteMoveVideoLink(id, vote) {
   return (dispatch, getState) => {
     const state = getState();

@@ -63,6 +63,7 @@ export class Move extends React.Component {
           <VideoLinkList
             items={this.props.videoLinks}
             setVote={this.props.voteVideoLink}
+            saveVideoLink={this.props.saveVideoLink}
             getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
           />
         </div>

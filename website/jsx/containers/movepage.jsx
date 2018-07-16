@@ -1,15 +1,24 @@
-import React from 'react'
-import { MoveHeader, Move } from 'jsx/presentation/move'
-import * as fromStore from 'jsx/reducers'
 import * as actions from 'jsx/actions'
 import * as api from 'jsx/api'
+import * as fromStore from 'jsx/reducers'
+import React from 'react'
 import { connect } from 'react-redux'
+import { MoveHeader, Move } from 'jsx/presentation/move'
+import { toastr } from 'react-redux-toastr'
 
 
 class MovePage extends React.Component {
   voteVideoLink = (id, vote) => {
-    api.voteMoveVideoLink(id, vote);
     this.props.voteMoveVideoLink(id, vote);
+    api.voteMoveVideoLink(id, vote)
+    .catch(() => toastr.error('Oops!', 'We could not save your vote'));
+  }
+
+  saveVideoLink = (id, values) => {
+    values.defaultTitle = values.title || values.url;
+    this.props.patchMoveVideoLink(id, values);
+    api.patchMoveVideoLink(id, values)
+    .catch(() => toastr.error('Oops!', 'We could not save the video link'));
   }
 
   render() {
@@ -25,6 +34,7 @@ class MovePage extends React.Component {
           loadDescription={() => api.loadMoveDescription(this.props.move.name)}
           videoLinks={this.props.getVideoLinksByMoveId(this.props.move.id)}
           voteVideoLink={this.voteVideoLink}
+          saveVideoLink={this.saveVideoLink}
           getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
         />
       </div>

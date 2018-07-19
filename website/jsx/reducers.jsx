@@ -40,6 +40,15 @@ const moveVideoLinksReducer = function(
           ...action.videoLink,
         }
       }
+    case 'REMOVE_EMPTY_MOVE_VIDEO_LINKS':
+      const newState = {};
+      Object.keys(state).forEach(id => {
+        if (state[id].url) {
+          newState[id] = state[id];
+        }
+      })
+      return newState;
+
     default:
       return state
   }

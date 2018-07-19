@@ -37,6 +37,15 @@ class MoveVideoLinksView(APIView):
             models.MoveVideoLink.objects.all(), many=True)
         return Response(serializer.data)
 
+    def post(self, request):
+        serializer = serializers.MoveVideoLinkSerializer(data=request.data)
+
+        is_valid = serializer.is_valid()
+        if is_valid:
+            serializer.save()
+
+        return _response_from_serializer(is_valid, serializer)
+
 
 class MoveVideoLinkView(APIView):
     def patch(self, request, pk):

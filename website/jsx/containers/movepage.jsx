@@ -2,8 +2,10 @@ import * as actions from 'jsx/actions'
 import * as api from 'jsx/api'
 import * as fromStore from 'jsx/reducers'
 import React from 'react'
+import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
 import { MoveHeader, Move } from 'jsx/presentation/move'
+import { querySetListToDict } from 'jsx/utils/utils'
 import { toastr } from 'react-redux-toastr'
 
 
@@ -15,10 +17,30 @@ class MovePage extends React.Component {
   }
 
   saveVideoLink = (id, values) => {
-    values.defaultTitle = values.title || values.url;
+    values.move = this.props.move.id;
+    const isNewMove = !this.props.getMoveVideoLinkById(id).url;
     this.props.patchMoveVideoLink(id, values);
-    api.patchMoveVideoLink(id, values)
-    .catch(() => toastr.error('Oops!', 'We could not save the video link'));
+    var response = null;
+    if (isNewMove) {
+      response = api.saveMoveVideoLink(values);
+    }
+    else {
+      response = api.patchMoveVideoLink(id, values);
+    }
+    response.catch(() => toastr.error('Oops!', 'We could not save the video link'));
+  }
+
+  addVideoLink = () => {
+    this.props.addMoveVideoLinks(querySetListToDict([{
+      id: uuidv4(),
+      move: this.props.move.id,
+      title: '',
+      url: ''
+    }]));
+  }
+
+  cancelEditVideoLink = () => {
+    this.props.removeEmptyMoveVideoLinks();
   }
 
   render() {
@@ -35,6 +57,8 @@ class MovePage extends React.Component {
           videoLinks={this.props.getVideoLinksByMoveId(this.props.move.id)}
           voteVideoLink={this.voteVideoLink}
           saveVideoLink={this.saveVideoLink}
+          addVideoLink={this.addVideoLink}
+          cancelEditVideoLink={this.cancelEditVideoLink}
           getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
         />
       </div>

@@ -19,7 +19,6 @@ class MoveVideoLinkSerializer(serializers.ModelSerializer):  # noqa
         exclude = []
 
     nr_votes = serializers.SerializerMethodField()
-    default_title = serializers.CharField()
 
     def get_nr_votes(self, obj):
         likes = obj.votes.likes()

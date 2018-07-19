@@ -13,8 +13,17 @@ export function voteMoveVideoLink(id, value) {
   }
 }
 
+export function saveMoveVideoLink(values) {
+  if (!values.url.startsWith('http://') && !values.url.startsWith('https://')) {
+    values = {...values,
+      url: 'http://' + values.url
+    }
+  }
+  return post(`/move-video-links/`, values);
+}
+
 export function patchMoveVideoLink(id, values) {
-  return patch(`/move-video-link/${id}/`, values);
+  return patch(`/move-video-links/${id}/`, values);
 }
 
 export function loadMoveDescription(moveName) {

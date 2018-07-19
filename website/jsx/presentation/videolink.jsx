@@ -81,7 +81,7 @@ export class VideoLink extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isEditing: false
+      isEditing: props.item.url == ''
     }
   }
 
@@ -138,7 +138,7 @@ export class VideoLink extends React.Component {
         href={this.props.item.url}
         target='blank'
       >
-        {this.props.item.defaultTitle}
+        {this.props.item.title || this.props.item.url}
       </a>
     );
 
@@ -175,7 +175,10 @@ export class VideoLink extends React.Component {
           this.props.saveVideoLink(this.props.item.id, values);
           this._setIsEditing(false);
         }}
-        onCancel={() => this._setIsEditing(false)}
+        onCancel={() => {
+          this.props.cancelEditVideoLink(this.props.item.id);
+          this._setIsEditing(false);
+        }}
       />
     );
 
@@ -202,11 +205,12 @@ export class VideoLinkList extends React.Component {
     const items = this.props.items.map((item, idx) => {
       return (
         <VideoLink
-          key={idx}
+          key={item.id}
           item={item}
           vote={this.props.getMoveVideoLinkVoteById(item.id)}
           setVote={this.props.setVote}
           saveVideoLink={this.props.saveVideoLink}
+          cancelEditVideoLink={this.props.cancelEditVideoLink}
         />
       );
     })

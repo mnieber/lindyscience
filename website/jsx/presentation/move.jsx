@@ -49,6 +49,16 @@ export class Move extends React.Component {
         {editMoveBtn}
       </div>
     )
+
+    const addVideoLinkBtn = (
+      <div className={"button button--wide ml-2"} onClick={() => {
+        this.props.addVideoLink()
+      }}
+      >
+      Add
+      </div>
+    );
+
     return (
       <div>
         {nameDiv}
@@ -59,11 +69,15 @@ export class Move extends React.Component {
         />
         </div>
         <div className={"panel"}>
-          <h2>Video links</h2>
+          <div className= {"flex flex-wrap mb-4"}>
+            <h2>Video links</h2>
+            {addVideoLinkBtn}
+          </div>
           <VideoLinkList
             items={this.props.videoLinks}
             setVote={this.props.voteVideoLink}
             saveVideoLink={this.props.saveVideoLink}
+            cancelEditVideoLink={this.props.cancelEditVideoLink}
             getMoveVideoLinkVoteById={this.props.getMoveVideoLinkVoteById}
           />
         </div>

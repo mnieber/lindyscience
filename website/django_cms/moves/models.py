@@ -4,9 +4,11 @@ from .utils import validate_video_url
 from enumfields import Enum, EnumField
 from votes.managers import VotableManager
 from tagulous.models import TagField
+import uuid
 
 
 class MoveVideoLink(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     move = models.ForeignKey(
         'Move', on_delete=models.CASCADE, related_name='video_links')
     url = models.URLField()

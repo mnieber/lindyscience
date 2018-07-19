@@ -31,6 +31,12 @@ export function patchMoveVideoLink(id, videoLink) {
   }
 }
 
+export function removeEmptyMoveVideoLinks() {
+  return {
+    type: 'REMOVE_EMPTY_MOVE_VIDEO_LINKS',
+  }
+}
+
 export function voteMoveVideoLink(id, vote) {
   return (dispatch, getState) => {
     const state = getState();

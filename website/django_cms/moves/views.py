@@ -31,6 +31,7 @@ class EditMoveView(View):
         form = form or MoveForm(instance=move)
         context = dict(
             move=move,
+            is_my_move=move.owner.id == self.request.user.id,
             private_data=models.MovePrivateData.objects.get_or_create(
                 move=move, owner_id=self.request.user.id)[0],
             form=form)
@@ -45,7 +46,8 @@ class EditMoveView(View):
         form = MoveForm(request.POST, instance=move)
 
         if form.is_valid():
-            move = form.save()
+            if move.owner.id == request.user.id:
+                move = form.save()
             return redirect('edit_move', move.name)
 
         return self._render(move, form)

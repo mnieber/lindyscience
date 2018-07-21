@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from . import serializers
 from . import models
-from app.utils import _response_from_serializer
+from app.utils import _response_from_serializer, _failure
 
 
 class MovesView(APIView):
@@ -30,10 +30,12 @@ class MoveVideoLinksView(APIView):
 
 class MoveVideoLinkView(APIView):
     def patch(self, request, pk):
+        instance = models.MoveVideoLink.objects.get(pk=pk)
+        if instance.owner_id != request.user.id:
+            return _failure('No permission', 403)
+
         serializer = serializers.MoveVideoLinkSerializer(
-            instance=models.MoveVideoLink.objects.get(pk=pk),
-            data=request.data,
-            partial=True)
+            instance=instance, data=request.data, partial=True)
 
         is_valid = serializer.is_valid()
         if is_valid:

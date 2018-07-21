@@ -36,6 +36,8 @@ class Move(models.Model):
     difficulty = EnumField(Difficulty, max_length=7)
     description = PlaceholderField('description', related_name="description")
     tags = TagField(force_lowercase=True, max_count=10)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):  # noqa
         return self.name

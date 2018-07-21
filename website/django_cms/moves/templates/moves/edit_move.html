@@ -10,6 +10,7 @@
 <a href='/app/moves'>All moves</a>
 
 <form class="editMoveForm" action='' method='post'>{% csrf_token %}
+    {% if is_my_move %}
     <div class="flex flex-col">
         {{ form }}
     </div>
@@ -18,6 +19,7 @@
     <div>
         {% render_placeholder move.description %}
     </div>
+    {% endif %}
 
     <div class="formField"><label>Private notes</label></div>
     <div>

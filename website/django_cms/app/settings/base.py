@@ -34,8 +34,8 @@ SRV_DIR = '/srv/linsci'
 INSTALLED_APPS = [
     'app.apps.MainAppConfig',
     'moves.apps.MovesConfig',
+    'votes.apps.VotesConfig',
     'tagulous',
-    'votes',
     'django_extensions',
     'webpack_loader',
     'rest_framework',

@@ -29,7 +29,7 @@ const moveVideoLinksReducer = function(
         ...state,
         [action.id]: {
           ...state[action.id],
-          nrVotes: state[action.id].nrVotes + (action.vote - action.prevVote),
+          voteCount: state[action.id].voteCount + (action.vote - action.prevVote),
         }
       }
     case 'PATCH_MOVE_VIDEO_LINK':
@@ -65,7 +65,7 @@ const votesReducer = function(
     case 'SET_VOTES':
       const votes = {};
       action.votes.moveVideoLinks.forEach(vote => {
-        votes[vote.objectId] = vote.vote;
+        votes[vote.objectId] = vote.value;
       })
       return {...state,
         moveVideoLinks: votes
@@ -108,7 +108,7 @@ export const linsciReducer = combineReducers({
 });
 
 export function getMoves(state) {
-  return Object.values(state.moves).sort((lhs, rhs) => (lhr.nrVotes - rhs.nrVotes));
+  return Object.values(state.moves);
 }
 
 export function getMoveByName(state, name) {
@@ -121,7 +121,7 @@ export function getMoveByName(state, name) {
 export function getVideoLinksByMoveId(state, moveId) {
   return Object.values(state.moveVideoLinks).filter(
     x => x.move == moveId
-  );
+  ).sort((lhs, rhs) => (rhs.voteCount - lhs.voteCount));
 }
 
 export function getMoveVideoLinkById(state, id) {

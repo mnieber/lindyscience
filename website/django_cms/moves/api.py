@@ -1,27 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from votes.models import Vote
 from . import serializers
 from . import models
-
-
-def _success(data):
-    return Response(dict(success=True, data=data), status=200)
-
-
-def _failure(error, status):
-    return Response(dict(success=False, error=error), status=status)
-
-
-def _response_from_serializer(is_valid, serializer):
-    if is_valid:
-        return _success(serializer.data)
-
-    error_strings = []
-    for field, errors in serializer.errors.items():
-        error_strings.append("%s - %s" % (field, "/".join(errors)))
-
-    return _failure(error=", ".join(error_strings), status=400)
+from app.utils import _response_from_serializer
 
 
 class MovesView(APIView):
@@ -59,10 +40,3 @@ class MoveVideoLinkView(APIView):
             serializer.save()
 
         return _response_from_serializer(is_valid, serializer)
-
-
-class CurrentUserVotesView(APIView):
-    def get(self, request):
-        serializer = serializers.VoteSerializer(
-            Vote.objects.filter(user_id=request.user.id), many=True)
-        return Response(serializer.data)

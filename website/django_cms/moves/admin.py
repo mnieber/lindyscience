@@ -14,3 +14,4 @@ class MoveAdmin(PlaceholderAdminMixin, admin.ModelAdmin):
 
 
 admin.site.register(Move, MoveAdmin)
+admin.site.register(MoveVideoLink)

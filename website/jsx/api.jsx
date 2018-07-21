@@ -4,13 +4,14 @@ import { get, post, patch } from 'jsx/utils/api_utils'
 
 
 export function voteMoveVideoLink(id, value) {
-  if (value != 0) {
-    const vote = value == 1 ? 'true' : 'false';
-    return post(`/votes/up/?model=movevideolink&id=${id}&vote=${vote}`)
-  }
-  else {
-    return post(`/votes/down/?model=movevideolink&id=${id}`)
-  }
+  return post(
+    `/votes`,
+    {
+      model: 'MoveVideoLink',
+      app_label: 'moves',
+      object_id: id,
+      value: value
+    })
 }
 
 export function saveMoveVideoLink(values) {
@@ -42,10 +43,6 @@ export function loadMoves() {
 export function loadVotes() {
   return get(`/votes`)
   .then(response => toCamelCase(response))
-  .then(response => response.map(x => {
-    x.vote = (x.vote ? 1 : -1);
-    return x;
-  }))
   .then(response => {
     const votes = {};
     votes.moveVideoLinks = response.filter(x => x.model='MoveVideoLink');

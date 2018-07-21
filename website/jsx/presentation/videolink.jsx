@@ -86,16 +86,16 @@ export class VideoLink extends React.Component {
   }
 
   _renderView = () => {
-    const nrVotes = (
+    const voteCount = (
       <div className={
         classnames(
-          'videolink__nrVotes',
+          'videolink__voteCount',
           {
-            'videolink__nrVotes--voted': this.props.vote != 0,
-            'videolink__nrVotes--notVoted': this.props.vote == 0,
+            'videolink__voteCount--voted': this.props.vote != 0,
+            'videolink__voteCount--notVoted': this.props.vote == 0,
           }
         )
-      }>{this.props.item.nrVotes}</div>
+      }>{this.props.item.voteCount}</div>
     );
 
     const upVote = (
@@ -153,7 +153,7 @@ export class VideoLink extends React.Component {
 
     return (
       <div className='videolink'>
-        {nrVotes}
+        {voteCount}
         {upVote}
         {downVote}
         {link}

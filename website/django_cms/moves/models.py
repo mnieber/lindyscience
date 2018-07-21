@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 from enumfields import Enum, EnumField
 from tagulous.models import TagField
-from votes.managers import VotableManager
 import uuid
 
 
@@ -14,7 +13,7 @@ class MoveVideoLink(models.Model):
         'Move', on_delete=models.CASCADE, related_name='video_links')
     url = models.URLField()
     title = models.CharField(max_length=255, blank=True, null=True)
-    votes = VotableManager()
+    vote_count = models.IntegerField(default=0)
 
     def default_title(self):
         return self.title or self.url

@@ -30,6 +30,10 @@ export function loadMoveDescription(moveName) {
   return get(`/moves/${moveName}/description`);
 }
 
+export function loadMovePrivateNotes(moveId) {
+  return get(`/moves/${moveId}/private-notes`);
+}
+
 export function loadMoves() {
   return get(`/moves`)
   .then(response => toCamelCase(response));

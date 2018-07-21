@@ -9,6 +9,8 @@ urlpatterns = [
         api.MoveVideoLinkView.as_view()),
     url(r'^moves/(?P<move_name>[^/]+)/description/?$',
         views.MoveDescriptionView.as_view()),
+    url(r'^moves/(?P<move_id>[0-9]+)/private-notes/?$',
+        views.MovePrivateNotesView.as_view()),
     url(r'^moves/(?P<move_name>[^/]+)/edit/?$',
         views.EditMoveView.as_view(),
         name='edit_move'),

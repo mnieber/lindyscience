@@ -108,7 +108,7 @@ export const linsciReducer = combineReducers({
 });
 
 export function getMoves(state) {
-  return Object.values(state.moves);
+  return Object.values(state.moves).sort((lhs, rhs) => (lhr.nrVotes - rhs.nrVotes));
 }
 
 export function getMoveByName(state, name) {

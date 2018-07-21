@@ -64,8 +64,15 @@ export class Move extends React.Component {
         {nameDiv}
         <Tags tagNamesStr={this.props.move.tags}/>
         <div className={"panel"}>
+        <h2>Description</h2>
         <Placeholder
           loadPlaceholder={this.props.loadDescription}
+        />
+        </div>
+        <div className={"panel"}>
+        <h2>Private notes</h2>
+        <Placeholder
+          loadPlaceholder={this.props.loadPrivateNotes}
         />
         </div>
         <div className={"panel"}>

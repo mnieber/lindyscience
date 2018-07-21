@@ -54,6 +54,7 @@ class MovePage extends React.Component {
         <Move
           move={this.props.move}
           loadDescription={() => api.loadMoveDescription(this.props.move.name)}
+          loadPrivateNotes={() => api.loadMovePrivateNotes(this.props.move.id)}
           videoLinks={this.props.getVideoLinksByMoveId(this.props.move.id)}
           voteVideoLink={this.voteVideoLink}
           saveVideoLink={this.saveVideoLink}

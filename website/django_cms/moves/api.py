@@ -19,7 +19,9 @@ class MoveVideoLinksView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = serializers.MoveVideoLinkSerializer(data=request.data)
+        request_data = request.data.copy()
+        request_data['owner'] = request.user.id
+        serializer = serializers.MoveVideoLinkSerializer(data=request_data)
 
         is_valid = serializer.is_valid()
         if is_valid:
@@ -35,6 +37,40 @@ class MoveVideoLinkView(APIView):
             return _failure('No permission', 403)
 
         serializer = serializers.MoveVideoLinkSerializer(
+            instance=instance, data=request.data, partial=True)
+
+        is_valid = serializer.is_valid()
+        if is_valid:
+            serializer.save()
+
+        return _response_from_serializer(is_valid, serializer)
+
+
+class MoveTipsView(APIView):
+    def get(self, request):
+        serializer = serializers.MoveTipSerializer(
+            models.MoveTip.objects.all(), many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        request_data = request.data.copy()
+        request_data['owner'] = request.user.id
+        serializer = serializers.MoveTipSerializer(data=request_data)
+
+        is_valid = serializer.is_valid()
+        if is_valid:
+            serializer.save()
+
+        return _response_from_serializer(is_valid, serializer)
+
+
+class MoveTipView(APIView):
+    def patch(self, request, pk):
+        instance = models.MoveTip.objects.get(pk=pk)
+        if instance.owner_id != request.user.id:
+            return _failure('No permission', 403)
+
+        serializer = serializers.MoveTipSerializer(
             instance=instance, data=request.data, partial=True)
 
         is_valid = serializer.is_valid()

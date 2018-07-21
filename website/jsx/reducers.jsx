@@ -54,9 +54,51 @@ const moveVideoLinksReducer = function(
   }
 }
 
+const moveTipsReducer = function(
+  state = {},
+  action
+)
+{
+  switch (action.type) {
+    case 'ADD_MOVE_TIPS':
+      return {
+        ...state,
+        ...action.moveTips
+      }
+    case 'VOTE_MOVE_TIP':
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          voteCount: state[action.id].voteCount + (action.vote - action.prevVote),
+        }
+      }
+    case 'PATCH_MOVE_TIP':
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          ...action.tip,
+        }
+      }
+    case 'REMOVE_EMPTY_MOVE_TIPS':
+      const newState = {};
+      Object.keys(state).forEach(id => {
+        if (state[id].text) {
+          newState[id] = state[id];
+        }
+      })
+      return newState;
+
+    default:
+      return state
+  }
+}
+
 const votesReducer = function(
   state = {
-    moveVideoLinks: {}
+    moveVideoLinks: {},
+    moveTips: {}
   },
   action
 )
@@ -103,6 +145,7 @@ const statusReducer = function(
 export const linsciReducer = combineReducers({
   moves: movesReducer,
   moveVideoLinks: moveVideoLinksReducer,
+  moveTips: moveTipsReducer,
   votes: votesReducer,
   status: statusReducer,
 });
@@ -121,7 +164,7 @@ export function getMoveByName(state, name) {
 export function getVideoLinksByMoveId(state, moveId) {
   return Object.values(state.moveVideoLinks).filter(
     x => x.move == moveId
-  ).sort((lhs, rhs) => (rhs.voteCount - lhs.voteCount));
+  ).sort((lhs, rhs) => (rhs.initialVoteCount - lhs.initialVoteCount));
 }
 
 export function getMoveVideoLinkById(state, id) {
@@ -130,6 +173,21 @@ export function getMoveVideoLinkById(state, id) {
 
 export function getMoveVideoLinkVoteById(state, id) {
   const result = state.votes.moveVideoLinks[id];
+  return result ? result : 0;
+}
+
+export function getTipsByMoveId(state, moveId) {
+  return Object.values(state.moveTips).filter(
+    x => x.move == moveId
+  ).sort((lhs, rhs) => (rhs.initialVoteCount - lhs.initialVoteCount));
+}
+
+export function getMoveTipById(state, id) {
+  return state.moveTips[id];
+}
+
+export function getMoveTipVoteById(state, id) {
+  const result = state.votes.moveTips[id];
   return result ? result : 0;
 }
 

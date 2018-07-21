@@ -1,17 +1,26 @@
 from django.contrib import admin
 from cms.admin.placeholderadmin import PlaceholderAdminMixin
-from moves.models import Move, MoveVideoLink
+from moves import models
 
 
 class MoveVideoLinkInline(admin.StackedInline):
-    model = MoveVideoLink
+    model = models.MoveVideoLink
+    extra = 1
+
+
+class MoveTipInline(admin.StackedInline):
+    model = models.MoveTip
     extra = 1
 
 
 class MoveAdmin(PlaceholderAdminMixin, admin.ModelAdmin):
-    model = Move
-    inlines = (MoveVideoLinkInline, )
+    model = models.Move
+    inlines = (
+        MoveVideoLinkInline,
+        MoveTipInline,
+    )
 
 
-admin.site.register(Move, MoveAdmin)
-admin.site.register(MoveVideoLink)
+admin.site.register(models.Move, MoveAdmin)
+admin.site.register(models.MoveVideoLink)
+admin.site.register(models.MoveTip)

@@ -15,3 +15,9 @@ class MoveVideoLinkSerializer(serializers.ModelSerializer):  # noqa
     class Meta:  # noqa
         model = models.MoveVideoLink
         exclude = []
+
+
+class MoveTipSerializer(serializers.ModelSerializer):  # noqa
+    class Meta:  # noqa
+        model = models.MoveTip
+        exclude = []

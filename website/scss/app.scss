@@ -20,31 +20,35 @@ $panGrey: #BBBBBB;
   @apply flex h-8;
 }
 
+.tip {
+  @apply flex h-8;
+}
+
 .videolink__url {
   @apply mx-1;
 }
 
-.videolink__upVoteBtn {
+.upVoteBtn {
   @apply mx-1 bg-cover w-6 h-6;
 }
 
-.videolink__upVoteBtn--voted {
+.upVoteBtn--voted {
   background-image: url('/static/img/upvote_1.png');
 }
 
-.videolink__upVoteBtn--notVoted {
+.upVoteBtn--notVoted {
   background-image: url('/static/img/upvote_0.png');
 }
 
-.videolink__downVoteBtn {
+.downVoteBtn {
   @apply mx-1 bg-cover w-6 h-6;
 }
 
-.videolink__downVoteBtn--voted {
+.downVoteBtn--voted {
   background-image: url('/static/img/downvote_1.png');
 }
 
-.videolink__downVoteBtn--notVoted {
+.downVoteBtn--notVoted {
   background-image: url('/static/img/downvote_0.png');
 }
 
@@ -62,14 +66,6 @@ $panGrey: #BBBBBB;
 }
 
 .editMoveForm {
-  .videoLinkPanel {
-    @apply bg-grey p-2 mb-8;
-
-    input {
-      @apply w-full bg-transparent;
-    }
-  }
-
   label {
     font-weight: bold;
   }
@@ -103,9 +99,16 @@ $panGrey: #BBBBBB;
 
 .editVideoLinkBtn {
   @apply cursor-pointer underline;
-
 }
 
-.videolink__voteCount {
+.editTipBtn {
+  @apply cursor-pointer underline;
+}
+
+.voteCount {
   @apply w-8;
+}
+
+.voteCountPanel {
+  @apply flex;
 }

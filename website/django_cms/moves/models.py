@@ -14,6 +14,8 @@ class MoveVideoLink(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=255, blank=True, null=True)
     vote_count = models.IntegerField(default=0)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def default_title(self):
         return self.title or self.url
@@ -21,6 +23,16 @@ class MoveVideoLink(models.Model):
     def clean_fields(self, exclude=None):
         super().clean_fields(exclude=exclude)
         validate_video_url(self.url)
+
+
+class MoveTip(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    move = models.ForeignKey(
+        'Move', on_delete=models.CASCADE, related_name='tips')
+    text = models.CharField(max_length=255, blank=True, null=True)
+    vote_count = models.IntegerField(default=0)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
 class Difficulty(Enum):

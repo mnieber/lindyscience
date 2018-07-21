@@ -2,40 +2,33 @@ import React from 'react'
 import classnames from 'classnames';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
-import { FormField, validateVideoLinkUrl } from 'jsx/utils/form_utils'
+import { FormField, validateTipUrl } from 'jsx/utils/form_utils'
 import { VoteCount } from 'jsx/presentation/vote_count'
 
 
-class VideoLinkForm extends React.Component {
+class TipForm extends React.Component {
   _form = () => {
     const InnerForm = props => {
 
       return (
-        <form className="videoLinkForm w-full" onSubmit={props.handleSubmit}>
+        <form className="tipForm w-full" onSubmit={props.handleSubmit}>
           <div className={"flex flex-wrap"}>
             <FormField
               classNames="w-64"
               formProps={props}
-              fieldName='url'
+              fieldName='text'
               type='text'
-              placeholder="Link"
-            />
-            <FormField
-              classNames="w-64"
-              formProps={props}
-              fieldName='title'
-              type='text'
-              placeholder="Title"
+              placeholder="Text"
             />
             <button
-              className="editVideoLinkBtn ml-2"
+              className="editTipBtn ml-2"
               type="submit"
               disabled={props.isSubmitting}
             >
               save
             </button>
             <button
-              className="editVideoLinkBtn ml-2"
+              className="editTipBtn ml-2"
               onClick={this.props.onCancel}
             >
               cancel
@@ -47,21 +40,14 @@ class VideoLinkForm extends React.Component {
 
     const EnhancedForm = withFormik({
       mapPropsToValues: () => ({
-        url: this.props.values.url,
-        title: this.props.values.title,
+        text: this.props.values.text,
       }),
       validationSchema: yup.object().shape({
-        url: yup.string()
-          .required('This field is required'),
-        title: yup.string()
+        text: yup.string()
           .required('This field is required'),
       }),
       validate: (values, props) => {
         let errors = {};
-        const urlError = validateVideoLinkUrl(values.url);
-        if (urlError) {
-          errors['url'] = urlError;
-        }
         return errors;
       },
       handleSubmit: (values, { setSubmitting }) => {
@@ -78,11 +64,11 @@ class VideoLinkForm extends React.Component {
   }
 }
 
-export class VideoLink extends React.Component {
+export class Tip extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isEditing: props.item.url == ''
+      isEditing: props.item.text == ''
     }
   }
 
@@ -95,19 +81,17 @@ export class VideoLink extends React.Component {
       />
     )
 
-    const link = (
-      <a
-        className='videolink__url'
-        href={this.props.item.url}
-        target='blank'
+    const text = (
+      <div
+        className='tip__text'
       >
-        {this.props.item.title || this.props.item.url}
-      </a>
+        {this.props.item.text}
+      </div>
     );
 
     const editBtn = (
       <div
-        className="editVideoLinkBtn ml-2"
+        className="editTipBtn ml-2"
         onClick={() => this._setIsEditing(true)}
       >
       edit
@@ -115,9 +99,9 @@ export class VideoLink extends React.Component {
     );
 
     return (
-      <div className='videolink'>
+      <div className='tip'>
         {voteCount}
-        {link}
+        {text}
         {editBtn}
       </div>
     );
@@ -127,24 +111,23 @@ export class VideoLink extends React.Component {
 
   _renderEdit = () => {
     const form = (
-      <VideoLinkForm
+      <TipForm
         values={{
-          url: this.props.item.url,
-          title: this.props.item.title,
+          text: this.props.item.text,
         }}
         onSubmit={values => {
-          this.props.saveVideoLink(this.props.item.id, values);
+          this.props.saveTip(this.props.item.id, values);
           this._setIsEditing(false);
         }}
         onCancel={() => {
-          this.props.cancelEditVideoLink(this.props.item.id);
+          this.props.cancelEditTip(this.props.item.id);
           this._setIsEditing(false);
         }}
       />
     );
 
     return (
-      <div className='videolink'>
+      <div className='tip'>
         {form}
       </div>
     );
@@ -161,17 +144,17 @@ export class VideoLink extends React.Component {
 }
 
 
-export class VideoLinkList extends React.Component {
+export class TipList extends React.Component {
   render() {
     const items = this.props.items.map((item, idx) => {
       return (
-        <VideoLink
+        <Tip
           key={item.id}
           item={item}
-          vote={this.props.getMoveVideoLinkVoteById(item.id)}
+          vote={this.props.getMoveTipVoteById(item.id)}
           setVote={this.props.setVote}
-          saveVideoLink={this.props.saveVideoLink}
-          cancelEditVideoLink={this.props.cancelEditVideoLink}
+          saveTip={this.props.saveTip}
+          cancelEditTip={this.props.cancelEditTip}
         />
       );
     })

@@ -5,8 +5,20 @@ import { Link } from 'react-router'
 
 export class MoveListHeader extends React.Component {
   render() {
+    const newMoveBtn = (
+      <div className={"button button--wide ml-2"} onClick={() => {
+        window.location=`/moves/new`
+      }}
+      >
+      New move
+      </div>
+    );
+
     return (
-      <h1>Moves</h1>
+      <div className= {"flex flex-wrap"}>
+        <h1>Moves</h1>
+        {newMoveBtn}
+      </div>
     )
   }
 }

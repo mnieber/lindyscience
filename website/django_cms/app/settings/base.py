@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'app.apps.MainAppConfig',
     'moves.apps.MovesConfig',
     'votes.apps.VotesConfig',
+    'django_cms_tools.apps.DjangoCmsToolsConfig',
     'tagulous',
     'django_extensions',
     'webpack_loader',

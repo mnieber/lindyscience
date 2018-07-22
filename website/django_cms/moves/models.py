@@ -59,7 +59,7 @@ class MovePrivateData(models.Model):
     move = models.ForeignKey('Move', on_delete=models.CASCADE)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    notes = PlaceholderField('notes', related_name="notes")
+    notes = PlaceholderField('Private notes', related_name="notes")
 
     def __str__(self):  # noqa
         return "Notes by %s on %s" % (self.owner, self.move)

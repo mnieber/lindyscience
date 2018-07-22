@@ -1,5 +1,4 @@
 from django.contrib import admin
-from cms.admin.placeholderadmin import PlaceholderAdminMixin
 from moves import models
 
 
@@ -13,7 +12,7 @@ class MoveTipInline(admin.StackedInline):
     extra = 1
 
 
-class MoveAdmin(PlaceholderAdminMixin, admin.ModelAdmin):
+class MoveAdmin(admin.ModelAdmin):
     model = models.Move
     inlines = (
         MoveVideoLinkInline,

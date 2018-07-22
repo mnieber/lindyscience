@@ -30,6 +30,7 @@
     "babel-preset-react": "^6.24.1",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.7",
+    "draft-js": "^0.11.0-alpha",
     "formik": "^1.0.0-beta.2",
     "mini-css-extract-plugin": "^0.4.0",
     "jquery": "^3.1.1",

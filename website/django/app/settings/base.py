@@ -35,12 +35,10 @@ INSTALLED_APPS = [
     'app.apps.MainAppConfig',
     'moves.apps.MovesConfig',
     'votes.apps.VotesConfig',
-    'django_cms_tools.apps.DjangoCmsToolsConfig',
     'tagulous',
     'django_extensions',
     'webpack_loader',
     'rest_framework',
-    'djangocms_admin_style',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -49,25 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'django.contrib.messages',
-    'cms',
-    'menus',
-    'sekizai',
-    'treebeard',
-    'djangocms_text_ckeditor',
-    'filer',
-    'easy_thumbnails',
-    'djangocms_column',
-    'djangocms_file',
-    'djangocms_link',
-    'djangocms_picture',
-    'djangocms_style',
-    'djangocms_snippet',
-    'djangocms_googlemap',
-    'djangocms_video',
 ]
 
 MIDDLEWARE = [
-    'cms.middleware.utils.ApphookReloadMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -75,10 +57,6 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'cms.middleware.user.CurrentUserMiddleware',
-    'cms.middleware.page.CurrentPageMiddleware',
-    'cms.middleware.toolbar.ToolbarMiddleware',
-    'cms.middleware.language.LanguageCookieMiddleware',
     'app.middleware.ThreadLocalMiddleware'
 ]
 
@@ -102,8 +80,6 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'sekizai.context_processors.sekizai',
-                'cms.context_processors.cms_settings'
             ],
             # 'string_if_invalid': 'DEBUG WARNING: undefined template variable [%s] not found'
             # 'loaders': [
@@ -230,17 +206,3 @@ LOGGING = {
 DUMP_DB_SERVERNAME = file_contents(os.path.join(SRV_DIR, 'servername.txt'))
 DUMP_DB_GIT_SHA = file_contents(os.path.join(SRV_DIR, 'deployed_version.txt'))
 DUMP_DB_DIR = os.path.join(SRV_DIR, 'dumps')
-
-CMS_TEMPLATES = (
-    # Customize this
-    ('fullwidth.html', 'Fullwidth'), )
-
-CMS_PERMISSION = True
-
-CMS_PLACEHOLDER_CONF = {}
-
-THUMBNAIL_PROCESSORS = (
-    'easy_thumbnails.processors.colorspace',
-    'easy_thumbnails.processors.autocrop',
-    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
-    'easy_thumbnails.processors.filters')

@@ -1,5 +1,4 @@
 from .utils import validate_video_url
-from cms.models.fields import PlaceholderField
 from django.conf import settings
 from django.db import models
 from enumfields import Enum, EnumField
@@ -46,7 +45,7 @@ class Difficulty(Enum):
 class Move(models.Model):
     name = models.CharField(max_length=200, unique=True)
     difficulty = EnumField(Difficulty, max_length=7)
-    description = PlaceholderField('description', related_name="description")
+    description = models.TextField()
     tags = TagField(force_lowercase=True, max_count=10)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -59,7 +58,7 @@ class MovePrivateData(models.Model):
     move = models.ForeignKey('Move', on_delete=models.CASCADE)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    notes = PlaceholderField('Private notes', related_name="notes")
+    notes = models.TextField()
 
     def __str__(self):  # noqa
         return "Notes by %s on %s" % (self.owner, self.move)

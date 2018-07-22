@@ -23,8 +23,6 @@ class MovePage extends React.Component {
         <MoveHeader move={this.props.move}/>
         <Move
           move={this.props.move}
-          loadDescription={() => api.loadMoveDescription(this.props.move.name)}
-          loadPrivateNotes={() => api.loadMovePrivateNotes(this.props.move.id)}
           videoLinksPanel={videoLinksPanel}
           tipsPanel={tipsPanel}
         />

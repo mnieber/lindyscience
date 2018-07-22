@@ -12,6 +12,22 @@ class MovesView(APIView):
         return Response(serializer.data)
 
 
+class MoveView(APIView):
+    def patch(self, request, pk):
+        instance = models.Move.objects.get(pk=pk)
+        if instance.owner_id != request.user.id:
+            return _failure('No permission', 403)
+
+        serializer = serializers.MoveSerializer(
+            instance=instance, data=request.data, partial=True)
+
+        is_valid = serializer.is_valid()
+        if is_valid:
+            serializer.save()
+
+        return _response_from_serializer(is_valid, serializer)
+
+
 class MoveVideoLinksView(APIView):
     def get(self, request):
         serializer = serializers.MoveVideoLinkSerializer(

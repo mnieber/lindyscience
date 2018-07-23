@@ -9,7 +9,23 @@ class MovesView(APIView):
     def get(self, request):
         serializer = serializers.MoveSerializer(
             models.Move.objects.all(), many=True)
-        return Response(serializer.data)
+        return Response({
+            'moves':
+            serializer.data,
+            'tags':
+            [tag.name for tag in models.Move.tags.tag_model.objects.all()]
+        })
+
+    def post(self, request):
+        request_data = request.data.copy()
+        request_data['owner'] = request.user.id
+        serializer = serializers.MoveSerializer(data=request_data)
+
+        is_valid = serializer.is_valid()
+        if is_valid:
+            serializer.save()
+
+        return _response_from_serializer(is_valid, serializer)
 
 
 class MoveView(APIView):
@@ -23,7 +39,10 @@ class MoveView(APIView):
 
         is_valid = serializer.is_valid()
         if is_valid:
-            serializer.save()
+            move = serializer.save()
+            # HACK: fix the value of the tags field
+            move.tags = request.data['tags']
+            move.save()
 
         return _response_from_serializer(is_valid, serializer)
 

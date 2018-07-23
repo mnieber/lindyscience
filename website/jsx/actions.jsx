@@ -2,10 +2,17 @@ import React from 'react'
 import * as fromStore from 'jsx/reducers'
 import {toTitleCase} from 'jsx/utils/utils'
 
-export function setMoves(moves) {
+export function addMoves(moves) {
   return {
-    type: 'SET_MOVES',
+    type: 'ADD_MOVES',
     moves: moves,
+  }
+}
+
+export function addMoveTags(tags) {
+  return {
+    type: 'ADD_MOVE_TAGS',
+    tags: tags,
   }
 }
 

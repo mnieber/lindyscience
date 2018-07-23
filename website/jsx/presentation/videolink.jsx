@@ -1,5 +1,4 @@
 import React from 'react'
-import classnames from 'classnames';
 import { VoteCount } from 'jsx/presentation/vote_count'
 import { VideoLinkForm } from 'jsx/presentation/video_link_form'
 

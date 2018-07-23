@@ -112,3 +112,11 @@ $panGrey: #BBBBBB;
 .voteCountPanel {
   @apply flex;
 }
+
+.foobar {
+  @apply w-full h-64;
+}
+
+.formField__field {
+  @apply w-full;
+}

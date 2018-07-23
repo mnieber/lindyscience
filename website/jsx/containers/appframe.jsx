@@ -1,6 +1,5 @@
 import jquery from 'jquery';
 import React from 'react'
-import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { querySetListToDict, createToastr } from 'jsx/utils/utils'
 
@@ -26,8 +25,9 @@ class AppFrame extends React.Component {
       api.loadMoveTips(),
       api.loadVotes(),
     )
-    .done((moves, moveVideoLinks, tips, votes) => {
-      this.props.setMoves(querySetListToDict(moves));
+    .done((movesAndTags, moveVideoLinks, tips, votes) => {
+      this.props.addMoves(querySetListToDict(movesAndTags.moves));
+      this.props.addMoveTags(movesAndTags.tags);
       this.props.addMoveVideoLinks(querySetListToDict(moveVideoLinks));
       this.props.addMoveTips(querySetListToDict(tips));
       this.props.setVotes(votes);

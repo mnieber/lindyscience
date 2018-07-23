@@ -1,5 +1,4 @@
 import React from 'react'
-import classnames from 'classnames';
 import { Link } from 'react-router';
 import { MoveForm } from 'jsx/presentation/move_form';
 
@@ -35,7 +34,7 @@ export class Move extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isEditing: false
+      isEditing: !props.move.name
     }
   }
 
@@ -53,7 +52,7 @@ export class Move extends React.Component {
   _renderView = () => {
     const editMoveBtn = (
       <div className={"button button--wide ml-2"} onClick={() => {
-        window.location=`/moves/${this.props.move.name}/edit`
+        this._setIsEditing(true);
       }}
       >
       Edit move
@@ -70,10 +69,16 @@ export class Move extends React.Component {
     return (
       <div>
         {nameDiv}
+        <div className={"panel"}>
+          <h2>Difficulty</h2>
+          {this.props.move.difficulty}
+        </div>
         <Tags tagNamesStr={this.props.move.tags}/>
         <div className={"panel"}>
-        <h2>Description</h2>
-        {this.props.move.description}
+          <h2>Description</h2>
+          <div
+            dangerouslySetInnerHTML={{__html: this.props.move.description}}
+          />
         </div>
         <div className={"panel"}>
         <h2>Private notes</h2>
@@ -87,7 +92,11 @@ export class Move extends React.Component {
   _renderEdit = () => {
     return (
       <div>
-        <MoveForm move={this.props.move}/>
+        <MoveForm
+          move={this.props.move}
+          onSubmit={this.props.saveMove}
+          knownTags={this.props.moveTags}
+        />
       </div>
     )
   }

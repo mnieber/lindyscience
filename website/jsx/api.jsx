@@ -1,5 +1,5 @@
 import jquery from 'jquery';
-import { toCamelCase } from 'jsx/utils/utils'
+import { toCamelCase, toSnakeCase } from 'jsx/utils/utils'
 import { get, post, patch } from 'jsx/utils/api_utils'
 
 
@@ -31,19 +31,27 @@ export function saveMoveVideoLink(values) {
       url: 'http://' + values.url
     }
   }
-  return post(`/move-video-links/`, values);
+  return post(`/move-video-links/`, toSnakeCase(values));
 }
 
 export function patchMoveVideoLink(id, values) {
-  return patch(`/move-video-links/${id}/`, values);
+  return patch(`/move-video-links/${id}/`, toSnakeCase(values));
 }
 
 export function saveMoveTip(values) {
-  return post(`/move-tips/`, values);
+  return post(`/move-tips/`, toSnakeCase(values));
+}
+
+export function saveMove(values) {
+  return post(`/moves/`, toSnakeCase(values));
+}
+
+export function patchMove(id, values) {
+  return patch(`/moves/${id}/`, toSnakeCase(values));
 }
 
 export function patchMoveTip(id, values) {
-  return patch(`/move-tips/${id}/`, values);
+  return patch(`/move-tips/${id}/`, toSnakeCase(values));
 }
 
 export function loadMoves() {

@@ -1,15 +1,12 @@
 import React from 'react'
-import classnames from 'classnames';
 import { Link } from 'react-router'
 
 
 export class MoveListHeader extends React.Component {
   render() {
+
     const newMoveBtn = (
-      <div className={"button button--wide ml-2"} onClick={() => {
-        window.location=`/moves/new`
-      }}
-      >
+      <div className={"button button--wide ml-2"} onClick={this.props.addNewMove}>
       New move
       </div>
     );
@@ -28,7 +25,7 @@ export class MoveList extends React.Component {
     const items = this.props.moves.map((move, idx) => {
       return (
         <div key={idx} className = {"moveList__item"}>
-          <Link to={`/app/moves/${move.name}`}>
+          <Link to={`/app/moves/${move.slug}`}>
             {move.name}
           </Link>
         </div>

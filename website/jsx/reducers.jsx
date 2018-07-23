@@ -6,8 +6,46 @@ const movesReducer = function(
 )
 {
   switch (action.type) {
-    case 'SET_MOVES':
-      return action.moves
+    case 'ADD_MOVES':
+      return {...state,
+        ...action.moves
+    }
+    default:
+      return state
+  }
+}
+
+const _tagsToDict = tags => {
+  const result = {};
+  tags.forEach(tag => {result[tag] = true});
+  return result;
+}
+
+const tagsReducer = function(
+  state = {
+    moves: {}
+  },
+  action
+)
+{
+  switch (action.type) {
+    case 'ADD_MOVE_TAGS':
+      return {
+        ...state,
+        moves: {...state.moves, ..._tagsToDict(action.tags)}
+      }
+    case 'ADD_MOVES':
+      const newTags = {};
+      Object.values(action.moves).forEach(move => {
+        move.tags
+          .split(',')
+          .map(x => x.trim())
+          .forEach(tag => newTags[tag] = true);
+      })
+      return {
+        ...state,
+        moves: {...state.moves, ...newTags}
+      }
     default:
       return state
   }
@@ -147,6 +185,7 @@ export const linsciReducer = combineReducers({
   moveVideoLinks: moveVideoLinksReducer,
   moveTips: moveTipsReducer,
   votes: votesReducer,
+  tags: tagsReducer,
   status: statusReducer,
 });
 
@@ -154,11 +193,24 @@ export function getMoves(state) {
   return Object.values(state.moves);
 }
 
-export function getMoveByName(state, name) {
+export function getMoveTags(state) {
+  return Object.keys(state.tags.moves);
+}
+
+export function getMoveBySlug(state, slug) {
   const move = getMoves(state).filter(
-    x => x.name.toLowerCase() == name.toLowerCase()
+    x => {
+      return (
+        x.slug == slug ||
+        x.temp_slug == slug
+      );
+    }
   )[0];
   return move;
+}
+
+export function getMoveById(state, id) {
+  return state.moves[id];
 }
 
 export function getVideoLinksByMoveId(state, moveId) {

@@ -2,6 +2,9 @@ import React from 'react'
 import classnames from 'classnames';
 import { isNone } from 'jsx/utils/utils'
 import parse from 'url-parse'
+import Select from 'react-select';
+import jquery from 'jquery';
+import Creatable from 'react-select/lib/Creatable';
 
 
 export function formField(errors, label, field) {
@@ -33,7 +36,7 @@ export function formFieldProps(formProps, fieldName, classNames) {
   }
 }
 
-export function formFieldLabel(fieldName, label, classNames) {
+export function FormFieldLabel({fieldName, label, classNames}) {
   return (
     <div className="mt-2">
         <label
@@ -57,25 +60,44 @@ export function formFieldError(formProps, fieldName, classNames) {
   return undefined;
 }
 
-export function FormField({formProps, fieldName, label, type, placeholder, classNames=''}) {
-    const textField = type.toLowerCase() == 'textarea'
+export class FormField extends React.Component {
+  constructor(props) {
+    super(props);
+    this.htmlElement = React.createRef();
+  }
+
+  render() {
+    const textField = this.props.type.toLowerCase() == 'textarea'
         ? <textarea
-          placeholder={placeholder}
-          {...formFieldProps(formProps, fieldName, ['formField__field'])}
+          ref={this.htmlElement}
+          placeholder={this.props.placeholder}
+          {...formFieldProps(this.props.formProps, this.props.fieldName, ['formField__field'])}
         />
         : <input
-          type={type}
-          placeholder={placeholder}
-          {...formFieldProps(formProps, fieldName, ['formField__field'])}
+          ref={this.htmlElement}
+          type={this.props.type}
+          placeholder={this.props.placeholder}
+          {...formFieldProps(this.props.formProps, this.props.fieldName, ['formField__field'])}
         />;
 
+    const formFieldLabel = (
+      <FormFieldLabel
+        fieldName={this.props.fieldName}
+        label={this.props.label}
+        classNames={['formField__label']}
+      />
+    );
+
     return (
-        <div className={`my-2 ${classNames}`}>
-            {label && formFieldLabel(fieldName, label, ['formField__label'])}
+        <div className={`my-2 ${this.props.classNames}`}>
+            {
+              this.props.label && formFieldLabel
+            }
             {textField}
-            {formFieldError(formProps, fieldName, ['formField__error'])}
+            {formFieldError(this.props.formProps, this.props.fieldName, ['formField__error'])}
         </div>
     )
+  }
 }
 
 export function Row2({w1, w2, padding=1}) {
@@ -104,4 +126,78 @@ export function validateVideoLinkUrl(url) {
       }
   }
   return undefined;
+}
+
+
+export function handleEnterAsTabToNext(event, isPreventDefault) {
+  if (event.keyCode === 13) {
+    const form = event.target.form;
+    const index = Array.prototype.indexOf.call(form, event.target);
+    form.elements[index + 1].focus();
+    if (isPreventDefault) {
+      event.preventDefault();
+    }
+  }
+}
+
+
+export class ValuePicker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: this.props.defaultValue,
+      isFocused: false
+    }
+  }
+
+  handleFocus = () =>  { this.setState({isFocused: true}); }
+  handleBlur = () =>  { this.setState({isFocused: false}); }
+
+  saveChanges = (value) => {
+    if (!this.props.isMulti && jquery.isArray(value)) {
+      this.setState({value: null, label: ""});
+    }
+    else {
+      this.setState({ value });
+    }
+    if (this.props.onChange) {
+      this.props.onChange(value);
+    }
+  }
+
+  render() {
+    const props = {
+      isMulti: this.props.isMulti,
+      name: this.props.fieldName,
+      options: this.props.options,
+      placeholder: this.props.placeholder,
+      value: this.state.value,
+      onChange: this.saveChanges,
+      onKeyDown: (e) => {handleEnterAsTabToNext(e, false)},
+      defaultValue: this.props.defaultValue,
+    }
+
+    const picker = this.props.isCreatable
+      ? <Creatable {...props}/>
+      : <Select {...props}/>;
+
+    return (
+      <div style={{zIndex: this.props.zIndex}}>
+        <FormFieldLabel
+          fieldName={this.props.fieldName}
+          label={this.props.label}
+        />
+        {picker}
+      </div>
+    );
+  }
+}
+
+export function pickerValue(picker, defaultValue) {
+  const value = picker.state.value;
+  return value
+    ? jquery.isArray(value)
+      ? value.map(x => x.value)
+      : value.value
+    : defaultValue;
 }

@@ -11,7 +11,7 @@ export default class UrlRouter extends React.Component {
       <Router history={browserHistory}>
         <Route path="/app" component={AppFrame}>
           <Route path="/app/moves" component={MovesPage}/>
-          <Route path="/app/moves/:name" component={MovePage}/>
+          <Route path="/app/moves/:slug" component={MovePage}/>
         </Route>
       </Router>
     );

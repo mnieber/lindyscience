@@ -5,7 +5,7 @@ from rest_framework import serializers
 class MoveSerializer(serializers.ModelSerializer):  # noqa
     class Meta:  # noqa
         model = models.Move
-        exclude = ['description']
+        exclude = []
 
     difficulty = serializers.CharField()
     tags = serializers.CharField()

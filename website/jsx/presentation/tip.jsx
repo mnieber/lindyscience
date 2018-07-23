@@ -1,5 +1,4 @@
 import React from 'react'
-import classnames from 'classnames';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
 import { FormField, validateTipUrl } from 'jsx/utils/form_utils'

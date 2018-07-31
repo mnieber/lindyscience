@@ -29,6 +29,7 @@ class Command(BaseCommand):
         return list(re.finditer(regex, basename))
 
     def _reset_migrations(self, sha):
+        """Reverts migration files to the ones that are present in `sha`"""
         module_names = set()
         repo = git_repo()
         if not repo:
@@ -57,10 +58,11 @@ class Command(BaseCommand):
                         os.path.join(migrations_dir,
                                      "%s.%s" % (sha, basename)))
 
+        # move back to the current branch
         current_branch.checkout()
         repo.delete_head(temp_branch, force=True)
 
-        # replace migrations by backup migration files
+        # remove current migrations and restore backed up migration files
         for app_dir in os.listdir(settings.BASE_DIR):
             migrations_dir = os.path.join(settings.BASE_DIR, app_dir,
                                           "migrations")

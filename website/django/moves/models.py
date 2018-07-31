@@ -44,6 +44,7 @@ class Difficulty(Enum):
 
 class Move(models.Model):
     name = models.CharField(max_length=200, unique=True)
+    slug = models.CharField(max_length=200, unique=True)
     difficulty = EnumField(Difficulty, max_length=7)
     description = models.TextField()
     tags = TagField(force_lowercase=True, max_count=10)

@@ -14,10 +14,10 @@ import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
 
 
-class DescriptionEditor extends React.Component {
+class RichTextEditor extends React.Component {
   constructor(props) {
     super(props);
-    const content = stateFromHTML(props.description);
+    const content = stateFromHTML(props.content);
     this.state = {editorState: EditorState.createWithContent(content)};
     this.onChange = (editorState) => this.setState({editorState});
   }
@@ -45,7 +45,7 @@ class DescriptionEditor extends React.Component {
 export class MoveForm extends React.Component {
   constructor(props) {
     super(props);
-    this.editor = React.createRef();
+    this.descriptionEditor = React.createRef();
     this.difficultyPicker = React.createRef();
     this.tagsPicker = React.createRef();
   }
@@ -94,9 +94,9 @@ export class MoveForm extends React.Component {
             {formFieldError(props, 'difficulty', ['formField__error'])}
 
             <FormFieldLabel label='Description'/>
-            <DescriptionEditor
-              ref={this.editor}
-              description={this.props.move.description}
+            <RichTextEditor
+              ref={this.descriptionEditor}
+              content={this.props.move.description}
             />
             {formFieldError(props, 'description', ['formField__error'])}
 
@@ -148,7 +148,7 @@ export class MoveForm extends React.Component {
 
         // HACK: add values from non-input fields
         values.description = stateToHTML(
-          this.editor.current.state.editorState.getCurrentContent()
+          this.descriptionEditor.current.state.editorState.getCurrentContent()
         );
         values.difficulty = pickerValue(this.difficultyPicker.current, "");
         values.tags = pickerValue(this.tagsPicker.current, []).map(addQuotes).join(", ");
@@ -162,9 +162,6 @@ export class MoveForm extends React.Component {
         }
         if (!values.tags) {
           errors.tags = 'This field is required';
-        }
-        if (!stripTags(values.description).trim()) {
-          errors.description = 'This field is required';
         }
         return errors;
       },

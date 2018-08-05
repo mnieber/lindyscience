@@ -223,14 +223,7 @@ export function getMoveTags(state) {
 }
 
 export function getMoveBySlug(state, slug) {
-  const move = getMoves(state).filter(
-    x => {
-      return (
-        x.slug == slug ||
-        x.temp_slug == slug
-      );
-    }
-  )[0];
+  const move = getMoves(state).filter(x => (x.slug == slug))[0];
   return _addPrivateData(state, move);
 }
 

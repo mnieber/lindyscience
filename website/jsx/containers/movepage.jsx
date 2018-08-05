@@ -14,7 +14,7 @@ import { toastr } from 'react-redux-toastr'
 function _createNewMove() {
   return {
     id: uuidv4(),
-    temp_slug: '',
+    slug: '',
     name: '',
     description: '',
     difficulty: '',
@@ -28,7 +28,7 @@ class MovePage extends React.Component {
   _saveMove = (id, values) => {
     const isNew = !this.props.getMoveById(id);
     values.id = id;
-    values.temp_slug = slugify(values.name);
+    values.slug = slugify(values.name);
     let response = undefined;
     this.props.addMoves(querySetListToDict([values]));
     if (isNew) {

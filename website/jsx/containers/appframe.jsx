@@ -24,13 +24,17 @@ class AppFrame extends React.Component {
       api.loadMoveVideoLinks(),
       api.loadMoveTips(),
       api.loadVotes(),
+      api.loadMovePrivateDatas(),
     )
-    .done((movesAndTags, moveVideoLinks, tips, votes) => {
+    .done((movesAndTags, moveVideoLinks, tips, votes, movePrivateDatas) => {
       this.props.addMoves(querySetListToDict(movesAndTags.moves));
       this.props.addMoveTags(movesAndTags.tags);
       this.props.addMoveVideoLinks(querySetListToDict(moveVideoLinks));
       this.props.addMoveTips(querySetListToDict(tips));
       this.props.setVotes(votes);
+      this.props.setMovePrivateDatas(
+        querySetListToDict(movePrivateDatas, 'move_id')
+      );
       this.props.setIOStatus("ok");
     })
     .catch(() => {

@@ -19,6 +19,7 @@ function _createNewMove() {
     description: '',
     difficulty: '',
     tags: '',
+    privateData: {},
   };
 }
 

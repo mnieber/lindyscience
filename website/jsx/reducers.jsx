@@ -15,6 +15,21 @@ const movesReducer = function(
   }
 }
 
+const movePrivateDatasReducer = function(
+  state = {},
+  action
+)
+{
+  switch (action.type) {
+    case 'ADD_MOVE_PRIVATE_DATAS':
+      return {...state,
+        ...action.movePrivateDatas
+    }
+    default:
+      return state
+  }
+}
+
 const _tagsToDict = tags => {
   const result = {};
   tags.forEach(tag => {result[tag] = true});
@@ -182,6 +197,7 @@ const statusReducer = function(
 
 export const linsciReducer = combineReducers({
   moves: movesReducer,
+  movePrivateDatas: movePrivateDatasReducer,
   moveVideoLinks: moveVideoLinksReducer,
   moveTips: moveTipsReducer,
   votes: votesReducer,
@@ -189,8 +205,17 @@ export const linsciReducer = combineReducers({
   status: statusReducer,
 });
 
+function _addPrivateData(state, move) {
+  if (!move) {
+    return move;
+  }
+  return {...move,
+    privateData: getMovePrivateDataByMoveId(state, move.id)
+  };
+}
+
 export function getMoves(state) {
-  return Object.values(state.moves);
+  return Object.values(state.moves).map(x => _addPrivateData(state, x));
 }
 
 export function getMoveTags(state) {
@@ -206,11 +231,15 @@ export function getMoveBySlug(state, slug) {
       );
     }
   )[0];
-  return move;
+  return _addPrivateData(state, move);
 }
 
 export function getMoveById(state, id) {
-  return state.moves[id];
+  return _addPrivateData(state, state.moves[id]);
+}
+
+export function getMovePrivateDataByMoveId(state, move_id) {
+  return state.movePrivateDatas[move_id] || {};
 }
 
 export function getVideoLinksByMoveId(state, moveId) {

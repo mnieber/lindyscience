@@ -50,6 +50,37 @@ class MoveView(APIView):
         return _response_from_serializer(is_valid, serializer)
 
 
+class MovePrivateDatasView(APIView):
+    def get(self, request):
+        serializer = serializers.MovePrivateDataSerializer(
+            models.MovePrivateData.objects.all(), many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = serializers.MovePrivateDataSerializer(
+            data=_request_data_with_owner(request))
+        is_valid = serializer.is_valid()
+        if is_valid:
+            serializer.save()
+        return _response_from_serializer(is_valid, serializer)
+
+
+class MovePrivateDataView(APIView):
+    def patch(self, request, pk):
+        instance = models.MovePrivateData.objects.get(pk=pk)
+        if instance.owner_id != request.user.id:
+            return _failure('No permission', 403)
+
+        serializer = serializers.MovePrivateDataSerializer(
+            instance=instance, data=request.data, partial=True)
+
+        is_valid = serializer.is_valid()
+        if is_valid:
+            serializer.save()
+
+        return _response_from_serializer(is_valid, serializer)
+
+
 class MoveVideoLinksView(APIView):
     def get(self, request):
         serializer = serializers.MoveVideoLinkSerializer(

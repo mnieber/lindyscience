@@ -25,10 +25,10 @@ export function createToastr() {
   />
 }
 
-export function querySetListToDict(qsList) {
+export function querySetListToDict(qsList, key='id') {
   const result = {};
   qsList.forEach(item => {
-    result[item.id] = item;
+    result[item[key]] = item;
   })
   return result;
 }

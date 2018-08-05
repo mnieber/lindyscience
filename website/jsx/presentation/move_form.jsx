@@ -46,6 +46,7 @@ export class MoveForm extends React.Component {
   constructor(props) {
     super(props);
     this.descriptionEditor = React.createRef();
+    this.privateNotesEditor = React.createRef();
     this.difficultyPicker = React.createRef();
     this.tagsPicker = React.createRef();
   }
@@ -64,55 +65,78 @@ export class MoveForm extends React.Component {
         knownTags.push(toPickerValue(tag));
       });
 
+      const isOwner = this.props.move.owner_id == 1 || !this.props.move.owner_id;
+
+      const nameField = <FormField
+        label='Name'
+        classNames="w-full"
+        formProps={props}
+        fieldName='name'
+        type='text'
+        placeholder="Name"
+      />;
+
+      const difficultyPicker = <div>
+        <ValuePicker
+          zIndex={20}
+          ref={this.difficultyPicker}
+          label='Difficulty'
+          defaultValue={toPickerValue(this.props.move.difficulty)}
+          fieldName='difficulty'
+          isMulti={false}
+          options={[
+            toPickerValue('Beginner'),
+            toPickerValue('Beginner Intermediate'),
+            toPickerValue('Intermediate'),
+            toPickerValue('Intermediate Advanced'),
+            toPickerValue('Advanced'),
+          ]}
+          placeholder="Difficulty"
+        />
+        {formFieldError(props, 'difficulty', ['formField__error'])}
+      </div>;
+
+      const description = <div>
+        <FormFieldLabel label='Description'/>
+        <RichTextEditor
+          ref={this.descriptionEditor}
+          content={this.props.move.description}
+        />
+        {formFieldError(props, 'description', ['formField__error'])}
+      </div>;
+
+      const privateNotes = <div>
+        <FormFieldLabel label='Private notes'/>
+        <RichTextEditor
+          ref={this.privateNotesEditor}
+          content={this.props.move.privateData.notes || ''}
+        />
+        {formFieldError(props, 'privateNotes', ['formField__error'])}
+      </div>;
+
+      const tags = <div>
+        <ValuePicker
+          zIndex={10}
+          ref={this.tagsPicker}
+          isCreatable={true}
+          label='Tags'
+          defaultValue={this.props.move.tags.split(',').map(toPickerValue)}
+          fieldName='tags'
+          isMulti={true}
+          options={knownTags}
+          placeholder="Tags"
+        />
+        {formFieldError(props, 'tags', ['formField__error'])}
+      </div>;
+
       return (
         <form className="moveForm w-full" onSubmit={props.handleSubmit}>
           <div className={"flex flex-col"}>
-            <FormField
-              label='Name'
-              classNames="w-full"
-              formProps={props}
-              fieldName='name'
-              type='text'
-              placeholder="Name"
-            />
-            <ValuePicker
-              zIndex={20}
-              ref={this.difficultyPicker}
-              label='Difficulty'
-              defaultValue={toPickerValue(this.props.move.difficulty)}
-              fieldName='difficulty'
-              isMulti={false}
-              options={[
-                toPickerValue('Beginner'),
-                toPickerValue('Beginner Intermediate'),
-                toPickerValue('Intermediate'),
-                toPickerValue('Intermediate Advanced'),
-                toPickerValue('Advanced'),
-              ]}
-              placeholder="Difficulty"
-            />
-            {formFieldError(props, 'difficulty', ['formField__error'])}
-
-            <FormFieldLabel label='Description'/>
-            <RichTextEditor
-              ref={this.descriptionEditor}
-              content={this.props.move.description}
-            />
-            {formFieldError(props, 'description', ['formField__error'])}
-
-            <ValuePicker
-              zIndex={10}
-              ref={this.tagsPicker}
-              isCreatable={true}
-              label='Tags'
-              defaultValue={this.props.move.tags.split(',').map(toPickerValue)}
-              fieldName='tags'
-              isMulti={true}
-              options={knownTags}
-              placeholder="Tags"
-            />
-            {formFieldError(props, 'tags', ['formField__error'])}
-
+            {isOwner && nameField}
+            {isOwner && difficultyPicker}
+            {isOwner && description}
+            {privateNotes}
+            {isOwner && tags}
             <div className={"flex flex-row mt-4"}>
               <button
                 className="button button--wide ml-2"
@@ -149,6 +173,9 @@ export class MoveForm extends React.Component {
         // HACK: add values from non-input fields
         values.description = stateToHTML(
           this.descriptionEditor.current.state.editorState.getCurrentContent()
+        );
+        values.privateNotes = stateToHTML(
+          this.privateNotesEditor.current.state.editorState.getCurrentContent()
         );
         values.difficulty = pickerValue(this.difficultyPicker.current, "");
         values.tags = pickerValue(this.tagsPicker.current, []).map(addQuotes).join(", ");

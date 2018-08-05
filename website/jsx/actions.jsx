@@ -23,6 +23,13 @@ export function setVotes(votes) {
   }
 }
 
+export function setMovePrivateDatas(movePrivateDatas) {
+  return {
+    type: 'SET_MOVE_PRIVATE_DATAS',
+    movePrivateDatas: movePrivateDatas,
+  }
+}
+
 export function addMoveVideoLinks(moveVideoLinks) {
   return {
     type: 'ADD_MOVE_VIDEO_LINKS',

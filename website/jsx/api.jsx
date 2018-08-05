@@ -59,6 +59,11 @@ export function loadMoves() {
   .then(response => toCamelCase(response));
 }
 
+export function loadMovePrivateDatas() {
+  return get(`/moves/privatedatas`)
+  .then(response => toCamelCase(response));
+}
+
 export function loadVotes() {
   return get(`/votes`)
   .then(response => toCamelCase(response))

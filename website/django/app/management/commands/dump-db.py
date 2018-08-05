@@ -30,7 +30,7 @@ class Command(BaseCommand):
         basename = '%s__%s__%s__%s.sql' % (
             self._branch_or_server_name(),
             db,
-            time.time(),
+            int(time.time()),
             self._git_sha(),
         )
 

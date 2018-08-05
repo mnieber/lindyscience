@@ -5,6 +5,12 @@ from . import models
 from app.utils import _response_from_serializer, _failure
 
 
+def _request_data_with_owner(request):
+    request_data = request.data.copy()
+    request_data['owner'] = request.user.id
+    return request_data
+
+
 class MovesView(APIView):
     def get(self, request):
         serializer = serializers.MoveSerializer(
@@ -17,14 +23,11 @@ class MovesView(APIView):
         })
 
     def post(self, request):
-        request_data = request.data.copy()
-        request_data['owner'] = request.user.id
-        serializer = serializers.MoveSerializer(data=request_data)
-
+        serializer = serializers.MoveSerializer(
+            data=_request_data_with_owner(request))
         is_valid = serializer.is_valid()
         if is_valid:
             serializer.save()
-
         return _response_from_serializer(is_valid, serializer)
 
 
@@ -54,14 +57,11 @@ class MoveVideoLinksView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        request_data = request.data.copy()
-        request_data['owner'] = request.user.id
-        serializer = serializers.MoveVideoLinkSerializer(data=request_data)
-
+        serializer = serializers.MoveVideoLinkSerializer(
+            data=_request_data_with_owner(request))
         is_valid = serializer.is_valid()
         if is_valid:
             serializer.save()
-
         return _response_from_serializer(is_valid, serializer)
 
 
@@ -88,14 +88,11 @@ class MoveTipsView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        request_data = request.data.copy()
-        request_data['owner'] = request.user.id
-        serializer = serializers.MoveTipSerializer(data=request_data)
-
+        serializer = serializers.MoveTipSerializer(
+            data=_request_data_with_owner(request))
         is_valid = serializer.is_valid()
         if is_valid:
             serializer.save()
-
         return _response_from_serializer(is_valid, serializer)
 
 

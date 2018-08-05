@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router';
 import { MoveForm } from 'jsx/presentation/move_form';
+import { stripPickerValue } from 'jsx/utils/utils'
 
 
 export class MoveHeader extends React.Component {
@@ -17,7 +18,7 @@ export class MoveHeader extends React.Component {
 class Tags extends React.Component {
   render() {
     const tagNames = this.props.tagNamesStr.split(',');
-    const items = tagNames.map((tagName, idx) => {
+    const items = tagNames.map(stripPickerValue).map((tagName, idx) => {
       return <div key={idx} className="moveTag">{tagName}</div>;
     });
 

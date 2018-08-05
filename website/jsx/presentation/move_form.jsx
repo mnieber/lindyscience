@@ -5,7 +5,7 @@ import {
   FormField, validateMoveUrl, ValuePicker, formFieldError, pickerValue, FormFieldLabel
 } from 'jsx/utils/form_utils'
 import {
-  stripTags
+  stripTags, stripPickerValue
 } from 'jsx/utils/utils'
 import {
   Editor, EditorState, RichUtils, convertFromRaw, convertToRaw
@@ -51,7 +51,11 @@ export class MoveForm extends React.Component {
   }
 
   _form = () => {
-    const toPickerValue = value => ({value: value, label: value});
+
+    const toPickerValue = value => ({
+      value: stripPickerValue(value),
+      label: stripPickerValue(value)
+    });
 
     const InnerForm = props => {
 
@@ -137,12 +141,14 @@ export class MoveForm extends React.Component {
       }),
 
       validate: (values, props) => {
+        const addQuotes = x => '"' + x + '"';
+
         // HACK: add values from non-input fields
         values.description = stateToHTML(
           this.editor.current.state.editorState.getCurrentContent()
         );
         values.difficulty = pickerValue(this.difficultyPicker.current, "");
-        values.tags = pickerValue(this.tagsPicker.current, []).join(", ");
+        values.tags = pickerValue(this.tagsPicker.current, []).map(addQuotes).join(", ");
 
         let errors = {};
         if (!values.name) {

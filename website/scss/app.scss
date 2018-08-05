@@ -80,7 +80,9 @@ $panGrey: #BBBBBB;
 }
 
 .moveTag {
-  @apply mr-2 text-blue;
+  @apply mr-2 p-2 rounded;
+  @apply text-sm;
+  background-color: #E6E6E6;
 }
 
 .panel {

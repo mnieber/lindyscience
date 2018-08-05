@@ -58,3 +58,13 @@ export function slugify(text)
     .replace(/^-+/, '')             // Trim - from start of text
     .replace(/-+$/, '');            // Trim - from end of text
 }
+
+export function stripPickerValue(value) {
+  if (value.startsWith('"')) {
+    value = value.substring(1)
+  }
+  if (value.endsWith('"')) {
+    value = value.substring(0, value.length - 1);
+  }
+  return value;
+}

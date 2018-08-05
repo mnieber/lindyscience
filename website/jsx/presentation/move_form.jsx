@@ -123,7 +123,10 @@ export class MoveForm extends React.Component {
               </button>
               <button
                 className="button button--wide ml-2"
-                onClick={this.props.onCancel}
+                onClick={e => {
+                  e.preventDefault();
+                  this.props.onCancel()
+                }}
               >
                 cancel
               </button>

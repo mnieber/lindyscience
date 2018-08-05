@@ -96,6 +96,7 @@ export class Move extends React.Component {
         <MoveForm
           move={this.props.move}
           onSubmit={this.props.saveMove}
+          onCancel={() => this._setIsEditing(false)}
           knownTags={this.props.moveTags}
         />
       </div>

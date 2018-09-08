@@ -168,8 +168,6 @@ export class MoveForm extends React.Component {
       }),
 
       validate: (values, props) => {
-        const addQuotes = x => '"' + x + '"';
-
         // HACK: add values from non-input fields
         values.description = stateToHTML(
           this.descriptionEditor.current.state.editorState.getCurrentContent()
@@ -178,7 +176,7 @@ export class MoveForm extends React.Component {
           this.privateNotesEditor.current.state.editorState.getCurrentContent()
         );
         values.difficulty = pickerValue(this.difficultyPicker.current, "");
-        values.tags = pickerValue(this.tagsPicker.current, []).map(addQuotes).join(", ");
+        values.tags = pickerValue(this.tagsPicker.current, []).join(", ");
 
         let errors = {};
         if (!values.name) {

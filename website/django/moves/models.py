@@ -48,7 +48,7 @@ class Move(models.Model):
     slug = models.CharField(max_length=200, unique=True)
     difficulty = EnumField(Difficulty, max_length=7)
     description = models.TextField()
-    tags = TagField(force_lowercase=True, max_count=10)
+    tags = TagField(force_lowercase=True, max_count=10, space_delimiter=False)
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 

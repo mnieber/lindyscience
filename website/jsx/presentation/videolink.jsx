@@ -1,6 +1,9 @@
 import React from 'react'
 import { VoteCount } from 'jsx/presentation/vote_count'
 import { VideoLinkForm } from 'jsx/presentation/video_link_form'
+import { videoLinkType } from 'jsx/types'
+import { PropTypes } from 'prop-types';
+import { voteType } from 'jsx/types'
 
 
 export class VideoLink extends React.Component {
@@ -85,6 +88,14 @@ export class VideoLink extends React.Component {
   }
 }
 
+VideoLink.propTypes = {
+  item: videoLinkType.isRequired,
+  vote: voteType.isRequired,
+  voteCount: PropTypes.number.isRequired,
+  setVote: PropTypes.func.isRequired,
+  saveVideoLink: PropTypes.func.isRequired,
+  cancelEditVideoLink: PropTypes.func.isRequired,
+}
 
 export class VideoLinkList extends React.Component {
   render() {
@@ -103,4 +114,12 @@ export class VideoLinkList extends React.Component {
 
     return <div>{items}</div>
   }
+}
+
+VideoLinkList.propTypes = {
+  items: PropTypes.arrayOf(videoLinkType).isRequired,
+  getMoveVideoLinkVoteById: PropTypes.func.isRequired,
+  setVote: PropTypes.func.isRequired,
+  saveVideoLink: PropTypes.func.isRequired,
+  cancelEditVideoLink: PropTypes.func.isRequired,
 }

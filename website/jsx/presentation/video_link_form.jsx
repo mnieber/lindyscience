@@ -28,7 +28,7 @@ export class VideoLinkForm extends React.Component {
             <button
               className="editVideoLinkBtn ml-2"
               type="submit"
-              disabled={props.isSubmitting}
+              disabled={false}
             >
               save
             </button>

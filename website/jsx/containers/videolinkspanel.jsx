@@ -7,6 +7,8 @@ import uuidv4 from 'uuid/v4'
 import { toastr } from 'react-redux-toastr'
 import { VideoLinkList } from 'jsx/presentation/videolink';
 import { querySetListToDict } from 'jsx/utils/utils'
+import { PropTypes } from 'prop-types';
+import { moveType } from 'jsx/types'
 
 
 class VideoLinksPanel extends React.Component {
@@ -63,7 +65,6 @@ class VideoLinksPanel extends React.Component {
   }
 };
 
-
 VideoLinksPanel = connect(
   (state) => ({
     getVideoLinksByMoveId: x => fromStore.getVideoLinksByMoveId(state.linsci, x),
@@ -73,5 +74,8 @@ VideoLinksPanel = connect(
   actions
 )(VideoLinksPanel)
 
+VideoLinksPanel.propTypes = {
+  move: moveType.isRequired,
+}
 
 export default VideoLinksPanel;

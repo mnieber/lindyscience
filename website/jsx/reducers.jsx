@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
 
+/// Add a reducer below
+
 const movesReducer = function(
   state = {},
   action
@@ -195,8 +197,26 @@ const statusReducer = function(
   }
 }
 
+const selectionReducer = function(
+  state = {
+    moveId: "",
+  },
+  action
+)
+{
+  switch (action.type) {
+    case 'SET_SELECTED_MOVE_ID':
+      return { ...state,
+        moveId: action.moveId
+      }
+    default:
+      return state
+  }
+}
+
 export const linsciReducer = combineReducers({
   moves: movesReducer,
+  selection: selectionReducer,
   movePrivateDatas: movePrivateDatasReducer,
   moveVideoLinks: moveVideoLinksReducer,
   moveTips: moveTipsReducer,
@@ -265,4 +285,10 @@ export function getMoveTipVoteById(state, id) {
   return result ? result : 0;
 }
 
+export function getSelectedMoveId(state) {
+  return state.selection.moveId;
+}
+
 export const getIOStatus = (state) => state.status.ioStatus;
+
+/// Add a state function above

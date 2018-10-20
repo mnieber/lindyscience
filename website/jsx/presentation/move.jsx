@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router';
 import { MoveForm } from 'jsx/presentation/move_form';
 import { stripPickerValue } from 'jsx/utils/utils'
+import { PropTypes } from 'prop-types';
 
 
 export class MoveHeader extends React.Component {
@@ -30,6 +31,9 @@ class Tags extends React.Component {
   }
 }
 
+Tags.propTypes = {
+  tagNamesStr: PropTypes.string.isRequired,
+}
 
 export class Move extends React.Component {
   constructor(props) {
@@ -102,4 +106,11 @@ export class Move extends React.Component {
       </div>
     )
   }
+}
+
+Move.propTypes = {
+  saveMove: PropTypes.func.isRequired,
+  moveTags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tipsPanel: PropTypes.node.isRequired,
+  videoLinksPanel: PropTypes.node.isRequired,
 }

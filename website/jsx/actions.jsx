@@ -86,6 +86,13 @@ export function removeEmptyMoveTips() {
   }
 }
 
+export function setSelectedMoveId(moveId) {
+  return {
+    type: 'SET_SELECTED_MOVE_ID',
+    moveId: moveId
+  }
+}
+
 export function voteMoveTip(id, vote) {
   return (dispatch, getState) => {
     const state = getState();
@@ -113,3 +120,5 @@ export function setIOStatus(value) {
     });
   }
 }
+
+/// Add an action above

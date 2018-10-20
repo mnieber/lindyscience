@@ -12,6 +12,8 @@ import {
 } from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
+import { moveType } from 'jsx/types'
+import { PropTypes } from 'prop-types';
 
 
 class RichTextEditor extends React.Component {
@@ -42,6 +44,10 @@ class RichTextEditor extends React.Component {
   }
 }
 
+RichTextEditor.propTypes = {
+  content: PropTypes.string.isRequired,
+}
+
 export class MoveForm extends React.Component {
   constructor(props) {
     super(props);
@@ -59,7 +65,6 @@ export class MoveForm extends React.Component {
     });
 
     const InnerForm = props => {
-
       const knownTags = [];
       this.props.knownTags.forEach(tag => {
         knownTags.push(toPickerValue(tag));
@@ -203,4 +208,11 @@ export class MoveForm extends React.Component {
   render() {
     return this._form();
   }
+}
+
+MoveForm.propTypes = {
+  knownTags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  move: moveType.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 }

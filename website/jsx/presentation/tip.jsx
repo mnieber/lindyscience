@@ -3,6 +3,8 @@ import { withFormik } from 'formik';
 import * as yup from 'yup';
 import { FormField, validateTipUrl } from 'jsx/utils/form_utils'
 import { VoteCount } from 'jsx/presentation/vote_count'
+import { tipType, voteType } from 'jsx/types'
+import { PropTypes } from 'prop-types';
 
 
 class TipForm extends React.Component {
@@ -10,7 +12,7 @@ class TipForm extends React.Component {
     const InnerForm = props => {
 
       return (
-        <form className="tipForm w-full" onSubmit={props.handleSubmit}>
+        <form className="tipForm w-full" onSubmit={props.onSubmit}>
           <div className={"flex flex-wrap"}>
             <FormField
               classNames="w-64"
@@ -22,7 +24,7 @@ class TipForm extends React.Component {
             <button
               className="editTipBtn ml-2"
               type="submit"
-              disabled={props.isSubmitting}
+              disabled={false}
             >
               save
             </button>
@@ -61,6 +63,12 @@ class TipForm extends React.Component {
   render() {
     return this._form();
   }
+}
+
+TipForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  values: PropTypes.object.isRequired,
 }
 
 export class Tip extends React.Component {
@@ -142,6 +150,14 @@ export class Tip extends React.Component {
   }
 }
 
+Tip.propTypes = {
+  item: tipType.isRequired,
+  vote: voteType,
+  voteCount: PropTypes.number.isRequired,
+  setVote: PropTypes.func.isRequired,
+  saveTip: PropTypes.func.isRequired,
+  cancelEditTip: PropTypes.func.isRequired,
+}
 
 export class TipList extends React.Component {
   render() {
@@ -160,4 +176,11 @@ export class TipList extends React.Component {
 
     return <div>{items}</div>
   }
+}
+
+TipList.propTypes = {
+  items: PropTypes.arrayOf(tipType).isRequired,
+  setVote: PropTypes.func.isRequired,
+  saveTip: PropTypes.func.isRequired,
+  cancelEditTip: PropTypes.func.isRequired,
 }

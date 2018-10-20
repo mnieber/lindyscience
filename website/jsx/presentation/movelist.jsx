@@ -1,6 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router'
-import PropTypes from 'prop-types';
+import VideoLinksPanel from 'jsx/containers/videolinkspanel'
+import TipsPanel from 'jsx/containers/tipspanel'
+import { Move } from 'jsx/presentation/move'
+import { moveType } from 'jsx/types'
+import { PropTypes } from 'prop-types';
 
 
 export class MoveListHeader extends React.Component {
@@ -28,16 +31,33 @@ MoveListHeader.propTypes = {
 export class MoveList extends React.Component {
   render() {
     const items = this.props.moves.map((move, idx) => {
+      if (move.id === this.props.selectedMoveId) {
+        const videoLinksPanel = <VideoLinksPanel move={move}/>;
+        const tipsPanel = <TipsPanel move={move}/>;
+
+        return (
+          <Move
+            key={idx}
+            move={move}
+            videoLinksPanel={videoLinksPanel}
+            tipsPanel={tipsPanel}
+            saveMove={this.props.saveMove}
+            moveTags={this.props.moveTags}
+          />
+        )
+      }
       const videoLinks = this.props.getVideoLinksByMoveId(move.id);
       const videoLinkDiv = videoLinks.length
         ? <a className='ml-2' href={videoLinks[0].url} target='blank'>VIDEO</a>
         : undefined;
 
       return (
-        <div key={idx} className = {"moveList__item"}>
-          <Link to={`/app/moves/${move.slug}`}>
-            {move.name}
-          </Link>
+        <div
+          key={idx}
+          className = {"moveList__item"}
+          onClick={() => this.props.setSelectedMoveId(move.id)}
+        >
+          {move.name}
           {videoLinkDiv}
         </div>
       )
@@ -53,8 +73,9 @@ export class MoveList extends React.Component {
 
 MoveList.propTypes = {
   getVideoLinksByMoveId: PropTypes.func.isRequired,
-  moves: PropTypes.array.isRequired,
+  moves: PropTypes.arrayOf(moveType).isRequired,
   moveTags: PropTypes.array.isRequired,
   saveMove: PropTypes.func.isRequired,
-  selectedMoveId: PropTypes.string.isRequired,
+  selectedMoveId: PropTypes.string,
+  setSelectedMoveId: PropTypes.func.isRequired,
 }

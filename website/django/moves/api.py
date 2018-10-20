@@ -11,6 +11,13 @@ def _request_data_with_owner(request):
     return request_data
 
 
+def _save_serializer(serializer, request_data):
+    if 'id' in request_data:
+        return serializer.save(id=request_data['id'])
+    else:
+        return serializer.save()
+
+
 class MovesView(APIView):
     def get(self, request):
         serializer = serializers.MoveSerializer(
@@ -23,11 +30,11 @@ class MovesView(APIView):
         })
 
     def post(self, request):
-        serializer = serializers.MoveSerializer(
-            data=_request_data_with_owner(request))
+        request_data = _request_data_with_owner(request)
+        serializer = serializers.MoveSerializer(data=request_data)
         is_valid = serializer.is_valid()
         if is_valid:
-            serializer.save()
+            _save_serializer(serializer, request_data)
         return _response_from_serializer(is_valid, serializer)
 
 

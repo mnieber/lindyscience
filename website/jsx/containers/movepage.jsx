@@ -27,16 +27,11 @@ class MovePage extends React.Component {
 
   _saveMove = (id, values) => {
     const isNew = !this.props.getMoveById(id);
-    values.id = id;
-    values.slug = slugify(values.name);
-    let response = undefined;
     this.props.addMoves(querySetListToDict([values]));
-    if (isNew) {
-      response = api.saveMove(values);
-    }
-    else {
-      response = api.patchMove(id, values);
-    }
+
+    let response = isNew
+      ? api.saveMove(values)
+      : api.patchMove(id, values);
     response.catch(() => toastr.error('Oops!', 'We could not save the move'));
   }
 
@@ -55,7 +50,7 @@ class MovePage extends React.Component {
           move={this.props.move}
           videoLinksPanel={videoLinksPanel}
           tipsPanel={tipsPanel}
-          saveMove={this._saveMove}
+          saveMove={(id, values) => this._saveMove(id, {...values, id: id, slug: slugify(values.name)})}
           moveTags={this.props.moveTags}
         />
       </div>

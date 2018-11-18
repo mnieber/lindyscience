@@ -1,4 +1,4 @@
-Host pan
+Host linsci
     HostName 163.172.138.137
     User root
     IdentityFile ~/.ssh/id_vegtech_rsa

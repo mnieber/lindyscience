@@ -1,28 +1,36 @@
+DIAGNOSE:
+  src_dir: ${/ROOT/src_dir}/extra/dodo_commands/diagnose
+  output_dir: ${/ROOT/project_dir}/res/diagnose
+  filters:
+  - - ${/DIAGNOSE/src_dir}
+    - filters
+
 DJANGO:
-  src_dir: ${/SERVER/src_dir}/website/django_wagtail
+  src_dir: ${/SERVER/src_dir}/django
   python: ${/SERVER/venv_dir}/bin/python
-  migrations_local_dir: ${/SERVER/install_dir}/migrations_local
   runserver_args:
   - --nostatic
 
 DOCKER:
   home: /root
   containers:
-    pg: dc_pandb
-    migrations: dc_pandb_migrations
-    static_data: dc_pan_static
-    packages: dc_pan_packages
+    static_data: dc_linsci_static_data
+    dumps: dc_linsci_dumps
+    packages: dc_linsci_packages
+    pg: dc_linsci_pg
   options:
     '*':
       volumes_from_list:
       - ${/DOCKER/containers/static_data}
-      - ${/DOCKER/containers/migrations}
       - ${/DOCKER/containers/packages}
+      - ${/DOCKER/containers/dumps}
       volume_map:
         ${/ROOT/src_dir}: ${/SERVER/src_dir}
       image: ${/DOCKER/images/base/image}
+      variable_map:
+        DJANGO_SETTINGS_MODULE: app.settings.dev
     bash:
-      cwd: /srv/pan/src/salt
+      cwd: ${/SERVER/src_dir}
     django-manage:
       link_list:
       - pg
@@ -31,22 +39,13 @@ DOCKER:
       - pg
       publish_list:
       - 8000
+    psql:
+      link_list:
+      - pg
     run-postgres:
       name: pg
       volumes_from_list:
       - ${/DOCKER/containers/pg}
-
-SSH_AGENT:
-  key_names: [id_vegtech_rsa]
-  docker_image: vegtech/ssh-agent
-
-SSH:
-  key_name: id_vegtech_rsa
-
-SALT:
-  docker_image: vegtech/salt
-  src_dir: ${/ROOT/src_dir}
-  top_dir: salt
 
 PYTEST:
   pytest: ${/SERVER/venv_dir}/bin/pytest
@@ -58,40 +57,47 @@ ROOT:
   - ~/.dodo_commands/layers/*.yaml
   - docker_images.yaml
   - salt.local.yaml
+  - django.dev.yaml
+  - drops/dodo_deploy_commands/drop.on.yaml
   decorators:
-    docker: [django-manage, django-runserver, docker, node-sass, pytest, webpack,
-      update-salt-package, run-postgres, pan-dockerupdate, install-packages]
-    pause: [django-runserver]
+    docker: [django-manage, django-runserver, docker, pytest, webpack, run-postgres,
+      install-packages, download_dump, yarn, psql, tape]
+  shared_config_dir: ${/ROOT/src_dir}/extra/dodo_commands/res
   command_path:
-  - - ~/.dodo_commands
-    - default_commands/*
-  - - ${/ROOT/src_dir}/extra/dodo_commands
-    - pan_commands
+  - ~/.dodo_commands/default_commands/*
+  - ${/ROOT/src_dir}/extra/dodo_commands/linsci_commands
   version: 1.0.0
 
-DIAGNOSE:
-  src_dir: ${/ROOT/src_dir}/extra/dodo_commands/diagnose
-  output_dir: ${/ROOT/project_dir}/res/diagnose
-  filters:
-  - - ${/DIAGNOSE/src_dir}
-    - filters
-
-TMUX:
-  docker_kill: [django-runserver, node-sass, webpack]
-  check_exists: /media/maarten/4de51826-182f-4043-b3bf-02d5eeb220e0
-  commands:
-  - dodo run-postgres
-  - dodo django-runserver
-  - dodo webpack --watch
-  - dodo ssh-agent restart
+SALT:
+  src_dir: ${/ROOT/src_dir}
+  top_dir: salt
+  host_name: dev
 
 SERVER:
-  install_dir: /srv/pan
+  install_dir: /srv/linsci
   src_dir: ${/SERVER/install_dir}/src
   node_modules_dir: ${/SERVER/src_dir}/website/node_modules
   venv_dir: ${/SERVER/install_dir}/env
+  pip_requirements: ${/DJANGO/src_dir}/requirements.txt
+
+TMUX:
+  commands:
+    server:
+    - dodo run-postgres
+    - dodo django-runserver
+    - dodo yarn run flow-watch
+    - dodo webpack --watch
+    ssh:
+    - dodo ssh-agent restart
+    db:
+    - dodo django-manage createsuperuser --email=mnieber@gmail.com --username=admin
+    - dodo django-manage restore-db --list
+    - dodo django-manage makemigrations moves
 
 WEBPACK:
   webpack: ${/SERVER/node_modules_dir}/.bin/webpack
   webpack_dir: ${/SERVER/src_dir}/website
+TAPE:
+  tape: ${/SERVER/node_modules_dir}/.bin/tape
+  bundle_file: ${/SERVER/install_dir}/static/bundles/test.js
 

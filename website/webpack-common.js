@@ -4,8 +4,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = {
   entry: {
-    main: './jsx/main.jsx',
-    app: './jsx/css/app.jsx',
+    main: './app/main.jsx',
+    app: './app/css/app.jsx',
   },
 
   output: {
@@ -28,8 +28,17 @@ const config = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
-          presets: ['babel-preset-es2015', 'babel-preset-react', 'es2015'],
-          plugins: ['transform-object-rest-spread', 'transform-class-properties', 'syntax-dynamic-import']
+          presets: [
+            '@babel/flow',
+            '@babel/preset-react',
+          ],
+          plugins: [
+            ["@babel/plugin-proposal-pipeline-operator", { "proposal": "minimal" }],
+            '@babel/plugin-proposal-object-rest-spread',
+            '@babel/plugin-proposal-class-properties',
+            '@babel/plugin-proposal-optional-chaining',
+            'syntax-dynamic-import'
+          ]
         }
       },
       {

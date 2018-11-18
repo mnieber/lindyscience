@@ -12,10 +12,10 @@ DOCKER:
       image: ${/DOCKER/images/base/image}
       dirs:
       - /var/lib/postgresql
-    migrations:
+    dumps:
       image: ${/DOCKER/images/base/image}
       dirs:
-      - ${/SERVER/install_dir}/migrations_local
+      - ${/SERVER/install_dir}/dumps
     packages:
       image: ${/DOCKER/images/base/image}
       dirs:

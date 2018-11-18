@@ -17,9 +17,24 @@ const development = merge(common, {
   },
 
   plugins: [
-    new WebpackCleanupPlugin({}),
+    new WebpackCleanupPlugin({
+      exclude: ["test.js"],
+    }),
     new BundleTracker({path: srvDir + '/static/bundles', filename: 'webpack-stats.json'})
   ],
 });
 
-module.exports = development;
+const test = merge(common, {
+  target: 'web',
+  mode: 'development',
+  entry: ['./test'],
+  node: {
+    fs: 'empty'
+  },
+  output: {
+      path: srvDir + '/static/bundles',
+      filename: "test.js",
+  },
+});
+
+module.exports = [development, test];

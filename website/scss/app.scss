@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+// Scss
+
 $panGreen: #3AB080;
 $panBlue: #006397;
 $panGrey: #BBBBBB;
@@ -16,7 +18,15 @@ $panGrey: #BBBBBB;
   @apply mb-4;
 }
 
-.videolink {
+.flexrow {
+  @apply flex flex-row;
+}
+
+.flexcol {
+  @apply flex flex-col;
+}
+
+.videoLink {
   @apply flex h-8;
 }
 
@@ -52,34 +62,35 @@ $panGrey: #BBBBBB;
   background-image: url('/static/img/downvote_0.png');
 }
 
-.move__description {
-  height: 200px;
-  width: 200px;
+.moveList {
+  @apply flexcol overflow-y-scroll;
 }
 
 .moveList__item {
-  @apply my-1;
+  @apply py-1;
+}
+
+.moveList__item--highlighted {
+  @apply bg-green-light;
+}
+
+.moveList__item--drag_before {
+  border-top: solid;
+}
+
+.moveList__item--drag_after {
+  border-bottom: solid;
 }
 
 .move__header {
-  @apply flex flex-col;
-}
-
-.editMoveForm {
-  label {
-    font-weight: bold;
-  }
-
-  .formField {
-    margin-top: 2rem;
-  }
+  @apply flexcol;
 }
 
 .move__tags {
   @apply flex;
 }
 
-.moveTag {
+.move__tag {
   @apply mr-2 p-2 rounded;
   @apply text-sm;
   background-color: #E6E6E6;
@@ -99,11 +110,27 @@ $panGrey: #BBBBBB;
   @apply w-32;
 }
 
-.editVideoLinkBtn {
+.videoLinkForm__submitButton {
   @apply cursor-pointer underline;
 }
 
-.editTipBtn {
+.videoLinkForm__cancelButton {
+  @apply cursor-pointer underline;
+}
+
+.videoLink__editButton {
+  @apply cursor-pointer underline;
+}
+
+.tip__editButton {
+  @apply cursor-pointer underline;
+}
+
+.tipForm__submitButton {
+  @apply cursor-pointer underline;
+}
+
+.tipForm__saveButton {
   @apply cursor-pointer underline;
 }
 
@@ -113,10 +140,6 @@ $panGrey: #BBBBBB;
 
 .voteCountPanel {
   @apply flex;
-}
-
-.foobar {
-  @apply w-full h-64;
 }
 
 .formField__field {

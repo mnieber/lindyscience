@@ -3,7 +3,7 @@ Deploying the Wagtail site
 
 Deploying the site involves the following resources:
 
-1. the pan:base docker image
+1. the lisci:base docker image
 2. a salt script located in {{ ['/ROOT/src_dir', 'salt'] | dodo_expand(link=True) }}.
 3. the website's source files and static files (css, js)
 4. an ssh key required to log into the remote server

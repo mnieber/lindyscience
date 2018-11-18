@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block content %}
+
+<script type="text/javascript">
+    var globalUserProfile = {{ user_profile }};
+</script>
+
+<div id='root' class="h-screen flex flex-col"/>
+{% render_bundle 'main' %}
+
+{% endblock %}

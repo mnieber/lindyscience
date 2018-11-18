@@ -16,7 +16,5 @@ RUN mkdir /root/.ssh
 
 EXPOSE 22
 
-WORKDIR /srv/pan/src/salt
-
 # Expose postgres port
 EXPOSE 5432

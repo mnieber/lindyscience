@@ -1,0 +1,6 @@
+DOCKER:
+  options:
+    '*':
+      variable_map:
+        DJANGO_SETTINGS_MODULE: app.settings.staging
+

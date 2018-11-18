@@ -16,10 +16,9 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
-project = u'pan'
+project = u'linsci'
 copyright = u'2018, Maarten'
 author = u'Maarten'
 
@@ -27,7 +26,6 @@ author = u'Maarten'
 version = u''
 # The full version, including alpha/beta/rc tags
 release = u'1'
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -38,8 +36,7 @@ release = u'1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -67,7 +64,6 @@ exclude_patterns = [u'_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -111,12 +107,10 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
-
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pandoc'
-
+htmlhelp_basename = 'linscidoc'
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -142,20 +136,14 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'pan.tex', u'pan Documentation',
-     u'Maarten', 'manual'),
+    (master_doc, 'linsci.tex', u'linsci Documentation', u'Maarten', 'manual'),
 ]
-
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'pan', u'pan Documentation',
-     [author], 1)
-]
-
+man_pages = [(master_doc, 'linsci', u'linsci Documentation', [author], 1)]
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -163,7 +151,6 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pan', u'pan Documentation',
-     author, 'pan', 'One line description of project.',
-     'Miscellaneous'),
+    (master_doc, 'linsci', u'linsci Documentation', author, 'linsci',
+     'One line description of project.', 'Miscellaneous'),
 ]

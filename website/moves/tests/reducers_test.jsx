@@ -53,12 +53,12 @@ test('add move lists', function (t) {
   t.deepEqual(sTags.moveListTags, {});
 
   const a = actions.actAddMoveLists(
-    {[data.moveList.id]: data.moveList},
+    {[data.moveList1.id]: data.moveList1},
     data.moves
   );
 
   sMoveList = reducers.moveListsReducer(sMoveList, a);
-  t.deepEqual(sMoveList, {[data.moveList.id]: data.moveList});
+  t.deepEqual(sMoveList, {[data.moveList1.id]: data.moveList1});
 
   sMoves = reducers.movesReducer(sMoves, a);
   t.deepEqual(sMoves, data.moves);
@@ -85,18 +85,18 @@ test('set votes', function (t) {
 });
 
 test('cast vote', function (t) {
-  const moveId = "18561d09-0727-441d-bdd9-d3d8c33ebde3";
+  const id = "759b488d-ffa4-467c-8157-6ca27114bda9";
 
   let sVotes = reducers.votesReducer(undefined, actions.actSetVotes(data.votes));
-  t.equal(sVotes[moveId], -1);
+  t.equal(sVotes[id], -1);
 
   sVotes = reducers.votesReducer(sVotes, {
     type: 'CAST_VOTE',
-    id: moveId,
+    id: id,
     vote: 1,
     prevVote: -1,
   });
-  t.equal(sVotes[moveId], 1);
+  t.equal(sVotes[id], 1);
 
   t.end();
 });
@@ -133,12 +133,12 @@ test('add tips', function (t) {
 
 test('insert moves into list', function (t) {
   let sMoveList = reducers.moveListsReducer(undefined, actions.actAddMoveLists(
-    {[data.moveList.id]: data.moveList},
+    {[data.moveList1.id]: data.moveList1},
     data.moves
   ));
 
   const moveIds = ["123"];
-  const moveListId = data.moveList.id;
+  const moveListId = data.moveList1.id;
 
   sMoveList = reducers.moveListsReducer(sMoveList, {
     type: 'INSERT_MOVES_INTO_LIST',
@@ -146,7 +146,7 @@ test('insert moves into list', function (t) {
     moveListId,
     undefined,
   });
-  t.deepEqual(sMoveList[moveListId].moves, ["123", ...data.moveList.moves]);
+  t.deepEqual(sMoveList[moveListId].moves, ["123", ...data.moveList1.moves]);
 
   t.end();
 });

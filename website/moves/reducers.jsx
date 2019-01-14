@@ -201,7 +201,7 @@ export function moveListsReducer(
           return acc;
         },
         !action.targetMoveId
-          ? action.moveIds
+          ? [...action.moveIds]
           : []
       );
 

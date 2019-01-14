@@ -14,3 +14,4 @@ debug.sls
 website/node_modules
 website/webpack-test.js
 website/webpack-test.js
+.pytest_cache

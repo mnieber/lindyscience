@@ -15,6 +15,12 @@ function csrfSafeMethod(method) {
   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+export const reducer = combineReducers({
+  toastr: toastrReducer,
+  moves: movesReducer,
+  app: appReducer,
+});
+
 const configureStore = () => {
   jQuery.ajaxSetup({
     beforeSend: function(xhr, settings) {
@@ -31,11 +37,7 @@ const configureStore = () => {
   }
 
   const store = createStore(
-    combineReducers({
-      toastr: toastrReducer,
-      moves: movesReducer,
-      app: appReducer,
-    }),
+    reducer,
     applyMiddleware(...middleware)
   )
 

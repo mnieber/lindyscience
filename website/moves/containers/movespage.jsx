@@ -93,8 +93,24 @@ export function useInsertMove(
 type NewMoveBvrT = {|
   newMove: ?MoveT,
   addNewMove: Function,
-  finalize: Function
+  finalize: Function,
+  setHighlightedMoveId: Function,
 |};
+
+export function _createNewMove(): MoveT {
+  return {
+    id: uuidv4(),
+    slug: 'new-move',
+    name: 'New move',
+    description: '',
+    difficulty: '',
+    tips: [],
+    videoLinks: [],
+    tags: [],
+    owner: 1, // TODO
+    privateData: {},
+  };
+}
 
 export function useNewMove(
   highlightedMoveId: UUID,
@@ -105,27 +121,12 @@ export function useNewMove(
 ): NewMoveBvrT {
   const [newMove, setNewMove] = React.useState(null);
 
-  function _createNewMove(): MoveT {
-    return {
-      id: uuidv4(),
-      slug: 'new-move',
-      name: 'New move',
-      description: '',
-      difficulty: '',
-      tips: [],
-      videoLinks: [],
-      tags: [],
-      owner: 1, // TODO
-      privateData: {},
-    };
-  }
-
   // Store a new move in the function's state
   function addNewMove() {
     const newMove = _createNewMove();
     setNewMove(newMove);
-    insertMoveBvr.prepare(highlightedMoveId, newMove);
     setHighlightedMoveId(newMove.id);
+    insertMoveBvr.prepare(highlightedMoveId, newMove);
     setEditingEnabled();
   }
 
@@ -139,12 +140,20 @@ export function useNewMove(
     setNewMove(null);
   }
 
-  // Cancel the new move if the highlight moves elsewhere
-  if (newMove && highlightedMoveId != newMove.id) {
-    finalize(true);
+  function setHighlightedMoveIdExt(id: UUID) {
+    // Cancel the new move if the highlight moves elsewhere
+    if (newMove && id != newMove.id) {
+      finalize(true);
+    }
+    setHighlightedMoveId(id);
   }
 
-  return {newMove, addNewMove, finalize};
+  return {
+    newMove,
+    addNewMove,
+    finalize,
+    setHighlightedMoveId: setHighlightedMoveIdExt
+  };
 }
 
 
@@ -170,10 +179,16 @@ export function useSaveMove(
   |};
 
   function _completeMove(id: UUID, incompleteValues: IncompleteValuesT): MoveT {
+    // $FlowFixMe
+    const move: MoveT = moves.find(x => x.id == id);
+    const newSlug = incompleteValues.name
+      ? slugify(incompleteValues.name)
+      : undefined;
+
     return {
-      ...moves.find(x => x.id == id),
+      ...move,
       ...incompleteValues,
-      slug: slugify(incompleteValues.name),
+      slug: newSlug || move.slug,
     };
   }
 
@@ -312,7 +327,7 @@ function MovesPage(props: MovesPagePropsT) {
           ref={moveListRef}
           className=""
           videoLinksByMoveId={props.videoLinksByMoveId}
-          setHighlightedMoveId={props.actSetHighlightedMoveId}
+          setHighlightedMoveId={newMoveBvr.setHighlightedMoveId}
           moves={insertMoveBvr.preview}
           highlightedMoveId={props.highlightedMoveId}
           onDrop={handlers.onDrop}

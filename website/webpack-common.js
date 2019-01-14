@@ -25,14 +25,15 @@ const config = {
     rules: [
       {
         test: /.jsx?$/,
-        loader: 'babel-loader',
         exclude: /node_modules/,
+        loader: 'babel-loader',
         options: {
           presets: [
             '@babel/flow',
             '@babel/preset-react',
           ],
           plugins: [
+            'babel-plugin-rewire',
             ["@babel/plugin-proposal-pipeline-operator", { "proposal": "minimal" }],
             '@babel/plugin-proposal-object-rest-spread',
             '@babel/plugin-proposal-class-properties',
@@ -56,7 +57,7 @@ const config = {
           MiniCssExtractPlugin.loader,
           'css-loader',
         ]
-      }
+      },
     ]
   },
   plugins: [

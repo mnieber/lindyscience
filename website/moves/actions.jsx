@@ -58,7 +58,7 @@ export function actAddVideoLinks(videoLinks: VideoLinkByIdT) {
 
 export function actCastVote(id: UUID, vote: VoteT) {
   return (dispatch: Function, getState: Function) => {
-    const prevVote = fromStore.getVoteByObjectId(getState().moves)[id];
+    const prevVote = fromStore.getVoteByObjectId(getState().moves)[id] || 0;
 
     dispatch({
       type: 'CAST_VOTE',
@@ -95,17 +95,29 @@ export function actSetMoveListFilter(
 
     if (restrictHighlightedMove) {
       const state = getState();
-      const allMoveIds = fromStore.getMoves(state.moves).map(x => x.id);
-      const filteredMoveIds = fromStore.getFilteredMoves(state.moves).map(x => x.id);
-      for (
-        var moveIdx = allMoveIds.indexOf(fromStore.getHighlightedMoveId(state.moves));
-        moveIdx < allMoveIds.length;
-        moveIdx += 1
-      ) {
-        if (filteredMoveIds.includes(allMoveIds[moveIdx])) {
-          dispatch(actSetHighlightedMoveId(allMoveIds[moveIdx]));
-          break;
+      const allMoveIds = fromStore.getMovesInList(state.moves).map(x => x.id);
+      const filteredMoveIds = fromStore.getFilteredMovesInList(state.moves).map(x => x.id);
+      const highlightedIdx = allMoveIds.indexOf(fromStore.getHighlightedMoveId(state.moves));
+
+      function findNeighbourIdx(endIndex, step) {
+        for (
+          var moveIdx = highlightedIdx;
+          moveIdx != endIndex;
+          moveIdx += step
+        ) {
+          if (filteredMoveIds.includes(allMoveIds[moveIdx])) {
+            return {result: moveIdx};
+          }
         }
+        return undefined;
+      }
+
+      const newIdx =
+        findNeighbourIdx(allMoveIds.length, 1) ||
+        findNeighbourIdx(-1, -1);
+
+      if (newIdx) {
+        dispatch(actSetHighlightedMoveId(allMoveIds[newIdx.result]));
       }
     }
   }

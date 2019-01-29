@@ -126,6 +126,22 @@ export function useSaveVideoLink(
   return {save, discardChanges};
 }
 
+type VoteVideoLinkBvrT = {
+  vote: Function
+};
+
+export function useVoteVideoLink(
+  actCastVote: Function,
+): VoteVideoLinkBvrT {
+  const vote = (id: UUID, vote: VoteT) => {
+    actCastVote(id, vote);
+    api.voteVideoLink(id, vote)
+    .catch(createErrorHandler('We could not save your vote'));
+  }
+
+  return {vote};
+}
+
 
 function VideoLinksPanel({
   moveId,
@@ -152,12 +168,9 @@ function VideoLinksPanel({
     actAddVideoLinks,
     createErrorHandler
   );
-
-  const voteVideoLink = (id: UUID, vote: VoteT) => {
-    actCastVote(id, vote);
-    api.voteVideoLink(id, vote)
-    .catch(createErrorHandler('We could not save your vote'));
-  }
+  const voteVideoLinkBvr = useVoteVideoLink(
+    actCastVote
+  );
 
   const addVideoLinkBtn = (
     <div
@@ -176,7 +189,7 @@ function VideoLinksPanel({
       </div>
       <VideoLinkList
         items={insertVideoLinkBvr.preview}
-        setVote={voteVideoLink}
+        setVote={voteVideoLinkBvr.vote}
         saveVideoLink={saveVideoLinkBvr.save}
         cancelEditVideoLink={saveVideoLinkBvr.discardChanges}
         voteByObjectId={voteByObjectId}

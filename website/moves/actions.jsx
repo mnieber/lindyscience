@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react'
 import * as fromStore from 'moves/reducers'
 import {toTitleCase} from 'utils/utils'

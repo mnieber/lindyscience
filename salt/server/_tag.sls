@@ -1,10 +1,10 @@
 ---
 Create srv directory:
   file.directory:
-    - name: {{ pillar['srv_dir'] }}
+    - name: /srv/linsci
 
 Record name tag on remote server:
   file.managed:
-    - name: /{{ pillar['srv_dir'] }}/servername.txt
+    - name: //srv/linsci/servername.txt
     - contents:
       - {{ grains['id'] }}

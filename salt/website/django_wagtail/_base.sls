@@ -18,7 +18,7 @@ Install django apt packages:
 
 Install django wagtail virtual env:
   virtualenv.managed:
-    - name: {{ pillar['srv_dir'] }}/env
+    - name: /srv/linsci/env
     - python: python3
     - system_site_packages: False
     - pip_upgrade: True

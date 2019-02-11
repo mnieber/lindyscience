@@ -67,7 +67,7 @@ test('test actSetMoveListFilter', function (t) {
 
 test('test actInsertMoves', function (t) {
   const {store} = _setUp();
-  const newMoves = [_createNewMove(), _createNewMove()];
+  const newMoves = [_createNewMove(data.profile.userId), _createNewMove(data.profile.userId)];
   const newMoveIds = newMoves.map(x => x.id);
 
   store.dispatch(actions.actUpdateMoves(newMoves));
@@ -86,13 +86,13 @@ test('test actInsertMoves', function (t) {
   t.end();
 });
 
-test('test actSelectMoveListById', function (t) {
+test('test actSelectMoveListByUserNameAndSlug', function (t) {
   const {store} = _setUp();
 
   const moveId = "b95df10a-cbe2-4ec4-9a03-1b61c5452e9d";
   store.dispatch(actions.actSetHighlightedMoveId(moveId));
   t.equal(fromStore.getHighlightedMoveId(store.getState().moves), moveId);
-  store.dispatch(actions.actSelectMoveListById(data.moveList2.id));
+  store.dispatch(actions.actSelectMoveListByUserNameAndSlug(data.moveList2.ownerUsername, data.moveList2.slug));
   t.equal(store.getState().moves.selection.moveListId, data.moveList2.id);
 
   t.end();

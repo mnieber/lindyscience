@@ -3,26 +3,25 @@
 import React from 'react'
 import classnames from 'classnames';
 import { useState } from 'react';
+import type { UserProfileT } from 'app/types';
 
 
-export function AccountMenu({
-  className,
-  loggedInUserName,
-  signIn
-}: {
+type AccountMenuPropsT = {
   className: string,
-  loggedInUserName: string,
+  userProfile: ?UserProfileT,
   signIn: Function,
-}) {
+};
+
+export function AccountMenu(props: AccountMenuPropsT) {
   const [expanded, setExpanded] = useState(false);
 
   function toggle() {
     setExpanded(!expanded);
   }
 
-  const node = loggedInUserName
+  const node = props.userProfile
     ? <React.Fragment>
-        <button onClick={toggle}>{`Hello ${loggedInUserName} ⛛`}</button>
+        <button onClick={toggle}>{`Hello ${props.userProfile.username} ⛛`}</button>
         {
           expanded &&
           <ul className="list-reset bg-green">
@@ -33,10 +32,10 @@ export function AccountMenu({
           </ul>
         }
       </React.Fragment>
-    : <button onClick={signIn}>{`Sign in`}</button>
+    : <button onClick={props.signIn}>{`Sign in`}</button>
 
   return (
-    <div className={classnames(className, "w-32")}>
+    <div className={classnames(props.className, "w-32")}>
       <div className={classnames("absolute", "z-10")}>
         {node}
       </div>

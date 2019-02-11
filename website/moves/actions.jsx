@@ -143,24 +143,32 @@ export function actInsertMoves(
   }
 }
 
-export function actSelectMoveListById(moveListId: UUID) {
+export function actSelectMoveListByUserNameAndSlug(
+  userName: string, moveListSlug: string
+) {
   return (dispatch: Function, getState: Function) => {
-    dispatch ({
-      type: 'SELECT_MOVE_LIST',
-      moveListId,
-    });
-
     const state = getState();
     const moveList = fromStore.getMoveLists(state.moves)
-      .find(x => x.id == moveListId)
-    const moveListMoves = (moveList && moveList.moves)
-      ? moveList.moves
-      : [];
+      .find(x => x.ownerUsername == userName && x.slug == moveListSlug);
 
-    if (!moveListMoves.includes(
-      fromStore.getHighlightedMoveId(state.moves)
-    )) {
-      dispatch(actSetHighlightedMoveId(""));
+    if (moveList) {
+      dispatch ({
+        type: 'SELECT_MOVE_LIST',
+        moveListId: moveList.id,
+      });
+
+      const moveListMoves = (moveList && moveList.moves)
+        ? moveList.moves
+        : [];
+
+      if (!moveListMoves.includes(
+        fromStore.getHighlightedMoveId(state.moves)
+      )) {
+        dispatch(actSetHighlightedMoveId(""));
+      }
+    }
+    else {
+      // TODO: show a "move list not found" placeholder
     }
   }
 }

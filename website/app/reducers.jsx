@@ -3,7 +3,7 @@
 import { combineReducers } from 'redux'
 import { createSelector } from 'reselect'
 import type { InputSelector } from 'reselect';
-import type { UUID } from 'app/types';
+import type { UUID, UserProfileT } from 'app/types';
 import {
   reduceMapToMap,
   getObjectValues,
@@ -24,43 +24,29 @@ const _stateStatus = (state: ReducerState): StatusState => state.status;
 ///////////////////////////////////////////////////////////////////////
 
 type StatusState = {
-  ioStatus: string,
 };
 
 const statusReducer = function(
   state: StatusState = {
-    ioStatus: "ok",
   },
   action
 ): StatusState
 {
   switch (action.type) {
-    case 'SET_IO_STATUS':
-      return { ...state,
-        ioStatus: action.value
-      }
     default:
       return state
   }
 }
-
-export const getIOStatus = (state: ReducerState) => state.status.ioStatus;
 
 
 ///////////////////////////////////////////////////////////////////////
 // Profile
 ///////////////////////////////////////////////////////////////////////
 
-type UserProfileState = {
-  username: string,
-  recentMoveListId: UUID,
-};
+type UserProfileState = ?UserProfileT;
 
 const userProfileReducer = function(
-  state: UserProfileState = {
-    username: "",
-    recentMoveListId: ""
-  },
+  state: UserProfileState = null,
   action
 ): UserProfileState
 {
@@ -75,9 +61,7 @@ const userProfileReducer = function(
   }
 }
 
-export const getProfile = (state: ReducerState) => state.userProfile;
-export const getLoggedInUserName = (state: ReducerState) => state.userProfile.username;
-export const getRecentMoveListId = (state: ReducerState) => state.userProfile.recentMoveListId;
+export const getUserProfile = (state: ReducerState): UserProfileState => state.userProfile;
 
 
 type ReducerState = {

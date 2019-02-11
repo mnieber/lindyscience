@@ -17,7 +17,7 @@ export type MoveT = {
   tips: Array<UUID>,
   name: string,
   slug: string,
-  owner: number,
+  ownerId: number,
 };
 
 export type MoveListT = {
@@ -26,7 +26,8 @@ export type MoveListT = {
   moves: Array<UUID>,
   name: string,
   slug: string,
-  owner: number,
+  ownerId: number,
+  ownerUsername: string,
 };
 
 export type MoveListByIdT = {
@@ -39,7 +40,7 @@ export type VotableT = {
 export type VideoLinkT = {
   id: UUID,
   moveId: UUID,
-  owner: number,
+  ownerId: number,
   title: string,
   url: string,
   initialVoteCount: number,
@@ -50,7 +51,7 @@ export type TipT = {|
   id: UUID,
   moveId: UUID,
   text: string,
-  owner: number,
+  ownerId: number,
   initialVoteCount: number,
   voteCount: number,
 |};

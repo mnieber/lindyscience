@@ -58,7 +58,7 @@ export function useNewVideoLink(
   function _createNewVideoLink(): VideoLinkT {
     return {
       id: uuidv4(),
-      owner: 1,
+      ownerId: 1,  // TODO
       title: '',
       moveId: moveId,
       url: '',

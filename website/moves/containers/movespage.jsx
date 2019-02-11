@@ -3,10 +3,11 @@
 import * as actions from 'moves/actions'
 import * as api from 'moves/api'
 import * as fromStore from 'moves/reducers'
+import * as fromAppStore from 'app/reducers'
 import * as React from 'react'
 import type { FlagT } from 'utils/hooks'
 import type { MoveListT, VideoLinksByIdT, TagT, MoveT, DifficultyT } from 'moves/types'
-import type { UUID } from 'app/types';
+import type { UUID, UserProfileT } from 'app/types';
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
 import { browserHistory } from 'react-router'
@@ -21,6 +22,10 @@ import { toastr } from 'react-redux-toastr'
 import { useFlag } from 'utils/hooks'
 import { useRef } from 'react'
 
+
+export function browseToMoveList(ownerName: string, moveListSlug: string) {
+  browserHistory.push(`/app/moves/${ownerName}/${moveListSlug}`);
+}
 
 // InsertMove Behaviour
 
@@ -97,7 +102,7 @@ type NewMoveBvrT = {|
   setHighlightedMoveId: Function,
 |};
 
-export function _createNewMove(): MoveT {
+export function _createNewMove(userId: number): MoveT {
   return {
     id: uuidv4(),
     slug: 'new-move',
@@ -107,12 +112,13 @@ export function _createNewMove(): MoveT {
     tips: [],
     videoLinks: [],
     tags: [],
-    owner: 1, // TODO
+    ownerId: userId,
     privateData: {},
   };
 }
 
 export function useNewMove(
+  userProfile: ?UserProfileT,
   highlightedMoveId: UUID,
   setHighlightedMoveId: Function,
   insertMoveBvr: InsertMoveBvrT,
@@ -123,11 +129,13 @@ export function useNewMove(
 
   // Store a new move in the function's state
   function addNewMove() {
-    const newMove = _createNewMove();
-    setNewMove(newMove);
-    setHighlightedMoveId(newMove.id);
-    insertMoveBvr.prepare(highlightedMoveId, newMove);
-    setEditingEnabled();
+    if (userProfile) {
+      const newMove = _createNewMove(userProfile.userId);
+      setNewMove(newMove);
+      setHighlightedMoveId(newMove.id);
+      insertMoveBvr.prepare(highlightedMoveId, newMove);
+      setEditingEnabled();
+    }
   }
 
   // Remove new move from the function's state
@@ -256,12 +264,12 @@ function createHandlers(
 }
 
 export type MovesPagePropsT = {
+  userProfile: ?UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
   moves: Array<MoveT>,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
   moveListId: UUID,
-  actSelectMoveListById: Function,
   highlightedMoveId: UUID,
   actSetHighlightedMoveId: Function,
   actSetMoveListFilter: Function,
@@ -280,6 +288,7 @@ function MovesPage(props: MovesPagePropsT) {
   );
 
   const newMoveBvr: NewMoveBvrT = useNewMove(
+    props.userProfile,
     props.highlightedMoveId,
     props.actSetHighlightedMoveId,
     insertMoveBvr,
@@ -312,7 +321,6 @@ function MovesPage(props: MovesPagePropsT) {
           className="mb-4"
           moveLists={props.moveLists}
           defaultMoveListId={props.moveListId}
-          selectMoveListById={props.actSelectMoveListById}
         />
         <MoveListHeader
           addNewMove={newMoveBvr.addNewMove}
@@ -337,9 +345,12 @@ function MovesPage(props: MovesPagePropsT) {
   }();
 
   const highlightedMove = insertMoveBvr.preview.find(m => (m.id == props.highlightedMoveId));
-  const moveDiv = highlightedMove
+  const moveList = props.moveLists.find(x => x.id == props.moveListId);
+
+  const moveDiv = (moveList && highlightedMove)
     ? <EditableMove
         move={highlightedMove}
+        moveList={moveList}
         key={highlightedMove.id}
         saveMove={saveMoveBvr.saveMove}
         cancelEditMove={saveMoveBvr.discardChanges}
@@ -367,6 +378,7 @@ function MovesPage(props: MovesPagePropsT) {
 // $FlowFixMe
 MovesPage = connect(
   (state) => ({
+    userProfile: fromAppStore.getUserProfile(state.app),
     videoLinksByMoveId: fromStore.getVideoLinksByMoveId(state.moves),
     moves: fromStore.getFilteredMovesInList(state.moves),
     moveLists: fromStore.getMoveLists(state.moves),

@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import {
   ValuePicker, strToPickerValue
 } from 'utils/form_utils'
+import { browseToMoveList } from 'moves/containers/movespage'
 
 
 // MoveListPicker
@@ -14,13 +15,17 @@ import {
 type MoveListPickerPropsT = {|
   moveLists: Array<MoveListT>,
   defaultMoveListId: UUID,
-  selectMoveListById: Function,
   className?: string,
 |};
 
 export function MoveListPicker(props: MoveListPickerPropsT) {
   function _onChange(pickedItem) {
-    props.selectMoveListById(pickedItem.value);
+    const moveList = props.moveLists.find(
+      x => x.id == pickedItem.value
+    );
+    if (moveList) {
+      browseToMoveList(moveList.ownerUsername, moveList.slug);
+    }
   }
 
   function toPickerValue(moveList: MoveListT) {

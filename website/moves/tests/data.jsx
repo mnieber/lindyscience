@@ -1,3 +1,7 @@
+export const profile = {
+  "userId": 1
+}
+
 export const moveList1 = {
   "description": "All the moves",
   "id": "02f82088-dee1-4b80-9c1c-0bec2b8255a3",
@@ -10,6 +14,7 @@ export const moveList1 = {
   ],
   "name": "Moves",
   "slug": "moves",
+  "ownerUsername": "mnieber",
   "tags": ["one", "two", "three"],
 }
 
@@ -24,6 +29,7 @@ export const moveList2 = {
   ],
   "name": "Some moves",
   "slug": "some-moves",
+  "ownerUsername": "mnieber",
   "tags": ["two"],
 }
 

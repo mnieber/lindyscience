@@ -65,6 +65,7 @@ function TestComponent({
   sandbox.insertMoveBvr.prepare = sinon.spy(sandbox.insertMoveBvr.prepare);
 
   sandbox.newMoveBvr = useNewMove(
+    data.profile.userId,
     highlightedMoveId,
     setHighlightedMoveId,
     sandbox.insertMoveBvr,
@@ -86,7 +87,7 @@ function TestComponent({
 
 test('test useInsertMove', function (t) {
   const moves = getObjectValues(data.moves);
-  const newMove = _createNewMove();
+  const newMove = _createNewMove(data.profile.userId);
   const expectedNewMoves = [moves[0], moves[1], newMove, moves[2]];
 
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);

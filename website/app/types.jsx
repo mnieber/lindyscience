@@ -5,3 +5,9 @@
 ///////////////////////////////////////////////////////////////////////
 
 export type UUID = string;
+
+export type UserProfileT = {
+  userId: number,
+  username: string,
+  recentMoveListId: UUID,
+};

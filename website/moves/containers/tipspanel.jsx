@@ -58,7 +58,7 @@ export function useNewTip(
   function _createNewTip(): TipT {
     return {
       id: uuidv4(),
-      owner: 1,
+      ownerId: 1,  // TODO
       moveId: moveId,
       text: '',
       voteCount: 0,

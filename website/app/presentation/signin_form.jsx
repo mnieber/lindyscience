@@ -20,7 +20,7 @@ export function SignInForm({
           <FormField
             classNames="signInForm__email w-64"
             formProps={props}
-            fieldName='username'
+            fieldName='email'
             type='email'
             placeholder="Email"
           />
@@ -45,6 +45,9 @@ export function SignInForm({
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
+      email: '',
+      password: '',
+      ...values
     }),
     validationSchema: yup.object().shape({
       text: yup.string()

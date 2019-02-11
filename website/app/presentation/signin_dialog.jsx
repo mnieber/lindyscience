@@ -13,8 +13,8 @@ export function SignInDialog({
 }) {
   const isModal = useFlag(true);
   function _submitValues(values) {
-    const {username, password} = values;
-    signIn(username, password);
+    const {email, password} = values;
+    signIn(email, password);
   }
 
   return (

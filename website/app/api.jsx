@@ -10,10 +10,9 @@ import type { UUID } from 'app/types';
 
 // Api app
 
-export function loadUserProfile(cachedData: any) {
-  const response = cachedData
-    ? Promise.resolve(deepCopy(cachedData))
-    : doQuery(
+// TODO: return a UserProfileT
+export function loadUserProfile() {
+  const response = doQuery(
     `query queryUserProfile {
       userProfile {
         owner {
@@ -45,12 +44,12 @@ export function loadUserProfile(cachedData: any) {
     });
 }
 
-export async function signIn(username: string, password: string) {
-  const rawResponse = await post('/auth/token/login', {username, password});
+export async function signIn(email: string, password: string) {
+  const rawResponse = await post('/auth/token/login', {email: email, password});
   const response = toCamelCase(rawResponse);
   if (response.authToken) {
     setToken(response.authToken);
     return await loadUserProfile();
   }
-  return {};
+  return null;
 }

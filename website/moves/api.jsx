@@ -138,9 +138,14 @@ export function loadMoveLists() {
         name
         slug
         tags
+        owner {
+          username
+        }
       }
     }`
-  ).then(result => normalize(result.allMoveLists, [moveList]))
+  )
+  .then(result => flatten(result, ['/allMoveLists/*/owner',]))
+  .then(result => normalize(result.allMoveLists, [moveList]))
 }
 
 export function loadMoveList(moveListId: UUID) {
@@ -151,6 +156,9 @@ export function loadMoveList(moveListId: UUID) {
         name
         slug
         tags
+        owner {
+          username
+        }
         moves {
           id
           name
@@ -187,6 +195,7 @@ export function loadMoveList(moveListId: UUID) {
   .then(result => flatten(
     result,
     [
+      '/moveList/owner',
       '/moveList/moves/*/videoLinks/*/move',
       '/moveList/moves/*/videoLinks/*/owner',
       '/moveList/moves/*/tips/*/move',

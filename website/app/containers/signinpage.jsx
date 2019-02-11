@@ -17,20 +17,22 @@ function createHandlers(
 ) {
 }
 
-function SignInPage({
-  actSetUserProfile,
-}: {
+type SignInPagePropsT = {
   actSetUserProfile: Function
-}) {
+};
+
+function SignInPage(props: SignInPagePropsT) {
   // const {} = getSignInPageBehaviours();
   // const {} = createHandlers();
 
   async function _signIn(username, password) {
     const profile = await api.signIn(username, password);
-    actSetUserProfile(profile);
-    const next = urlParam('next')
-    if (next) {
-      browserHistory.push(next);
+    if (profile) {
+      props.actSetUserProfile(profile);
+      const next = urlParam('next')
+      if (next) {
+        browserHistory.push(next);
+      }
     }
   }
 

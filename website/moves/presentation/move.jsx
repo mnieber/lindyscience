@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router';
 import { MoveForm } from 'moves/presentation/move_form';
 import type { FlagT } from 'utils/hooks'
-import type { MoveT, TagT } from 'moves/types'
+import type { MoveT, MoveListT, TagT } from 'moves/types'
 import VideoLinksPanel from 'moves/containers/videolinkspanel'
 import TipsPanel from 'moves/containers/tipspanel'
 import { difficulties } from 'utils/form_utils'
@@ -40,38 +40,39 @@ function Tags({
 
 // Move
 
-export function StaticMove({
-  move,
-  moveTags,
-  buttons=[],
-  className="",
-}: {
+type StaticMovePropsT = {
   move: MoveT,
+  moveList: MoveListT,
   moveTags: Array<TagT>,
   buttons?: Array<React.Node>,
   className?: string,
-}) {
+};
+
+export function StaticMove(props: StaticMovePropsT) {
   const nameDiv =
-    <div className= {"move__name flexrow flex-wrap"}>
-      <h1>{move.name}</h1>
-      {buttons}
+    <div className="flex flex-row">
+      <Link className="" href="."><h1>{props.moveList.name}</h1></Link>
+      <div className={"move__name flexrow flex-wrap"}>
+        <h1>: {props.move.name}</h1>
+        {props.buttons}
+      </div>;
     </div>;
 
   const difficultyDiv =
     <div className={"move__difficulty panel"}>
       <h2>Difficulty</h2>
-      {difficulties[move.difficulty]}
+      {difficulties[props.move.difficulty]}
     </div>;
 
-  const tagsDiv = move.tags.length
-    ? <Tags tags={move.tags}/>
+  const tagsDiv = props.move.tags.length
+    ? <Tags tags={props.move.tags}/>
     : undefined;
 
   const descriptionDiv =
     <div className={"move__description panel"}>
       <h2>Description</h2>
       <div
-        dangerouslySetInnerHTML={{__html: move.description}}
+        dangerouslySetInnerHTML={{__html: props.move.description}}
       />
     </div>;
 
@@ -80,11 +81,11 @@ export function StaticMove({
     <h2>Private notes</h2>
     </div>;
 
-  const videoLinksPanel = <VideoLinksPanel moveId={move.id}/>;
-  const tipsPanel = <TipsPanel moveId={move.id}/>;
+  const videoLinksPanel = <VideoLinksPanel moveId={props.move.id}/>;
+  const tipsPanel = <TipsPanel moveId={props.move.id}/>;
 
   return (
-    <div className={classnames("move", className)}>
+    <div className={classnames("move", props.className || "")}>
       {nameDiv}
       {difficultyDiv}
       {tagsDiv}
@@ -98,18 +99,9 @@ export function StaticMove({
 
 // EditableMove
 
-export function EditableMove({
-  move,
-  moveTags,
-  saveMove,
-  cancelEditMove,
-  isEditing,
-  setEditingEnabled,
-  buttons=[],
-  className="",
-  autoFocus=true,
-}: {|
+type EditableMovePropsT = {|
   move: MoveT,
+  moveList: MoveListT,
   moveTags: Array<TagT>,
   saveMove: Function,
   cancelEditMove: Function,
@@ -118,16 +110,18 @@ export function EditableMove({
   buttons?: Array<React.Node>,
   className?: string,
   autoFocus?: boolean,
-|}) {
-  if (isEditing) {
+|};
+
+export function EditableMove(props: EditableMovePropsT) {
+  if (props.isEditing) {
     return (
       <div>
         <MoveForm
-          autoFocus={autoFocus}
-          move={move}
-          onSubmit={saveMove}
-          onCancel={cancelEditMove}
-          knownTags={moveTags}
+          autoFocus={props.autoFocus}
+          move={props.move}
+          onSubmit={props.saveMove}
+          onCancel={props.cancelEditMove}
+          knownTags={props.moveTags}
         />
       </div>
     );
@@ -136,7 +130,7 @@ export function EditableMove({
     const editMoveBtn =
       <div
         className={"move__editBtn button button--wide ml-2"}
-        onClick={setEditingEnabled}
+        onClick={props.setEditingEnabled}
         key={1}
       >
       Edit move
@@ -144,10 +138,11 @@ export function EditableMove({
 
     return (
       <StaticMove
-        move={move}
-        moveTags={moveTags}
+        move={props.move}
+        moveList={props.moveList}
+        moveTags={props.moveTags}
         buttons={[editMoveBtn]}
-        className={className}
+        className={props.className}
       />
     );
   }

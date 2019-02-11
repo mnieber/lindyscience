@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'app.apps.MainAppConfig',
     'moves.apps.MovesConfig',
     'votes.apps.VotesConfig',
+    'accounts.apps.AccountsConfig',
     'tagulous',
     'django_extensions',
     'webpack_loader',
@@ -116,6 +117,8 @@ DATABASES = {
         'NAME': os.path.join(SRV_DIR, 'media/db.sqlite3')
     }
 }
+
+AUTH_USER_MODEL = 'accounts.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -215,3 +218,21 @@ LOGGING = {
 DUMP_DB_SERVERNAME = file_contents(os.path.join(SRV_DIR, 'servername.txt'))
 DUMP_DB_GIT_SHA = file_contents(os.path.join(SRV_DIR, 'deployed_version.txt'))
 DUMP_DB_DIR = os.path.join(SRV_DIR, 'dumps')
+
+DJOSER = {
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'EMAIL': {
+        'activation': 'accounts.email.ActivationEmail',
+        'password_reset': 'accounts.email.PasswordResetEmail',
+        'confirmation': 'accounts.email.ConfirmationEmail',
+    },
+    'PASSWORD_RESET_CONFIRM_URL': 'login/password-reset/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE': False,
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.UserCreateSerializer',
+    }
+}
+
+DOMAIN = 'www.lindyscience.org'

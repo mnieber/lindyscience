@@ -24,8 +24,7 @@ maybe_csrf_exempt = csrf_exempt if settings.DEBUG else lambda x: x
 
 urlpatterns += i18n_patterns(
     url(r'^admin/', include(admin.site.urls)),  # NOQA
-    url(r'^auth/', include('djoser.urls')),
-    url(r'^auth/', include('djoser.urls.authtoken')),
+    url(r'^auth/', include('accounts.urls')),
     url(r'^app/', AppView.as_view()),
     url(r'^graphql', maybe_csrf_exempt(GraphQLView.as_view(graphiql=True))),
 )

@@ -11,7 +11,7 @@ class AccountTest(APITestCase):
     server_url = 'https://' + settings.DOMAIN + '/'
     url_regex = 'https://(?:[a-zA-Z0-9\-\.\/])+'
 
-    def test_create_user_account_basic(self):
+    def test_create_and_activate_user(self):
         """
         Ensure we can create a new user account, activate it and log in/out as that user
         """
@@ -48,13 +48,14 @@ class AccountTest(APITestCase):
             'uid': uid,
             'token': token
         })
-
-        # Ensure the activation went through
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
         # Ensure the user is not automatically logged in
         response = self.client.get('/auth/users/me/', {})
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_log_in_new_user(self):
+        create_logged_in_user(self.client)
 
         # Log in the newly created user with wrong password
         response = self.client.post('/auth/token/login/', {
@@ -121,11 +122,10 @@ class AccountTest(APITestCase):
         ) == 'required_to_accept_terms'
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_create_user_account_empty_field(self):
+    def test_register_with_empty_fields(self):
         """
         Ensure that a user with an empty email/password can't be created
         """
-
         # Try creating a user with an empty email
         response = self.client.post('/auth/users/create/', {
             'email': '',
@@ -144,27 +144,6 @@ class AccountTest(APITestCase):
         })
         assert response.data['password'][0].lower(
         ) == 'this field may not be blank.'
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-
-    def test_create_duplicate_nonactivated_user_account(self):
-        """
-        Ensure that a user tries to sign up with an already registered email
-        _without having activated it the first time_, he or she will get an error
-        """
-
-        # Register user using the API
-        data = {
-            'email': test_email,
-            'password': test_password,
-            'accepts_terms': 'true'
-        }
-        response = self.client.post('/auth/users/create/', data)
-        assert response.status_code == status.HTTP_201_CREATED
-
-        # Try to register a user with the same credentials using the API
-        response = self.client.post('/auth/users/create/', data)
-        assert response.data['email'][0].lower(
-        ) == 'user with this email already exists.'
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_password_reset(self):

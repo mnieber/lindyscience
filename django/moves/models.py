@@ -49,8 +49,8 @@ class Move(Entity):
 
 
 class MoveList2Move(models.Model):
-    move = models.ForeignKey(Move)
-    move_list = models.ForeignKey('MoveList')
+    move = models.ForeignKey(Move, on_delete=models.CASCADE)
+    move_list = models.ForeignKey('MoveList', on_delete=models.CASCADE)
     order = models.FloatField()
 
     class Meta:

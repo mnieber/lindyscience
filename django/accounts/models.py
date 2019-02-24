@@ -30,6 +30,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     email = models.EmailField(max_length=255, unique=True)
+    username = models.CharField(max_length=255, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField('active', default=True)
     date_joined = models.DateTimeField('date joined', auto_now_add=True)
@@ -38,8 +39,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class ProfileToMoveList(models.Model):
-    profile = models.ForeignKey('Profile')
-    move_list = models.ForeignKey('moves.MoveList')
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    move_list = models.ForeignKey('moves.MoveList', on_delete=models.CASCADE)
     order = models.FloatField()
 
     class Meta:
@@ -47,7 +48,13 @@ class ProfileToMoveList(models.Model):
 
 
 class Profile(Entity):
-    recent_move_list = models.ForeignKey('moves.MoveList', related_name='+')
+    recent_move_list = models.ForeignKey(
+        'moves.MoveList',
+        related_name='+',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     move_lists = models.ManyToManyField(
         'moves.MoveList', through=ProfileToMoveList)
 

@@ -2,7 +2,7 @@ import re
 from django.core import mail
 from rest_framework.test import APITestCase
 from rest_framework import status
-from accounts.tests.utils import test_email, test_password, create_logged_in_user
+from accounts.tests.utils import test_email, test_password, create_user, create_logged_in_user
 from django.conf import settings
 
 
@@ -55,7 +55,7 @@ class AccountTest(APITestCase):
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_log_in_new_user(self):
-        create_logged_in_user(self.client)
+        create_user(self.client)
 
         # Log in the newly created user with wrong password
         response = self.client.post('/auth/token/login/', {

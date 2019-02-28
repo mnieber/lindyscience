@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import {
   ValuePicker, strToPickerValue
 } from 'utils/form_utils'
-import { browseToMoveList } from 'moves/containers/movespage'
+import { browseToMove } from 'moves/containers/move_list_frame'
 
 
 // MoveListPicker
@@ -24,7 +24,10 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
       x => x.id == pickedItem.value
     );
     if (moveList) {
-      browseToMoveList(moveList.ownerUsername, moveList.slug);
+      browseToMove([
+        moveList.ownerUsername,
+        moveList.slug,
+      ]);
     }
   }
 
@@ -58,11 +61,15 @@ type MoveListFilterPropsT = {|
   moveTags: Array<TagT>,
   setMoveListFilter: Function,
   className?: string,
+  moveListUrl: string,
 |};
 
 export function MoveListFilter(props: MoveListFilterPropsT) {
   function _onChange(pickedTags) {
-    props.setMoveListFilter(pickedTags.map(x => x.value), true);
+    const slugid = props.setMoveListFilter(pickedTags.map(x => x.value), true);
+    if (slugid) {
+      browseToMove([props.moveListUrl, slugid])
+    }
   }
 
   return (

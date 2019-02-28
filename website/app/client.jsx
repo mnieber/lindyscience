@@ -4,11 +4,12 @@ import Cookies from 'js-cookie'
 import { request, GraphQLClient } from 'graphql-request'
 
 
-function _createClient(authToken: ?string) {
-  const tokenHeader = authToken
+function _createClient() {
+  const authToken = Cookies.get('authToken')
+  const authHeader = authToken
     ? {
-      'Authorization': 'Token ' + authToken
-    }
+        "Authorization": "Token " + authToken,
+      }
     : {};
 
   return new GraphQLClient(
@@ -16,8 +17,8 @@ function _createClient(authToken: ?string) {
     {
       credentials: 'include',
       headers: {
-        ...tokenHeader,
-        "X-CSRFToken": Cookies.get('csrftoken')
+        ...authHeader,
+        "X-CSRFToken": Cookies.get('csrftoken'),
       }
     }
   );
@@ -26,7 +27,10 @@ function _createClient(authToken: ?string) {
 let _client = _createClient();
 
 export const client = () => _client;
-export const setToken = (token: string) => {_client = _createClient(token)};
+export const setToken = (authToken: string) => {
+  Cookies.set('authToken', authToken);
+  _client = _createClient()
+};
 
 export function doQuery(query: string, variables: any) {
   return client().request(query, variables);

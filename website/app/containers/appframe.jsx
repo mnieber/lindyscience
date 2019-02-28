@@ -2,12 +2,10 @@
 
 import jquery from 'jquery';
 import React from 'react'
-import { useEffect, useState } from 'react';
 import { connect } from 'react-redux'
 import { querySetListToDict, createToastr } from 'utils/utils'
 import { AccountMenu } from 'app/presentation/accountmenu';
-import { browserHistory } from 'react-router'
-import { browseToMoveList } from 'moves/containers/movespage'
+import { navigate } from "@reach/router"
 
 import * as movesActions from 'moves/actions'
 import * as appActions from 'app/actions'
@@ -24,71 +22,71 @@ type AppFramePropsT = {
   moveLists: Array<MoveListT>,
   selectedMoveListId: UUID,
   userProfile: ?UserProfileT,
+  signedInUsername: string,
+  actSetSignedInUsername: Function,
+  actSetUserProfile: Function,
   actSetVotes: Function,
   actAddMoveLists: Function,
   actAddVideoLinks: Function,
   actAddTips: Function,
   actAddMovePrivateDatas: Function,
-  actSetUserProfile: Function,
   children: any,
-  params: any,
 };
 
 function AppFrame(props: AppFramePropsT) {
-  const [hasLoadedMoveLists, setHasLoadedMoveLists] = useState(false);
-  const [loadedUsername, setLoadedUsername] = useState("");
+  const [hasLoadedMoveLists, setHasLoadedMoveLists] = React.useState(null);
+  const [loadedUsername, setLoadedUsername] = React.useState("");
+  const [loadedMoveListId, setLoadedMoveListId] = React.useState("");
 
-  async function _loadMoveLists() {
-    if (!hasLoadedMoveLists) {
-      const moveLists = await movesApi.loadMoveLists();
+  async function _loadMoveListsAndUsername() {
+    if (hasLoadedMoveLists === null) {
+      setHasLoadedMoveLists(false);
+
+      const [username, moveLists] = await Promise.all([
+        appApi.getUsername(),
+        movesApi.loadMoveLists(),
+      ]);
+      if (username) {
+        props.actSetSignedInUsername(username);
+      }
       props.actAddMoveLists(moveLists.entities.moveLists || {}, {});
       setHasLoadedMoveLists(true);
-      props.actSelectMoveListByUserNameAndSlug(
-        props.params.ownerUsername, props.params.moveListSlug
-      );
     }
   }
 
-  const loggedInUsername = props.userProfile ? props.userProfile.username : "";
-
   async function _loadUserProfile() {
-    if (hasLoadedMoveLists && loadedUsername != loggedInUsername) {
-      const [profile, votes] = await Promise.all([
+    if (hasLoadedMoveLists && loadedUsername != props.signedInUsername) {
+      const [profile, votes, movePrivateDatas] = await Promise.all([
         appApi.loadUserProfile(),
-        movesApi.loadUserVotes()
+        appApi.loadUserVotes(),
+        movesApi.loadMovePrivateDatas()
       ]);
       props.actSetUserProfile(profile);
       props.actSetVotes(votes);
-      const recentMoveList = props.moveLists.find(x => x.id == profile.recentMoveListId);
-      if (recentMoveList) {
-        browseToMoveList(recentMoveList.ownerUsername, recentMoveList.slug);
-        props.actSelectMoveListByUserNameAndSlug(
-          recentMoveList.ownerUsername, recentMoveList.slug
-        );
-      }
+      props.actAddMovePrivateDatas(movePrivateDatas.entities.movePrivateDatas || {});
 
-      setLoadedUsername(profile.username);
+      setLoadedUsername(props.signedInUsername);
     }
   }
 
   async function _loadSelectedMoveList() {
-    if (props.selectedMoveListId) {
+    if (hasLoadedMoveLists && loadedMoveListId != props.selectedMoveListId) {
       const [moveList] = await Promise.all([
         movesApi.loadMoveList(props.selectedMoveListId)
       ]);
       props.actAddMoveLists(moveList.entities.moveLists, moveList.entities.moves || {});
       props.actAddVideoLinks(moveList.entities.videoLinks || {});
       props.actAddTips(moveList.entities.tips || {});
-      props.actAddMovePrivateDatas(moveList.entities.movePrivateDatas || {});
+      setLoadedMoveListId(props.selectedMoveListId);
     }
   }
 
-  useEffect(() => {_loadMoveLists()});
-  useEffect(() => {_loadUserProfile()}, [hasLoadedMoveLists, loggedInUsername]);
-  useEffect(() => {_loadSelectedMoveList()}, [props.selectedMoveListId]);
+  React.useEffect(() => {_loadMoveListsAndUsername()});
+  React.useEffect(() => {_loadUserProfile()}, [hasLoadedMoveLists, props.signedInUsername]);
+  React.useEffect(() => {_loadSelectedMoveList()}, [hasLoadedMoveLists, props.selectedMoveListId]);
 
   function signIn() {
-    browserHistory.push("/app/sign-in/");
+    navigate("/app/sign-in/");
   }
 
   return (
@@ -111,15 +109,15 @@ function AppFrame(props: AppFramePropsT) {
 
 function mergeProps(state: any, actions: any,
   {
-    params
+    children
   }: {
-    params: any
+    children: any,
   }
 ) {
   return {
     ...state,
     ...actions,
-    params: params,
+    children,
   }
 }
 
@@ -128,13 +126,14 @@ AppFrame = connect(
   (state) => ({
     moveLists: fromMovesStore.getMoveLists(state.moves),
     userProfile: fromAppStore.getUserProfile(state.app),
+    signedInUsername: fromAppStore.getSignedInUsername(state.app),
     selectedMoveListId: fromMovesStore.getSelectedMoveListId(state.moves),
   }),
   {
     ...movesActions,
     ...appActions,
   },
-  mergeProps
+  // mergeProps
 )(AppFrame)
 
 export default AppFrame;

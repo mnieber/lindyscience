@@ -2,17 +2,18 @@
 
 import * as actions from 'moves/actions'
 import * as api from 'moves/api'
+import * as appApi from 'app/api'
 import * as fromStore from 'moves/reducers'
+import * as fromAppStore from 'app/reducers'
 import * as React from 'react'
-import type { UUID } from 'app/types';
-import type { VoteT, VoteByIdT, MoveT, VideoLinkT } from 'moves/types'
+import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
+import type { MoveT, VideoLinkT } from 'moves/types'
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
 import { createErrorHandler } from 'utils/utils'
 import { querySetListToDict, slugify, isNone } from 'utils/utils'
 import { useFlag } from 'utils/hooks'
-import { useState } from 'react';
 import { VideoLinkList } from 'moves/presentation/videolink';
 
 // Behaviours
@@ -50,6 +51,7 @@ type NewVideoLinkBvrT = {
 };
 
 export function useNewVideoLink(
+  userId: number,
   insertVideoLinkBvr: InsertVideoLinkBvrT,
   moveId: UUID,
 ) {
@@ -58,7 +60,7 @@ export function useNewVideoLink(
   function _createNewVideoLink(): VideoLinkT {
     return {
       id: uuidv4(),
-      ownerId: 1,  // TODO
+      ownerId: userId,
       title: '',
       moveId: moveId,
       url: '',
@@ -135,41 +137,39 @@ export function useVoteVideoLink(
 ): VoteVideoLinkBvrT {
   const vote = (id: UUID, vote: VoteT) => {
     actCastVote(id, vote);
-    api.voteVideoLink(id, vote)
+    appApi.voteVideoLink(id, vote)
     .catch(createErrorHandler('We could not save your vote'));
   }
 
   return {vote};
 }
 
-
-function VideoLinksPanel({
-  moveId,
-  videoLinks,
-  voteByObjectId,
-  actAddVideoLinks,
-  actCastVote,
-}: {
+type VideoLinksPanelPropsT = {
   moveId: UUID,
+  userProfile: UserProfileT,
   videoLinks: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
   actAddVideoLinks: Function,
   actCastVote: Function,
-}) {
-  const insertVideoLinkBvr = useInsertVideoLink(videoLinks);
+};
+
+export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
+  const insertVideoLinkBvr = useInsertVideoLink(props.videoLinks);
+
   const newVideoLinkBvr = useNewVideoLink(
+    props.userProfile.userId,
     insertVideoLinkBvr,
-    moveId,
+    props.moveId,
   );
   const saveVideoLinkBvr = useSaveVideoLink(
     newVideoLinkBvr,
-    moveId,
+    props.moveId,
     insertVideoLinkBvr.preview,
-    actAddVideoLinks,
+    props.actAddVideoLinks,
     createErrorHandler
   );
   const voteVideoLinkBvr = useVoteVideoLink(
-    actCastVote
+    props.actCastVote
   );
 
   const addVideoLinkBtn = (
@@ -192,36 +192,8 @@ function VideoLinksPanel({
         setVote={voteVideoLinkBvr.vote}
         saveVideoLink={saveVideoLinkBvr.save}
         cancelEditVideoLink={saveVideoLinkBvr.discardChanges}
-        voteByObjectId={voteByObjectId}
+        voteByObjectId={props.voteByObjectId}
       />
     </div>
   );
 };
-
-
-function mergeProps(state: any, actions: any,
-  {
-    moveId
-  }: {
-    moveId: UUID
-  }
-) {
-  return {
-    ...state,
-    ...actions,
-    moveId: moveId,
-    videoLinks: state.videoLinksByMoveId[moveId],
-  }
-}
-
-VideoLinksPanel = connect(
-  (state) => ({
-    videoLinksByMoveId: fromStore.getVideoLinksByMoveId(state.moves),
-    voteByObjectId: fromStore.getVoteByObjectId(state.moves),
-  }),
-  actions,
-  mergeProps
-)(VideoLinksPanel)
-
-
-export default VideoLinksPanel;

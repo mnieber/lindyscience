@@ -85,7 +85,7 @@ class SaveMoveListOrdering(graphene.Mutation):
         def try_it():
             with transaction.atomic():
                 for move_id in move_ids:
-                    models.MoveList2Move.objects.get_or_create(
+                    models.MoveList2Move.objects.update_or_create(
                         move_id=move_id,
                         move_list_id=move_list_id,
                         defaults={'order': move_ids.index(str(move_id))})

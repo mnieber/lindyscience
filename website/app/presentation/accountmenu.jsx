@@ -2,7 +2,6 @@
 
 import React from 'react'
 import classnames from 'classnames';
-import { useState } from 'react';
 import type { UserProfileT } from 'app/types';
 
 
@@ -13,7 +12,7 @@ type AccountMenuPropsT = {
 };
 
 export function AccountMenu(props: AccountMenuPropsT) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = React.useState(false);
 
   function toggle() {
     setExpanded(!expanded);

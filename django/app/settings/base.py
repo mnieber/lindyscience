@@ -232,6 +232,7 @@ DJOSER = {
     'SEND_CONFIRMATION_EMAIL': True,
     'SERIALIZERS': {
         'user_create': 'accounts.serializers.UserCreateSerializer',
+        'current_user': 'accounts.serializers.CurrentUserSerializer',
     }
 }
 

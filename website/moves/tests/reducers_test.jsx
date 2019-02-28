@@ -6,25 +6,15 @@ import * as data from 'moves/tests/data'
 import * as reducers from 'moves/reducers'
 import * as actions from 'moves/actions'
 
-test('select move list by id', function (t) {
+test('select highlighted move', function (t) {
   let s = reducers.selectionReducer(undefined, {});
-  t.equal(s.moveListId, "");
+  t.equal(s.highlightedMoveSlugid, "");
 
   s = reducers.selectionReducer(s, {
-    type: 'SELECT_MOVE_LIST',
-    moveListId: "123",
+    type: 'SET_HIGHLIGHTED_MOVE_SLUGID',
+    moveSlugid: 'abc/efg',
   });
-  t.equal(s.moveListId, "123");
-
-  t.end();
-});
-
-test('select highlighted move by id', function (t) {
-  let s = reducers.selectionReducer(undefined, {});
-  t.equal(s.highlightedMoveId, "");
-
-  s = reducers.selectionReducer(s, actions.actSetHighlightedMoveId("123"));
-  t.equal(s.highlightedMoveId, "123");
+  t.equal(s.highlightedMoveSlugid, 'abc/efg');
 
   t.end();
 });
@@ -70,33 +60,6 @@ test('add move lists', function (t) {
     "basket whip":true,
     fun:true
   });
-
-  t.end();
-});
-
-test('set votes', function (t) {
-  let sVotes = reducers.votesReducer(undefined, {});
-  t.deepEqual(sVotes, {});
-
-  sVotes = reducers.votesReducer(sVotes, actions.actSetVotes(data.votes));
-  t.deepEqual(sVotes, data.votes);
-
-  t.end();
-});
-
-test('cast vote', function (t) {
-  const id = "759b488d-ffa4-467c-8157-6ca27114bda9";
-
-  let sVotes = reducers.votesReducer(undefined, actions.actSetVotes(data.votes));
-  t.equal(sVotes[id], -1);
-
-  sVotes = reducers.votesReducer(sVotes, {
-    type: 'CAST_VOTE',
-    id: id,
-    vote: 1,
-    prevVote: -1,
-  });
-  t.equal(sVotes[id], 1);
 
   t.end();
 });

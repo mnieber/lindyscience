@@ -1,50 +1,47 @@
 // @flow
 
 import * as React from 'react'
-import { VoteCount } from 'moves/presentation/vote_count'
+import { VoteCount } from 'app/presentation/vote_count'
 import { VideoLinkForm } from 'moves/presentation/video_link_form'
 import { useFlag } from 'utils/hooks'
-import type { VideoLinkT, VoteT, VoteByIdT } from 'moves/types'
+import type { VoteByIdT, VoteT } from 'app/types'
+import type { VideoLinkT } from 'moves/types'
 
 
 // VideoLinkeoLink
 
-export function VideoLink({
-  item,
-  vote,
-  setVote,
-  saveVideoLink,
-  cancelEditVideoLink,
-} : {
+type VideoLinkPropsT = {
   item: VideoLinkT,
   vote: VoteT,
   setVote: Function,
   saveVideoLink: Function,
   cancelEditVideoLink: Function,
-}) {
+};
+
+export function VideoLink(props: VideoLinkPropsT) {
   const {
     flag: isEditing,
     setTrue: setEditingEnabled,
     setFalse: setEditingDisabled
-  } = useFlag(item.url == '');
+  } = useFlag(props.item.url == '');
 
   if (isEditing) {
     function _onSubmit(values) {
-      saveVideoLink(item.id, values);
+      props.saveVideoLink(props.item.id, values);
       setEditingDisabled();
     }
 
     function _onCancel(e) {
       e.preventDefault();
-      cancelEditVideoLink(item.id);
+      props.cancelEditVideoLink(props.item.id);
       setEditingDisabled();
     }
 
     const form = (
       <VideoLinkForm
         values={{
-          url: item.url,
-          title: item.title,
+          url: props.item.url,
+          title: props.item.title,
         }}
         onSubmit={_onSubmit}
         onCancel={_onCancel}
@@ -59,13 +56,13 @@ export function VideoLink({
   }
   else {
     function _setVote(value) {
-      setVote(item.id, value);
+      props.setVote(props.item.id, value);
     }
 
     const voteCount = (
       <VoteCount
-        vote={vote}
-        count={item.voteCount}
+        vote={props.vote}
+        count={props.item.voteCount}
         setVote={_setVote}
       />
     )
@@ -73,10 +70,10 @@ export function VideoLink({
     const link = (
       <a
         className='videoLink__url'
-        href={item.url}
+        href={props.item.url}
         target='blank'
       >
-        {item.title || item.url}
+        {props.item.title || props.item.url}
       </a>
     );
 
@@ -100,29 +97,24 @@ export function VideoLink({
 }
 
 // VideoLinkList
-
-export function VideoLinkList({
-  items,
-  voteByObjectId,
-  setVote,
-  saveVideoLink,
-  cancelEditVideoLink,
-} : {
+type VideoLinkListPropsT = {
   items: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
   setVote: Function,
   saveVideoLink: Function,
   cancelEditVideoLink: Function,
-}) {
-  const itemNodes = items.map<React.Node>((item, idx) => {
+};
+
+export function VideoLinkList(props: VideoLinkListPropsT) {
+  const itemNodes = props.items.map<React.Node>((item, idx) => {
     return (
       <VideoLink
         key={item.id}
         item={item}
-        vote={voteByObjectId[item.id]}
-        setVote={setVote}
-        saveVideoLink={saveVideoLink}
-        cancelEditVideoLink={cancelEditVideoLink}
+        vote={props.voteByObjectId[item.id] || 0}
+        setVote={props.setVote}
+        saveVideoLink={props.saveVideoLink}
+        cancelEditVideoLink={props.cancelEditVideoLink}
       />
     );
   })

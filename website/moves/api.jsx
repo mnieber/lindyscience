@@ -3,7 +3,7 @@
 import { flatten } from 'utils/utils'
 import { normalize, schema } from 'normalizr';
 import { client, doQuery } from 'app/client';
-import type { VoteT, TipT, VideoLinkT, MoveT } from 'moves/types'
+import type { TipT, VideoLinkT, MoveT } from 'moves/types'
 import type { UUID } from 'app/types';
 
 
@@ -120,11 +120,10 @@ export function saveMoveListOrdering(moveListId: UUID, moveIds: Array<number>) {
 
 const videoLink = new schema.Entity('videoLinks');
 const tip = new schema.Entity('tips');
-const privateData = new schema.Entity('privateDatas');
+const movePrivateData = new schema.Entity('movePrivateDatas');
 const move = new schema.Entity('moves', {
   videoLinks: [videoLink],
   tips: [tip],
-  privateDatas: [privateData],
 });
 const moveList = new schema.Entity('moveLists', {
   moves: [move]
@@ -166,10 +165,6 @@ export function loadMoveList(moveListId: UUID) {
           description
           difficulty
           tags
-          privateDatas {
-            id
-            notes
-          }
           videoLinks {
             id
             url
@@ -206,53 +201,32 @@ export function loadMoveList(moveListId: UUID) {
 }
 
 
-export function loadUserVotes() {
+export function loadMovePrivateDatas() {
   return doQuery(
-    `query queryUserVotes {
-      userVotes {
-        objectId
-        value
+    `query queryMovePrivateDatas {
+      movePrivateDatas {
+        id
+        notes
       }
     }`
   )
-  .then(result => result.userVotes.reduce(
-    (acc, vote) => {
-      acc[vote.objectId] = vote.value;
-      return acc;
-    },
-    {}
-  ))
+  .then(result => normalize(result.movePrivateDatas, [movePrivateData]))
 }
 
 
-function _castVote(
-  appLabel: string,
-  model: string,
-  objectId: UUID,
-  value: VoteT,
+export function updateProfile(
+  moveUrl: string,
 ) {
   return doQuery(
-    `mutation castVote(
-      $appLabel: String!,
-      $model: String!,
-      $objectId: String!,
-      $value: Int!
+    `mutation updateProfile(
+      $moveUrl: String!,
     ) {
-      castVote(
-        appLabel: $appLabel,
-        model: $model,
-        objectId: $objectId,
-        value: $value
+      updateProfile(
+        recentMoveUrl: $moveUrl,
       ) {
         ok
-        vote {
-          value
-        }
       }
     }`,
-    {appLabel, model, objectId, value}
+    {moveUrl}
   )
 }
-
-export const voteTip = (objectId: UUID, value: VoteT) => _castVote('moves', 'Tip', objectId, value);
-export const voteVideoLink = (objectId: UUID, value: VoteT) => _castVote('moves', 'VideoLink', objectId, value);

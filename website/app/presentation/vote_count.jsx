@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import classnames from 'classnames';
-import type { VoteT } from 'moves/types'
+import type { VoteT } from 'app/types'
 
 
 // VoteCount

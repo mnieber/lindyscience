@@ -1,10 +1,10 @@
 // @flow
 
 import * as React from 'react'
-import { useState } from 'react'
 import type { MoveT, VideoLinksByIdT } from 'moves/types'
-import type { UUID } from 'app/types';
+import type { UUID, SlugidT } from 'app/types';
 import classnames from 'classnames';
+import { makeSlugidMatcher, findMoveBySlugid } from 'moves/utils';
 import {handleSelectionKeys, scrollIntoView} from 'utils/utils'
 import {
   Menu, Item, Separator, Submenu, MenuProvider
@@ -22,8 +22,11 @@ type DraggingBvrT = {|
 |};
 
 function useDragging(): DraggingBvrT {
-  const [[draggingOverMoveId: UUID, isBefore: boolean], setDraggingOverMoveId] = useState(["", false]);
-  const [dragSourceMoveId: UUID, setDragSourceMoveId] = useState("");
+  const [
+    [draggingOverMoveId: UUID, isBefore: boolean],
+    setDraggingOverMoveId
+  ] = React.useState(["", false]);
+  const [dragSourceMoveId: UUID, setDragSourceMoveId] = React.useState("");
 
   return {
     draggingOverMoveId,
@@ -42,18 +45,17 @@ type OtherBvrT = {|
 function useOtherBehaviours(
   setHighlightedMoveId: Function,
 ): OtherBvrT {
-  function setHighlightedMoveIdAndScroll(id) {
-    setHighlightedMoveId(id);
-    scrollIntoView(document.getElementById(id));
+  function setHighlightedMoveIdAndScroll(moveId: UUID) {
+    setHighlightedMoveId(moveId);
+    scrollIntoView(document.getElementById(moveId));
   }
 
   async function trashHighlightedMove() {
     try {
-      // TODO: determine neighbour move id, and go there afterwards
+      // determine neighbour move id, and go there afterwards
       // await trashMove(highlightedMoveId);
     }
     catch(e) {
-      // TODO
     }
   }
 
@@ -77,11 +79,14 @@ function createHandlers(
   props: MoveListPropsT,
 ): HandlersT {
   function handleKeyDown(e) {
+    const highlightedMove = findMoveBySlugid(
+      props.moves, props.highlightedMoveSlugid
+    );
     handleSelectionKeys(
       e,
       "moveList",
       props.moves,
-      props.highlightedMoveId,
+      highlightedMove.id,
       otherBvr.setHighlightedMoveIdAndScroll
     );
   }
@@ -115,7 +120,7 @@ function createHandlers(
 type MoveListPropsT = {|
   moves: Array<MoveT>,
   videoLinksByMoveId: VideoLinksByIdT,
-  highlightedMoveId: UUID,
+  highlightedMoveSlugid: SlugidT,
   setHighlightedMoveId: Function,
   // trashMove: Function,
   onDrop: Function,
@@ -127,6 +132,7 @@ function _MoveList(props : MoveListPropsT) {
   const draggingBvr: DraggingBvrT = useDragging();
   const otherBvr: OtherBvrT = useOtherBehaviours(props.setHighlightedMoveId);
   const handlers = createHandlers(draggingBvr, otherBvr, props);
+  const slugidMatcher = makeSlugidMatcher(props.highlightedMoveSlugid);
 
   const moveNodes = props.moves.map((move, idx) => {
     const videoLinks = props.videoLinksByMoveId[move.id];
@@ -134,16 +140,12 @@ function _MoveList(props : MoveListPropsT) {
       ? <a className='ml-2' href={videoLinks[0].url} target='blank'>VIDEO</a>
       : undefined;
 
-    // function _onContextMenu(e) {
-    //   e.preventDefault();
-    // }
-
     return (
       <div
         className = {classnames(
           {
             "moveList__item": true,
-            "moveList__item--highlighted": (move.id == props.highlightedMoveId),
+            "moveList__item--highlighted": slugidMatcher(move),
             "moveList__item--drag_before": (draggingBvr.isBefore && draggingBvr.draggingOverMoveId == move.id),
             "moveList__item--drag_after": (!draggingBvr.isBefore && draggingBvr.draggingOverMoveId == move.id),
           }

@@ -19,6 +19,15 @@ class UserCreateSerializer(djoser.serializers.UserCreateSerializer):
         )
 
 
+class CurrentUserSerializer(serializers.ModelSerializer):
+    class Meta:  # noqa
+        model = User
+        fields = (
+            'email',
+            'username',
+        )
+
+
 # class LogInSerializer(serializers.Serializer):  # noqa
 #     email = serializers.CharField()
 #     password = serializers.CharField()

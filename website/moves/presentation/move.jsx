@@ -2,13 +2,15 @@
 
 import * as React from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
+import { Link } from '@reach/router';
 import { MoveForm } from 'moves/presentation/move_form';
 import type { FlagT } from 'utils/hooks'
-import type { MoveT, MoveListT, TagT } from 'moves/types'
-import VideoLinksPanel from 'moves/containers/videolinkspanel'
-import TipsPanel from 'moves/containers/tipspanel'
+import type { MoveT, MoveListT, TagT, VideoLinkT, TipT } from 'moves/types'
+import type { UserProfileT, VoteByIdT } from 'app/types'
+import { VideoLinksPanel } from 'moves/presentation/videolinks_panel'
+import { TipsPanel } from 'moves/presentation/tips_panel'
 import { difficulties } from 'utils/form_utils'
+import { StaticMove } from 'moves/presentation/static_move'
 
 
 export function MoveHeader() {
@@ -20,87 +22,11 @@ export function MoveHeader() {
 }
 
 
-function Tags({
-  tags
-} : {
-  tags : Array<TagT>
-}) {
-  const items = tags
-    .map((tagName, idx) => {
-      return <div key={idx} className="move__tag">{tagName}</div>;
-    });
-
-  return (
-    <div className = {"move__tags"}>
-      {items}
-    </div>
-  );
-}
-
-
 // Move
 
-type StaticMovePropsT = {
+type MovePropsT = {|
   move: MoveT,
-  moveList: MoveListT,
-  moveTags: Array<TagT>,
-  buttons?: Array<React.Node>,
-  className?: string,
-};
-
-export function StaticMove(props: StaticMovePropsT) {
-  const nameDiv =
-    <div className="flex flex-row">
-      <Link className="" href="."><h1>{props.moveList.name}</h1></Link>
-      <div className={"move__name flexrow flex-wrap"}>
-        <h1>: {props.move.name}</h1>
-        {props.buttons}
-      </div>;
-    </div>;
-
-  const difficultyDiv =
-    <div className={"move__difficulty panel"}>
-      <h2>Difficulty</h2>
-      {difficulties[props.move.difficulty]}
-    </div>;
-
-  const tagsDiv = props.move.tags.length
-    ? <Tags tags={props.move.tags}/>
-    : undefined;
-
-  const descriptionDiv =
-    <div className={"move__description panel"}>
-      <h2>Description</h2>
-      <div
-        dangerouslySetInnerHTML={{__html: props.move.description}}
-      />
-    </div>;
-
-  const privateNotesDiv =
-    <div className={"move__privateNotes panel"}>
-    <h2>Private notes</h2>
-    </div>;
-
-  const videoLinksPanel = <VideoLinksPanel moveId={props.move.id}/>;
-  const tipsPanel = <TipsPanel moveId={props.move.id}/>;
-
-  return (
-    <div className={classnames("move", props.className || "")}>
-      {nameDiv}
-      {difficultyDiv}
-      {tagsDiv}
-      {descriptionDiv}
-      {privateNotesDiv}
-      {tipsPanel}
-      {videoLinksPanel}
-    </div>
-  );
-}
-
-// EditableMove
-
-type EditableMovePropsT = {|
-  move: MoveT,
+  userProfile: UserProfileT,
   moveList: MoveListT,
   moveTags: Array<TagT>,
   saveMove: Function,
@@ -110,9 +36,15 @@ type EditableMovePropsT = {|
   buttons?: Array<React.Node>,
   className?: string,
   autoFocus?: boolean,
+  tips: Array<TipT>,
+  videoLinks: Array<VideoLinkT>,
+  voteByObjectId: VoteByIdT,
+  actAddTips: Function,
+  actAddVideoLinks: Function,
+  actCastVote: Function,
 |};
 
-export function EditableMove(props: EditableMovePropsT) {
+export function Move(props: MovePropsT) {
   if (props.isEditing) {
     return (
       <div>
@@ -136,13 +68,34 @@ export function EditableMove(props: EditableMovePropsT) {
       Edit move
       </div>;
 
+    const videoLinksPanel = <VideoLinksPanel
+      moveId={props.move.id}
+      userProfile={props.userProfile}
+      videoLinks={props.videoLinks}
+      voteByObjectId={props.voteByObjectId}
+      actAddVideoLinks={props.actAddVideoLinks}
+      actCastVote={props.actCastVote}
+    />;
+
+    const tipsPanel = <TipsPanel
+      moveId={props.move.id}
+      userProfile={props.userProfile}
+      tips={props.tips}
+      voteByObjectId={props.voteByObjectId}
+      actAddTips={props.actAddTips}
+      actCastVote={props.actCastVote}
+    />;
+
     return (
       <StaticMove
         move={props.move}
+        userProfile={props.userProfile}
         moveList={props.moveList}
         moveTags={props.moveTags}
         buttons={[editMoveBtn]}
         className={props.className}
+        videoLinksPanel={videoLinksPanel}
+        tipsPanel={tipsPanel}
       />
     );
   }

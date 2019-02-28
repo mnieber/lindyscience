@@ -5,6 +5,8 @@
 ///////////////////////////////////////////////////////////////////////
 
 import type { UUID } from 'app/types';
+import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
+import type { FlagT } from 'utils/hooks'
 
 export type DifficultyT = '' | 'beg' | 'beg/int' | 'int' | 'int/adv' | 'adv';
 
@@ -56,12 +58,6 @@ export type TipT = {|
   voteCount: number,
 |};
 
-export type VoteT = -1 | 0 | 1;
-
-export type VoteByIdT = {
-  [UUID]: VoteT
-};
-
 export type TipByIdT = {
   [UUID]: TipT
 };
@@ -93,3 +89,10 @@ export type TagMapT = {
 };
 
 export type MovePrivateDataByIdT = {[UUID]: {}};
+
+export type MoveCrudBvrsT = {
+  newMoveBvr: NewMoveBvrT,
+  insertMoveBvr: InsertMoveBvrT,
+  saveMoveBvr: SaveMoveBvrT,
+  isEditing: FlagT,
+};

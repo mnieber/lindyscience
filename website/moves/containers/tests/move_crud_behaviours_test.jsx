@@ -6,10 +6,11 @@ import sinon from 'sinon'
 // $FlowFixMe
 import TestRenderer from "react-test-renderer";
 import redtape from 'redtape'
-import { useInsertMove, useNewMove, useSaveMove } from 'moves/containers/movespage'
+import { useInsertMove, useNewMove, useSaveMove } from 'moves/containers/move_crud_behaviours'
 import { getObjectValues } from 'utils/utils'
-import { _createNewMove } from 'moves/containers/movespage'
-import MovesPage from 'moves/containers/movespage'
+import { _createNewMove } from 'moves/containers/move_crud_behaviours'
+// $FlowFixMe
+import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from 'moves/containers/move_crud_behaviours'
 
 const sandbox = {};
 
@@ -65,7 +66,7 @@ function TestComponent({
   sandbox.insertMoveBvr.prepare = sinon.spy(sandbox.insertMoveBvr.prepare);
 
   sandbox.newMoveBvr = useNewMove(
-    data.profile.userId,
+    data.profile1.userId,
     highlightedMoveId,
     setHighlightedMoveId,
     sandbox.insertMoveBvr,
@@ -87,17 +88,14 @@ function TestComponent({
 
 test('test useInsertMove', function (t) {
   const moves = getObjectValues(data.moves);
-  const newMove = _createNewMove(data.profile.userId);
+  const newMove = _createNewMove(data.profile1.userId);
   const expectedNewMoves = [moves[0], moves[1], newMove, moves[2]];
 
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
   var saveMoveListOrdering = sinon.fake.resolves(true);
 
-  MovesPage.__Rewire__('api', {
+  MoveCrudBehavioursRewireAPI.__Rewire__('api', {
     saveMoveListOrdering
-  });
-  MovesPage.__Rewire__('actions', {
-    actInsertMoves
   });
 
   const testComponent = TestRenderer.create(<TestComponent
@@ -148,10 +146,10 @@ test('test useInsertMove', function (t) {
 
 test('test useNewMove', function (t) {
   const moves = getObjectValues(data.moves);
-  const highlightedMoveId = moves[1].id;
+  const highlightedMove = moves[1];
 
-  sandbox.highlightedMoveId = highlightedMoveId;
-  const setHighlightedMoveIdStub = id => sandbox.highlightedMoveId = id;
+  sandbox.highlightedMoveId = highlightedMove.id;
+  const setHighlightedMoveIdStub = moveId => sandbox.highlightedMoveId = moveId;
   const setHighlightedMoveId = sinon.stub().callsFake(
     setHighlightedMoveIdStub
   );
@@ -162,11 +160,8 @@ test('test useNewMove', function (t) {
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
   var saveMoveListOrdering = sinon.fake.resolves(true);
 
-  MovesPage.__Rewire__('api', {
+  MoveCrudBehavioursRewireAPI.__Rewire__('api', {
     saveMoveListOrdering
-  });
-  MovesPage.__Rewire__('actions', {
-    actInsertMoves
   });
 
   const testComponent = TestRenderer.create(<TestComponent
@@ -193,7 +188,7 @@ test('test useNewMove', function (t) {
 
   t.calledOnceWith(
     prepare,
-    [highlightedMoveId, sandbox.newMoveBvr.newMove],
+    [highlightedMove.id, sandbox.newMoveBvr.newMove],
     "After addNewMove(), the preview contains the newMove"
   );
 
@@ -204,7 +199,7 @@ test('test useNewMove', function (t) {
 
   t.calledOnceWith(
     setHighlightedMoveId,
-    [sandbox.newMoveBvr.newMove && sandbox.newMoveBvr.newMove.id],
+    [!!sandbox.newMoveBvr.newMove && sandbox.newMoveBvr.newMove.id],
     "After addNewMove(), the new move should have the highlight"
   );
 
@@ -217,12 +212,14 @@ test('test useNewMove', function (t) {
   );
   t.calledOnceWith(
     setHighlightedMoveId,
-    [highlightedMoveId],
+    [highlightedMove.id],
     "After finalize with cancel, the previous highlight should be restored"
   );
 
   sandbox.newMoveBvr.addNewMove();
-  sandbox.newMoveBvr.setHighlightedMoveId("123");
+  sandbox.newMoveBvr.setHighlightedMoveId(
+    "18561d09-0727-441d-bdd9-d3d8c33ebde3"
+  );
   t.assert(
     !sandbox.newMoveBvr.newMove,
     "Changing the highlight should cancel the new move"
@@ -241,7 +238,7 @@ test('test useNewMove', function (t) {
 });
 
 
-test.only('test useSaveMove', function (t) {
+test('test useSaveMove', function (t) {
   const moves = getObjectValues(data.moves);
 
   const setEditingEnabled = sinon.fake();
@@ -252,13 +249,9 @@ test.only('test useSaveMove', function (t) {
   var saveMoveListOrdering = sinon.fake.resolves(true);
   var saveMove = sinon.fake.resolves(true);
 
-  MovesPage.__Rewire__('api', {
+  MoveCrudBehavioursRewireAPI.__Rewire__('api', {
     saveMoveListOrdering,
     saveMove
-  });
-  MovesPage.__Rewire__('actions', {
-    actInsertMoves,
-    actUpdateMoves,
   });
 
   const testComponent = TestRenderer.create(<TestComponent

@@ -3,7 +3,7 @@
 import { combineReducers } from 'redux'
 import { createSelector } from 'reselect'
 import type { InputSelector } from 'reselect';
-import type { UUID, UserProfileT } from 'app/types';
+import type { UUID, VoteByIdT, UserProfileT } from 'app/types';
 import {
   reduceMapToMap,
   getObjectValues,
@@ -17,6 +17,7 @@ import {
 ///////////////////////////////////////////////////////////////////////
 
 const _stateStatus = (state: ReducerState): StatusState => state.status;
+const _stateVotes = (state: ReducerState): VotesState => state.votes;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -24,20 +25,29 @@ const _stateStatus = (state: ReducerState): StatusState => state.status;
 ///////////////////////////////////////////////////////////////////////
 
 type StatusState = {
+  signedInUsername: string
 };
 
 const statusReducer = function(
   state: StatusState = {
+    signedInUsername: ""
   },
   action
 ): StatusState
 {
   switch (action.type) {
+    case 'SET_SIGNED_IN_USERNAME':
+      return {
+        ...state,
+        signedInUsername: action.username
+      }
     default:
       return state
   }
 }
 
+
+export const getSignedInUsername = (state: ReducerState): string => state.status.signedInUsername;
 
 ///////////////////////////////////////////////////////////////////////
 // Profile
@@ -64,9 +74,46 @@ const userProfileReducer = function(
 export const getUserProfile = (state: ReducerState): UserProfileState => state.userProfile;
 
 
+///////////////////////////////////////////////////////////////////////
+// Votes
+///////////////////////////////////////////////////////////////////////
+
+type VotesState = VoteByIdT;
+
+export function votesReducer(
+  state: VotesState = {},
+  action: any
+): VotesState
+{
+  switch (action.type) {
+    case 'SET_VOTES':
+      return {
+        ...state,
+        ...action.votes
+      };
+    case 'CAST_VOTE':
+      return {
+        ...state,
+        [action.id]: action.vote
+      }
+    default:
+      return state
+  }
+}
+
+export const getVoteByObjectId: Selector<VoteByIdT> = createSelector(
+  [_stateVotes],
+
+  (stateVotes): VoteByIdT => {
+    return stateVotes;
+  }
+);
+
+
 type ReducerState = {
   status: StatusState,
   userProfile: UserProfileState,
+  votes: VotesState,
 };
 
 export type Selector<TResult> = InputSelector<ReducerState, void, TResult>;
@@ -75,4 +122,5 @@ export type Selector<TResult> = InputSelector<ReducerState, void, TResult>;
 export const reducer = combineReducers({
   status: statusReducer,
   userProfile: userProfileReducer,
+  votes: votesReducer,
 });

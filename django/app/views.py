@@ -14,9 +14,7 @@ class AppView(View):
                 owner {
                   username
                 }
-                recentMoveList {
-                  id
-                }
+                recentMoveUrl
                 moveListIds
               }
             }

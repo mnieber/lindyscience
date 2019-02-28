@@ -2,21 +2,22 @@
 
 import React from 'react'
 import * as fromStore from 'moves/reducers'
-import {toTitleCase} from 'utils/utils'
+import { toTitleCase } from 'utils/utils'
+import { findMoveBySlugid, makeSlugid } from 'moves/utils'
 import type {
   MoveByIdT,
   MoveListByIdT,
   MoveT,
+  MoveListT,
   TagT,
   TipT,
   TipByIdT,
   MovePrivateDataByIdT,
-  VoteT,
-  VoteByIdT,
   VideoLinkByIdT,
 } from 'moves/types'
 import type {
   UUID,
+  SlugidT,
 } from 'app/types'
 
 ///////////////////////////////////////////////////////////////////////
@@ -31,13 +32,6 @@ export function actAddMoveLists(
     type: 'ADD_MOVE_LISTS',
     moveLists,
     moves,
-  }
-}
-
-export function actSetVotes(votes: VoteByIdT) {
-  return {
-    type: 'SET_VOTES',
-    votes: votes,
   }
 }
 
@@ -57,19 +51,6 @@ export function actAddVideoLinks(videoLinks: VideoLinkByIdT) {
   }
 }
 
-export function actCastVote(id: UUID, vote: VoteT) {
-  return (dispatch: Function, getState: Function) => {
-    const prevVote = fromStore.getVoteByObjectId(getState().moves)[id] || 0;
-
-    dispatch({
-      type: 'CAST_VOTE',
-      id: id,
-      vote: vote,
-      prevVote: prevVote,
-    });
-  }
-}
-
 export function actAddTips(tips: TipByIdT) {
   return {
     type: 'ADD_TIPS',
@@ -77,50 +58,52 @@ export function actAddTips(tips: TipByIdT) {
   }
 }
 
-export function actSetHighlightedMoveId(moveId: UUID) {
-  return {
-    type: 'SET_HIGHLIGHTED_MOVE_ID',
-    moveId: moveId
+
+function _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, endIndex, step) {
+  for (
+    var moveIdx = highlightedIdx;
+    moveIdx != endIndex;
+    moveIdx += step
+  ) {
+    if (filteredMoveIds.includes(allMoveIds[moveIdx])) {
+      return {result: moveIdx};
+    }
   }
+  return undefined;
 }
 
-export function actSetMoveListFilter(
-  tags: Array<TagT>,
-  restrictHighlightedMove: boolean
-) {
-  return (dispatch: Function, getState: Function) => {
+
+export function actSetMoveListFilter(tags: Array<TagT>) {
+  return (dispatch: Function, getState: Function): SlugidT => {
     dispatch({
       type: 'SET_MOVE_LIST_FILTER',
       tags: tags,
     });
 
-    if (restrictHighlightedMove) {
-      const state = getState();
-      const allMoveIds = fromStore.getMovesInList(state.moves).map(x => x.id);
-      const filteredMoveIds = fromStore.getFilteredMovesInList(state.moves).map(x => x.id);
-      const highlightedIdx = allMoveIds.indexOf(fromStore.getHighlightedMoveId(state.moves));
+    const state = getState();
+    const allMoves = fromStore.getMovesInList(state.moves);
+    const highlightedMove = findMoveBySlugid(
+      allMoves,
+      fromStore.getHighlightedMoveSlugid(state.moves)
+    );
 
-      function findNeighbourIdx(endIndex, step) {
-        for (
-          var moveIdx = highlightedIdx;
-          moveIdx != endIndex;
-          moveIdx += step
-        ) {
-          if (filteredMoveIds.includes(allMoveIds[moveIdx])) {
-            return {result: moveIdx};
-          }
-        }
-        return undefined;
-      }
+    if (highlightedMove) {
+      const allMoveIds = allMoves.map(x => x.id);
+      const filteredMoveIds = fromStore.getFilteredMovesInList(state.moves).map(x => x.id);
+      const highlightedIdx = allMoveIds.indexOf(highlightedMove.id);
 
       const newIdx =
-        findNeighbourIdx(allMoveIds.length, 1) ||
-        findNeighbourIdx(-1, -1);
+        _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, allMoveIds.length, 1) ||
+        _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, -1, -1);
 
       if (newIdx) {
-        dispatch(actSetHighlightedMoveId(allMoveIds[newIdx.result]));
+        const moveId = allMoveIds[newIdx.result];
+        const move = fromStore.getMoveById(state.moves)[moveId];
+        const isSlugUnique = allMoves.filter(x => x.slug == move.slug).length == 1;
+        return makeSlugid(move.slug, isSlugUnique ? "" : move.id);
       }
     }
+    return "";
   }
 }
 
@@ -139,37 +122,24 @@ export function actInsertMoves(
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
     // $FlowFixMe
-    return fromStore.getMovesInList(getState().moves).map(x => x.id);
+    const moveList = fromStore.getMoveListById(getState().moves)[moveListId];
+    return moveList.moves;
   }
 }
 
-export function actSelectMoveListByUserNameAndSlug(
-  userName: string, moveListSlug: string
-) {
-  return (dispatch: Function, getState: Function) => {
-    const state = getState();
-    const moveList = fromStore.getMoveLists(state.moves)
-      .find(x => x.ownerUsername == userName && x.slug == moveListSlug);
 
-    if (moveList) {
-      dispatch ({
-        type: 'SELECT_MOVE_LIST',
-        moveListId: moveList.id,
-      });
+export function actSetHighlightedMoveBySlug(moveSlug: string, moveId: ?UUID) {
+  return {
+    type: 'SET_HIGHLIGHTED_MOVE_SLUGID',
+    moveSlugid: makeSlugid(moveSlug, moveId),
+  };
+}
 
-      const moveListMoves = (moveList && moveList.moves)
-        ? moveList.moves
-        : [];
 
-      if (!moveListMoves.includes(
-        fromStore.getHighlightedMoveId(state.moves)
-      )) {
-        dispatch(actSetHighlightedMoveId(""));
-      }
-    }
-    else {
-      // TODO: show a "move list not found" placeholder
-    }
+export function actSelectMoveListByUrl(ownerUsername: string, moveListSlug: string) {
+  return {
+    type: 'SET_SELECTED_MOVE_LIST_URL',
+    moveListUrl: ownerUsername + '/' + moveListSlug,
   }
 }
 

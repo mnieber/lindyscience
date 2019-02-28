@@ -4,7 +4,7 @@ import * as React from 'react'
 import * as appActions from 'app/actions'
 import * as fromAppStore from 'app/reducers'
 import * as api from 'app/api'
-import { browserHistory } from 'react-router'
+import { navigate } from "@reach/router"
 import { urlParam } from 'utils/utils'
 import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
@@ -18,7 +18,7 @@ function createHandlers(
 }
 
 type SignInPagePropsT = {
-  actSetUserProfile: Function
+  actSetSignedInUsername: Function
 };
 
 function SignInPage(props: SignInPagePropsT) {
@@ -26,12 +26,11 @@ function SignInPage(props: SignInPagePropsT) {
   // const {} = createHandlers();
 
   async function _signIn(username, password) {
-    const profile = await api.signIn(username, password);
-    if (profile) {
-      props.actSetUserProfile(profile);
+    if (await api.signIn(username, password)) {
+      props.actSetSignedInUsername(username);
       const next = urlParam('next')
       if (next) {
-        browserHistory.push(next);
+        navigate(next);
       }
     }
   }

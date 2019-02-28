@@ -1,6 +1,6 @@
 // @flow
 
-import { useState } from 'react';
+import * as React from 'react'
 
 // Hooks
 
@@ -11,7 +11,7 @@ export type FlagT = {
 };
 
 export function useFlag(initialState: boolean, decorator:any=undefined): FlagT {
-  const [flag, setFlag] = useState(initialState);
+  const [flag, setFlag] = React.useState(initialState);
 
   const decoratedSetFlag = decorator !== undefined
     ? decorator(setFlag)

@@ -48,13 +48,7 @@ class ProfileToMoveList(models.Model):
 
 
 class Profile(Entity):
-    recent_move_list = models.ForeignKey(
-        'moves.MoveList',
-        related_name='+',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
+    recent_move_url = models.CharField(max_length=255, null=True, blank=True)
     move_lists = models.ManyToManyField(
         'moves.MoveList', through=ProfileToMoveList)
 

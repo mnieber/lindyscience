@@ -2,11 +2,12 @@
 
 import * as actions from 'moves/actions'
 import * as api from 'moves/api'
+import * as appApi from 'app/api'
 import * as fromStore from 'moves/reducers'
+import * as fromAppStore from 'app/reducers'
 import * as React from 'react'
-import { useState } from 'react'
-import type { UUID } from 'app/types';
-import type { VoteByIdT, MoveT, TipT, VoteT } from 'moves/types'
+import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
+import type { MoveT, TipT } from 'moves/types'
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
@@ -50,6 +51,7 @@ type NewTipBvrT = {
 };
 
 export function useNewTip(
+  userId: number,
   insertTipBvr: InsertTipBvrT,
   moveId: UUID,
 ) {
@@ -58,7 +60,7 @@ export function useNewTip(
   function _createNewTip(): TipT {
     return {
       id: uuidv4(),
-      ownerId: 1,  // TODO
+      ownerId: userId,
       moveId: moveId,
       text: '',
       voteCount: 0,
@@ -123,33 +125,29 @@ export function useSaveTip(
   return {save, discardChanges};
 }
 
-
-function TipsPanel({
-  moveId,
-  tips,
-  voteByObjectId,
-  actAddTips,
-  actCastVote,
-}: {
+type TipsPanelPropsT = {
   moveId: UUID,
+  userProfile: UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
   actAddTips: Function,
   actCastVote: Function,
-}) {
-  const insertTipBvr = useInsertTip(tips);
-  const newTipBvr = useNewTip(insertTipBvr, moveId);
+};
+
+export function TipsPanel(props: TipsPanelPropsT) {
+  const insertTipBvr = useInsertTip(props.tips);
+  const newTipBvr = useNewTip(props.userProfile.userId, insertTipBvr, props.moveId);
   const saveTipBvr = useSaveTip(
     newTipBvr,
-    moveId,
+    props.moveId,
     insertTipBvr.preview,
-    actAddTips,
+    props.actAddTips,
     createErrorHandler
   );
 
   const voteTip = (id: UUID, vote: VoteT) => {
-    actCastVote(id, vote);
-    api.voteTip(id, vote)
+    props.actCastVote(id, vote);
+    appApi.voteTip(id, vote)
     .catch(createErrorHandler('We could not save your vote'));
   }
 
@@ -173,36 +171,8 @@ function TipsPanel({
         setVote={voteTip}
         saveTip={saveTipBvr.save}
         cancelEditTip={saveTipBvr.discardChanges}
-        voteByObjectId={voteByObjectId}
+        voteByObjectId={props.voteByObjectId}
       />
     </div>
   );
 };
-
-
-function mergeProps(state: any, actions: any,
-  {
-    moveId
-  }: {
-    moveId: UUID
-  }
-) {
-  return {
-    ...state,
-    ...actions,
-    moveId: moveId,
-    tips: state.tipsByMoveId[moveId],
-  };
-}
-
-TipsPanel = connect(
-  (state) => ({
-    tipsByMoveId: fromStore.getTipsByMoveId(state.moves),
-    voteByObjectId: fromStore.getVoteByObjectId(state.moves),
-  }),
-  actions,
-  mergeProps
-)(TipsPanel)
-
-
-export default TipsPanel;

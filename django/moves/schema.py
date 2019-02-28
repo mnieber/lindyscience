@@ -55,9 +55,6 @@ class MoveType(DjangoObjectType):
     def resolve_difficulty(self, info, **kwargs):
         return self.difficulty.value
 
-    def resolve_private_datas(self, info, **kwargs):
-        return self.private_datas.filter(owner_id=info.context.user.id)
-
 
 class CreateMoveList(graphene.Mutation):
     class Arguments:
@@ -186,9 +183,13 @@ class SaveMovePrivateData(graphene.Mutation):
 class Query(object):
     all_move_lists = graphene.List(MoveListType)
     move_list = graphene.Field(MoveListType, id=graphene.String())
+    move_private_datas = graphene.List(MovePrivateDataType)
 
     def resolve_all_move_lists(self, info, **kwargs):
         return models.MoveList.objects.all()
 
     def resolve_move_list(self, info, id):
         return models.MoveList.objects.get(pk=id)
+
+    def resolve_move_private_datas(self, info, **kwargs):
+        return models.MovePrivateData.objects.filter(owner_id=info.context.user.id)

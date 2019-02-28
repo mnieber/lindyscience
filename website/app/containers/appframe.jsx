@@ -31,6 +31,7 @@ type AppFramePropsT = {
   actAddMovePrivateDatas: Function,
   actSetUserProfile: Function,
   children: any,
+  params: any,
 };
 
 function AppFrame(props: AppFramePropsT) {
@@ -42,6 +43,9 @@ function AppFrame(props: AppFramePropsT) {
       const moveLists = await movesApi.loadMoveLists();
       props.actAddMoveLists(moveLists.entities.moveLists || {}, {});
       setHasLoadedMoveLists(true);
+      props.actSelectMoveListByUserNameAndSlug(
+        props.params.ownerUsername, props.params.moveListSlug
+      );
     }
   }
 
@@ -58,6 +62,9 @@ function AppFrame(props: AppFramePropsT) {
       const recentMoveList = props.moveLists.find(x => x.id == profile.recentMoveListId);
       if (recentMoveList) {
         browseToMoveList(recentMoveList.ownerUsername, recentMoveList.slug);
+        props.actSelectMoveListByUserNameAndSlug(
+          recentMoveList.ownerUsername, recentMoveList.slug
+        );
       }
 
       setLoadedUsername(profile.username);
@@ -102,6 +109,20 @@ function AppFrame(props: AppFramePropsT) {
   );
 };
 
+function mergeProps(state: any, actions: any,
+  {
+    params
+  }: {
+    params: any
+  }
+) {
+  return {
+    ...state,
+    ...actions,
+    params: params,
+  }
+}
+
 // $FlowFixMe
 AppFrame = connect(
   (state) => ({
@@ -112,7 +133,8 @@ AppFrame = connect(
   {
     ...movesActions,
     ...appActions,
-  }
+  },
+  mergeProps
 )(AppFrame)
 
 export default AppFrame;

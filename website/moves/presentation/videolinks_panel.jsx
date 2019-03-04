@@ -13,7 +13,6 @@ import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
 import { createErrorHandler } from 'utils/utils'
 import { querySetListToDict, slugify, isNone } from 'utils/utils'
-import { useFlag } from 'utils/hooks'
 import { VideoLinkList } from 'moves/presentation/videolink';
 
 // Behaviours

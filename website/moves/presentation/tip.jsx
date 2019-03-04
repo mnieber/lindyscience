@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { VoteCount } from 'app/presentation/vote_count'
 import { TipForm } from 'moves/presentation/tip_form'
-import { useFlag } from 'utils/hooks'
 import type { VoteByIdT, VoteT } from 'app/types'
 import type { TipT } from 'moves/types'
 
@@ -18,22 +17,18 @@ type TipPropsT = {
 };
 
 export function Tip(props: TipPropsT) {
-  const {
-    flag: isEditing,
-    setTrue: setEditingEnabled,
-    setFalse: setEditingDisabled
-  } = useFlag(props.item.text == '');
+  const [isEditing, setIsEditing] = React.useState(props.item.text == '');
 
   if (isEditing) {
     function _submitValues(values) {
       props.saveTip(props.item.id, values);
-      setEditingDisabled();
+      setIsEditing(false);
     }
 
     function _onCancel(e) {
       e.preventDefault();
       props.cancelEditTip(props.item.id);
-      setEditingDisabled();
+      setIsEditing(false);
     }
 
     const form =
@@ -71,7 +66,7 @@ export function Tip(props: TipPropsT) {
     const editBtn =
       <div
         className="tip__editButton ml-2"
-        onClick={setEditingEnabled}
+        onClick={() => setIsEditing(true)}
       >
       edit
       </div>

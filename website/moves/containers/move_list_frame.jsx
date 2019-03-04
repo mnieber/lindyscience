@@ -12,7 +12,6 @@ import { makeMoveListUrl, makeSlugidMatcher } from 'moves/utils'
 import { createErrorHandler } from 'utils/utils'
 import { MoveListPanel } from 'moves/presentation/move_list_panel';
 import { findMoveBySlugid } from 'moves/utils';
-import { useFlag } from 'utils/hooks'
 import {
   useInsertMove, useNewMove, useSaveMove, MoveCrudBvrsContext
 } from 'moves/containers/move_crud_behaviours'
@@ -50,7 +49,7 @@ export type _MoveListFramePropsT = {
 function _MoveListFrame(props: _MoveListFramePropsT) {
   const actions: any = props;
 
-  const isEditing = useFlag(false);
+  const [isEditing, setIsEditing] = React.useState(false);
 
   const insertMoveBvr: InsertMoveBvrT = useInsertMove(
     props.moves,
@@ -85,20 +84,20 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     highlightedMove ? highlightedMove.id : "",
     setHighlightedMoveId,
     insertMoveBvr,
-    isEditing.setTrue,
-    isEditing.setFalse,
+    setIsEditing,
   );
 
   const saveMoveBvr: SaveMoveBvrT = useSaveMove(
     insertMoveBvr.preview,
     newMoveBvr,
-    isEditing.setFalse,
+    setIsEditing,
     actions.actUpdateMoves,
     createErrorHandler
   );
 
-  const bvrs: MoveCrudBvrsT  = {
+  const bvrs: MoveCrudBvrsT = {
     isEditing,
+    setIsEditing,
     insertMoveBvr,
     newMoveBvr,
     saveMoveBvr

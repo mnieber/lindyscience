@@ -9,7 +9,6 @@ import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
 import { createErrorHandler, querySetListToDict, slugify, isNone } from 'utils/utils'
 import { StaticTipList } from 'moves/presentation/static_tip';
-import { useFlag } from 'utils/hooks'
 
 
 type StaticTipsPanelPropsT = {

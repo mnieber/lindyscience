@@ -108,8 +108,7 @@ export function useNewMove(
   highlightedMoveId: UUID,
   setHighlightedMoveId: Function,
   insertMoveBvr: InsertMoveBvrT,
-  setEditingEnabled: Function,
-  setEditingDisabled: Function,
+  setIsEditing: Function,
 ): NewMoveBvrT {
   const [newMove, setNewMove] = React.useState(null);
   const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
@@ -128,13 +127,13 @@ export function useNewMove(
       setNewMove(newMove);
       insertMoveBvr.prepare(highlightedMoveId, newMove);
       setNextHighlightedMoveId(newMove.id);
-      setEditingEnabled();
+      setIsEditing(true);
     }
   }
 
   // Remove new move from the function's state
   function finalize(isCancel: boolean) {
-    setEditingDisabled();
+    setIsEditing(false);
     const targetMoveId = insertMoveBvr.finalize(isCancel);
     if (newMove && isCancel) {
       setNextHighlightedMoveId(targetMoveId);

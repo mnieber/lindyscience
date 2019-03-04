@@ -6,7 +6,6 @@
 
 import type { UUID } from 'app/types';
 import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
-import type { FlagT } from 'utils/hooks'
 
 export type DifficultyT = '' | 'beg' | 'beg/int' | 'int' | 'int/adv' | 'adv';
 
@@ -95,5 +94,6 @@ export type MoveCrudBvrsT = {
   newMoveBvr: NewMoveBvrT,
   insertMoveBvr: InsertMoveBvrT,
   saveMoveBvr: SaveMoveBvrT,
-  isEditing: FlagT,
+  isEditing: boolean,
+  setIsEditing: Function,
 };

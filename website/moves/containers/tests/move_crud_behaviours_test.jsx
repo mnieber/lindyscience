@@ -50,8 +50,7 @@ function TestComponent({
   moves,
   actInsertMoves,
   setHighlightedMoveId,
-  setEditingEnabled,
-  setEditingDisabled,
+  setIsEditing,
   highlightedMoveId,
   actUpdateMoves,
 }) {
@@ -70,14 +69,13 @@ function TestComponent({
     highlightedMoveId,
     setHighlightedMoveId,
     sandbox.insertMoveBvr,
-    setEditingEnabled,
-    setEditingDisabled,
+    setIsEditing,
   );
 
   sandbox.saveMoveBvr = useSaveMove(
     sandbox.insertMoveBvr.preview,
     sandbox.newMoveBvr,
-    setEditingDisabled,
+    setIsEditing,
     actUpdateMoves,
     createErrorHandler,
   )
@@ -102,8 +100,7 @@ test('test useInsertMove', function (t) {
     moves={moves}
     actInsertMoves={actInsertMoves}
     setHighlightedMoveId={()=>{}}
-    setEditingEnabled={()=>{}}
-    setEditingDisabled={()=>{}}
+    setIsEditing={()=>{}}
     highlightedMoveId={""}
     actUpdateMoves={()=>{}}
   />);
@@ -154,8 +151,7 @@ test('test useNewMove', function (t) {
     setHighlightedMoveIdStub
   );
 
-  const setEditingEnabled = sinon.fake();
-  const setEditingDisabled = sinon.fake();
+  const setIsEditing = sinon.fake();
 
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
   var saveMoveListOrdering = sinon.fake.resolves(true);
@@ -168,8 +164,7 @@ test('test useNewMove', function (t) {
     moves={moves}
     actInsertMoves={actInsertMoves}
     setHighlightedMoveId={setHighlightedMoveId}
-    setEditingEnabled={setEditingEnabled}
-    setEditingDisabled={setEditingDisabled}
+    setIsEditing={setIsEditing}
     highlightedMoveId={sandbox.highlightedMoveId}
     actUpdateMoves={()=>{}}
   />);
@@ -192,8 +187,9 @@ test('test useNewMove', function (t) {
     "After addNewMove(), the preview contains the newMove"
   );
 
-  t.assert(
-    setEditingEnabled.calledOnce,
+  t.assertOnceWith(
+    setIsEditing,
+    [true],
     "After addNewMove(), editing should have been enabled"
   );
 
@@ -206,8 +202,9 @@ test('test useNewMove', function (t) {
   sinon.reset();
   sandbox.newMoveBvr.finalize(/* cancel */ true);
 
-  t.assert(
-    setEditingDisabled.calledOnce,
+  t.assertOnceWith(
+    setIsEditing,
+    [false],
     "After finalize with cancel, editing should have been disabled"
   );
   t.calledOnceWith(
@@ -241,8 +238,7 @@ test('test useNewMove', function (t) {
 test('test useSaveMove', function (t) {
   const moves = getObjectValues(data.moves);
 
-  const setEditingEnabled = sinon.fake();
-  const setEditingDisabled = sinon.fake();
+  const setIsEditing = sinon.fake();
 
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
   var actUpdateMoves = sinon.fake();
@@ -258,8 +254,7 @@ test('test useSaveMove', function (t) {
     moves={moves}
     actInsertMoves={actInsertMoves}
     setHighlightedMoveId={() => {}}
-    setEditingEnabled={setEditingEnabled}
-    setEditingDisabled={setEditingDisabled}
+    setIsEditing={setIsEditing}
     highlightedMoveId={moves[1].id}
     actUpdateMoves={actUpdateMoves}
   />);
@@ -271,7 +266,7 @@ test('test useSaveMove', function (t) {
     "Discarding the move should cancel the new move"
   );
   t.calledOnceWith(
-    setEditingDisabled, [],
+    setIsEditing, [false],
     "Discarding the move should disable editing"
   );
 
@@ -288,8 +283,8 @@ test('test useSaveMove', function (t) {
     "Saving a move should call newMoveBvr.finalize"
   );
   t.calledOnceWith(
-    setEditingDisabled, [],
-    "Saving a move should call setEditingDisabled"
+    setIsEditing, [false],
+    "Saving a move should call setIsEditing(false)"
   );
   t.calledOnceWith(
     saveMove, [false, moves[1]],

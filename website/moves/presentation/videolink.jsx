@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { VoteCount } from 'app/presentation/vote_count'
 import { VideoLinkForm } from 'moves/presentation/video_link_form'
-import { useFlag } from 'utils/hooks'
 import type { VoteByIdT, VoteT } from 'app/types'
 import type { VideoLinkT } from 'moves/types'
 
@@ -19,22 +18,18 @@ type VideoLinkPropsT = {
 };
 
 export function VideoLink(props: VideoLinkPropsT) {
-  const {
-    flag: isEditing,
-    setTrue: setEditingEnabled,
-    setFalse: setEditingDisabled
-  } = useFlag(props.item.url == '');
+  const [isEditing, setIsEditing] = React.useState(props.item.url == '');
 
   if (isEditing) {
     function _onSubmit(values) {
       props.saveVideoLink(props.item.id, values);
-      setEditingDisabled();
+      setIsEditing(false);
     }
 
     function _onCancel(e) {
       e.preventDefault();
       props.cancelEditVideoLink(props.item.id);
-      setEditingDisabled();
+      setIsEditing(false);
     }
 
     const form = (
@@ -80,7 +75,7 @@ export function VideoLink(props: VideoLinkPropsT) {
     const editBtn = (
       <div
         className="videoLink__editButton ml-2"
-        onClick={setEditingEnabled}
+        onClick={() => setIsEditing(true)}
       >
       edit
       </div>

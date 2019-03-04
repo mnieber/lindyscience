@@ -4,7 +4,6 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from '@reach/router';
 import { MoveForm } from 'moves/presentation/move_form';
-import type { FlagT } from 'utils/hooks'
 import type { MoveT, MoveListT, TagT } from 'moves/types'
 import type { UserProfileT } from 'app/types'
 import { difficulties } from 'utils/form_utils'

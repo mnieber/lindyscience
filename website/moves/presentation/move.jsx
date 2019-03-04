@@ -4,7 +4,6 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from '@reach/router';
 import { MoveForm } from 'moves/presentation/move_form';
-import type { FlagT } from 'utils/hooks'
 import type { MoveT, MoveListT, TagT, VideoLinkT, TipT } from 'moves/types'
 import type { UserProfileT, VoteByIdT } from 'app/types'
 import { VideoLinksPanel } from 'moves/presentation/videolinks_panel'
@@ -32,7 +31,7 @@ type MovePropsT = {|
   saveMove: Function,
   cancelEditMove: Function,
   isEditing: boolean,
-  setEditingEnabled: Function,
+  setIsEditing: Function,
   buttons?: Array<React.Node>,
   className?: string,
   autoFocus?: boolean,
@@ -62,7 +61,7 @@ export function Move(props: MovePropsT) {
     const editMoveBtn =
       <div
         className={"move__editBtn button button--wide ml-2"}
-        onClick={props.setEditingEnabled}
+        onClick={() => props.setIsEditing(true)}
         key={1}
       >
       Edit move

@@ -3,7 +3,6 @@
 import * as React from 'react'
 import { StaticVoteCount } from 'app/presentation/static_vote_count'
 import { VideoLinkForm } from 'moves/presentation/video_link_form'
-import { useFlag } from 'utils/hooks'
 import type { VoteByIdT, VoteT } from 'app/types'
 import type { VideoLinkT } from 'moves/types'
 

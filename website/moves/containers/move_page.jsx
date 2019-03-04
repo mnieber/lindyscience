@@ -63,8 +63,8 @@ function _MovePage(props: _MovePagePropsT, bvrs: MoveCrudBvrsT) {
           saveMove={bvrs.saveMoveBvr.saveMove}
           cancelEditMove={bvrs.saveMoveBvr.discardChanges}
           moveTags={props.moveTags}
-          isEditing={bvrs.isEditing.flag}
-          setEditingEnabled={bvrs.isEditing.setTrue}
+          isEditing={bvrs.isEditing}
+          setIsEditing={bvrs.setIsEditing}
           tips={props.tipsByMoveId[move.id]}
           videoLinks={props.videoLinksByMoveId[move.id]}
           voteByObjectId={props.voteByObjectId}

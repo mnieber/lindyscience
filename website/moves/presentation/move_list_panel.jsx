@@ -34,14 +34,14 @@ function createHandlers(
     if(e.ctrlKey && [edit_e].indexOf(e.keyCode) > -1) {
       e.preventDefault();
       e.stopPropagation();
-      if (bvrs.isEditing.flag) {
+      if (bvrs.isEditing) {
         bvrs.saveMoveBvr.discardChanges();
         if (moveListRef.current) {
           moveListRef.current.focus();
         }
       }
       else {
-        bvrs.isEditing.setTrue();
+        bvrs.setIsEditing(true);
       }
     }
   }

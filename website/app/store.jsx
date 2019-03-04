@@ -27,7 +27,10 @@ const configureStore = () => {
       if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
         xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
       }
-      if (Cookies.get('authToken')) {
+      if (
+        Cookies.get('authToken') &&
+        settings.url !== '/auth/token/login'
+      ) {
         xhr.setRequestHeader("Authorization", 'Token ' + Cookies.get('authToken'));
       }
     },

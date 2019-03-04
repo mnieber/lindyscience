@@ -92,11 +92,16 @@ export const voteVideoLink = (objectId: UUID, value: VoteT) => _castVote('moves'
 
 
 export async function signIn(email: string, password: string) {
-  const rawResponse = await post('/auth/token/login', {email: email, password});
-  const response = toCamelCase(rawResponse);
-  if (response.authToken) {
-    setToken(response.authToken);
-    return true;
+  try {
+    const rawResponse = await post('/auth/token/login', {email, password});
+    const response = toCamelCase(rawResponse);
+    if (response.authToken) {
+      setToken(response.authToken);
+      return true;
+    }
+  }
+  catch(e) {
+    console.error(e);
   }
   return false;
 }

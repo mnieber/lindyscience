@@ -71,6 +71,7 @@ type HandlersT = {|
   handleDragStart: Function,
   handleDrop: Function,
   handleDragOver: Function,
+  handleDragEnd: Function,
 |};
 
 function createHandlers(
@@ -95,6 +96,10 @@ function createHandlers(
     draggingBvr.setDragSourceMoveId(sourceMoveId);
   }
 
+  function handleDragEnd(sourceMoveId) {
+    draggingBvr.setDraggingOverMoveId([undefined, false]);
+  }
+
   function handleDrop(targetMoveId) {
     props.onDrop(draggingBvr.dragSourceMoveId, targetMoveId, draggingBvr.isBefore);
     draggingBvr.setDraggingOverMoveId([undefined, false]);
@@ -113,6 +118,7 @@ function createHandlers(
     handleDragStart,
     handleDrop,
     handleDragOver,
+    handleDragEnd,
   }
 }
 
@@ -157,6 +163,7 @@ function _MoveList(props : MoveListPropsT) {
         draggable={true}
         onDragStart={e => handlers.handleDragStart(move.id)}
         onDragOver={e => handlers.handleDragOver(e, move.id)}
+        onDragEnd={e => handlers.handleDragEnd(e, move.id)}
         onDrop={e => {handlers.handleDrop(move.id)}}
       >
         {move.name}

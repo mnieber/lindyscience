@@ -4,18 +4,24 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from '@reach/router';
 import { MoveForm } from 'moves/presentation/move_form';
-import type { MoveT, MoveListT, TagT, VideoLinkT, TipT } from 'moves/types'
-import type { UserProfileT, VoteByIdT } from 'app/types'
-import { VideoLinksPanel } from 'moves/presentation/videolinks_panel'
-import { TipsPanel } from 'moves/presentation/tips_panel'
+import type { MoveT, MoveListT, TagT } from 'moves/types'
+import type { UserProfileT } from 'app/types'
 import { difficulties } from 'utils/form_utils'
-import { StaticMove } from 'moves/presentation/static_move'
 
 
-export function MoveHeader() {
+function Tags({
+  tags
+} : {
+  tags : Array<TagT>
+}) {
+  const items = tags
+    .map((tagName, idx) => {
+      return <div key={idx} className="move__tag">{tagName}</div>;
+    });
+
   return (
-    <div className = {"move__header"}>
-      <Link to='/app/moves'>All moves</Link>
+    <div className = {"move__tags"}>
+      {items}
     </div>
   );
 }
@@ -23,79 +29,63 @@ export function MoveHeader() {
 
 // Move
 
-type MovePropsT = {|
+type MovePropsT = {
   move: MoveT,
-  userProfile: UserProfileT,
   moveList: MoveListT,
   moveTags: Array<TagT>,
-  saveMove: Function,
-  cancelEditMove: Function,
-  isEditing: boolean,
-  setIsEditing: Function,
   buttons?: Array<React.Node>,
   className?: string,
-  autoFocus?: boolean,
-  tips: Array<TipT>,
-  videoLinks: Array<VideoLinkT>,
-  voteByObjectId: VoteByIdT,
-  actAddTips: Function,
-  actAddVideoLinks: Function,
-  actCastVote: Function,
-|};
+  tipsPanel: any,
+  videoLinksPanel: any,
+};
 
 export function Move(props: MovePropsT) {
-  if (props.isEditing) {
-    return (
-      <div>
-        <MoveForm
-          autoFocus={props.autoFocus}
-          move={props.move}
-          onSubmit={props.saveMove}
-          onCancel={props.cancelEditMove}
-          knownTags={props.moveTags}
-        />
-      </div>
-    );
-  }
-  else {
-    const editMoveBtn =
-      <div
-        className={"move__editBtn button button--wide ml-2"}
-        onClick={() => props.setIsEditing(true)}
-        key={1}
+  const nameDiv =
+    <div className="flex flex-row">
+      <Link
+        className=""
+        to={`/app/list/${props.moveList.ownerUsername}/${props.moveList.slug}`}
       >
-      Edit move
-      </div>;
+        <h1>{props.moveList.name}</h1>
+      </Link>
+      <div className={"move__name flexrow flex-wrap"}>
+        <h1>: {props.move.name}</h1>
+        {props.buttons}
+      </div>
+    </div>;
 
-    const videoLinksPanel = <VideoLinksPanel
-      moveId={props.move.id}
-      userProfile={props.userProfile}
-      videoLinks={props.videoLinks}
-      voteByObjectId={props.voteByObjectId}
-      actAddVideoLinks={props.actAddVideoLinks}
-      actCastVote={props.actCastVote}
-    />;
+  const difficultyDiv =
+    <div className={"move__difficulty panel"}>
+      <h2>Difficulty</h2>
+      {difficulties[props.move.difficulty]}
+    </div>;
 
-    const tipsPanel = <TipsPanel
-      moveId={props.move.id}
-      userProfile={props.userProfile}
-      tips={props.tips}
-      voteByObjectId={props.voteByObjectId}
-      actAddTips={props.actAddTips}
-      actCastVote={props.actCastVote}
-    />;
+  const tagsDiv = props.move.tags.length
+    ? <Tags tags={props.move.tags}/>
+    : undefined;
 
-    return (
-      <StaticMove
-        move={props.move}
-        userProfile={props.userProfile}
-        moveList={props.moveList}
-        moveTags={props.moveTags}
-        buttons={[editMoveBtn]}
-        className={props.className}
-        videoLinksPanel={videoLinksPanel}
-        tipsPanel={tipsPanel}
+  const descriptionDiv =
+    <div className={"move__description panel"}>
+      <h2>Description</h2>
+      <div
+        dangerouslySetInnerHTML={{__html: props.move.description}}
       />
-    );
-  }
+    </div>;
+
+  const privateNotesDiv =
+    <div className={"move__privateNotes panel"}>
+    <h2>Private notes</h2>
+    </div>;
+
+  return (
+    <div className={classnames("move", props.className || "")}>
+      {nameDiv}
+      {difficultyDiv}
+      {tagsDiv}
+      {descriptionDiv}
+      {privateNotesDiv}
+      {props.tipsPanel}
+      {props.videoLinksPanel}
+    </div>
+  );
 }

@@ -21,3 +21,5 @@ export function makeSlugidMatcher(slugid: SlugidT) {
 export function findMoveBySlugid(moves: Array<MoveT>, slugid: string) {
   return moves.find(makeSlugidMatcher(slugid));
 }
+
+export const newMoveSlug = 'new-move';

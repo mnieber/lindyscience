@@ -1,6 +1,7 @@
 // @flow
 
 import * as api from 'moves/api'
+import { newMoveSlug } from 'moves/utils'
 import { querySetListToDict, slugify, isNone } from 'utils/utils'
 import * as React from 'react'
 import type { TagT, MoveT, DifficultyT } from 'moves/types'
@@ -17,6 +18,7 @@ export const MoveCrudBvrsContext = React.createContext({});
 
 export type InsertMoveBvrT = {|
   preview: Array<MoveT>,
+  previewMove: ?MoveT,
   prepare: Function,
   finalize: Function,
   insertDirectly: Function
@@ -29,53 +31,53 @@ export function useInsertMove(
   createErrorHandler: Function
 ): InsertMoveBvrT {
   const [targetMoveId, setTargetMoveId] = React.useState("");
-  const [sourceMove, setSourceMove] = React.useState(null);
+  const [previewMove, setPreviewMove] = React.useState(null);
 
-  const preview = !sourceMove
+  const preview = !previewMove
     ? moves
     : moves.reduce(
       (acc, move) => {
-        if (move.id != sourceMove.id) {
+        if (move.id != previewMove.id) {
           acc.push(move);
         }
         if (move.id == targetMoveId) {
-          acc.push(sourceMove);
+          acc.push(previewMove);
         }
         return acc;
       },
-      targetMoveId ? [] : [sourceMove]
+      targetMoveId ? [] : [previewMove]
     );
 
   function insertDirectly(
-    sourceMoveId: UUID, targetMoveId: UUID, isBefore: boolean
+    previewMoveId: UUID, targetMoveId: UUID, isBefore: boolean
   ) {
     if (isBefore) {
       const idx = moves.findIndex(x => x.id == targetMoveId) - 1;
       targetMoveId = idx < 0 ? "" : moves[idx].id;
     }
-    const allMoveIds = actInsertMoves([sourceMoveId], moveListId, targetMoveId);
+    const allMoveIds = actInsertMoves([previewMoveId], moveListId, targetMoveId);
     api.saveMoveListOrdering(moveListId, allMoveIds)
       .catch(createErrorHandler("We could not update the move list"));
   }
 
   function prepare(targetMoveId: UUID, move: MoveT) {
     if (move) {
-      setSourceMove(move);
+      setPreviewMove(move);
       setTargetMoveId(targetMoveId);
     }
   }
 
   function finalize(isCancel: boolean) {
     const result = targetMoveId;
-    if (sourceMove && !isCancel) {
-      insertDirectly(sourceMove.id, targetMoveId, false)
+    if (previewMove && !isCancel) {
+      insertDirectly(previewMove.id, targetMoveId, false)
     }
-    setSourceMove(null);
+    setPreviewMove(null);
     setTargetMoveId("");
     return result;
   }
 
-  return {preview, prepare, finalize, insertDirectly};
+  return {preview, previewMove, prepare, finalize, insertDirectly};
 }
 
 
@@ -91,7 +93,7 @@ export type NewMoveBvrT = {|
 export function _createNewMove(userId: number): MoveT {
   return {
     id: uuidv4(),
-    slug: 'new-move',
+    slug: newMoveSlug,
     name: 'New move',
     description: '',
     difficulty: '',
@@ -111,18 +113,17 @@ export function useNewMove(
   setIsEditing: Function,
 ): NewMoveBvrT {
   const [newMove, setNewMove] = React.useState(null);
-  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
 
-  // Call setHighlightedMoveId with the moveId set in the previous render.
-  // This ensures that `newMove` is visible to the whole app.
-  if (nextHighlightedMoveId) {
-    setNextHighlightedMoveId(null);
-    setHighlightedMoveId(nextHighlightedMoveId);
-  }
+  // Only change the highlight after rendering
+  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
+  React.useEffect(
+    () => {(nextHighlightedMoveId != null) && setHighlightedMoveId(nextHighlightedMoveId)},
+    [nextHighlightedMoveId]
+  )
 
   // Store a new move in the function's state
   function addNewMove() {
-    if (userProfile) {
+    if (userProfile && !newMove) {
       const newMove = _createNewMove(userProfile.userId);
       setNewMove(newMove);
       insertMoveBvr.prepare(highlightedMoveId, newMove);

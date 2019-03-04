@@ -6,9 +6,11 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import * as fromStore from 'moves/reducers'
 import * as fromAppStore from 'app/reducers'
+import { findMoveBySlugid, newMoveSlug } from 'moves/utils'
 import { Move } from 'moves/presentation/move'
-import { findMoveBySlugid } from 'moves/utils'
-import { StaticMove } from 'moves/presentation/static_move'
+import { TipsPanel } from 'moves/presentation/tips_panel'
+import { MoveForm } from 'moves/presentation/move_form'
+import { VideoLinksPanel } from 'moves/presentation/videolinks_panel'
 import { StaticVideoLinksPanel } from 'moves/presentation/static_videolinks_panel'
 import { StaticTipsPanel } from 'moves/presentation/static_tips_panel'
 import { MoveCrudBvrsContext } from 'moves/containers/move_crud_behaviours'
@@ -18,89 +20,146 @@ import type {
 } from 'moves/types'
 
 
-type _MovePagePropsT = {
-  userProfile: UserProfileT,
-  videoLinksByMoveId: VideoLinksByIdT,
-  tipsByMoveId: TipsByIdT,
-  voteByObjectId: VoteByIdT,
-  move: MoveT,
-  moveList: MoveListT,
-  moveLists: Array<MoveListT>,
-  moveTags: Array<TagT>,
-  highlightedMoveSlugid: SlugidT,
-  // receive any actions as well
-};
+function _createStaticMove(move: MoveT, props: _MovePagePropsT) {
+  const tipsPanel =
+    <StaticTipsPanel
+      tips={props.tipsByMoveId[move.id]}
+      voteByObjectId={props.voteByObjectId}
+    />
 
-function _MovePage(props: _MovePagePropsT, bvrs: MoveCrudBvrsT) {
+  const videoLinksPanel =
+    <StaticVideoLinksPanel
+      videoLinks={props.videoLinksByMoveId[move.id]}
+      voteByObjectId={props.voteByObjectId}
+    />
+
+  return (
+    <Move
+      move={move}
+      moveList={props.moveList}
+      key={move.id}
+      moveTags={props.moveTags}
+      tipsPanel={tipsPanel}
+      videoLinksPanel={videoLinksPanel}
+      videoLinks={props.videoLinksByMoveId[move.id]}
+    />
+  )
+}
+
+function _createOwnMove(move: MoveT, props: _MovePagePropsT, bvrs: MoveCrudBvrsT) {
   const actions: any = props;
 
-  const staticTipsPanel = props.move
-    ? <StaticTipsPanel
-      tips={props.tipsByMoveId[props.move.id]}
+  if (bvrs.isEditing) {
+    return (
+      <div>
+        <MoveForm
+          autoFocus={true}
+          move={move}
+          onSubmit={bvrs.saveMoveBvr.saveMove}
+          onCancel={bvrs.saveMoveBvr.discardChanges}
+          knownTags={props.moveTags}
+        />
+      </div>
+    );
+  }
+  else {
+    const videoLinksPanel = <VideoLinksPanel
+      moveId={move.id}
+      userProfile={props.userProfile}
+      videoLinks={props.videoLinksByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
-    />
-    : undefined;
+      actAddVideoLinks={actions.actAddVideoLinks}
+      actCastVote={actions.actCastVote}
+    />;
 
-  const staticVideoLinksPanel = props.move
-    ? <StaticVideoLinksPanel
-      videoLinks={props.videoLinksByMoveId[props.move.id]}
+    const tipsPanel = <TipsPanel
+      moveId={move.id}
+      userProfile={props.userProfile}
+      tips={props.tipsByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
-    />
-    : undefined;
+      actAddTips={actions.actAddTips}
+      actCastVote={actions.actCastVote}
+    />;
+
+    const editMoveBtn =
+      <div
+        className={"move__editBtn button button--wide ml-2"}
+        onClick={() => bvrs.setIsEditing(true)}
+        key={1}
+      >
+      Edit move
+      </div>;
+
+    return (
+      <Move
+        move={move}
+        userProfile={props.userProfile}
+        moveList={props.moveList}
+        moveTags={props.moveTags}
+        buttons={[editMoveBtn]}
+        videoLinksPanel={videoLinksPanel}
+        tipsPanel={tipsPanel}
+      />
+    );
+  }
+}
+
+
+type _MovePagePropsT = MovePagePropsT & {
+  bvrs: any
+};
+
+function _MovePage(props: _MovePagePropsT) {
+  React.useEffect(
+    () => {
+      if (
+        props.moveSlug == newMoveSlug &&
+        props.userProfile &&
+        !props.bvrs.newMoveBvr.newMove
+      ) {
+        props.bvrs.newMoveBvr.addNewMove();
+      }
+      props.actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId)
+    },
+    [props.moveSlug, props.moveId, props.userProfile]
+  );
 
   const move = findMoveBySlugid(
-    bvrs.insertMoveBvr.preview,
+    props.bvrs.insertMoveBvr.preview,
     props.highlightedMoveSlugid
   );
 
-  const moveDiv = move
-    ? (props.userProfile && props.userProfile.userId == move.ownerId)
-      ? <Move
-          move={move}
-          userProfile={props.userProfile}
-          moveList={props.moveList}
-          key={move.id}
-          saveMove={bvrs.saveMoveBvr.saveMove}
-          cancelEditMove={bvrs.saveMoveBvr.discardChanges}
-          moveTags={props.moveTags}
-          isEditing={bvrs.isEditing}
-          setIsEditing={bvrs.setIsEditing}
-          tips={props.tipsByMoveId[move.id]}
-          videoLinks={props.videoLinksByMoveId[move.id]}
-          voteByObjectId={props.voteByObjectId}
-          actAddTips={actions.actAddTips}
-          actAddVideoLinks={actions.actAddVideoLinks}
-          actCastVote={actions.actCastVote}
-        />
-      : <StaticMove
-          move={move}
-          moveList={props.moveList}
-          key={move.id}
-          moveTags={props.moveTags}
-          tipsPanel={staticTipsPanel}
-          videoLinksPanel={staticVideoLinksPanel}
-          videoLinks={props.videoLinksByMoveId[move.id]}
-        />
-    : <div className="noMoveHighlighted">No move highlighted</div>
+  if (!move) {
+    return <div className="noMoveHighlighted">Oops, I cannot find this move</div>;
+  }
 
-  return moveDiv;
+  const isOwnMove = props.userProfile && props.userProfile.userId == move.ownerId;
+  return isOwnMove
+    ? _createOwnMove(move, props, props.bvrs)
+    : _createStaticMove(move, props)
 }
 
-type MovePagePropsT = _MovePagePropsT & {
+
+type MovePagePropsT = {
+  userProfile: UserProfileT,
+  videoLinksByMoveId: VideoLinksByIdT,
+  tipsByMoveId: TipsByIdT,
+  moveLists: Array<MoveListT>,
+  moveTags: Array<TagT>,
+  moveList: MoveListT,
+  highlightedMoveSlugid: SlugidT,
+  voteByObjectId: VoteByIdT,
+  actions: any,
   moveSlug: string,
   moveId: ?UUID,
 };
 
 export function MovePage(props: MovePagePropsT) {
-  const actions: any = props;
-  React.useEffect(
-    () => {actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId)},
-    [props.moveSlug, props.moveId]
-  );
-
   return (
     <MoveCrudBvrsContext.Consumer>
-      {bvrs => _MovePage(props, bvrs)}
+      {
+        bvrs => <_MovePage {...props} bvrs={bvrs} actions={props}/>
+      }
     </MoveCrudBvrsContext.Consumer>
   );
 }

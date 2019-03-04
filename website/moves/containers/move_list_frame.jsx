@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import { makeMoveListUrl, makeSlugidMatcher } from 'moves/utils'
 import { createErrorHandler } from 'utils/utils'
 import { MoveListPanel } from 'moves/presentation/move_list_panel';
-import { findMoveBySlugid } from 'moves/utils';
+import { findMoveBySlugid, newMoveSlug } from 'moves/utils';
 import {
   useInsertMove, useNewMove, useSaveMove, MoveCrudBvrsContext
 } from 'moves/containers/move_crud_behaviours'
@@ -27,6 +27,26 @@ export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boo
   navigate(`/app/list/${moveUrl}`);
   if (mustUpdateProfile) {
     api.updateProfile(moveUrl);
+  }
+}
+
+
+function _setHighlightedMoveId(
+  moveList: ?MoveListT, allMoves: Array<MoveT>, moveId: UUID
+) {
+  const move = allMoves.find(x => x.id == moveId) || allMoves.find(x => true);
+  if (moveList && move) {
+    const matcher = makeSlugidMatcher(move.slug);
+    const isSlugUnique = allMoves.filter(matcher).length <= 1;
+    const updateProfile = move.slug != newMoveSlug;
+    browseToMove(
+      [
+        makeMoveListUrl(moveList),
+        move.slug,
+        isSlugUnique ? "" : (move ? move.id : ""),
+      ],
+      updateProfile
+    );
   }
 }
 
@@ -49,6 +69,10 @@ export type _MoveListFramePropsT = {
 function _MoveListFrame(props: _MoveListFramePropsT) {
   const actions: any = props;
 
+  const highlightedMoveInStore = findMoveBySlugid(
+    props.moves, props.highlightedMoveSlugid
+  );
+
   const [isEditing, setIsEditing] = React.useState(false);
 
   const insertMoveBvr: InsertMoveBvrT = useInsertMove(
@@ -58,31 +82,10 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     createErrorHandler
   );
 
-  const setHighlightedMoveId = moveId => {
-    const move = insertMoveBvr.preview.find(x => x.id == moveId);
-    if (move) {
-      const matcher = makeSlugidMatcher(move.slug);
-      const isSlugUnique = props.allMoves.filter(matcher).length <= 1;
-      const updateProfile = !!props.allMoves.find(matcher);
-      browseToMove(
-        [
-          props.moveList ? makeMoveListUrl(props.moveList) : "",
-          move ? move.slug : "",
-          isSlugUnique ? "" : (move ? move.id : ""),
-        ],
-        updateProfile
-      );
-    }
-  }
-
-  const highlightedMove = findMoveBySlugid(
-    insertMoveBvr.preview, props.highlightedMoveSlugid
-  );
-
   const newMoveBvr: NewMoveBvrT = useNewMove(
     props.userProfile,
-    highlightedMove ? highlightedMove.id : "",
-    setHighlightedMoveId,
+    highlightedMoveInStore ? highlightedMoveInStore.id : "",
+    moveId => _setHighlightedMoveId(props.moveList, insertMoveBvr.preview, moveId),
     insertMoveBvr,
     setIsEditing,
   );

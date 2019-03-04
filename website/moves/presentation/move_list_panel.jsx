@@ -72,8 +72,32 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
     ? props.userProfile.userId
     : -1;
 
-  const moveListComponent = (props.moveList && userId == props.moveList.ownerId)
-    ? <MoveList
+  const moveListPicker =
+    <MoveListPicker
+      className="mb-4"
+      moveLists={props.moveLists}
+      defaultMoveListId={props.moveList ? props.moveList.id : ""}
+    />
+
+  const moveListHeader =
+    <MoveListHeader
+      addNewMove={props.bvrs.newMoveBvr.addNewMove}
+      className="py-4"
+    />
+
+  const moveListFilter =
+    <MoveListFilter
+      className="mb-4"
+      setMoveListFilter={props.actSetMoveListFilter}
+      moveTags={props.moveTags}
+      moveListUrl={props.moveList
+        ? makeMoveListUrl(props.moveList)
+        : ""
+      }
+    />
+
+  const moveList =
+    <MoveList
       ref={moveListRef}
       className=""
       videoLinksByMoveId={props.videoLinksByMoveId}
@@ -82,36 +106,17 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       onDrop={handlers.onDrop}
     />
-    : <StaticMoveList
+
+  const staticMoveList =
+    <StaticMoveList
       moves={props.bvrs.insertMoveBvr.preview}
       videoLinksByMoveId={props.videoLinksByMoveId}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       setHighlightedMoveId={props.bvrs.newMoveBvr.setHighlightedMoveId}
       className=""
-    />;
+    />
 
-  const moveListPanelNodes =
-    <React.Fragment>
-      <MoveListPicker
-        className="mb-4"
-        moveLists={props.moveLists}
-        defaultMoveListId={props.moveList ? props.moveList.id : ""}
-      />
-      <MoveListHeader
-        addNewMove={props.bvrs.newMoveBvr.addNewMove}
-        className="py-4"
-      />
-      <MoveListFilter
-        className="mb-4"
-        setMoveListFilter={props.actSetMoveListFilter}
-        moveTags={props.moveTags}
-        moveListUrl={props.moveList
-          ? makeMoveListUrl(props.moveList)
-          : ""
-        }
-      />
-      {moveListComponent}
-    </React.Fragment>
+  const showStatic = !(props.moveList && userId == props.moveList.ownerId);
 
   return (
     <div
@@ -119,7 +124,11 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       onKeyDown={handlers.onKeyDown}
     >
       <div className="moveListPanel w-1/5 flexcol">
-        {moveListPanelNodes}
+        {moveListPicker}
+        {!showStatic && moveListHeader}
+        {moveListFilter}
+        {!showStatic && moveList}
+        {showStatic && staticMoveList}
       </div>
       <div className="movePanel pl-4 w-4/5">
           {props.children}

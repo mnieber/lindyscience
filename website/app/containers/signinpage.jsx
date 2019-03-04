@@ -18,16 +18,16 @@ function createHandlers(
 }
 
 type SignInPagePropsT = {
-  actSetSignedInUsername: Function
+  actSetSignedInEmail: Function
 };
 
 function SignInPage(props: SignInPagePropsT) {
   // const {} = getSignInPageBehaviours();
   // const {} = createHandlers();
 
-  async function _signIn(username, password) {
-    if (await api.signIn(username, password)) {
-      props.actSetSignedInUsername(username);
+  async function _signIn(email, password) {
+    if (await api.signIn(email, password)) {
+      props.actSetSignedInEmail(email);
       const next = urlParam('next')
       if (next) {
         navigate(next);

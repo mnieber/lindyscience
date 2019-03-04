@@ -22,8 +22,8 @@ type AppFramePropsT = {
   moveLists: Array<MoveListT>,
   selectedMoveListId: UUID,
   userProfile: ?UserProfileT,
-  signedInUsername: string,
-  actSetSignedInUsername: Function,
+  signedInEmail: string,
+  actSetSignedInEmail: Function,
   actSetUserProfile: Function,
   actSetVotes: Function,
   actAddMoveLists: Function,
@@ -35,19 +35,19 @@ type AppFramePropsT = {
 
 function AppFrame(props: AppFramePropsT) {
   const [hasLoadedMoveLists, setHasLoadedMoveLists] = React.useState(null);
-  const [loadedUsername, setLoadedUsername] = React.useState("");
+  const [loadedEmail, setLoadedEmail] = React.useState("");
   const [loadedMoveListId, setLoadedMoveListId] = React.useState("");
 
-  async function _loadMoveListsAndUsername() {
+  async function _loadMoveListsAndEmail() {
     if (hasLoadedMoveLists === null) {
       setHasLoadedMoveLists(false);
 
-      const [username, moveLists] = await Promise.all([
-        appApi.getUsername(),
+      const [email, moveLists] = await Promise.all([
+        appApi.getEmail(),
         movesApi.loadMoveLists(),
       ]);
-      if (username) {
-        props.actSetSignedInUsername(username);
+      if (email) {
+        props.actSetSignedInEmail(email);
       }
       props.actAddMoveLists(moveLists.entities.moveLists || {}, {});
       setHasLoadedMoveLists(true);
@@ -55,7 +55,7 @@ function AppFrame(props: AppFramePropsT) {
   }
 
   async function _loadUserProfile() {
-    if (hasLoadedMoveLists && loadedUsername != props.signedInUsername) {
+    if (hasLoadedMoveLists && loadedEmail != props.signedInEmail) {
       const [profile, votes, movePrivateDatas] = await Promise.all([
         appApi.loadUserProfile(),
         appApi.loadUserVotes(),
@@ -65,7 +65,7 @@ function AppFrame(props: AppFramePropsT) {
       props.actSetVotes(votes);
       props.actAddMovePrivateDatas(movePrivateDatas.entities.movePrivateDatas || {});
 
-      setLoadedUsername(props.signedInUsername);
+      setLoadedEmail(props.signedInEmail);
     }
   }
 
@@ -81,8 +81,8 @@ function AppFrame(props: AppFramePropsT) {
     }
   }
 
-  React.useEffect(() => {_loadMoveListsAndUsername()});
-  React.useEffect(() => {_loadUserProfile()}, [hasLoadedMoveLists, props.signedInUsername]);
+  React.useEffect(() => {_loadMoveListsAndEmail()});
+  React.useEffect(() => {_loadUserProfile()}, [hasLoadedMoveLists, props.signedInEmail]);
   React.useEffect(() => {_loadSelectedMoveList()}, [hasLoadedMoveLists, props.selectedMoveListId]);
 
   function signIn() {
@@ -126,7 +126,7 @@ AppFrame = connect(
   (state) => ({
     moveLists: fromMovesStore.getMoveLists(state.moves),
     userProfile: fromAppStore.getUserProfile(state.app),
-    signedInUsername: fromAppStore.getSignedInUsername(state.app),
+    signedInEmail: fromAppStore.getSignedInEmail(state.app),
     selectedMoveListId: fromMovesStore.getSelectedMoveListId(state.moves),
   }),
   {

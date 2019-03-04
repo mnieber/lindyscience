@@ -25,21 +25,21 @@ const _stateVotes = (state: ReducerState): VotesState => state.votes;
 ///////////////////////////////////////////////////////////////////////
 
 type StatusState = {
-  signedInUsername: string
+  signedInEmail: string
 };
 
 const statusReducer = function(
   state: StatusState = {
-    signedInUsername: ""
+    signedInEmail: ""
   },
   action
 ): StatusState
 {
   switch (action.type) {
-    case 'SET_SIGNED_IN_USERNAME':
+    case 'SET_SIGNED_IN_EMAIL':
       return {
         ...state,
-        signedInUsername: action.username
+        signedInEmail: action.username
       }
     default:
       return state
@@ -47,7 +47,7 @@ const statusReducer = function(
 }
 
 
-export const getSignedInUsername = (state: ReducerState): string => state.status.signedInUsername;
+export const getSignedInEmail = (state: ReducerState): string => state.status.signedInEmail;
 
 ///////////////////////////////////////////////////////////////////////
 // Profile

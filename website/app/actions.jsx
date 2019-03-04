@@ -28,10 +28,10 @@ export function actSetVotes(votes: VoteByIdT) {
   }
 }
 
-export function actSetSignedInUsername(username: string) {
+export function actSetSignedInEmail(email: string) {
   return {
-    type: 'SET_SIGNED_IN_USERNAME',
-    username,
+    type: 'SET_SIGNED_IN_EMAIL',
+    email,
   }
 }
 

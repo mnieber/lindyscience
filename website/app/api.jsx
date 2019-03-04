@@ -107,11 +107,11 @@ export async function signIn(email: string, password: string) {
 }
 
 
-export async function getUsername() {
+export async function getEmail() {
   try {
     const rawResponse = await get('/auth/users/me');
     const response = toCamelCase(rawResponse);
-    return response.username;
+    return response.email;
   }
   catch(e) {
     return "";

@@ -43,7 +43,12 @@ type StaticMovePropsT = {
 export function StaticMove(props: StaticMovePropsT) {
   const nameDiv =
     <div className="flex flex-row">
-      <a className="" href="#"><h1>{props.moveList.name}</h1></a>
+      <Link
+        className=""
+        to={`/app/list/${props.moveList.ownerUsername}/${props.moveList.slug}`}
+      >
+        <h1>{props.moveList.name}</h1>
+      </Link>
       <div className={"move__name flexrow flex-wrap"}>
         <h1>: {props.move.name}</h1>
         {props.buttons}

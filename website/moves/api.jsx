@@ -136,6 +136,7 @@ export function loadMoveLists() {
         id
         name
         slug
+        description
         tags
         owner {
           username
@@ -154,6 +155,7 @@ export function loadMoveList(moveListId: UUID) {
         id
         name
         slug
+        description
         tags
         owner {
           username

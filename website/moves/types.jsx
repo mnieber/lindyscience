@@ -28,6 +28,7 @@ export type MoveListT = {
   moves: Array<UUID>,
   name: string,
   slug: string,
+  description: string,
   ownerId: number,
   ownerUsername: string,
 };

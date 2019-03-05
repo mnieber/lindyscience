@@ -53,6 +53,7 @@ function _createOwnMove(move: MoveT, props: _MovePagePropsT, bvrs: MoveCrudBvrsT
     return (
       <div>
         <MoveForm
+          userProfile={props.userProfile}
           autoFocus={true}
           move={move}
           onSubmit={bvrs.saveMoveBvr.saveMove}

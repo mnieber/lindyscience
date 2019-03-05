@@ -6,7 +6,7 @@ import { makeSlugidMatcher, findMoveBySlugid } from 'moves/utils';
 import {
   Menu, Item, Separator, Submenu, MenuProvider
 } from 'react-contexify';
-import {handleSelectionKeys, scrollIntoView} from 'utils/utils'
+import {handleSelectionKeys, scrollIntoView} from 'app/utils'
 import type { MoveT, VideoLinksByIdT } from 'moves/types'
 import type { UUID, SlugidT } from 'app/types';
 

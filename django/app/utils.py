@@ -20,15 +20,8 @@ def _response_from_serializer(is_valid, serializer):
     return _failure(error=", ".join(error_strings), status=400)
 
 
-def assert_authorized(is_create, model, pk, user_id):
+def assert_authorized(model, pk, user_id):
     instance = model.objects.filter(pk=pk).first()
-    if instance and is_create:
-        raise Exception("Cannot create existing object with id %s" % pk)
-
-    if not instance and not is_create:
-        raise Exception("Cannot update non-existing object with id %s" % pk)
-
     if instance and instance.owner_id != user_id:
         raise Exception("Not authorized to update object with id %s" % pk)
-
     return instance

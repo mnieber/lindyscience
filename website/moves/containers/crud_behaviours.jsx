@@ -139,8 +139,7 @@ export function useSaveItem<ItemT: ObjectT>(
   saveItem: Function,
 ): SaveItemBvrT<ItemT> {
   function saveItemExt(id: UUID, incompleteValues: any) {
-    const isNewItem = !!newItemBvr.newItem && newItemBvr.newItem.id == id;
-    saveItem(isNewItem, id, incompleteValues);
+    saveItem(id, incompleteValues);
     newItemBvr.finalize(false);
     setIsEditing(false);
   }

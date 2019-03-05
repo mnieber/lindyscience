@@ -7,7 +7,8 @@ import type { MoveT, TipT } from 'moves/types'
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
-import { createErrorHandler, querySetListToDict, slugify, isNone } from 'utils/utils'
+import { querySetListToDict, slugify, isNone } from 'utils/utils'
+import { createErrorHandler } from 'app/utils'
 import { StaticTipList } from 'moves/presentation/static_tip';
 
 

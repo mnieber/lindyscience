@@ -3,7 +3,8 @@
 import jquery from 'jquery';
 import React from 'react'
 import { connect } from 'react-redux'
-import { querySetListToDict, createToastr } from 'utils/utils'
+import { querySetListToDict, getObjectValues } from 'utils/utils'
+import { createToastr } from 'app/utils'
 import { AccountMenu } from 'app/presentation/accountmenu';
 import { navigate } from "@reach/router"
 
@@ -23,17 +24,13 @@ type AppFramePropsT = {
   selectedMoveListId: UUID,
   userProfile: ?UserProfileT,
   signedInEmail: string,
-  actSetSignedInEmail: Function,
-  actSetUserProfile: Function,
-  actSetVotes: Function,
-  actAddMoveLists: Function,
-  actAddVideoLinks: Function,
-  actAddTips: Function,
-  actAddMovePrivateDatas: Function,
   children: any,
+  // also receive any actions
 };
 
 function AppFrame(props: AppFramePropsT) {
+  const actions: any = props;
+
   const [hasLoadedMoveLists, setHasLoadedMoveLists] = React.useState(null);
   const [loadedEmail, setLoadedEmail] = React.useState("");
   const [loadedMoveListId, setLoadedMoveListId] = React.useState("");
@@ -47,9 +44,9 @@ function AppFrame(props: AppFramePropsT) {
         movesApi.loadMoveLists(),
       ]);
       if (email) {
-        props.actSetSignedInEmail(email);
+        actions.actSetSignedInEmail(email);
       }
-      props.actAddMoveLists(moveLists.entities.moveLists || {}, {});
+      actions.actInsertMoveLists(moveLists.entities.moveLists || {}, "");
       setHasLoadedMoveLists(true);
     }
   }
@@ -61,9 +58,9 @@ function AppFrame(props: AppFramePropsT) {
         appApi.loadUserVotes(),
         movesApi.loadMovePrivateDatas()
       ]);
-      props.actSetUserProfile(profile);
-      props.actSetVotes(votes);
-      props.actAddMovePrivateDatas(movePrivateDatas.entities.movePrivateDatas || {});
+      actions.actSetUserProfile(profile);
+      actions.actSetVotes(votes);
+      actions.actAddMovePrivateDatas(movePrivateDatas.entities.movePrivateDatas || {});
 
       setLoadedEmail(props.signedInEmail);
     }
@@ -74,9 +71,10 @@ function AppFrame(props: AppFramePropsT) {
       const [moveList] = await Promise.all([
         movesApi.loadMoveList(props.selectedMoveListId)
       ]);
-      props.actAddMoveLists(moveList.entities.moveLists, moveList.entities.moves || {});
-      props.actAddVideoLinks(moveList.entities.videoLinks || {});
-      props.actAddTips(moveList.entities.tips || {});
+      actions.actAddMoves(getObjectValues(moveList.entities.moves || {}));
+      actions.actInsertMoveLists(moveList.entities.moveLists, "");
+      actions.actAddVideoLinks(moveList.entities.videoLinks || {});
+      actions.actAddTips(moveList.entities.tips || {});
       setLoadedMoveListId(props.selectedMoveListId);
     }
   }

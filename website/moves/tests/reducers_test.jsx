@@ -5,6 +5,7 @@ import * as data from 'moves/tests/data'
 
 import * as reducers from 'moves/reducers'
 import * as actions from 'moves/actions'
+import { getObjectValues } from 'utils/utils'
 
 test('select highlighted move', function (t) {
   let s = reducers.selectionReducer(undefined, {});
@@ -39,21 +40,23 @@ test('add move lists', function (t) {
   let sMoves = reducers.movesReducer(undefined, {});
   t.deepEqual(sMoves, {});
 
-  let sTags = reducers.tagsReducer(undefined, {});
-  t.deepEqual(sTags.moveListTags, {});
-
-  const a = actions.actAddMoveLists(
+  const a = actions.actInsertMoveLists(
     {[data.moveList1.id]: data.moveList1},
-    data.moves
+    ""
   );
+  const a2 = actions.actAddMoves(getObjectValues(data.moves));
 
   sMoveList = reducers.moveListsReducer(sMoveList, a);
   t.deepEqual(sMoveList, {[data.moveList1.id]: data.moveList1});
 
-  sMoves = reducers.movesReducer(sMoves, a);
+  sMoves = reducers.movesReducer(sMoves, a2);
   t.deepEqual(sMoves, data.moves);
 
+  let sTags = reducers.tagsReducer(undefined, {});
+  t.deepEqual(sTags.moveListTags, {});
+
   sTags = reducers.tagsReducer(sTags, a);
+  sTags = reducers.tagsReducer(sTags, a2);
   t.deepEqual(sTags.moveListTags, {one: true, two:true, three:true});
   t.deepEqual(sTags.moveTags, {
     "swing out": true,
@@ -95,10 +98,13 @@ test('add tips', function (t) {
 });
 
 test('insert moves into list', function (t) {
-  let sMoveList = reducers.moveListsReducer(undefined, actions.actAddMoveLists(
+  let sMoveList = reducers.moveListsReducer(undefined, actions.actInsertMoveLists(
     {[data.moveList1.id]: data.moveList1},
-    data.moves
+    ""
   ));
+  let sMoves = reducers.movesReducer(
+    undefined, actions.actAddMoves(getObjectValues(data.moves))
+  );
 
   const moveIds = ["123"];
   const moveListId = data.moveList1.id;
@@ -116,7 +122,7 @@ test('insert moves into list', function (t) {
 
 test('update moves', function (t) {
   const move = data.moves["18561d09-0727-441d-bdd9-d3d8c33ebde3"];
-  let sMoves = reducers.movesReducer(undefined, actions.actUpdateMoves(
+  let sMoves = reducers.movesReducer(undefined, actions.actAddMoves(
     [move]
   ));
   t.deepEqual(sMoves, {[move.id]: move});

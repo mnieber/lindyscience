@@ -11,7 +11,8 @@ import type { MoveT, TipT } from 'moves/types'
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
-import { createErrorHandler, querySetListToDict, slugify, isNone } from 'utils/utils'
+import { querySetListToDict, slugify, isNone } from 'utils/utils'
+import { createErrorHandler } from 'app/utils'
 import { TipList } from 'moves/presentation/tip';
 
 // Behaviours
@@ -107,11 +108,7 @@ export function useSaveTip(
     };
 
     actAddTips(querySetListToDict([tip]));
-    let response = api.saveTip(
-      !!newTipBvr.newTip && newTipBvr.newTip.id == id,
-      moveId,
-      tip,
-    );
+    let response = api.saveTip(moveId, tip);
     response.catch(createErrorHandler('We could not save the tip'));
 
     newTipBvr.finalize(false);

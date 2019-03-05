@@ -11,13 +11,13 @@ class Query(accounts.schema.Query, moves.schema.Query, votes.schema.Query,
 
 
 class Mutations(graphene.ObjectType):
-    create_move_list = moves.schema.CreateMoveList.Field()
+    save_move_list = moves.schema.SaveMoveList.Field()
     save_move = moves.schema.SaveMove.Field()
     save_tip = moves.schema.SaveTip.Field()
     save_video_link = moves.schema.SaveVideoLink.Field()
     save_video_link = moves.schema.SaveVideoLink.Field()
     save_move_private_data = moves.schema.SaveMovePrivateData.Field()
-    save_move_list_ordering = moves.schema.SaveMoveListOrdering.Field()
+    save_move_ordering = moves.schema.SaveMoveOrdering.Field()
     cast_vote = votes.schema.CastVote.Field()
     update_profile = accounts.schema.UpdateProfile.Field()
 

@@ -9,7 +9,7 @@ import {
 } from 'moves/containers/crud_behaviours'
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
-import type { TagT, MoveT, MoveListT, DifficultyT } from 'moves/types'
+import type { MoveT, MoveListT, DifficultyT } from 'moves/types'
 import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
 import type {
   InsertItemBvrT, NewItemBvrT, SaveItemBvrT
@@ -35,7 +35,7 @@ export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
     videoLinks: [],
     tags: [],
     ownerId: userProfile.userId,
-    privateData: {},
+    privateData: null,
   };
 }
 
@@ -52,7 +52,7 @@ export function useInsertMove(
 ): InsertMoveBvrT {
   function _insertMove(move: MoveT, targetMoveId: UUID) {
     const allMoveIds = actInsertMoves([move.id], moveListId, targetMoveId);
-    api.saveMoveListOrdering(moveListId, allMoveIds)
+    api.saveMoveOrdering(moveListId, allMoveIds)
       .catch(createErrorHandler("We could not update the move list"));
   }
 
@@ -93,7 +93,7 @@ export function useSaveMove(
   moves: Array<MoveT>,
   newMoveBvr: NewMoveBvrT,
   setIsEditing: Function,
-  actUpdateMoves: Function,
+  actAddMoves: Function,
   createErrorHandler: Function,
 ): SaveMoveBvrT {
   type IncompleteValuesT = {
@@ -114,10 +114,10 @@ export function useSaveMove(
     };
   }
 
-  function _saveMove(isNewMove, id: UUID, incompleteValues: IncompleteValuesT) {
+  function _saveMove(id: UUID, incompleteValues: IncompleteValuesT) {
     const move = _completeMove(id, incompleteValues);
-    actUpdateMoves([move]);
-    return api.saveMove(isNewMove, move)
+    actAddMoves([move]);
+    return api.saveMove(move)
       .catch(createErrorHandler('We could not save the move'));
   }
 

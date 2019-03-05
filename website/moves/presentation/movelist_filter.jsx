@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from 'react'
-import type { MoveListT, TagT } from 'moves/types'
-import type { UUID } from 'app/types';
+import type { MoveListT } from 'moves/types'
+import type { UUID, TagT } from 'app/types';
 import classnames from 'classnames';
 import {
   ValuePicker, strToPickerValue

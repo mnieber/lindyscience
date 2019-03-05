@@ -8,8 +8,6 @@ import type {
   MoveT,
   MoveListT,
   MoveListByIdT,
-  TagT,
-  TagMapT,
   TipByIdT,
   TipsByIdT,
   TipT,
@@ -18,7 +16,7 @@ import type {
   VideoLinkT,
   MovePrivateDataByIdT,
 } from 'moves/types'
-import type { UUID } from 'app/types';
+import type { UUID, TagT, TagMapT, } from 'app/types';
 import type { InputSelector } from 'reselect';
 import {
   reduceMapToMap,
@@ -95,6 +93,42 @@ function _filterMovesByTags(moves, moveFilterTags) {
 export const getHighlightedMoveSlugid = (state: ReducerState) => state.selection.highlightedMoveSlugid;
 
 ///////////////////////////////////////////////////////////////////////
+// Private data
+///////////////////////////////////////////////////////////////////////
+
+type MovePrivateDatasState = MovePrivateDataByIdT;
+
+export function movePrivateDatasReducer(
+  state: MovePrivateDatasState = {},
+  action: any
+): MovePrivateDatasState
+{
+  switch (action.type) {
+    case 'ADD_MOVE_PRIVATE_DATAS':
+      return {...state,
+        ...action.movePrivateDatas
+    }
+    default:
+      return state
+  }
+}
+
+export const getPrivateDataByMoveId: Selector<MovePrivateDataByIdT> = createSelector(
+  [_stateMovePrivateDatas],
+
+  (stateMovePrivateDatas): MovePrivateDataByIdT => {
+    return getObjectValues(stateMovePrivateDatas).reduce(
+      (acc, x) => {
+        acc[x.moveId] = x;
+        return acc;
+      },
+      {}
+    );
+  }
+);
+
+
+///////////////////////////////////////////////////////////////////////
 // Moves
 ///////////////////////////////////////////////////////////////////////
 
@@ -106,12 +140,7 @@ export function movesReducer(
 ): MovesState
 {
   switch (action.type) {
-    case 'ADD_MOVE_LISTS':
-      return {
-        ...state,
-        ...action.moves
-      };
-    case 'UPDATE_MOVES':
+    case 'ADD_MOVES':
       return {
         ...state,
         ...querySetListToDict(action.moves)
@@ -122,15 +151,15 @@ export function movesReducer(
 }
 
 export const getMoveById: Selector<MoveByIdT> = createSelector(
-  [_stateMoves, _stateMovePrivateDatas],
+  [_stateMoves, getPrivateDataByMoveId],
 
-  (stateMoves, stateMovePrivateDatas): MoveByIdT => {
+  (stateMoves, privateDataByMoveId): MoveByIdT => {
     return reduceMapToMap<MoveByIdT>(
       stateMoves,
       (acc, id: UUID, move: MoveT) => {
         acc[id] = {
           ...move,
-          privateData: stateMovePrivateDatas[id] || {},
+          privateData: privateDataByMoveId[id] || {},
         }
       }
     );
@@ -208,28 +237,6 @@ export const getMoveListById = _stateMoveLists;
 
 
 ///////////////////////////////////////////////////////////////////////
-// Private data
-///////////////////////////////////////////////////////////////////////
-
-type MovePrivateDatasState = MovePrivateDataByIdT;
-
-export function movePrivateDatasReducer(
-  state: MovePrivateDatasState = {},
-  action: any
-): MovePrivateDatasState
-{
-  switch (action.type) {
-    case 'ADD_MOVE_PRIVATE_DATAS':
-      return {...state,
-        ...action.movePrivateDatas
-    }
-    default:
-      return state
-  }
-}
-
-
-///////////////////////////////////////////////////////////////////////
 // Tags
 ///////////////////////////////////////////////////////////////////////
 
@@ -267,13 +274,17 @@ export function tagsReducer(
 ): TagsState
 {
   switch (action.type) {
-    case 'ADD_MOVE_LISTS':
+    case 'ADD_MOVES':
       return {
         ...state,
         moveTags: _addTags(
           getObjectValues(action.moves).map(x => x.tags),
           state.moveTags
         ),
+      }
+    case 'ADD_MOVE_LISTS':
+      return {
+        ...state,
         moveListTags: _addTags(
           getObjectValues(action.moveLists).map((x: MoveListT) => x.tags),
           state.moveListTags

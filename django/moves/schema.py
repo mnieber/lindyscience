@@ -56,22 +56,24 @@ class MoveType(DjangoObjectType):
         return self.difficulty.value
 
 
-class CreateMoveList(graphene.Mutation):
+class SaveMoveList(graphene.Mutation):
     class Arguments:
-        create = graphene.Boolean()
+        pk = graphene.String()
         name = graphene.String()
         slug = graphene.String()
 
     ok = graphene.Boolean()
     move_list = graphene.Field(MoveListType)
 
-    def mutate(self, info, create, **inputs):
-        move_list = models.MoveList(**inputs)
-        move_list.save()
-        return CreateMoveList(move_list=move_list, ok=True)
+    def mutate(self, info, pk, **inputs):
+        assert_authorized(models.MoveList, pk, info.context.user.id)
+        inputs['owner_id'] = info.context.user.id
+
+        moveList, created = models.MoveList.objects.update_or_create(inputs, pk=pk)
+        return SaveMoveList(moveList=moveList, ok=True)
 
 
-class SaveMoveListOrdering(graphene.Mutation):
+class SaveMoveOrdering(graphene.Mutation):
     class Arguments:
         move_list_id = graphene.String()
         move_ids = graphene.List(of_type=graphene.String)
@@ -79,7 +81,7 @@ class SaveMoveListOrdering(graphene.Mutation):
     ok = graphene.Boolean()
 
     def mutate(self, info, move_list_id, move_ids, **inputs):
-        assert_authorized(False, models.MoveList, move_list_id,
+        assert_authorized(models.MoveList, move_list_id,
                           info.context.user.id)
 
         def try_it():
@@ -94,7 +96,7 @@ class SaveMoveListOrdering(graphene.Mutation):
         for tryIdx in range(max_tries):
             try:
                 try_it()
-                return SaveMoveListOrdering(ok=True)
+                return SaveMoveOrdering(ok=True)
             except Exception as e:
                 if tryIdx == max_tries - 1:
                     raise e
@@ -104,7 +106,6 @@ class SaveMoveListOrdering(graphene.Mutation):
 
 class SaveMove(graphene.Mutation):
     class Arguments:
-        create = graphene.Boolean()
         pk = graphene.String()
         name = graphene.String()
         slug = graphene.String()
@@ -115,8 +116,8 @@ class SaveMove(graphene.Mutation):
     ok = graphene.Boolean()
     move = graphene.Field(MoveType)
 
-    def mutate(self, info, create, pk, **inputs):
-        assert_authorized(create, models.Move, pk, info.context.user.id)
+    def mutate(self, info, pk, **inputs):
+        assert_authorized(models.Move, pk, info.context.user.id)
 
         inputs['tags'] = ",".join(inputs['tags'])
         inputs['owner_id'] = info.context.user.id
@@ -127,7 +128,6 @@ class SaveMove(graphene.Mutation):
 
 class SaveTip(graphene.Mutation):
     class Arguments:
-        create = graphene.Boolean()
         pk = graphene.String()
         move_id = graphene.String()
         text = graphene.String()
@@ -135,8 +135,8 @@ class SaveTip(graphene.Mutation):
     ok = graphene.Boolean()
     tip = graphene.Field(TipType)
 
-    def mutate(self, info, create, pk, **inputs):
-        assert_authorized(create, models.Tip, pk, info.context.user.id)
+    def mutate(self, info, pk, **inputs):
+        assert_authorized(models.Tip, pk, info.context.user.id)
         inputs['owner_id'] = info.context.user.id
         tip, created = models.Tip.objects.update_or_create(inputs, pk=pk)
         return SaveTip(tip=tip, ok=True)
@@ -144,7 +144,6 @@ class SaveTip(graphene.Mutation):
 
 class SaveVideoLink(graphene.Mutation):
     class Arguments:
-        create = graphene.Boolean()
         pk = graphene.String()
         move_id = graphene.String()
         url = graphene.String()
@@ -153,8 +152,8 @@ class SaveVideoLink(graphene.Mutation):
     ok = graphene.Boolean()
     videolink = graphene.Field(VideoLinkType)
 
-    def mutate(self, info, create, pk, **inputs):
-        assert_authorized(create, models.VideoLink, pk, info.context.user.id)
+    def mutate(self, info, pk, **inputs):
+        assert_authorized(models.VideoLink, pk, info.context.user.id)
         inputs['owner_id'] = info.context.user.id
         videolink, created = models.VideoLink.objects.update_or_create(
             inputs, pk=pk)
@@ -163,7 +162,6 @@ class SaveVideoLink(graphene.Mutation):
 
 class SaveMovePrivateData(graphene.Mutation):
     class Arguments:
-        create = graphene.Boolean()
         pk = graphene.String()
         move_id = graphene.String()
         notes = graphene.String()
@@ -171,8 +169,8 @@ class SaveMovePrivateData(graphene.Mutation):
     ok = graphene.Boolean()
     movePrivateData = graphene.Field(MovePrivateDataType)
 
-    def mutate(self, info, create, pk, **inputs):
-        assert_authorized(create, models.MovePrivateData, pk,
+    def mutate(self, info, pk, **inputs):
+        assert_authorized(models.MovePrivateData, pk,
                           info.context.user.id)
         inputs['owner_id'] = info.context.user.id
         movePrivateData, created = models.MovePrivateData.objects.update_or_create(

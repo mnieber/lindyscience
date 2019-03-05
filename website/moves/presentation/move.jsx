@@ -4,8 +4,8 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from '@reach/router';
 import { MoveForm } from 'moves/presentation/move_form';
-import type { MoveT, MoveListT, TagT } from 'moves/types'
-import type { UserProfileT } from 'app/types'
+import type { MoveT, MoveListT } from 'moves/types'
+import type { UserProfileT, TagT } from 'app/types'
 import { difficulties } from 'utils/form_utils'
 
 
@@ -37,6 +37,7 @@ type MovePropsT = {
   className?: string,
   tipsPanel: any,
   videoLinksPanel: any,
+  movePrivateDataPanel: any,
 };
 
 export function Move(props: MovePropsT) {
@@ -72,18 +73,13 @@ export function Move(props: MovePropsT) {
       />
     </div>;
 
-  const privateNotesDiv =
-    <div className={"move__privateNotes panel"}>
-    <h2>Private notes</h2>
-    </div>;
-
   return (
     <div className={classnames("move", props.className || "")}>
       {nameDiv}
       {difficultyDiv}
       {tagsDiv}
       {descriptionDiv}
-      {privateNotesDiv}
+      {props.movePrivateDataPanel}
       {props.tipsPanel}
       {props.videoLinksPanel}
     </div>

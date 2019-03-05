@@ -11,7 +11,7 @@ import type { MoveT, VideoLinkT } from 'moves/types'
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
 import { connect } from 'react-redux'
-import { createErrorHandler } from 'utils/utils'
+import { createErrorHandler } from 'app/utils'
 import { querySetListToDict, slugify, isNone } from 'utils/utils'
 import { VideoLinkList } from 'moves/presentation/videolink';
 
@@ -110,11 +110,7 @@ export function useSaveVideoLink(
     };
 
     actAddVideoLinks(querySetListToDict([videoLink]));
-    let response = api.saveVideoLink(
-      !!newVideoLinkBvr.newVideoLink && newVideoLinkBvr.newVideoLink.id == id,
-      moveId,
-      videoLink,
-    );
+    let response = api.saveVideoLink(moveId, videoLink);
     response.catch(createErrorHandler('We could not save the video link'));
 
     newVideoLinkBvr.finalize(false);

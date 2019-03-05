@@ -8,10 +8,8 @@ import { StaticMoveList } from 'moves/presentation/static_movelist';
 import { MoveListFilter, MoveListPicker } from 'moves/presentation/movelist_filter';
 import { MoveListHeader } from 'moves/presentation/movelist_header';
 import type {  } from 'moves/containers/move_crud_behaviours';
-import type { UUID, UserProfileT, SlugidT } from 'app/types';
-import type {
-  MoveListT, VideoLinksByIdT, TagT, MoveT, MoveCrudBvrsT
-} from 'moves/types'
+import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
+import type { MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT } from 'moves/types'
 
 
 type HandlersT = {

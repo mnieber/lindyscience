@@ -9,7 +9,6 @@ import type {
   MoveListByIdT,
   MoveT,
   MoveListT,
-  TagT,
   TipT,
   TipByIdT,
   MovePrivateDataByIdT,
@@ -18,20 +17,21 @@ import type {
 import type {
   UUID,
   SlugidT,
+  TagT,
 } from 'app/types'
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
 ///////////////////////////////////////////////////////////////////////
 
-export function actAddMoveLists(
+export function actInsertMoveLists(
   moveLists: MoveListByIdT,
-  moves: MoveByIdT,
+  targetMoveListId: UUID,
 ) {
   return {
     type: 'ADD_MOVE_LISTS',
     moveLists,
-    moves,
+    targetMoveListId,
   }
 }
 
@@ -143,9 +143,9 @@ export function actSelectMoveListByUrl(ownerUsername: string, moveListSlug: stri
   }
 }
 
-export function actUpdateMoves(moves: Array<MoveT>) {
+export function actAddMoves(moves: Array<MoveT>) {
   return {
-    type: 'UPDATE_MOVES',
+    type: 'ADD_MOVES',
     moves,
   }
 }

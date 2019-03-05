@@ -52,7 +52,7 @@ function TestComponent({
   setHighlightedMoveId,
   setIsEditing,
   highlightedMoveId,
-  actUpdateMoves,
+  actAddMoves,
 }) {
   const createErrorHandler = () => (() => {});
 
@@ -76,7 +76,7 @@ function TestComponent({
     sandbox.insertMoveBvr.preview,
     sandbox.newMoveBvr,
     setIsEditing,
-    actUpdateMoves,
+    actAddMoves,
     createErrorHandler,
   )
 
@@ -92,10 +92,10 @@ test('test useInsertMove', function (t) {
     const expectedNewMoves = [moves[0], moves[1], newMove, moves[2]];
 
     var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
-    var saveMoveListOrdering = sinon.fake.resolves(true);
+    var saveMoveOrdering = sinon.fake.resolves(true);
 
     MoveCrudBehavioursRewireAPI.__Rewire__('api', {
-      saveMoveListOrdering
+      saveMoveOrdering
     });
 
     const testComponent = TestRenderer.create(<TestComponent
@@ -104,7 +104,7 @@ test('test useInsertMove', function (t) {
       setHighlightedMoveId={()=>{}}
       setIsEditing={()=>{}}
       highlightedMoveId={""}
-      actUpdateMoves={()=>{}}
+      actAddMoves={()=>{}}
     />);
     t.deepEqual(
       sandbox.insertMoveBvr.preview, moves,
@@ -123,7 +123,7 @@ test('test useInsertMove', function (t) {
       "After finalize with cancel, the preview shouldn't contain the new move"
     );
     t.assert(!actInsertMoves.called);
-    t.assert(!saveMoveListOrdering.called);
+    t.assert(!saveMoveOrdering.called);
 
     sandbox.insertMoveBvr.prepare(moves[1].id, newMove);
     sandbox.insertMoveBvr.finalize(/* cancel */ false);
@@ -134,9 +134,9 @@ test('test useInsertMove', function (t) {
       "After finalize, actInsertMoves should have been called"
     );
     t.calledOnceWith(
-      saveMoveListOrdering,
+      saveMoveOrdering,
       [data.moveList1.id, ["new", "move", "ids"]],
-      "After finalize, saveMoveListOrdering should have been called"
+      "After finalize, saveMoveOrdering should have been called"
     );
   }
 
@@ -152,12 +152,14 @@ test('test useNewMove', function (t) {
   const setIsEditing = sinon.fake();
 
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
-  var saveMoveListOrdering = sinon.fake.resolves(true);
+  var saveMoveOrdering = sinon.fake.resolves(true);
   var saveMove = sinon.fake.resolves(true);
+  var saveMovePrivateData = sinon.fake.resolves(true);
 
   MoveCrudBehavioursRewireAPI.__Rewire__('api', {
-    saveMoveListOrdering,
+    saveMoveOrdering,
     saveMove,
+    saveMovePrivateData,
   });
 
   const testComponent = TestRenderer.create(<TestComponent
@@ -166,7 +168,7 @@ test('test useNewMove', function (t) {
     setHighlightedMoveId={setHighlightedMoveId}
     setIsEditing={setIsEditing}
     highlightedMoveId={highlightedMove.id}
-    actUpdateMoves={()=>{}}
+    actAddMoves={()=>{}}
   />);
 
   t.equal(
@@ -241,12 +243,12 @@ test('test useSaveMove', function (t) {
   const setIsEditing = sinon.fake();
 
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
-  var actUpdateMoves = sinon.fake();
-  var saveMoveListOrdering = sinon.fake.resolves(true);
+  var actAddMoves = sinon.fake();
+  var saveMoveOrdering = sinon.fake.resolves(true);
   var saveMove = sinon.fake.resolves(true);
 
   MoveCrudBehavioursRewireAPI.__Rewire__('api', {
-    saveMoveListOrdering,
+    saveMoveOrdering,
     saveMove
   });
 
@@ -256,7 +258,7 @@ test('test useSaveMove', function (t) {
     setHighlightedMoveId={() => {}}
     setIsEditing={setIsEditing}
     highlightedMoveId={moves[1].id}
-    actUpdateMoves={actUpdateMoves}
+    actAddMoves={actAddMoves}
   />);
 
   sandbox.newMoveBvr.finalize = sinon.fake();
@@ -275,8 +277,8 @@ test('test useSaveMove', function (t) {
   sandbox.newMoveBvr.finalize = sinon.fake();
   sandbox.saveMoveBvr.saveItem(moves[1].id, {});
   t.calledOnceWith(
-    actUpdateMoves, [[moves[1]]],
-    "Saving a move should call actUpdateMoves"
+    actAddMoves, [[moves[1]]],
+    "Saving a move should call actAddMoves"
   );
   t.calledOnceWith(
     sandbox.newMoveBvr.finalize, [false],
@@ -287,22 +289,11 @@ test('test useSaveMove', function (t) {
     "Saving a move should call setIsEditing(false)"
   );
   t.calledOnceWith(
-    saveMove, [false, moves[1]],
+    saveMove, [moves[1]],
     "Saving a move should call saveMove"
   );
 
   sinon.reset();
-
-  sandbox.newMoveBvr.addNewItem();
-  sandbox.newMoveBvr.finalize = sinon.fake();
-  sandbox.saveMoveBvr.saveItem(
-    !!sandbox.newMoveBvr.newItem && sandbox.newMoveBvr.newItem.id, {}
-  );
-
-  t.calledOnceWith(
-    saveMove, [true, sandbox.newMoveBvr.newItem],
-    "Saving a new move should use isNewMove=true"
-  );
 
   t.end();
 });

@@ -23,3 +23,5 @@ export function findMoveBySlugid(moves: Array<MoveT>, slugid: string) {
 }
 
 export const newMoveSlug = 'new-move';
+
+export const newMoveListSlug = 'new-move-list';

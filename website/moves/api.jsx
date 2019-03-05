@@ -3,14 +3,16 @@
 import { flatten } from 'utils/utils'
 import { normalize, schema } from 'normalizr';
 import { client, doQuery } from 'app/client';
-import type { TipT, VideoLinkT, MoveT } from 'moves/types'
+import type {
+  TipT, VideoLinkT, MoveT, MoveListT, MovePrivateDataT
+} from 'moves/types'
 import type { UUID } from 'app/types';
 
 
 // Api moves
 
 export function saveVideoLink(
-  create: boolean, moveId: UUID, values: VideoLinkT
+  moveId: UUID, values: VideoLinkT
 ) {
   if (
     !values.url.startsWith('http://') &&
@@ -22,14 +24,12 @@ export function saveVideoLink(
   }
   return doQuery(
     `mutation saveVideoLink(
-      $create: Boolean!,
       $id: String!,
       $moveId: String!
       $url: String!,
       $title: String!,
     ) {
       saveVideoLink(
-        create: $create,
         pk: $id,
         moveId: $moveId,
         url: $url,
@@ -39,24 +39,21 @@ export function saveVideoLink(
     {
       ...values,
       moveId,
-      create,
     }
   )
 }
 
 
 export function saveTip(
-  create: boolean, moveId: UUID, values: TipT
+  moveId: UUID, values: TipT
 ) {
   return doQuery(
     `mutation saveTip(
-      $create: Boolean!,
       $id: String!,
       $moveId: String!
       $text: String!,
     ) {
       saveTip(
-        create: $create,
         pk: $id,
         moveId: $moveId,
         text: $text,
@@ -65,16 +62,38 @@ export function saveTip(
     {
       ...values,
       moveId,
-      create,
     }
   )
 }
 
 
-export function saveMove(create: boolean, values: MoveT) {
+export function saveMoveList(values: MoveListT) {
+  return doQuery(
+    `mutation saveMoveList(
+      $id: String!,
+      $name: String!,
+      $slug: String!,
+      $description: String!,
+      $tags: [String]!
+    ) {
+      saveMoveList(
+        pk: $id,
+        name: $name,
+        slug: $slug,
+        description: $description,
+        tags: $tags
+      ) { ok }
+    }`,
+    {
+      ...values,
+    }
+  )
+}
+
+
+export function saveMove(values: MoveT) {
   return doQuery(
     `mutation saveMove(
-      $create: Boolean!,
       $id: String!,
       $name: String!,
       $slug: String!,
@@ -83,7 +102,6 @@ export function saveMove(create: boolean, values: MoveT) {
       $tags: [String]!
     ) {
       saveMove(
-        create: $create,
         pk: $id,
         name: $name,
         slug: $slug,
@@ -94,18 +112,37 @@ export function saveMove(create: boolean, values: MoveT) {
     }`,
     {
       ...values,
-      create: create
     }
   )
 }
 
-export function saveMoveListOrdering(moveListId: UUID, moveIds: Array<number>) {
+
+export function saveMovePrivateData(values: MovePrivateDataT) {
   return doQuery(
-    `mutation saveMoveListOrdering(
+    `mutation saveMovePrivateData(
+      $id: String!,
+      $moveId: String!,
+      $notes: String!,
+    ) {
+      saveMovePrivateData(
+        pk: $id,
+        moveId: $moveId,
+        notes: $notes,
+      ) { ok }
+    }`,
+    {
+      ...values
+    }
+  )
+}
+
+export function saveMoveOrdering(moveListId: UUID, moveIds: Array<number>) {
+  return doQuery(
+    `mutation saveMoveOrdering(
       $moveListId: String!,
       $moveIds: [String]!,
     ) {
-      saveMoveListOrdering(
+      saveMoveOrdering(
         moveListId: $moveListId,
         moveIds: $moveIds
       ) { ok }
@@ -113,6 +150,21 @@ export function saveMoveListOrdering(moveListId: UUID, moveIds: Array<number>) {
     {
       moveListId,
       moveIds
+    }
+  )
+}
+
+export function saveMoveListOrdering(moveListIds: Array<number>) {
+  return doQuery(
+    `mutation saveMoveListOrdering(
+      $moveListIds: [String]!,
+    ) {
+      saveMoveListOrdering(
+        moveIds: $moveIds
+      ) { ok }
+    }`,
+    {
+      moveListIds
     }
   )
 }
@@ -209,9 +261,18 @@ export function loadMovePrivateDatas() {
       movePrivateDatas {
         id
         notes
+        move {
+          id
+        }
       }
     }`
   )
+  .then(result => flatten(
+      result,
+      [
+        '/movePrivateDatas/*/move',
+      ]
+    ))
   .then(result => normalize(result.movePrivateDatas, [movePrivateData]))
 }
 

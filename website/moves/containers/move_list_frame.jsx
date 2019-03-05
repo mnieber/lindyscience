@@ -8,16 +8,16 @@ import * as fromAppStore from 'app/reducers'
 import * as React from 'react'
 import { navigate } from "@reach/router"
 import { connect } from 'react-redux'
-import { createErrorHandler } from 'utils/utils'
+import { createErrorHandler } from 'app/utils'
 import { MoveListPanel } from 'moves/presentation/move_list_panel';
 import { makeSlugidMatcher, makeMoveListUrl, findMoveBySlugid, newMoveSlug } from 'moves/utils';
 import {
   useInsertMove, useNewMove, useSaveMove, MoveCrudBvrsContext
 } from 'moves/containers/move_crud_behaviours'
 import type {
-  MoveListT, VideoLinksByIdT, TagT, MoveT, MoveCrudBvrsT
+  MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT
 } from 'moves/types'
-import type { UUID, UserProfileT, SlugidT } from 'app/types';
+import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
 import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
 
 
@@ -104,7 +104,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     insertMoveBvr.preview,
     newMoveBvr,
     setIsEditing,
-    actions.actUpdateMoves,
+    actions.actAddMoves,
     createErrorHandler
   );
 

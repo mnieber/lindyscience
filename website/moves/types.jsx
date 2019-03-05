@@ -4,7 +4,7 @@
 // Types
 ///////////////////////////////////////////////////////////////////////
 
-import type { UUID } from 'app/types';
+import type { UUID, TagT } from 'app/types';
 import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
 
 export type DifficultyT = '' | 'beg' | 'beg/int' | 'int' | 'int/adv' | 'adv';
@@ -19,15 +19,16 @@ export type MoveT = {
   name: string,
   slug: string,
   ownerId: number,
+  privateData: ?MovePrivateDataT
 };
 
 export type MoveListT = {
   id: UUID,
-  tags: Array<TagT>,
-  moves: Array<UUID>,
   name: string,
   slug: string,
   description: string,
+  tags: Array<TagT>,
+  moves: Array<UUID>,
   ownerId: number,
   ownerUsername: string,
 };
@@ -82,13 +83,11 @@ export type VideoLinksByIdT = {
   [UUID]: Array<VideoLinkT>
 };
 
-export type TagT = string;
-
-export type TagMapT = {
-  [TagT]: boolean
+export type MovePrivateDataT = {
+  notes: string,
 };
 
-export type MovePrivateDataByIdT = {[UUID]: {}};
+export type MovePrivateDataByIdT = {[UUID]: MovePrivateDataT};
 
 export type MoveCrudBvrsT = {
   newMoveBvr: NewMoveBvrT,

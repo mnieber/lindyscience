@@ -56,7 +56,7 @@ test('test actSetMoveListFilter with duplicate slugs', function (t) {
   const swingOut = getObjectValues(data.moves)[0];
   swingOut.slug = getObjectValues(data.moves)[1].slug;
   store.dispatch(
-    actions.actUpdateMoves([swingOut])
+    actions.actAddMoves([swingOut])
   );
 
   store.dispatch(
@@ -80,7 +80,7 @@ test('test actInsertMoves', function (t) {
     const newMoves = [move1, move2];
     const newMoveIds = newMoves.map(x => x.id);
 
-    store.dispatch(actions.actUpdateMoves(newMoves));
+    store.dispatch(actions.actAddMoves(newMoves));
     const moveIdsInList = store.dispatch(
       actions.actInsertMoves(
         newMoveIds,

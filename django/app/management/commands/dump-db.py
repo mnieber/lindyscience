@@ -8,7 +8,7 @@ from ._utils import git_repo
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
-        pass
+        parser.add_arguments('--print-pw', action='store_true')
 
     def _branch_or_server_name(self):
         if not git_repo():
@@ -37,7 +37,9 @@ class Command(BaseCommand):
         if not os.path.exists(settings.DUMP_DB_DIR):
             os.makedirs(settings.DUMP_DB_DIR)
 
-        print(settings.DATABASES['default']['PASSWORD'])
+        if args.print_pw:
+            print(settings.DATABASES['default']['PASSWORD'])
+
         dump_filename = os.path.join(settings.DUMP_DB_DIR, basename)
         pg_dump("-U", settings.DATABASES['default']['USER'], "-h",
                 settings.DATABASES['default']['HOST'], "-p",

@@ -1,11 +1,10 @@
 from __future__ import absolute_import, unicode_literals
 
-from .base import *
+from .base import *  # noqa
 
 ALLOWED_HOSTS = ['*']
 
 DEBUG = True
-ALLOW_DESTRUCTIVE = True
 
 INSTALLED_APPS += ['anonymizer']
 
@@ -23,6 +22,6 @@ if os.environ.get('PG_PORT_5432_TCP_ADDR'):
     }
 
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
     pass

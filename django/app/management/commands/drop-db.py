@@ -1,6 +1,7 @@
+import sys
 from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
-from ._utils import drop_db, create_db
+from django.core.management.base import BaseCommand
+from ._utils import drop_db, create_db, query_yes_no
 
 
 class Command(BaseCommand):
@@ -10,8 +11,10 @@ class Command(BaseCommand):
     def handle(self, force, *args, **options):
         db = settings.DATABASES['default']['NAME']
 
-        if not settings.ALLOW_DESTRUCTIVE and not force:
-            raise CommandError("Destructive operation not allowed")
+        if not force and not query_yes_no(
+            "About to drop the current database: %s. Continue?" % db
+        ):
+            sys.exit(1)
 
         print(settings.DATABASES['default']['PASSWORD'])
         drop_db(db)

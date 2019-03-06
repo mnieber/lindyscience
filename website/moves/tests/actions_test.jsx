@@ -9,7 +9,7 @@ import { test } from 'tape'
 import { Thunk, FlushThunks } from 'redux-testkit';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
-import { _createNewMove } from 'moves/containers/move_crud_behaviours'
+import { createNewMove } from 'moves/containers/move_crud_behaviours'
 
 function _setUp() {
   const flushThunks = FlushThunks.createMiddleware();
@@ -50,11 +50,14 @@ test('test actSetMoveListFilter', function (t) {
   t.end();
 });
 
-test.only('test actSetMoveListFilter with duplicate slugs', function (t) {
+test('test actSetMoveListFilter with duplicate slugs', function (t) {
   const {store} = _setUp();
 
   const swingOut = getObjectValues(data.moves)[0];
   swingOut.slug = getObjectValues(data.moves)[1].slug;
+  store.dispatch(
+    actions.actUpdateMoves([swingOut])
+  );
 
   store.dispatch(
     actions.actSetHighlightedMoveBySlug(swingOut.slug)
@@ -71,22 +74,26 @@ test.only('test actSetMoveListFilter with duplicate slugs', function (t) {
 
 test('test actInsertMoves', function (t) {
   const {store} = _setUp();
-  const newMoves = [_createNewMove(data.profile1.userId), _createNewMove(data.profile1.userId)];
-  const newMoveIds = newMoves.map(x => x.id);
+  const move1 = createNewMove(data.profile1);
+  const move2 = createNewMove(data.profile1);
+  if (move1 && move2) {
+    const newMoves = [move1, move2];
+    const newMoveIds = newMoves.map(x => x.id);
 
-  store.dispatch(actions.actUpdateMoves(newMoves));
-  const moveIdsInList = store.dispatch(
-    actions.actInsertMoves(
-      newMoveIds,
-      data.moveList1.id,
-      ""
+    store.dispatch(actions.actUpdateMoves(newMoves));
+    const moveIdsInList = store.dispatch(
+      actions.actInsertMoves(
+        newMoveIds,
+        data.moveList1.id,
+        ""
+      )
+    );
+
+    t.deepEqual(
+      moveIdsInList.sort(),
+      [...data.moveList1.moves, ...newMoveIds].sort()
     )
-  );
-
-  t.deepEqual(
-    moveIdsInList.sort(),
-    [...data.moveList1.moves, ...newMoveIds].sort()
-  )
+  }
   t.end();
 });
 

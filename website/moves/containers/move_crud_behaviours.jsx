@@ -2,95 +2,29 @@
 
 import * as api from 'moves/api'
 import { newMoveSlug } from 'moves/utils'
-import { querySetListToDict, slugify, isNone } from 'utils/utils'
+import { slugify } from 'utils/utils'
 import * as React from 'react'
-import type { TagT, MoveT, DifficultyT } from 'moves/types'
-import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
+import {
+  useInsertItem, useNewItem, useSaveItem
+} from 'moves/containers/crud_behaviours'
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
+import type { TagT, MoveT, MoveListT, DifficultyT } from 'moves/types'
+import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
+import type {
+  InsertItemBvrT, NewItemBvrT, SaveItemBvrT
+} from 'moves/containers/crud_behaviours'
 
 
 // $FlowFixMe
 export const MoveCrudBvrsContext = React.createContext({});
 
 
-// InsertMove Behaviour
-
-export type InsertMoveBvrT = {|
-  preview: Array<MoveT>,
-  previewMove: ?MoveT,
-  prepare: Function,
-  finalize: Function,
-  insertDirectly: Function
-|};
-
-export function useInsertMove(
-  moves: Array<MoveT>,
-  actInsertMoves: Function,
-  moveListId: UUID,
-  createErrorHandler: Function
-): InsertMoveBvrT {
-  const [targetMoveId, setTargetMoveId] = React.useState("");
-  const [previewMove, setPreviewMove] = React.useState(null);
-
-  const preview = !previewMove
-    ? moves
-    : moves.reduce(
-      (acc, move) => {
-        if (move.id != previewMove.id) {
-          acc.push(move);
-        }
-        if (move.id == targetMoveId) {
-          acc.push(previewMove);
-        }
-        return acc;
-      },
-      targetMoveId ? [] : [previewMove]
-    );
-
-  function insertDirectly(
-    previewMoveId: UUID, targetMoveId: UUID, isBefore: boolean
-  ) {
-    if (isBefore) {
-      const idx = moves.findIndex(x => x.id == targetMoveId) - 1;
-      targetMoveId = idx < 0 ? "" : moves[idx].id;
-    }
-    const allMoveIds = actInsertMoves([previewMoveId], moveListId, targetMoveId);
-    api.saveMoveListOrdering(moveListId, allMoveIds)
-      .catch(createErrorHandler("We could not update the move list"));
+export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
+  if (!userProfile) {
+    return null;
   }
 
-  function prepare(targetMoveId: UUID, move: MoveT) {
-    if (move) {
-      setPreviewMove(move);
-      setTargetMoveId(targetMoveId);
-    }
-  }
-
-  function finalize(isCancel: boolean) {
-    const result = targetMoveId;
-    if (previewMove && !isCancel) {
-      insertDirectly(previewMove.id, targetMoveId, false)
-    }
-    setPreviewMove(null);
-    setTargetMoveId("");
-    return result;
-  }
-
-  return {preview, previewMove, prepare, finalize, insertDirectly};
-}
-
-
-// NewMove Behaviour
-
-export type NewMoveBvrT = {|
-  newMove: ?MoveT,
-  addNewMove: Function,
-  finalize: Function,
-  setHighlightedMoveId: Function,
-|};
-
-export function _createNewMove(userId: number): MoveT {
   return {
     id: uuidv4(),
     slug: newMoveSlug,
@@ -100,85 +34,71 @@ export function _createNewMove(userId: number): MoveT {
     tips: [],
     videoLinks: [],
     tags: [],
-    ownerId: userId,
+    ownerId: userProfile.userId,
     privateData: {},
   };
 }
 
+
+// InsertMove Behaviour
+
+export type InsertMoveBvrT = InsertItemBvrT<MoveT>;
+
+export function useInsertMove(
+  moves: Array<MoveT>,
+  actInsertMoves: Function,
+  moveListId: UUID,
+  createErrorHandler: Function
+): InsertMoveBvrT {
+  function _insertMove(move: MoveT, targetMoveId: UUID) {
+    const allMoveIds = actInsertMoves([move.id], moveListId, targetMoveId);
+    api.saveMoveListOrdering(moveListId, allMoveIds)
+      .catch(createErrorHandler("We could not update the move list"));
+  }
+
+  return useInsertItem(moves, _insertMove);
+}
+
+
+// NewMove Behaviour
+
+export type NewMoveBvrT = NewItemBvrT<MoveT>;
+
 export function useNewMove(
   userProfile: ?UserProfileT,
-  highlightedMoveId: UUID,
   setHighlightedMoveId: Function,
+  highlightedMoveId: UUID,
   insertMoveBvr: InsertMoveBvrT,
   setIsEditing: Function,
 ): NewMoveBvrT {
-  const [newMove, setNewMove] = React.useState(null);
-
-  // Only change the highlight after rendering
-  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
-  React.useEffect(
-    () => {(nextHighlightedMoveId != null) && setHighlightedMoveId(nextHighlightedMoveId)},
-    [nextHighlightedMoveId]
-  )
-
-  // Store a new move in the function's state
-  function addNewMove() {
-    if (userProfile && !newMove) {
-      const newMove = _createNewMove(userProfile.userId);
-      setNewMove(newMove);
-      insertMoveBvr.prepare(highlightedMoveId, newMove);
-      setNextHighlightedMoveId(newMove.id);
-      setIsEditing(true);
-    }
+  function _createNewMove() {
+    return createNewMove(userProfile);
   }
 
-  // Remove new move from the function's state
-  function finalize(isCancel: boolean) {
-    setIsEditing(false);
-    const targetMoveId = insertMoveBvr.finalize(isCancel);
-    if (newMove && isCancel) {
-      setNextHighlightedMoveId(targetMoveId);
-    }
-    setNewMove(null);
-  }
-
-  function setHighlightedMoveIdExt(moveId: UUID) {
-    // Cancel the new move if the highlight moves elsewhere
-    if (newMove && moveId != newMove.id) {
-      finalize(true);
-    }
-    setNextHighlightedMoveId(moveId);
-  }
-
-  return {
-    newMove,
-    addNewMove,
-    finalize,
-    setHighlightedMoveId: setHighlightedMoveIdExt
-  };
+  return useNewItem(
+    highlightedMoveId,
+    setHighlightedMoveId,
+    insertMoveBvr,
+    setIsEditing,
+    _createNewMove,
+  );
 }
 
 
 // SaveMove Behaviour
 
-export type SaveMoveBvrT = {
-  saveMove: Function,
-  discardChanges: Function,
-};
+export type SaveMoveBvrT = SaveItemBvrT<MoveT>;
 
 export function useSaveMove(
   moves: Array<MoveT>,
   newMoveBvr: NewMoveBvrT,
-  disableEditing: Function,
+  setIsEditing: Function,
   actUpdateMoves: Function,
   createErrorHandler: Function,
 ): SaveMoveBvrT {
-  type IncompleteValuesT = {|
+  type IncompleteValuesT = {
     name: string,
-    description: string,
-    difficulty: DifficultyT,
-    tags: Array<TagT>,
-  |};
+  };
 
   function _completeMove(id: UUID, incompleteValues: IncompleteValuesT): MoveT {
     // $FlowFixMe
@@ -194,21 +114,12 @@ export function useSaveMove(
     };
   }
 
-  function saveMove(id: UUID, incompleteValues: IncompleteValuesT) {
+  function _saveMove(isNewMove, id: UUID, incompleteValues: IncompleteValuesT) {
     const move = _completeMove(id, incompleteValues);
     actUpdateMoves([move]);
-    newMoveBvr.finalize(false);
-    disableEditing();
-
-    const isNewMove = !!newMoveBvr.newMove && newMoveBvr.newMove.id == id;
     return api.saveMove(isNewMove, move)
       .catch(createErrorHandler('We could not save the move'));
   }
 
-  function discardChanges() {
-    newMoveBvr.finalize(true);
-    disableEditing();
-  }
-
-  return {saveMove, discardChanges};
+  return useSaveItem<MoveT>(moves, newMoveBvr, setIsEditing, _saveMove);
 }

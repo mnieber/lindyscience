@@ -19,3 +19,7 @@ export type VoteByIdT = {
 };
 
 export type SlugidT = string;
+
+export type ObjectT = {
+  id: UUID
+};

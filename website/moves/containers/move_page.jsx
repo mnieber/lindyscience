@@ -56,7 +56,7 @@ function _createOwnMove(move: MoveT, props: _MovePagePropsT, bvrs: MoveCrudBvrsT
           userProfile={props.userProfile}
           autoFocus={true}
           move={move}
-          onSubmit={bvrs.saveMoveBvr.saveMove}
+          onSubmit={bvrs.saveMoveBvr.saveItem}
           onCancel={bvrs.saveMoveBvr.discardChanges}
           knownTags={props.moveTags}
         />
@@ -107,7 +107,7 @@ function _createOwnMove(move: MoveT, props: _MovePagePropsT, bvrs: MoveCrudBvrsT
 
 
 type _MovePagePropsT = MovePagePropsT & {
-  bvrs: any
+  bvrs: MoveCrudBvrsT
 };
 
 function _MovePage(props: _MovePagePropsT) {
@@ -116,9 +116,9 @@ function _MovePage(props: _MovePagePropsT) {
       if (
         props.moveSlug == newMoveSlug &&
         props.userProfile &&
-        !props.bvrs.newMoveBvr.newMove
+        !props.bvrs.newMoveBvr.newItem
       ) {
-        props.bvrs.newMoveBvr.addNewMove();
+        props.bvrs.newMoveBvr.addNewItem();
       }
       props.actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId)
     },

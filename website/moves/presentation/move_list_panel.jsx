@@ -24,7 +24,7 @@ function createHandlers(
   moveListRef: any,
 ): HandlersT {
   const onDrop = (sourceMoveId, targetMoveId, isBefore) => {
-    if (bvrs.newMoveBvr.newMove?.id != sourceMoveId) {
+    if (bvrs.newMoveBvr.newItem?.id != sourceMoveId) {
       bvrs.insertMoveBvr.insertDirectly(sourceMoveId, targetMoveId, isBefore);
     }
   }
@@ -81,7 +81,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
 
   const moveListHeader =
     <MoveListHeader
-      addNewMove={props.bvrs.newMoveBvr.addNewMove}
+      addNewMove={props.bvrs.newMoveBvr.addNewItem}
       className="py-4"
     />
 
@@ -101,7 +101,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       ref={moveListRef}
       className=""
       videoLinksByMoveId={props.videoLinksByMoveId}
-      setHighlightedMoveId={props.bvrs.newMoveBvr.setHighlightedMoveId}
+      setHighlightedMoveId={props.bvrs.newMoveBvr.setHighlightedItemId}
       moves={props.bvrs.insertMoveBvr.preview}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       onDrop={handlers.onDrop}
@@ -112,7 +112,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       moves={props.bvrs.insertMoveBvr.preview}
       videoLinksByMoveId={props.videoLinksByMoveId}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
-      setHighlightedMoveId={props.bvrs.newMoveBvr.setHighlightedMoveId}
+      setHighlightedMoveId={props.bvrs.newMoveBvr.setHighlightedItemId}
       className=""
     />
 

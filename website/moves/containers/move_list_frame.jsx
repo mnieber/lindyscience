@@ -8,10 +8,9 @@ import * as fromAppStore from 'app/reducers'
 import * as React from 'react'
 import { navigate } from "@reach/router"
 import { connect } from 'react-redux'
-import { makeMoveListUrl, makeSlugidMatcher } from 'moves/utils'
 import { createErrorHandler } from 'utils/utils'
 import { MoveListPanel } from 'moves/presentation/move_list_panel';
-import { findMoveBySlugid, newMoveSlug } from 'moves/utils';
+import { makeSlugidMatcher, makeMoveListUrl, findMoveBySlugid, newMoveSlug } from 'moves/utils';
 import {
   useInsertMove, useNewMove, useSaveMove, MoveCrudBvrsContext
 } from 'moves/containers/move_crud_behaviours'
@@ -31,20 +30,19 @@ export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boo
 }
 
 
-function _setHighlightedMoveId(
-  moveList: ?MoveListT, allMoves: Array<MoveT>, moveId: UUID
-) {
-  const move = allMoves.find(x => x.id == moveId) || allMoves.find(x => true);
-  if (moveList && move) {
+function _setHighlightedMoveId(moves: Array<MoveT>, moveId: UUID, moveListUrl: string) {
+  const move = (
+    moves.find(x => x.id == moveId) ||
+    moves.find(x => true)
+  );
+
+  if (move) {
     const matcher = makeSlugidMatcher(move.slug);
-    const isSlugUnique = allMoves.filter(matcher).length <= 1;
+    const isSlugUnique = moves.filter(matcher).length <= 1;
     const updateProfile = move.slug != newMoveSlug;
+    const maybeMoveId = isSlugUnique ? "" : (move ? move.id : "");
     browseToMove(
-      [
-        makeMoveListUrl(moveList),
-        move.slug,
-        isSlugUnique ? "" : (move ? move.id : ""),
-      ],
+      [moveListUrl, move.slug, maybeMoveId],
       updateProfile
     );
   }
@@ -69,10 +67,6 @@ export type _MoveListFramePropsT = {
 function _MoveListFrame(props: _MoveListFramePropsT) {
   const actions: any = props;
 
-  const highlightedMoveInStore = findMoveBySlugid(
-    props.moves, props.highlightedMoveSlugid
-  );
-
   const [isEditing, setIsEditing] = React.useState(false);
 
   const insertMoveBvr: InsertMoveBvrT = useInsertMove(
@@ -82,10 +76,26 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     createErrorHandler
   );
 
+  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
+  React.useEffect(
+    () => {
+      if (props.moveList && nextHighlightedMoveId != null) {
+        _setHighlightedMoveId(
+          insertMoveBvr.preview, nextHighlightedMoveId, makeMoveListUrl(props.moveList)
+        );
+      }
+    },
+    [nextHighlightedMoveId]
+  )
+
+  const highlightedMoveInStore = findMoveBySlugid(
+    props.moves, props.highlightedMoveSlugid
+  );
+
   const newMoveBvr: NewMoveBvrT = useNewMove(
     props.userProfile,
+    setNextHighlightedMoveId,
     highlightedMoveInStore ? highlightedMoveInStore.id : "",
-    moveId => _setHighlightedMoveId(props.moveList, insertMoveBvr.preview, moveId),
     insertMoveBvr,
     setIsEditing,
   );

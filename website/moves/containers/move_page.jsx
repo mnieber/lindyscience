@@ -52,7 +52,6 @@ type MovePagePropsT = {
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
   tipsByMoveId: TipsByIdT,
-  moveLists: Array<MoveListT>,
   moveTags: Array<TagT>,
   moveList: MoveListT,
   highlightedMoveSlugid: SlugidT,
@@ -62,11 +61,9 @@ type MovePagePropsT = {
   moveId: ?UUID,
 };
 
-
 type _MovePagePropsT = MovePagePropsT & {
-  bvrs: MoveCrudBvrsT
+  moveCrudBvrs: MoveCrudBvrsT
 };
-
 
 function _createStaticMove(move: MoveT, props: _MovePagePropsT, actions: any) {
   const tipsPanel =
@@ -164,9 +161,9 @@ function _MovePage(props: _MovePagePropsT) {
       if (
         props.userProfile &&
         props.moveSlug == newMoveSlug &&
-        !props.bvrs.newMoveBvr.newItem
+        !props.moveCrudBvrs.newMoveBvr.newItem
       ) {
-        props.bvrs.newMoveBvr.addNewItem();
+        props.moveCrudBvrs.newMoveBvr.addNewItem();
       }
       props.actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId)
     },
@@ -174,7 +171,7 @@ function _MovePage(props: _MovePagePropsT) {
   );
 
   const move = findMoveBySlugid(
-    props.bvrs.insertMoveBvr.preview,
+    props.moveCrudBvrs.insertMoveBvr.preview,
     props.highlightedMoveSlugid
   );
 
@@ -183,18 +180,19 @@ function _MovePage(props: _MovePagePropsT) {
   }
 
   return isOwner(props.userProfile, move.ownerId)
-    ? _createOwnMove(move, props, props.bvrs, actions)
+    ? _createOwnMove(move, props, props.moveCrudBvrs, actions)
     : _createStaticMove(move, props, actions)
 }
 
 
 export function MovePage(props: MovePagePropsT) {
   return (
-    <MoveCrudBvrsContext.Consumer>
-      {
-        bvrs => <_MovePage {...props} bvrs={bvrs} actions={props}/>
-      }
-    </MoveCrudBvrsContext.Consumer>
+    <MoveCrudBvrsContext.Consumer>{moveCrudBvrs =>
+      <_MovePage
+        {...props}
+        moveCrudBvrs={moveCrudBvrs}
+      />
+    }</MoveCrudBvrsContext.Consumer>
   );
 }
 
@@ -204,7 +202,6 @@ MovePage = connect(
     userProfile: fromAppStore.getUserProfile(state.app),
     videoLinksByMoveId: fromStore.getVideoLinksByMoveId(state.moves),
     tipsByMoveId: fromStore.getTipsByMoveId(state.moves),
-    moveLists: fromStore.getMoveLists(state.moves),
     moveTags: fromStore.getMoveTags(state.moves),
     moveList: fromStore.getSelectedMoveList(state.moves),
     highlightedMoveSlugid: fromStore.getHighlightedMoveSlugid(state.moves),

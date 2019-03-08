@@ -16,6 +16,10 @@ import type {
 } from 'moves/containers/crud_behaviours'
 
 
+// $FlowFixMe
+export const MoveListCrudBvrsContext = React.createContext({});
+
+
 export function createNewMoveList(userProfile: ?UserProfileT): ?MoveListT {
   if (!userProfile) {
     return null;

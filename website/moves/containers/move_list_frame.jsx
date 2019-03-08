@@ -6,28 +6,25 @@ import * as api from 'moves/api'
 import * as fromStore from 'moves/reducers'
 import * as fromAppStore from 'app/reducers'
 import * as React from 'react'
-import { navigate } from "@reach/router"
 import { connect } from 'react-redux'
 import { createErrorHandler } from 'app/utils'
 import { MoveListPanel } from 'moves/presentation/move_list_panel';
-import { makeSlugidMatcher, makeMoveListUrl, findMoveBySlugid, newMoveSlug } from 'moves/utils';
+import { browseToMove } from 'app/containers/appframe';
+import {
+  makeSlugidMatcher,
+  makeMoveListUrl,
+  findMoveBySlugid,
+  newMoveSlug,
+} from 'moves/utils';
 import {
   useInsertMove, useNewMove, useSaveMove, MoveCrudBvrsContext
 } from 'moves/containers/move_crud_behaviours'
+import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'
 import type {
-  MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT
+  MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT, MoveListCrudBvrsT
 } from 'moves/types'
 import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
 import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
-
-
-export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boolean=true) {
-  const moveUrl = moveUrlParts.filter(x => !!x).join('/');
-  navigate(`/app/list/${moveUrl}`);
-  if (mustUpdateProfile) {
-    api.updateProfile(moveUrl);
-  }
-}
 
 
 function _setHighlightedMoveById(moves: Array<MoveT>, moveId: UUID, moveListUrl: string) {
@@ -49,23 +46,15 @@ function _setHighlightedMoveById(moves: Array<MoveT>, moveId: UUID, moveListUrl:
 }
 
 
-// MoveListFrame
-
-export type _MoveListFramePropsT = {
-  userProfile: UserProfileT,
-  videoLinksByMoveId: VideoLinksByIdT,
-  moves: Array<MoveT>,
-  allMoves: Array<MoveT>,
-  moveTags: Array<TagT>,
-  moveLists: Array<MoveListT>,
-  highlightedMoveSlugid: SlugidT,
-  moveList: ?MoveListT,
-  children: any,
-  // receive any actions as well
-};
-
-function _MoveListFrame(props: _MoveListFramePropsT) {
+function _createMoveCrudBvrs(
+  props: MoveListFramePropsT,
+  setNextHighlightedMoveId: Function,
+): MoveCrudBvrsT {
   const actions: any = props;
+
+  const highlightedMoveInStore = findMoveBySlugid(
+    props.moves, props.highlightedMoveSlugid
+  );
 
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -74,22 +63,6 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     actions.actInsertMoves,
     props.moveList ? props.moveList.id : "",
     createErrorHandler
-  );
-
-  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
-  React.useEffect(
-    () => {
-      if (props.moveList && nextHighlightedMoveId != null) {
-        _setHighlightedMoveById(
-          insertMoveBvr.preview, nextHighlightedMoveId, makeMoveListUrl(props.moveList)
-        );
-      }
-    },
-    [nextHighlightedMoveId]
-  )
-
-  const highlightedMoveInStore = findMoveBySlugid(
-    props.moves, props.highlightedMoveSlugid
   );
 
   const newMoveBvr: NewMoveBvrT = useNewMove(
@@ -116,29 +89,68 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     saveMoveBvr
   };
 
+  return bvrs;
+}
+
+
+// MoveListFrame
+
+type MoveListFramePropsT = {
+  userProfile: UserProfileT,
+  videoLinksByMoveId: VideoLinksByIdT,
+  moves: Array<MoveT>,
+  allMoves: Array<MoveT>,
+  moveTags: Array<TagT>,
+  moveLists: Array<MoveListT>,
+  highlightedMoveSlugid: SlugidT,
+  moveList: ?MoveListT,
+  children: any,
+  // receive any actions as well
+  ownerUsername: string,
+  moveListSlug: string,
+};
+
+type _MoveListFramePropsT = MoveListFramePropsT & {
+  moveListCrudBvrs: MoveListCrudBvrsT
+};
+
+function _MoveListFrame(props: _MoveListFramePropsT) {
+  const actions: any = props;
+
+  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
+  const moveCrudBvrs = _createMoveCrudBvrs(props, setNextHighlightedMoveId);
+  React.useEffect(
+    () => {
+      if (props.moveList && nextHighlightedMoveId != null) {
+        _setHighlightedMoveById(
+          moveCrudBvrs.insertMoveBvr.preview,
+          nextHighlightedMoveId,
+          makeMoveListUrl(props.moveList)
+        );
+      }
+    },
+    [nextHighlightedMoveId]
+  )
+
   return (
     <MoveListPanel
       userProfile={props.userProfile}
       videoLinksByMoveId={props.videoLinksByMoveId}
-      bvrs={bvrs}
+      moveCrudBvrs={moveCrudBvrs}
+      moveListCrudBvrs={props.moveListCrudBvrs}
       moveTags={props.moveTags}
       moveLists={props.moveLists}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       moveList={props.moveList}
       actSetMoveListFilter={actions.actSetMoveListFilter}
     >
-      <MoveCrudBvrsContext.Provider value={bvrs}>
+      <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>
         {props.children}
       </MoveCrudBvrsContext.Provider>
     </MoveListPanel>
   )
 }
 
-
-type MoveListFramePropsT = _MoveListFramePropsT & {
-  ownerUsername: string,
-  moveListSlug: string,
-};
 
 function MoveListFrame(props: MoveListFramePropsT) {
   const actions: any = props;
@@ -148,7 +160,14 @@ function MoveListFrame(props: MoveListFramePropsT) {
     [props.ownerUsername, props.moveListSlug,]
   );
 
-  return _MoveListFrame(props);
+  return (
+    <MoveListCrudBvrsContext.Consumer>{moveListCrudBvrs =>
+      <_MoveListFrame
+        {...props}
+        moveListCrudBvrs={moveListCrudBvrs}
+      />
+    }</MoveListCrudBvrsContext.Consumer>
+  );
 }
 
 

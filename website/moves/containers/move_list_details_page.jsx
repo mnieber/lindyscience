@@ -8,33 +8,14 @@ import * as fromStore from 'moves/reducers'
 import * as fromAppStore from 'app/reducers'
 import { MoveListDetails } from 'moves/presentation/move_list_details'
 import { MoveListForm } from 'moves/presentation/move_list_form'
-import { browseToMove } from 'moves/containers/move_list_frame'
 import { isOwner, createErrorHandler } from 'app/utils'
-import { findMoveListByUrl, newMoveListSlug } from 'moves/utils'
-import {
-  useInsertMoveList, useNewMoveList, useSaveMoveList
-} from 'moves/containers/move_list_crud_behaviours'
+import { findMoveListByUrl } from 'moves/utils'
+import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'
 import type { UUID, UserProfileT, TagT } from 'app/types';
 import type { MoveListT, MoveListCrudBvrsT } from 'moves/types'
-import type {
-  InsertMoveListBvrT, NewMoveListBvrT, SaveMoveListBvrT
-} from 'moves/containers/move_list_crud_behaviours'
 
 
-function _setSelectedMoveListByUrl(moveLists: Array<MoveListT>, moveListUrl: string) {
-  const moveList = (
-    findMoveListByUrl(moveLists, moveListUrl) ||
-    moveLists.find(x => true)
-  );
-
-  if (moveList) {
-    const updateProfile = moveList.slug != newMoveListSlug;
-    browseToMove([moveListUrl], updateProfile);
-  }
-}
-
-
-export type MoveListDetailsPagePropsT = {
+type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
   moveLists: Array<MoveListT>,
   moveListTags: Array<TagT>,
@@ -42,9 +23,12 @@ export type MoveListDetailsPagePropsT = {
   // receive any actions as well
 };
 
+type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT & {
+  moveListCrudBvrs: MoveListCrudBvrsT
+};
 
 function _createStaticMoveListDetails(
-  moveList: MoveListT, props: MoveListDetailsPagePropsT
+  moveList: MoveListT, props: _MoveListDetailsPagePropsT
 ) {
   return (
     <MoveListDetails
@@ -57,24 +41,24 @@ function _createStaticMoveListDetails(
 
 
 function _createOwnMoveListDetails(
-  moveList: MoveListT, props: MoveListDetailsPagePropsT, bvrs: MoveListCrudBvrsT) {
+  moveList: MoveListT, props: _MoveListDetailsPagePropsT) {
 
   const editBtn =
     <div
       className={"button button--wide ml-2"}
-      onClick={() => bvrs.setIsEditing(true)}
+      onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
       key={1}
     >
     Edit
     </div>;
 
-  const div = bvrs.isEditing
+  const div = props.moveListCrudBvrs.isEditing
     ? <MoveListForm
       autoFocus={true}
       knownTags={props.moveListTags}
       moveList={moveList}
-      onSubmit={bvrs.saveMoveListBvr.saveItem}
-      onCancel={bvrs.saveMoveListBvr.discardChanges}
+      onSubmit={props.moveListCrudBvrs.saveMoveListBvr.saveItem}
+      onCancel={props.moveListCrudBvrs.saveMoveListBvr.discardChanges}
       />
     : _createStaticMoveListDetails(moveList, props);
 
@@ -87,59 +71,11 @@ function _createOwnMoveListDetails(
 }
 
 
-export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
+export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   const actions: any = props;
 
-  const [isEditing, setIsEditing] = React.useState(false);
-
-  const insertMoveListBvr: InsertMoveListBvrT = useInsertMoveList(
-    props.moveLists,
-    actions.actInsertMoveLists,
-    createErrorHandler
-  );
-
-  const [nextSelectedMoveListId, setNextSelectedMoveListId] = React.useState(null);
-  React.useEffect(
-    () => {
-      if (nextSelectedMoveListId != null) {
-        _setSelectedMoveListByUrl(
-          insertMoveListBvr.preview, nextSelectedMoveListId
-        );
-      }
-    },
-    [nextSelectedMoveListId]
-  )
-
-  const selectedMoveListInStore = findMoveListByUrl(
-    props.moveLists, props.selectedMoveListUrl
-  );
-
-  const newMoveListBvr: NewMoveListBvrT = useNewMoveList(
-    props.userProfile,
-    setNextSelectedMoveListId,
-    selectedMoveListInStore ? selectedMoveListInStore.id : "",
-    insertMoveListBvr,
-    setIsEditing,
-  );
-
-  const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(
-    insertMoveListBvr.preview,
-    newMoveListBvr,
-    setIsEditing,
-    actions.actInsertMoveLists,
-    createErrorHandler
-  );
-
-  const bvrs: MoveListCrudBvrsT = {
-    isEditing,
-    setIsEditing,
-    insertMoveListBvr,
-    newMoveListBvr,
-    saveMoveListBvr
-  };
-
   const moveList = findMoveListByUrl(
-    bvrs.insertMoveListBvr.preview,
+    props.moveListCrudBvrs.insertMoveListBvr.preview,
     props.selectedMoveListUrl
   );
 
@@ -148,8 +84,19 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
   }
 
   return isOwner(props.userProfile, moveList.ownerId)
-    ? _createOwnMoveListDetails(moveList, props, bvrs)
+    ? _createOwnMoveListDetails(moveList, props)
     : _createStaticMoveListDetails(moveList, props)
+}
+
+export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
+  return (
+    <MoveListCrudBvrsContext.Consumer>{moveListCrudBvrs =>
+      <_MoveListDetailsPage
+        {...props}
+        moveListCrudBvrs={moveListCrudBvrs}
+      />
+    }</MoveListCrudBvrsContext.Consumer>
+  );
 }
 
 // $FlowFixMe

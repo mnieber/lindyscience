@@ -448,12 +448,6 @@ export const getSelectedMoveList: Selector<?MoveListT> = createSelector(
     )}
 );
 
-export const getSelectedMoveListId: Selector<UUID> = createSelector(
-  [getSelectedMoveList],
-
-  (selectedMoveList): UUID => selectedMoveList ? selectedMoveList.id : ""
-);
-
 export const getMovesInList: Selector<Array<MoveT>> = createSelector(
   [getMoveById, _stateMoveLists, getSelectedMoveList],
 

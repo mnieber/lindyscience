@@ -9,7 +9,9 @@ import { MoveListFilter, MoveListPicker } from 'moves/presentation/movelist_filt
 import { MoveListHeader } from 'moves/presentation/movelist_header';
 import type {  } from 'moves/containers/move_crud_behaviours';
 import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
-import type { MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT } from 'moves/types'
+import type {
+  MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT, MoveListCrudBvrsT
+} from 'moves/types'
 
 
 type HandlersT = {
@@ -53,7 +55,8 @@ function createHandlers(
 export type MoveListPanelPropsT = {
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
-  bvrs: MoveCrudBvrsT,
+  moveCrudBvrs: MoveCrudBvrsT,
+  moveListCrudBvrs: MoveListCrudBvrsT,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
   highlightedMoveSlugid: SlugidT,
@@ -63,7 +66,7 @@ export type MoveListPanelPropsT = {
 };
 
 export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
-  const handlers: HandlersT = createHandlers(props.bvrs);
+  const handlers: HandlersT = createHandlers(props.moveCrudBvrs);
   const moveListRef = useRef(null);
 
   const userId = props.userProfile
@@ -79,7 +82,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
 
   const moveListHeader =
     <MoveListHeader
-      addNewMove={props.bvrs.newMoveBvr.addNewItem}
+      addNewMove={props.moveCrudBvrs.newMoveBvr.addNewItem}
       className="py-4"
     />
 
@@ -99,22 +102,36 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       ref={moveListRef}
       className=""
       videoLinksByMoveId={props.videoLinksByMoveId}
-      setHighlightedMoveId={props.bvrs.newMoveBvr.setHighlightedItemId}
-      moves={props.bvrs.insertMoveBvr.preview}
+      setHighlightedMoveId={props.moveCrudBvrs.newMoveBvr.setHighlightedItemId}
+      moves={props.moveCrudBvrs.insertMoveBvr.preview}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       onDrop={handlers.onDrop}
     />
 
   const staticMoveList =
     <StaticMoveList
-      moves={props.bvrs.insertMoveBvr.preview}
+      moves={props.moveCrudBvrs.insertMoveBvr.preview}
       videoLinksByMoveId={props.videoLinksByMoveId}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
-      setHighlightedMoveId={props.bvrs.newMoveBvr.setHighlightedItemId}
+      setHighlightedMoveId={props.moveCrudBvrs.newMoveBvr.setHighlightedItemId}
       className=""
     />
 
   const showStatic = !(props.moveList && userId == props.moveList.ownerId);
+
+  const newMoveListBtn =
+    <div
+      className={"button button--wide ml-2"}
+      onClick={() => props.moveListCrudBvrs.newMoveListBvr.addNewItem}
+      key={1}
+    >
+    New move list
+    </div>;
+
+  const buttonsDiv =
+    <div className={"move__name flexrow flex-wrap"}>
+      {newMoveListBtn}
+    </div>
 
   return (
     <div
@@ -122,6 +139,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       onKeyDown={handlers.onKeyDown}
     >
       <div className="moveListPanel w-1/5 flexcol">
+        {!showStatic && buttonsDiv}
         {moveListPicker}
         {!showStatic && moveListHeader}
         {moveListFilter}

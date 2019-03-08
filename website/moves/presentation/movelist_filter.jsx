@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import {
   ValuePicker, strToPickerValue
 } from 'utils/form_utils'
-import { browseToMove } from 'moves/containers/move_list_frame'
+import { browseToMove } from 'app/containers/appframe'
 
 
 // MoveListPicker

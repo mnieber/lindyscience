@@ -2,10 +2,10 @@
 
 import React from 'react'
 import { Router, Link } from "@reach/router"
-import MoveListFrame, { browseToMove } from 'moves/containers/move_list_frame'
+import MoveListFrame from 'moves/containers/move_list_frame'
 import MovePage from 'moves/containers/move_page'
 import MoveListDetailsPage from 'moves/containers/move_list_details_page'
-import AppFrame from 'app/containers/appframe'
+import AppFrame, { browseToMove } from 'app/containers/appframe'
 import SignInPage from 'app/containers/signinpage'
 import * as movesActions from 'moves/actions'
 import * as fromAppStore from 'app/reducers'

@@ -275,21 +275,3 @@ export function loadMovePrivateDatas() {
     ))
   .then(result => normalize(result.movePrivateDatas, [movePrivateData]))
 }
-
-
-export function updateProfile(
-  moveUrl: string,
-) {
-  return doQuery(
-    `mutation updateProfile(
-      $moveUrl: String!,
-    ) {
-      updateProfile(
-        recentMoveUrl: $moveUrl,
-      ) {
-        ok
-      }
-    }`,
-    {moveUrl}
-  )
-}

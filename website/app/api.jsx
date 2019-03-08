@@ -38,6 +38,24 @@ export function loadUserProfile() {
 }
 
 
+export function updateProfile(
+  moveUrl: string,
+) {
+  return doQuery(
+    `mutation updateProfile(
+      $moveUrl: String!,
+    ) {
+      updateProfile(
+        recentMoveUrl: $moveUrl,
+      ) {
+        ok
+      }
+    }`,
+    {moveUrl}
+  )
+}
+
+
 export function loadUserVotes() {
   return doQuery(
     `query queryUserVotes {

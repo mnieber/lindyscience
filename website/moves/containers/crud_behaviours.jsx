@@ -133,7 +133,6 @@ export type SaveItemBvrT<ItemT> = {
 };
 
 export function useSaveItem<ItemT: ObjectT>(
-  items: Array<ItemT>,
   newItemBvr: NewItemBvrT<ItemT>,
   setIsEditing: Function,
   saveItem: Function,

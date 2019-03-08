@@ -97,36 +97,35 @@ export function useSaveMove(
   moves: Array<MoveT>,
   newMoveBvr: NewMoveBvrT,
   setIsEditing: Function,
-  actAddMoves: Function,
+  updateMove: Function,
   createErrorHandler: Function,
 ): SaveMoveBvrT {
   type IncompleteValuesT = {
     name: string,
   };
 
-  function _completeMove(id: UUID, incompleteValues: IncompleteValuesT): MoveT {
-    // $FlowFixMe
-    const move: MoveT = moves.find(x => x.id == id);
+  function _completeMove(oldMove: MoveT, incompleteValues: IncompleteValuesT): MoveT {
     const newSlug = incompleteValues.name
       ? slugify(incompleteValues.name)
       : undefined;
 
     return {
-      ...move,
+      ...oldMove,
       ...incompleteValues,
-      slug: newSlug || move.slug,
+      slug: newSlug || oldMove.slug,
     };
   }
 
   function _saveMove(id: UUID, incompleteValues: IncompleteValuesT) {
-    newMoveBvr.setHighlightedItemId(id);
-    const move = _completeMove(id, incompleteValues);
-    actAddMoves([move]);
-    return api.saveMove(move)
+    // $FlowFixMe
+    const oldMove: MoveT = moves.find(x => x.id == id);
+    const newMove = _completeMove(oldMove, incompleteValues);
+    updateMove(oldMove, newMove);
+    return api.saveMove(newMove)
       .catch(createErrorHandler('We could not save the move'));
   }
 
-  return useSaveItem<MoveT>(moves, newMoveBvr, setIsEditing, _saveMove);
+  return useSaveItem<MoveT>(newMoveBvr, setIsEditing, _saveMove);
 }
 
 
@@ -136,8 +135,8 @@ export function createMoveCrudBvrs(
   userProfile: UserProfileT,
   highlightedMoveSlugid: SlugidT,
   setNextHighlightedMoveId: Function,
+  updateMove: Function,
   actInsertMoves: Function,
-  actAddMoves: Function,
 ): MoveCrudBvrsT {
   const highlightedMoveInStore = findMoveBySlugid(
     moves, highlightedMoveSlugid
@@ -164,7 +163,7 @@ export function createMoveCrudBvrs(
     insertMoveBvr.preview,
     newMoveBvr,
     setIsEditing,
-    actAddMoves,
+    updateMove,
     createErrorHandler
   );
 

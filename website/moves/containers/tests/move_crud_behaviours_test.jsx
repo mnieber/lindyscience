@@ -52,7 +52,7 @@ function TestComponent({
   setHighlightedMoveId,
   setIsEditing,
   highlightedMoveId,
-  actAddMoves,
+  updateMove,
 }) {
   const createErrorHandler = () => (() => {});
 
@@ -76,7 +76,7 @@ function TestComponent({
     sandbox.insertMoveBvr.preview,
     sandbox.newMoveBvr,
     setIsEditing,
-    actAddMoves,
+    updateMove,
     createErrorHandler,
   )
 
@@ -104,7 +104,7 @@ test('test useInsertMove', function (t) {
       setHighlightedMoveId={()=>{}}
       setIsEditing={()=>{}}
       highlightedMoveId={""}
-      actAddMoves={()=>{}}
+      updateMove={()=>{}}
     />);
     t.deepEqual(
       sandbox.insertMoveBvr.preview, moves,
@@ -168,7 +168,7 @@ test('test useNewMove', function (t) {
     setHighlightedMoveId={setHighlightedMoveId}
     setIsEditing={setIsEditing}
     highlightedMoveId={highlightedMove.id}
-    actAddMoves={()=>{}}
+    updateMove={()=>{}}
   />);
 
   t.equal(
@@ -243,7 +243,7 @@ test('test useSaveMove', function (t) {
   const setIsEditing = sinon.fake();
 
   var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
-  var actAddMoves = sinon.fake();
+  var updateMove = sinon.fake();
   var saveMoveOrdering = sinon.fake.resolves(true);
   var saveMove = sinon.fake.resolves(true);
 
@@ -258,7 +258,7 @@ test('test useSaveMove', function (t) {
     setHighlightedMoveId={() => {}}
     setIsEditing={setIsEditing}
     highlightedMoveId={moves[1].id}
-    actAddMoves={actAddMoves}
+    updateMove={updateMove}
   />);
 
   sandbox.newMoveBvr.finalize = sinon.fake();
@@ -277,8 +277,8 @@ test('test useSaveMove', function (t) {
   sandbox.newMoveBvr.finalize = sinon.fake();
   sandbox.saveMoveBvr.saveItem(moves[1].id, {});
   t.calledOnceWith(
-    actAddMoves, [[moves[1]]],
-    "Saving a move should call actAddMoves"
+    updateMove, [[moves[1]]],
+    "Saving a move should call updateMove"
   );
   t.calledOnceWith(
     sandbox.newMoveBvr.finalize, [false],

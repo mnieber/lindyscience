@@ -160,7 +160,7 @@ export function saveMoveListOrdering(moveListIds: Array<number>) {
       $moveListIds: [String]!,
     ) {
       saveMoveListOrdering(
-        moveIds: $moveIds
+        moveListIds: $moveListIds
       ) { ok }
     }`,
     {
@@ -192,6 +192,7 @@ export function loadMoveLists() {
         tags
         owner {
           username
+          id
         }
       }
     }`
@@ -211,9 +212,11 @@ export function loadMoveList(moveListId: UUID) {
         tags
         owner {
           username
+          id
         }
         moves {
           id
+          owner { id }
           name
           slug
           description
@@ -245,6 +248,7 @@ export function loadMoveList(moveListId: UUID) {
     result,
     [
       '/moveList/owner',
+      '/moveList/moves/*/owner',
       '/moveList/moves/*/videoLinks/*/move',
       '/moveList/moves/*/videoLinks/*/owner',
       '/moveList/moves/*/tips/*/move',

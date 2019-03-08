@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+import time
 
 
 def _success(data):
@@ -25,3 +26,12 @@ def assert_authorized(model, pk, user_id):
     if instance and instance.owner_id != user_id:
         raise Exception("Not authorized to update object with id %s" % pk)
     return instance
+
+
+def try_n_times(f, n):
+    for _ in range(n - 1):
+        try:
+            return f()
+        except Exception:
+            time.sleep(1)
+    return f()

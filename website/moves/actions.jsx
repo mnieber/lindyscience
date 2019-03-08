@@ -2,6 +2,7 @@
 
 import React from 'react'
 import * as fromStore from 'moves/reducers'
+import * as fromAppStore from 'app/reducers'
 import { toTitleCase } from 'utils/utils'
 import { findMoveBySlugid, makeSlugid } from 'moves/utils'
 import type {
@@ -25,13 +26,29 @@ import type {
 ///////////////////////////////////////////////////////////////////////
 
 export function actInsertMoveLists(
-  moveLists: MoveListByIdT,
+  moveListIds: Array<UUID>,
   targetMoveListId: UUID,
+) {
+  const createAction = () => ({
+    type: 'INSERT_MOVE_LISTS_INTO_PROFILE',
+    moveListIds,
+    targetMoveListId,
+  });
+
+  return (dispatch: Function, getState: Function) => {
+    dispatch(createAction());
+    // $FlowFixMe
+    const profile: UserProfileT = fromAppStore.getUserProfile(getState().app);
+    return profile.moveListIds;
+  }
+}
+
+export function actAddMoveLists(
+  moveLists: MoveListByIdT,
 ) {
   return {
     type: 'ADD_MOVE_LISTS',
     moveLists,
-    targetMoveListId,
   }
 }
 
@@ -58,7 +75,6 @@ export function actAddTips(tips: TipByIdT) {
   }
 }
 
-
 function _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, endIndex, step) {
   for (
     var moveIdx = highlightedIdx;
@@ -71,7 +87,6 @@ function _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, endIndex
   }
   return undefined;
 }
-
 
 export function actSetMoveListFilter(tags: Array<TagT>) {
   return (dispatch: Function, getState: Function): SlugidT => {
@@ -127,14 +142,12 @@ export function actInsertMoves(
   }
 }
 
-
 export function actSetHighlightedMoveBySlug(moveSlug: string, moveId: ?UUID) {
   return {
     type: 'SET_HIGHLIGHTED_MOVE_SLUGID',
     moveSlugid: makeSlugid(moveSlug, moveId),
   };
 }
-
 
 export function actSelectMoveListByUrl(ownerUsername: string, moveListSlug: string) {
   return {

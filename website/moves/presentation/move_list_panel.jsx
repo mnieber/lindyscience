@@ -118,7 +118,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
   const newMoveListBtn =
     <div
       className={"button button--wide ml-2"}
-      onClick={() => props.moveListCrudBvrs.newMoveListBvr.addNewItem}
+      onClick={props.moveListCrudBvrs.newMoveListBvr.addNewItem}
       key={1}
     >
     New move list

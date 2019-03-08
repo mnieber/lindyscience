@@ -1,10 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
 import graphene
-import time
 from graphene_django.types import DjangoObjectType
 from moves import models
-from app.utils import assert_authorized
+from app.utils import assert_authorized, try_n_times
 
 # Moves schema
 
@@ -83,9 +82,6 @@ class SaveMoveOrdering(graphene.Mutation):
     ok = graphene.Boolean()
 
     def mutate(self, info, move_list_id, move_ids, **inputs):
-        assert_authorized(models.MoveList, move_list_id,
-                          info.context.user.id)
-
         def try_it():
             with transaction.atomic():
                 for move_id in move_ids:
@@ -93,17 +89,11 @@ class SaveMoveOrdering(graphene.Mutation):
                         move_id=move_id,
                         move_list_id=move_list_id,
                         defaults={'order': move_ids.index(str(move_id))})
+            return SaveMoveOrdering(ok=True)
 
-        max_tries = 5
-        for tryIdx in range(max_tries):
-            try:
-                try_it()
-                return SaveMoveOrdering(ok=True)
-            except Exception as e:
-                if tryIdx == max_tries - 1:
-                    raise e
-                else:
-                    time.sleep(1)
+        assert_authorized(models.MoveList, move_list_id,
+                          info.context.user.id)
+        return try_n_times(try_it, n=5)
 
 
 class SaveMove(graphene.Mutation):

@@ -8,7 +8,7 @@ import Widgets from 'moves/presentation/index'
 import { browseToMove } from 'app/containers/appframe';
 
 import {
-  makeSlugidMatcher, makeMoveListUrl, newMoveSlug,
+  makeSlugidMatcher, makeMoveListUrl, newMoveSlug, findMoveBySlugid
 } from 'moves/utils';
 
 import {
@@ -23,22 +23,15 @@ import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
 import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
 
 
-function _setHighlightedMoveById(moves: Array<MoveT>, moveId: UUID, moveListUrl: string) {
-  const move = (
-    moves.find(x => x.id == moveId) ||
-    moves.find(x => true)
+function _browseToMove(moves: Array<MoveT>, move: MoveT, moveListUrl: string) {
+  const matcher = makeSlugidMatcher(move.slug);
+  const isSlugUnique = moves.filter(matcher).length <= 1;
+  const updateProfile = move.slug != newMoveSlug;
+  const maybeMoveId = isSlugUnique ? "" : (move ? move.id : "");
+  browseToMove(
+    [moveListUrl, move.slug, maybeMoveId],
+    updateProfile
   );
-
-  if (move) {
-    const matcher = makeSlugidMatcher(move.slug);
-    const isSlugUnique = moves.filter(matcher).length <= 1;
-    const updateProfile = move.slug != newMoveSlug;
-    const maybeMoveId = isSlugUnique ? "" : (move ? move.id : "");
-    browseToMove(
-      [moveListUrl, move.slug, maybeMoveId],
-      updateProfile
-    );
-  }
 }
 
 
@@ -65,20 +58,7 @@ type _MoveListFramePropsT = MoveListFramePropsT & {
 
 function _MoveListFrame(props: _MoveListFramePropsT) {
   const actions: any = props;
-
   const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
-  React.useEffect(
-    () => {
-      if (props.moveList && nextHighlightedMoveId != null) {
-        _setHighlightedMoveById(
-          moveCrudBvrs.insertMoveBvr.preview,
-          nextHighlightedMoveId,
-          makeMoveListUrl(props.moveList)
-        );
-      }
-    },
-    [nextHighlightedMoveId]
-  )
 
   const moveCrudBvrs = createMoveCrudBvrs(
     props.moves,
@@ -86,9 +66,34 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     props.userProfile,
     props.highlightedMoveSlugid,
     setNextHighlightedMoveId,
+    _updateMove,
     actions.actInsertMoves,
-    actions.actAddMoves,
   );
+
+  const moves = moveCrudBvrs.insertMoveBvr.preview;
+
+  React.useEffect(
+    () => {
+      if (props.moveList && nextHighlightedMoveId != null) {
+        const move = (
+          moves.find(x => x.id == nextHighlightedMoveId) ||
+          moves.find(x => true)
+        );
+        if (move) {
+          _browseToMove(moves, move, makeMoveListUrl(props.moveList));
+        }
+      }
+    },
+    [nextHighlightedMoveId]
+  )
+
+  function _updateMove(oldMove: MoveT, newMove: MoveT) {
+    actions.actAddMoves([newMove]);
+    const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
+    if (highlightedMove && highlightedMove.id == oldMove.id) {
+      _browseToMove(moves, newMove, makeMoveListUrl(props.moveList));
+    }
+  }
 
   return (
     <Widgets.MoveListPanel

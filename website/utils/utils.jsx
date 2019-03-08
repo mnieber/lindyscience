@@ -137,3 +137,22 @@ export function urlParam(name: string) {
                       .exec(window.location.href);
     return (results && results[1]) || undefined;
 }
+
+export function insertIdsIntoList(
+  ids: Array<any>, idList: Array<any>, targetId: any
+) {
+  return idList.reduce(
+    (acc: Array<any>, id: any) => {
+      if (!ids.includes(id)) {
+        acc.push(id);
+        if (id == targetId) {
+          acc.push(...ids);
+        }
+      }
+      return acc;
+    },
+    !targetId
+      ? [...ids]
+      : []
+  );
+}

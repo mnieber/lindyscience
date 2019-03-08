@@ -23,7 +23,8 @@ import {
   getObjectValues,
   isNone,
   querySetListToDict,
-  addToSet
+  addToSet,
+  insertIdsIntoList
 } from 'utils/utils'
 import {
   findMove,
@@ -199,21 +200,11 @@ export function moveListsReducer(
         ...action.moveLists
       }
     case 'INSERT_MOVES_INTO_LIST':
-      const acc = state[action.moveListId].moves.reduce(
-        (acc: Array<UUID>, moveId: UUID) => {
-          if (!action.moveIds.includes(moveId)) {
-            acc.push(moveId);
-            if (moveId == action.targetMoveId) {
-              acc.push(...action.moveIds);
-            }
-          }
-          return acc;
-        },
-        !action.targetMoveId
-          ? [...action.moveIds]
-          : []
-      );
-
+      const acc = insertIdsIntoList(
+        action.moveIds,
+        state[action.moveListId].moves,
+        action.targetMoveId,
+      )
       return {
         ...state,
         [action.moveListId]: {

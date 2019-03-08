@@ -52,7 +52,7 @@ export function useInsertMoveList(
   createErrorHandler: Function
 ): InsertMoveListBvrT {
   function _insertMoveList(moveList: MoveListT, targetMoveListId: UUID) {
-    const allMoveListIds = actInsertMoveLists({[moveList.id]: moveList}, targetMoveListId);
+    const allMoveListIds = actInsertMoveLists([moveList.id], targetMoveListId);
     api.saveMoveListOrdering(allMoveListIds)
       .catch(createErrorHandler("We could not update the move list"));
   }
@@ -94,7 +94,7 @@ export function useSaveMoveList(
   movelists: Array<MoveListT>,
   newMoveListBvr: NewMoveListBvrT,
   setIsEditing: Function,
-  actInsertMoveLists: Function,
+  actAddMoveLists: Function,
   createErrorHandler: Function,
 ): SaveMoveListBvrT {
   type IncompleteValuesT = {
@@ -117,12 +117,12 @@ export function useSaveMoveList(
 
   function _saveMoveList(id: UUID, incompleteValues: IncompleteValuesT) {
     const movelist = _completeMoveList(id, incompleteValues);
-    actInsertMoveLists([movelist]);
+    actAddMoveLists([movelist]);
     return api.saveMoveList(movelist)
       .catch(createErrorHandler('We could not save the movelist'));
   }
 
-  return useSaveItem<MoveListT>(movelists, newMoveListBvr, setIsEditing, _saveMoveList);
+  return useSaveItem<MoveListT>(newMoveListBvr, setIsEditing, _saveMoveList);
 }
 
 
@@ -130,7 +130,8 @@ export function createMoveListCrudBvrs(
   userProfile: ?UserProfileT,
   moveLists: Array<MoveListT>,
   selectedMoveListUrl: string,
-  actions: any,
+  actAddMoveLists: Function,
+  actInsertMoveLists: Function,
   setNextSelectedMoveListId: Function,
 ): MoveListCrudBvrsT {
   const [isEditing, setIsEditing] = React.useState(false);
@@ -139,7 +140,7 @@ export function createMoveListCrudBvrs(
 
   const insertMoveListBvr: InsertMoveListBvrT = useInsertMoveList(
     moveLists,
-    actions.actInsertMoveLists,
+    actInsertMoveLists,
     createErrorHandler
   );
 
@@ -155,7 +156,7 @@ export function createMoveListCrudBvrs(
     insertMoveListBvr.preview,
     newMoveListBvr,
     setIsEditing,
-    actions.actInsertMoveLists,
+    actAddMoveLists,
     createErrorHandler
   );
 

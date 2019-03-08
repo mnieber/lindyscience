@@ -17,20 +17,28 @@ export function loadUserProfile() {
         owner {
           username
         }
+        user: owner {
+          id
+        }
         recentMoveUrl
         moveListIds
       }
     }`
   );
 
-  const composeKeys = (pk, ck) => ck;
   return response
     .then(result => {
       if (result.userProfile) {
+        // put owner.username into the root as username
         flatten(
           result.userProfile,
           ['/owner'],
-          composeKeys
+          (pk, ck) => ck
+        );
+        // put user.id into the root as userId
+        flatten(
+          result.userProfile,
+          ['/user'],
         );
       }
       return result.userProfile;

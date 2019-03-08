@@ -20,6 +20,7 @@ class Mutations(graphene.ObjectType):
     save_move_ordering = moves.schema.SaveMoveOrdering.Field()
     cast_vote = votes.schema.CastVote.Field()
     update_profile = accounts.schema.UpdateProfile.Field()
+    save_move_list_ordering = accounts.schema.SaveMoveListOrdering.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutations)

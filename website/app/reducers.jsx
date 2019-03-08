@@ -9,6 +9,7 @@ import {
   getObjectValues,
   isNone,
   querySetListToDict,
+  insertIdsIntoList,
 } from 'utils/utils'
 
 
@@ -65,6 +66,16 @@ const userProfileReducer = function(
       return {
         ...state,
         ...action.profile
+      }
+    case 'INSERT_MOVE_LISTS_INTO_PROFILE':
+      const acc = insertIdsIntoList(
+        action.moveListIds,
+        state ? state.moveListIds : [],
+        action.targetMoveListId,
+      )
+      return {
+        ...state,
+        moveListIds: acc
       }
     default:
       return state

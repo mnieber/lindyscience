@@ -40,9 +40,8 @@ test('add move lists', function (t) {
   let sMoves = reducers.movesReducer(undefined, {});
   t.deepEqual(sMoves, {});
 
-  const a = actions.actInsertMoveLists(
+  const a = actions.actAddMoveLists(
     {[data.moveList1.id]: data.moveList1},
-    ""
   );
   const a2 = actions.actAddMoves(getObjectValues(data.moves));
 
@@ -98,9 +97,8 @@ test('add tips', function (t) {
 });
 
 test('insert moves into list', function (t) {
-  let sMoveList = reducers.moveListsReducer(undefined, actions.actInsertMoveLists(
-    {[data.moveList1.id]: data.moveList1},
-    ""
+  let sMoveList = reducers.moveListsReducer(undefined, actions.actAddMoveLists(
+    {[data.moveList1.id]: data.moveList1}
   ));
   let sMoves = reducers.movesReducer(
     undefined, actions.actAddMoves(getObjectValues(data.moves))

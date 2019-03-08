@@ -9,7 +9,7 @@ import AppCtr from 'app/containers/index'
 
 import { getObjectValues } from 'utils/utils'
 import { createToastr } from 'app/utils'
-import { findMoveListByUrl, newMoveListSlug } from 'moves/utils'
+import { findMoveListByUrl, newMoveListSlug, makeMoveListUrl } from 'moves/utils'
 
 import {
   MoveListCrudBvrsContext, createMoveListCrudBvrs
@@ -31,15 +31,15 @@ export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boo
 }
 
 
-function _setSelectedMoveListByUrl(moveLists: Array<MoveListT>, moveListUrl: string) {
+function _setSelectedMoveListById(moveLists: Array<MoveListT>, id: UUID) {
   const moveList = (
-    findMoveListByUrl(moveLists, moveListUrl) ||
+    moveLists.find(x => x.id == id) ||
     moveLists.find(x => true)
   );
 
   if (moveList) {
     const updateProfile = moveList.slug != newMoveListSlug;
-    browseToMove([moveListUrl], updateProfile);
+    browseToMove([makeMoveListUrl(moveList)], updateProfile);
   }
 }
 
@@ -72,7 +72,7 @@ function AppFrame(props: AppFramePropsT) {
       if (email) {
         actions.actSetSignedInEmail(email);
       }
-      actions.actInsertMoveLists(moveLists.entities.moveLists || {}, "");
+      actions.actAddMoveLists(moveLists.entities.moveLists || {});
       setHasLoadedMoveLists(true);
     }
   }
@@ -94,16 +94,20 @@ function AppFrame(props: AppFramePropsT) {
 
   async function _loadSelectedMoveList() {
     if (hasLoadedMoveLists && loadedMoveListUrl != props.selectedMoveListUrl) {
-      const [moveList] = await Promise.all([
-        MoveContainer.api.loadMoveList(
-          findMoveListByUrl(props.moveLists, props.selectedMoveListUrl).id
-        )
-      ]);
-      actions.actAddMoves(getObjectValues(moveList.entities.moves || {}));
-      actions.actInsertMoveLists(moveList.entities.moveLists, "");
-      actions.actAddVideoLinks(moveList.entities.videoLinks || {});
-      actions.actAddTips(moveList.entities.tips || {});
-      setLoadedMoveListUrl(props.selectedMoveListUrl);
+      const moveListInStore = findMoveListByUrl(
+        props.moveLists, props.selectedMoveListUrl
+      );
+
+      if (moveListInStore) {
+        const [moveList] = await Promise.all([
+          MoveContainer.api.loadMoveList(moveListInStore.id)
+        ]);
+        actions.actAddMoves(getObjectValues(moveList.entities.moves || {}));
+        actions.actAddMoveLists(moveList.entities.moveLists);
+        actions.actAddVideoLinks(moveList.entities.videoLinks || {});
+        actions.actAddTips(moveList.entities.tips || {});
+        setLoadedMoveListUrl(props.selectedMoveListUrl);
+      }
     }
   }
 
@@ -115,7 +119,7 @@ function AppFrame(props: AppFramePropsT) {
   React.useEffect(
     () => {
       if (nextSelectedMoveListId != null) {
-        _setSelectedMoveListByUrl(
+        _setSelectedMoveListById(
           moveListCrudBvrs.insertMoveListBvr.preview, nextSelectedMoveListId
         );
       }
@@ -127,6 +131,7 @@ function AppFrame(props: AppFramePropsT) {
     props.userProfile,
     props.moveLists,
     props.selectedMoveListUrl,
+    actions.actAddMoveLists,
     actions.actInsertMoveLists,
     setNextSelectedMoveListId
   );

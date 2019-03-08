@@ -56,7 +56,7 @@ export function useInsertMove(
       .catch(createErrorHandler("We could not update the move list"));
   }
 
-  return useInsertItem(moves, _insertMove);
+  return useInsertItem<MoveT>(moves, _insertMove);
 }
 
 
@@ -75,7 +75,7 @@ export function useNewMove(
     return createNewMove(userProfile);
   }
 
-  return useNewItem(
+  return useNewItem<MoveT>(
     highlightedMoveId,
     setHighlightedMoveId,
     insertMoveBvr,
@@ -115,6 +115,7 @@ export function useSaveMove(
   }
 
   function _saveMove(id: UUID, incompleteValues: IncompleteValuesT) {
+    newMoveBvr.setHighlightedItemId(id);
     const move = _completeMove(id, incompleteValues);
     actAddMoves([move]);
     return api.saveMove(move)

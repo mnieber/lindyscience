@@ -49,7 +49,7 @@ export function useInsertMoveList(
       .catch(createErrorHandler("We could not update the move list"));
   }
 
-  return useInsertItem(moveLists, _insertMoveList);
+  return useInsertItem<MoveListT>(moveLists, _insertMoveList);
 }
 
 
@@ -68,7 +68,7 @@ export function useNewMoveList(
     return createNewMoveList(userProfile);
   }
 
-  return useNewItem(
+  return useNewItem<MoveListT>(
     highlightedMoveListId,
     setHighlightedMoveListId,
     insertMoveListBvr,

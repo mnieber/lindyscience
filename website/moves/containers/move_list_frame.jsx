@@ -30,7 +30,7 @@ export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boo
 }
 
 
-function _setHighlightedMoveId(moves: Array<MoveT>, moveId: UUID, moveListUrl: string) {
+function _setHighlightedMoveById(moves: Array<MoveT>, moveId: UUID, moveListUrl: string) {
   const move = (
     moves.find(x => x.id == moveId) ||
     moves.find(x => true)
@@ -80,7 +80,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
   React.useEffect(
     () => {
       if (props.moveList && nextHighlightedMoveId != null) {
-        _setHighlightedMoveId(
+        _setHighlightedMoveById(
           insertMoveBvr.preview, nextHighlightedMoveId, makeMoveListUrl(props.moveList)
         );
       }

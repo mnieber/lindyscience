@@ -1,12 +1,9 @@
 // @flow
 
 import * as React from 'react'
-import * as appActions from 'app/actions'
-import * as fromAppStore from 'app/reducers'
-import * as api from 'app/api'
+import AppCtr from 'app/containers/index'
 import { navigate } from "@reach/router"
 import { urlParam } from 'utils/utils'
-import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 import { SignInDialog } from 'app/presentation/signin_dialog';
 import { getSignInPageBehaviours } from 'app/containers/behaviours'
@@ -26,7 +23,7 @@ function SignInPage(props: SignInPagePropsT) {
   // const {} = createHandlers();
 
   async function _signIn(email, password) {
-    if (await api.signIn(email, password)) {
+    if (await AppCtr.api.signIn(email, password)) {
       props.actSetSignedInEmail(email);
       const next = urlParam('next')
       if (next) {
@@ -47,10 +44,10 @@ function SignInPage(props: SignInPagePropsT) {
 }
 
 // $FlowFixMe
-SignInPage = connect(
+SignInPage = AppCtr.connect(
   (state) => ({
   }),
-  appActions
+  AppCtr.actions
 )(SignInPage)
 
 export default SignInPage;

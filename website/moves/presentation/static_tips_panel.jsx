@@ -1,14 +1,8 @@
 // @flow
 
-import * as actions from 'moves/actions'
 import * as React from 'react'
-import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
-import type { MoveT, TipT } from 'moves/types'
-// $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import { connect } from 'react-redux'
-import { querySetListToDict, slugify, isNone } from 'utils/utils'
-import { createErrorHandler } from 'app/utils'
+import type { VoteByIdT } from 'app/types';
+import type { TipT } from 'moves/types'
 import { StaticTipList } from 'moves/presentation/static_tip';
 
 

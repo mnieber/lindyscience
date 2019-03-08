@@ -1,25 +1,25 @@
 // @flow
 
-import * as appActions from 'app/actions'
-import * as movesActions from 'moves/actions'
-import * as api from 'moves/api'
-import * as fromStore from 'moves/reducers'
-import * as fromAppStore from 'app/reducers'
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { createErrorHandler } from 'app/utils'
-import { MoveListPanel } from 'moves/presentation/move_list_panel';
+import MovesCtr from 'moves/containers/index'
+import AppCtr from 'app/containers/index'
+
+import Widgets from 'moves/presentation/index'
 import { browseToMove } from 'app/containers/appframe';
+
+import { createErrorHandler } from 'app/utils'
 import {
   makeSlugidMatcher,
   makeMoveListUrl,
   findMoveBySlugid,
   newMoveSlug,
 } from 'moves/utils';
+
 import {
   useInsertMove, useNewMove, useSaveMove, MoveCrudBvrsContext
 } from 'moves/containers/move_crud_behaviours'
 import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'
+
 import type {
   MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT, MoveListCrudBvrsT
 } from 'moves/types'
@@ -133,7 +133,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
   )
 
   return (
-    <MoveListPanel
+    <Widgets.MoveListPanel
       userProfile={props.userProfile}
       videoLinksByMoveId={props.videoLinksByMoveId}
       moveCrudBvrs={moveCrudBvrs}
@@ -147,7 +147,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
       <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>
         {props.children}
       </MoveCrudBvrsContext.Provider>
-    </MoveListPanel>
+    </Widgets.MoveListPanel>
   )
 }
 
@@ -172,20 +172,20 @@ function MoveListFrame(props: MoveListFramePropsT) {
 
 
 // $FlowFixMe
-MoveListFrame = connect(
+MoveListFrame = MovesCtr.connect(
   (state) => ({
-    userProfile: fromAppStore.getUserProfile(state.app),
-    videoLinksByMoveId: fromStore.getVideoLinksByMoveId(state.moves),
-    moves: fromStore.getFilteredMovesInList(state.moves),
-    allMoves: fromStore.getMovesInList(state.moves),
-    moveTags: fromStore.getMoveTags(state.moves),
-    moveLists: fromStore.getMoveLists(state.moves),
-    highlightedMoveSlugid: fromStore.getHighlightedMoveSlugid(state.moves),
-    moveList: fromStore.getSelectedMoveList(state.moves),
+    userProfile: AppCtr.fromStore.getUserProfile(state.app),
+    videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state.moves),
+    moves: MovesCtr.fromStore.getFilteredMovesInList(state.moves),
+    allMoves: MovesCtr.fromStore.getMovesInList(state.moves),
+    moveTags: MovesCtr.fromStore.getMoveTags(state.moves),
+    moveLists: MovesCtr.fromStore.getMoveLists(state.moves),
+    highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(state.moves),
+    moveList: MovesCtr.fromStore.getSelectedMoveList(state.moves),
   }),
   {
-    ...appActions,
-    ...movesActions,
+    ...AppCtr.actions,
+    ...MovesCtr.actions,
   }
 )(MoveListFrame)
 

@@ -1,19 +1,19 @@
 // @flow
 
-import * as actions from 'moves/actions'
+import * as React from 'react'
+// TODO: move out of the presentation layer
 import * as api from 'moves/api'
 import * as appApi from 'app/api'
-import * as fromStore from 'moves/reducers'
-import * as fromAppStore from 'app/reducers'
-import * as React from 'react'
-import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
-import type { MoveT, VideoLinkT } from 'moves/types'
+
+import { VideoLinkList } from 'moves/presentation/videolink';
+
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
-import { connect } from 'react-redux'
 import { createErrorHandler } from 'app/utils'
 import { querySetListToDict, slugify, isNone } from 'utils/utils'
-import { VideoLinkList } from 'moves/presentation/videolink';
+
+import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
+import type { MoveT, VideoLinkT } from 'moves/types'
 
 // Behaviours
 

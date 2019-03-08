@@ -2,12 +2,8 @@
 
 import * as React from 'react'
 import { useRef } from 'react'
-import { MoveList } from 'moves/presentation/movelist';
+import Widgets from 'moves/presentation/index'
 import { makeMoveListUrl } from 'moves/utils';
-import { StaticMoveList } from 'moves/presentation/static_movelist';
-import { MoveListFilter, MoveListPicker } from 'moves/presentation/movelist_filter';
-import { MoveListHeader } from 'moves/presentation/movelist_header';
-import type {  } from 'moves/containers/move_crud_behaviours';
 import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
 import type {
   MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT, MoveListCrudBvrsT
@@ -74,20 +70,20 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
     : -1;
 
   const moveListPicker =
-    <MoveListPicker
+    <Widgets.MoveListPicker
       className="mb-4"
       moveLists={props.moveLists}
       defaultMoveListId={props.moveList ? props.moveList.id : ""}
     />
 
   const moveListHeader =
-    <MoveListHeader
+    <Widgets.MoveListHeader
       addNewMove={props.moveCrudBvrs.newMoveBvr.addNewItem}
       className="py-4"
     />
 
   const moveListFilter =
-    <MoveListFilter
+    <Widgets.MoveListFilter
       className="mb-4"
       setMoveListFilter={props.actSetMoveListFilter}
       moveTags={props.moveTags}
@@ -98,7 +94,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
     />
 
   const moveList =
-    <MoveList
+    <Widgets.MoveList
       ref={moveListRef}
       className=""
       videoLinksByMoveId={props.videoLinksByMoveId}
@@ -109,7 +105,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
     />
 
   const staticMoveList =
-    <StaticMoveList
+    <Widgets.StaticMoveList
       moves={props.moveCrudBvrs.insertMoveBvr.preview}
       videoLinksByMoveId={props.videoLinksByMoveId}
       highlightedMoveSlugid={props.highlightedMoveSlugid}

@@ -3,7 +3,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from '@reach/router';
-import { MoveForm } from 'moves/presentation/move_form';
 import type { MoveT, MoveListT } from 'moves/types'
 import type { UserProfileT, TagT } from 'app/types'
 import { difficulties } from 'utils/form_utils'

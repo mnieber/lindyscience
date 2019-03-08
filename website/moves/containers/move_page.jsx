@@ -1,24 +1,18 @@
 // @flow
 
-import * as appActions from 'app/actions'
-import * as movesActions from 'moves/actions'
 import * as React from 'react'
-import { connect } from 'react-redux'
-import * as fromStore from 'moves/reducers'
-import * as fromAppStore from 'app/reducers'
-import * as movesApi from 'moves/api'
+import MovesCtr from 'moves/containers/index'
+import AppCtr from 'app/containers/index'
+
+import Widgets from 'moves/presentation/index'
+
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
 import { findMoveBySlugid, newMoveSlug } from 'moves/utils'
 import { isOwner, createErrorHandler } from 'app/utils'
-import { Move } from 'moves/presentation/move'
-import { TipsPanel } from 'moves/presentation/tips_panel'
-import { MoveForm } from 'moves/presentation/move_form'
-import { VideoLinksPanel } from 'moves/presentation/videolinks_panel'
-import { MovePrivateDataPanel } from 'moves/presentation/move_private_data_panel';
-import { StaticVideoLinksPanel } from 'moves/presentation/static_videolinks_panel'
-import { StaticTipsPanel } from 'moves/presentation/static_tips_panel'
+
 import { MoveCrudBvrsContext } from 'moves/containers/move_crud_behaviours'
+
 import type { UUID, UserProfileT, VoteByIdT, SlugidT, TagT } from 'app/types';
 import type {
   MoveListT, MoveT, VideoLinksByIdT, TipsByIdT, MoveCrudBvrsT, MovePrivateDataT,
@@ -35,12 +29,12 @@ function _createMovePrivateDataPanel(move: MoveT, actions: any) {
     };
 
     actions.actAddMovePrivateDatas([movePrivateData]);
-    movesApi.saveMovePrivateData(movePrivateData)
+    MovesCtr.api.saveMovePrivateData(movePrivateData)
       .catch(createErrorHandler("We could not update your private data for this move"));
   };
 
   return (
-    <MovePrivateDataPanel
+    <Widgets.MovePrivateDataPanel
       movePrivateData={move.privateData}
       onSave={_onSave}
     />
@@ -67,19 +61,19 @@ type _MovePagePropsT = MovePagePropsT & {
 
 function _createStaticMove(move: MoveT, props: _MovePagePropsT, actions: any) {
   const tipsPanel =
-    <StaticTipsPanel
+    <Widgets.StaticTipsPanel
       tips={props.tipsByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
     />
 
   const videoLinksPanel =
-    <StaticVideoLinksPanel
+    <Widgets.StaticVideoLinksPanel
       videoLinks={props.videoLinksByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
     />
 
   return (
-    <Move
+    <Widgets.Move
       move={move}
       moveList={props.moveList}
       key={move.id}
@@ -98,7 +92,7 @@ function _createOwnMove(
   if (bvrs.isEditing) {
     return (
       <div>
-        <MoveForm
+        <Widgets.MoveForm
           userProfile={props.userProfile}
           autoFocus={true}
           move={move}
@@ -110,7 +104,7 @@ function _createOwnMove(
     );
   }
   else {
-    const videoLinksPanel = <VideoLinksPanel
+    const videoLinksPanel = <Widgets.VideoLinksPanel
       moveId={move.id}
       userProfile={props.userProfile}
       videoLinks={props.videoLinksByMoveId[move.id]}
@@ -119,7 +113,7 @@ function _createOwnMove(
       actCastVote={actions.actCastVote}
     />;
 
-    const tipsPanel = <TipsPanel
+    const tipsPanel = <Widgets.TipsPanel
       moveId={move.id}
       userProfile={props.userProfile}
       tips={props.tipsByMoveId[move.id]}
@@ -138,7 +132,7 @@ function _createOwnMove(
       </div>;
 
     return (
-      <Move
+      <Widgets.Move
         move={move}
         userProfile={props.userProfile}
         moveList={props.moveList}
@@ -165,7 +159,7 @@ function _MovePage(props: _MovePagePropsT) {
       ) {
         props.moveCrudBvrs.newMoveBvr.addNewItem();
       }
-      props.actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId)
+      actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId)
     },
     [props.moveSlug, props.moveId, props.userProfile]
   );
@@ -197,19 +191,19 @@ export function MovePage(props: MovePagePropsT) {
 }
 
 // $FlowFixMe
-MovePage = connect(
+MovePage = MovesCtr.connect(
   (state) => ({
-    userProfile: fromAppStore.getUserProfile(state.app),
-    videoLinksByMoveId: fromStore.getVideoLinksByMoveId(state.moves),
-    tipsByMoveId: fromStore.getTipsByMoveId(state.moves),
-    moveTags: fromStore.getMoveTags(state.moves),
-    moveList: fromStore.getSelectedMoveList(state.moves),
-    highlightedMoveSlugid: fromStore.getHighlightedMoveSlugid(state.moves),
-    voteByObjectId: fromAppStore.getVoteByObjectId(state.app)
+    userProfile: AppCtr.fromStore.getUserProfile(state.app),
+    videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state.moves),
+    tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state.moves),
+    moveTags: MovesCtr.fromStore.getMoveTags(state.moves),
+    moveList: MovesCtr.fromStore.getSelectedMoveList(state.moves),
+    highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(state.moves),
+    voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state.app)
   }),
   {
-    ...appActions,
-    ...movesActions,
+    ...AppCtr.actions,
+    ...MovesCtr.actions,
   }
 )(MovePage)
 

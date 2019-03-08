@@ -1,23 +1,20 @@
 // @flow
 
 import React from 'react'
-import { connect } from 'react-redux'
-import { getObjectValues } from 'utils/utils'
-import { createToastr } from 'app/utils'
 import { AccountMenu } from 'app/presentation/accountmenu';
 import { navigate } from "@reach/router"
 
-import * as movesActions from 'moves/actions'
-import * as appActions from 'app/actions'
-import * as fromAppStore from 'app/reducers'
-import * as fromMovesStore from 'moves/reducers'
-import * as movesApi from 'moves/api'
-import * as appApi from 'app/api'
-import { createErrorHandler } from 'app/utils'
+import MoveContainer from 'moves/containers/index'
+import AppCtr from 'app/containers/index'
+
+import { getObjectValues } from 'utils/utils'
+import { createToastr, createErrorHandler } from 'app/utils'
 import { findMoveListByUrl, newMoveListSlug } from 'moves/utils'
+
 import {
   useInsertMoveList, useNewMoveList, useSaveMoveList, MoveListCrudBvrsContext
 } from 'moves/containers/move_list_crud_behaviours'
+
 import type { UUID, UserProfileT } from 'app/types';
 import type { MoveListT, MoveListCrudBvrsT } from 'moves/types';
 import type {
@@ -29,7 +26,7 @@ export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boo
   const moveUrl = moveUrlParts.filter(x => !!x).join('/');
   navigate(`/app/list/${moveUrl}`);
   if (mustUpdateProfile) {
-    appApi.updateProfile(moveUrl);
+    AppCtr.api.updateProfile(moveUrl);
   }
 }
 
@@ -112,8 +109,8 @@ function AppFrame(props: AppFramePropsT) {
       setHasLoadedMoveLists(false);
 
       const [email, moveLists] = await Promise.all([
-        appApi.getEmail(),
-        movesApi.loadMoveLists(),
+        AppCtr.api.getEmail(),
+        MoveContainer.api.loadMoveLists(),
       ]);
       if (email) {
         actions.actSetSignedInEmail(email);
@@ -126,9 +123,9 @@ function AppFrame(props: AppFramePropsT) {
   async function _loadUserProfile() {
     if (hasLoadedMoveLists && loadedEmail != props.signedInEmail) {
       const [profile, votes, movePrivateDatas] = await Promise.all([
-        appApi.loadUserProfile(),
-        appApi.loadUserVotes(),
-        movesApi.loadMovePrivateDatas()
+        AppCtr.api.loadUserProfile(),
+        AppCtr.api.loadUserVotes(),
+        MoveContainer.api.loadMovePrivateDatas()
       ]);
       actions.actSetUserProfile(profile);
       actions.actSetVotes(votes);
@@ -141,7 +138,7 @@ function AppFrame(props: AppFramePropsT) {
   async function _loadSelectedMoveList() {
     if (hasLoadedMoveLists && loadedMoveListUrl != props.selectedMoveListUrl) {
       const [moveList] = await Promise.all([
-        movesApi.loadMoveList(
+        MoveContainer.api.loadMoveList(
           findMoveListByUrl(props.moveLists, props.selectedMoveListUrl).id
         )
       ]);
@@ -195,16 +192,16 @@ function AppFrame(props: AppFramePropsT) {
 };
 
 // $FlowFixMe
-AppFrame = connect(
+AppFrame = MoveContainer.connect(
   (state) => ({
-    moveLists: fromMovesStore.getMoveLists(state.moves),
-    userProfile: fromAppStore.getUserProfile(state.app),
-    signedInEmail: fromAppStore.getSignedInEmail(state.app),
-    selectedMoveListUrl: fromMovesStore.getSelectedMoveListUrl(state.moves),
+    moveLists: MoveContainer.fromStore.getMoveLists(state.moves),
+    userProfile: AppCtr.fromStore.getUserProfile(state.app),
+    signedInEmail: AppCtr.fromStore.getSignedInEmail(state.app),
+    selectedMoveListUrl: MoveContainer.fromStore.getSelectedMoveListUrl(state.moves),
   }),
   {
-    ...movesActions,
-    ...appActions,
+    ...MoveContainer.actions,
+    ...AppCtr.actions,
   }
 )(AppFrame)
 

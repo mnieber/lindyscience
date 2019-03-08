@@ -7,9 +7,8 @@ import MovePage from 'moves/containers/move_page'
 import MoveListDetailsPage from 'moves/containers/move_list_details_page'
 import AppFrame, { browseToMove } from 'app/containers/appframe'
 import SignInPage from 'app/containers/signinpage'
-import * as movesActions from 'moves/actions'
-import * as fromAppStore from 'app/reducers'
-import { connect } from 'react-redux'
+import AppCtr from 'app/containers/index'
+import MovesCtr from 'moves/containers/index'
 import type { UserProfileT } from 'app/types';
 
 
@@ -60,12 +59,12 @@ function UrlRouter(props: UrlRouterPropsT) {
 }
 
 // $FlowFixMe
-UrlRouter = connect(
+UrlRouter = AppCtr.connect(
   (state) => ({
-    userProfile: fromAppStore.getUserProfile(state.app),
+    userProfile: AppCtr.fromStore.getUserProfile(state.app),
   }),
   {
-    ...movesActions,
+    ...MovesCtr.actions,
   }
 )(UrlRouter)
 

@@ -1,16 +1,15 @@
 // @flow
 
-import * as appActions from 'app/actions'
-import * as movesActions from 'moves/actions'
 import * as React from 'react'
-import { connect } from 'react-redux'
-import * as fromStore from 'moves/reducers'
-import * as fromAppStore from 'app/reducers'
-import { MoveListDetails } from 'moves/presentation/move_list_details'
-import { MoveListForm } from 'moves/presentation/move_list_form'
+import MovesCtr from 'moves/containers/index'
+import AppCtr from 'app/containers/index'
+
+import Widgets from 'moves/presentation/index'
 import { isOwner, createErrorHandler } from 'app/utils'
 import { findMoveListByUrl } from 'moves/utils'
+
 import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'
+
 import type { UUID, UserProfileT, TagT } from 'app/types';
 import type { MoveListT, MoveListCrudBvrsT } from 'moves/types'
 
@@ -31,11 +30,11 @@ function _createStaticMoveListDetails(
   moveList: MoveListT, props: _MoveListDetailsPagePropsT
 ) {
   return (
-    <MoveListDetails
+    <Widgets.MoveListDetails
       userProfile={props.userProfile}
       moveList={moveList}
     >
-    </MoveListDetails>
+    </Widgets.MoveListDetails>
   );
 }
 
@@ -53,7 +52,7 @@ function _createOwnMoveListDetails(
     </div>;
 
   const div = props.moveListCrudBvrs.isEditing
-    ? <MoveListForm
+    ? <Widgets.MoveListForm
       autoFocus={true}
       knownTags={props.moveListTags}
       moveList={moveList}
@@ -100,16 +99,16 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
 }
 
 // $FlowFixMe
-MoveListDetailsPage = connect(
+MoveListDetailsPage = MovesCtr.connect(
   (state) => ({
-    userProfile: fromAppStore.getUserProfile(state.app),
-    moveLists: fromStore.getMoveLists(state.moves),
-    selectedMoveListUrl: fromStore.getSelectedMoveListUrl(state.moves),
-    moveListTags: fromStore.getMoveListTags(state.moves),
+    userProfile: AppCtr.fromStore.getUserProfile(state.app),
+    moveLists: MovesCtr.fromStore.getMoveLists(state.moves),
+    selectedMoveListUrl: MovesCtr.fromStore.getSelectedMoveListUrl(state.moves),
+    moveListTags: MovesCtr.fromStore.getMoveListTags(state.moves),
   }),
   {
-    ...appActions,
-    ...movesActions,
+    ...AppCtr.actions,
+    ...MovesCtr.actions,
   }
 )(MoveListDetailsPage)
 

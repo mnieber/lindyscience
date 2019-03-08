@@ -60,6 +60,8 @@ class SaveMoveList(graphene.Mutation):
     class Arguments:
         pk = graphene.String()
         name = graphene.String()
+        description = graphene.String()
+        tags = graphene.List(of_type=graphene.String)
         slug = graphene.String()
 
     ok = graphene.Boolean()
@@ -70,7 +72,7 @@ class SaveMoveList(graphene.Mutation):
         inputs['owner_id'] = info.context.user.id
 
         moveList, created = models.MoveList.objects.update_or_create(inputs, pk=pk)
-        return SaveMoveList(moveList=moveList, ok=True)
+        return SaveMoveList(move_list=moveList, ok=True)
 
 
 class SaveMoveOrdering(graphene.Mutation):

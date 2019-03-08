@@ -18,7 +18,9 @@ export function MoveListDetails(props: MoveListDetailsPropsT) {
   return (
     <div className={classnames("moveListDetails flex flex-col")}>
       <h1>{props.moveList.name}</h1>
-      <p>{props.moveList.description}</p>
+      <div
+        dangerouslySetInnerHTML={{__html: props.moveList.description}}
+      />
     </div>
   );
 }

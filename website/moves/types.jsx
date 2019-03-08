@@ -5,7 +5,12 @@
 ///////////////////////////////////////////////////////////////////////
 
 import type { UUID, TagT } from 'app/types';
-import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
+import type {
+  SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT
+} from 'moves/containers/move_crud_behaviours'
+import type {
+  SaveMoveListBvrT, InsertMoveListBvrT, NewMoveListBvrT
+} from 'moves/containers/move_list_crud_behaviours'
 
 export type DifficultyT = '' | 'beg' | 'beg/int' | 'int' | 'int/adv' | 'adv';
 
@@ -93,6 +98,14 @@ export type MoveCrudBvrsT = {
   newMoveBvr: NewMoveBvrT,
   insertMoveBvr: InsertMoveBvrT,
   saveMoveBvr: SaveMoveBvrT,
+  isEditing: boolean,
+  setIsEditing: Function,
+};
+
+export type MoveListCrudBvrsT = {
+  newMoveListBvr: NewMoveListBvrT,
+  insertMoveListBvr: InsertMoveListBvrT,
+  saveMoveListBvr: SaveMoveListBvrT,
   isEditing: boolean,
   setIsEditing: Function,
 };

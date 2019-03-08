@@ -91,6 +91,7 @@ function _filterMovesByTags(moves, moveFilterTags) {
 }
 
 export const getHighlightedMoveSlugid = (state: ReducerState) => state.selection.highlightedMoveSlugid;
+export const getSelectedMoveListUrl = (state: ReducerState) => state.selection.moveListUrl;
 
 ///////////////////////////////////////////////////////////////////////
 // Private data

@@ -86,7 +86,7 @@ export function useSaveMoveList(
   movelists: Array<MoveListT>,
   newMoveListBvr: NewMoveListBvrT,
   setIsEditing: Function,
-  actAddMoveLists: Function,
+  actInsertMoveLists: Function,
   createErrorHandler: Function,
 ): SaveMoveListBvrT {
   type IncompleteValuesT = {
@@ -109,7 +109,7 @@ export function useSaveMoveList(
 
   function _saveMoveList(id: UUID, incompleteValues: IncompleteValuesT) {
     const movelist = _completeMoveList(id, incompleteValues);
-    actAddMoveLists([movelist]);
+    actInsertMoveLists([movelist]);
     return api.saveMoveList(movelist)
       .catch(createErrorHandler('We could not save the movelist'));
   }

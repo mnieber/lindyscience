@@ -22,6 +22,10 @@ export function findMoveBySlugid(moves: Array<MoveT>, slugid: string) {
   return moves.find(makeSlugidMatcher(slugid));
 }
 
+export function findMoveListByUrl(moveLists: Array<MoveListT>, url: string) {
+  return moveLists.find(x => makeMoveListUrl(x) == url);
+}
+
 export const newMoveSlug = 'new-move';
 
 export const newMoveListSlug = 'new-move-list';

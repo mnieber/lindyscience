@@ -1,16 +1,20 @@
 // @flow
 
-import * as api from 'moves/api'
-import { newMoveSlug } from 'moves/utils'
-import { slugify } from 'utils/utils'
 import * as React from 'react'
+import * as api from 'moves/api'
+
+// $FlowFixMe
+import uuidv4 from 'uuid/v4'
+import { createErrorHandler } from 'app/utils'
+import { newMoveSlug, findMoveBySlugid } from 'moves/utils'
+import { slugify } from 'utils/utils'
+
 import {
   useInsertItem, useNewItem, useSaveItem
 } from 'moves/containers/crud_behaviours'
-// $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import type { MoveT, MoveListT, DifficultyT } from 'moves/types'
-import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
+
+import type { MoveT, MoveListT, DifficultyT, MoveCrudBvrsT } from 'moves/types'
+import type { UUID, UserProfileT, VoteByIdT, SlugidT } from 'app/types';
 import type {
   InsertItemBvrT, NewItemBvrT, SaveItemBvrT
 } from 'moves/containers/crud_behaviours'
@@ -123,4 +127,54 @@ export function useSaveMove(
   }
 
   return useSaveItem<MoveT>(moves, newMoveBvr, setIsEditing, _saveMove);
+}
+
+
+export function createMoveCrudBvrs(
+  moves: Array<MoveT>,
+  moveList: ?MoveListT,
+  userProfile: UserProfileT,
+  highlightedMoveSlugid: SlugidT,
+  setNextHighlightedMoveId: Function,
+  actInsertMoves: Function,
+  actAddMoves: Function,
+): MoveCrudBvrsT {
+  const highlightedMoveInStore = findMoveBySlugid(
+    moves, highlightedMoveSlugid
+  );
+
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  const insertMoveBvr: InsertMoveBvrT = useInsertMove(
+    moves,
+    actInsertMoves,
+    moveList ? moveList.id : "",
+    createErrorHandler
+  );
+
+  const newMoveBvr: NewMoveBvrT = useNewMove(
+    userProfile,
+    setNextHighlightedMoveId,
+    highlightedMoveInStore ? highlightedMoveInStore.id : "",
+    insertMoveBvr,
+    setIsEditing,
+  );
+
+  const saveMoveBvr: SaveMoveBvrT = useSaveMove(
+    insertMoveBvr.preview,
+    newMoveBvr,
+    setIsEditing,
+    actAddMoves,
+    createErrorHandler
+  );
+
+  const bvrs: MoveCrudBvrsT = {
+    isEditing,
+    setIsEditing,
+    insertMoveBvr,
+    newMoveBvr,
+    saveMoveBvr
+  };
+
+  return bvrs;
 }

@@ -8,15 +8,15 @@ import MoveContainer from 'moves/containers/index'
 import AppCtr from 'app/containers/index'
 
 import { getObjectValues } from 'utils/utils'
-import { createToastr, createErrorHandler } from 'app/utils'
+import { createToastr } from 'app/utils'
 import { findMoveListByUrl, newMoveListSlug } from 'moves/utils'
 
 import {
-  useInsertMoveList, useNewMoveList, useSaveMoveList, MoveListCrudBvrsContext
+  MoveListCrudBvrsContext, createMoveListCrudBvrs
 } from 'moves/containers/move_list_crud_behaviours'
 
 import type { UUID, UserProfileT } from 'app/types';
-import type { MoveListT, MoveListCrudBvrsT } from 'moves/types';
+import type { MoveListT } from 'moves/types';
 import type {
   InsertMoveListBvrT, NewMoveListBvrT, SaveMoveListBvrT
 } from 'moves/containers/move_list_crud_behaviours'
@@ -41,49 +41,6 @@ function _setSelectedMoveListByUrl(moveLists: Array<MoveListT>, moveListUrl: str
     const updateProfile = moveList.slug != newMoveListSlug;
     browseToMove([moveListUrl], updateProfile);
   }
-}
-
-
-function _createMoveListCrudBvrs(
-  props: AppFramePropsT,
-  setNextSelectedMoveListId: Function,
-): MoveListCrudBvrsT {
-  const actions: any = props;
-  const [isEditing, setIsEditing] = React.useState(false);
-
-  const moveList = findMoveListByUrl(props.moveLists, props.selectedMoveListUrl);
-
-  const insertMoveListBvr: InsertMoveListBvrT = useInsertMoveList(
-    props.moveLists,
-    actions.actInsertMoveLists,
-    createErrorHandler
-  );
-
-  const newMoveListBvr: NewMoveListBvrT = useNewMoveList(
-    props.userProfile,
-    setNextSelectedMoveListId,
-    moveList ? moveList.id : "",
-    insertMoveListBvr,
-    setIsEditing,
-  );
-
-  const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(
-    insertMoveListBvr.preview,
-    newMoveListBvr,
-    setIsEditing,
-    actions.actInsertMoveLists,
-    createErrorHandler
-  );
-
-  const bvrs: MoveListCrudBvrsT = {
-    isEditing,
-    setIsEditing,
-    insertMoveListBvr,
-    newMoveListBvr,
-    saveMoveListBvr
-  };
-
-  return bvrs;
 }
 
 
@@ -155,7 +112,6 @@ function AppFrame(props: AppFramePropsT) {
   React.useEffect(() => {_loadSelectedMoveList()}, [hasLoadedMoveLists, props.selectedMoveListUrl]);
 
   const [nextSelectedMoveListId, setNextSelectedMoveListId] = React.useState(null);
-  const moveListCrudBvrs = _createMoveListCrudBvrs(props, setNextSelectedMoveListId);
   React.useEffect(
     () => {
       if (nextSelectedMoveListId != null) {
@@ -166,6 +122,14 @@ function AppFrame(props: AppFramePropsT) {
     },
     [nextSelectedMoveListId]
   )
+
+  const moveListCrudBvrs = createMoveListCrudBvrs(
+    props.userProfile,
+    props.moveLists,
+    props.selectedMoveListUrl,
+    actions.actInsertMoveLists,
+    setNextSelectedMoveListId
+  );
 
   function signIn() {
     navigate("/app/sign-in/");

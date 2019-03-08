@@ -1,15 +1,19 @@
 // @flow
 
-import * as api from 'moves/api'
-import { newMoveListSlug } from 'moves/utils'
-import { slugify } from 'utils/utils'
 import * as React from 'react'
+import * as api from 'moves/api'
+
+// $FlowFixMe
+import uuidv4 from 'uuid/v4'
+import { findMoveListByUrl, newMoveListSlug } from 'moves/utils'
+import { createErrorHandler } from 'app/utils'
+import { slugify } from 'utils/utils'
+
 import {
   useInsertItem, useNewItem, useSaveItem
 } from 'moves/containers/crud_behaviours'
-// $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import type { MoveListT, DifficultyT } from 'moves/types'
+
+import type { MoveListT, DifficultyT, MoveListCrudBvrsT } from 'moves/types'
 import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
 import type {
   InsertItemBvrT, NewItemBvrT, SaveItemBvrT
@@ -119,4 +123,49 @@ export function useSaveMoveList(
   }
 
   return useSaveItem<MoveListT>(movelists, newMoveListBvr, setIsEditing, _saveMoveList);
+}
+
+
+export function createMoveListCrudBvrs(
+  userProfile: ?UserProfileT,
+  moveLists: Array<MoveListT>,
+  selectedMoveListUrl: string,
+  actions: any,
+  setNextSelectedMoveListId: Function,
+): MoveListCrudBvrsT {
+  const [isEditing, setIsEditing] = React.useState(false);
+
+  const moveList = findMoveListByUrl(moveLists, selectedMoveListUrl);
+
+  const insertMoveListBvr: InsertMoveListBvrT = useInsertMoveList(
+    moveLists,
+    actions.actInsertMoveLists,
+    createErrorHandler
+  );
+
+  const newMoveListBvr: NewMoveListBvrT = useNewMoveList(
+    userProfile,
+    setNextSelectedMoveListId,
+    moveList ? moveList.id : "",
+    insertMoveListBvr,
+    setIsEditing,
+  );
+
+  const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(
+    insertMoveListBvr.preview,
+    newMoveListBvr,
+    setIsEditing,
+    actions.actInsertMoveLists,
+    createErrorHandler
+  );
+
+  const bvrs: MoveListCrudBvrsT = {
+    isEditing,
+    setIsEditing,
+    insertMoveListBvr,
+    newMoveListBvr,
+    saveMoveListBvr
+  };
+
+  return bvrs;
 }

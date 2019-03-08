@@ -7,21 +7,17 @@ import AppCtr from 'app/containers/index'
 import Widgets from 'moves/presentation/index'
 import { browseToMove } from 'app/containers/appframe';
 
-import { createErrorHandler } from 'app/utils'
 import {
-  makeSlugidMatcher,
-  makeMoveListUrl,
-  findMoveBySlugid,
-  newMoveSlug,
+  makeSlugidMatcher, makeMoveListUrl, newMoveSlug,
 } from 'moves/utils';
 
 import {
-  useInsertMove, useNewMove, useSaveMove, MoveCrudBvrsContext
+  MoveCrudBvrsContext, createMoveCrudBvrs
 } from 'moves/containers/move_crud_behaviours'
 import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'
 
 import type {
-  MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT, MoveListCrudBvrsT
+  MoveListT, VideoLinksByIdT, MoveT, MoveListCrudBvrsT
 } from 'moves/types'
 import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
 import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
@@ -43,53 +39,6 @@ function _setHighlightedMoveById(moves: Array<MoveT>, moveId: UUID, moveListUrl:
       updateProfile
     );
   }
-}
-
-
-function _createMoveCrudBvrs(
-  props: MoveListFramePropsT,
-  setNextHighlightedMoveId: Function,
-): MoveCrudBvrsT {
-  const actions: any = props;
-
-  const highlightedMoveInStore = findMoveBySlugid(
-    props.moves, props.highlightedMoveSlugid
-  );
-
-  const [isEditing, setIsEditing] = React.useState(false);
-
-  const insertMoveBvr: InsertMoveBvrT = useInsertMove(
-    props.moves,
-    actions.actInsertMoves,
-    props.moveList ? props.moveList.id : "",
-    createErrorHandler
-  );
-
-  const newMoveBvr: NewMoveBvrT = useNewMove(
-    props.userProfile,
-    setNextHighlightedMoveId,
-    highlightedMoveInStore ? highlightedMoveInStore.id : "",
-    insertMoveBvr,
-    setIsEditing,
-  );
-
-  const saveMoveBvr: SaveMoveBvrT = useSaveMove(
-    insertMoveBvr.preview,
-    newMoveBvr,
-    setIsEditing,
-    actions.actAddMoves,
-    createErrorHandler
-  );
-
-  const bvrs: MoveCrudBvrsT = {
-    isEditing,
-    setIsEditing,
-    insertMoveBvr,
-    newMoveBvr,
-    saveMoveBvr
-  };
-
-  return bvrs;
 }
 
 
@@ -118,7 +67,6 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
   const actions: any = props;
 
   const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
-  const moveCrudBvrs = _createMoveCrudBvrs(props, setNextHighlightedMoveId);
   React.useEffect(
     () => {
       if (props.moveList && nextHighlightedMoveId != null) {
@@ -131,6 +79,16 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     },
     [nextHighlightedMoveId]
   )
+
+  const moveCrudBvrs = createMoveCrudBvrs(
+    props.moves,
+    props.moveList,
+    props.userProfile,
+    props.highlightedMoveSlugid,
+    setNextHighlightedMoveId,
+    actions.actInsertMoves,
+    actions.actAddMoves,
+  );
 
   return (
     <Widgets.MoveListPanel

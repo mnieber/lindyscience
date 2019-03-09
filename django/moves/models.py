@@ -31,9 +31,9 @@ class Tip(Entity):
 
 class Difficulty(Enum):
     BEGINNER = 'beg'
-    BEGINNER_INTERMEDIATE = 'beg/int'
+    BEGINNER_INTERMEDIATE = 'beg/int'  # TODO: remove
     INTERMEDIATE = 'int'
-    INTERMEDIATE_ADVANCED = 'int/adv'
+    INTERMEDIATE_ADVANCED = 'int/adv'  # TODO: remove
     ADVANCED = 'adv'
 
 

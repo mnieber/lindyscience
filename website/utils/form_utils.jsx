@@ -213,8 +213,6 @@ export function strToPickerValue(value) {
 
 export const difficulties = {
   'beg': 'Beginner',
-  'beg/int': 'Beginner Intermediate',
   'int': 'Intermediate',
-  'int/adv': 'Intermediate Advanced',
   'adv': 'Advanced',
 }

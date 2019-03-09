@@ -212,6 +212,18 @@ export function moveListsReducer(
           moves: acc
         }
       }
+    case 'REMOVE_MOVES_FROM_LIST':
+      const moves = state[action.moveListId].moves.filter(
+        x => !action.moveIds.includes(x)
+      );
+
+      return {
+        ...state,
+        [action.moveListId]: {
+          ...state[action.moveListId],
+          moves: moves
+        }
+      }
 
     default:
       return state
@@ -444,7 +456,7 @@ export const getMovesInList: Selector<Array<MoveT>> = createSelector(
 
   (moveById, stateMoveLists, moveList): Array<MoveT> => {
     return moveList
-      ? (moveList.moves || []).map(moveId => moveById[moveId])
+      ? (moveList.moves || []).map(moveId => moveById[moveId]).filter(x => !!x)
       : [];
   }
 );

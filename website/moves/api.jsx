@@ -194,6 +194,9 @@ export function loadMoveLists() {
           username
           id
         }
+        moves {
+          id
+        }
       }
     }`
   )

@@ -24,13 +24,17 @@ type InnerFormPropsT = {
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
   onCancel: Function,
-  refs: Object,
+  setDifficultyPickerRef: Function,
+  setTagsPickerRef: Function,
+  setDescriptionEditorRef: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
-  props.refs.descriptionEditorRef = React.useRef(null);
-  props.refs.difficultyPickerRef = React.useRef(null);
-  props.refs.tagsPickerRef = React.useRef(null);
+  const difficultyPickerRef = React.useRef(null);
+  props.setDifficultyPickerRef(difficultyPickerRef);
+
+  const tagsPickerRef = React.useRef(null);
+  props.setTagsPickerRef(tagsPickerRef);
 
   const nameField =
     <FormField
@@ -47,7 +51,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
     <div className="moveForm__difficultyPicker z-20 mt-4">
       <ValuePicker
         zIndex={21}
-        ref={props.refs.difficultyPickerRef}
+        ref={difficultyPickerRef}
         label='Difficulty'
         defaultValue={props.difficultyPickerDefaultValue}
         fieldName='difficulty'
@@ -62,7 +66,8 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
     <div className="moveForm__description mt-4">
       <FormFieldLabel label='Description'/>
       <RichTextEditor
-        ref={props.refs.descriptionEditorRef}
+        autoFocus={false}
+        setEditorRef={props.setDescriptionEditorRef}
         content={formProps.values.description}
       />
       {formFieldError(formProps, 'description', ['formField__error'])}
@@ -72,7 +77,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
     <div className="moveForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={props.refs.tagsPickerRef}
+        ref={tagsPickerRef}
         isCreatable={true}
         label='Tags'
         defaultValue={props.tagPickerDefaultValue}
@@ -126,8 +131,10 @@ type MoveFormPropsT = {
 };
 
 export function MoveForm(props: MoveFormPropsT) {
-  // HACK: the inner form will set any created refs as attributes of this object
   const refs = {};
+  const setTagsPickerRef = x => refs.tagsPickerRef = x;
+  const setDifficultyPickerRef = x => refs.difficultyPickerRef = x;
+  const setDescriptionEditorRef = x => refs.descriptionEditorRef = x;
 
   const toPickerValue = val => {
     return {
@@ -146,7 +153,7 @@ export function MoveForm(props: MoveFormPropsT) {
 
     validate: (values, formProps) => {
       values.description = getContentFromEditor(refs.descriptionEditorRef.current, '');
-      values.difficulty = getValueFromPicker(refs.difficultyPickerRef.current, "");
+      values.difficulty = getValueFromPicker(refs.difficultyPickerRef.current, '');
       values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
 
       let errors = {};
@@ -179,7 +186,9 @@ export function MoveForm(props: MoveFormPropsT) {
     tagPickerOptions: props.knownTags.map(strToPickerValue),
     tagPickerDefaultValue: props.move.tags.map(strToPickerValue),
     onCancel: props.onCancel,
-    refs: refs,
+    setTagsPickerRef,
+    setDifficultyPickerRef,
+    setDescriptionEditorRef,
   }));
 
   return <EnhancedForm/>;

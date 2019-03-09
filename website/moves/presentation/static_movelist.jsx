@@ -62,9 +62,12 @@ type StaticMoveListPropsT = {|
   highlightedMoveSlugid: SlugidT,
   setHighlightedMoveId: Function,
   className?: string,
+  refs: any,
 |};
 
 export function StaticMoveList(props : StaticMoveListPropsT) {
+  props.refs.moveListRef = React.useRef(null);
+
   const otherBvr = useOtherBehaviours(
     props.setHighlightedMoveId
   );
@@ -99,6 +102,7 @@ export function StaticMoveList(props : StaticMoveListPropsT) {
   return (
     <div
       className = {classnames(props.className, "moveList")}
+      ref={props.refs.moveListRef}
       id="moveList"
       tabIndex={123}
       onKeyDown={handlers.handleKeyDown}

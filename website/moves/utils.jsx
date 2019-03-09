@@ -29,3 +29,16 @@ export function findMoveListByUrl(moveLists: Array<MoveListT>, url: string) {
 export const newMoveSlug = 'new-move';
 
 export const newMoveListSlug = 'new-move-list';
+
+export function findNeighbourIdx(filteredMoveIds, allMoveIds, beginIndex, endIndex, step) {
+  for (
+    var moveIdx = beginIndex;
+    moveIdx != endIndex;
+    moveIdx += step
+  ) {
+    if (filteredMoveIds.includes(allMoveIds[moveIdx])) {
+      return {result: moveIdx};
+    }
+  }
+  return undefined;
+}

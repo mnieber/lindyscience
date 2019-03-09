@@ -17,7 +17,7 @@ import type { MoveT, MovePrivateDataT } from 'moves/types';
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  notesEditorRef: any,
+  setNotesEditorRef: Function,
   onCancel: Function,
 };
 
@@ -26,7 +26,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
     <div className="movePrivateDataForm__notes mt-4">
       <RichTextEditor
         autoFocus={true}
-        ref={props.notesEditorRef}
+        setEditorRef={props.setNotesEditorRef}
         content={formProps.values.notes}
       />
       {formFieldError(formProps, 'notes', ['formField__error'])}
@@ -64,7 +64,9 @@ type MovePrivateDataFormPropsT = {
 };
 
 export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
-  const notesEditorRef = React.useRef(null);
+  const refs = {}
+  const setNotesEditorRef = x => refs.notesEditorRef = x;
+
   const notes = props.movePrivateData
     ? props.movePrivateData.notes || ''
     : '';
@@ -76,7 +78,7 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
 
     validate: (values, formProps) => {
       // HACK: add values from non-input fields
-      values.notes = getContentFromEditor(notesEditorRef.current, '');
+      values.notes = getContentFromEditor(refs.notesEditorRef.current, '');
       let errors = {};
       return errors;
     },
@@ -87,7 +89,7 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
     displayName: 'BasicForm', // helps with React DevTools
   })(InnerForm({
     autoFocus: props.autoFocus,
-    notesEditorRef: notesEditorRef,
+    setNotesEditorRef: setNotesEditorRef,
     onCancel: props.onCancel
   }));
 

@@ -7,7 +7,7 @@ import * as api from 'moves/api'
 import uuidv4 from 'uuid/v4'
 import { findMoveListByUrl, newMoveListSlug } from 'moves/utils'
 import { createErrorHandler } from 'app/utils'
-import { slugify } from 'utils/utils'
+import { slugify, querySetListToDict } from 'utils/utils'
 
 import {
   useInsertItem, useNewItem, useSaveItem
@@ -117,7 +117,7 @@ export function useSaveMoveList(
 
   function _saveMoveList(id: UUID, incompleteValues: IncompleteValuesT) {
     const movelist = _completeMoveList(id, incompleteValues);
-    actAddMoveLists([movelist]);
+    actAddMoveLists(querySetListToDict([movelist]));
     return api.saveMoveList(movelist)
       .catch(createErrorHandler('We could not save the movelist'));
   }

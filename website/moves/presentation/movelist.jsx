@@ -39,7 +39,6 @@ function useDragging(): DraggingBvrT {
 
 type OtherBvrT = {|
   setHighlightedMoveIdAndScroll: Function,
-  trashHighlightedMove: Function,
 |};
 
 function useOtherBehaviours(
@@ -50,18 +49,8 @@ function useOtherBehaviours(
     scrollIntoView(document.getElementById(moveId));
   }
 
-  async function trashHighlightedMove() {
-    try {
-      // determine neighbour move id, and go there afterwards
-      // await trashMove(highlightedMoveId);
-    }
-    catch(e) {
-    }
-  }
-
   return {
     setHighlightedMoveIdAndScroll,
-    trashHighlightedMove,
   }
 }
 
@@ -128,13 +117,15 @@ type MoveListPropsT = {|
   videoLinksByMoveId: VideoLinksByIdT,
   highlightedMoveSlugid: SlugidT,
   setHighlightedMoveId: Function,
-  // trashMove: Function,
+  moveContextMenu: any,
   onDrop: Function,
   className?: string,
-  ref?: any,
+  refs: any,
 |};
 
-function _MoveList(props : MoveListPropsT) {
+export function MoveList(props: MoveListPropsT) {
+  props.refs.moveListRef = React.useRef(null);
+
   const draggingBvr: DraggingBvrT = useDragging();
   const otherBvr: OtherBvrT = useOtherBehaviours(props.setHighlightedMoveId);
   const handlers = createHandlers(draggingBvr, otherBvr, props);
@@ -159,7 +150,6 @@ function _MoveList(props : MoveListPropsT) {
         id={move.id}
         key={idx}
         onMouseDown={() => otherBvr.setHighlightedMoveIdAndScroll(move.id)}
-        // onContextMenu={_onContextMenu}
         draggable={true}
         onDragStart={e => handlers.handleDragStart(move.id)}
         onDragOver={e => handlers.handleDragOver(e, move.id)}
@@ -172,12 +162,10 @@ function _MoveList(props : MoveListPropsT) {
     )
   })
 
-  function _handleClick() {}
-
   return (
     <div
       className = {classnames(props.className, "moveList")}
-      ref={props.ref}
+      ref={props.refs.moveListRef}
       id="moveList"
       tabIndex={123}
       onKeyDown={handlers.handleKeyDown}
@@ -185,19 +173,7 @@ function _MoveList(props : MoveListPropsT) {
       <MenuProvider id="moveContextMenu">
         {moveNodes}
       </MenuProvider>
-
-      <Menu id="moveContextMenu">
-        <Item onClick={otherBvr.trashHighlightedMove} >
-          Trash
-        </Item>
-        <Submenu label="Foobar">
-          <Item onClick={_handleClick}>Foo</Item>
-          <Item onClick={_handleClick}>Bar</Item>
-        </Submenu>
-      </Menu>
+      {props.moveContextMenu}
     </div>
   );
 }
-
-// $FlowFixMe
-export const MoveList = React.forwardRef((props, ref) => _MoveList({...props, ref}));

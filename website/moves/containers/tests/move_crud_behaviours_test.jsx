@@ -277,7 +277,7 @@ test('test useSaveMove', function (t) {
   sandbox.newMoveBvr.finalize = sinon.fake();
   sandbox.saveMoveBvr.saveItem(moves[1].id, {});
   t.calledOnceWith(
-    updateMove, [[moves[1]]],
+    updateMove, [moves[1], moves[1]],
     "Saving a move should call updateMove"
   );
   t.calledOnceWith(

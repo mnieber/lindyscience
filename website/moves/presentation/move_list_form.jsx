@@ -23,12 +23,13 @@ type InnerFormPropsT = {
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
   onCancel: Function,
-  refs: Object,
+  setDescriptionEditorRef: Function,
+  setTagsPickerRef: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
-  props.refs.descriptionEditorRef = React.useRef(null);
-  props.refs.tagsPickerRef = React.useRef(null);
+  const tagsPickerRef = React.useRef(null);
+  props.setTagsPickerRef(tagsPickerRef);
 
   const nameField =
     <FormField
@@ -45,7 +46,8 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
     <div className="moveListForm__description mt-4">
       <FormFieldLabel label='Description'/>
       <RichTextEditor
-        ref={props.refs.descriptionEditorRef}
+        autoFocus={false}
+        setEditorRef={props.setDescriptionEditorRef}
         content={formProps.values.description}
       />
       {formFieldError(formProps, 'description', ['formField__error'])}
@@ -55,7 +57,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
     <div className="moveListForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={props.refs.tagsPickerRef}
+        ref={tagsPickerRef}
         isCreatable={true}
         label='Tags'
         defaultValue={props.tagPickerDefaultValue}
@@ -105,8 +107,9 @@ type MoveListFormPropsT = {
 };
 
 export function MoveListForm(props: MoveListFormPropsT) {
-  // HACK: the inner form will set any created refs as attributes of this object
   const refs = {};
+  const setTagsPickerRef = x => refs.tagsPickerRef = x;
+  const setDescriptionEditorRef = x => refs.descriptionEditorRef = x;
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
@@ -138,7 +141,8 @@ export function MoveListForm(props: MoveListFormPropsT) {
     tagPickerOptions: props.knownTags.map(strToPickerValue),
     tagPickerDefaultValue: props.moveList.tags.map(strToPickerValue),
     onCancel: props.onCancel,
-    refs: refs,
+    setDescriptionEditorRef,
+    setTagsPickerRef,
   }));
 
   return <EnhancedForm/>;

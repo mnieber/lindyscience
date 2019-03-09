@@ -1,23 +1,35 @@
+// @flow
+
 import React from 'react'
 import {
   Editor, EditorState, RichUtils, convertFromRaw, convertToRaw
+// $FlowFixMe
 } from 'draft-js';
 import { stateFromHTML } from 'draft-js-import-html';
 import { stateToHTML } from 'draft-js-export-html';
 
 
-export function _RichTextEditor(props) {
+type RichTextEditorPropsT = {
+  content: string,
+  autoFocus: boolean,
+  setEditorRef: Function,
+};
+
+export function RichTextEditor(props: RichTextEditorPropsT) {
+  const editorRef = React.useRef(null);
+  props.setEditorRef(editorRef);
+
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(stateFromHTML(props.content))
   );
 
   React.useEffect(
     () => {
-      if (props.autoFocus && props.editorRef && props.editorRef.current) {
-        props.editorRef.current.focus();
+      if (props.autoFocus && editorRef && editorRef.current) {
+        editorRef.current.focus();
       }
     }
-    , [props.editorRef]
+    , [editorRef]
   );
 
   const handleKeyCommand = (command, editorState) => {
@@ -31,18 +43,13 @@ export function _RichTextEditor(props) {
 
   return (
       <Editor
-        ref={props.editorRef}
+        ref={editorRef}
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
         onChange={setEditorState}
       />
   );
 }
-
-// $FlowFixMe
-export const RichTextEditor = React.forwardRef(
-  (props, editorRef) => _RichTextEditor({...props, editorRef})
-);
 
 
 export function getContentFromEditor(editor: any, defaultValue: string) {

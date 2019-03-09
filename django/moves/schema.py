@@ -89,6 +89,10 @@ class SaveMoveOrdering(graphene.Mutation):
                         move_id=move_id,
                         move_list_id=move_list_id,
                         defaults={'order': move_ids.index(str(move_id))})
+                to_be_removed = models.MoveList2Move.objects \
+                    .filter(move_list_id=move_list_id) \
+                    .exclude(move_id__in=move_ids)
+                to_be_removed.delete()
             return SaveMoveOrdering(ok=True)
 
         assert_authorized(models.MoveList, move_list_id,

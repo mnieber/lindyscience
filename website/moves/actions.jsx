@@ -4,7 +4,7 @@ import React from 'react'
 import * as fromStore from 'moves/reducers'
 import * as fromAppStore from 'app/reducers'
 import { toTitleCase } from 'utils/utils'
-import { findMoveBySlugid, makeSlugid } from 'moves/utils'
+import { findMoveBySlugid, makeSlugid, findNeighbourIdx } from 'moves/utils'
 import type {
   MoveByIdT,
   MoveListByIdT,
@@ -75,19 +75,6 @@ export function actAddTips(tips: TipByIdT) {
   }
 }
 
-function _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, endIndex, step) {
-  for (
-    var moveIdx = highlightedIdx;
-    moveIdx != endIndex;
-    moveIdx += step
-  ) {
-    if (filteredMoveIds.includes(allMoveIds[moveIdx])) {
-      return {result: moveIdx};
-    }
-  }
-  return undefined;
-}
-
 export function actSetMoveListFilter(tags: Array<TagT>) {
   return (dispatch: Function, getState: Function): SlugidT => {
     dispatch({
@@ -108,8 +95,8 @@ export function actSetMoveListFilter(tags: Array<TagT>) {
       const highlightedIdx = allMoveIds.indexOf(highlightedMove.id);
 
       const newIdx =
-        _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, allMoveIds.length, 1) ||
-        _findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, -1, -1);
+        findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, allMoveIds.length, 1) ||
+        findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, -1, -1);
 
       if (newIdx) {
         const moveId = allMoveIds[newIdx.result];
@@ -132,6 +119,24 @@ export function actInsertMoves(
     moveIds,
     moveListId,
     targetMoveId,
+  });
+
+  return (dispatch: Function, getState: Function) => {
+    dispatch(createAction());
+    // $FlowFixMe
+    const moveList = fromStore.getMoveListById(getState().moves)[moveListId];
+    return moveList.moves;
+  }
+}
+
+export function actRemoveMoves(
+  moveIds: Array<UUID>,
+  moveListId: UUID,
+) {
+  const createAction = () => ({
+    type: 'REMOVE_MOVES_FROM_LIST',
+    moveIds,
+    moveListId,
   });
 
   return (dispatch: Function, getState: Function) => {

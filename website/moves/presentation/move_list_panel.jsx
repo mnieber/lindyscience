@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from 'react'
-import { useRef } from 'react'
 import Widgets from 'moves/presentation/index'
+import { MoveList } from 'moves/presentation/movelist';
 import { makeMoveListUrl } from 'moves/utils';
 import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
 import type {
@@ -32,7 +32,7 @@ function createHandlers(
       e.stopPropagation();
       if (bvrs.isEditing) {
         bvrs.saveMoveBvr.discardChanges();
-        if (moveListRef.current) {
+        if (moveListRef && moveListRef.current) {
           moveListRef.current.focus();
         }
       }
@@ -58,12 +58,14 @@ export type MoveListPanelPropsT = {
   highlightedMoveSlugid: SlugidT,
   moveList: ?MoveListT,
   actSetMoveListFilter: Function,
+  shareMoveToList: Function,
+  moveMoveToList: Function,
   children: any,
 };
 
 export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
-  const handlers: HandlersT = createHandlers(props.moveCrudBvrs);
-  const moveListRef = useRef(null);
+  const refs = {};
+  const handlers: HandlersT = createHandlers(props.moveCrudBvrs, refs.moveListRef);
 
   const userId = props.userProfile
     ? props.userProfile.userId
@@ -93,19 +95,28 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       }
     />
 
+  const moveContextMenu =
+    <Widgets.MoveContextMenu
+      moveLists={props.moveLists}
+      shareMoveToList={props.shareMoveToList}
+      moveMoveToList={props.moveMoveToList}
+    />
+
   const moveList =
     <Widgets.MoveList
-      ref={moveListRef}
+      refs={refs}
       className=""
       videoLinksByMoveId={props.videoLinksByMoveId}
       setHighlightedMoveId={props.moveCrudBvrs.newMoveBvr.setHighlightedItemId}
       moves={props.moveCrudBvrs.insertMoveBvr.preview}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       onDrop={handlers.onDrop}
+      moveContextMenu={moveContextMenu}
     />
 
   const staticMoveList =
     <Widgets.StaticMoveList
+      refs={refs}
       moves={props.moveCrudBvrs.insertMoveBvr.preview}
       videoLinksByMoveId={props.videoLinksByMoveId}
       highlightedMoveSlugid={props.highlightedMoveSlugid}

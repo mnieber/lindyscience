@@ -15,6 +15,7 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
 
   const editBtn =
     <div
+      key={'edit'}
       className={"button button--wide ml-2"}
       onClick={() => setIsEditing(true)}
     >
@@ -22,14 +23,15 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
     </div>;
 
   const staticDiv =
-    <div>
-      {editBtn}
-      <div
-        dangerouslySetInnerHTML={{
-          __html: props.movePrivateData && props.movePrivateData.notes
-        }}
-      />
-    </div>;
+    <div
+      dangerouslySetInnerHTML={{
+        __html: props.movePrivateData && props.movePrivateData.notes
+      }}
+    />
+
+  const buttons = isEditing
+    ? []
+    : [editBtn];
 
   const formDiv =
     <MovePrivateDataForm
@@ -40,9 +42,12 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
     />;
 
   return (
-    <div className={"move__privateNotes panel"}>
-    <h2>Private notes</h2>
-    {isEditing ? formDiv : staticDiv}
+    <div className={"move__privateNotes panel flexcol"}>
+      <div className={"flexrow"}>
+        <h2>Private notes</h2>
+        {buttons}
+      </div>
+      {isEditing ? formDiv : staticDiv}
     </div>
   );
 };

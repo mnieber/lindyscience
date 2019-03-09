@@ -8,8 +8,15 @@ import Widgets from 'moves/presentation/index'
 import { browseToMove } from 'app/containers/appframe';
 
 import {
-  makeSlugidMatcher, makeMoveListUrl, newMoveSlug, findMoveBySlugid
+  makeSlugidMatcher,
+  makeMoveListUrl,
+  newMoveSlug,
+  findMoveBySlugid,
+  findNeighbourIdx,
 } from 'moves/utils';
+import {
+  createErrorHandler
+} from 'app/utils';
 
 import {
   MoveCrudBvrsContext, createMoveCrudBvrs
@@ -95,6 +102,38 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     }
   }
 
+  function _shareMoveToList(moveList: MoveListT) {
+    const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
+    if (highlightedMove && !moveList.moves.includes(highlightedMove.id)) {
+      const moveIds = actions.actInsertMoves([highlightedMove.id], moveList.id, "");
+      MovesCtr.api.saveMoveOrdering(moveList.id, moveIds)
+        .catch(createErrorHandler("Could not update the move list"));
+    }
+  }
+
+  function _moveMoveToList(moveList: MoveListT) {
+    const sourceMoveList = props.moveList;
+
+    if (sourceMoveList && sourceMoveList.id != moveList.id) {
+      const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
+      const moveIds = moves.map(x => x.id);
+      const highlightedIdx = moveIds.indexOf(highlightedMove.id);
+
+      _shareMoveToList(moveList);
+      const newMoveIds = actions.actRemoveMoves([highlightedMove.id], sourceMoveList.id);
+      MovesCtr.api.saveMoveOrdering(sourceMoveList.id, newMoveIds)
+        .catch(createErrorHandler("Could not update the move list"));
+
+      const newIdx =
+        findNeighbourIdx(newMoveIds, moveIds, highlightedIdx, moveIds.length, 1) ||
+        findNeighbourIdx(newMoveIds, moveIds, highlightedIdx, -1, -1);
+
+      if (newIdx) {
+        _browseToMove(moves, moves[newIdx.result], makeMoveListUrl(sourceMoveList));
+      }
+    }
+  }
+
   return (
     <Widgets.MoveListPanel
       userProfile={props.userProfile}
@@ -106,6 +145,8 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       moveList={props.moveList}
       actSetMoveListFilter={actions.actSetMoveListFilter}
+      shareMoveToList={_shareMoveToList}
+      moveMoveToList={_moveMoveToList}
     >
       <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>
         {props.children}

@@ -37,13 +37,13 @@ export function useInsertItem<ItemT: ObjectT>(
     );
 
   function insertDirectly(
-    previewItem: ItemT, targetItemId: UUID, isBefore: boolean
+    previewItemId: UUID, targetItemId: UUID, isBefore: boolean
   ) {
     if (isBefore) {
       const idx = items.findIndex(x => x.id == targetItemId) - 1;
       targetItemId = idx < 0 ? "" : items[idx].id;
     }
-    insertItem(previewItem, targetItemId);
+    insertItem(previewItemId, targetItemId);
   }
 
   function prepare(targetItemId: UUID, item: ItemT) {
@@ -56,7 +56,7 @@ export function useInsertItem<ItemT: ObjectT>(
   function finalize(isCancel: boolean) {
     const result = targetItemId;
     if (previewItem && !isCancel) {
-      insertDirectly(previewItem, targetItemId, false)
+      insertDirectly(previewItem.id, targetItemId, false)
     }
     setPreviewItem(null);
     setTargetItemId("");

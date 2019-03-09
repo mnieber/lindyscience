@@ -54,8 +54,8 @@ export function useInsertMove(
   moveListId: UUID,
   createErrorHandler: Function
 ): InsertMoveBvrT {
-  function _insertMove(move: MoveT, targetMoveId: UUID) {
-    const allMoveIds = actInsertMoves([move.id], moveListId, targetMoveId);
+  function _insertMove(moveId: UUID, targetMoveId: UUID) {
+    const allMoveIds = actInsertMoves([moveId], moveListId, targetMoveId);
     api.saveMoveOrdering(moveListId, allMoveIds)
       .catch(createErrorHandler("We could not update the move list"));
   }

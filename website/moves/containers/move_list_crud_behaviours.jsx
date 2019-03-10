@@ -51,8 +51,8 @@ export function useInsertMoveList(
   actInsertMoveLists: Function,
   createErrorHandler: Function
 ): InsertMoveListBvrT {
-  function _insertMoveList(moveList: MoveListT, targetMoveListId: UUID) {
-    const allMoveListIds = actInsertMoveLists([moveList.id], targetMoveListId);
+  function _insertMoveList(moveListId: UUID, targetMoveListId: UUID) {
+    const allMoveListIds = actInsertMoveLists([moveListId], targetMoveListId);
     api.saveMoveListOrdering(allMoveListIds)
       .catch(createErrorHandler("We could not update the move list"));
   }

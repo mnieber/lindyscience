@@ -6,9 +6,10 @@ import sinon from 'sinon'
 // $FlowFixMe
 import TestRenderer from "react-test-renderer";
 import redtape from 'redtape'
-import { useInsertMove, useNewMove, useSaveMove } from 'moves/containers/move_crud_behaviours'
+import {
+  useInsertMove, useNewMove, useSaveMove, createNewMove
+} from 'moves/containers/move_crud_behaviours'
 import { getObjectValues } from 'utils/utils'
-import { createNewMove } from 'moves/containers/move_crud_behaviours'
 // $FlowFixMe
 import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from 'moves/containers/move_crud_behaviours'
 

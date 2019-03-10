@@ -1,10 +1,9 @@
 // @flow
 
 import * as React from 'react'
+import { StaticVideoLinkList } from 'moves/presentation/static_videolink';
 import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
 import type { MoveT, VideoLinkT } from 'moves/types'
-// $FlowFixMe
-import { StaticVideoLinkList } from 'moves/presentation/static_videolink';
 
 
 type StaticVideoLinksPanelPropsT = {

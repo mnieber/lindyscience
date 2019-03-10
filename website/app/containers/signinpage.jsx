@@ -4,7 +4,6 @@ import * as React from 'react'
 import AppCtr from 'app/containers/index'
 import { navigate } from "@reach/router"
 import { urlParam } from 'utils/utils'
-import { toastr } from 'react-redux-toastr'
 import { SignInDialog } from 'app/presentation/signin_dialog';
 import { getSignInPageBehaviours } from 'app/containers/behaviours'
 

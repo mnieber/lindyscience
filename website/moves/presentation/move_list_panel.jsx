@@ -3,7 +3,6 @@
 import * as React from 'react'
 import Widgets from 'moves/presentation/index'
 import { MoveList } from 'moves/presentation/movelist';
-import { makeMoveListUrl } from 'moves/utils';
 import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
 import type {
   MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT, MoveListCrudBvrsT
@@ -57,9 +56,10 @@ export type MoveListPanelPropsT = {
   moveLists: Array<MoveListT>,
   highlightedMoveSlugid: SlugidT,
   moveList: ?MoveListT,
-  actSetMoveListFilter: Function,
+  filterMovesByTags: Function,
   shareMoveToList: Function,
   moveMoveToList: Function,
+  selectMoveListById: Function,
   children: any,
 };
 
@@ -76,6 +76,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       className="mb-4"
       moveLists={props.moveLists}
       defaultMoveListId={props.moveList ? props.moveList.id : ""}
+      selectMoveListById={props.selectMoveListById}
     />
 
   const moveListHeader =
@@ -87,12 +88,8 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
   const moveListFilter =
     <Widgets.MoveListFilter
       className="mb-4"
-      setMoveListFilter={props.actSetMoveListFilter}
+      filterMovesByTags={props.filterMovesByTags}
       moveTags={props.moveTags}
-      moveListUrl={props.moveList
-        ? makeMoveListUrl(props.moveList)
-        : ""
-      }
     />
 
   const moveContextMenu =

@@ -17,9 +17,6 @@ import {
 
 import type { UUID, UserProfileT } from 'app/types';
 import type { MoveListT } from 'moves/types';
-import type {
-  InsertMoveListBvrT, NewMoveListBvrT, SaveMoveListBvrT
-} from 'moves/containers/move_list_crud_behaviours'
 
 
 export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boolean=true) {

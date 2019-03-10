@@ -134,6 +134,20 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     }
   }
 
+  const selectMoveListById = id => {
+    const moveList = props.moveLists.find(x => x.id == id);
+    if (moveList) {
+      browseToMove([moveList.ownerUsername, moveList.slug]);
+    }
+  }
+
+  const filterMovesByTags = tags => {
+    const slugid = actions.actSetMoveListFilter(tags, true);
+    if (props.moveList && slugid) {
+      browseToMove([makeMoveListUrl(props.moveList), slugid])
+    }
+  }
+
   return (
     <Widgets.MoveListPanel
       userProfile={props.userProfile}
@@ -144,9 +158,10 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
       moveLists={props.moveLists}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       moveList={props.moveList}
-      actSetMoveListFilter={actions.actSetMoveListFilter}
+      filterMovesByTags={filterMovesByTags}
       shareMoveToList={_shareMoveToList}
       moveMoveToList={_moveMoveToList}
+      selectMoveListById={selectMoveListById}
     >
       <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>
         {props.children}

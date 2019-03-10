@@ -1,13 +1,12 @@
 // @flow
 
 import * as React from 'react'
-import type { MoveListT } from 'moves/types'
-import type { UUID, TagT } from 'app/types';
 import classnames from 'classnames';
 import {
   ValuePicker, strToPickerValue
 } from 'utils/form_utils'
-import { browseToMove } from 'app/containers/appframe'
+import type { MoveListT } from 'moves/types'
+import type { UUID, TagT } from 'app/types';
 
 
 // MoveListPicker
@@ -16,19 +15,12 @@ type MoveListPickerPropsT = {|
   moveLists: Array<MoveListT>,
   defaultMoveListId: UUID,
   className?: string,
+  selectMoveListById: Function,
 |};
 
 export function MoveListPicker(props: MoveListPickerPropsT) {
   function _onChange(pickedItem) {
-    const moveList = props.moveLists.find(
-      x => x.id == pickedItem.value
-    );
-    if (moveList) {
-      browseToMove([
-        moveList.ownerUsername,
-        moveList.slug,
-      ]);
-    }
+    props.selectMoveListById(pickedItem.value);
   }
 
   function toPickerValue(moveList: MoveListT) {
@@ -59,17 +51,13 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
 
 type MoveListFilterPropsT = {|
   moveTags: Array<TagT>,
-  setMoveListFilter: Function,
+  filterMovesByTags: Function,
   className?: string,
-  moveListUrl: string,
 |};
 
 export function MoveListFilter(props: MoveListFilterPropsT) {
   function _onChange(pickedTags) {
-    const slugid = props.setMoveListFilter(pickedTags.map(x => x.value), true);
-    if (slugid) {
-      browseToMove([props.moveListUrl, slugid])
-    }
+    props.filterMovesByTags(pickedTags.map(x => x.value));
   }
 
   return (

@@ -2,10 +2,10 @@
 
 import * as React from 'react'
 import classnames from 'classnames';
-import { makeSlugidMatcher, findMoveBySlugid } from 'moves/utils';
 import {
   Menu, Item, Separator, Submenu, MenuProvider
 } from 'react-contexify';
+import { makeSlugidMatcher, findMoveBySlugid } from 'moves/utils';
 import {handleSelectionKeys, scrollIntoView} from 'app/utils'
 import type { MoveT, VideoLinksByIdT } from 'moves/types'
 import type { UUID, SlugidT } from 'app/types';

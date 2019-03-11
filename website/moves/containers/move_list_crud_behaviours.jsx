@@ -51,7 +51,6 @@ export type InsertMoveListBvrT = InsertItemBvrT<MoveListT>;
 export function useInsertMoveList(
   moveLists: Array<MoveListT>,
   actInsertMoveLists: (moveListIds: Array<UUID>, targetMoveListId: UUID) => Array<UUID>,
-  createErrorHandler: (string) => Function
 ): InsertMoveListBvrT {
   function _insertMoveList(moveListId: UUID, targetMoveListId: UUID) {
     const allMoveListIds = actInsertMoveLists([moveListId], targetMoveListId);
@@ -97,7 +96,6 @@ export function useSaveMoveList(
   newMoveListBvr: NewMoveListBvrT,
   setIsEditing: (boolean) => void,
   actAddMoveLists: (MoveListByIdT) => void,
-  createErrorHandler: (string) => Function,
 ): SaveMoveListBvrT {
   type IncompleteValuesT = {
     name: string,
@@ -142,8 +140,7 @@ export function createMoveListCrudBvrs(
 
   const insertMoveListBvr: InsertMoveListBvrT = useInsertMoveList(
     moveLists,
-    actInsertMoveLists,
-    createErrorHandler
+    actInsertMoveLists
   );
 
   const newMoveListBvr: NewMoveListBvrT = useNewMoveList(
@@ -158,8 +155,7 @@ export function createMoveListCrudBvrs(
     insertMoveListBvr.preview,
     newMoveListBvr,
     setIsEditing,
-    actAddMoveLists,
-    createErrorHandler
+    actAddMoveLists
   );
 
   const bvrs: MoveListCrudBvrsT = {

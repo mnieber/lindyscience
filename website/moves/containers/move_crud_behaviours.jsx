@@ -53,8 +53,7 @@ export function useInsertMove(
   actInsertMoves: (
     moveIds: Array<UUID>, moveListId: UUID, targetMoveId: UUID
   ) => Array<UUID>,
-  moveListId: UUID,
-  createErrorHandler: (string) => Function
+  moveListId: UUID
 ): InsertMoveBvrT {
   function _insertMove(moveId: UUID, targetMoveId: UUID) {
     const allMoveIds = actInsertMoves([moveId], moveListId, targetMoveId);
@@ -99,8 +98,7 @@ export function useSaveMove(
   moves: Array<MoveT>,
   newMoveBvr: NewMoveBvrT,
   setIsEditing: (boolean) => void,
-  updateMove: (oldMove: MoveT, newMove: MoveT) => void,
-  createErrorHandler: (string) => Function,
+  updateMove: (oldMove: MoveT, newMove: MoveT) => void
 ): SaveMoveBvrT {
   type IncompleteValuesT = {
     name: string,
@@ -151,8 +149,7 @@ export function createMoveCrudBvrs(
   const insertMoveBvr: InsertMoveBvrT = useInsertMove(
     moves,
     actInsertMoves,
-    moveList ? moveList.id : "",
-    createErrorHandler
+    moveList ? moveList.id : ""
   );
 
   const newMoveBvr: NewMoveBvrT = useNewMove(
@@ -167,8 +164,7 @@ export function createMoveCrudBvrs(
     insertMoveBvr.preview,
     newMoveBvr,
     setIsEditing,
-    updateMove,
-    createErrorHandler
+    updateMove
   );
 
   const bvrs: MoveCrudBvrsT = {

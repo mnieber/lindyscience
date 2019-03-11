@@ -5,7 +5,7 @@ import MovesCtr from 'moves/containers/index'
 import AppCtr from 'app/containers/index'
 
 import Widgets from 'moves/presentation/index'
-import { isOwner, createErrorHandler } from 'app/utils'
+import { isOwner } from 'app/utils'
 import { findMoveListByUrl } from 'moves/utils'
 
 import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'

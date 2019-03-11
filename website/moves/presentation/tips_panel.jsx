@@ -99,7 +99,6 @@ export function useSaveTip(
   moveId: UUID,
   tips: Array<TipT>,
   actAddTips: Function,
-  createErrorHandler: Function,
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const tip: TipT = {
@@ -138,7 +137,6 @@ export function TipsPanel(props: TipsPanelPropsT) {
     props.moveId,
     insertTipBvr.preview,
     props.actAddTips,
-    createErrorHandler
   );
 
   const voteTip = (id: UUID, vote: VoteT) => {

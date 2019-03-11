@@ -101,7 +101,6 @@ export function useSaveVideoLink(
   moveId: UUID,
   videoLinks: Array<VideoLinkT>,
   actAddVideoLinks: Function,
-  createErrorHandler: Function,
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const videoLink: VideoLinkT = {
@@ -161,7 +160,6 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
     props.moveId,
     insertVideoLinkBvr.preview,
     props.actAddVideoLinks,
-    createErrorHandler
   );
   const voteVideoLinkBvr = useVoteVideoLink(
     props.actCastVote

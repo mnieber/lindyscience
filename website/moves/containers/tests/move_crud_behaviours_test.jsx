@@ -55,13 +55,10 @@ function TestComponent({
   highlightedMoveId,
   updateMove,
 }) {
-  const createErrorHandler = () => (() => {});
-
   sandbox.insertMoveBvr = useInsertMove(
     moves,
     actInsertMoves,
     data.moveList1.id,
-    createErrorHandler
   )
   sandbox.insertMoveBvr.prepare = sinon.spy(sandbox.insertMoveBvr.prepare);
 
@@ -78,7 +75,6 @@ function TestComponent({
     sandbox.newMoveBvr,
     setIsEditing,
     updateMove,
-    createErrorHandler,
   )
 
   return [];

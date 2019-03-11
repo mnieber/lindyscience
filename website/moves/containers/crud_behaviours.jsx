@@ -9,14 +9,14 @@ import type { UUID, ObjectT } from 'app/types';
 export type InsertItemBvrT<ItemT> = {|
   preview: Array<ItemT>,
   previewItem: ?ItemT,
-  prepare: Function,
-  finalize: Function,
-  insertDirectly: Function
+  prepare: (targetItemId: UUID, item: ItemT) => void,
+  finalize: (isCancel: boolean) => UUID,
+  insertDirectly: (itemId: UUID, targetItemId: UUID, isBefore: boolean) => void
 |};
 
 export function useInsertItem<ItemT: ObjectT>(
   items: Array<ItemT>,
-  insertItem: Function,
+  insertItem: (itemId: UUID, targetItemId: UUID) => void,
 ): InsertItemBvrT<ItemT> {
   const [targetItemId, setTargetItemId] = React.useState("");
   const [previewItem, setPreviewItem] = React.useState(null);
@@ -36,14 +36,12 @@ export function useInsertItem<ItemT: ObjectT>(
       targetItemId ? [] : [previewItem]
     );
 
-  function insertDirectly(
-    previewItemId: UUID, targetItemId: UUID, isBefore: boolean
-  ) {
+  function insertDirectly(itemId: UUID, targetItemId: UUID, isBefore: boolean) {
     if (isBefore) {
       const idx = items.findIndex(x => x.id == targetItemId) - 1;
       targetItemId = idx < 0 ? "" : items[idx].id;
     }
-    insertItem(previewItemId, targetItemId);
+    insertItem(itemId, targetItemId);
   }
 
   function prepare(targetItemId: UUID, item: ItemT) {
@@ -71,17 +69,17 @@ export function useInsertItem<ItemT: ObjectT>(
 
 export type NewItemBvrT<ItemT> = {|
   newItem: ?ItemT,
-  addNewItem: Function,
-  finalize: Function,
-  setHighlightedItemId: Function,
+  addNewItem: () => void,
+  finalize: (isCancel: boolean) => void,
+  setHighlightedItemId: (itemId: UUID) => void
 |};
 
-export function useNewItem<ItemT>(
+export function useNewItem<ItemT: ObjectT>(
   highlightedItemId: UUID,
-  setHighlightedItemId: Function,
+  setHighlightedItemId: (itemId: UUID) => void,
   insertItemBvr: InsertItemBvrT<ItemT>,
-  setIsEditing: Function,
-  createNewItem: Function,
+  setIsEditing: (boolean) => void,
+  createNewItem: () => ?ItemT,
 ): NewItemBvrT<ItemT> {
   const [newItem, setNewItem] = React.useState(null);
 
@@ -128,14 +126,14 @@ export function useNewItem<ItemT>(
 // SaveItem Behaviour
 
 export type SaveItemBvrT<ItemT> = {
-  saveItem: Function,
-  discardChanges: Function,
+  saveItem: (id: UUID, incompleteValues: any) => void,
+  discardChanges: () => void,
 };
 
 export function useSaveItem<ItemT: ObjectT>(
   newItemBvr: NewItemBvrT<ItemT>,
-  setIsEditing: Function,
-  saveItem: Function,
+  setIsEditing: (boolean) => void,
+  saveItem: (id: UUID, incompleteValues: any) => void,
 ): SaveItemBvrT<ItemT> {
   function saveItemExt(id: UUID, incompleteValues: any) {
     saveItem(id, incompleteValues);

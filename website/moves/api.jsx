@@ -136,7 +136,7 @@ export function saveMovePrivateData(values: MovePrivateDataT) {
   )
 }
 
-export function saveMoveOrdering(moveListId: UUID, moveIds: Array<number>) {
+export function saveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
   return doQuery(
     `mutation saveMoveOrdering(
       $moveListId: String!,
@@ -154,7 +154,7 @@ export function saveMoveOrdering(moveListId: UUID, moveIds: Array<number>) {
   )
 }
 
-export function saveMoveListOrdering(moveListIds: Array<number>) {
+export function saveMoveListOrdering(moveListIds: Array<UUID>) {
   return doQuery(
     `mutation saveMoveListOrdering(
       $moveListIds: [String]!,

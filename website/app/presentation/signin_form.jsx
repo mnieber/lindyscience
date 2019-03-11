@@ -10,23 +10,23 @@ export function SignInForm({
   onSubmit,
   values,
 }: {
-  onSubmit: Function,
+  onSubmit: (any) => void,
   values: any,
 }) {
-  function InnerForm(props) {
+  function InnerForm(formProps) {
     return (
-      <form className="signInForm w-full" onSubmit={props.handleSubmit}>
+      <form className="signInForm w-full" onSubmit={formProps.handleSubmit}>
         <div className={"flex flex-wrap"}>
           <FormField
             classNames="signInForm__email w-64"
-            formProps={props}
+            formProps={formProps}
             fieldName='email'
             type='email'
             placeholder="Email"
           />
           <FormField
             classNames="signInForm__password w-64"
-            formProps={props}
+            formProps={formProps}
             fieldName='password'
             type='password'
             placeholder="Password"
@@ -53,7 +53,7 @@ export function SignInForm({
       text: yup.string()
         .required('This field is required'),
     }),
-    validate: (values, props) => {
+    validate: (values, formProps) => {
       let errors = {};
       return errors;
     },

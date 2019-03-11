@@ -50,9 +50,11 @@ export type InsertMoveBvrT = InsertItemBvrT<MoveT>;
 
 export function useInsertMove(
   moves: Array<MoveT>,
-  actInsertMoves: Function,
+  actInsertMoves: (
+    moveIds: Array<UUID>, moveListId: UUID, targetMoveId: UUID
+  ) => Array<UUID>,
   moveListId: UUID,
-  createErrorHandler: Function
+  createErrorHandler: (string) => Function
 ): InsertMoveBvrT {
   function _insertMove(moveId: UUID, targetMoveId: UUID) {
     const allMoveIds = actInsertMoves([moveId], moveListId, targetMoveId);
@@ -70,10 +72,10 @@ export type NewMoveBvrT = NewItemBvrT<MoveT>;
 
 export function useNewMove(
   userProfile: ?UserProfileT,
-  setHighlightedMoveId: Function,
+  setHighlightedMoveId: (UUID) => void,
   highlightedMoveId: UUID,
   insertMoveBvr: InsertMoveBvrT,
-  setIsEditing: Function,
+  setIsEditing: (boolean) => void,
 ): NewMoveBvrT {
   function _createNewMove() {
     return createNewMove(userProfile);
@@ -96,9 +98,9 @@ export type SaveMoveBvrT = SaveItemBvrT<MoveT>;
 export function useSaveMove(
   moves: Array<MoveT>,
   newMoveBvr: NewMoveBvrT,
-  setIsEditing: Function,
-  updateMove: Function,
-  createErrorHandler: Function,
+  setIsEditing: (boolean) => void,
+  updateMove: (oldMove: MoveT, newMove: MoveT) => void,
+  createErrorHandler: (string) => Function,
 ): SaveMoveBvrT {
   type IncompleteValuesT = {
     name: string,
@@ -134,9 +136,11 @@ export function createMoveCrudBvrs(
   moveList: ?MoveListT,
   userProfile: UserProfileT,
   highlightedMoveSlugid: SlugidT,
-  setNextHighlightedMoveId: Function,
-  updateMove: Function,
-  actInsertMoves: Function,
+  setNextHighlightedMoveId: (UUID) => void,
+  updateMove: (oldMove: MoveT, newMove: MoveT) => void,
+  actInsertMoves: (
+    moveIds: Array<UUID>, moveListId: UUID, targetMoveId: UUID
+  ) => Array<UUID>,
 ): MoveCrudBvrsT {
   const highlightedMoveInStore = findMoveBySlugid(
     moves, highlightedMoveSlugid

@@ -18,7 +18,7 @@ import type { MoveT, MovePrivateDataT } from 'moves/types';
 type InnerFormPropsT = {
   autoFocus: boolean,
   setNotesEditorRef: Function,
-  onCancel: Function,
+  onCancel: () => void,
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
@@ -57,8 +57,8 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 }
 
 type MovePrivateDataFormPropsT = {
-  onCancel: Function,
-  onSubmit: Function,
+  onCancel: () => void,
+  onSubmit: (values: any) => void,
   movePrivateData: ?MovePrivateDataT,
   autoFocus: boolean,
 };

@@ -12,7 +12,7 @@ import { stateToHTML } from 'draft-js-export-html';
 type RichTextEditorPropsT = {
   content: string,
   autoFocus: boolean,
-  setEditorRef: Function,
+  setEditorRef: (any) => void,
 };
 
 export function RichTextEditor(props: RichTextEditorPropsT) {

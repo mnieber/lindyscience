@@ -11,8 +11,8 @@ export function VideoLinkForm({
   onCancel,
   values,
 }: {
-  onSubmit: Function,
-  onCancel: Function,
+  onSubmit: (values: any) => void,
+  onCancel: () => void,
   values: any,
 }) {
   function InnerForm(props) {
@@ -42,7 +42,7 @@ export function VideoLinkForm({
           </button>
           <button
             className="videoLinkForm__cancelButton ml-2"
-            onClick={onCancel}
+            onClick={e => {e.preventDefault(); onCancel()}}
           >
             cancel
           </button>

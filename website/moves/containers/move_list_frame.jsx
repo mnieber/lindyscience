@@ -134,7 +134,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     }
   }
 
-  const selectMoveListById = id => {
+  const selectMoveListById = (id: UUID) => {
     const moveList = props.moveLists.find(x => x.id == id);
     if (moveList) {
       browseToMove([moveList.ownerUsername, moveList.slug]);

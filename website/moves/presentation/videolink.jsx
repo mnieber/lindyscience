@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { VoteCount } from 'app/presentation/vote_count'
 import { VideoLinkForm } from 'moves/presentation/video_link_form'
-import type { VoteByIdT, VoteT } from 'app/types'
+import type { UUID, VoteByIdT, VoteT } from 'app/types'
 import type { VideoLinkT } from 'moves/types'
 
 
@@ -12,7 +12,7 @@ import type { VideoLinkT } from 'moves/types'
 type VideoLinkPropsT = {
   item: VideoLinkT,
   vote: VoteT,
-  setVote: Function,
+  setVote: (UUID, VoteT) => void,
   saveVideoLink: Function,
   cancelEditVideoLink: Function,
 };
@@ -26,8 +26,7 @@ export function VideoLink(props: VideoLinkPropsT) {
       setIsEditing(false);
     }
 
-    function _onCancel(e) {
-      e.preventDefault();
+    function _onCancel() {
       props.cancelEditVideoLink(props.item.id);
       setIsEditing(false);
     }
@@ -95,7 +94,7 @@ export function VideoLink(props: VideoLinkPropsT) {
 type VideoLinkListPropsT = {
   items: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
-  setVote: Function,
+  setVote: (UUID, VoteT) => void,
   saveVideoLink: Function,
   cancelEditVideoLink: Function,
 };

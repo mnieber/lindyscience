@@ -8,7 +8,7 @@ import { SignInForm } from 'app/presentation/signin_form'
 export function SignInDialog({
   signIn,
 }: {
-  signIn: Function,
+  signIn: (email: string, password: string) => any,
 }) {
   const [isModal, setIsModel] = React.useState(true);
   function _submitValues(values) {

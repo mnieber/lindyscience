@@ -16,9 +16,9 @@ import type { UUID, SlugidT } from 'app/types';
 type DraggingBvrT = {|
   draggingOverMoveId: UUID,
   isBefore: boolean,
-  setDraggingOverMoveId: Function,
+  setDraggingOverMoveId: Function,  // (Array<UUID | boolean>) => void
   dragSourceMoveId: UUID,
-  setDragSourceMoveId: Function,
+  setDragSourceMoveId: (UUID) => void,
 |};
 
 function useDragging(): DraggingBvrT {
@@ -116,9 +116,9 @@ type MoveListPropsT = {|
   moves: Array<MoveT>,
   videoLinksByMoveId: VideoLinksByIdT,
   highlightedMoveSlugid: SlugidT,
-  setHighlightedMoveId: Function,
+  setHighlightedMoveId: (UUID) => void,
   moveContextMenu: any,
-  onDrop: Function,
+  onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void,
   className?: string,
   refs: any,
 |};

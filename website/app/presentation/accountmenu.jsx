@@ -8,7 +8,7 @@ import type { UserProfileT } from 'app/types';
 type AccountMenuPropsT = {
   className: string,
   userProfile: ?UserProfileT,
-  signIn: Function,
+  signIn: () => void,
 };
 
 export function AccountMenu(props: AccountMenuPropsT) {

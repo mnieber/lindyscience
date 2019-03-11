@@ -99,7 +99,7 @@ export type MoveCrudBvrsT = {
   insertMoveBvr: InsertMoveBvrT,
   saveMoveBvr: SaveMoveBvrT,
   isEditing: boolean,
-  setIsEditing: Function,
+  setIsEditing: (boolean) => void,
 };
 
 export type MoveListCrudBvrsT = {
@@ -107,5 +107,5 @@ export type MoveListCrudBvrsT = {
   insertMoveListBvr: InsertMoveListBvrT,
   saveMoveListBvr: SaveMoveListBvrT,
   isEditing: boolean,
-  setIsEditing: Function,
+  setIsEditing: (boolean) => void,
 };

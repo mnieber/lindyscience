@@ -29,7 +29,7 @@ export function pickNeighbour(
   allItems: Array<any>,
   pickedItemId: UUID,
   isForward: boolean,
-  pickItemById: Function
+  pickItemById: (id: UUID) => void
 ) {
     const idx = allItems.findIndex(
       (c) => c.id === pickedItemId
@@ -51,7 +51,7 @@ export function handleSelectionKeys(
   targetId: UUID,
   allItems: Array<any>,
   selectedItemId: UUID,
-  selectItemById: Function
+  selectItemById: (id: UUID) => void
 )
 {
   if (targetId && e.target.id !== targetId) {

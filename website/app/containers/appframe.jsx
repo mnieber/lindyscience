@@ -133,10 +133,6 @@ function AppFrame(props: AppFramePropsT) {
     setNextSelectedMoveListId
   );
 
-  function signIn() {
-    navigate("/app/sign-in/");
-  }
-
   return (
     <div className="appFrame px-4 flex flex-col">
       {createToastr()}
@@ -145,7 +141,7 @@ function AppFrame(props: AppFramePropsT) {
         <AccountMenu
           className=""
           userProfile={props.userProfile}
-          signIn={signIn}
+          signIn={() => navigate("/app/sign-in/")}
         />
       </div>
       <React.Fragment>

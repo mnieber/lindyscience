@@ -14,7 +14,7 @@ export function VoteCount({
 }: {
   vote: VoteT,
   count: number,
-  setVote: Function,
+  setVote: (vote: VoteT) => void,
 }) {
   function _toggleUpVote() {
     setVote(vote == 1 ? 0 : 1)

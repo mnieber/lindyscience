@@ -14,14 +14,14 @@ function createHandlers(
 }
 
 type SignInPagePropsT = {
-  actSetSignedInEmail: Function
+  actSetSignedInEmail: (email: string) => void
 };
 
 function SignInPage(props: SignInPagePropsT) {
   // const {} = getSignInPageBehaviours();
   // const {} = createHandlers();
 
-  async function _signIn(email, password) {
+  async function _signIn(email: string, password: string) {
     if (await AppCtr.api.signIn(email, password)) {
       props.actSetSignedInEmail(email);
       const next = urlParam('next')

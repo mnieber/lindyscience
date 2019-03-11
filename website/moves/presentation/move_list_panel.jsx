@@ -10,8 +10,8 @@ import type {
 
 
 type HandlersT = {
-  onDrop: Function,
-  onKeyDown: Function,
+  onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void,
+  onKeyDown: (e: any) => void,
 };
 
 function createHandlers(
@@ -56,10 +56,10 @@ export type MoveListPanelPropsT = {
   moveLists: Array<MoveListT>,
   highlightedMoveSlugid: SlugidT,
   moveList: ?MoveListT,
-  filterMovesByTags: Function,
-  shareMoveToList: Function,
-  moveMoveToList: Function,
-  selectMoveListById: Function,
+  filterMovesByTags: (Array<TagT>) => void,
+  shareMoveToList: (MoveListT) => void,
+  moveMoveToList: (MoveListT) => void,
+  selectMoveListById: (id: UUID) => void,
   children: any,
 };
 

@@ -13,7 +13,7 @@ import {
 } from 'utils/form_utils'
 import { RichTextEditor, getContentFromEditor } from 'moves/presentation/rich_text_editor'
 import type { MoveListT } from 'moves/types';
-import type { TagT } from 'app/types';
+import type { UUID, TagT } from 'app/types';
 
 
 // MoveListForm
@@ -22,9 +22,9 @@ type InnerFormPropsT = {
   autoFocus: boolean,
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
-  onCancel: Function,
-  setDescriptionEditorRef: Function,
-  setTagsPickerRef: Function,
+  onCancel: () => void,
+  setDescriptionEditorRef: (any) => void,
+  setTagsPickerRef: (any) => void,
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
@@ -99,8 +99,8 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 }
 
 type MoveListFormPropsT = {
-  onCancel: Function,
-  onSubmit: Function,
+  onCancel: () => void,
+  onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   moveList: MoveListT,
   autoFocus: boolean,

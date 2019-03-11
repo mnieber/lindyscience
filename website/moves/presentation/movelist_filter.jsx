@@ -51,7 +51,7 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
 
 type MoveListFilterPropsT = {|
   moveTags: Array<TagT>,
-  filterMovesByTags: Function,
+  filterMovesByTags: (Array<TagT>) => void,
   className?: string,
 |};
 

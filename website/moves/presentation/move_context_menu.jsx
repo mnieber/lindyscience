@@ -12,8 +12,8 @@ import type {
 
 type MoveContextMenuPropsT = {
   moveLists: Array<MoveListT>,
-  shareMoveToList: Function,
-  moveMoveToList: Function,
+  shareMoveToList: (MoveListT) => void,
+  moveMoveToList: (MoveListT) => void,
 };
 
 export function MoveContextMenu(props: MoveContextMenuPropsT) {

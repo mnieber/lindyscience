@@ -13,7 +13,9 @@ import {
   useInsertItem, useNewItem, useSaveItem
 } from 'moves/containers/crud_behaviours'
 
-import type { MoveListT, DifficultyT, MoveListCrudBvrsT } from 'moves/types'
+import type {
+  MoveListT, DifficultyT, MoveListCrudBvrsT, MoveListByIdT
+} from 'moves/types'
 import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
 import type {
   InsertItemBvrT, NewItemBvrT, SaveItemBvrT
@@ -48,8 +50,8 @@ export type InsertMoveListBvrT = InsertItemBvrT<MoveListT>;
 
 export function useInsertMoveList(
   moveLists: Array<MoveListT>,
-  actInsertMoveLists: Function,
-  createErrorHandler: Function
+  actInsertMoveLists: (moveListIds: Array<UUID>, targetMoveListId: UUID) => Array<UUID>,
+  createErrorHandler: (string) => Function
 ): InsertMoveListBvrT {
   function _insertMoveList(moveListId: UUID, targetMoveListId: UUID) {
     const allMoveListIds = actInsertMoveLists([moveListId], targetMoveListId);
@@ -67,10 +69,10 @@ export type NewMoveListBvrT = NewItemBvrT<MoveListT>;
 
 export function useNewMoveList(
   userProfile: ?UserProfileT,
-  setHighlightedMoveListId: Function,
+  setHighlightedMoveListId: (UUID) => void,
   highlightedMoveListId: UUID,
   insertMoveListBvr: InsertMoveListBvrT,
-  setIsEditing: Function,
+  setIsEditing: (boolean) => void,
 ): NewMoveListBvrT {
   function _createNewMoveList() {
     return createNewMoveList(userProfile);
@@ -93,9 +95,9 @@ export type SaveMoveListBvrT = SaveItemBvrT<MoveListT>;
 export function useSaveMoveList(
   movelists: Array<MoveListT>,
   newMoveListBvr: NewMoveListBvrT,
-  setIsEditing: Function,
-  actAddMoveLists: Function,
-  createErrorHandler: Function,
+  setIsEditing: (boolean) => void,
+  actAddMoveLists: (MoveListByIdT) => void,
+  createErrorHandler: (string) => Function,
 ): SaveMoveListBvrT {
   type IncompleteValuesT = {
     name: string,
@@ -130,9 +132,9 @@ export function createMoveListCrudBvrs(
   userProfile: ?UserProfileT,
   moveLists: Array<MoveListT>,
   selectedMoveListUrl: string,
-  actAddMoveLists: Function,
-  actInsertMoveLists: Function,
-  setNextSelectedMoveListId: Function,
+  actAddMoveLists: (MoveListByIdT) => void,
+  actInsertMoveLists: (moveListIds: Array<UUID>, targetMoveListId: UUID) => Array<UUID>,
+  setNextSelectedMoveListId: (UUID) => void,
 ): MoveListCrudBvrsT {
   const [isEditing, setIsEditing] = React.useState(false);
 

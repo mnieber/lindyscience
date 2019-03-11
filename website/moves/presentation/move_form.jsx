@@ -14,7 +14,7 @@ import {
 } from 'utils/form_utils'
 import { RichTextEditor, getContentFromEditor } from 'moves/presentation/rich_text_editor'
 import type { MoveT } from 'moves/types';
-import type { UserProfileT, TagT } from 'app/types';
+import type { UUID, UserProfileT, TagT } from 'app/types';
 
 
 type InnerFormPropsT = {
@@ -23,10 +23,10 @@ type InnerFormPropsT = {
   difficultyPickerOptions: Array<any>,
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
-  onCancel: Function,
-  setDifficultyPickerRef: Function,
-  setTagsPickerRef: Function,
-  setDescriptionEditorRef: Function,
+  onCancel: () => void,
+  setDifficultyPickerRef: (any) => void,
+  setTagsPickerRef: (any) => void,
+  setDescriptionEditorRef: (any) => void,
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
@@ -123,8 +123,8 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 // MoveForm
 
 type MoveFormPropsT = {
-  onCancel: Function,
-  onSubmit: Function,
+  onCancel: () => void,
+  onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   move: MoveT,
   autoFocus: boolean,

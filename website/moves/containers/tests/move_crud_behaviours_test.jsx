@@ -227,7 +227,7 @@ test('test useNewMove', function (t) {
 
   sandbox.newMoveBvr.addNewItem();
   sandbox.newMoveBvr.setHighlightedItemId(
-    !!sandbox.newMoveBvr.newItem && sandbox.newMoveBvr.newItem.id
+    sandbox.newMoveBvr.newItem ? sandbox.newMoveBvr.newItem.id : ""
   );
   t.assert(
     !!sandbox.newMoveBvr.newItem,

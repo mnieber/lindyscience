@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { VoteCount } from 'app/presentation/vote_count'
 import { TipForm } from 'moves/presentation/tip_form'
-import type { VoteByIdT, VoteT } from 'app/types'
+import type { UUID, VoteByIdT, VoteT } from 'app/types'
 import type { TipT } from 'moves/types'
 
 
@@ -11,7 +11,7 @@ import type { TipT } from 'moves/types'
 type TipPropsT = {
   item: TipT,
   vote: VoteT,
-  setVote: Function,
+  setVote: (UUID, VoteT) => void,
   saveTip: Function,
   cancelEditTip: Function,
 };
@@ -25,8 +25,7 @@ export function Tip(props: TipPropsT) {
       setIsEditing(false);
     }
 
-    function _onCancel(e) {
-      e.preventDefault();
+    function _onCancel() {
       props.cancelEditTip(props.item.id);
       setIsEditing(false);
     }
@@ -86,7 +85,7 @@ export function Tip(props: TipPropsT) {
 type TipListPropsT = {
   items: Array<TipT>,
   voteByObjectId: VoteByIdT,
-  setVote: Function,
+  setVote: (UUID, VoteT) => void,
   saveTip: Function,
   cancelEditTip: Function,
 };

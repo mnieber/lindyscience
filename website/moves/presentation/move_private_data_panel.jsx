@@ -7,7 +7,7 @@ import type { MovePrivateDataT } from 'moves/types'
 
 type MovePrivateDatasPanelPropsT = {
   movePrivateData: ?MovePrivateDataT,
-  onSave: Function,
+  onSave: () => void,
 };
 
 export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {

@@ -117,12 +117,13 @@ export function useSaveMove(
   }
 
   function _saveMove(id: UUID, incompleteValues: IncompleteValuesT) {
-    // $FlowFixMe
-    const oldMove: MoveT = moves.find(x => x.id == id);
-    const newMove = _completeMove(oldMove, incompleteValues);
-    updateMove(oldMove, newMove);
-    return api.saveMove(newMove)
-      .catch(createErrorHandler('We could not save the move'));
+    const oldMove = moves.find(x => x.id == id);
+    if (oldMove) {
+      const newMove = _completeMove(oldMove, incompleteValues);
+      updateMove(oldMove, newMove);
+      return api.saveMove(newMove)
+        .catch(createErrorHandler('We could not save the move'));
+    }
   }
 
   return useSaveItem<MoveT>(newMoveBvr, setIsEditing, _saveMove);

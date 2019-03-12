@@ -7,7 +7,7 @@ import { navigate } from "@reach/router"
 import MoveContainer from 'moves/containers/index'
 import AppCtr from 'app/containers/index'
 
-import { getObjectValues } from 'utils/utils'
+import { getObjectValues, querySetListToDict } from 'utils/utils'
 import { createToastr } from 'app/utils'
 import { findMoveListByUrl, newMoveListSlug, makeMoveListUrl } from 'moves/utils'
 
@@ -21,10 +21,10 @@ import type { MoveListT } from 'moves/types';
 
 export function browseToMove(moveUrlParts: Array<string>, mustUpdateProfile: boolean=true) {
   const moveUrl = moveUrlParts.filter(x => !!x).join('/');
-  navigate(`/app/list/${moveUrl}`);
   if (mustUpdateProfile) {
     AppCtr.api.updateProfile(moveUrl);
   }
+  return navigate(`/app/list/${moveUrl}`);
 }
 
 
@@ -125,13 +125,18 @@ function AppFrame(props: AppFramePropsT) {
   )
 
   const moveListCrudBvrs = createMoveListCrudBvrs(
-    props.userProfile,
     props.moveLists,
+    props.userProfile,
     props.selectedMoveListUrl,
-    actions.actAddMoveLists,
+    setNextSelectedMoveListId,
+    _updateMoveList,
     actions.actInsertMoveLists,
-    setNextSelectedMoveListId
   );
+
+  async function _updateMoveList(oldMoveList: MoveListT, newMoveList: MoveListT) {
+    actions.actAddMoveLists(querySetListToDict([newMoveList]));
+    await browseToMove([makeMoveListUrl(newMoveList)], true);
+  }
 
   return (
     <div className="appFrame px-4 flex flex-col">

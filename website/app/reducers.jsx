@@ -5,10 +5,6 @@ import { createSelector } from 'reselect'
 import type { InputSelector } from 'reselect';
 import type { UUID, VoteByIdT, UserProfileT } from 'app/types';
 import {
-  reduceMapToMap,
-  getObjectValues,
-  isNone,
-  querySetListToDict,
   insertIdsIntoList,
 } from 'utils/utils'
 

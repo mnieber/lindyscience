@@ -83,7 +83,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
   const moveListHeader =
     <Widgets.MoveListHeader
       addNewMove={props.moveCrudBvrs.newMoveBvr.addNewItem}
-      className="py-4"
+      className=""
     />
 
   const moveListFilter =
@@ -126,7 +126,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
 
   const newMoveListBtn =
     <div
-      className={"button button--wide ml-2"}
+      className={"button button--wide"}
       onClick={props.moveListCrudBvrs.newMoveListBvr.addNewItem}
       key={1}
     >
@@ -140,10 +140,10 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
 
   return (
     <div
-      className="moveListFrame flexrow"
+      className="moveListPanel flexrow"
       onKeyDown={handlers.onKeyDown}
     >
-      <div className="moveListPanel w-1/5 flexcol">
+      <div className="moveListPanel__inner w-1/5 flexcol">
         {!showStatic && buttonsDiv}
         {moveListPicker}
         {!showStatic && moveListHeader}

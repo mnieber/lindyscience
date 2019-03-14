@@ -13,7 +13,7 @@ type MoveListHeaderPropsT = {|
 export function MoveListHeader(props: MoveListHeaderPropsT) {
   const newMoveBtn = (
     <div
-      className={"moveListHeader__addButton button button--wide ml-2"}
+      className={"moveListHeader__addButton button button--wide"}
       onClick={props.addNewMove}
     >
     New move

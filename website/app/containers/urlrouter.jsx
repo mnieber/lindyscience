@@ -34,7 +34,8 @@ type UrlRouterPropsT = {
 
 function UrlRouter(props: UrlRouterPropsT) {
   return (
-    <Router primary={false}>
+    // $FlowFixMe
+    <Router primary={false} id="reachRouter">
       <AppFrame
         path="/app">
         <IndexPage

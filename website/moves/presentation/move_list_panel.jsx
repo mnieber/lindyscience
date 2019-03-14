@@ -54,6 +54,7 @@ export type MoveListPanelPropsT = {
   moveListCrudBvrs: MoveListCrudBvrsT,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
+  targetMoveLists: Array<MoveListT>,
   highlightedMoveSlugid: SlugidT,
   moveList: ?MoveListT,
   filterMovesByTags: (Array<TagT>) => void,
@@ -94,7 +95,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
 
   const moveContextMenu =
     <Widgets.MoveContextMenu
-      moveLists={props.moveLists}
+      targetMoveLists={props.targetMoveLists}
       shareMoveToList={props.shareMoveToList}
       moveMoveToList={props.moveMoveToList}
     />

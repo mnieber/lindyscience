@@ -78,6 +78,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
   );
 
   const moves = moveCrudBvrs.insertMoveBvr.preview;
+  const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
 
   React.useEffect(
     () => {
@@ -96,14 +97,12 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
 
   function _updateMove(oldMove: MoveT, newMove: MoveT) {
     actions.actAddMoves([newMove]);
-    const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
     if (highlightedMove && highlightedMove.id == oldMove.id) {
       _browseToMove(moves, newMove, makeMoveListUrl(props.moveList));
     }
   }
 
   function _shareMoveToList(moveList: MoveListT) {
-    const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
     if (highlightedMove && !moveList.moves.includes(highlightedMove.id)) {
       const moveIds = actions.actInsertMoves([highlightedMove.id], moveList.id, "");
       MovesCtr.api.saveMoveOrdering(moveList.id, moveIds)
@@ -115,7 +114,6 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     const sourceMoveList = props.moveList;
 
     if (sourceMoveList && sourceMoveList.id != moveList.id) {
-      const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
       const moveIds = moves.map(x => x.id);
       const highlightedIdx = moveIds.indexOf(highlightedMove.id);
 
@@ -148,6 +146,10 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     }
   }
 
+  const targetMoveLists = props.moveLists.filter(
+    x => (highlightedMove && !x.moves.includes(highlightedMove.id))
+  );
+
   return (
     <Widgets.MoveListPanel
       userProfile={props.userProfile}
@@ -156,6 +158,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
       moveListCrudBvrs={props.moveListCrudBvrs}
       moveTags={props.moveTags}
       moveLists={props.moveLists}
+      targetMoveLists={targetMoveLists}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       moveList={props.moveList}
       filterMovesByTags={filterMovesByTags}

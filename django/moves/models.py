@@ -38,8 +38,8 @@ class Difficulty(Enum):
 
 
 class Move(Entity):
-    name = models.CharField(max_length=200, unique=True)
-    slug = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200, unique=False)
+    slug = models.CharField(max_length=200, unique=False)
     difficulty = EnumField(Difficulty, max_length=7)
     description = models.TextField()
     tags = TagField(force_lowercase=True, max_count=10, space_delimiter=False)

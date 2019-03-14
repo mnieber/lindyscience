@@ -149,11 +149,9 @@ function AppFrame(props: AppFramePropsT) {
           signIn={() => navigate("/app/sign-in/")}
         />
       </div>
-      <React.Fragment>
-        <MoveListCrudBvrsContext.Provider value={moveListCrudBvrs}>
-          {props.children}
-        </MoveListCrudBvrsContext.Provider>
-      </React.Fragment>
+      <MoveListCrudBvrsContext.Provider value={moveListCrudBvrs}>
+        {props.children}
+      </MoveListCrudBvrsContext.Provider>
     </div>
   );
 };

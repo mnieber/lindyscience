@@ -13,7 +13,7 @@ import {
   useInsertItem, useNewItem, useSaveItem
 } from 'moves/containers/crud_behaviours'
 
-import type { MoveT, MoveListT, DifficultyT, MoveCrudBvrsT } from 'moves/types'
+import type { MoveT, MoveListT, MoveCrudBvrsT } from 'moves/types'
 import type { UUID, UserProfileT, VoteByIdT, SlugidT } from 'app/types';
 import type {
   InsertItemBvrT, NewItemBvrT, SaveItemBvrT
@@ -34,7 +34,6 @@ export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
     slug: newMoveSlug,
     name: 'New move',
     description: '',
-    difficulty: '',
     tips: [],
     videoLinks: [],
     tags: [],

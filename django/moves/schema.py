@@ -45,14 +45,10 @@ class MoveType(DjangoObjectType):
     class Meta:
         model = models.Move
 
-    difficulty = graphene.String()
     tags = graphene.List(of_type=graphene.String)
 
     def resolve_tags(self, info, **kwargs):
         return self.tags.get_tag_list()
-
-    def resolve_difficulty(self, info, **kwargs):
-        return self.difficulty.value
 
 
 class SaveMoveList(graphene.Mutation):
@@ -106,7 +102,6 @@ class SaveMove(graphene.Mutation):
         name = graphene.String()
         slug = graphene.String()
         description = graphene.String()
-        difficulty = graphene.String()
         tags = graphene.List(of_type=graphene.String)
 
     ok = graphene.Boolean()

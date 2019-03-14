@@ -1,6 +1,5 @@
 from .utils import validate_video_url
 from django.db import models
-from enumfields import Enum, EnumField
 from tagulous.models import TagField
 from app.models import Entity
 
@@ -29,18 +28,9 @@ class Tip(Entity):
     vote_count = models.IntegerField(default=0)
 
 
-class Difficulty(Enum):
-    BEGINNER = 'beg'
-    BEGINNER_INTERMEDIATE = 'beg/int'  # TODO: remove
-    INTERMEDIATE = 'int'
-    INTERMEDIATE_ADVANCED = 'int/adv'  # TODO: remove
-    ADVANCED = 'adv'
-
-
 class Move(Entity):
     name = models.CharField(max_length=200, unique=False)
     slug = models.CharField(max_length=200, unique=False)
-    difficulty = EnumField(Difficulty, max_length=7)
     description = models.TextField()
     tags = TagField(force_lowercase=True, max_count=10, space_delimiter=False)
 

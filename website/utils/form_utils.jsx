@@ -210,9 +210,3 @@ export function strToPickerValue(value) {
     label: stripQuotes(value)
   }
 };
-
-export const difficulties = {
-  'beg': 'Beginner',
-  'int': 'Intermediate',
-  'adv': 'Advanced',
-}

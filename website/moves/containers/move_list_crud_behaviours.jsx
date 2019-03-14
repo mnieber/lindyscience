@@ -14,7 +14,7 @@ import {
 } from 'moves/containers/crud_behaviours'
 
 import type {
-  MoveListT, DifficultyT, MoveListCrudBvrsT, MoveListByIdT
+  MoveListT, MoveListCrudBvrsT, MoveListByIdT
 } from 'moves/types'
 import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
 import type {

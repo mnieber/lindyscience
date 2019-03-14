@@ -3,7 +3,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from '@reach/router';
-import { difficulties } from 'utils/form_utils'
 import type { MoveT, MoveListT } from 'moves/types'
 import type { UserProfileT, TagT } from 'app/types'
 
@@ -54,12 +53,6 @@ export function Move(props: MovePropsT) {
       </div>
     </div>;
 
-  const difficultyDiv =
-    <div className={"move__difficulty panel"}>
-      <h2>Difficulty</h2>
-      {difficulties[props.move.difficulty]}
-    </div>;
-
   const tagsDiv = props.move.tags.length
     ? <Tags tags={props.move.tags}/>
     : undefined;
@@ -75,7 +68,6 @@ export function Move(props: MovePropsT) {
   return (
     <div className={classnames("move", props.className || "")}>
       {nameDiv}
-      {difficultyDiv}
       {tagsDiv}
       {descriptionDiv}
       {props.movePrivateDataPanel}

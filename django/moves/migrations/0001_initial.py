@@ -3,8 +3,6 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import enumfields.fields
-import moves.models
 import tagulous.models.fields
 import tagulous.models.models
 import uuid
@@ -26,7 +24,6 @@ class Migration(migrations.Migration):
                 ('created', models.DateField(auto_now_add=True)),
                 ('name', models.CharField(max_length=200, unique=True)),
                 ('slug', models.CharField(max_length=200, unique=True)),
-                ('difficulty', enumfields.fields.EnumField(enum=moves.models.Difficulty, max_length=7)),
                 ('description', models.TextField()),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

@@ -12,11 +12,8 @@ import type {
   SaveMoveListBvrT, InsertMoveListBvrT, NewMoveListBvrT
 } from 'moves/containers/move_list_crud_behaviours'
 
-export type DifficultyT = '' | 'beg' | 'int' | 'adv';
-
 export type MoveT = {
   id: UUID,
-  difficulty: DifficultyT,
   description: string,
   tags: Array<TagT>,
   videoLinks: Array<UUID>,

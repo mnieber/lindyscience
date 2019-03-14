@@ -98,7 +98,6 @@ export function saveMove(values: MoveT) {
       $name: String!,
       $slug: String!,
       $description: String!,
-      $difficulty: String!,
       $tags: [String]!
     ) {
       saveMove(
@@ -106,7 +105,6 @@ export function saveMove(values: MoveT) {
         name: $name,
         slug: $slug,
         description: $description,
-        difficulty: $difficulty,
         tags: $tags
       ) { ok }
     }`,
@@ -223,7 +221,6 @@ export function loadMoveList(moveListId: UUID) {
           name
           slug
           description
-          difficulty
           tags
           videoLinks {
             id

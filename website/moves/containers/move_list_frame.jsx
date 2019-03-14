@@ -139,8 +139,8 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     }
   }
 
-  const filterMovesByTags = tags => {
-    const slugid = actions.actSetMoveListFilter(tags, true);
+  const filterMoves = (tags, keywords) => {
+    const slugid = actions.actSetMoveListFilter(tags, keywords);
     if (props.moveList && slugid) {
       browseToMove([makeMoveListUrl(props.moveList), slugid])
     }
@@ -161,7 +161,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
       targetMoveLists={targetMoveLists}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       moveList={props.moveList}
-      filterMovesByTags={filterMovesByTags}
+      filterMoves={filterMoves}
       shareMoveToList={_shareMoveToList}
       moveMoveToList={_moveMoveToList}
       selectMoveListById={selectMoveListById}

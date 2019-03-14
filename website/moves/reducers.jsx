@@ -24,7 +24,8 @@ import {
   isNone,
   querySetListToDict,
   addToSet,
-  insertIdsIntoList
+  insertIdsIntoList,
+  splitIntoKeywords,
 } from 'utils/utils'
 import {
   findMove,
@@ -50,6 +51,7 @@ type SelectionState = {
   highlightedMoveSlugid: string,
   moveListUrl: string,
   moveFilterTags: Array<TagT>,
+  moveFilterKeywords: Array<string>,
 };
 
 export function selectionReducer(
@@ -57,6 +59,7 @@ export function selectionReducer(
     highlightedMoveSlugid: "",
     moveListUrl: "",
     moveFilterTags: [],
+    moveFilterKeywords: [],
   },
   action: any
 ): SelectionState
@@ -72,21 +75,25 @@ export function selectionReducer(
       }
     case 'SET_MOVE_LIST_FILTER':
       return { ...state,
-        moveFilterTags: action.tags
+        moveFilterTags: action.tags,
+        moveFilterKeywords: action.keywords,
       }
     default:
       return state
   }
 }
 
-function _filterMovesByTags(moves, moveFilterTags) {
+function _filterMoves(moves, tags, keywords) {
   function match(move) {
-    return moveFilterTags.every(
-      tag => (-1 != move.tags.indexOf(tag))
-    );
+    const moveKeywords = splitIntoKeywords(move.name);
+    return (!tags.length || tags.every(
+      tag => (move.tags.includes(tag))
+    )) && (!keywords.length || keywords.every(
+      keyword => (move.name.toLowerCase().indexOf(keyword) >= 0)
+    ));
   }
 
-  return (moveFilterTags.length)
+  return (tags.length || keywords.length)
     ? moves.filter(match)
     : moves;
 }
@@ -172,13 +179,6 @@ export const getMoves: Selector<Array<MoveT>> = createSelector(
 
   (moveById): Array<MoveT> => {
     return getObjectValues(moveById);
-  }
-);
-export const getFilteredMoves: Selector<Array<MoveT>> = createSelector(
-  [getMoves, _stateSelection],
-
-  (moves, stateSelection): Array<MoveT> => {
-    return _filterMovesByTags(moves, stateSelection.moveFilterTags);
   }
 );
 
@@ -465,6 +465,8 @@ export const getFilteredMovesInList: Selector<Array<MoveT>> = createSelector(
   [getMovesInList, _stateSelection],
 
   (moves, stateSelection): Array<MoveT> => {
-    return _filterMovesByTags(moves, stateSelection.moveFilterTags);
+    return _filterMoves(
+      moves, stateSelection.moveFilterTags, stateSelection.moveFilterKeywords
+    );
   }
 );

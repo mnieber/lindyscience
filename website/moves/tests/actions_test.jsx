@@ -31,19 +31,19 @@ test('test actSetMoveListFilter', function (t) {
   );
 
   t.equal(
-    store.dispatch(actions.actSetMoveListFilter(['fun'])),
+    store.dispatch(actions.actSetMoveListFilter(['fun'], [])),
     "basket-whip",
   );
 
   // change filter, do not update highlighted move
   t.equal(
-    store.dispatch(actions.actSetMoveListFilter(["foo"])),
+    store.dispatch(actions.actSetMoveListFilter(["foo"], [])),
     "",
   );
 
   // change filter, update highlighted move
   t.equal(
-    store.dispatch(actions.actSetMoveListFilter(["swing out"])),
+    store.dispatch(actions.actSetMoveListFilter(["swing out"], [])),
     "three-wall-swing-out",
   );
 
@@ -64,7 +64,7 @@ test('test actSetMoveListFilter with duplicate slugs', function (t) {
   );
 
   t.equal(
-    store.dispatch(actions.actSetMoveListFilter(['fun'])),
+    store.dispatch(actions.actSetMoveListFilter(['fun'], [])),
     "basket-whip/3ba5ed84-34d5-442c-921c-50da0dc022da",
     "Since the slug is duplicated, the slugid should contain the id"
   );

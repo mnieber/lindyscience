@@ -57,7 +57,7 @@ export type MoveListPanelPropsT = {
   targetMoveLists: Array<MoveListT>,
   highlightedMoveSlugid: SlugidT,
   moveList: ?MoveListT,
-  filterMovesByTags: (Array<TagT>) => void,
+  filterMoves: (Array<TagT>, Array<string>) => void,
   shareMoveToList: (MoveListT) => void,
   moveMoveToList: (MoveListT) => void,
   selectMoveListById: (id: UUID) => void,
@@ -89,7 +89,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
   const moveListFilter =
     <Widgets.MoveListFilter
       className="mb-4"
-      filterMovesByTags={props.filterMovesByTags}
+      filterMoves={props.filterMoves}
       moveTags={props.moveTags}
     />
 

@@ -75,11 +75,12 @@ export function actAddTips(tips: TipByIdT) {
   }
 }
 
-export function actSetMoveListFilter(tags: Array<TagT>) {
+export function actSetMoveListFilter(tags: Array<TagT>, keywords: Array<string>) {
   return (dispatch: Function, getState: Function): SlugidT => {
     dispatch({
       type: 'SET_MOVE_LIST_FILTER',
-      tags: tags,
+      tags,
+      keywords,
     });
 
     const state = getState();

@@ -156,3 +156,12 @@ export function insertIdsIntoList(
       : []
   );
 }
+
+export function splitIntoKeywords(x: string) {
+  // $FlowFixMe
+  return x
+    .toLowerCase()
+    .replace(",", " ")
+    .split(" ")
+    .filter((x) => !!x);
+}

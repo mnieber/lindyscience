@@ -13,8 +13,8 @@ import {
 // Private state helpers
 ///////////////////////////////////////////////////////////////////////
 
-const _stateStatus = (state: ReducerState): StatusState => state.status;
-const _stateVotes = (state: ReducerState): VotesState => state.votes;
+const _stateStatus = (state: ReducerStateT): StatusState => state.status;
+const _stateVotes = (state: ReducerStateT): VotesState => state.votes;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ const statusReducer = function(
 }
 
 
-export const getSignedInEmail = (state: ReducerState): string => state.status.signedInEmail;
+export const getSignedInEmail = (state: ReducerStateT): string => state.status.signedInEmail;
 
 ///////////////////////////////////////////////////////////////////////
 // Profile
@@ -78,7 +78,7 @@ const userProfileReducer = function(
   }
 }
 
-export const getUserProfile = (state: ReducerState): UserProfileState => state.userProfile;
+export const getUserProfile = (state: ReducerStateT): UserProfileState => state.userProfile;
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -117,13 +117,13 @@ export const getVoteByObjectId: Selector<VoteByIdT> = createSelector(
 );
 
 
-type ReducerState = {
+export type ReducerStateT = {
   status: StatusState,
   userProfile: UserProfileState,
   votes: VotesState,
 };
 
-export type Selector<TResult> = InputSelector<ReducerState, void, TResult>;
+export type Selector<TResult> = InputSelector<ReducerStateT, void, TResult>;
 
 // $FlowFixMe
 export const reducer = combineReducers({

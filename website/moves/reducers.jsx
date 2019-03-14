@@ -34,13 +34,13 @@ import {
 // Private state helpers
 ///////////////////////////////////////////////////////////////////////
 
-const _stateMoves = (state: ReducerState): MovesState => state.moves;
-const _stateMoveLists = (state: ReducerState): MoveListsState => state.moveLists;
-const _stateTags = (state: ReducerState): TagsState => state.tags;
-const _stateTips = (state: ReducerState): TipsState => state.tips;
-const _stateVideoLinks = (state: ReducerState): VideoLinksState => state.videoLinks;
-const _stateMovePrivateDatas = (state: ReducerState): MovePrivateDatasState => state.movePrivateDatas;
-const _stateSelection = (state: ReducerState): SelectionState => state.selection;
+const _stateMoves = (state: ReducerStateT): MovesState => state.moves;
+const _stateMoveLists = (state: ReducerStateT): MoveListsState => state.moveLists;
+const _stateTags = (state: ReducerStateT): TagsState => state.tags;
+const _stateTips = (state: ReducerStateT): TipsState => state.tips;
+const _stateVideoLinks = (state: ReducerStateT): VideoLinksState => state.videoLinks;
+const _stateMovePrivateDatas = (state: ReducerStateT): MovePrivateDatasState => state.movePrivateDatas;
+const _stateSelection = (state: ReducerStateT): SelectionState => state.selection;
 
 ///////////////////////////////////////////////////////////////////////
 // Selection
@@ -91,8 +91,8 @@ function _filterMovesByTags(moves, moveFilterTags) {
     : moves;
 }
 
-export const getHighlightedMoveSlugid = (state: ReducerState) => state.selection.highlightedMoveSlugid;
-export const getSelectedMoveListUrl = (state: ReducerState) => state.selection.moveListUrl;
+export const getHighlightedMoveSlugid = (state: ReducerStateT) => state.selection.highlightedMoveSlugid;
+export const getSelectedMoveListUrl = (state: ReducerStateT) => state.selection.moveListUrl;
 
 ///////////////////////////////////////////////////////////////////////
 // Private data
@@ -360,7 +360,7 @@ export const getVideoLinksByMoveId: Selector<VideoLinksByIdT> = createSelector(
     );
   }
 );
-export function getVideoLinkById(state: ReducerState) {
+export function getVideoLinkById(state: ReducerStateT) {
   return state.videoLinks;
 }
 
@@ -395,7 +395,7 @@ export function tipsReducer(
   }
 }
 
-export function getTipById(state: ReducerState) {
+export function getTipById(state: ReducerStateT) {
   return state.tips;
 }
 export const getTipsByMoveId: Selector<TipsByIdT> = createSelector(
@@ -414,7 +414,7 @@ export const getTipsByMoveId: Selector<TipsByIdT> = createSelector(
 );
 
 
-type ReducerState = {
+export type ReducerStateT = {
   moves: MovesState,
   moveLists: MoveListsState,
   selection: SelectionState,
@@ -424,7 +424,7 @@ type ReducerState = {
   tags: TagsState,
 };
 
-export type Selector<TResult> = InputSelector<ReducerState, void, TResult>;
+export type Selector<TResult> = InputSelector<ReducerStateT, void, TResult>;
 
 // $FlowFixMe
 export const reducer = combineReducers({

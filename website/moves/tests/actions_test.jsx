@@ -4,7 +4,7 @@ import * as actions from 'moves/actions'
 import * as data from 'moves/tests/data'
 import * as fromStore from 'moves/reducers'
 import { getObjectValues } from 'utils/utils'
-import { reducer } from 'app/store'
+import { reducer } from 'app/root_reducer'
 import { test } from 'tape'
 import { Thunk, FlushThunks } from 'redux-testkit';
 import { createStore, applyMiddleware, combineReducers } from 'redux';

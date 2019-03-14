@@ -5,21 +5,13 @@ import jQuery from 'jquery';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { reducer as movesReducer } from 'moves/reducers'
-import { reducer as appReducer } from 'app/reducers'
-import { reducer as toastrReducer } from 'react-redux-toastr'
+import { reducer } from 'app/root_reducer'
 
 
 function csrfSafeMethod(method) {
   // these HTTP methods do not require CSRF protection
   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
-
-export const reducer = combineReducers({
-  toastr: toastrReducer,
-  moves: movesReducer,
-  app: appReducer,
-});
 
 const configureStore = () => {
   jQuery.ajaxSetup({

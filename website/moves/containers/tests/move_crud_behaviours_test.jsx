@@ -5,46 +5,15 @@ import * as data from 'moves/tests/data'
 import sinon from 'sinon'
 // $FlowFixMe
 import TestRenderer from "react-test-renderer";
-import redtape from 'redtape'
 import {
-  useInsertMove, useNewMove, useSaveMove, createNewMove
+  useInsertMoves, useNewMove, useSaveMove, createNewMove
 } from 'moves/containers/move_crud_behaviours'
 import { getObjectValues } from 'utils/utils'
 // $FlowFixMe
 import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from 'moves/containers/move_crud_behaviours'
+import { test } from 'utils/test_utils'
 
 const sandbox = {};
-
-const test = redtape({
-  beforeEach: function (cb) {
-    cb();
-  },
-  afterEach: function (cb) {
-    sinon.restore();
-    cb();
-  },
-  // add the `like` function to the `t` test object
-  asserts: {
-    calledOnceWith: function(stubFn, args, msg) {
-      this.assert(
-        stubFn.calledOnce,
-        `${msg} (times called: ${stubFn.callCount})`
-      );
-      if (stubFn.firstCall) {
-        this.deepEqual(
-          stubFn.firstCall.args, args,
-          `${msg} (arguments match)`
-        );
-      }
-      else {
-        this.deepEqual(
-          stubFn.args, args,
-          `${msg} (arguments match)`
-        );
-      }
-    }
-  }
-});
 
 
 function TestComponent({
@@ -55,23 +24,23 @@ function TestComponent({
   highlightedMoveId,
   updateMove,
 }) {
-  sandbox.insertMoveBvr = useInsertMove(
+  sandbox.insertMovesBvr = useInsertMoves(
     moves,
     actInsertMoves,
     data.moveList1.id,
   )
-  sandbox.insertMoveBvr.prepare = sinon.spy(sandbox.insertMoveBvr.prepare);
+  sandbox.insertMovesBvr.prepare = sinon.spy(sandbox.insertMovesBvr.prepare);
 
   sandbox.newMoveBvr = useNewMove(
     data.profile1,
     setHighlightedMoveId,
     highlightedMoveId,
-    sandbox.insertMoveBvr,
+    sandbox.insertMovesBvr,
     setIsEditing,
   );
 
   sandbox.saveMoveBvr = useSaveMove(
-    sandbox.insertMoveBvr.preview,
+    sandbox.insertMovesBvr.preview,
     sandbox.newMoveBvr,
     setIsEditing,
     updateMove,
@@ -81,12 +50,12 @@ function TestComponent({
 }
 
 
-test('test useInsertMove', function (t) {
+test('test useInsertMoves', function (t) {
   const moves = getObjectValues(data.moves);
   const newMove = createNewMove(data.profile1);
 
   if (newMove) {
-    const expectedNewMoves = [moves[0], moves[1], newMove, moves[2]];
+    const expectedNewMoves = [moves[0], moves[1], newMove, moves[2], moves[3]];
 
     var actInsertMoves = sinon.fake.returns(["new", "move", "ids"]);
     var saveMoveOrdering = sinon.fake.resolves(true);
@@ -104,26 +73,26 @@ test('test useInsertMove', function (t) {
       updateMove={()=>{}}
     />);
     t.deepEqual(
-      sandbox.insertMoveBvr.preview, moves,
+      sandbox.insertMovesBvr.preview, moves,
       "Initially, the preview is just the list of moves"
     );
 
-    sandbox.insertMoveBvr.prepare(moves[1].id, newMove);
+    sandbox.insertMovesBvr.prepare(moves[1].id, [newMove]);
     t.deepEqual(
-      sandbox.insertMoveBvr.preview, expectedNewMoves,
+      sandbox.insertMovesBvr.preview, expectedNewMoves,
       "After prepare, the preview should contain the new move"
     );
 
-    sandbox.insertMoveBvr.finalize(/* cancel */ true);
+    sandbox.insertMovesBvr.finalize(/* cancel */ true);
     t.deepEqual(
-      sandbox.insertMoveBvr.preview, moves,
+      sandbox.insertMovesBvr.preview, moves,
       "After finalize with cancel, the preview shouldn't contain the new move"
     );
     t.assert(!actInsertMoves.called);
     t.assert(!saveMoveOrdering.called);
 
-    sandbox.insertMoveBvr.prepare(moves[1].id, newMove);
-    sandbox.insertMoveBvr.finalize(/* cancel */ false);
+    sandbox.insertMovesBvr.prepare(moves[1].id, [newMove]);
+    sandbox.insertMovesBvr.finalize(/* cancel */ false);
 
     t.calledOnceWith(
       actInsertMoves,
@@ -173,7 +142,7 @@ test('test useNewMove', function (t) {
     "Initially, there is no newMove"
   );
 
-  const prepare = sandbox.insertMoveBvr.prepare;
+  const prepare = sandbox.insertMovesBvr.prepare;
   sandbox.newMoveBvr.addNewItem();
   t.notEqual(
     sandbox.newMoveBvr.newItem, null,
@@ -182,7 +151,7 @@ test('test useNewMove', function (t) {
 
   t.calledOnceWith(
     prepare,
-    [highlightedMove.id, sandbox.newMoveBvr.newItem],
+    [highlightedMove.id, [sandbox.newMoveBvr.newItem]],
     "After addNewItem(), the preview contains the newMove"
   );
 

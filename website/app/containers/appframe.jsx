@@ -9,7 +9,9 @@ import AppCtr from 'app/containers/index'
 
 import { getObjectValues, querySetListToDict } from 'utils/utils'
 import { createToastr } from 'app/utils'
-import { findMoveListByUrl, newMoveListSlug, makeMoveListUrl } from 'moves/utils'
+import {
+  findMoveListByUrl, newMoveListSlug, makeMoveListUrl }
+from 'moves/utils'
 
 import {
   MoveListCrudBvrsContext, createMoveListCrudBvrs
@@ -117,7 +119,7 @@ function AppFrame(props: AppFramePropsT) {
     () => {
       if (nextSelectedMoveListId != null) {
         _setSelectedMoveListById(
-          moveListCrudBvrs.insertMoveListBvr.preview, nextSelectedMoveListId
+          moveListCrudBvrs.insertMoveListsBvr.preview, nextSelectedMoveListId
         );
       }
     },
@@ -141,7 +143,7 @@ function AppFrame(props: AppFramePropsT) {
   return (
     <div className="appFrame px-4 flex flex-col">
       {createToastr()}
-      <div className="flex flex-row justify-between h-16">
+      <div className="appFrame__banner flex flex-row justify-between h-16">
         <h1 onClick={() => alert("TODO")}>Lindy Science</h1>
         <AccountMenu
           className=""

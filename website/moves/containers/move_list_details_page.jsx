@@ -74,7 +74,7 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   const actions: any = props;
 
   const moveList = findMoveListByUrl(
-    props.moveListCrudBvrs.insertMoveListBvr.preview,
+    props.moveListCrudBvrs.insertMoveListsBvr.preview,
     props.selectedMoveListUrl
   );
 

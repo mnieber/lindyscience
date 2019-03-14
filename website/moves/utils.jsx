@@ -30,8 +30,6 @@ export const newMoveSlug = 'new-move';
 
 export const newMoveListSlug = 'new-move-list';
 
-export const allMovesListSlug = 'all-moves';
-
 export function findNeighbourIdx(filteredMoveIds, allMoveIds, beginIndex, endIndex, step) {
   for (
     var moveIdx = beginIndex;

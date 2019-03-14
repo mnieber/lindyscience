@@ -10,13 +10,13 @@ import { newMoveSlug, findMoveBySlugid } from 'moves/utils'
 import { slugify } from 'utils/utils'
 
 import {
-  useInsertItem, useNewItem, useSaveItem
+  useInsertItems, useNewItem, useSaveItem
 } from 'moves/containers/crud_behaviours'
 
 import type { MoveT, MoveListT, MoveCrudBvrsT } from 'moves/types'
 import type { UUID, UserProfileT, VoteByIdT, SlugidT } from 'app/types';
 import type {
-  InsertItemBvrT, NewItemBvrT, SaveItemBvrT
+  InsertItemsBvrT, NewItemBvrT, SaveItemBvrT
 } from 'moves/containers/crud_behaviours'
 
 
@@ -43,24 +43,24 @@ export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
 }
 
 
-// InsertMove Behaviour
+// InsertMoves Behaviour
 
-export type InsertMoveBvrT = InsertItemBvrT<MoveT>;
+export type InsertMovesBvrT = InsertItemsBvrT<MoveT>;
 
-export function useInsertMove(
+export function useInsertMoves(
   moves: Array<MoveT>,
   actInsertMoves: (
     moveIds: Array<UUID>, moveListId: UUID, targetMoveId: UUID
   ) => Array<UUID>,
   moveListId: UUID
-): InsertMoveBvrT {
-  function _insertMove(moveId: UUID, targetMoveId: UUID) {
-    const allMoveIds = actInsertMoves([moveId], moveListId, targetMoveId);
+): InsertMovesBvrT {
+  function _insertMoveIds(moveIds: Array<UUID>, targetMoveId: UUID) {
+    const allMoveIds = actInsertMoves(moveIds, moveListId, targetMoveId);
     api.saveMoveOrdering(moveListId, allMoveIds)
       .catch(createErrorHandler("We could not update the move list"));
   }
 
-  return useInsertItem<MoveT>(moves, _insertMove);
+  return useInsertItems<MoveT>(moves, _insertMoveIds);
 }
 
 
@@ -72,7 +72,7 @@ export function useNewMove(
   userProfile: ?UserProfileT,
   setHighlightedMoveId: (UUID) => void,
   highlightedMoveId: UUID,
-  insertMoveBvr: InsertMoveBvrT,
+  insertMovesBvr: InsertMovesBvrT,
   setIsEditing: (boolean) => void,
 ): NewMoveBvrT {
   function _createNewMove() {
@@ -82,7 +82,7 @@ export function useNewMove(
   return useNewItem<MoveT>(
     highlightedMoveId,
     setHighlightedMoveId,
-    insertMoveBvr,
+    insertMovesBvr,
     setIsEditing,
     _createNewMove,
   );
@@ -146,7 +146,7 @@ export function createMoveCrudBvrs(
 
   const [isEditing, setIsEditing] = React.useState(false);
 
-  const insertMoveBvr: InsertMoveBvrT = useInsertMove(
+  const insertMovesBvr: InsertMovesBvrT = useInsertMoves(
     moves,
     actInsertMoves,
     moveList ? moveList.id : ""
@@ -156,12 +156,12 @@ export function createMoveCrudBvrs(
     userProfile,
     setNextHighlightedMoveId,
     highlightedMoveInStore ? highlightedMoveInStore.id : "",
-    insertMoveBvr,
+    insertMovesBvr,
     setIsEditing,
   );
 
   const saveMoveBvr: SaveMoveBvrT = useSaveMove(
-    insertMoveBvr.preview,
+    insertMovesBvr.preview,
     newMoveBvr,
     setIsEditing,
     updateMove
@@ -170,7 +170,7 @@ export function createMoveCrudBvrs(
   const bvrs: MoveCrudBvrsT = {
     isEditing,
     setIsEditing,
-    insertMoveBvr,
+    insertMovesBvr,
     newMoveBvr,
     saveMoveBvr
   };

@@ -93,7 +93,11 @@ $panGrey: #BBBBBB;
 }
 
 .moveList__item--highlighted {
-  @apply bg-green-light;
+  @apply border-4 border-blue;
+}
+
+.moveList__item--selected {
+  @apply bg-blue-light;
 }
 
 .moveList__item--drag_before {

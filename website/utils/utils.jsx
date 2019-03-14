@@ -165,3 +165,11 @@ export function splitIntoKeywords(x: string) {
     .split(" ")
     .filter((x) => !!x);
 }
+
+export function range(start: number, stop: number) {
+    var ans = [];
+    for (let i = start; i < stop; i++) {
+        ans.push(i);
+    }
+    return ans;
+}

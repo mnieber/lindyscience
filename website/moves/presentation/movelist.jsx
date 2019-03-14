@@ -37,23 +37,6 @@ function useDragging(): DraggingBvrT {
   };
 }
 
-type OtherBvrT = {|
-  setHighlightedMoveIdAndScroll: Function,
-|};
-
-function useOtherBehaviours(
-  setHighlightedMoveId: Function,
-): OtherBvrT {
-  function setHighlightedMoveIdAndScroll(moveId: UUID) {
-    setHighlightedMoveId(moveId);
-    scrollIntoView(document.getElementById(moveId));
-  }
-
-  return {
-    setHighlightedMoveIdAndScroll,
-  }
-}
-
 
 type HandlersT = {|
   handleKeyDown: Function,
@@ -65,7 +48,7 @@ type HandlersT = {|
 
 function createHandlers(
   draggingBvr: DraggingBvrT,
-  otherBvr: OtherBvrT,
+  selectMoveById: (UUID, boolean, boolean) => void,
   props: MoveListPropsT,
 ): HandlersT {
   function handleKeyDown(e) {
@@ -77,7 +60,9 @@ function createHandlers(
       "moveList",
       props.moves,
       highlightedMove.id,
-      otherBvr.setHighlightedMoveIdAndScroll
+      // TODO support shift selection with keyboard (e.shiftKey)
+      // Note: in that case, anchor != highlight
+      id => selectMoveById(id, false, false)
     );
   }
 
@@ -115,8 +100,9 @@ function createHandlers(
 type MoveListPropsT = {|
   moves: Array<MoveT>,
   videoLinksByMoveId: VideoLinksByIdT,
+  selectedMoveIds: Array<UUID>,
   highlightedMoveSlugid: SlugidT,
-  setHighlightedMoveId: (UUID) => void,
+  selectMoveById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   moveContextMenu: any,
   onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void,
   className?: string,
@@ -126,9 +112,13 @@ type MoveListPropsT = {|
 export function MoveList(props: MoveListPropsT) {
   props.refs.moveListRef = React.useRef(null);
 
+  const selectMoveById = (moveId: UUID, isShift: boolean, isCtrl: boolean) => {
+    scrollIntoView(document.getElementById(moveId));
+    props.selectMoveById(moveId, isShift, isCtrl);
+  }
+
   const draggingBvr: DraggingBvrT = useDragging();
-  const otherBvr: OtherBvrT = useOtherBehaviours(props.setHighlightedMoveId);
-  const handlers = createHandlers(draggingBvr, otherBvr, props);
+  const handlers = createHandlers(draggingBvr, selectMoveById, props);
   const slugidMatcher = makeSlugidMatcher(props.highlightedMoveSlugid);
 
   const moveNodes = props.moves.map((move, idx) => {
@@ -142,6 +132,7 @@ export function MoveList(props: MoveListPropsT) {
         className = {classnames(
           {
             "moveList__item": true,
+            "moveList__item--selected": props.selectedMoveIds.includes(move.id),
             "moveList__item--highlighted": slugidMatcher(move),
             "moveList__item--drag_before": (draggingBvr.isBefore && draggingBvr.draggingOverMoveId == move.id),
             "moveList__item--drag_after": (!draggingBvr.isBefore && draggingBvr.draggingOverMoveId == move.id),
@@ -149,7 +140,11 @@ export function MoveList(props: MoveListPropsT) {
         )}
         id={move.id}
         key={idx}
-        onMouseDown={() => otherBvr.setHighlightedMoveIdAndScroll(move.id)}
+        onMouseDown={e => {
+          if (e.button == 0) {
+            selectMoveById(move.id, e.shiftKey, e.ctrlKey);
+          }
+        }}
         draggable={true}
         onDragStart={e => handlers.handleDragStart(move.id)}
         onDragOver={e => handlers.handleDragOver(e, move.id)}

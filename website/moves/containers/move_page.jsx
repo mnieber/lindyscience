@@ -197,7 +197,7 @@ function _MovePage(props: _MovePagePropsT) {
   );
 
   const move = findMoveBySlugid(
-    props.moveCrudBvrs.insertMoveBvr.preview,
+    props.moveCrudBvrs.insertMovesBvr.preview,
     props.highlightedMoveSlugid
   );
 

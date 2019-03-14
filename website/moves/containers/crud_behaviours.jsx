@@ -6,62 +6,62 @@ import type { UUID, ObjectT } from 'app/types';
 
 // InsertItem Behaviour
 
-export type InsertItemBvrT<ItemT> = {|
+export type InsertItemsBvrT<ItemT> = {|
   preview: Array<ItemT>,
-  previewItem: ?ItemT,
-  prepare: (targetItemId: UUID, item: ItemT) => void,
+  previewItems: Array<ItemT>,
+  prepare: (targetItemId: UUID, items: Array<ItemT>) => void,
   finalize: (isCancel: boolean) => UUID,
-  insertDirectly: (itemId: UUID, targetItemId: UUID, isBefore: boolean) => void
+  insertDirectly: (itemIds: Array<UUID>, targetItemId: UUID, isBefore: boolean) => void
 |};
 
-export function useInsertItem<ItemT: ObjectT>(
+export function useInsertItems<ItemT: ObjectT>(
   items: Array<ItemT>,
-  insertItem: (itemId: UUID, targetItemId: UUID) => void,
-): InsertItemBvrT<ItemT> {
+  insertItemIds: (itemIds: Array<UUID>, targetItemId: UUID) => void,
+): InsertItemsBvrT<ItemT> {
   const [targetItemId, setTargetItemId] = React.useState("");
-  const [previewItem, setPreviewItem] = React.useState(null);
+  const [previewItems, setPreviewItems] = React.useState([]);
 
-  const preview = !previewItem
+  const preview = !previewItems.length
     ? items
     : items.reduce(
       (acc, item) => {
-        if (item.id != previewItem.id) {
+        if (!previewItems.includes(item.id)) {
           acc.push(item);
         }
         if (item.id == targetItemId) {
-          acc.push(previewItem);
+          acc.push(...previewItems);
         }
         return acc;
       },
-      targetItemId ? [] : [previewItem]
+      targetItemId ? [] : [...previewItems]
     );
 
-  function insertDirectly(itemId: UUID, targetItemId: UUID, isBefore: boolean) {
+  function insertDirectly(itemIds: Array<UUID>, targetItemId: UUID, isBefore: boolean) {
     if (isBefore) {
       const idx = items.findIndex(x => x.id == targetItemId) - 1;
       targetItemId = idx < 0 ? "" : items[idx].id;
     }
-    insertItem(itemId, targetItemId);
+    insertItemIds(itemIds, targetItemId);
   }
 
-  function prepare(targetItemId: UUID, item: ItemT) {
-    if (item) {
-      setPreviewItem(item);
+  function prepare(targetItemId: UUID, items: Array<ItemT>) {
+    if (items.length) {
+      setPreviewItems(items);
       setTargetItemId(targetItemId);
     }
   }
 
   function finalize(isCancel: boolean) {
     const result = targetItemId;
-    if (previewItem && !isCancel) {
-      insertDirectly(previewItem.id, targetItemId, false)
+    if (previewItems.length && !isCancel) {
+      insertDirectly(previewItems.map(x => x.id), targetItemId, false)
     }
-    setPreviewItem(null);
+    setPreviewItems([]);
     setTargetItemId("");
     return result;
   }
 
-  return {preview, previewItem, prepare, finalize, insertDirectly};
+  return {preview, previewItems, prepare, finalize, insertDirectly};
 }
 
 
@@ -77,7 +77,7 @@ export type NewItemBvrT<ItemT> = {|
 export function useNewItem<ItemT: ObjectT>(
   highlightedItemId: UUID,
   setHighlightedItemId: (itemId: UUID) => void,
-  insertItemBvr: InsertItemBvrT<ItemT>,
+  insertItemsBvr: InsertItemsBvrT<ItemT>,
   setIsEditing: (boolean) => void,
   createNewItem: () => ?ItemT,
 ): NewItemBvrT<ItemT> {
@@ -89,7 +89,7 @@ export function useNewItem<ItemT: ObjectT>(
       const newItem = createNewItem();
       if (newItem) {
         setNewItem(newItem);
-        insertItemBvr.prepare(highlightedItemId, newItem);
+        insertItemsBvr.prepare(highlightedItemId, [newItem]);
         setHighlightedItemId(newItem.id);
         setIsEditing(true);
       }
@@ -99,7 +99,7 @@ export function useNewItem<ItemT: ObjectT>(
   // Remove new item from the function's state
   function finalize(isCancel: boolean) {
     setIsEditing(false);
-    const targetItemId = insertItemBvr.finalize(isCancel);
+    const targetItemId = insertItemsBvr.finalize(isCancel);
     if (newItem && isCancel) {
       setHighlightedItemId(targetItemId);
     }

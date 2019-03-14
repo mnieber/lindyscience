@@ -12,13 +12,13 @@ import type {
 
 type MoveContextMenuPropsT = {
   targetMoveLists: Array<MoveListT>,
-  shareMoveToList: (MoveListT) => void,
-  moveMoveToList: (MoveListT) => void,
+  shareMovesToList: (MoveListT) => boolean,
+  moveMovesToList: (MoveListT) => boolean,
 };
 
 export function MoveContextMenu(props: MoveContextMenuPropsT) {
   function _shareToList(e) {
-    props.shareMoveToList(e.props);
+    props.shareMovesToList(e.props);
   }
 
   const shareToListMenuItems = props.targetMoveLists.map((moveList, idx) => {
@@ -34,7 +34,7 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
   })
 
   function _moveToList(e) {
-    props.moveMoveToList(e.props);
+    props.moveMovesToList(e.props);
   }
 
   const moveToListMenuItems = props.targetMoveLists.map((moveList, idx) => {

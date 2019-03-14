@@ -17,7 +17,7 @@ import type { MoveT, MovePrivateDataT } from 'moves/types';
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  setNotesEditorRef: Function,
+  setNotesEditorRef: (any) => void,
   onCancel: () => void,
 };
 

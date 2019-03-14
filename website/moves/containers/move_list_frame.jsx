@@ -12,12 +12,10 @@ import {
   makeMoveListUrl,
   newMoveSlug,
   findMoveBySlugid,
-  findNeighbourIdx,
 } from 'moves/utils';
-import {
-  createErrorHandler
-} from 'app/utils';
 
+import { useSelectItems } from 'moves/containers/move_selection_behaviours'
+import { useMoveClipboard } from 'moves/containers/move_clipboard_behaviours'
 import {
   MoveCrudBvrsContext, createMoveCrudBvrs
 } from 'moves/containers/move_crud_behaviours'
@@ -27,7 +25,7 @@ import type {
   MoveListT, VideoLinksByIdT, MoveT, MoveListCrudBvrsT
 } from 'moves/types'
 import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
-import type { SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
+import type { SaveMoveBvrT, InsertMovesBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
 
 
 function _browseToMove(moves: Array<MoveT>, move: MoveT, moveListUrl: string) {
@@ -48,7 +46,6 @@ type MoveListFramePropsT = {
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
   moves: Array<MoveT>,
-  allMoves: Array<MoveT>,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
   highlightedMoveSlugid: SlugidT,
@@ -67,6 +64,13 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
   const actions: any = props;
   const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
 
+  function _updateMove(oldMove: MoveT, newMove: MoveT) {
+    actions.actAddMoves([newMove]);
+    if (highlightedMove && highlightedMove.id == oldMove.id) {
+      _browseToMove(moves, newMove, makeMoveListUrl(props.moveList));
+    }
+  }
+
   const moveCrudBvrs = createMoveCrudBvrs(
     props.moves,
     props.moveList,
@@ -77,8 +81,9 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     actions.actInsertMoves,
   );
 
-  const moves = moveCrudBvrs.insertMoveBvr.preview;
+  const moves = moveCrudBvrs.insertMovesBvr.preview;
   const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
+  const highlightedMoveId = highlightedMove ? highlightedMove.id : "";
 
   React.useEffect(
     () => {
@@ -95,43 +100,6 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     [nextHighlightedMoveId]
   )
 
-  function _updateMove(oldMove: MoveT, newMove: MoveT) {
-    actions.actAddMoves([newMove]);
-    if (highlightedMove && highlightedMove.id == oldMove.id) {
-      _browseToMove(moves, newMove, makeMoveListUrl(props.moveList));
-    }
-  }
-
-  function _shareMoveToList(moveList: MoveListT) {
-    if (highlightedMove && !moveList.moves.includes(highlightedMove.id)) {
-      const moveIds = actions.actInsertMoves([highlightedMove.id], moveList.id, "");
-      MovesCtr.api.saveMoveOrdering(moveList.id, moveIds)
-        .catch(createErrorHandler("Could not update the move list"));
-    }
-  }
-
-  function _moveMoveToList(moveList: MoveListT) {
-    const sourceMoveList = props.moveList;
-
-    if (sourceMoveList && sourceMoveList.id != moveList.id) {
-      const moveIds = moves.map(x => x.id);
-      const highlightedIdx = moveIds.indexOf(highlightedMove.id);
-
-      _shareMoveToList(moveList);
-      const newMoveIds = actions.actRemoveMoves([highlightedMove.id], sourceMoveList.id);
-      MovesCtr.api.saveMoveOrdering(sourceMoveList.id, newMoveIds)
-        .catch(createErrorHandler("Could not update the move list"));
-
-      const newIdx =
-        findNeighbourIdx(newMoveIds, moveIds, highlightedIdx, moveIds.length, 1) ||
-        findNeighbourIdx(newMoveIds, moveIds, highlightedIdx, -1, -1);
-
-      if (newIdx) {
-        _browseToMove(moves, moves[newIdx.result], makeMoveListUrl(sourceMoveList));
-      }
-    }
-  }
-
   const selectMoveListById = (id: UUID) => {
     const moveList = props.moveLists.find(x => x.id == id);
     if (moveList) {
@@ -146,8 +114,21 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     }
   }
 
-  const targetMoveLists = props.moveLists.filter(
-    x => (highlightedMove && !x.moves.includes(highlightedMove.id))
+  // TODO: when clicking to highlight something, we should also select it...
+
+  const selectMovesBvr = useSelectItems<MoveT>(
+    moves,
+    highlightedMoveId,
+    moveCrudBvrs.newMoveBvr.setHighlightedItemId
+  );
+
+  const moveClipboardBvr = useMoveClipboard(
+    props.moveLists,
+    selectMovesBvr.selectedItems.map(x => x.id),
+    highlightedMoveId,
+    moveCrudBvrs.newMoveBvr.setHighlightedItemId,
+    actions.actInsertMoves,
+    actions.actRemoveMoves,
   );
 
   return (
@@ -156,14 +137,13 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
       videoLinksByMoveId={props.videoLinksByMoveId}
       moveCrudBvrs={moveCrudBvrs}
       moveListCrudBvrs={props.moveListCrudBvrs}
+      moveClipboardBvr={moveClipboardBvr}
       moveTags={props.moveTags}
       moveLists={props.moveLists}
-      targetMoveLists={targetMoveLists}
+      selectMovesBvr={selectMovesBvr}
       highlightedMoveSlugid={props.highlightedMoveSlugid}
       moveList={props.moveList}
       filterMoves={filterMoves}
-      shareMoveToList={_shareMoveToList}
-      moveMoveToList={_moveMoveToList}
       selectMoveListById={selectMoveListById}
     >
       <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>
@@ -199,7 +179,6 @@ MoveListFrame = MovesCtr.connect(
     userProfile: AppCtr.fromStore.getUserProfile(state.app),
     videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state.moves),
     moves: MovesCtr.fromStore.getFilteredMovesInList(state.moves),
-    allMoves: MovesCtr.fromStore.getMovesInList(state.moves),
     moveTags: MovesCtr.fromStore.getMoveTags(state.moves),
     moveLists: MovesCtr.fromStore.getMoveLists(state.moves),
     highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(state.moves),

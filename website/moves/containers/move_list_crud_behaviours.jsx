@@ -10,7 +10,7 @@ import { createErrorHandler } from 'app/utils'
 import { slugify } from 'utils/utils'
 
 import {
-  useInsertItem, useNewItem, useSaveItem
+  useInsertItems, useNewItem, useSaveItem
 } from 'moves/containers/crud_behaviours'
 
 import type {
@@ -18,7 +18,7 @@ import type {
 } from 'moves/types'
 import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
 import type {
-  InsertItemBvrT, NewItemBvrT, SaveItemBvrT
+  InsertItemsBvrT, NewItemBvrT, SaveItemBvrT
 } from 'moves/containers/crud_behaviours'
 
 
@@ -26,11 +26,7 @@ import type {
 export const MoveListCrudBvrsContext = React.createContext({});
 
 
-export function createNewMoveList(userProfile: ?UserProfileT): ?MoveListT {
-  if (!userProfile) {
-    return null;
-  }
-
+export function createNewMoveList(userId: number, username: string): MoveListT {
   return {
     id: uuidv4(),
     slug: newMoveListSlug,
@@ -38,27 +34,27 @@ export function createNewMoveList(userProfile: ?UserProfileT): ?MoveListT {
     description: '',
     tags: [],
     moves: [],
-    ownerId: userProfile.userId,
-    ownerUsername: userProfile.username,
+    ownerId: userId,
+    ownerUsername: username,
   };
 }
 
 
-// InsertMoveList Behaviour
+// InsertMoveLists Behaviour
 
-export type InsertMoveListBvrT = InsertItemBvrT<MoveListT>;
+export type InsertMoveListsBvrT = InsertItemsBvrT<MoveListT>;
 
-export function useInsertMoveList(
+export function useInsertMoveLists(
   moveLists: Array<MoveListT>,
   actInsertMoveLists: (moveListIds: Array<UUID>, targetMoveListId: UUID) => Array<UUID>,
-): InsertMoveListBvrT {
-  function _insertMoveList(moveListId: UUID, targetMoveListId: UUID) {
-    const allMoveListIds = actInsertMoveLists([moveListId], targetMoveListId);
+): InsertMoveListsBvrT {
+  function _insertMoveListIds(moveListIds: Array<UUID>, targetMoveListId: UUID) {
+    const allMoveListIds = actInsertMoveLists(moveListIds, targetMoveListId);
     api.saveMoveListOrdering(allMoveListIds)
       .catch(createErrorHandler("We could not update the move list"));
   }
 
-  return useInsertItem<MoveListT>(moveLists, _insertMoveList);
+  return useInsertItems<MoveListT>(moveLists, _insertMoveListIds);
 }
 
 
@@ -70,17 +66,19 @@ export function useNewMoveList(
   userProfile: ?UserProfileT,
   setHighlightedMoveListId: (UUID) => void,
   highlightedMoveListId: UUID,
-  insertMoveListBvr: InsertMoveListBvrT,
+  insertMoveListsBvr: InsertMoveListsBvrT,
   setIsEditing: (boolean) => void,
 ): NewMoveListBvrT {
   function _createNewMoveList() {
-    return createNewMoveList(userProfile);
+    return userProfile
+      ? createNewMoveList(userProfile.userId, userProfile.username)
+      : undefined;
   }
 
   return useNewItem<MoveListT>(
     highlightedMoveListId,
     setHighlightedMoveListId,
-    insertMoveListBvr,
+    insertMoveListsBvr,
     setIsEditing,
     _createNewMoveList,
   );
@@ -140,7 +138,7 @@ export function createMoveListCrudBvrs(
 
   const moveList = findMoveListByUrl(moveLists, selectedMoveListUrl);
 
-  const insertMoveListBvr: InsertMoveListBvrT = useInsertMoveList(
+  const insertMoveListsBvr: InsertMoveListsBvrT = useInsertMoveLists(
     moveLists,
     actInsertMoveLists
   );
@@ -149,12 +147,12 @@ export function createMoveListCrudBvrs(
     userProfile,
     setNextSelectedMoveListId,
     moveList ? moveList.id : "",
-    insertMoveListBvr,
+    insertMoveListsBvr,
     setIsEditing,
   );
 
   const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(
-    insertMoveListBvr.preview,
+    insertMoveListsBvr.preview,
     newMoveListBvr,
     setIsEditing,
     updateMoveList,
@@ -163,7 +161,7 @@ export function createMoveListCrudBvrs(
   const bvrs: MoveListCrudBvrsT = {
     isEditing,
     setIsEditing,
-    insertMoveListBvr,
+    insertMoveListsBvr,
     newMoveListBvr,
     saveMoveListBvr
   };

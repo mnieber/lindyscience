@@ -6,10 +6,10 @@
 
 import type { UUID, TagT } from 'app/types';
 import type {
-  SaveMoveBvrT, InsertMoveBvrT, NewMoveBvrT
+  SaveMoveBvrT, InsertMovesBvrT, NewMoveBvrT
 } from 'moves/containers/move_crud_behaviours'
 import type {
-  SaveMoveListBvrT, InsertMoveListBvrT, NewMoveListBvrT
+  SaveMoveListBvrT, InsertMoveListsBvrT, NewMoveListBvrT
 } from 'moves/containers/move_list_crud_behaviours'
 
 export type MoveT = {
@@ -93,7 +93,7 @@ export type MovePrivateDataByIdT = {[UUID]: MovePrivateDataT};
 
 export type MoveCrudBvrsT = {
   newMoveBvr: NewMoveBvrT,
-  insertMoveBvr: InsertMoveBvrT,
+  insertMovesBvr: InsertMovesBvrT,
   saveMoveBvr: SaveMoveBvrT,
   isEditing: boolean,
   setIsEditing: (boolean) => void,
@@ -101,7 +101,7 @@ export type MoveCrudBvrsT = {
 
 export type MoveListCrudBvrsT = {
   newMoveListBvr: NewMoveListBvrT,
-  insertMoveListBvr: InsertMoveListBvrT,
+  insertMoveListsBvr: InsertMoveListsBvrT,
   saveMoveListBvr: SaveMoveListBvrT,
   isEditing: boolean,
   setIsEditing: (boolean) => void,

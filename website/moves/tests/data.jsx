@@ -65,6 +65,13 @@ export const moves = {
     "slug": "heel-pops",
     "tags": [],
     "ownerId": profile2.userId,
+  },
+  "95f5fb91-81ce-4895-a945-59dada5b8b7e": {
+    "id": "95f5fb91-81ce-4895-a945-59dada5b8b7e",
+    "name": "Slides",
+    "slug": "slides",
+    "tags": [],
+    "ownerId": profile2.userId,
   }
 };
 

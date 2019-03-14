@@ -108,6 +108,14 @@ $panGrey: #BBBBBB;
   @apply flexcol;
 }
 
+.move__description {
+  @apply text-lg;
+}
+
+.moveForm__description {
+  @apply text-lg;
+}
+
 .move__tags {
   @apply flex;
 }
@@ -166,4 +174,8 @@ $panGrey: #BBBBBB;
 
 .formField__field {
   @apply w-full;
+}
+
+.formField__error {
+  @apply text-red;
 }

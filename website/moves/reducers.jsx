@@ -452,9 +452,9 @@ export const getSelectedMoveList: Selector<?MoveListT> = createSelector(
 );
 
 export const getMovesInList: Selector<Array<MoveT>> = createSelector(
-  [getMoveById, _stateMoveLists, getSelectedMoveList],
+  [getMoveById, getSelectedMoveList],
 
-  (moveById, stateMoveLists, moveList): Array<MoveT> => {
+  (moveById, moveList): Array<MoveT> => {
     return moveList
       ? (moveList.moves || []).map(moveId => moveById[moveId]).filter(x => !!x)
       : [];

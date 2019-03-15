@@ -10,12 +10,20 @@ import Widgets from 'moves/presentation/index'
 import uuidv4 from 'uuid/v4'
 import { findMoveBySlugid, newMoveSlug } from 'moves/utils'
 import { isOwner, createErrorHandler } from 'app/utils'
+import { querySetListToDict } from 'utils/utils'
 
 import { MoveCrudBvrsContext } from 'moves/containers/move_crud_behaviours'
 
-import type { UUID, UserProfileT, VoteByIdT, SlugidT, TagT } from 'app/types';
+import type { UUID, UserProfileT, VoteByIdT, SlugidT, TagT, VoteT } from 'app/types';
 import type {
-  MoveListT, MoveT, VideoLinksByIdT, TipsByIdT, MoveCrudBvrsT, MovePrivateDataT,
+  MoveListT,
+  MoveT,
+  VideoLinkT,
+  VideoLinksByIdT,
+  TipT,
+  TipsByIdT,
+  MoveCrudBvrsT,
+  MovePrivateDataT,
 } from 'moves/types'
 
 
@@ -104,22 +112,46 @@ function _createOwnMove(
     );
   }
   else {
+    const saveVideoLink = (videoLink: VideoLinkT) => {
+        actions.actAddVideoLinks(querySetListToDict([videoLink]));
+        let response = MovesCtr.api.saveVideoLink(move.id, videoLink);
+        response.catch(createErrorHandler('We could not save the video link'));
+    }
+
+    const voteVideoLink = (id: UUID, vote: VoteT) => {
+      actions.actCastVote(id, vote);
+      AppCtr.api.voteVideoLink(id, vote)
+      .catch(createErrorHandler('We could not save your vote'));
+    }
+
     const videoLinksPanel = <Widgets.VideoLinksPanel
       moveId={move.id}
       userProfile={props.userProfile}
       videoLinks={props.videoLinksByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
-      actAddVideoLinks={actions.actAddVideoLinks}
-      actCastVote={actions.actCastVote}
+      saveVideoLink={saveVideoLink}
+      voteVideoLink={voteVideoLink}
     />;
+
+    const saveTip = (tip: TipT) => {
+      actions.actAddTips(querySetListToDict([tip]));
+      let response = MovesCtr.api.saveTip(move.id, tip);
+      response.catch(createErrorHandler('We could not save the tip'));
+    }
+
+    const voteTip = (id: UUID, vote: VoteT) => {
+      actions.actCastVote(id, vote);
+      AppCtr.api.voteTip(id, vote)
+      .catch(createErrorHandler('We could not save your vote'));
+    }
 
     const tipsPanel = <Widgets.TipsPanel
       moveId={move.id}
       userProfile={props.userProfile}
       tips={props.tipsByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
-      actAddTips={actions.actAddTips}
-      actCastVote={actions.actCastVote}
+      saveTip={saveTip}
+      voteTip={voteTip}
     />;
 
     const editMoveBtn =

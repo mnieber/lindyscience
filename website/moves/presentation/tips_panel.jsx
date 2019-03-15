@@ -1,15 +1,12 @@
 // @flow
 
 import * as React from 'react'
-// TODO: move out of the presentation layer
-import * as api from 'moves/api'
-import * as appApi from 'app/api'
 
 import { TipList } from 'moves/presentation/tip';
 
 // $FlowFixMe
 import uuidv4 from 'uuid/v4'
-import { querySetListToDict, slugify, isNone } from 'utils/utils'
+import { slugify, isNone } from 'utils/utils'
 import { createErrorHandler } from 'app/utils'
 
 import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
@@ -98,7 +95,7 @@ export function useSaveTip(
   newTipBvr: NewTipBvrT,
   moveId: UUID,
   tips: Array<TipT>,
-  actAddTips: Function,
+  saveTip: (TipT) => void,
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const tip: TipT = {
@@ -106,10 +103,7 @@ export function useSaveTip(
       ...incompleteValues,
     };
 
-    actAddTips(querySetListToDict([tip]));
-    let response = api.saveTip(moveId, tip);
-    response.catch(createErrorHandler('We could not save the tip'));
-
+    saveTip(tip);
     newTipBvr.finalize(false);
   }
 
@@ -125,8 +119,8 @@ type TipsPanelPropsT = {
   userProfile: UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
-  actAddTips: Function,
-  actCastVote: Function,
+  saveTip: (TipT) => void,
+  voteTip: (UUID, VoteT) => void,
 };
 
 export function TipsPanel(props: TipsPanelPropsT) {
@@ -136,14 +130,8 @@ export function TipsPanel(props: TipsPanelPropsT) {
     newTipBvr,
     props.moveId,
     insertTipBvr.preview,
-    props.actAddTips,
+    props.saveTip,
   );
-
-  const voteTip = (id: UUID, vote: VoteT) => {
-    props.actCastVote(id, vote);
-    appApi.voteTip(id, vote)
-    .catch(createErrorHandler('We could not save your vote'));
-  }
 
   const addTipBtn = (
     <div
@@ -162,7 +150,7 @@ export function TipsPanel(props: TipsPanelPropsT) {
       </div>
       <TipList
         items={insertTipBvr.preview}
-        setVote={voteTip}
+        setVote={props.voteTip}
         saveTip={saveTipBvr.save}
         cancelEditTip={saveTipBvr.discardChanges}
         voteByObjectId={props.voteByObjectId}

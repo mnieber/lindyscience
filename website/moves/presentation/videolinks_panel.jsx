@@ -1,9 +1,6 @@
 // @flow
 
 import * as React from 'react'
-// TODO: move out of the presentation layer
-import * as api from 'moves/api'
-import * as appApi from 'app/api'
 
 import { VideoLinkList } from 'moves/presentation/videolink';
 
@@ -100,7 +97,7 @@ export function useSaveVideoLink(
   newVideoLinkBvr: NewVideoLinkBvrT,
   moveId: UUID,
   videoLinks: Array<VideoLinkT>,
-  actAddVideoLinks: Function,
+  saveVideoLink: (VideoLinkT) => void,
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const videoLink: VideoLinkT = {
@@ -108,10 +105,7 @@ export function useSaveVideoLink(
       ...incompleteValues,
     };
 
-    actAddVideoLinks(querySetListToDict([videoLink]));
-    let response = api.saveVideoLink(moveId, videoLink);
-    response.catch(createErrorHandler('We could not save the video link'));
-
+    saveVideoLink(videoLink);
     newVideoLinkBvr.finalize(false);
   }
 
@@ -126,25 +120,14 @@ type VoteVideoLinkBvrT = {
   vote: Function
 };
 
-export function useVoteVideoLink(
-  actCastVote: Function,
-): VoteVideoLinkBvrT {
-  const vote = (id: UUID, vote: VoteT) => {
-    actCastVote(id, vote);
-    appApi.voteVideoLink(id, vote)
-    .catch(createErrorHandler('We could not save your vote'));
-  }
-
-  return {vote};
-}
 
 type VideoLinksPanelPropsT = {
   moveId: UUID,
   userProfile: UserProfileT,
   videoLinks: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
-  actAddVideoLinks: Function,
-  actCastVote: Function,
+  saveVideoLink: (VideoLinkT) => void,
+  voteVideoLink: (UUID, VoteT) => void,
 };
 
 export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
@@ -159,10 +142,7 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
     newVideoLinkBvr,
     props.moveId,
     insertVideoLinkBvr.preview,
-    props.actAddVideoLinks,
-  );
-  const voteVideoLinkBvr = useVoteVideoLink(
-    props.actCastVote
+    props.saveVideoLink,
   );
 
   const addVideoLinkBtn = (
@@ -182,7 +162,7 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
       </div>
       <VideoLinkList
         items={insertVideoLinkBvr.preview}
-        setVote={voteVideoLinkBvr.vote}
+        setVote={props.voteVideoLink}
         saveVideoLink={saveVideoLinkBvr.save}
         cancelEditVideoLink={saveVideoLinkBvr.discardChanges}
         voteByObjectId={props.voteByObjectId}

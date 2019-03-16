@@ -1,10 +1,9 @@
 // @flow
 
-import * as React from 'react'
-import { withFormik } from 'formik';
-import * as yup from 'yup';
-import { FormField, validateTipUrl } from 'utils/form_utils'
-
+import * as React from "react";
+import { withFormik } from "formik";
+import * as yup from "yup";
+import { FormField, validateTipUrl } from "utils/form_utils";
 
 export function TipForm({
   onSubmit,
@@ -22,8 +21,8 @@ export function TipForm({
           <FormField
             classNames="tipForm__text w-64"
             formProps={props}
-            fieldName='text'
-            type='text'
+            fieldName="text"
+            type="text"
             placeholder="Text"
           />
           <button
@@ -35,7 +34,10 @@ export function TipForm({
           </button>
           <button
             className="tipForm__cancelButton ml-2"
-            onClick={e => {e.preventDefault(); onCancel()}}
+            onClick={e => {
+              e.preventDefault();
+              onCancel();
+            }}
           >
             cancel
           </button>
@@ -49,8 +51,7 @@ export function TipForm({
       text: values.text,
     }),
     validationSchema: yup.object().shape({
-      text: yup.string()
-        .required('This field is required'),
+      text: yup.string().required("This field is required"),
     }),
     validate: (values, props) => {
       let errors = {};
@@ -59,8 +60,8 @@ export function TipForm({
     handleSubmit: (values, { setSubmitting }) => {
       onSubmit(values);
     },
-    displayName: 'BasicForm', // helps with React DevTools
+    displayName: "BasicForm", // helps with React DevTools
   })(InnerForm);
 
-  return <EnhancedForm/>;
+  return <EnhancedForm />;
 }

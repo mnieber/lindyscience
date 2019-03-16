@@ -4,13 +4,17 @@
 // Types
 ///////////////////////////////////////////////////////////////////////
 
-import type { UUID, TagT } from 'app/types';
+import type { UUID, TagT } from "app/types";
 import type {
-  SaveMoveBvrT, InsertMovesBvrT, NewMoveBvrT
-} from 'moves/containers/move_crud_behaviours'
+  SaveMoveBvrT,
+  InsertMovesBvrT,
+  NewMoveBvrT,
+} from "moves/containers/move_crud_behaviours";
 import type {
-  SaveMoveListBvrT, InsertMoveListsBvrT, NewMoveListBvrT
-} from 'moves/containers/move_list_crud_behaviours'
+  SaveMoveListBvrT,
+  InsertMoveListsBvrT,
+  NewMoveListBvrT,
+} from "moves/containers/move_list_crud_behaviours";
 
 export type MoveT = {
   id: UUID,
@@ -21,7 +25,7 @@ export type MoveT = {
   name: string,
   slug: string,
   ownerId: number,
-  privateData: ?MovePrivateDataT
+  privateData: ?MovePrivateDataT,
 };
 
 export type MoveListT = {
@@ -36,11 +40,10 @@ export type MoveListT = {
 };
 
 export type MoveListByIdT = {
-  [UUID]: MoveListT
+  [UUID]: MoveListT,
 };
 
-export type VotableT = {
-};
+export type VotableT = {};
 
 export type VideoLinkT = {
   id: UUID,
@@ -62,41 +65,41 @@ export type TipT = {|
 |};
 
 export type TipByIdT = {
-  [UUID]: TipT
+  [UUID]: TipT,
 };
 
 export type TipsByIdT = {
-  [UUID]: Array<TipT>
+  [UUID]: Array<TipT>,
 };
 
 export type MoveByIdT = {
-  [UUID]: MoveT
+  [UUID]: MoveT,
 };
 
 export type MoveBySlugT = {
-  [string]: MoveT
+  [string]: MoveT,
 };
 
 export type VideoLinkByIdT = {
-  [UUID]: VideoLinkT
+  [UUID]: VideoLinkT,
 };
 
 export type VideoLinksByIdT = {
-  [UUID]: Array<VideoLinkT>
+  [UUID]: Array<VideoLinkT>,
 };
 
 export type MovePrivateDataT = {
   notes: string,
 };
 
-export type MovePrivateDataByIdT = {[UUID]: MovePrivateDataT};
+export type MovePrivateDataByIdT = { [UUID]: MovePrivateDataT };
 
 export type MoveCrudBvrsT = {
   newMoveBvr: NewMoveBvrT,
   insertMovesBvr: InsertMovesBvrT,
   saveMoveBvr: SaveMoveBvrT,
   isEditing: boolean,
-  setIsEditing: (boolean) => void,
+  setIsEditing: boolean => void,
 };
 
 export type MoveListCrudBvrsT = {
@@ -104,5 +107,5 @@ export type MoveListCrudBvrsT = {
   insertMoveListsBvr: InsertMoveListsBvrT,
   saveMoveListBvr: SaveMoveListBvrT,
   isEditing: boolean,
-  setIsEditing: (boolean) => void,
+  setIsEditing: boolean => void,
 };

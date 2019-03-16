@@ -1,18 +1,21 @@
 // @flow
 
-import React from 'react'
+import React from "react";
 import {
-  Editor, EditorState, RichUtils, convertFromRaw, convertToRaw
-// $FlowFixMe
-} from 'draft-js';
-import { stateFromHTML } from 'draft-js-import-html';
-import { stateToHTML } from 'draft-js-export-html';
-
+  Editor,
+  EditorState,
+  RichUtils,
+  convertFromRaw,
+  convertToRaw,
+  // $FlowFixMe
+} from "draft-js";
+import { stateFromHTML } from "draft-js-import-html";
+import { stateToHTML } from "draft-js-export-html";
 
 type RichTextEditorPropsT = {
   content: string,
   autoFocus: boolean,
-  setEditorRef: (any) => void,
+  setEditorRef: any => void,
 };
 
 export function RichTextEditor(props: RichTextEditorPropsT) {
@@ -23,34 +26,30 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
     EditorState.createWithContent(stateFromHTML(props.content))
   );
 
-  React.useEffect(
-    () => {
-      if (props.autoFocus && editorRef && editorRef.current) {
-        editorRef.current.focus();
-      }
+  React.useEffect(() => {
+    if (props.autoFocus && editorRef && editorRef.current) {
+      editorRef.current.focus();
     }
-    , [editorRef]
-  );
+  }, [editorRef]);
 
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       setEditorState(newState);
-      return 'handled';
+      return "handled";
     }
-    return 'not-handled';
-  }
+    return "not-handled";
+  };
 
   return (
-      <Editor
-        ref={editorRef}
-        editorState={editorState}
-        handleKeyCommand={handleKeyCommand}
-        onChange={setEditorState}
-      />
+    <Editor
+      ref={editorRef}
+      editorState={editorState}
+      handleKeyCommand={handleKeyCommand}
+      onChange={setEditorState}
+    />
   );
 }
-
 
 export function getContentFromEditor(editor: any, defaultValue: string) {
   if (!editor) {

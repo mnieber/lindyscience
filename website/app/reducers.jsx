@@ -1,13 +1,10 @@
 // @flow
 
-import { combineReducers } from 'redux'
-import { createSelector } from 'reselect'
-import type { InputSelector } from 'reselect';
-import type { UUID, VoteByIdT, UserProfileT } from 'app/types';
-import {
-  insertIdsIntoList,
-} from 'utils/utils'
-
+import { combineReducers } from "redux";
+import { createSelector } from "reselect";
+import type { InputSelector } from "reselect";
+import type { UUID, VoteByIdT, UserProfileT } from "app/types";
+import { insertIdsIntoList } from "utils/utils";
 
 ///////////////////////////////////////////////////////////////////////
 // Private state helpers
@@ -16,35 +13,33 @@ import {
 const _stateStatus = (state: ReducerStateT): StatusState => state.status;
 const _stateVotes = (state: ReducerStateT): VotesState => state.votes;
 
-
 ///////////////////////////////////////////////////////////////////////
 // Status
 ///////////////////////////////////////////////////////////////////////
 
 type StatusState = {
-  signedInEmail: string
+  signedInEmail: string,
 };
 
 const statusReducer = function(
   state: StatusState = {
-    signedInEmail: ""
+    signedInEmail: "",
   },
   action
-): StatusState
-{
+): StatusState {
   switch (action.type) {
-    case 'SET_SIGNED_IN_EMAIL':
+    case "SET_SIGNED_IN_EMAIL":
       return {
         ...state,
-        signedInEmail: action.username
-      }
+        signedInEmail: action.username,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-
-export const getSignedInEmail = (state: ReducerStateT): string => state.status.signedInEmail;
+export const getSignedInEmail = (state: ReducerStateT): string =>
+  state.status.signedInEmail;
 
 ///////////////////////////////////////////////////////////////////////
 // Profile
@@ -55,31 +50,30 @@ type UserProfileState = ?UserProfileT;
 const userProfileReducer = function(
   state: UserProfileState = null,
   action
-): UserProfileState
-{
+): UserProfileState {
   switch (action.type) {
-    case 'SET_USER_PROFILE':
+    case "SET_USER_PROFILE":
       return {
         ...state,
-        ...action.profile
-      }
-    case 'INSERT_MOVE_LISTS_INTO_PROFILE':
+        ...action.profile,
+      };
+    case "INSERT_MOVE_LISTS_INTO_PROFILE":
       const acc = insertIdsIntoList(
         action.moveListIds,
         state ? state.moveListIds : [],
-        action.targetMoveListId,
-      )
+        action.targetMoveListId
+      );
       return {
         ...state,
-        moveListIds: acc
-      }
+        moveListIds: acc,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export const getUserProfile = (state: ReducerStateT): UserProfileState => state.userProfile;
-
+export const getUserProfile = (state: ReducerStateT): UserProfileState =>
+  state.userProfile;
 
 ///////////////////////////////////////////////////////////////////////
 // Votes
@@ -87,24 +81,20 @@ export const getUserProfile = (state: ReducerStateT): UserProfileState => state.
 
 type VotesState = VoteByIdT;
 
-export function votesReducer(
-  state: VotesState = {},
-  action: any
-): VotesState
-{
+export function votesReducer(state: VotesState = {}, action: any): VotesState {
   switch (action.type) {
-    case 'SET_VOTES':
+    case "SET_VOTES":
       return {
         ...state,
-        ...action.votes
+        ...action.votes,
       };
-    case 'CAST_VOTE':
+    case "CAST_VOTE":
       return {
         ...state,
-        [action.id]: action.vote
-      }
+        [action.id]: action.vote,
+      };
     default:
-      return state
+      return state;
   }
 }
 
@@ -115,7 +105,6 @@ export const getVoteByObjectId: Selector<VoteByIdT> = createSelector(
     return stateVotes;
   }
 );
-
 
 export type ReducerStateT = {
   status: StatusState,

@@ -1,8 +1,8 @@
 // @flow
 
-import React from 'react'
-import { withFormik } from 'formik';
-import * as yup from 'yup';
+import React from "react";
+import { withFormik } from "formik";
+import * as yup from "yup";
 import {
   FormField,
   ValuePicker,
@@ -10,62 +10,67 @@ import {
   getValueFromPicker,
   FormFieldLabel,
   strToPickerValue,
-} from 'utils/form_utils'
-import { RichTextEditor, getContentFromEditor } from 'moves/presentation/rich_text_editor'
-import type { MoveT } from 'moves/types';
-import type { UUID, UserProfileT, TagT } from 'app/types';
-
+} from "utils/form_utils";
+import {
+  RichTextEditor,
+  getContentFromEditor,
+} from "moves/presentation/rich_text_editor";
+import type { MoveT } from "moves/types";
+import type { UUID, UserProfileT, TagT } from "app/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
   onCancel: () => void,
-  setTagsPickerRef: (any) => void,
-  setDescriptionEditorRef: (any) => void,
+  setTagsPickerRef: any => void,
+  setDescriptionEditorRef: any => void,
 };
 
-const InnerForm = (props: InnerFormPropsT) => (formProps) => {
+const InnerForm = (props: InnerFormPropsT) => formProps => {
   const tagsPickerRef = React.useRef(null);
   props.setTagsPickerRef(tagsPickerRef);
 
-  const nameField =
+  const nameField = (
     <FormField
       classNames="w-full"
-      label='Name'
+      label="Name"
       formProps={formProps}
-      fieldName='name'
-      type='text'
+      fieldName="name"
+      type="text"
       placeholder="Name"
       autoFocus={props.autoFocus}
     />
+  );
 
-  const description =
+  const description = (
     <div className="moveForm__description mt-4">
-      <FormFieldLabel label='Description'/>
+      <FormFieldLabel label="Description" />
       <RichTextEditor
         autoFocus={false}
         setEditorRef={props.setDescriptionEditorRef}
         content={formProps.values.description}
       />
-      {formFieldError(formProps, 'description', ['formField__error'])}
+      {formFieldError(formProps, "description", ["formField__error"])}
     </div>
+  );
 
-  const tags =
+  const tags = (
     <div className="moveForm__tags mt-4">
       <ValuePicker
         zIndex={10}
         ref={tagsPickerRef}
         isCreatable={true}
-        label='Tags'
+        label="Tags"
         defaultValue={props.tagPickerDefaultValue}
-        fieldName='tags'
+        fieldName="tags"
         isMulti={true}
         options={props.tagPickerOptions}
         placeholder="Tags"
       />
-      {formFieldError(formProps, 'tags', ['formField__error'], "error")}
+      {formFieldError(formProps, "tags", ["formField__error"], "error")}
     </div>
+  );
 
   return (
     <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
@@ -85,7 +90,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
             className="button button--wide ml-2"
             onClick={e => {
               e.preventDefault();
-              props.onCancel()
+              props.onCancel();
             }}
           >
             cancel
@@ -93,9 +98,8 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
         </div>
       </div>
     </form>
-  )
-}
-
+  );
+};
 
 // MoveForm
 
@@ -109,8 +113,8 @@ type MoveFormPropsT = {
 
 export function MoveForm(props: MoveFormPropsT) {
   const refs = {};
-  const setTagsPickerRef = x => refs.tagsPickerRef = x;
-  const setDescriptionEditorRef = x => refs.descriptionEditorRef = x;
+  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
+  const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
@@ -120,15 +124,18 @@ export function MoveForm(props: MoveFormPropsT) {
     }),
 
     validate: (values, formProps) => {
-      values.description = getContentFromEditor(refs.descriptionEditorRef.current, '');
+      values.description = getContentFromEditor(
+        refs.descriptionEditorRef.current,
+        ""
+      );
       values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
 
       let errors = {};
       if (!values.name) {
-        errors.name = 'This field is required';
+        errors.name = "This field is required";
       }
       if (!values.tags) {
-        errors.tags = 'This field is required';
+        errors.tags = "This field is required";
       }
       return errors;
     },
@@ -136,15 +143,17 @@ export function MoveForm(props: MoveFormPropsT) {
     handleSubmit: (values, { setSubmitting }) => {
       props.onSubmit(props.move.id, values);
     },
-    displayName: 'BasicForm', // helps with React DevTools
-  })(InnerForm({
-    autoFocus: props.autoFocus,
-    tagPickerOptions: props.knownTags.map(strToPickerValue),
-    tagPickerDefaultValue: props.move.tags.map(strToPickerValue),
-    onCancel: props.onCancel,
-    setTagsPickerRef,
-    setDescriptionEditorRef,
-  }));
+    displayName: "BasicForm", // helps with React DevTools
+  })(
+    InnerForm({
+      autoFocus: props.autoFocus,
+      tagPickerOptions: props.knownTags.map(strToPickerValue),
+      tagPickerDefaultValue: props.move.tags.map(strToPickerValue),
+      onCancel: props.onCancel,
+      setTagsPickerRef,
+      setDescriptionEditorRef,
+    })
+  );
 
-  return <EnhancedForm/>;
+  return <EnhancedForm />;
 }

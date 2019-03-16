@@ -1,9 +1,7 @@
 // @flow
 
-import * as React from 'react'
+import * as React from "react";
 
-export function getSignInPageBehaviours(
-) {
-  return {
-  };
+export function getSignInPageBehaviours() {
+  return {};
 }

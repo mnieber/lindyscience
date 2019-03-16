@@ -1,16 +1,16 @@
 // @flow
 
-import * as React from 'react'
+import * as React from "react";
 
-import { VideoLinkList } from 'moves/presentation/videolink';
+import { VideoLinkList } from "moves/presentation/videolink";
 
 // $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import { createErrorHandler } from 'app/utils'
-import { querySetListToDict, slugify, isNone } from 'utils/utils'
+import uuidv4 from "uuid/v4";
+import { createErrorHandler } from "app/utils";
+import { querySetListToDict, slugify, isNone } from "utils/utils";
 
-import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
-import type { MoveT, VideoLinkT } from 'moves/types'
+import type { UUID, VoteT, VoteByIdT, UserProfileT } from "app/types";
+import type { MoveT, VideoLinkT } from "moves/types";
 
 // Behaviours
 
@@ -20,9 +20,7 @@ type InsertVideoLinkBvrT = {
   finalize: Function,
 };
 
-export function useInsertVideoLink(
-  videoLinks: Array<VideoLinkT>,
-) {
+export function useInsertVideoLink(videoLinks: Array<VideoLinkT>) {
   const [sourceVideoLink, setSourceVideoLink] = React.useState(null);
 
   function prepare(videoLink: VideoLinkT) {
@@ -35,9 +33,9 @@ export function useInsertVideoLink(
 
   const preview = !sourceVideoLink
     ? videoLinks
-    : [...videoLinks, sourceVideoLink]
+    : [...videoLinks, sourceVideoLink];
 
-  return {preview, prepare, finalize};
+  return { preview, prepare, finalize };
 }
 
 type NewVideoLinkBvrT = {
@@ -49,7 +47,7 @@ type NewVideoLinkBvrT = {
 export function useNewVideoLink(
   userId: number,
   insertVideoLinkBvr: InsertVideoLinkBvrT,
-  moveId: UUID,
+  moveId: UUID
 ) {
   const [newVideoLink, setNewVideoLink] = React.useState(null);
 
@@ -57,9 +55,9 @@ export function useNewVideoLink(
     return {
       id: uuidv4(),
       ownerId: userId,
-      title: '',
+      title: "",
       moveId: moveId,
-      url: '',
+      url: "",
       voteCount: 0,
       initialVoteCount: 0,
     };
@@ -78,26 +76,24 @@ export function useNewVideoLink(
     setNewVideoLink(null);
   }
 
-  return {newVideoLink, add, finalize};
+  return { newVideoLink, add, finalize };
 }
-
 
 type IncompleteValuesT = {
   url: string,
   title: string,
 };
 
-
 type SaveVideoLinkBvr = {
   save: Function,
-  discardChanges: Function
+  discardChanges: Function,
 };
 
 export function useSaveVideoLink(
   newVideoLinkBvr: NewVideoLinkBvrT,
   moveId: UUID,
   videoLinks: Array<VideoLinkT>,
-  saveVideoLink: (VideoLinkT) => void,
+  saveVideoLink: VideoLinkT => void
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const videoLink: VideoLinkT = {
@@ -113,20 +109,19 @@ export function useSaveVideoLink(
     newVideoLinkBvr.finalize(true);
   }
 
-  return {save, discardChanges};
+  return { save, discardChanges };
 }
 
 type VoteVideoLinkBvrT = {
-  vote: Function
+  vote: Function,
 };
-
 
 type VideoLinksPanelPropsT = {
   moveId: UUID,
   userProfile: UserProfileT,
   videoLinks: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
-  saveVideoLink: (VideoLinkT) => void,
+  saveVideoLink: VideoLinkT => void,
   voteVideoLink: (UUID, VoteT) => void,
 };
 
@@ -136,13 +131,13 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
   const newVideoLinkBvr = useNewVideoLink(
     props.userProfile.userId,
     insertVideoLinkBvr,
-    props.moveId,
+    props.moveId
   );
   const saveVideoLinkBvr = useSaveVideoLink(
     newVideoLinkBvr,
     props.moveId,
     insertVideoLinkBvr.preview,
-    props.saveVideoLink,
+    props.saveVideoLink
   );
 
   const addVideoLinkBtn = (
@@ -150,13 +145,13 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
       className={"videoLinksPanel__addButton button button--wide ml-2"}
       onClick={newVideoLinkBvr.add}
     >
-    Add
+      Add
     </div>
   );
 
   return (
     <div className={"videoLinksPanel panel"}>
-      <div className= {"videoLinksPanel__header flex flex-wrap mb-4"}>
+      <div className={"videoLinksPanel__header flex flex-wrap mb-4"}>
         <h2>Video links</h2>
         {addVideoLinkBtn}
       </div>
@@ -169,4 +164,4 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
       />
     </div>
   );
-};
+}

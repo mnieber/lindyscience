@@ -1,16 +1,11 @@
 // @flow
 
-import * as React from 'react'
-import classnames from 'classnames';
-import {
-  ValuePicker, strToPickerValue
-} from 'utils/form_utils'
-import {
-  splitIntoKeywords
-} from 'utils/utils'
-import type { MoveListT } from 'moves/types'
-import type { UUID, TagT } from 'app/types';
-
+import * as React from "react";
+import classnames from "classnames";
+import { ValuePicker, strToPickerValue } from "utils/form_utils";
+import { splitIntoKeywords } from "utils/utils";
+import type { MoveListT } from "moves/types";
+import type { UUID, TagT } from "app/types";
 
 // MoveListPicker
 
@@ -29,26 +24,29 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
   function toPickerValue(moveList: MoveListT) {
     return {
       value: moveList.id,
-      label: moveList.name
-    }
+      label: moveList.name,
+    };
   }
 
-  const defaultMoveList = props.moveLists.find(x => x.id == props.defaultMoveListId);
+  const defaultMoveList = props.moveLists.find(
+    x => x.id == props.defaultMoveListId
+  );
 
   return (
-    <div className= {classnames("moveListPicker mt-4", props.className)}>
+    <div className={classnames("moveListPicker mt-4", props.className)}>
       <ValuePicker
         key={props.defaultMoveListId}
         isMulti={false}
         options={props.moveLists.map(toPickerValue)}
         placeholder="Select a move list"
         onChange={_onChange}
-        defaultValue={defaultMoveList ? toPickerValue(defaultMoveList) : undefined}
+        defaultValue={
+          defaultMoveList ? toPickerValue(defaultMoveList) : undefined
+        }
       />
     </div>
   );
 }
-
 
 // MoveListFilter
 
@@ -63,10 +61,7 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
   const [tags, setTags] = React.useState([]);
   const [keywords, setKeywords] = React.useState([]);
 
-  React.useEffect(
-    () => props.filterMoves(tags, keywords),
-    [tags, keywords]
-  );
+  React.useEffect(() => props.filterMoves(tags, keywords), [tags, keywords]);
 
   function _onKeywordsChange(e) {
     if (inputRef.current) {
@@ -78,15 +73,16 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
     setTags(pickedTags.map(x => x.value));
   }
 
-  const valuePicker =
+  const valuePicker = (
     <ValuePicker
       isMulti={true}
       options={props.moveTags.map(strToPickerValue)}
       placeholder="Enter search tags here"
       onChange={_onTagsChange}
     />
+  );
 
-  const inputElm =
+  const inputElm = (
     // $FlowFixMe
     <input
       ref={inputRef}
@@ -94,11 +90,12 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
       placeholder="Enter search keywords here"
       onChange={_onKeywordsChange}
     />
+  );
 
   return (
-    <div className= {classnames("moveListFilter mt-4", props.className)}>
-    {valuePicker}
-    {inputElm}
+    <div className={classnames("moveListFilter mt-4", props.className)}>
+      {valuePicker}
+      {inputElm}
     </div>
   );
 }

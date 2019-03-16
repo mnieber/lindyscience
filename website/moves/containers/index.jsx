@@ -1,11 +1,11 @@
 // @flow
 
-import * as React from 'react'
+import * as React from "react";
 
-import { connect } from 'react-redux'
-import * as movesActions from 'moves/actions'
-import * as fromMovesStore from 'moves/reducers'
-import * as movesApi from 'moves/api'
+import { connect } from "react-redux";
+import * as movesActions from "moves/actions";
+import * as fromMovesStore from "moves/reducers";
+import * as movesApi from "moves/api";
 
 export type ContainerT = {
   connect: Function,

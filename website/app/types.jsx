@@ -16,17 +16,17 @@ export type UserProfileT = {
 export type VoteT = -1 | 0 | 1;
 
 export type VoteByIdT = {
-  [UUID]: VoteT
+  [UUID]: VoteT,
 };
 
 export type SlugidT = string;
 
 export type ObjectT = {
-  id: UUID
+  id: UUID,
 };
 
 export type TagT = string;
 
 export type TagMapT = {
-  [TagT]: boolean
+  [TagT]: boolean,
 };

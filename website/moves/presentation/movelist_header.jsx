@@ -1,7 +1,7 @@
 // @flow
 
-import * as React from 'react'
-import classnames from 'classnames';
+import * as React from "react";
+import classnames from "classnames";
 
 // MoveListHeader
 
@@ -16,12 +16,14 @@ export function MoveListHeader(props: MoveListHeaderPropsT) {
       className={"moveListHeader__addButton button button--wide"}
       onClick={props.addNewMove}
     >
-    New move
+      New move
     </div>
   );
 
   return (
-    <div className= {classnames("moveListHeader flex flex-wrap", props.className)}>
+    <div
+      className={classnames("moveListHeader flex flex-wrap", props.className)}
+    >
       {newMoveBtn}
     </div>
   );

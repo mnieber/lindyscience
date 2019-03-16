@@ -1,11 +1,10 @@
 // @flow
 
-import * as React from 'react'
-import { StaticVoteCount } from 'app/presentation/static_vote_count'
-import { TipForm } from 'moves/presentation/tip_form'
-import type { VoteByIdT, VoteT } from 'app/types'
-import type { TipT } from 'moves/types'
-
+import * as React from "react";
+import { StaticVoteCount } from "app/presentation/static_vote_count";
+import { TipForm } from "moves/presentation/tip_form";
+import type { VoteByIdT, VoteT } from "app/types";
+import type { TipT } from "moves/types";
 
 // Tip
 type StaticTipPropsT = {
@@ -14,19 +13,14 @@ type StaticTipPropsT = {
 };
 
 export function StaticTip(props: StaticTipPropsT) {
-  const voteCount =
-    <StaticVoteCount
-      vote={props.vote}
-      count={props.item.voteCount}
-    />
+  const voteCount = (
+    <StaticVoteCount vote={props.vote} count={props.item.voteCount} />
+  );
 
-  const text =
-    <div className='tip__text'>
-      {props.item.text}
-    </div>;
+  const text = <div className="tip__text">{props.item.text}</div>;
 
   return (
-    <div className='tip'>
+    <div className="tip">
       {voteCount}
       {text}
     </div>
@@ -49,7 +43,7 @@ export function StaticTipList(props: StaticTipListPropsT) {
         vote={props.voteByObjectId[item.id] || 0}
       />
     );
-  })
+  });
 
   return itemNodes;
 }

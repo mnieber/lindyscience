@@ -1,12 +1,11 @@
-import redtape from 'redtape'
-import sinon from 'sinon'
-
+import redtape from "redtape";
+import sinon from "sinon";
 
 export const test = redtape({
-  beforeEach: function (cb) {
+  beforeEach: function(cb) {
     cb();
   },
-  afterEach: function (cb) {
+  afterEach: function(cb) {
     sinon.restore();
     cb();
   },
@@ -17,17 +16,10 @@ export const test = redtape({
         `${msg} (times called: ${stubFn.callCount})`
       );
       if (stubFn.firstCall) {
-        this.deepEqual(
-          stubFn.firstCall.args, args,
-          `${msg} (arguments match)`
-        );
+        this.deepEqual(stubFn.firstCall.args, args, `${msg} (arguments match)`);
+      } else {
+        this.deepEqual(stubFn.args, args, `${msg} (arguments match)`);
       }
-      else {
-        this.deepEqual(
-          stubFn.args, args,
-          `${msg} (arguments match)`
-        );
-      }
-    }
-  }
+    },
+  },
 });

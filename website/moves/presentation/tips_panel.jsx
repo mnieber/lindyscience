@@ -1,16 +1,16 @@
 // @flow
 
-import * as React from 'react'
+import * as React from "react";
 
-import { TipList } from 'moves/presentation/tip';
+import { TipList } from "moves/presentation/tip";
 
 // $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import { slugify, isNone } from 'utils/utils'
-import { createErrorHandler } from 'app/utils'
+import uuidv4 from "uuid/v4";
+import { slugify, isNone } from "utils/utils";
+import { createErrorHandler } from "app/utils";
 
-import type { UUID, VoteT, VoteByIdT, UserProfileT } from 'app/types';
-import type { MoveT, TipT } from 'moves/types'
+import type { UUID, VoteT, VoteByIdT, UserProfileT } from "app/types";
+import type { MoveT, TipT } from "moves/types";
 
 // Behaviours
 
@@ -20,9 +20,7 @@ type InsertTipBvrT = {
   finalize: Function,
 };
 
-export function useInsertTip(
-  tips: Array<TipT>,
-): InsertTipBvrT {
+export function useInsertTip(tips: Array<TipT>): InsertTipBvrT {
   const [sourceTip, setSourceTip] = React.useState(null);
 
   function prepare(tip: TipT) {
@@ -33,13 +31,10 @@ export function useInsertTip(
     setSourceTip(null);
   }
 
-  const preview = !sourceTip
-    ? tips
-    : [...tips, sourceTip]
+  const preview = !sourceTip ? tips : [...tips, sourceTip];
 
-  return {preview, prepare, finalize};
+  return { preview, prepare, finalize };
 }
-
 
 type NewTipBvrT = {
   newTip: ?TipT,
@@ -50,7 +45,7 @@ type NewTipBvrT = {
 export function useNewTip(
   userId: number,
   insertTipBvr: InsertTipBvrT,
-  moveId: UUID,
+  moveId: UUID
 ) {
   const [newTip, setNewTip] = React.useState(null);
 
@@ -59,7 +54,7 @@ export function useNewTip(
       id: uuidv4(),
       ownerId: userId,
       moveId: moveId,
-      text: '',
+      text: "",
       voteCount: 0,
       initialVoteCount: 0,
     };
@@ -78,9 +73,8 @@ export function useNewTip(
     setNewTip(null);
   }
 
-  return {newTip, add, finalize};
+  return { newTip, add, finalize };
 }
-
 
 type IncompleteValuesT = {
   text: string,
@@ -88,14 +82,14 @@ type IncompleteValuesT = {
 
 type SaveTipBvr = {
   save: Function,
-  discardChanges: Function
+  discardChanges: Function,
 };
 
 export function useSaveTip(
   newTipBvr: NewTipBvrT,
   moveId: UUID,
   tips: Array<TipT>,
-  saveTip: (TipT) => void,
+  saveTip: TipT => void
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const tip: TipT = {
@@ -111,7 +105,7 @@ export function useSaveTip(
     newTipBvr.finalize(true);
   }
 
-  return {save, discardChanges};
+  return { save, discardChanges };
 }
 
 type TipsPanelPropsT = {
@@ -119,18 +113,22 @@ type TipsPanelPropsT = {
   userProfile: UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
-  saveTip: (TipT) => void,
+  saveTip: TipT => void,
   voteTip: (UUID, VoteT) => void,
 };
 
 export function TipsPanel(props: TipsPanelPropsT) {
   const insertTipBvr = useInsertTip(props.tips);
-  const newTipBvr = useNewTip(props.userProfile.userId, insertTipBvr, props.moveId);
+  const newTipBvr = useNewTip(
+    props.userProfile.userId,
+    insertTipBvr,
+    props.moveId
+  );
   const saveTipBvr = useSaveTip(
     newTipBvr,
     props.moveId,
     insertTipBvr.preview,
-    props.saveTip,
+    props.saveTip
   );
 
   const addTipBtn = (
@@ -138,13 +136,13 @@ export function TipsPanel(props: TipsPanelPropsT) {
       className={"tipsPanel__addButton button button--wide ml-2"}
       onClick={newTipBvr.add}
     >
-    Add
+      Add
     </div>
   );
 
   return (
     <div className={"tipsPanel panel"}>
-      <div className= {"flex flex-wrap mb-4"}>
+      <div className={"flex flex-wrap mb-4"}>
         <h2>Tips</h2>
         {addTipBtn}
       </div>
@@ -157,4 +155,4 @@ export function TipsPanel(props: TipsPanelPropsT) {
       />
     </div>
   );
-};
+}

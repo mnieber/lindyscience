@@ -1,14 +1,9 @@
 // @flow
 
-import React from 'react'
-import * as fromStore from 'app/reducers'
-import {toTitleCase} from 'utils/utils'
-import type {
-  UserProfileT,
-  UUID,
-  VoteT,
-  VoteByIdT,
-} from 'app/types'
+import React from "react";
+import * as fromStore from "app/reducers";
+import { toTitleCase } from "utils/utils";
+import type { UserProfileT, UUID, VoteT, VoteByIdT } from "app/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
@@ -16,23 +11,23 @@ import type {
 
 export function actSetUserProfile(profile: UserProfileT) {
   return {
-    type: 'SET_USER_PROFILE',
+    type: "SET_USER_PROFILE",
     profile,
-  }
+  };
 }
 
 export function actSetVotes(votes: VoteByIdT) {
   return {
-    type: 'SET_VOTES',
+    type: "SET_VOTES",
     votes: votes,
-  }
+  };
 }
 
 export function actSetSignedInEmail(email: string) {
   return {
-    type: 'SET_SIGNED_IN_EMAIL',
+    type: "SET_SIGNED_IN_EMAIL",
     email,
-  }
+  };
 }
 
 export function actCastVote(id: UUID, vote: VoteT) {
@@ -40,10 +35,10 @@ export function actCastVote(id: UUID, vote: VoteT) {
     const prevVote = fromStore.getVoteByObjectId(getState().app)[id] || 0;
 
     dispatch({
-      type: 'CAST_VOTE',
+      type: "CAST_VOTE",
       id: id,
       vote: vote,
       prevVote: prevVote,
     });
-  }
+  };
 }

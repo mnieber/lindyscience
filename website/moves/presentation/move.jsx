@@ -1,29 +1,22 @@
 // @flow
 
-import * as React from 'react';
-import classnames from 'classnames';
-import { Link } from '@reach/router';
-import type { MoveT, MoveListT } from 'moves/types'
-import type { UserProfileT, TagT } from 'app/types'
+import * as React from "react";
+import classnames from "classnames";
+import { Link } from "@reach/router";
+import type { MoveT, MoveListT } from "moves/types";
+import type { UserProfileT, TagT } from "app/types";
 
+function Tags({ tags }: { tags: Array<TagT> }) {
+  const items = tags.map((tagName, idx) => {
+    return (
+      <div key={idx} className="move__tag">
+        {tagName}
+      </div>
+    );
+  });
 
-function Tags({
-  tags
-} : {
-  tags : Array<TagT>
-}) {
-  const items = tags
-    .map((tagName, idx) => {
-      return <div key={idx} className="move__tag">{tagName}</div>;
-    });
-
-  return (
-    <div className = {"move__tags"}>
-      {items}
-    </div>
-  );
+  return <div className={"move__tags"}>{items}</div>;
 }
-
 
 // Move
 
@@ -39,7 +32,7 @@ type MovePropsT = {
 };
 
 export function Move(props: MovePropsT) {
-  const nameDiv =
+  const nameDiv = (
     <div className="flex flex-row">
       <Link
         className=""
@@ -51,19 +44,21 @@ export function Move(props: MovePropsT) {
         <h1>: {props.move.name}</h1>
         {props.buttons}
       </div>
-    </div>;
+    </div>
+  );
 
-  const tagsDiv = props.move.tags.length
-    ? <Tags tags={props.move.tags}/>
-    : undefined;
+  const tagsDiv = props.move.tags.length ? (
+    <Tags tags={props.move.tags} />
+  ) : (
+    undefined
+  );
 
-  const descriptionDiv =
+  const descriptionDiv = (
     <div className={"move__description panel"}>
       <h2>Description</h2>
-      <div
-        dangerouslySetInnerHTML={{__html: props.move.description}}
-      />
-    </div>;
+      <div dangerouslySetInnerHTML={{ __html: props.move.description }} />
+    </div>
+  );
 
   return (
     <div className={classnames("move", props.className || "")}>

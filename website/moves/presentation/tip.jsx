@@ -1,11 +1,10 @@
 // @flow
 
-import * as React from 'react'
-import { VoteCount } from 'app/presentation/vote_count'
-import { TipForm } from 'moves/presentation/tip_form'
-import type { UUID, VoteByIdT, VoteT } from 'app/types'
-import type { TipT } from 'moves/types'
-
+import * as React from "react";
+import { VoteCount } from "app/presentation/vote_count";
+import { TipForm } from "moves/presentation/tip_form";
+import type { UUID, VoteByIdT, VoteT } from "app/types";
+import type { TipT } from "moves/types";
 
 // Tip
 type TipPropsT = {
@@ -17,7 +16,7 @@ type TipPropsT = {
 };
 
 export function Tip(props: TipPropsT) {
-  const [isEditing, setIsEditing] = React.useState(props.item.text == '');
+  const [isEditing, setIsEditing] = React.useState(props.item.text == "");
 
   if (isEditing) {
     function _submitValues(values) {
@@ -30,7 +29,7 @@ export function Tip(props: TipPropsT) {
       setIsEditing(false);
     }
 
-    const form =
+    const form = (
       <TipForm
         values={{
           text: props.item.text,
@@ -38,40 +37,32 @@ export function Tip(props: TipPropsT) {
         onSubmit={_submitValues}
         onCancel={_onCancel}
       />
-
-    return (
-      <div className='tip'>
-        {form}
-      </div>
     );
-  }
-  else {
+
+    return <div className="tip">{form}</div>;
+  } else {
     function _setVote(value) {
       props.setVote(props.item.id, value);
     }
 
-    const voteCount =
+    const voteCount = (
       <VoteCount
         vote={props.vote}
         count={props.item.voteCount}
         setVote={_setVote}
       />
+    );
 
-    const text =
-      <div className='tip__text'>
-        {props.item.text}
-      </div>;
+    const text = <div className="tip__text">{props.item.text}</div>;
 
-    const editBtn =
-      <div
-        className="tip__editButton ml-2"
-        onClick={() => setIsEditing(true)}
-      >
-      edit
+    const editBtn = (
+      <div className="tip__editButton ml-2" onClick={() => setIsEditing(true)}>
+        edit
       </div>
+    );
 
     return (
-      <div className='tip'>
+      <div className="tip">
         {voteCount}
         {text}
         {editBtn}
@@ -102,7 +93,7 @@ export function TipList(props: TipListPropsT) {
         cancelEditTip={props.cancelEditTip}
       />
     );
-  })
+  });
 
   return itemNodes;
 }

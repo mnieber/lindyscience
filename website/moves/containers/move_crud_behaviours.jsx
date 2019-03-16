@@ -1,28 +1,30 @@
 // @flow
 
-import * as React from 'react'
-import * as api from 'moves/api'
+import * as React from "react";
+import * as api from "moves/api";
 
 // $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import { createErrorHandler } from 'app/utils'
-import { newMoveSlug, findMoveBySlugid } from 'moves/utils'
-import { slugify } from 'utils/utils'
+import uuidv4 from "uuid/v4";
+import { createErrorHandler } from "app/utils";
+import { newMoveSlug, findMoveBySlugid } from "moves/utils";
+import { slugify } from "utils/utils";
 
 import {
-  useInsertItems, useNewItem, useSaveItem
-} from 'moves/containers/crud_behaviours'
+  useInsertItems,
+  useNewItem,
+  useSaveItem,
+} from "moves/containers/crud_behaviours";
 
-import type { MoveT, MoveListT, MoveCrudBvrsT } from 'moves/types'
-import type { UUID, UserProfileT, VoteByIdT, SlugidT } from 'app/types';
+import type { MoveT, MoveListT, MoveCrudBvrsT } from "moves/types";
+import type { UUID, UserProfileT, VoteByIdT, SlugidT } from "app/types";
 import type {
-  InsertItemsBvrT, NewItemBvrT, SaveItemBvrT
-} from 'moves/containers/crud_behaviours'
-
+  InsertItemsBvrT,
+  NewItemBvrT,
+  SaveItemBvrT,
+} from "moves/containers/crud_behaviours";
 
 // $FlowFixMe
 export const MoveCrudBvrsContext = React.createContext({});
-
 
 export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
   if (!userProfile) {
@@ -32,8 +34,8 @@ export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
   return {
     id: uuidv4(),
     slug: newMoveSlug,
-    name: 'New move',
-    description: '',
+    name: "New move",
+    description: "",
     tips: [],
     videoLinks: [],
     tags: [],
@@ -42,7 +44,6 @@ export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
   };
 }
 
-
 // InsertMoves Behaviour
 
 export type InsertMovesBvrT = InsertItemsBvrT<MoveT>;
@@ -50,19 +51,21 @@ export type InsertMovesBvrT = InsertItemsBvrT<MoveT>;
 export function useInsertMoves(
   moves: Array<MoveT>,
   actInsertMoves: (
-    moveIds: Array<UUID>, moveListId: UUID, targetMoveId: UUID
+    moveIds: Array<UUID>,
+    moveListId: UUID,
+    targetMoveId: UUID
   ) => Array<UUID>,
   moveListId: UUID
 ): InsertMovesBvrT {
   function _insertMoveIds(moveIds: Array<UUID>, targetMoveId: UUID) {
     const allMoveIds = actInsertMoves(moveIds, moveListId, targetMoveId);
-    api.saveMoveOrdering(moveListId, allMoveIds)
+    api
+      .saveMoveOrdering(moveListId, allMoveIds)
       .catch(createErrorHandler("We could not update the move list"));
   }
 
   return useInsertItems<MoveT>(moves, _insertMoveIds);
 }
-
 
 // NewMove Behaviour
 
@@ -70,10 +73,10 @@ export type NewMoveBvrT = NewItemBvrT<MoveT>;
 
 export function useNewMove(
   userProfile: ?UserProfileT,
-  setHighlightedMoveId: (UUID) => void,
+  setHighlightedMoveId: UUID => void,
   highlightedMoveId: UUID,
   insertMovesBvr: InsertMovesBvrT,
-  setIsEditing: (boolean) => void,
+  setIsEditing: boolean => void
 ): NewMoveBvrT {
   function _createNewMove() {
     return createNewMove(userProfile);
@@ -84,10 +87,9 @@ export function useNewMove(
     setHighlightedMoveId,
     insertMovesBvr,
     setIsEditing,
-    _createNewMove,
+    _createNewMove
   );
 }
-
 
 // SaveMove Behaviour
 
@@ -96,14 +98,17 @@ export type SaveMoveBvrT = SaveItemBvrT<MoveT>;
 export function useSaveMove(
   moves: Array<MoveT>,
   newMoveBvr: NewMoveBvrT,
-  setIsEditing: (boolean) => void,
+  setIsEditing: boolean => void,
   updateMove: (oldMove: MoveT, newMove: MoveT) => void
 ): SaveMoveBvrT {
   type IncompleteValuesT = {
     name: string,
   };
 
-  function _completeMove(oldMove: MoveT, incompleteValues: IncompleteValuesT): MoveT {
+  function _completeMove(
+    oldMove: MoveT,
+    incompleteValues: IncompleteValuesT
+  ): MoveT {
     const newSlug = incompleteValues.name
       ? slugify(incompleteValues.name)
       : undefined;
@@ -120,29 +125,29 @@ export function useSaveMove(
     if (oldMove) {
       const newMove = _completeMove(oldMove, incompleteValues);
       updateMove(oldMove, newMove);
-      return api.saveMove(newMove)
-        .catch(createErrorHandler('We could not save the move'));
+      return api
+        .saveMove(newMove)
+        .catch(createErrorHandler("We could not save the move"));
     }
   }
 
   return useSaveItem<MoveT>(newMoveBvr, setIsEditing, _saveMove);
 }
 
-
 export function createMoveCrudBvrs(
   moves: Array<MoveT>,
   moveList: ?MoveListT,
   userProfile: UserProfileT,
   highlightedMoveSlugid: SlugidT,
-  setNextHighlightedMoveId: (UUID) => void,
+  setNextHighlightedMoveId: UUID => void,
   updateMove: (oldMove: MoveT, newMove: MoveT) => void,
   actInsertMoves: (
-    moveIds: Array<UUID>, moveListId: UUID, targetMoveId: UUID
-  ) => Array<UUID>,
+    moveIds: Array<UUID>,
+    moveListId: UUID,
+    targetMoveId: UUID
+  ) => Array<UUID>
 ): MoveCrudBvrsT {
-  const highlightedMoveInStore = findMoveBySlugid(
-    moves, highlightedMoveSlugid
-  );
+  const highlightedMoveInStore = findMoveBySlugid(moves, highlightedMoveSlugid);
 
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -157,7 +162,7 @@ export function createMoveCrudBvrs(
     setNextHighlightedMoveId,
     highlightedMoveInStore ? highlightedMoveInStore.id : "",
     insertMovesBvr,
-    setIsEditing,
+    setIsEditing
   );
 
   const saveMoveBvr: SaveMoveBvrT = useSaveMove(
@@ -172,7 +177,7 @@ export function createMoveCrudBvrs(
     setIsEditing,
     insertMovesBvr,
     newMoveBvr,
-    saveMoveBvr
+    saveMoveBvr,
   };
 
   return bvrs;

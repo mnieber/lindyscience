@@ -1,7 +1,7 @@
 // @flow
 
-import React from 'react'
-import recase from 'recase';
+import React from "react";
+import recase from "recase";
 
 export function toCamelCase(obj: {}) {
   const r = recase.create({});
@@ -13,43 +13,42 @@ export function toSnakeCase(obj: {}) {
   return r.snakeCopy(obj);
 }
 
-export function querySetListToDict(qsList: Array<any>, key: string='id') {
+export function querySetListToDict(qsList: Array<any>, key: string = "id") {
   const result = {};
   qsList.forEach(item => {
     result[item[key]] = item;
-  })
+  });
   return result;
 }
 
-export function toTitleCase(str: string)
-{
+export function toTitleCase(str: string) {
   return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 }
 
 export function isNone(x: any) {
-  return typeof x == 'undefined' || x === null
+  return typeof x == "undefined" || x === null;
 }
 
-export function stripTags(html: string)
-{
-   var tmp = document.createElement("DIV");
-   tmp.innerHTML = html;
-   return tmp.textContent || tmp.innerText || "";
+export function stripTags(html: string) {
+  var tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
 }
 
-export function slugify(text: string)
-{
-  return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '');            // Trim - from end of text
+export function slugify(text: string) {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, "-") // Replace spaces with -
+    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+    .replace(/\-\-+/g, "-") // Replace multiple - with single -
+    .replace(/^-+/, "") // Trim - from start of text
+    .replace(/-+$/, ""); // Trim - from end of text
 }
 
 export function stripQuotes(value: string) {
   if (value.startsWith('"')) {
-    value = value.substring(1)
+    value = value.substring(1);
   }
   if (value.endsWith('"')) {
     value = value.substring(0, value.length - 1);
@@ -57,9 +56,8 @@ export function stripQuotes(value: string) {
   return value;
 }
 
-export function deepCopy(obj: {})
-{
-  return JSON.parse(JSON.stringify(obj))
+export function deepCopy(obj: {}) {
+  return JSON.parse(JSON.stringify(obj));
 }
 
 export function reduceMapToMap<T>(obj: {}, f: Function): T {
@@ -69,11 +67,11 @@ export function reduceMapToMap<T>(obj: {}, f: Function): T {
       return acc;
     },
     // $FlowFixMe
-    ({} : T)
+    ({}: T)
   );
 }
 
-export function getObjectValues(obj: {}) : any {
+export function getObjectValues(obj: {}): any {
   return Object.keys(obj).map(x => obj[x]);
 }
 
@@ -95,51 +93,50 @@ export function flatten(
     : (pk, ck) => pk + toTitleCase(ck);
 
   function _flatObj(obj, key) {
-    return Object.entries(obj[key]).reduce(
-      (acc, [k, v]) => {
-        acc[composeKeys(key, k)] = v;
-        return acc;
-      },
-      {}
-    )
+    return Object.entries(obj[key]).reduce((acc, [k, v]) => {
+      acc[composeKeys(key, k)] = v;
+      return acc;
+    }, {});
   }
 
   paths.forEach(path => {
-    const xpath = path.split('/');
+    const xpath = path.split("/");
     function _flatten(obj, xpath) {
       const key = xpath.shift();
       // TODO(mnr): use /foo/?bar if bar might not be present
-      if (key != '*' && !(key in obj)) {
+      if (key != "*" && !(key in obj)) {
         return;
       }
 
       if (xpath.length == 0) {
         const flatObj = _flatObj(obj, key);
         delete obj[key];
-        Object.entries(flatObj).forEach(([k, v]) => {obj[k] = v;});
-      }
-      else {
-        const childKeys = (key == '*') ? Object.keys(obj) : [key];
-        childKeys.forEach(
-          childKey => _flatten(obj[childKey], [...xpath])
-        );
+        Object.entries(flatObj).forEach(([k, v]) => {
+          obj[k] = v;
+        });
+      } else {
+        const childKeys = key == "*" ? Object.keys(obj) : [key];
+        childKeys.forEach(childKey => _flatten(obj[childKey], [...xpath]));
       }
     }
 
-    _flatten(obj, path.split('/').filter(x => !!x));
-  })
+    _flatten(obj, path.split("/").filter(x => !!x));
+  });
 
   return obj;
 }
 
 export function urlParam(name: string) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)')
-                      .exec(window.location.href);
-    return (results && results[1]) || undefined;
+  var results = new RegExp("[?&]" + name + "=([^&#]*)").exec(
+    window.location.href
+  );
+  return (results && results[1]) || undefined;
 }
 
 export function insertIdsIntoList(
-  ids: Array<any>, idList: Array<any>, targetId: any
+  ids: Array<any>,
+  idList: Array<any>,
+  targetId: any
 ) {
   return idList.reduce(
     (acc: Array<any>, id: any) => {
@@ -151,9 +148,7 @@ export function insertIdsIntoList(
       }
       return acc;
     },
-    !targetId
-      ? [...ids]
-      : []
+    !targetId ? [...ids] : []
   );
 }
 
@@ -163,13 +158,13 @@ export function splitIntoKeywords(x: string) {
     .toLowerCase()
     .replace(",", " ")
     .split(" ")
-    .filter((x) => !!x);
+    .filter(x => !!x);
 }
 
 export function range(start: number, stop: number) {
-    var ans = [];
-    for (let i = start; i < stop; i++) {
-        ans.push(i);
-    }
-    return ans;
+  var ans = [];
+  for (let i = start; i < stop; i++) {
+    ans.push(i);
+  }
+  return ans;
 }

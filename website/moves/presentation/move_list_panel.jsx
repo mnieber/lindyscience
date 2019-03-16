@@ -1,38 +1,38 @@
 // @flow
 
-import * as React from 'react'
-import Widgets from 'moves/presentation/index'
-import { MoveList } from 'moves/presentation/movelist';
-import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
+import * as React from "react";
+import Widgets from "moves/presentation/index";
+import { MoveList } from "moves/presentation/movelist";
+import type { UUID, UserProfileT, SlugidT, TagT } from "app/types";
 import type {
-  MoveListT, VideoLinksByIdT, MoveT, MoveCrudBvrsT, MoveListCrudBvrsT
-} from 'moves/types'
-import type {
-  MoveClipboardBvrT
-} from 'moves/containers/move_clipboard_behaviours'
-import type {
-  SelectItemsBvrT
-} from 'moves/containers/move_selection_behaviours'
-
+  MoveListT,
+  VideoLinksByIdT,
+  MoveT,
+  MoveCrudBvrsT,
+  MoveListCrudBvrsT,
+} from "moves/types";
+import type { MoveClipboardBvrT } from "moves/containers/move_clipboard_behaviours";
+import type { SelectItemsBvrT } from "moves/containers/move_selection_behaviours";
 
 type HandlersT = {
   onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void,
   onKeyDown: (e: any) => void,
 };
 
-function createHandlers(
-  bvrs: MoveCrudBvrsT,
-  moveListRef: any,
-): HandlersT {
+function createHandlers(bvrs: MoveCrudBvrsT, moveListRef: any): HandlersT {
   const onDrop = (sourceMoveId, targetMoveId, isBefore) => {
     if (bvrs.newMoveBvr.newItem?.id != sourceMoveId) {
-      bvrs.insertMovesBvr.insertDirectly([sourceMoveId], targetMoveId, isBefore);
+      bvrs.insertMovesBvr.insertDirectly(
+        [sourceMoveId],
+        targetMoveId,
+        isBefore
+      );
     }
-  }
+  };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = e => {
     const edit_e = 69;
-    if(e.ctrlKey && [edit_e].indexOf(e.keyCode) > -1) {
+    if (e.ctrlKey && [edit_e].indexOf(e.keyCode) > -1) {
       e.preventDefault();
       e.stopPropagation();
       if (bvrs.isEditing) {
@@ -40,17 +40,16 @@ function createHandlers(
         if (moveListRef && moveListRef.current) {
           moveListRef.current.focus();
         }
-      }
-      else {
+      } else {
         bvrs.setIsEditing(true);
       }
     }
-  }
+  };
 
   return {
     onDrop,
-    onKeyDown
-  }
+    onKeyDown,
+  };
 }
 
 export type MoveListPanelPropsT = {
@@ -71,48 +70,54 @@ export type MoveListPanelPropsT = {
 
 export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
   const refs = {};
-  const handlers: HandlersT = createHandlers(props.moveCrudBvrs, refs.moveListRef);
+  const handlers: HandlersT = createHandlers(
+    props.moveCrudBvrs,
+    refs.moveListRef
+  );
 
-  const userId = props.userProfile
-    ? props.userProfile.userId
-    : -1;
+  const userId = props.userProfile ? props.userProfile.userId : -1;
 
-  const moveListPicker =
+  const moveListPicker = (
     <Widgets.MoveListPicker
       className="mb-4"
       moveLists={props.moveLists}
       defaultMoveListId={props.moveList ? props.moveList.id : ""}
       selectMoveListById={props.selectMoveListById}
     />
+  );
 
-  const moveListHeader =
+  const moveListHeader = (
     <Widgets.MoveListHeader
       addNewMove={props.moveCrudBvrs.newMoveBvr.addNewItem}
       className=""
     />
+  );
 
-  const moveListFilter =
+  const moveListFilter = (
     <Widgets.MoveListFilter
       className="mb-4"
       filterMoves={props.filterMoves}
       moveTags={props.moveTags}
     />
+  );
 
   const moveMovesToList = targetMoveList => {
-    return !!props.moveList && props.moveClipboardBvr.moveToList(
-      props.moveList, targetMoveList
+    return (
+      !!props.moveList &&
+      props.moveClipboardBvr.moveToList(props.moveList, targetMoveList)
     );
   };
 
   // TODO: put moving moves into a behaviour
-  const moveContextMenu =
+  const moveContextMenu = (
     <Widgets.MoveContextMenu
       targetMoveLists={props.moveClipboardBvr.targetMoveLists}
       shareMovesToList={props.moveClipboardBvr.shareToList}
       moveMovesToList={moveMovesToList}
     />
+  );
 
-  const moveList =
+  const moveList = (
     <Widgets.MoveList
       refs={refs}
       className=""
@@ -124,8 +129,9 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       onDrop={handlers.onDrop}
       moveContextMenu={moveContextMenu}
     />
+  );
 
-  const staticMoveList =
+  const staticMoveList = (
     <Widgets.StaticMoveList
       refs={refs}
       moves={props.moveCrudBvrs.insertMovesBvr.preview}
@@ -134,28 +140,26 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       setHighlightedMoveId={props.moveCrudBvrs.newMoveBvr.setHighlightedItemId}
       className=""
     />
+  );
 
   const showStatic = !(props.moveList && userId == props.moveList.ownerId);
 
-  const newMoveListBtn =
+  const newMoveListBtn = (
     <div
       className={"button button--wide"}
       onClick={props.moveListCrudBvrs.newMoveListBvr.addNewItem}
       key={1}
     >
-    New move list
-    </div>;
-
-  const buttonsDiv =
-    <div className={"move__name flexrow flex-wrap"}>
-      {newMoveListBtn}
+      New move list
     </div>
+  );
+
+  const buttonsDiv = (
+    <div className={"move__name flexrow flex-wrap"}>{newMoveListBtn}</div>
+  );
 
   return (
-    <div
-      className="moveListPanel flexrow"
-      onKeyDown={handlers.onKeyDown}
-    >
+    <div className="moveListPanel flexrow" onKeyDown={handlers.onKeyDown}>
       <div className="moveListPanel__inner w-1/5 flexcol">
         {!showStatic && buttonsDiv}
         {moveListPicker}
@@ -164,9 +168,7 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
         {!showStatic && moveList}
         {showStatic && staticMoveList}
       </div>
-      <div className="movePanel pl-4 w-4/5">
-          {props.children}
-      </div>
+      <div className="movePanel pl-4 w-4/5">{props.children}</div>
     </div>
   );
 }

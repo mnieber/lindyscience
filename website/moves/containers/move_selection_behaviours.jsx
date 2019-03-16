@@ -1,11 +1,10 @@
 // @flow
 
-import * as React from 'react'
+import * as React from "react";
 
-import { range } from 'utils/utils'
+import { range } from "utils/utils";
 
-import type { UUID, ObjectT } from 'app/types';
-
+import type { UUID, ObjectT } from "app/types";
 
 // InsertItem Behaviour
 
@@ -17,7 +16,7 @@ export type SelectItemsBvrT<ItemT> = {|
 export function useSelectItems<ItemT: ObjectT>(
   items: Array<ItemT>,
   anchorItemId: UUID,
-  setAnchorItemId: (UUID) => void,
+  setAnchorItemId: UUID => void
 ): SelectItemsBvrT<ItemT> {
   const [selectedItems, setSelectedItems] = React.useState([]);
 
@@ -33,15 +32,14 @@ export function useSelectItems<ItemT: ObjectT>(
         Math.min(startIdx, stopIdx),
         1 + Math.max(startIdx, stopIdx)
       );
-      setSelectedItems(idxRange.map(idx => items[idx]))
-    }
-    else if (isCtrl) {
-      setSelectedItems(hasItem
-        ? selectedItems.filter(x => x.id != id)
-        : [...selectedItems, ...items.filter(x => x.id == id)]
+      setSelectedItems(idxRange.map(idx => items[idx]));
+    } else if (isCtrl) {
+      setSelectedItems(
+        hasItem
+          ? selectedItems.filter(x => x.id != id)
+          : [...selectedItems, ...items.filter(x => x.id == id)]
       );
-    }
-    else {
+    } else {
       setSelectedItems(items.filter(x => x.id == id));
     }
 
@@ -51,5 +49,5 @@ export function useSelectItems<ItemT: ObjectT>(
     }
   }
 
-  return {selectedItems, select};
+  return { selectedItems, select };
 }

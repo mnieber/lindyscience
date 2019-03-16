@@ -1,18 +1,17 @@
 // @flow
 
-import * as React from 'react'
-import MovesCtr from 'moves/containers/index'
-import AppCtr from 'app/containers/index'
+import * as React from "react";
+import MovesCtr from "moves/containers/index";
+import AppCtr from "app/containers/index";
 
-import Widgets from 'moves/presentation/index'
-import { isOwner } from 'app/utils'
-import { findMoveListByUrl } from 'moves/utils'
+import Widgets from "moves/presentation/index";
+import { isOwner } from "app/utils";
+import { findMoveListByUrl } from "moves/utils";
 
-import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'
+import { MoveListCrudBvrsContext } from "moves/containers/move_list_crud_behaviours";
 
-import type { UUID, UserProfileT, TagT } from 'app/types';
-import type { MoveListT, MoveListCrudBvrsT } from 'moves/types'
-
+import type { UUID, UserProfileT, TagT } from "app/types";
+import type { MoveListT, MoveListCrudBvrsT } from "moves/types";
 
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
@@ -23,43 +22,46 @@ type MoveListDetailsPagePropsT = {
 };
 
 type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT & {
-  moveListCrudBvrs: MoveListCrudBvrsT
+  moveListCrudBvrs: MoveListCrudBvrsT,
 };
 
 function _createStaticMoveListDetails(
-  moveList: MoveListT, props: _MoveListDetailsPagePropsT
+  moveList: MoveListT,
+  props: _MoveListDetailsPagePropsT
 ) {
   return (
     <Widgets.MoveListDetails
       userProfile={props.userProfile}
       moveList={moveList}
-    >
-    </Widgets.MoveListDetails>
+    />
   );
 }
 
-
 function _createOwnMoveListDetails(
-  moveList: MoveListT, props: _MoveListDetailsPagePropsT) {
-
-  const editBtn =
+  moveList: MoveListT,
+  props: _MoveListDetailsPagePropsT
+) {
+  const editBtn = (
     <div
       className={"button button--wide ml-2"}
       onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
       key={1}
     >
-    Edit
-    </div>;
+      Edit
+    </div>
+  );
 
-  const div = props.moveListCrudBvrs.isEditing
-    ? <Widgets.MoveListForm
+  const div = props.moveListCrudBvrs.isEditing ? (
+    <Widgets.MoveListForm
       autoFocus={true}
       knownTags={props.moveListTags}
       moveList={moveList}
       onSubmit={props.moveListCrudBvrs.saveMoveListBvr.saveItem}
       onCancel={props.moveListCrudBvrs.saveMoveListBvr.discardChanges}
-      />
-    : _createStaticMoveListDetails(moveList, props);
+    />
+  ) : (
+    _createStaticMoveListDetails(moveList, props)
+  );
 
   return (
     <div>
@@ -68,7 +70,6 @@ function _createOwnMoveListDetails(
     </div>
   );
 }
-
 
 export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   const actions: any = props;
@@ -79,28 +80,27 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   );
 
   if (!moveList) {
-    return <React.Fragment/>;
+    return <React.Fragment />;
   }
 
   return isOwner(props.userProfile, moveList.ownerId)
     ? _createOwnMoveListDetails(moveList, props)
-    : _createStaticMoveListDetails(moveList, props)
+    : _createStaticMoveListDetails(moveList, props);
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
   return (
-    <MoveListCrudBvrsContext.Consumer>{moveListCrudBvrs =>
-      <_MoveListDetailsPage
-        {...props}
-        moveListCrudBvrs={moveListCrudBvrs}
-      />
-    }</MoveListCrudBvrsContext.Consumer>
+    <MoveListCrudBvrsContext.Consumer>
+      {moveListCrudBvrs => (
+        <_MoveListDetailsPage {...props} moveListCrudBvrs={moveListCrudBvrs} />
+      )}
+    </MoveListCrudBvrsContext.Consumer>
   );
 }
 
 // $FlowFixMe
 MoveListDetailsPage = MovesCtr.connect(
-  (state) => ({
+  state => ({
     userProfile: AppCtr.fromStore.getUserProfile(state.app),
     moveLists: MovesCtr.fromStore.getMoveLists(state.moves),
     selectedMoveListUrl: MovesCtr.fromStore.getSelectedMoveListUrl(state.moves),
@@ -110,6 +110,6 @@ MoveListDetailsPage = MovesCtr.connect(
     ...AppCtr.actions,
     ...MovesCtr.actions,
   }
-)(MoveListDetailsPage)
+)(MoveListDetailsPage);
 
 export default MoveListDetailsPage;

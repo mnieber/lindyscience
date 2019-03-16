@@ -1,19 +1,14 @@
 // @flow
 
-import * as React from 'react'
-import {
-  Menu, Item, Separator, Submenu
-} from 'react-contexify';
+import * as React from "react";
+import { Menu, Item, Separator, Submenu } from "react-contexify";
 
-import type {
-  MoveListT
-} from 'moves/types'
-
+import type { MoveListT } from "moves/types";
 
 type MoveContextMenuPropsT = {
   targetMoveLists: Array<MoveListT>,
-  shareMovesToList: (MoveListT) => boolean,
-  moveMovesToList: (MoveListT) => boolean,
+  shareMovesToList: MoveListT => boolean,
+  moveMovesToList: MoveListT => boolean,
 };
 
 export function MoveContextMenu(props: MoveContextMenuPropsT) {
@@ -23,15 +18,11 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
 
   const shareToListMenuItems = props.targetMoveLists.map((moveList, idx) => {
     return (
-      <Item
-        onClick={_shareToList}
-        key={moveList.id}
-        data={moveList}
-      >
-      {moveList.name}
+      <Item onClick={_shareToList} key={moveList.id} data={moveList}>
+        {moveList.name}
       </Item>
-    )
-  })
+    );
+  });
 
   function _moveToList(e) {
     props.moveMovesToList(e.props);
@@ -39,27 +30,17 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
 
   const moveToListMenuItems = props.targetMoveLists.map((moveList, idx) => {
     return (
-      <Item
-        onClick={_moveToList}
-        key={moveList.id}
-        data={moveList}
-      >
-      {moveList.name}
+      <Item onClick={_moveToList} key={moveList.id} data={moveList}>
+        {moveList.name}
       </Item>
-    )
-  })
+    );
+  });
 
   return (
     <Menu id="moveContextMenu">
-      <Item onClick={()=>{}} >
-        Trash
-      </Item>
-      <Submenu label="Share to list">
-        {shareToListMenuItems}
-      </Submenu>
-      <Submenu label="Move to list">
-        {moveToListMenuItems}
-      </Submenu>
+      <Item onClick={() => {}}>Trash</Item>
+      <Submenu label="Share to list">{shareToListMenuItems}</Submenu>
+      <Submenu label="Move to list">{moveToListMenuItems}</Submenu>
     </Menu>
   );
 }

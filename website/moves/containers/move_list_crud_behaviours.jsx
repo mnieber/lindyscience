@@ -1,37 +1,37 @@
 // @flow
 
-import * as React from 'react'
-import * as api from 'moves/api'
+import * as React from "react";
+import * as api from "moves/api";
 
 // $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import { findMoveListByUrl, newMoveListSlug } from 'moves/utils'
-import { createErrorHandler } from 'app/utils'
-import { slugify } from 'utils/utils'
+import uuidv4 from "uuid/v4";
+import { findMoveListByUrl, newMoveListSlug } from "moves/utils";
+import { createErrorHandler } from "app/utils";
+import { slugify } from "utils/utils";
 
 import {
-  useInsertItems, useNewItem, useSaveItem
-} from 'moves/containers/crud_behaviours'
+  useInsertItems,
+  useNewItem,
+  useSaveItem,
+} from "moves/containers/crud_behaviours";
 
+import type { MoveListT, MoveListCrudBvrsT, MoveListByIdT } from "moves/types";
+import type { UUID, UserProfileT, VoteByIdT } from "app/types";
 import type {
-  MoveListT, MoveListCrudBvrsT, MoveListByIdT
-} from 'moves/types'
-import type { UUID, UserProfileT, VoteByIdT } from 'app/types';
-import type {
-  InsertItemsBvrT, NewItemBvrT, SaveItemBvrT
-} from 'moves/containers/crud_behaviours'
-
+  InsertItemsBvrT,
+  NewItemBvrT,
+  SaveItemBvrT,
+} from "moves/containers/crud_behaviours";
 
 // $FlowFixMe
 export const MoveListCrudBvrsContext = React.createContext({});
-
 
 export function createNewMoveList(userId: number, username: string): MoveListT {
   return {
     id: uuidv4(),
     slug: newMoveListSlug,
-    name: 'New move list',
-    description: '',
+    name: "New move list",
+    description: "",
     tags: [],
     moves: [],
     ownerId: userId,
@@ -39,24 +39,29 @@ export function createNewMoveList(userId: number, username: string): MoveListT {
   };
 }
 
-
 // InsertMoveLists Behaviour
 
 export type InsertMoveListsBvrT = InsertItemsBvrT<MoveListT>;
 
 export function useInsertMoveLists(
   moveLists: Array<MoveListT>,
-  actInsertMoveLists: (moveListIds: Array<UUID>, targetMoveListId: UUID) => Array<UUID>,
+  actInsertMoveLists: (
+    moveListIds: Array<UUID>,
+    targetMoveListId: UUID
+  ) => Array<UUID>
 ): InsertMoveListsBvrT {
-  function _insertMoveListIds(moveListIds: Array<UUID>, targetMoveListId: UUID) {
+  function _insertMoveListIds(
+    moveListIds: Array<UUID>,
+    targetMoveListId: UUID
+  ) {
     const allMoveListIds = actInsertMoveLists(moveListIds, targetMoveListId);
-    api.saveMoveListOrdering(allMoveListIds)
+    api
+      .saveMoveListOrdering(allMoveListIds)
       .catch(createErrorHandler("We could not update the move list"));
   }
 
   return useInsertItems<MoveListT>(moveLists, _insertMoveListIds);
 }
-
 
 // NewMoveList Behaviour
 
@@ -64,10 +69,10 @@ export type NewMoveListBvrT = NewItemBvrT<MoveListT>;
 
 export function useNewMoveList(
   userProfile: ?UserProfileT,
-  setHighlightedMoveListId: (UUID) => void,
+  setHighlightedMoveListId: UUID => void,
   highlightedMoveListId: UUID,
   insertMoveListsBvr: InsertMoveListsBvrT,
-  setIsEditing: (boolean) => void,
+  setIsEditing: boolean => void
 ): NewMoveListBvrT {
   function _createNewMoveList() {
     return userProfile
@@ -80,10 +85,9 @@ export function useNewMoveList(
     setHighlightedMoveListId,
     insertMoveListsBvr,
     setIsEditing,
-    _createNewMoveList,
+    _createNewMoveList
   );
 }
-
 
 // SaveMoveList Behaviour
 
@@ -92,14 +96,17 @@ export type SaveMoveListBvrT = SaveItemBvrT<MoveListT>;
 export function useSaveMoveList(
   moveLists: Array<MoveListT>,
   newMoveListBvr: NewMoveListBvrT,
-  setIsEditing: (boolean) => void,
-  updateMoveList: (oldMoveList: MoveListT, newMoveList: MoveListT) => any,
+  setIsEditing: boolean => void,
+  updateMoveList: (oldMoveList: MoveListT, newMoveList: MoveListT) => any
 ): SaveMoveListBvrT {
   type IncompleteValuesT = {
     name: string,
   };
 
-  function _completeMoveList(oldMoveList: MoveListT, incompleteValues: IncompleteValuesT): MoveListT {
+  function _completeMoveList(
+    oldMoveList: MoveListT,
+    incompleteValues: IncompleteValuesT
+  ): MoveListT {
     // $FlowFixMe
     const newSlug = incompleteValues.name
       ? slugify(incompleteValues.name)
@@ -117,22 +124,25 @@ export function useSaveMoveList(
     if (oldMoveList) {
       const newMoveList = _completeMoveList(oldMoveList, incompleteValues);
       updateMoveList(oldMoveList, newMoveList);
-      return api.saveMoveList(newMoveList)
-        .catch(createErrorHandler('We could not save the movelist'));
+      return api
+        .saveMoveList(newMoveList)
+        .catch(createErrorHandler("We could not save the movelist"));
     }
   }
 
   return useSaveItem<MoveListT>(newMoveListBvr, setIsEditing, _saveMoveList);
 }
 
-
 export function createMoveListCrudBvrs(
   moveLists: Array<MoveListT>,
   userProfile: ?UserProfileT,
   selectedMoveListUrl: string,
-  setNextSelectedMoveListId: (UUID) => void,
+  setNextSelectedMoveListId: UUID => void,
   updateMoveList: (oldMoveList: MoveListT, newMoveList: MoveListT) => any,
-  actInsertMoveLists: (moveListIds: Array<UUID>, targetMoveListId: UUID) => Array<UUID>,
+  actInsertMoveLists: (
+    moveListIds: Array<UUID>,
+    targetMoveListId: UUID
+  ) => Array<UUID>
 ): MoveListCrudBvrsT {
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -148,14 +158,14 @@ export function createMoveListCrudBvrs(
     setNextSelectedMoveListId,
     moveList ? moveList.id : "",
     insertMoveListsBvr,
-    setIsEditing,
+    setIsEditing
   );
 
   const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(
     insertMoveListsBvr.preview,
     newMoveListBvr,
     setIsEditing,
-    updateMoveList,
+    updateMoveList
   );
 
   const bvrs: MoveListCrudBvrsT = {
@@ -163,7 +173,7 @@ export function createMoveListCrudBvrs(
     setIsEditing,
     insertMoveListsBvr,
     newMoveListBvr,
-    saveMoveListBvr
+    saveMoveListBvr,
   };
 
   return bvrs;

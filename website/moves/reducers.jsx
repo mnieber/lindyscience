@@ -1,7 +1,7 @@
 // @flow
 
-import { combineReducers } from 'redux'
-import { createSelector } from 'reselect'
+import { combineReducers } from "redux";
+import { createSelector } from "reselect";
 import type {
   MoveByIdT,
   MoveBySlugT,
@@ -15,9 +15,9 @@ import type {
   VideoLinksByIdT,
   VideoLinkT,
   MovePrivateDataByIdT,
-} from 'moves/types'
-import type { UUID, TagT, TagMapT, } from 'app/types';
-import type { InputSelector } from 'reselect';
+} from "moves/types";
+import type { UUID, TagT, TagMapT } from "app/types";
+import type { InputSelector } from "reselect";
 import {
   reduceMapToMap,
   getObjectValues,
@@ -26,22 +26,24 @@ import {
   addToSet,
   insertIdsIntoList,
   splitIntoKeywords,
-} from 'utils/utils'
-import {
-  findMove,
-} from 'moves/utils'
+} from "utils/utils";
+import { findMove } from "moves/utils";
 
 ///////////////////////////////////////////////////////////////////////
 // Private state helpers
 ///////////////////////////////////////////////////////////////////////
 
 const _stateMoves = (state: ReducerStateT): MovesState => state.moves;
-const _stateMoveLists = (state: ReducerStateT): MoveListsState => state.moveLists;
+const _stateMoveLists = (state: ReducerStateT): MoveListsState =>
+  state.moveLists;
 const _stateTags = (state: ReducerStateT): TagsState => state.tags;
 const _stateTips = (state: ReducerStateT): TipsState => state.tips;
-const _stateVideoLinks = (state: ReducerStateT): VideoLinksState => state.videoLinks;
-const _stateMovePrivateDatas = (state: ReducerStateT): MovePrivateDatasState => state.movePrivateDatas;
-const _stateSelection = (state: ReducerStateT): SelectionState => state.selection;
+const _stateVideoLinks = (state: ReducerStateT): VideoLinksState =>
+  state.videoLinks;
+const _stateMovePrivateDatas = (state: ReducerStateT): MovePrivateDatasState =>
+  state.movePrivateDatas;
+const _stateSelection = (state: ReducerStateT): SelectionState =>
+  state.selection;
 
 ///////////////////////////////////////////////////////////////////////
 // Selection
@@ -62,44 +64,42 @@ export function selectionReducer(
     moveFilterKeywords: [],
   },
   action: any
-): SelectionState
-{
+): SelectionState {
   switch (action.type) {
-    case 'SET_HIGHLIGHTED_MOVE_SLUGID':
-      return { ...state,
-        highlightedMoveSlugid: action.moveSlugid,
-      }
-    case 'SET_SELECTED_MOVE_LIST_URL':
-      return { ...state,
-        moveListUrl: action.moveListUrl,
-      }
-    case 'SET_MOVE_LIST_FILTER':
-      return { ...state,
+    case "SET_HIGHLIGHTED_MOVE_SLUGID":
+      return { ...state, highlightedMoveSlugid: action.moveSlugid };
+    case "SET_SELECTED_MOVE_LIST_URL":
+      return { ...state, moveListUrl: action.moveListUrl };
+    case "SET_MOVE_LIST_FILTER":
+      return {
+        ...state,
         moveFilterTags: action.tags,
         moveFilterKeywords: action.keywords,
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
 
 function _filterMoves(moves, tags, keywords) {
   function match(move) {
     const moveKeywords = splitIntoKeywords(move.name);
-    return (!tags.length || tags.every(
-      tag => (move.tags.includes(tag))
-    )) && (!keywords.length || keywords.every(
-      keyword => (move.name.toLowerCase().indexOf(keyword) >= 0)
-    ));
+    return (
+      (!tags.length || tags.every(tag => move.tags.includes(tag))) &&
+      (!keywords.length ||
+        keywords.every(
+          keyword => move.name.toLowerCase().indexOf(keyword) >= 0
+        ))
+    );
   }
 
-  return (tags.length || keywords.length)
-    ? moves.filter(match)
-    : moves;
+  return tags.length || keywords.length ? moves.filter(match) : moves;
 }
 
-export const getHighlightedMoveSlugid = (state: ReducerStateT) => state.selection.highlightedMoveSlugid;
-export const getSelectedMoveListUrl = (state: ReducerStateT) => state.selection.moveListUrl;
+export const getHighlightedMoveSlugid = (state: ReducerStateT) =>
+  state.selection.highlightedMoveSlugid;
+export const getSelectedMoveListUrl = (state: ReducerStateT) =>
+  state.selection.moveListUrl;
 
 ///////////////////////////////////////////////////////////////////////
 // Private data
@@ -110,15 +110,12 @@ type MovePrivateDatasState = MovePrivateDataByIdT;
 export function movePrivateDatasReducer(
   state: MovePrivateDatasState = {},
   action: any
-): MovePrivateDatasState
-{
+): MovePrivateDatasState {
   switch (action.type) {
-    case 'ADD_MOVE_PRIVATE_DATAS':
-      return {...state,
-        ...action.movePrivateDatas
-    }
+    case "ADD_MOVE_PRIVATE_DATAS":
+      return { ...state, ...action.movePrivateDatas };
     default:
-      return state
+      return state;
   }
 }
 
@@ -126,16 +123,12 @@ export const getPrivateDataByMoveId: Selector<MovePrivateDataByIdT> = createSele
   [_stateMovePrivateDatas],
 
   (stateMovePrivateDatas): MovePrivateDataByIdT => {
-    return getObjectValues(stateMovePrivateDatas).reduce(
-      (acc, x) => {
-        acc[x.moveId] = x;
-        return acc;
-      },
-      {}
-    );
+    return getObjectValues(stateMovePrivateDatas).reduce((acc, x) => {
+      acc[x.moveId] = x;
+      return acc;
+    }, {});
   }
 );
-
 
 ///////////////////////////////////////////////////////////////////////
 // Moves
@@ -143,19 +136,15 @@ export const getPrivateDataByMoveId: Selector<MovePrivateDataByIdT> = createSele
 
 type MovesState = MoveByIdT;
 
-export function movesReducer(
-  state: MovesState = {},
-  action: any
-): MovesState
-{
+export function movesReducer(state: MovesState = {}, action: any): MovesState {
   switch (action.type) {
-    case 'ADD_MOVES':
+    case "ADD_MOVES":
       return {
         ...state,
-        ...querySetListToDict(action.moves)
+        ...querySetListToDict(action.moves),
       };
     default:
-      return state
+      return state;
   }
 }
 
@@ -169,7 +158,7 @@ export const getMoveById: Selector<MoveByIdT> = createSelector(
         acc[id] = {
           ...move,
           privateData: privateDataByMoveId[id] || {},
-        }
+        };
       }
     );
   }
@@ -191,28 +180,27 @@ type MoveListsState = MoveListByIdT;
 export function moveListsReducer(
   state: MoveListsState = {},
   action: any
-): MoveListsState
-{
+): MoveListsState {
   switch (action.type) {
-    case 'ADD_MOVE_LISTS':
+    case "ADD_MOVE_LISTS":
       return {
         ...state,
-        ...action.moveLists
-      }
-    case 'INSERT_MOVES_INTO_LIST':
+        ...action.moveLists,
+      };
+    case "INSERT_MOVES_INTO_LIST":
       const acc = insertIdsIntoList(
         action.moveIds,
         state[action.moveListId].moves,
-        action.targetMoveId,
-      )
+        action.targetMoveId
+      );
       return {
         ...state,
         [action.moveListId]: {
           ...state[action.moveListId],
-          moves: acc
-        }
-      }
-    case 'REMOVE_MOVES_FROM_LIST':
+          moves: acc,
+        },
+      };
+    case "REMOVE_MOVES_FROM_LIST":
       const moves = state[action.moveListId].moves.filter(
         x => !action.moveIds.includes(x)
       );
@@ -221,12 +209,12 @@ export function moveListsReducer(
         ...state,
         [action.moveListId]: {
           ...state[action.moveListId],
-          moves: moves
-        }
-      }
+          moves: moves,
+        },
+      };
 
     default:
-      return state
+      return state;
   }
 }
 
@@ -239,20 +227,16 @@ export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
 );
 export const getMoveListById = _stateMoveLists;
 
-
 ///////////////////////////////////////////////////////////////////////
 // Tags
 ///////////////////////////////////////////////////////////////////////
 
 const _createTagMap = (tags: Array<string>): TagMapT => {
-  return tags.reduce(
-    (acc, tag) => {
-      acc[tag] = true;
-      return acc;
-    },
-    ({}: TagMapT)
-  );
-}
+  return tags.reduce((acc, tag) => {
+    acc[tag] = true;
+    return acc;
+  }, ({}: TagMapT));
+};
 
 type TagsState = {
   moveTags: TagMapT,
@@ -262,11 +246,13 @@ type TagsState = {
 function _addTags(listOfTagLists: Array<Array<TagT>>, tagMap: TagMapT) {
   return listOfTagLists.reduce(
     (acc, tags) => {
-      tags.forEach(tag => {acc[tag] = true;});
+      tags.forEach(tag => {
+        acc[tag] = true;
+      });
       return acc;
     },
-    {...tagMap}
-  )
+    { ...tagMap }
+  );
 }
 
 export function tagsReducer(
@@ -275,27 +261,26 @@ export function tagsReducer(
     moveListTags: {},
   },
   action: any
-): TagsState
-{
+): TagsState {
   switch (action.type) {
-    case 'ADD_MOVES':
+    case "ADD_MOVES":
       return {
         ...state,
         moveTags: _addTags(
           getObjectValues(action.moves).map(x => x.tags),
           state.moveTags
         ),
-      }
-    case 'ADD_MOVE_LISTS':
+      };
+    case "ADD_MOVE_LISTS":
       return {
         ...state,
         moveListTags: _addTags(
           getObjectValues(action.moveLists).map((x: MoveListT) => x.tags),
           state.moveListTags
-        )
-      }
+        ),
+      };
     default:
-      return state
+      return state;
   }
 }
 
@@ -314,7 +299,6 @@ export const getMoveListTags: Selector<Array<TagT>> = createSelector(
   }
 );
 
-
 ///////////////////////////////////////////////////////////////////////
 // Videolinks
 ///////////////////////////////////////////////////////////////////////
@@ -324,25 +308,25 @@ type VideoLinksState = VideoLinkByIdT;
 export function videoLinksReducer(
   state: VideoLinksState = {},
   action: any
-): VideoLinksState
-{
+): VideoLinksState {
   switch (action.type) {
-    case 'ADD_VIDEO_LINKS':
+    case "ADD_VIDEO_LINKS":
       return {
         ...state,
-        ...action.videoLinks
-      }
-    case 'CAST_VOTE':
+        ...action.videoLinks,
+      };
+    case "CAST_VOTE":
       if (!state[action.id]) return state;
       return {
         ...state,
         [action.id]: {
           ...state[action.id],
-          voteCount: state[action.id].voteCount + (action.vote - action.prevVote),
-        }
-      }
+          voteCount:
+            state[action.id].voteCount + (action.vote - action.prevVote),
+        },
+      };
     default:
-      return state
+      return state;
   }
 }
 
@@ -350,14 +334,11 @@ export const getVideoLinksByMoveId: Selector<VideoLinksByIdT> = createSelector(
   [_stateMoves, _stateVideoLinks],
 
   (stateMoves, stateVideoLinks): VideoLinksByIdT => {
-    return reduceMapToMap<VideoLinksByIdT>(
-      stateMoves,
-      (acc, moveId, move) => {
-        acc[moveId] = getObjectValues(stateVideoLinks)
-          .filter(videoLink => (videoLink.moveId == moveId))
-          .sort((lhs, rhs) => (rhs.initialVoteCount - lhs.initialVoteCount));
-      }
-    );
+    return reduceMapToMap<VideoLinksByIdT>(stateMoves, (acc, moveId, move) => {
+      acc[moveId] = getObjectValues(stateVideoLinks)
+        .filter(videoLink => videoLink.moveId == moveId)
+        .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
+    });
   }
 );
 export function getVideoLinkById(state: ReducerStateT) {
@@ -370,28 +351,25 @@ export function getVideoLinkById(state: ReducerStateT) {
 
 type TipsState = TipByIdT;
 
-export function tipsReducer(
-  state: TipsState = {},
-  action: any
-): TipsState
-{
+export function tipsReducer(state: TipsState = {}, action: any): TipsState {
   switch (action.type) {
-    case 'ADD_TIPS':
+    case "ADD_TIPS":
       return {
         ...state,
-        ...action.tips
-      }
-    case 'CAST_VOTE':
+        ...action.tips,
+      };
+    case "CAST_VOTE":
       if (!state[action.id]) return state;
       return {
         ...state,
         [action.id]: {
           ...state[action.id],
-          voteCount: state[action.id].voteCount + (action.vote - action.prevVote),
-        }
-      }
+          voteCount:
+            state[action.id].voteCount + (action.vote - action.prevVote),
+        },
+      };
     default:
-      return state
+      return state;
   }
 }
 
@@ -402,17 +380,13 @@ export const getTipsByMoveId: Selector<TipsByIdT> = createSelector(
   [_stateMoves, _stateTips],
 
   (stateMoves, stateTips): TipsByIdT => {
-    return reduceMapToMap<TipsByIdT>(
-      stateMoves,
-      (acc, moveId, move) => {
-        acc[moveId] = getObjectValues(stateTips)
-          .filter(tip => (tip.moveId == moveId))
-          .sort((lhs, rhs) => (rhs.initialVoteCount - lhs.initialVoteCount));
-      }
-    );
+    return reduceMapToMap<TipsByIdT>(stateMoves, (acc, moveId, move) => {
+      acc[moveId] = getObjectValues(stateTips)
+        .filter(tip => tip.moveId == moveId)
+        .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
+    });
   }
 );
-
 
 export type ReducerStateT = {
   moves: MovesState,
@@ -437,18 +411,15 @@ export const reducer = combineReducers({
   tags: tagsReducer,
 });
 
-
 export const getSelectedMoveList: Selector<?MoveListT> = createSelector(
   [_stateSelection, getMoveLists],
 
   (stateSelection, moveLists): ?MoveListT => {
-    const [ownerUsername, slug] = stateSelection.moveListUrl.split('/');
+    const [ownerUsername, slug] = stateSelection.moveListUrl.split("/");
     return moveLists.find(
-      x => (
-        x.ownerUsername == ownerUsername &&
-        x.slug == slug
-      )
-    )}
+      x => x.ownerUsername == ownerUsername && x.slug == slug
+    );
+  }
 );
 
 export const getMovesInList: Selector<Array<MoveT>> = createSelector(
@@ -466,7 +437,9 @@ export const getFilteredMovesInList: Selector<Array<MoveT>> = createSelector(
 
   (moves, stateSelection): Array<MoveT> => {
     return _filterMoves(
-      moves, stateSelection.moveFilterTags, stateSelection.moveFilterKeywords
+      moves,
+      stateSelection.moveFilterTags,
+      stateSelection.moveFilterKeywords
     );
   }
 );

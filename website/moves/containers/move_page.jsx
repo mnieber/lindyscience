@@ -1,20 +1,27 @@
 // @flow
 
-import * as React from 'react'
-import MovesCtr from 'moves/containers/index'
-import AppCtr from 'app/containers/index'
+import * as React from "react";
+import MovesCtr from "moves/containers/index";
+import AppCtr from "app/containers/index";
 
-import Widgets from 'moves/presentation/index'
+import Widgets from "moves/presentation/index";
 
 // $FlowFixMe
-import uuidv4 from 'uuid/v4'
-import { findMoveBySlugid, newMoveSlug } from 'moves/utils'
-import { isOwner, createErrorHandler } from 'app/utils'
-import { querySetListToDict } from 'utils/utils'
+import uuidv4 from "uuid/v4";
+import { findMoveBySlugid, newMoveSlug } from "moves/utils";
+import { isOwner, createErrorHandler } from "app/utils";
+import { querySetListToDict } from "utils/utils";
 
-import { MoveCrudBvrsContext } from 'moves/containers/move_crud_behaviours'
+import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 
-import type { UUID, UserProfileT, VoteByIdT, SlugidT, TagT, VoteT } from 'app/types';
+import type {
+  UUID,
+  UserProfileT,
+  VoteByIdT,
+  SlugidT,
+  TagT,
+  VoteT,
+} from "app/types";
 import type {
   MoveListT,
   MoveT,
@@ -24,21 +31,25 @@ import type {
   TipsByIdT,
   MoveCrudBvrsT,
   MovePrivateDataT,
-} from 'moves/types'
-
+} from "moves/types";
 
 function _createMovePrivateDataPanel(move: MoveT, actions: any) {
   const _onSave = values => {
     const movePrivateData = {
-      'id': uuidv4(),
-      'moveId': move.id,
+      id: uuidv4(),
+      moveId: move.id,
       ...move.privateData,
-      ...values
+      ...values,
     };
 
     actions.actAddMovePrivateDatas([movePrivateData]);
-    MovesCtr.api.saveMovePrivateData(movePrivateData)
-      .catch(createErrorHandler("We could not update your private data for this move"));
+    MovesCtr.api
+      .saveMovePrivateData(movePrivateData)
+      .catch(
+        createErrorHandler(
+          "We could not update your private data for this move"
+        )
+      );
   };
 
   return (
@@ -48,7 +59,6 @@ function _createMovePrivateDataPanel(move: MoveT, actions: any) {
     />
   );
 }
-
 
 type MovePagePropsT = {
   userProfile: UserProfileT,
@@ -64,21 +74,23 @@ type MovePagePropsT = {
 };
 
 type _MovePagePropsT = MovePagePropsT & {
-  moveCrudBvrs: MoveCrudBvrsT
+  moveCrudBvrs: MoveCrudBvrsT,
 };
 
 function _createStaticMove(move: MoveT, props: _MovePagePropsT, actions: any) {
-  const tipsPanel =
+  const tipsPanel = (
     <Widgets.StaticTipsPanel
       tips={props.tipsByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
     />
+  );
 
-  const videoLinksPanel =
+  const videoLinksPanel = (
     <Widgets.StaticVideoLinksPanel
       videoLinks={props.videoLinksByMoveId[move.id]}
       voteByObjectId={props.voteByObjectId}
     />
+  );
 
   return (
     <Widgets.Move
@@ -91,11 +103,14 @@ function _createStaticMove(move: MoveT, props: _MovePagePropsT, actions: any) {
       videoLinks={props.videoLinksByMoveId[move.id]}
       movePrivateDataPanel={_createMovePrivateDataPanel(move, actions)}
     />
-  )
+  );
 }
 
 function _createOwnMove(
-  move: MoveT, props: _MovePagePropsT, bvrs: MoveCrudBvrsT, actions: any
+  move: MoveT,
+  props: _MovePagePropsT,
+  bvrs: MoveCrudBvrsT,
+  actions: any
 ) {
   if (bvrs.isEditing) {
     return (
@@ -110,58 +125,64 @@ function _createOwnMove(
         />
       </div>
     );
-  }
-  else {
+  } else {
     const saveVideoLink = (videoLink: VideoLinkT) => {
-        actions.actAddVideoLinks(querySetListToDict([videoLink]));
-        let response = MovesCtr.api.saveVideoLink(move.id, videoLink);
-        response.catch(createErrorHandler('We could not save the video link'));
-    }
+      actions.actAddVideoLinks(querySetListToDict([videoLink]));
+      let response = MovesCtr.api.saveVideoLink(move.id, videoLink);
+      response.catch(createErrorHandler("We could not save the video link"));
+    };
 
     const voteVideoLink = (id: UUID, vote: VoteT) => {
       actions.actCastVote(id, vote);
-      AppCtr.api.voteVideoLink(id, vote)
-      .catch(createErrorHandler('We could not save your vote'));
-    }
+      AppCtr.api
+        .voteVideoLink(id, vote)
+        .catch(createErrorHandler("We could not save your vote"));
+    };
 
-    const videoLinksPanel = <Widgets.VideoLinksPanel
-      moveId={move.id}
-      userProfile={props.userProfile}
-      videoLinks={props.videoLinksByMoveId[move.id]}
-      voteByObjectId={props.voteByObjectId}
-      saveVideoLink={saveVideoLink}
-      voteVideoLink={voteVideoLink}
-    />;
+    const videoLinksPanel = (
+      <Widgets.VideoLinksPanel
+        moveId={move.id}
+        userProfile={props.userProfile}
+        videoLinks={props.videoLinksByMoveId[move.id]}
+        voteByObjectId={props.voteByObjectId}
+        saveVideoLink={saveVideoLink}
+        voteVideoLink={voteVideoLink}
+      />
+    );
 
     const saveTip = (tip: TipT) => {
       actions.actAddTips(querySetListToDict([tip]));
       let response = MovesCtr.api.saveTip(move.id, tip);
-      response.catch(createErrorHandler('We could not save the tip'));
-    }
+      response.catch(createErrorHandler("We could not save the tip"));
+    };
 
     const voteTip = (id: UUID, vote: VoteT) => {
       actions.actCastVote(id, vote);
-      AppCtr.api.voteTip(id, vote)
-      .catch(createErrorHandler('We could not save your vote'));
-    }
+      AppCtr.api
+        .voteTip(id, vote)
+        .catch(createErrorHandler("We could not save your vote"));
+    };
 
-    const tipsPanel = <Widgets.TipsPanel
-      moveId={move.id}
-      userProfile={props.userProfile}
-      tips={props.tipsByMoveId[move.id]}
-      voteByObjectId={props.voteByObjectId}
-      saveTip={saveTip}
-      voteTip={voteTip}
-    />;
+    const tipsPanel = (
+      <Widgets.TipsPanel
+        moveId={move.id}
+        userProfile={props.userProfile}
+        tips={props.tipsByMoveId[move.id]}
+        voteByObjectId={props.voteByObjectId}
+        saveTip={saveTip}
+        voteTip={voteTip}
+      />
+    );
 
-    const editMoveBtn =
+    const editMoveBtn = (
       <div
         className={"move__editBtn button button--wide ml-2"}
         onClick={() => bvrs.setIsEditing(true)}
         key={1}
       >
-      Edit move
-      </div>;
+        Edit move
+      </div>
+    );
 
     return (
       <Widgets.Move
@@ -178,23 +199,19 @@ function _createOwnMove(
   }
 }
 
-
 function _MovePage(props: _MovePagePropsT) {
   const actions: any = props;
 
-  React.useEffect(
-    () => {
-      if (
-        props.userProfile &&
-        props.moveSlug == newMoveSlug &&
-        !props.moveCrudBvrs.newMoveBvr.newItem
-      ) {
-        props.moveCrudBvrs.newMoveBvr.addNewItem();
-      }
-      actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId)
-    },
-    [props.moveSlug, props.moveId, props.userProfile]
-  );
+  React.useEffect(() => {
+    if (
+      props.userProfile &&
+      props.moveSlug == newMoveSlug &&
+      !props.moveCrudBvrs.newMoveBvr.newItem
+    ) {
+      props.moveCrudBvrs.newMoveBvr.addNewItem();
+    }
+    actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId);
+  }, [props.moveSlug, props.moveId, props.userProfile]);
 
   const move = findMoveBySlugid(
     props.moveCrudBvrs.insertMovesBvr.preview,
@@ -202,41 +219,41 @@ function _MovePage(props: _MovePagePropsT) {
   );
 
   if (!move) {
-    return <div className="noMoveHighlighted">Oops, I cannot find this move</div>;
+    return (
+      <div className="noMoveHighlighted">Oops, I cannot find this move</div>
+    );
   }
 
   return isOwner(props.userProfile, move.ownerId)
     ? _createOwnMove(move, props, props.moveCrudBvrs, actions)
-    : _createStaticMove(move, props, actions)
+    : _createStaticMove(move, props, actions);
 }
-
 
 export function MovePage(props: MovePagePropsT) {
   return (
-    <MoveCrudBvrsContext.Consumer>{moveCrudBvrs =>
-      <_MovePage
-        {...props}
-        moveCrudBvrs={moveCrudBvrs}
-      />
-    }</MoveCrudBvrsContext.Consumer>
+    <MoveCrudBvrsContext.Consumer>
+      {moveCrudBvrs => <_MovePage {...props} moveCrudBvrs={moveCrudBvrs} />}
+    </MoveCrudBvrsContext.Consumer>
   );
 }
 
 // $FlowFixMe
 MovePage = MovesCtr.connect(
-  (state) => ({
+  state => ({
     userProfile: AppCtr.fromStore.getUserProfile(state.app),
     videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state.moves),
     tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state.moves),
     moveTags: MovesCtr.fromStore.getMoveTags(state.moves),
     moveList: MovesCtr.fromStore.getSelectedMoveList(state.moves),
-    highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(state.moves),
-    voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state.app)
+    highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(
+      state.moves
+    ),
+    voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state.app),
   }),
   {
     ...AppCtr.actions,
     ...MovesCtr.actions,
   }
-)(MovePage)
+)(MovePage);
 
 export default MovePage;

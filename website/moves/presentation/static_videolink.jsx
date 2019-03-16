@@ -1,11 +1,10 @@
 // @flow
 
-import * as React from 'react'
-import { StaticVoteCount } from 'app/presentation/static_vote_count'
-import { VideoLinkForm } from 'moves/presentation/video_link_form'
-import type { VoteByIdT, VoteT } from 'app/types'
-import type { VideoLinkT } from 'moves/types'
-
+import * as React from "react";
+import { StaticVoteCount } from "app/presentation/static_vote_count";
+import { VideoLinkForm } from "moves/presentation/video_link_form";
+import type { VoteByIdT, VoteT } from "app/types";
+import type { VideoLinkT } from "moves/types";
 
 // VideoLinkeoLink
 
@@ -16,24 +15,17 @@ type StaticVideoLinkPropsT = {
 
 export function StaticVideoLink(props: StaticVideoLinkPropsT) {
   const voteCount = (
-    <StaticVoteCount
-      vote={props.vote}
-      count={props.item.voteCount}
-    />
-  )
+    <StaticVoteCount vote={props.vote} count={props.item.voteCount} />
+  );
 
   const link = (
-    <a
-      className='videoLink__url'
-      href={props.item.url}
-      target='blank'
-    >
+    <a className="videoLink__url" href={props.item.url} target="blank">
       {props.item.title || props.item.url}
     </a>
   );
 
   return (
-    <div className='videoLink'>
+    <div className="videoLink">
       {voteCount}
       {link}
     </div>
@@ -56,7 +48,7 @@ export function StaticVideoLinkList(props: StaticVideoLinkListPropsT) {
         vote={props.voteByObjectId[item.id] || 0}
       />
     );
-  })
+  });
 
   return itemNodes;
 }

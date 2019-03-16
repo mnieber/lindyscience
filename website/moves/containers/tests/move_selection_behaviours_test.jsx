@@ -1,28 +1,21 @@
 // @flow
 
-import * as React from 'react'
-import * as data from 'moves/tests/data'
-import sinon from 'sinon'
+import * as React from "react";
+import * as data from "moves/tests/data";
+import sinon from "sinon";
 // $FlowFixMe
 import TestRenderer from "react-test-renderer";
-import {
-  useSelectItems,
-} from 'moves/containers/move_selection_behaviours'
-import { getObjectValues } from 'utils/utils'
+import { useSelectItems } from "moves/containers/move_selection_behaviours";
+import { getObjectValues } from "utils/utils";
 // $FlowFixMe
-import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from 'moves/containers/move_crud_behaviours'
-import { test } from 'utils/test_utils'
+import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from "moves/containers/move_crud_behaviours";
+import { test } from "utils/test_utils";
 
-import type { MoveT } from 'moves/types'
+import type { MoveT } from "moves/types";
 
 const sandbox = {};
 
-
-function TestComponent({
-  moves,
-  highlightedMoveId,
-  setHighlightedMoveId,
-}) {
+function TestComponent({ moves, highlightedMoveId, setHighlightedMoveId }) {
   sandbox.selectMovesBvr = useSelectItems<MoveT>(
     moves,
     highlightedMoveId,
@@ -32,15 +25,16 @@ function TestComponent({
   return [];
 }
 
-
-test.only('test selectInsertMoves', function (t) {
+test.only("test selectInsertMoves", function(t) {
   const moves = getObjectValues(data.moves);
 
-  const testComponent = TestRenderer.create(<TestComponent
-    moves={moves}
-    setHighlightedMoveId={()=>{}}
-    highlightedMoveId={moves[1].id}
-  />);
+  const testComponent = TestRenderer.create(
+    <TestComponent
+      moves={moves}
+      setHighlightedMoveId={() => {}}
+      highlightedMoveId={moves[1].id}
+    />
+  );
 
   t.deepEqual(
     sandbox.selectMovesBvr.selectedItems,

@@ -1,4 +1,4 @@
-import jquery from 'jquery';
+import jquery from "jquery";
 
 export function post(url, data) {
   return jquery.ajax({
@@ -6,11 +6,10 @@ export function post(url, data) {
     url: url,
     data: JSON.stringify(data),
     headers: {
-      'Content-type': 'application/json'
-    }
-  })
+      "Content-type": "application/json",
+    },
+  });
 }
-
 
 export function patch(url, data) {
   return jquery.ajax({
@@ -18,18 +17,17 @@ export function patch(url, data) {
     url: url,
     data: JSON.stringify(data),
     headers: {
-      'Content-type': 'application/json'
-    }
-  })
+      "Content-type": "application/json",
+    },
+  });
 }
-
 
 export function get(url) {
   return jquery.ajax({
     type: "GET",
     url: url,
     headers: {
-      'Content-type': 'application/json'
-    }
-  })
+      "Content-type": "application/json",
+    },
+  });
 }

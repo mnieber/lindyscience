@@ -1,44 +1,47 @@
 // @flow
 
-import * as React from 'react'
-import MovesCtr from 'moves/containers/index'
-import AppCtr from 'app/containers/index'
+import * as React from "react";
+import MovesCtr from "moves/containers/index";
+import AppCtr from "app/containers/index";
 
-import Widgets from 'moves/presentation/index'
-import { browseToMove } from 'app/containers/appframe';
+import Widgets from "moves/presentation/index";
+import { browseToMove } from "app/containers/appframe";
 
 import {
   makeSlugidMatcher,
   makeMoveListUrl,
   newMoveSlug,
   findMoveBySlugid,
-} from 'moves/utils';
+} from "moves/utils";
 
-import { useSelectItems } from 'moves/containers/move_selection_behaviours'
-import { useMoveClipboard } from 'moves/containers/move_clipboard_behaviours'
+import { useSelectItems } from "moves/containers/move_selection_behaviours";
+import { useMoveClipboard } from "moves/containers/move_clipboard_behaviours";
 import {
-  MoveCrudBvrsContext, createMoveCrudBvrs
-} from 'moves/containers/move_crud_behaviours'
-import { MoveListCrudBvrsContext } from 'moves/containers/move_list_crud_behaviours'
+  MoveCrudBvrsContext,
+  createMoveCrudBvrs,
+} from "moves/containers/move_crud_behaviours";
+import { MoveListCrudBvrsContext } from "moves/containers/move_list_crud_behaviours";
 
 import type {
-  MoveListT, VideoLinksByIdT, MoveT, MoveListCrudBvrsT
-} from 'moves/types'
-import type { UUID, UserProfileT, SlugidT, TagT } from 'app/types';
-import type { SaveMoveBvrT, InsertMovesBvrT, NewMoveBvrT } from 'moves/containers/move_crud_behaviours'
-
+  MoveListT,
+  VideoLinksByIdT,
+  MoveT,
+  MoveListCrudBvrsT,
+} from "moves/types";
+import type { UUID, UserProfileT, SlugidT, TagT } from "app/types";
+import type {
+  SaveMoveBvrT,
+  InsertMovesBvrT,
+  NewMoveBvrT,
+} from "moves/containers/move_crud_behaviours";
 
 function _browseToMove(moves: Array<MoveT>, move: MoveT, moveListUrl: string) {
   const matcher = makeSlugidMatcher(move.slug);
   const isSlugUnique = moves.filter(matcher).length <= 1;
   const updateProfile = move.slug != newMoveSlug;
-  const maybeMoveId = isSlugUnique ? "" : (move ? move.id : "");
-  browseToMove(
-    [moveListUrl, move.slug, maybeMoveId],
-    updateProfile
-  );
+  const maybeMoveId = isSlugUnique ? "" : move ? move.id : "";
+  browseToMove([moveListUrl, move.slug, maybeMoveId], updateProfile);
 }
-
 
 // MoveListFrame
 
@@ -57,12 +60,14 @@ type MoveListFramePropsT = {
 };
 
 type _MoveListFramePropsT = MoveListFramePropsT & {
-  moveListCrudBvrs: MoveListCrudBvrsT
+  moveListCrudBvrs: MoveListCrudBvrsT,
 };
 
 function _MoveListFrame(props: _MoveListFramePropsT) {
   const actions: any = props;
-  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(null);
+  const [nextHighlightedMoveId, setNextHighlightedMoveId] = React.useState(
+    null
+  );
 
   function _updateMove(oldMove: MoveT, newMove: MoveT) {
     actions.actAddMoves([newMove]);
@@ -78,41 +83,36 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     props.highlightedMoveSlugid,
     setNextHighlightedMoveId,
     _updateMove,
-    actions.actInsertMoves,
+    actions.actInsertMoves
   );
 
   const moves = moveCrudBvrs.insertMovesBvr.preview;
   const highlightedMove = findMoveBySlugid(moves, props.highlightedMoveSlugid);
   const highlightedMoveId = highlightedMove ? highlightedMove.id : "";
 
-  React.useEffect(
-    () => {
-      if (props.moveList && nextHighlightedMoveId != null) {
-        const move = (
-          moves.find(x => x.id == nextHighlightedMoveId) ||
-          moves.find(x => true)
-        );
-        if (move) {
-          _browseToMove(moves, move, makeMoveListUrl(props.moveList));
-        }
+  React.useEffect(() => {
+    if (props.moveList && nextHighlightedMoveId != null) {
+      const move =
+        moves.find(x => x.id == nextHighlightedMoveId) || moves.find(x => true);
+      if (move) {
+        _browseToMove(moves, move, makeMoveListUrl(props.moveList));
       }
-    },
-    [nextHighlightedMoveId]
-  )
+    }
+  }, [nextHighlightedMoveId]);
 
   const selectMoveListById = (id: UUID) => {
     const moveList = props.moveLists.find(x => x.id == id);
     if (moveList) {
       browseToMove([moveList.ownerUsername, moveList.slug]);
     }
-  }
+  };
 
   const filterMoves = (tags, keywords) => {
     const slugid = actions.actSetMoveListFilter(tags, keywords);
     if (props.moveList && slugid) {
-      browseToMove([makeMoveListUrl(props.moveList), slugid])
+      browseToMove([makeMoveListUrl(props.moveList), slugid]);
     }
-  }
+  };
 
   // TODO: when clicking to highlight something, we should also select it...
 
@@ -128,7 +128,7 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
     highlightedMoveId,
     moveCrudBvrs.newMoveBvr.setHighlightedItemId,
     actions.actInsertMoves,
-    actions.actRemoveMoves,
+    actions.actRemoveMoves
   );
 
   return (
@@ -150,44 +150,42 @@ function _MoveListFrame(props: _MoveListFramePropsT) {
         {props.children}
       </MoveCrudBvrsContext.Provider>
     </Widgets.MoveListPanel>
-  )
+  );
 }
-
 
 function MoveListFrame(props: MoveListFramePropsT) {
   const actions: any = props;
 
-  React.useEffect(
-    () => {actions.actSelectMoveListByUrl(props.ownerUsername, props.moveListSlug)},
-    [props.ownerUsername, props.moveListSlug,]
-  );
+  React.useEffect(() => {
+    actions.actSelectMoveListByUrl(props.ownerUsername, props.moveListSlug);
+  }, [props.ownerUsername, props.moveListSlug]);
 
   return (
-    <MoveListCrudBvrsContext.Consumer>{moveListCrudBvrs =>
-      <_MoveListFrame
-        {...props}
-        moveListCrudBvrs={moveListCrudBvrs}
-      />
-    }</MoveListCrudBvrsContext.Consumer>
+    <MoveListCrudBvrsContext.Consumer>
+      {moveListCrudBvrs => (
+        <_MoveListFrame {...props} moveListCrudBvrs={moveListCrudBvrs} />
+      )}
+    </MoveListCrudBvrsContext.Consumer>
   );
 }
 
-
 // $FlowFixMe
 MoveListFrame = MovesCtr.connect(
-  (state) => ({
+  state => ({
     userProfile: AppCtr.fromStore.getUserProfile(state.app),
     videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state.moves),
     moves: MovesCtr.fromStore.getFilteredMovesInList(state.moves),
     moveTags: MovesCtr.fromStore.getMoveTags(state.moves),
     moveLists: MovesCtr.fromStore.getMoveLists(state.moves),
-    highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(state.moves),
+    highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(
+      state.moves
+    ),
     moveList: MovesCtr.fromStore.getSelectedMoveList(state.moves),
   }),
   {
     ...AppCtr.actions,
     ...MovesCtr.actions,
   }
-)(MoveListFrame)
+)(MoveListFrame);
 
 export default MoveListFrame;

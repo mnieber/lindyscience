@@ -1,26 +1,22 @@
 // @flow
 
-import { flatten } from 'utils/utils'
-import { normalize, schema } from 'normalizr';
-import { client, doQuery } from 'app/client';
+import { flatten } from "utils/utils";
+import { normalize, schema } from "normalizr";
+import { client, doQuery } from "app/client";
 import type {
-  TipT, VideoLinkT, MoveT, MoveListT, MovePrivateDataT
-} from 'moves/types'
-import type { UUID } from 'app/types';
-
+  TipT,
+  VideoLinkT,
+  MoveT,
+  MoveListT,
+  MovePrivateDataT,
+} from "moves/types";
+import type { UUID } from "app/types";
 
 // Api moves
 
-export function saveVideoLink(
-  moveId: UUID, values: VideoLinkT
-) {
-  if (
-    !values.url.startsWith('http://') &&
-    !values.url.startsWith('https://')
-  ) {
-    values = {...values,
-      url: 'http://' + values.url
-    }
+export function saveVideoLink(moveId: UUID, values: VideoLinkT) {
+  if (!values.url.startsWith("http://") && !values.url.startsWith("https://")) {
+    values = { ...values, url: "http://" + values.url };
   }
   return doQuery(
     `mutation saveVideoLink(
@@ -40,13 +36,10 @@ export function saveVideoLink(
       ...values,
       moveId,
     }
-  )
+  );
 }
 
-
-export function saveTip(
-  moveId: UUID, values: TipT
-) {
+export function saveTip(moveId: UUID, values: TipT) {
   return doQuery(
     `mutation saveTip(
       $id: String!,
@@ -63,9 +56,8 @@ export function saveTip(
       ...values,
       moveId,
     }
-  )
+  );
 }
-
 
 export function saveMoveList(values: MoveListT) {
   return doQuery(
@@ -87,9 +79,8 @@ export function saveMoveList(values: MoveListT) {
     {
       ...values,
     }
-  )
+  );
 }
-
 
 export function saveMove(values: MoveT) {
   return doQuery(
@@ -111,9 +102,8 @@ export function saveMove(values: MoveT) {
     {
       ...values,
     }
-  )
+  );
 }
-
 
 export function saveMovePrivateData(values: MovePrivateDataT) {
   return doQuery(
@@ -129,9 +119,9 @@ export function saveMovePrivateData(values: MovePrivateDataT) {
       ) { ok }
     }`,
     {
-      ...values
+      ...values,
     }
-  )
+  );
 }
 
 export function saveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
@@ -147,9 +137,9 @@ export function saveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
     }`,
     {
       moveListId,
-      moveIds
+      moveIds,
     }
-  )
+  );
 }
 
 export function saveMoveListOrdering(moveListIds: Array<UUID>) {
@@ -162,21 +152,20 @@ export function saveMoveListOrdering(moveListIds: Array<UUID>) {
       ) { ok }
     }`,
     {
-      moveListIds
+      moveListIds,
     }
-  )
+  );
 }
 
-
-const videoLink = new schema.Entity('videoLinks');
-const tip = new schema.Entity('tips');
-const movePrivateData = new schema.Entity('movePrivateDatas');
-const move = new schema.Entity('moves', {
+const videoLink = new schema.Entity("videoLinks");
+const tip = new schema.Entity("tips");
+const movePrivateData = new schema.Entity("movePrivateDatas");
+const move = new schema.Entity("moves", {
   videoLinks: [videoLink],
   tips: [tip],
 });
-const moveList = new schema.Entity('moveLists', {
-  moves: [move]
+const moveList = new schema.Entity("moveLists", {
+  moves: [move],
 });
 
 export function loadMoveLists() {
@@ -198,8 +187,8 @@ export function loadMoveLists() {
       }
     }`
   )
-  .then(result => flatten(result, ['/allMoveLists/*/owner',]))
-  .then(result => normalize(result.allMoveLists, [moveList]))
+    .then(result => flatten(result, ["/allMoveLists/*/owner"]))
+    .then(result => normalize(result.allMoveLists, [moveList]));
 }
 
 export function loadMoveList(moveListId: UUID) {
@@ -242,22 +231,20 @@ export function loadMoveList(moveListId: UUID) {
         }
       }
     }`,
-    {moveListId}
+    { moveListId }
   )
-  .then(result => flatten(
-    result,
-    [
-      '/moveList/owner',
-      '/moveList/moves/*/owner',
-      '/moveList/moves/*/videoLinks/*/move',
-      '/moveList/moves/*/videoLinks/*/owner',
-      '/moveList/moves/*/tips/*/move',
-      '/moveList/moves/*/tips/*/owner',
-    ]
-  ))
-  .then(result => normalize(result.moveList, moveList))
+    .then(result =>
+      flatten(result, [
+        "/moveList/owner",
+        "/moveList/moves/*/owner",
+        "/moveList/moves/*/videoLinks/*/move",
+        "/moveList/moves/*/videoLinks/*/owner",
+        "/moveList/moves/*/tips/*/move",
+        "/moveList/moves/*/tips/*/owner",
+      ])
+    )
+    .then(result => normalize(result.moveList, moveList));
 }
-
 
 export function loadMovePrivateDatas() {
   return doQuery(
@@ -271,11 +258,6 @@ export function loadMovePrivateDatas() {
       }
     }`
   )
-  .then(result => flatten(
-      result,
-      [
-        '/movePrivateDatas/*/move',
-      ]
-    ))
-  .then(result => normalize(result.movePrivateDatas, [movePrivateData]))
+    .then(result => flatten(result, ["/movePrivateDatas/*/move"]))
+    .then(result => normalize(result.movePrivateDatas, [movePrivateData]));
 }

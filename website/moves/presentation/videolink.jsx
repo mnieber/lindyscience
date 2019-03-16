@@ -1,11 +1,10 @@
 // @flow
 
-import * as React from 'react'
-import { VoteCount } from 'app/presentation/vote_count'
-import { VideoLinkForm } from 'moves/presentation/video_link_form'
-import type { UUID, VoteByIdT, VoteT } from 'app/types'
-import type { VideoLinkT } from 'moves/types'
-
+import * as React from "react";
+import { VoteCount } from "app/presentation/vote_count";
+import { VideoLinkForm } from "moves/presentation/video_link_form";
+import type { UUID, VoteByIdT, VoteT } from "app/types";
+import type { VideoLinkT } from "moves/types";
 
 // VideoLinkeoLink
 
@@ -18,7 +17,7 @@ type VideoLinkPropsT = {
 };
 
 export function VideoLink(props: VideoLinkPropsT) {
-  const [isEditing, setIsEditing] = React.useState(props.item.url == '');
+  const [isEditing, setIsEditing] = React.useState(props.item.url == "");
 
   if (isEditing) {
     function _onSubmit(values) {
@@ -42,13 +41,8 @@ export function VideoLink(props: VideoLinkPropsT) {
       />
     );
 
-    return (
-      <div className='videoLink'>
-        {form}
-      </div>
-    );
-  }
-  else {
+    return <div className="videoLink">{form}</div>;
+  } else {
     function _setVote(value) {
       props.setVote(props.item.id, value);
     }
@@ -59,14 +53,10 @@ export function VideoLink(props: VideoLinkPropsT) {
         count={props.item.voteCount}
         setVote={_setVote}
       />
-    )
+    );
 
     const link = (
-      <a
-        className='videoLink__url'
-        href={props.item.url}
-        target='blank'
-      >
+      <a className="videoLink__url" href={props.item.url} target="blank">
         {props.item.title || props.item.url}
       </a>
     );
@@ -76,12 +66,12 @@ export function VideoLink(props: VideoLinkPropsT) {
         className="videoLink__editButton ml-2"
         onClick={() => setIsEditing(true)}
       >
-      edit
+        edit
       </div>
     );
 
     return (
-      <div className='videoLink'>
+      <div className="videoLink">
         {voteCount}
         {link}
         {editBtn}
@@ -111,7 +101,7 @@ export function VideoLinkList(props: VideoLinkListPropsT) {
         cancelEditVideoLink={props.cancelEditVideoLink}
       />
     );
-  })
+  });
 
   return itemNodes;
 }

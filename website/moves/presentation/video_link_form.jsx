@@ -1,10 +1,9 @@
 // @flow
 
-import React from 'react'
-import { withFormik } from 'formik';
-import * as yup from 'yup';
-import { FormField, validateVideoLinkUrl } from 'utils/form_utils'
-
+import React from "react";
+import { withFormik } from "formik";
+import * as yup from "yup";
+import { FormField, validateVideoLinkUrl } from "utils/form_utils";
 
 export function VideoLinkForm({
   onSubmit,
@@ -22,15 +21,15 @@ export function VideoLinkForm({
           <FormField
             classNames="videoLinkForm__url w-64"
             formProps={props}
-            fieldName='url'
-            type='text'
+            fieldName="url"
+            type="text"
             placeholder="Link"
           />
           <FormField
             classNames="videoLinkForm__title w-64"
             formProps={props}
-            fieldName='title'
-            type='text'
+            fieldName="title"
+            type="text"
             placeholder="Title"
           />
           <button
@@ -42,13 +41,16 @@ export function VideoLinkForm({
           </button>
           <button
             className="videoLinkForm__cancelButton ml-2"
-            onClick={e => {e.preventDefault(); onCancel()}}
+            onClick={e => {
+              e.preventDefault();
+              onCancel();
+            }}
           >
             cancel
           </button>
         </div>
       </form>
-    )
+    );
   }
 
   const EnhancedForm = withFormik({
@@ -57,24 +59,22 @@ export function VideoLinkForm({
       title: values.title,
     }),
     validationSchema: yup.object().shape({
-      url: yup.string()
-        .required('This field is required'),
-      title: yup.string()
-        .required('This field is required'),
+      url: yup.string().required("This field is required"),
+      title: yup.string().required("This field is required"),
     }),
     validate: (values, props) => {
       let errors = {};
       const urlError = validateVideoLinkUrl(values.url);
       if (urlError) {
-        errors['url'] = urlError;
+        errors["url"] = urlError;
       }
       return errors;
     },
     handleSubmit: (values, { setSubmitting }) => {
       onSubmit(values);
     },
-    displayName: 'BasicForm', // helps with React DevTools
+    displayName: "BasicForm", // helps with React DevTools
   })(InnerForm);
 
-  return <EnhancedForm/>;
+  return <EnhancedForm />;
 }

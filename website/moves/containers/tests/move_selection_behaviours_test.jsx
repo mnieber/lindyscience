@@ -25,7 +25,7 @@ function TestComponent({ moves, highlightedMoveId, setHighlightedMoveId }) {
   return [];
 }
 
-test.only("test selectInsertMoves", function(t) {
+test("test selectInsertMoves", function(t) {
   const moves = getObjectValues(data.moves);
 
   const testComponent = TestRenderer.create(

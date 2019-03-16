@@ -1,74 +1,45 @@
 // @flow
 
 import * as React from "react";
+
+import { getPreview } from "moves/utils";
+
 import type { UUID, ObjectT } from "app/types";
+import type { DataContainerT } from "moves/containers/data_container";
 
 // InsertItem Behaviour
 
 export type InsertItemsBvrT<ItemT> = {|
-  preview: Array<ItemT>,
-  previewItems: Array<ItemT>,
-  prepare: (targetItemId: UUID, items: Array<ItemT>) => void,
+  prepare: (items: Array<ItemT>, targetItemId: UUID) => void,
   finalize: (isCancel: boolean) => UUID,
   insertDirectly: (
-    itemIds: Array<UUID>,
+    payloadIds: Array<UUID>,
     targetItemId: UUID,
     isBefore: boolean
   ) => void,
 |};
 
 export function useInsertItems<ItemT: ObjectT>(
-  items: Array<ItemT>,
-  insertItemIds: (itemIds: Array<UUID>, targetItemId: UUID) => void
+  dataContainer: DataContainerT<ItemT>
 ): InsertItemsBvrT<ItemT> {
-  const [targetItemId, setTargetItemId] = React.useState("");
-  const [previewItems, setPreviewItems] = React.useState([]);
-
-  const preview = !previewItems.length
-    ? items
-    : items.reduce(
-        (acc, item) => {
-          if (!previewItems.includes(item.id)) {
-            acc.push(item);
-          }
-          if (item.id == targetItemId) {
-            acc.push(...previewItems);
-          }
-          return acc;
-        },
-        targetItemId ? [] : [...previewItems]
-      );
-
-  function insertDirectly(
-    itemIds: Array<UUID>,
-    targetItemId: UUID,
-    isBefore: boolean
-  ) {
-    if (isBefore) {
-      const idx = items.findIndex(x => x.id == targetItemId) - 1;
-      targetItemId = idx < 0 ? "" : items[idx].id;
-    }
-    insertItemIds(itemIds, targetItemId);
-  }
-
-  function prepare(targetItemId: UUID, items: Array<ItemT>) {
-    if (items.length) {
-      setPreviewItems(items);
-      setTargetItemId(targetItemId);
-    }
-  }
-
   function finalize(isCancel: boolean) {
-    const result = targetItemId;
-    if (previewItems.length && !isCancel) {
-      insertDirectly(previewItems.map(x => x.id), targetItemId, false);
+    const result = dataContainer.targetItemId;
+    if (dataContainer.payloadIds.length && !isCancel) {
+      dataContainer.insert(
+        dataContainer.payloadIds,
+        dataContainer.targetItemId,
+        false
+      );
     }
-    setPreviewItems([]);
-    setTargetItemId("");
+    dataContainer.setPayload([], "");
     return result;
   }
 
-  return { preview, previewItems, prepare, finalize, insertDirectly };
+  return {
+    prepare: dataContainer.setPayload,
+    finalize,
+    insertDirectly: dataContainer.insert,
+  };
 }
 
 // NewItem Behaviour
@@ -95,7 +66,7 @@ export function useNewItem<ItemT: ObjectT>(
       const newItem = createNewItem();
       if (newItem) {
         setNewItem(newItem);
-        insertItemsBvr.prepare(highlightedItemId, [newItem]);
+        insertItemsBvr.prepare([newItem], highlightedItemId);
         setHighlightedItemId(newItem.id);
         setIsEditing(true);
       }

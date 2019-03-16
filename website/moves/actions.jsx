@@ -34,7 +34,7 @@ export function actInsertMoveLists(
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
     // $FlowFixMe
-    const profile: UserProfileT = fromAppStore.getUserProfile(getState().app);
+    const profile: UserProfileT = fromAppStore.getUserProfile(getState());
     return profile.moveListIds;
   };
 }
@@ -79,16 +79,13 @@ export function actSetMoveListFilter(
     });
 
     const state = getState();
-    const allMoves = fromStore.getMovesInList(state.moves);
-    const highlightedMove = findMoveBySlugid(
-      allMoves,
-      fromStore.getHighlightedMoveSlugid(state.moves)
-    );
+    const allMoves = fromStore.getMovesInList(state);
+    const highlightedMove = fromStore.getHighlightedMove(state);
 
     if (highlightedMove) {
       const allMoveIds = allMoves.map(x => x.id);
       const filteredMoveIds = fromStore
-        .getFilteredMovesInList(state.moves)
+        .getFilteredMovesInList(state)
         .map(x => x.id);
       const highlightedIdx = allMoveIds.indexOf(highlightedMove.id);
 
@@ -104,7 +101,7 @@ export function actSetMoveListFilter(
 
       if (newIdx) {
         const moveId = allMoveIds[newIdx.result];
-        const move = fromStore.getMoveById(state.moves)[moveId];
+        const move = fromStore.getMoveById(state)[moveId];
         const isSlugUnique =
           allMoves.filter(x => x.slug == move.slug).length == 1;
         return makeSlugid(move.slug, isSlugUnique ? "" : move.id);
@@ -129,7 +126,7 @@ export function actInsertMoves(
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
     // $FlowFixMe
-    const moveList = fromStore.getMoveListById(getState().moves)[moveListId];
+    const moveList = fromStore.getMoveListById(getState())[moveListId];
     return moveList.moves;
   };
 }
@@ -144,7 +141,7 @@ export function actRemoveMoves(moveIds: Array<UUID>, moveListId: UUID) {
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
     // $FlowFixMe
-    const moveList = fromStore.getMoveListById(getState().moves)[moveListId];
+    const moveList = fromStore.getMoveListById(getState())[moveListId];
     return moveList.moves;
   };
 }
@@ -156,7 +153,7 @@ export function actSetHighlightedMoveBySlug(moveSlug: string, moveId: ?UUID) {
   };
 }
 
-export function actSelectMoveListByUrl(
+export function actSetSelectedMoveListUrl(
   ownerUsername: string,
   moveListSlug: string
 ) {

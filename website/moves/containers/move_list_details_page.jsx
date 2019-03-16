@@ -17,7 +17,7 @@ type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
   moveLists: Array<MoveListT>,
   moveListTags: Array<TagT>,
-  selectedMoveListUrl: string,
+  moveList: MoveListT,
   // receive any actions as well
 };
 
@@ -74,18 +74,13 @@ function _createOwnMoveListDetails(
 export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   const actions: any = props;
 
-  const moveList = findMoveListByUrl(
-    props.moveListCrudBvrs.insertMoveListsBvr.preview,
-    props.selectedMoveListUrl
-  );
-
-  if (!moveList) {
+  if (!props.moveList) {
     return <React.Fragment />;
   }
 
-  return isOwner(props.userProfile, moveList.ownerId)
-    ? _createOwnMoveListDetails(moveList, props)
-    : _createStaticMoveListDetails(moveList, props);
+  return isOwner(props.userProfile, props.moveList.ownerId)
+    ? _createOwnMoveListDetails(props.moveList, props)
+    : _createStaticMoveListDetails(props.moveList, props);
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
@@ -101,10 +96,10 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
 // $FlowFixMe
 MoveListDetailsPage = MovesCtr.connect(
   state => ({
-    userProfile: AppCtr.fromStore.getUserProfile(state.app),
-    moveLists: MovesCtr.fromStore.getMoveLists(state.moves),
-    selectedMoveListUrl: MovesCtr.fromStore.getSelectedMoveListUrl(state.moves),
-    moveListTags: MovesCtr.fromStore.getMoveListTags(state.moves),
+    userProfile: AppCtr.fromStore.getUserProfile(state),
+    moveLists: MovesCtr.fromStore.getMoveLists(state),
+    moveList: MovesCtr.fromStore.getSelectedMoveList(state),
+    moveListTags: MovesCtr.fromStore.getMoveListTags(state),
   }),
   {
     ...AppCtr.actions,

@@ -15,6 +15,10 @@ export function makeSlugidMatcher(slugid: SlugidT) {
     parts.length == 2 ? move.id == parts[1] : move.slug == parts[0];
 }
 
+export function makeIdMatcher(id: UUID) {
+  return obj => obj.id == id;
+}
+
 export function findMoveBySlugid(moves: Array<MoveT>, slugid: string) {
   return moves.find(makeSlugidMatcher(slugid));
 }
@@ -40,4 +44,37 @@ export function findNeighbourIdx(
     }
   }
   return undefined;
+}
+
+export function getPreview<ItemT: ObjectT>(
+  items: Array<ItemT>,
+  payload: Array<ItemT>,
+  targetMoveId: UUID
+): Array<ItemT> {
+  return !payload.length
+    ? items
+    : items.reduce(
+        (acc, item) => {
+          if (!payload.find(makeIdMatcher(item.id))) {
+            acc.push(item);
+          }
+          if (item.id == targetMoveId) {
+            acc.push(...payload);
+          }
+          return acc;
+        },
+        targetMoveId ? [] : [...payload]
+      );
+}
+
+export function findTargetId(
+  itemIds: Array<UUID>,
+  targetItemId: UUID,
+  isBefore: boolean
+) {
+  if (isBefore) {
+    const idx = itemIds.findIndex(x => x == targetItemId) - 1;
+    targetItemId = idx < 0 ? "" : itemIds[idx];
+  }
+  return targetItemId;
 }

@@ -3,10 +3,9 @@
 import * as React from "react";
 import classnames from "classnames";
 import { Menu, Item, Separator, Submenu, MenuProvider } from "react-contexify";
-import { makeSlugidMatcher, findMoveBySlugid } from "moves/utils";
 import { handleSelectionKeys, scrollIntoView } from "app/utils";
 import type { MoveT, VideoLinksByIdT } from "moves/types";
-import type { UUID, SlugidT } from "app/types";
+import type { UUID } from "app/types";
 
 // MoveList
 
@@ -48,19 +47,17 @@ function createHandlers(
   props: MoveListPropsT
 ): HandlersT {
   function handleKeyDown(e) {
-    const highlightedMove = findMoveBySlugid(
-      props.moves,
-      props.highlightedMoveSlugid
-    );
-    handleSelectionKeys(
-      e,
-      "moveList",
-      props.moves,
-      highlightedMove.id,
-      // TODO support shift selection with keyboard (e.shiftKey)
-      // Note: in that case, anchor != highlight
-      id => selectMoveById(id, false, false)
-    );
+    if (props.highlightedMove) {
+      handleSelectionKeys(
+        e,
+        "moveList",
+        props.moves,
+        props.highlightedMove.id,
+        // TODO support shift selection with keyboard (e.shiftKey)
+        // Note: in that case, anchor != highlight
+        id => selectMoveById(id, false, false)
+      );
+    }
   }
 
   function handleDragStart(sourceMoveId) {
@@ -101,7 +98,7 @@ type MoveListPropsT = {|
   moves: Array<MoveT>,
   videoLinksByMoveId: VideoLinksByIdT,
   selectedMoveIds: Array<UUID>,
-  highlightedMoveSlugid: SlugidT,
+  highlightedMove: ?MoveT,
   selectMoveById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   moveContextMenu: any,
   onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void,
@@ -119,7 +116,9 @@ export function MoveList(props: MoveListPropsT) {
 
   const draggingBvr: DraggingBvrT = useDragging();
   const handlers = createHandlers(draggingBvr, selectMoveById, props);
-  const slugidMatcher = makeSlugidMatcher(props.highlightedMoveSlugid);
+  const highlightedMoveId = props.highlightedMove
+    ? props.highlightedMove.id
+    : "";
 
   const moveNodes = props.moves.map((move, idx) => {
     const videoLinks = props.videoLinksByMoveId[move.id];
@@ -137,7 +136,7 @@ export function MoveList(props: MoveListPropsT) {
         className={classnames({
           moveList__item: true,
           "moveList__item--selected": props.selectedMoveIds.includes(move.id),
-          "moveList__item--highlighted": slugidMatcher(move),
+          "moveList__item--highlighted": move.id == highlightedMoveId,
           "moveList__item--drag_before":
             draggingBvr.isBefore && draggingBvr.draggingOverMoveId == move.id,
           "moveList__item--drag_after":

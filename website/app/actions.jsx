@@ -32,7 +32,7 @@ export function actSetSignedInEmail(email: string) {
 
 export function actCastVote(id: UUID, vote: VoteT) {
   return (dispatch: Function, getState: Function) => {
-    const prevVote = fromStore.getVoteByObjectId(getState().app)[id] || 0;
+    const prevVote = fromStore.getVoteByObjectId(getState())[id] || 0;
 
     dispatch({
       type: "CAST_VOTE",

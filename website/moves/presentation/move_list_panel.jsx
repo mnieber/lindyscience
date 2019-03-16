@@ -15,11 +15,15 @@ import type { MoveClipboardBvrT } from "moves/containers/move_clipboard_behaviou
 import type { SelectItemsBvrT } from "moves/containers/move_selection_behaviours";
 
 type HandlersT = {
-  onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void,
+  onDrop: (sourceMoveId: UUID, targetId: UUID, isBefore: boolean) => void,
   onKeyDown: (e: any) => void,
 };
 
-function createHandlers(bvrs: MoveCrudBvrsT, moveListRef: any): HandlersT {
+function createHandlers(
+  moves: Array<MoveT>,
+  bvrs: MoveCrudBvrsT,
+  moveListRef: any
+): HandlersT {
   const onDrop = (sourceMoveId, targetMoveId, isBefore) => {
     if (bvrs.newMoveBvr.newItem?.id != sourceMoveId) {
       bvrs.insertMovesBvr.insertDirectly(
@@ -55,22 +59,24 @@ function createHandlers(bvrs: MoveCrudBvrsT, moveListRef: any): HandlersT {
 export type MoveListPanelPropsT = {
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
+  moves: Array<MoveT>,
   moveCrudBvrs: MoveCrudBvrsT,
   moveListCrudBvrs: MoveListCrudBvrsT,
   moveClipboardBvr: MoveClipboardBvrT,
   selectMovesBvr: SelectItemsBvrT<MoveT>,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
-  highlightedMoveSlugid: SlugidT,
+  highlightedMove: ?MoveT,
   moveList: ?MoveListT,
   filterMoves: (Array<TagT>, Array<string>) => void,
   selectMoveListById: (id: UUID) => void,
   children: any,
 };
 
-export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
+export function MoveListPanel(props: MoveListPanelPropsT) {
   const refs = {};
   const handlers: HandlersT = createHandlers(
+    props.moves,
     props.moveCrudBvrs,
     refs.moveListRef
   );
@@ -108,7 +114,6 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
     );
   };
 
-  // TODO: put moving moves into a behaviour
   const moveContextMenu = (
     <Widgets.MoveContextMenu
       targetMoveLists={props.moveClipboardBvr.targetMoveLists}
@@ -123,9 +128,9 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
       className=""
       videoLinksByMoveId={props.videoLinksByMoveId}
       selectMoveById={props.selectMovesBvr.select}
-      moves={props.moveCrudBvrs.insertMovesBvr.preview}
+      moves={props.moves}
       selectedMoveIds={props.selectMovesBvr.selectedItems.map(x => x.id)}
-      highlightedMoveSlugid={props.highlightedMoveSlugid}
+      highlightedMove={props.highlightedMove}
       onDrop={handlers.onDrop}
       moveContextMenu={moveContextMenu}
     />
@@ -134,9 +139,9 @@ export function MoveListPanel(props: MoveListPanelPropsT, context: any) {
   const staticMoveList = (
     <Widgets.StaticMoveList
       refs={refs}
-      moves={props.moveCrudBvrs.insertMovesBvr.preview}
+      moves={props.moves}
       videoLinksByMoveId={props.videoLinksByMoveId}
-      highlightedMoveSlugid={props.highlightedMoveSlugid}
+      highlightedMove={props.highlightedMove}
       setHighlightedMoveId={props.moveCrudBvrs.newMoveBvr.setHighlightedItemId}
       className=""
     />

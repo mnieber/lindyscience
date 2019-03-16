@@ -5,9 +5,9 @@ import { Router, Link } from "@reach/router";
 import MoveListFrame from "moves/containers/move_list_frame";
 import MovePage from "moves/containers/move_page";
 import MoveListDetailsPage from "moves/containers/move_list_details_page";
-import AppFrame, { browseToMove } from "app/containers/appframe";
+import AppFrame from "app/containers/appframe";
 import SignInPage from "app/containers/signinpage";
-import AppCtr from "app/containers/index";
+import AppCtr, { browseToMove } from "app/containers/index";
 import MovesCtr from "moves/containers/index";
 import type { UserProfileT } from "app/types";
 
@@ -52,7 +52,7 @@ function UrlRouter(props: UrlRouterPropsT) {
 // $FlowFixMe
 UrlRouter = AppCtr.connect(
   state => ({
-    userProfile: AppCtr.fromStore.getUserProfile(state.app),
+    userProfile: AppCtr.fromStore.getUserProfile(state),
   }),
   {
     ...MovesCtr.actions,

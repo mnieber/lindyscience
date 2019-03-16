@@ -6,8 +6,6 @@ import { VideoLinkList } from "moves/presentation/videolink";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
-import { createErrorHandler } from "app/utils";
-import { querySetListToDict, slugify, isNone } from "utils/utils";
 
 import type { UUID, VoteT, VoteByIdT, UserProfileT } from "app/types";
 import type { MoveT, VideoLinkT } from "moves/types";

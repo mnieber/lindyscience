@@ -7,7 +7,7 @@ import ReduxToastr, { toastr } from "react-redux-toastr";
 import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 import { stripQuotes } from "utils/utils";
 
-import type { UserProfileT, UUID, TagT } from "app/types";
+import type { UserProfileT, UUID, TagT, ObjectT } from "app/types";
 
 export function createToastr() {
   return (
@@ -100,4 +100,8 @@ export function createErrorHandler(msg: string) {
     console.log(msg, e);
     toastr.error("Oops!", msg);
   };
+}
+
+export function getId(x: ?ObjectT) {
+  return x ? x.id : "";
 }

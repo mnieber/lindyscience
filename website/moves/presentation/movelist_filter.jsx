@@ -13,7 +13,7 @@ type MoveListPickerPropsT = {|
   moveLists: Array<MoveListT>,
   defaultMoveListId: UUID,
   className?: string,
-  selectMoveListById: Function,
+  selectMoveListById: UUID => void,
 |};
 
 export function MoveListPicker(props: MoveListPickerPropsT) {

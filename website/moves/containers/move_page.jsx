@@ -8,20 +8,13 @@ import Widgets from "moves/presentation/index";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
-import { findMoveBySlugid, newMoveSlug } from "moves/utils";
+import { newMoveSlug } from "moves/utils";
 import { isOwner, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
 
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 
-import type {
-  UUID,
-  UserProfileT,
-  VoteByIdT,
-  SlugidT,
-  TagT,
-  VoteT,
-} from "app/types";
+import type { UUID, UserProfileT, VoteByIdT, TagT, VoteT } from "app/types";
 import type {
   MoveListT,
   MoveT,
@@ -66,9 +59,10 @@ type MovePagePropsT = {
   tipsByMoveId: TipsByIdT,
   moveTags: Array<TagT>,
   moveList: MoveListT,
-  highlightedMoveSlugid: SlugidT,
+  highlightedMove: MoveT,
   voteByObjectId: VoteByIdT,
   actions: any,
+  // the follower are inserted by the router
   moveSlug: string,
   moveId: ?UUID,
 };
@@ -213,20 +207,15 @@ function _MovePage(props: _MovePagePropsT) {
     actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId);
   }, [props.moveSlug, props.moveId, props.userProfile]);
 
-  const move = findMoveBySlugid(
-    props.moveCrudBvrs.insertMovesBvr.preview,
-    props.highlightedMoveSlugid
-  );
-
-  if (!move) {
+  if (!props.highlightedMove) {
     return (
       <div className="noMoveHighlighted">Oops, I cannot find this move</div>
     );
   }
 
-  return isOwner(props.userProfile, move.ownerId)
-    ? _createOwnMove(move, props, props.moveCrudBvrs, actions)
-    : _createStaticMove(move, props, actions);
+  return isOwner(props.userProfile, props.highlightedMove.ownerId)
+    ? _createOwnMove(props.highlightedMove, props, props.moveCrudBvrs, actions)
+    : _createStaticMove(props.highlightedMove, props, actions);
 }
 
 export function MovePage(props: MovePagePropsT) {
@@ -240,15 +229,13 @@ export function MovePage(props: MovePagePropsT) {
 // $FlowFixMe
 MovePage = MovesCtr.connect(
   state => ({
-    userProfile: AppCtr.fromStore.getUserProfile(state.app),
-    videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state.moves),
-    tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state.moves),
-    moveTags: MovesCtr.fromStore.getMoveTags(state.moves),
-    moveList: MovesCtr.fromStore.getSelectedMoveList(state.moves),
-    highlightedMoveSlugid: MovesCtr.fromStore.getHighlightedMoveSlugid(
-      state.moves
-    ),
-    voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state.app),
+    userProfile: AppCtr.fromStore.getUserProfile(state),
+    videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
+    tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state),
+    moveTags: MovesCtr.fromStore.getMoveTags(state),
+    moveList: MovesCtr.fromStore.getSelectedMoveList(state),
+    highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
+    voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state),
   }),
   {
     ...AppCtr.actions,

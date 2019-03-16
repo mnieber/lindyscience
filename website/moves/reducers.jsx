@@ -16,8 +16,6 @@ import type {
   VideoLinkT,
   MovePrivateDataByIdT,
 } from "moves/types";
-import type { UUID, TagT, TagMapT } from "app/types";
-import type { InputSelector } from "reselect";
 import {
   reduceMapToMap,
   getObjectValues,
@@ -27,23 +25,27 @@ import {
   insertIdsIntoList,
   splitIntoKeywords,
 } from "utils/utils";
-import { findMove } from "moves/utils";
+import { findMove, findMoveBySlugid } from "moves/utils";
+
+import type { UUID, TagT, TagMapT } from "app/types";
+import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 ///////////////////////////////////////////////////////////////////////
 // Private state helpers
 ///////////////////////////////////////////////////////////////////////
 
-const _stateMoves = (state: ReducerStateT): MovesState => state.moves;
-const _stateMoveLists = (state: ReducerStateT): MoveListsState =>
-  state.moveLists;
-const _stateTags = (state: ReducerStateT): TagsState => state.tags;
-const _stateTips = (state: ReducerStateT): TipsState => state.tips;
-const _stateVideoLinks = (state: ReducerStateT): VideoLinksState =>
-  state.videoLinks;
-const _stateMovePrivateDatas = (state: ReducerStateT): MovePrivateDatasState =>
-  state.movePrivateDatas;
-const _stateSelection = (state: ReducerStateT): SelectionState =>
-  state.selection;
+const _stateMoves = (state: RootReducerStateT): MovesState => state.moves.moves;
+const _stateMoveLists = (state: RootReducerStateT): MoveListsState =>
+  state.moves.moveLists;
+const _stateTags = (state: RootReducerStateT): TagsState => state.moves.tags;
+const _stateTips = (state: RootReducerStateT): TipsState => state.moves.tips;
+const _stateVideoLinks = (state: RootReducerStateT): VideoLinksState =>
+  state.moves.videoLinks;
+const _stateMovePrivateDatas = (
+  state: RootReducerStateT
+): MovePrivateDatasState => state.moves.movePrivateDatas;
+const _stateSelection = (state: RootReducerStateT): SelectionState =>
+  state.moves.selection;
 
 ///////////////////////////////////////////////////////////////////////
 // Selection
@@ -96,10 +98,17 @@ function _filterMoves(moves, tags, keywords) {
   return tags.length || keywords.length ? moves.filter(match) : moves;
 }
 
-export const getHighlightedMoveSlugid = (state: ReducerStateT) =>
-  state.selection.highlightedMoveSlugid;
-export const getSelectedMoveListUrl = (state: ReducerStateT) =>
-  state.selection.moveListUrl;
+export const getHighlightedMoveSlugid = (state: RootReducerStateT) =>
+  state.moves.selection.highlightedMoveSlugid;
+export const getSelectedMoveListUrl = (state: RootReducerStateT) =>
+  state.moves.selection.moveListUrl;
+
+export const getHighlightedMove = (state: RootReducerStateT) => {
+  return findMoveBySlugid(
+    getObjectValues(state.moves.moves),
+    state.moves.selection.highlightedMoveSlugid
+  );
+};
 
 ///////////////////////////////////////////////////////////////////////
 // Private data
@@ -341,8 +350,8 @@ export const getVideoLinksByMoveId: Selector<VideoLinksByIdT> = createSelector(
     });
   }
 );
-export function getVideoLinkById(state: ReducerStateT) {
-  return state.videoLinks;
+export function getVideoLinkById(state: RootReducerStateT) {
+  return state.moves.videoLinks;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -373,8 +382,8 @@ export function tipsReducer(state: TipsState = {}, action: any): TipsState {
   }
 }
 
-export function getTipById(state: ReducerStateT) {
-  return state.tips;
+export function getTipById(state: RootReducerStateT) {
+  return state.moves.tips;
 }
 export const getTipsByMoveId: Selector<TipsByIdT> = createSelector(
   [_stateMoves, _stateTips],
@@ -397,8 +406,6 @@ export type ReducerStateT = {
   tips: TipsState,
   tags: TagsState,
 };
-
-export type Selector<TResult> = InputSelector<ReducerStateT, void, TResult>;
 
 // $FlowFixMe
 export const reducer = combineReducers({

@@ -23,7 +23,7 @@ function _setUp() {
 
 test("test actSetMoveListFilter", function(t) {
   const { store } = _setUp();
-  store.dispatch(actions.actSelectMoveListByUrl("mnieber", "moves"));
+  store.dispatch(actions.actSetSelectedMoveListUrl("mnieber", "moves"));
   store.dispatch(actions.actSetHighlightedMoveBySlug("three-wall-swing-out"));
 
   t.equal(
@@ -82,11 +82,11 @@ test("test actInsertMoves", function(t) {
   t.end();
 });
 
-test("test actSelectMoveListByUrl", function(t) {
+test("test actSetSelectedMoveListUrl", function(t) {
   const { store } = _setUp();
 
-  store.dispatch(actions.actSelectMoveListByUrl("mnieber", "moves"));
-  const moveList = fromStore.getSelectedMoveList(store.getState().moves);
+  store.dispatch(actions.actSetSelectedMoveListUrl("mnieber", "moves"));
+  const moveList = fromStore.getSelectedMoveList(store.getState());
   t.equal(!!moveList && moveList.id, data.moveList1.id);
 
   t.end();

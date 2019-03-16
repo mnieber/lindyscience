@@ -4,44 +4,15 @@ import React from "react";
 import { AccountMenu } from "app/presentation/accountmenu";
 import { navigate } from "@reach/router";
 
-import MoveContainer from "moves/containers/index";
+import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
 
-import { getObjectValues, querySetListToDict } from "utils/utils";
+import { getObjectValues } from "utils/utils";
 import { createToastr } from "app/utils";
-import {
-  findMoveListByUrl,
-  newMoveListSlug,
-  makeMoveListUrl,
-} from "moves/utils";
+import { findMoveListByUrl } from "moves/utils";
 
-import {
-  MoveListCrudBvrsContext,
-  createMoveListCrudBvrs,
-} from "moves/containers/move_list_crud_behaviours";
-
-import type { UUID, UserProfileT } from "app/types";
+import type { UserProfileT } from "app/types";
 import type { MoveListT } from "moves/types";
-
-export function browseToMove(
-  moveUrlParts: Array<string>,
-  mustUpdateProfile: boolean = true
-) {
-  const moveUrl = moveUrlParts.filter(x => !!x).join("/");
-  if (mustUpdateProfile) {
-    AppCtr.api.updateProfile(moveUrl);
-  }
-  return navigate(`/app/list/${moveUrl}`);
-}
-
-function _setSelectedMoveListById(moveLists: Array<MoveListT>, id: UUID) {
-  const moveList = moveLists.find(x => x.id == id) || moveLists.find(x => true);
-
-  if (moveList) {
-    const updateProfile = moveList.slug != newMoveListSlug;
-    browseToMove([makeMoveListUrl(moveList)], updateProfile);
-  }
-}
 
 // AppFrame
 type AppFramePropsT = {
@@ -66,7 +37,7 @@ function AppFrame(props: AppFramePropsT) {
 
       const [email, moveLists] = await Promise.all([
         AppCtr.api.getEmail(),
-        MoveContainer.api.loadMoveLists(),
+        MovesCtr.api.loadMoveLists(),
       ]);
       if (email) {
         actions.actSetSignedInEmail(email);
@@ -81,7 +52,7 @@ function AppFrame(props: AppFramePropsT) {
       const [profile, votes, movePrivateDatas] = await Promise.all([
         AppCtr.api.loadUserProfile(),
         AppCtr.api.loadUserVotes(),
-        MoveContainer.api.loadMovePrivateDatas(),
+        MovesCtr.api.loadMovePrivateDatas(),
       ]);
       actions.actSetUserProfile(profile);
       actions.actSetVotes(votes);
@@ -102,7 +73,7 @@ function AppFrame(props: AppFramePropsT) {
 
       if (moveListInStore) {
         const [moveList] = await Promise.all([
-          MoveContainer.api.loadMoveList(moveListInStore.id),
+          MovesCtr.api.loadMoveList(moveListInStore.id),
         ]);
         actions.actAddMoves(getObjectValues(moveList.entities.moves || {}));
         actions.actAddMoveLists(moveList.entities.moveLists);
@@ -123,35 +94,6 @@ function AppFrame(props: AppFramePropsT) {
     _loadSelectedMoveList();
   }, [hasLoadedMoveLists, props.selectedMoveListUrl]);
 
-  const [nextSelectedMoveListId, setNextSelectedMoveListId] = React.useState(
-    null
-  );
-  React.useEffect(() => {
-    if (nextSelectedMoveListId != null) {
-      _setSelectedMoveListById(
-        moveListCrudBvrs.insertMoveListsBvr.preview,
-        nextSelectedMoveListId
-      );
-    }
-  }, [nextSelectedMoveListId]);
-
-  const moveListCrudBvrs = createMoveListCrudBvrs(
-    props.moveLists,
-    props.userProfile,
-    props.selectedMoveListUrl,
-    setNextSelectedMoveListId,
-    _updateMoveList,
-    actions.actInsertMoveLists
-  );
-
-  async function _updateMoveList(
-    oldMoveList: MoveListT,
-    newMoveList: MoveListT
-  ) {
-    actions.actAddMoveLists(querySetListToDict([newMoveList]));
-    await browseToMove([makeMoveListUrl(newMoveList)], true);
-  }
-
   return (
     <div className="appFrame px-4 flex flex-col">
       {createToastr()}
@@ -163,25 +105,21 @@ function AppFrame(props: AppFramePropsT) {
           signIn={() => navigate("/app/sign-in/")}
         />
       </div>
-      <MoveListCrudBvrsContext.Provider value={moveListCrudBvrs}>
-        {props.children}
-      </MoveListCrudBvrsContext.Provider>
+      {props.children}
     </div>
   );
 }
 
 // $FlowFixMe
-AppFrame = MoveContainer.connect(
+AppFrame = MovesCtr.connect(
   state => ({
-    moveLists: MoveContainer.fromStore.getMoveLists(state.moves),
-    userProfile: AppCtr.fromStore.getUserProfile(state.app),
-    signedInEmail: AppCtr.fromStore.getSignedInEmail(state.app),
-    selectedMoveListUrl: MoveContainer.fromStore.getSelectedMoveListUrl(
-      state.moves
-    ),
+    moveLists: MovesCtr.fromStore.getMoveLists(state),
+    userProfile: AppCtr.fromStore.getUserProfile(state),
+    signedInEmail: AppCtr.fromStore.getSignedInEmail(state),
+    selectedMoveListUrl: MovesCtr.fromStore.getSelectedMoveListUrl(state),
   }),
   {
-    ...MoveContainer.actions,
+    ...MovesCtr.actions,
     ...AppCtr.actions,
   }
 )(AppFrame);

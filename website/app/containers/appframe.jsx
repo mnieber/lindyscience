@@ -9,7 +9,7 @@ import AppCtr from "app/containers/index";
 
 import { getObjectValues } from "utils/utils";
 import { createToastr } from "app/utils";
-import { findMoveListByUrl } from "moves/utils";
+import { findMoveListByUrl, newMoveListSlug } from "moves/utils";
 
 import type { UserProfileT } from "app/types";
 import type { MoveListT } from "moves/types";
@@ -71,7 +71,7 @@ function AppFrame(props: AppFramePropsT) {
         props.selectedMoveListUrl
       );
 
-      if (moveListInStore) {
+      if (moveListInStore && moveListInStore.slug != newMoveListSlug) {
         const [moveList] = await Promise.all([
           MovesCtr.api.loadMoveList(moveListInStore.id),
         ]);

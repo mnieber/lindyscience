@@ -169,3 +169,17 @@ export function actAddMoves(moves: Array<MoveT>) {
     moves,
   };
 }
+
+export function actSetMovePayload(moves: Array<MoveT>) {
+  return {
+    type: "SET_MOVE_PAYLOAD",
+    moves,
+  };
+}
+
+export function actSetMoveListPayload(moveLists: Array<MoveListT>) {
+  return {
+    type: "SET_MOVE_LIST_PAYLOAD",
+    moveLists,
+  };
+}

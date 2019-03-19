@@ -7,6 +7,7 @@ import { compose } from "redux";
 import MovesCtr from "moves/containers/index";
 import { findTargetId, getPreview } from "moves/utils";
 import { createErrorHandler, getId } from "app/utils";
+import { querySetListToDict } from "utils/utils";
 
 import type { DataContainerT } from "moves/containers/data_container";
 import type { UUID } from "app/types";
@@ -18,22 +19,22 @@ export const withMoveListContainer = compose(
     state => ({
       moveListById: MovesCtr.fromStore.getMoveListById(state),
       moveLists: MovesCtr.fromStore.getMoveLists(state),
+      moveListPayload: MovesCtr.fromStore.getMoveListPayload(state),
     }),
     {
       actInsertMoveLists: MovesCtr.actions.actInsertMoveLists,
+      actSetMoveListPayload: MovesCtr.actions.actSetMoveListPayload,
     }
   ),
   (WrappedComponent: any) => (props: any) => {
     const {
-      moveListById,
       moveLists,
+      moveListPayload,
       actInsertMoveLists,
+      actSetMoveListPayload,
       ...passThroughProps
     } = props;
 
-    const [payloadIds: Array<UUID>, setPayloadIds: Function] = React.useState(
-      []
-    );
     const [targetItemId: UUID, setTargetItemId: Function] = React.useState("");
 
     function _insert(
@@ -53,18 +54,14 @@ export const withMoveListContainer = compose(
     }
 
     const _setPayload = (payload: Array<MoveListT>, targetItemId: UUID) => {
+      actSetMoveListPayload(payload);
       setTargetItemId(targetItemId);
-      setPayloadIds(payload.map(x => x.id));
     };
 
     const moveListContainer: DataContainerT<MoveListT> = {
       insert: _insert,
-      preview: getPreview<MoveListT>(
-        moveLists,
-        payloadIds.map(x => moveListById[x]),
-        targetItemId
-      ),
-      payloadIds,
+      preview: getPreview<MoveListT>(moveLists, moveListPayload, targetItemId),
+      payloadIds: moveListPayload.map(x => x.id),
       targetItemId,
       setPayload: _setPayload,
     };

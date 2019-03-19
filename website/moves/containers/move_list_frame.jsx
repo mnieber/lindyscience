@@ -114,7 +114,7 @@ function MoveListFrame(props: MoveListFramePropsT) {
       videoLinksByMoveId={props.videoLinksByMoveId}
       highlightedMove={props.highlightedMove}
       filterMoves={filterMoves}
-      selectMoveListById={navigationBvr.setNextSelectedMoveListId}
+      selectMoveListById={moveListCrudBvrs.newMoveListBvr.setHighlightedItemId}
     >
       <MoveListCrudBvrsContext.Provider value={moveListCrudBvrs}>
         <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>

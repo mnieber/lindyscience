@@ -56,6 +56,8 @@ type SelectionState = {
   moveListUrl: string,
   moveFilterTags: Array<TagT>,
   moveFilterKeywords: Array<string>,
+  movePayload: Array<MoveT>,
+  moveListPayload: Array<MoveListT>,
 };
 
 export function selectionReducer(
@@ -64,6 +66,8 @@ export function selectionReducer(
     moveListUrl: "",
     moveFilterTags: [],
     moveFilterKeywords: [],
+    movePayload: [],
+    moveListPayload: [],
   },
   action: any
 ): SelectionState {
@@ -78,6 +82,10 @@ export function selectionReducer(
         moveFilterTags: action.tags,
         moveFilterKeywords: action.keywords,
       };
+    case "SET_MOVE_PAYLOAD":
+      return { ...state, movePayload: action.moves };
+    case "SET_MOVE_LIST_PAYLOAD":
+      return { ...state, moveListPayload: action.moveLists };
     default:
       return state;
   }
@@ -102,13 +110,10 @@ export const getHighlightedMoveSlugid = (state: RootReducerStateT) =>
   state.moves.selection.highlightedMoveSlugid;
 export const getSelectedMoveListUrl = (state: RootReducerStateT) =>
   state.moves.selection.moveListUrl;
-
-export const getHighlightedMove = (state: RootReducerStateT) => {
-  return findMoveBySlugid(
-    getObjectValues(state.moves.moves),
-    state.moves.selection.highlightedMoveSlugid
-  );
-};
+export const getMovePayload = (state: RootReducerStateT) =>
+  state.moves.selection.movePayload;
+export const getMoveListPayload = (state: RootReducerStateT) =>
+  state.moves.selection.moveListPayload;
 
 ///////////////////////////////////////////////////////////////////////
 // Private data
@@ -158,11 +163,14 @@ export function movesReducer(state: MovesState = {}, action: any): MovesState {
 }
 
 export const getMoveById: Selector<MoveByIdT> = createSelector(
-  [_stateMoves, getPrivateDataByMoveId],
+  [_stateMoves, _stateSelection, getPrivateDataByMoveId],
 
-  (stateMoves, privateDataByMoveId): MoveByIdT => {
+  (stateMoves, stateSelection, privateDataByMoveId): MoveByIdT => {
     return reduceMapToMap<MoveByIdT>(
-      stateMoves,
+      {
+        ...stateMoves,
+        ...querySetListToDict(stateSelection.movePayload),
+      },
       (acc, id: UUID, move: MoveT) => {
         acc[id] = {
           ...move,
@@ -228,10 +236,13 @@ export function moveListsReducer(
 }
 
 export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
-  [_stateMoveLists],
+  [_stateMoveLists, _stateSelection],
 
-  (stateMoveLists): Array<MoveListT> => {
-    return getObjectValues(stateMoveLists);
+  (stateMoveLists, stateSelection): Array<MoveListT> => {
+    return getObjectValues({
+      ...stateMoveLists,
+      ...querySetListToDict(stateSelection.moveListPayload),
+    });
   }
 );
 export const getMoveListById = _stateMoveLists;
@@ -423,8 +434,9 @@ export const getSelectedMoveList: Selector<?MoveListT> = createSelector(
 
   (stateSelection, moveLists): ?MoveListT => {
     const [ownerUsername, slug] = stateSelection.moveListUrl.split("/");
-    return moveLists.find(
-      x => x.ownerUsername == ownerUsername && x.slug == slug
+    const isMatch = x => x.ownerUsername == ownerUsername && x.slug == slug;
+    return (
+      moveLists.find(isMatch) || stateSelection.moveListPayload.find(isMatch)
     );
   }
 );
@@ -448,5 +460,12 @@ export const getFilteredMovesInList: Selector<Array<MoveT>> = createSelector(
       stateSelection.moveFilterTags,
       stateSelection.moveFilterKeywords
     );
+  }
+);
+
+export const getHighlightedMove: Selector<MoveT> = createSelector(
+  [_stateSelection, getMoves],
+  (stateSelection, moves): MoveT => {
+    return findMoveBySlugid(moves, stateSelection.highlightedMoveSlugid);
   }
 );

@@ -42,7 +42,7 @@ type MoveListFramePropsT = {
   moveListSlug: string,
 };
 
-function MoveListFrame(props: MoveListFramePropsT) {
+function _MoveListFrame(props: MoveListFramePropsT) {
   const actions: any = props;
 
   const navigationBvr = useNavigation(
@@ -50,10 +50,6 @@ function MoveListFrame(props: MoveListFramePropsT) {
     props.moveLists,
     props.moveContainer.preview
   );
-
-  React.useEffect(() => {
-    actions.actSetSelectedMoveListUrl(props.ownerUsername, props.moveListSlug);
-  }, [props.ownerUsername, props.moveListSlug]);
 
   const highlightedMoveId = getId(props.highlightedMove);
   const selectedMoveListId = getId(props.moveList);
@@ -123,6 +119,15 @@ function MoveListFrame(props: MoveListFramePropsT) {
       </MoveListCrudBvrsContext.Provider>
     </Widgets.MoveListPanel>
   );
+}
+
+function MoveListFrame({ ownerUsername, moveListSlug, ...props }) {
+  const actions: any = props;
+  React.useEffect(() => {
+    actions.actSetSelectedMoveListUrl(ownerUsername, moveListSlug);
+  }, [props.ownerUsername, props.moveListSlug]);
+
+  return <_MoveListFrame {...props} />;
 }
 
 // $FlowFixMe

@@ -3,7 +3,7 @@
 import * as React from "react";
 import classnames from "classnames";
 import { Menu, Item, Separator, Submenu, MenuProvider } from "react-contexify";
-import { handleSelectionKeys, scrollIntoView } from "app/utils";
+import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
 import type { MoveT, VideoLinksByIdT } from "moves/types";
 import type { UUID } from "app/types";
 
@@ -116,9 +116,7 @@ export function MoveList(props: MoveListPropsT) {
 
   const draggingBvr: DraggingBvrT = useDragging();
   const handlers = createHandlers(draggingBvr, selectMoveById, props);
-  const highlightedMoveId = props.highlightedMove
-    ? props.highlightedMove.id
-    : "";
+  const highlightedMoveId = getId(props.highlightedMove);
 
   const moveNodes = props.moves.map((move, idx) => {
     const videoLinks = props.videoLinksByMoveId[move.id];

@@ -7,12 +7,13 @@ import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 import { withMovePrivateDataPanel } from "moves/containers/with_move_private_data_panel";
+import { withVideoLinksPanel } from "moves/containers/with_videolinks_panel";
+import { withTipsPanel } from "moves/containers/with_tips_panel";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 import { newMoveSlug } from "moves/utils";
-import { isOwner, createErrorHandler } from "app/utils";
-import { querySetListToDict } from "utils/utils";
+import { isOwner } from "app/utils";
 
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 
@@ -20,16 +21,16 @@ import type { UUID, UserProfileT, VoteByIdT, TagT, VoteT } from "app/types";
 import type {
   MoveListT,
   MoveT,
-  VideoLinkT,
   VideoLinksByIdT,
-  TipT,
   TipsByIdT,
   MoveCrudBvrsT,
-  MovePrivateDataT,
 } from "moves/types";
 
 type MovePagePropsT = {
   movePrivateDataPanel: any,
+  tipsPanel: any,
+  videoLinksPanel: any,
+  videoLinksByMoveId: VideoLinksByIdT,
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
   tipsByMoveId: TipsByIdT,
@@ -97,54 +98,6 @@ function OwnMove(props: _MovePagePropsT) {
       </div>
     );
   } else {
-    const saveVideoLink = (videoLink: VideoLinkT) => {
-      actions.actAddVideoLinks(querySetListToDict([videoLink]));
-      let response = MovesCtr.api.saveVideoLink(move.id, videoLink);
-      response.catch(createErrorHandler("We could not save the video link"));
-    };
-
-    const voteVideoLink = (id: UUID, vote: VoteT) => {
-      actions.actCastVote(id, vote);
-      AppCtr.api
-        .voteVideoLink(id, vote)
-        .catch(createErrorHandler("We could not save your vote"));
-    };
-
-    const videoLinksPanel = (
-      <Widgets.VideoLinksPanel
-        moveId={move.id}
-        userProfile={props.userProfile}
-        videoLinks={props.videoLinksByMoveId[move.id]}
-        voteByObjectId={props.voteByObjectId}
-        saveVideoLink={saveVideoLink}
-        voteVideoLink={voteVideoLink}
-      />
-    );
-
-    const saveTip = (tip: TipT) => {
-      actions.actAddTips(querySetListToDict([tip]));
-      let response = MovesCtr.api.saveTip(move.id, tip);
-      response.catch(createErrorHandler("We could not save the tip"));
-    };
-
-    const voteTip = (id: UUID, vote: VoteT) => {
-      actions.actCastVote(id, vote);
-      AppCtr.api
-        .voteTip(id, vote)
-        .catch(createErrorHandler("We could not save your vote"));
-    };
-
-    const tipsPanel = (
-      <Widgets.TipsPanel
-        moveId={move.id}
-        userProfile={props.userProfile}
-        tips={props.tipsByMoveId[move.id]}
-        voteByObjectId={props.voteByObjectId}
-        saveTip={saveTip}
-        voteTip={voteTip}
-      />
-    );
-
     const editMoveBtn = (
       <div
         className={"move__editBtn button button--wide ml-2"}
@@ -162,8 +115,8 @@ function OwnMove(props: _MovePagePropsT) {
         moveList={props.moveList}
         moveTags={props.moveTags}
         buttons={[editMoveBtn]}
-        videoLinksPanel={videoLinksPanel}
-        tipsPanel={tipsPanel}
+        videoLinksPanel={props.videoLinksPanel}
+        tipsPanel={props.tipsPanel}
         movePrivateDataPanel={props.movePrivateDataPanel}
       />
     );
@@ -205,6 +158,8 @@ export function MovePage(props: MovePagePropsT) {
 
 // $FlowFixMe
 MovePage = compose(
+  withTipsPanel,
+  withVideoLinksPanel,
   withMovePrivateDataPanel,
   MovesCtr.connect(
     state => ({

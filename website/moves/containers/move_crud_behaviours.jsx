@@ -27,6 +27,18 @@ import type {
 // $FlowFixMe
 export const MoveCrudBvrsContext = React.createContext({});
 
+export const withMoveCrudBvrsContext = (WrappedComponent: any) => (
+  props: any
+) => {
+  return (
+    <MoveCrudBvrsContext.Consumer>
+      {moveCrudBvrs => (
+        <WrappedComponent {...props} moveCrudBvrs={moveCrudBvrs} />
+      )}
+    </MoveCrudBvrsContext.Consumer>
+  );
+};
+
 export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
   if (!userProfile) {
     return null;

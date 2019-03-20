@@ -86,7 +86,7 @@ function MoveListFrame({ ownerUsername, moveListSlug, ...props }) {
   const actions: any = props;
   React.useEffect(() => {
     actions.actSetSelectedMoveListUrl(ownerUsername, moveListSlug);
-  }, [props.ownerUsername, props.moveListSlug]);
+  }, [ownerUsername, moveListSlug]);
 
   return <_MoveListFrame {...props} />;
 }

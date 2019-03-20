@@ -143,7 +143,13 @@ export function MoveList(props: MoveListPropsT) {
         id={move.id}
         key={idx}
         onMouseDown={e => {
-          if (e.button == 0) {
+          if (
+            e.button == 0 ||
+            !(
+              props.selectedMoveIds.length &&
+              props.selectedMoveIds.includes(move.id)
+            )
+          ) {
             selectMoveById(move.id, e.shiftKey, e.ctrlKey);
           }
         }}

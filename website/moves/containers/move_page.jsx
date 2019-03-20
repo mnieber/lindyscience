@@ -1,10 +1,12 @@
 // @flow
 
 import * as React from "react";
+import { compose } from "redux";
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
+import { withMovePrivateDataPanel } from "moves/containers/with_move_private_data_panel";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
@@ -26,34 +28,8 @@ import type {
   MovePrivateDataT,
 } from "moves/types";
 
-function _createMovePrivateDataPanel(move: MoveT, actions: any) {
-  const _onSave = values => {
-    const movePrivateData = {
-      id: uuidv4(),
-      moveId: move.id,
-      ...move.privateData,
-      ...values,
-    };
-
-    actions.actAddMovePrivateDatas([movePrivateData]);
-    MovesCtr.api
-      .saveMovePrivateData(movePrivateData)
-      .catch(
-        createErrorHandler(
-          "We could not update your private data for this move"
-        )
-      );
-  };
-
-  return (
-    <Widgets.MovePrivateDataPanel
-      movePrivateData={move.privateData}
-      onSave={_onSave}
-    />
-  );
-}
-
 type MovePagePropsT = {
+  movePrivateDataPanel: any,
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
   tipsByMoveId: TipsByIdT,
@@ -98,7 +74,7 @@ function StaticMove(props: _MovePagePropsT) {
       tipsPanel={tipsPanel}
       videoLinksPanel={videoLinksPanel}
       videoLinks={props.videoLinksByMoveId[move.id]}
-      movePrivateDataPanel={_createMovePrivateDataPanel(move, actions)}
+      movePrivateDataPanel={props.movePrivateDataPanel}
     />
   );
 }
@@ -188,7 +164,7 @@ function OwnMove(props: _MovePagePropsT) {
         buttons={[editMoveBtn]}
         videoLinksPanel={videoLinksPanel}
         tipsPanel={tipsPanel}
-        movePrivateDataPanel={_createMovePrivateDataPanel(move, actions)}
+        movePrivateDataPanel={props.movePrivateDataPanel}
       />
     );
   }
@@ -228,20 +204,23 @@ export function MovePage(props: MovePagePropsT) {
 }
 
 // $FlowFixMe
-MovePage = MovesCtr.connect(
-  state => ({
-    userProfile: AppCtr.fromStore.getUserProfile(state),
-    videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
-    tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state),
-    moveTags: MovesCtr.fromStore.getMoveTags(state),
-    moveList: MovesCtr.fromStore.getSelectedMoveList(state),
-    highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
-    voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state),
-  }),
-  {
-    ...AppCtr.actions,
-    ...MovesCtr.actions,
-  }
+MovePage = compose(
+  withMovePrivateDataPanel,
+  MovesCtr.connect(
+    state => ({
+      userProfile: AppCtr.fromStore.getUserProfile(state),
+      videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
+      tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state),
+      moveTags: MovesCtr.fromStore.getMoveTags(state),
+      moveList: MovesCtr.fromStore.getSelectedMoveList(state),
+      highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
+      voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state),
+    }),
+    {
+      ...AppCtr.actions,
+      ...MovesCtr.actions,
+    }
+  )
 )(MovePage);
 
 export default MovePage;

@@ -29,7 +29,7 @@ function AppFrame(props: AppFramePropsT) {
 
   const [hasLoadedMoveLists, setHasLoadedMoveLists] = React.useState(null);
   const [loadedEmail, setLoadedEmail] = React.useState("");
-  const [loadedMoveListUrl, setLoadedMoveListUrl] = React.useState("");
+  const [loadedMoveListUrls, setLoadedMoveListUrls] = React.useState([]);
 
   async function _loadMoveListsAndEmail() {
     if (hasLoadedMoveLists === null) {
@@ -65,7 +65,10 @@ function AppFrame(props: AppFramePropsT) {
   }
 
   async function _loadSelectedMoveList() {
-    if (hasLoadedMoveLists && loadedMoveListUrl != props.selectedMoveListUrl) {
+    if (
+      hasLoadedMoveLists &&
+      !loadedMoveListUrls.includes(props.selectedMoveListUrl)
+    ) {
       const moveListInStore = findMoveListByUrl(
         props.moveLists,
         props.selectedMoveListUrl
@@ -79,7 +82,10 @@ function AppFrame(props: AppFramePropsT) {
         actions.actAddMoveLists(moveList.entities.moveLists);
         actions.actAddVideoLinks(moveList.entities.videoLinks || {});
         actions.actAddTips(moveList.entities.tips || {});
-        setLoadedMoveListUrl(props.selectedMoveListUrl);
+        setLoadedMoveListUrls([
+          ...loadedMoveListUrls,
+          props.selectedMoveListUrl,
+        ]);
       }
     }
   }

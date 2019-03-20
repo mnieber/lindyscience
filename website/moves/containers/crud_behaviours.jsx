@@ -17,6 +17,7 @@ export type InsertItemsBvrT<ItemT> = {|
     targetItemId: UUID,
     isBefore: boolean
   ) => void,
+  preview: Array<ItemT>,
 |};
 
 export function useInsertItems<ItemT: ObjectT>(
@@ -39,6 +40,7 @@ export function useInsertItems<ItemT: ObjectT>(
     prepare: dataContainer.setPayload,
     finalize,
     insertDirectly: dataContainer.insert,
+    preview: dataContainer.preview,
   };
 }
 

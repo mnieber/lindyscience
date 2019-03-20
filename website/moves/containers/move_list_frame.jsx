@@ -1,37 +1,40 @@
 // @flow
 
 import * as React from "react";
+import { compose } from "redux";
 import MovesCtr from "moves/containers/index";
-import { withMoveContainer } from "moves/containers/with_move_container";
-import { withMoveListContainer } from "moves/containers/with_move_list_container";
 import AppCtr, { browseToMove } from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
 import { makeMoveListUrl } from "moves/utils";
-import { getId } from "app/utils";
 
-import { useSelectItems } from "moves/containers/move_selection_behaviours";
-import { useMoveClipboard } from "moves/containers/move_clipboard_behaviours";
-import { createMoveCrudBvrs } from "moves/containers/move_crud_behaviours";
-import { createMoveListCrudBvrs } from "moves/containers/move_list_crud_behaviours";
-import { useNavigation } from "app/containers/navigation_bvr";
-
+import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 import { MoveListCrudBvrsContext } from "moves/containers/move_list_crud_behaviours";
 
-import type { MoveListT, VideoLinksByIdT, MoveT } from "moves/types";
-import type { UUID, UserProfileT, SlugidT, TagT } from "app/types";
-import type { DataContainerT } from "moves/containers/data_container"; // TODO
+import type {
+  MoveListT,
+  VideoLinksByIdT,
+  MoveT,
+  MoveCrudBvrsT,
+  MoveListCrudBvrsT,
+} from "moves/types";
+import type { UUID, UserProfileT, TagT } from "app/types";
 import type { NavigationBvrT } from "app/containers/navigation_bvr";
+import type { SelectMovesBvrT } from "moves/containers/with_move_list_frame_bvrs";
+import type { MoveClipboardBvrT } from "moves/containers/move_clipboard_behaviours";
 
 // MoveListFrame
 
 type MoveListFramePropsT = {
   userProfile: UserProfileT,
-  moveContainer: DataContainerT<MoveT>,
-  moveListContainer: DataContainerT<MoveListT>,
   videoLinksByMoveId: VideoLinksByIdT,
+  navigationBvr: NavigationBvrT,
+  moveCrudBvrs: MoveCrudBvrsT,
+  moveListCrudBvrs: MoveListCrudBvrsT,
+  selectMovesBvr: SelectMovesBvrT,
+  moveClipboardBvr: MoveClipboardBvrT,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
   highlightedMove: ?MoveT,
@@ -45,25 +48,6 @@ type MoveListFramePropsT = {
 function _MoveListFrame(props: MoveListFramePropsT) {
   const actions: any = props;
 
-  const navigationBvr = useNavigation(
-    props.moveList,
-    props.moveLists,
-    props.moveContainer.preview
-  );
-
-  const highlightedMoveId = getId(props.highlightedMove);
-  const selectedMoveListId = getId(props.moveList);
-
-  const moveCrudBvrs = createMoveCrudBvrs(
-    props.moveList,
-    props.userProfile,
-    highlightedMoveId,
-    navigationBvr.setNextHighlightedMoveId,
-    props.moveContainer,
-    navigationBvr.browseToMove,
-    actions.actAddMoves
-  );
-
   const filterMoves = (tags, keywords) => {
     const slugid = actions.actSetMoveListFilter(tags, keywords);
     if (props.moveList && slugid) {
@@ -71,49 +55,26 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     }
   };
 
-  // TODO: when clicking to highlight something, we should also select it...
-
-  const selectMovesBvr = useSelectItems<MoveT>(
-    props.moveContainer.preview,
-    highlightedMoveId,
-    moveCrudBvrs.newMoveBvr.setHighlightedItemId
-  );
-
-  const moveClipboardBvr = useMoveClipboard(
-    props.moveLists,
-    selectMovesBvr.selectedItems.map(x => x.id),
-    highlightedMoveId,
-    moveCrudBvrs.newMoveBvr.setHighlightedItemId,
-    actions.actInsertMoves,
-    actions.actRemoveMoves
-  );
-
-  const moveListCrudBvrs = createMoveListCrudBvrs(
-    props.userProfile,
-    props.moveListContainer,
-    selectedMoveListId,
-    navigationBvr.setNextSelectedMoveListId,
-    actions.actAddMoveLists
-  );
-
   return (
     <Widgets.MoveListPanel
       userProfile={props.userProfile}
       moveList={props.moveList}
-      moves={props.moveContainer.preview}
-      moveCrudBvrs={moveCrudBvrs}
+      moves={props.moveCrudBvrs.insertMovesBvr.preview}
+      moveCrudBvrs={props.moveCrudBvrs}
       moveLists={props.moveLists}
-      moveListCrudBvrs={moveListCrudBvrs}
-      moveClipboardBvr={moveClipboardBvr}
-      selectMovesBvr={selectMovesBvr}
+      moveListCrudBvrs={props.moveListCrudBvrs}
+      moveClipboardBvr={props.moveClipboardBvr}
+      selectMovesBvr={props.selectMovesBvr}
       moveTags={props.moveTags}
       videoLinksByMoveId={props.videoLinksByMoveId}
       highlightedMove={props.highlightedMove}
       filterMoves={filterMoves}
-      selectMoveListById={moveListCrudBvrs.newMoveListBvr.setHighlightedItemId}
+      selectMoveListById={
+        props.moveListCrudBvrs.newMoveListBvr.setHighlightedItemId
+      }
     >
-      <MoveListCrudBvrsContext.Provider value={moveListCrudBvrs}>
-        <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>
+      <MoveListCrudBvrsContext.Provider value={props.moveListCrudBvrs}>
+        <MoveCrudBvrsContext.Provider value={props.moveCrudBvrs}>
           {props.children}
         </MoveCrudBvrsContext.Provider>
       </MoveListCrudBvrsContext.Provider>
@@ -131,24 +92,23 @@ function MoveListFrame({ ownerUsername, moveListSlug, ...props }) {
 }
 
 // $FlowFixMe
-MoveListFrame = withMoveListContainer(
-  withMoveContainer(
-    MovesCtr.connect(
-      state => ({
-        userProfile: AppCtr.fromStore.getUserProfile(state),
-        videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
-        moves: MovesCtr.fromStore.getFilteredMovesInList(state),
-        moveTags: MovesCtr.fromStore.getMoveTags(state),
-        moveLists: MovesCtr.fromStore.getMoveLists(state),
-        highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
-        moveList: MovesCtr.fromStore.getSelectedMoveList(state),
-      }),
-      {
-        ...AppCtr.actions,
-        ...MovesCtr.actions,
-      }
-    )(MoveListFrame)
+MoveListFrame = compose(
+  withMoveListFrameBvrs,
+  MovesCtr.connect(
+    state => ({
+      userProfile: AppCtr.fromStore.getUserProfile(state),
+      videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
+      moves: MovesCtr.fromStore.getFilteredMovesInList(state),
+      moveTags: MovesCtr.fromStore.getMoveTags(state),
+      moveLists: MovesCtr.fromStore.getMoveLists(state),
+      highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
+      moveList: MovesCtr.fromStore.getSelectedMoveList(state),
+    }),
+    {
+      ...AppCtr.actions,
+      ...MovesCtr.actions,
+    }
   )
-);
+)(MoveListFrame);
 
 export default MoveListFrame;

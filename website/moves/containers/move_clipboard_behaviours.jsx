@@ -27,7 +27,7 @@ export function useMoveClipboard(
     targetMoveId: UUID
   ) => Array<UUID>,
   actRemoveMoves: (moveIds: Array<UUID>, moveList: UUID) => Array<UUID>
-) {
+): MoveClipboardBvrT {
   function isTarget(moveList: MoveListT): boolean {
     return selectedMoveIds.some(moveId => !moveList.moves.includes(moveId));
   }

@@ -71,7 +71,10 @@ type _MovePagePropsT = MovePagePropsT & {
   moveCrudBvrs: MoveCrudBvrsT,
 };
 
-function _createStaticMove(move: MoveT, props: _MovePagePropsT, actions: any) {
+function StaticMove(props: _MovePagePropsT) {
+  const actions: any = props;
+  const move = props.highlightedMove;
+
   const tipsPanel = (
     <Widgets.StaticTipsPanel
       tips={props.tipsByMoveId[move.id]}
@@ -100,21 +103,19 @@ function _createStaticMove(move: MoveT, props: _MovePagePropsT, actions: any) {
   );
 }
 
-function _createOwnMove(
-  move: MoveT,
-  props: _MovePagePropsT,
-  bvrs: MoveCrudBvrsT,
-  actions: any
-) {
-  if (bvrs.isEditing) {
+function OwnMove(props: _MovePagePropsT) {
+  const actions: any = props;
+  const move = props.highlightedMove;
+
+  if (props.moveCrudBvrs.isEditing) {
     return (
       <div>
         <Widgets.MoveForm
           userProfile={props.userProfile}
           autoFocus={true}
           move={move}
-          onSubmit={bvrs.saveMoveBvr.saveItem}
-          onCancel={bvrs.saveMoveBvr.discardChanges}
+          onSubmit={props.moveCrudBvrs.saveMoveBvr.saveItem}
+          onCancel={props.moveCrudBvrs.saveMoveBvr.discardChanges}
           knownTags={props.moveTags}
         />
       </div>
@@ -171,7 +172,7 @@ function _createOwnMove(
     const editMoveBtn = (
       <div
         className={"move__editBtn button button--wide ml-2"}
-        onClick={() => bvrs.setIsEditing(true)}
+        onClick={() => props.moveCrudBvrs.setIsEditing(true)}
         key={1}
       >
         Edit move
@@ -214,8 +215,8 @@ function _MovePage(props: _MovePagePropsT) {
   }
 
   return isOwner(props.userProfile, props.highlightedMove.ownerId)
-    ? _createOwnMove(props.highlightedMove, props, props.moveCrudBvrs, actions)
-    : _createStaticMove(props.highlightedMove, props, actions);
+    ? OwnMove(props)
+    : StaticMove(props);
 }
 
 export function MovePage(props: MovePagePropsT) {

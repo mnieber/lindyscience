@@ -5,7 +5,6 @@ import * as React from "react";
 import { Move } from "moves/presentation/move";
 import { TipsPanel } from "moves/presentation/tips_panel";
 import { MoveList } from "moves/presentation/movelist";
-import { StaticMoveList } from "moves/presentation/static_movelist";
 import { MoveForm } from "moves/presentation/move_form";
 import { MoveContextMenu } from "moves/presentation/move_context_menu";
 import { MoveListForm } from "moves/presentation/move_list_form";
@@ -25,7 +24,6 @@ const Widgets = {
   Move,
   TipsPanel,
   MoveList,
-  StaticMoveList,
   MoveForm,
   MoveContextMenu,
   MoveListForm,

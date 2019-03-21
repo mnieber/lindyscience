@@ -33,34 +33,17 @@ function useDragging(): DraggingBvrT {
   };
 }
 
-type HandlersT = {|
-  handleKeyDown: Function,
+type DragHandlersT = {|
   handleDragStart: Function,
   handleDrop: Function,
   handleDragOver: Function,
   handleDragEnd: Function,
 |};
 
-function createHandlers(
+function createDragHandlers(
   draggingBvr: DraggingBvrT,
-  selectMoveById: (UUID, boolean, boolean) => void,
   props: MoveListPropsT
-): HandlersT {
-  function handleKeyDown(e) {
-    if (props.highlightedMove) {
-      e.target.id == "moveList" &&
-        handleSelectionKeys(
-          e,
-          "moveList",
-          props.moves,
-          props.highlightedMove.id,
-          // TODO support shift selection with keyboard (e.shiftKey)
-          // Note: in that case, anchor != highlight
-          id => selectMoveById(id, false, false)
-        );
-    }
-  }
-
+): DragHandlersT {
   function handleDragStart(sourceMoveId) {
     draggingBvr.setDragSourceMoveId(sourceMoveId);
   }
@@ -87,7 +70,6 @@ function createHandlers(
   }
 
   return {
-    handleKeyDown,
     handleDragStart,
     handleDrop,
     handleDragOver,
@@ -95,7 +77,35 @@ function createHandlers(
   };
 }
 
+type KeyHandlersT = {|
+  handleKeyDown: Function,
+|};
+
+function createKeyHandlers(
+  selectMoveById: (UUID, boolean, boolean) => void,
+  props: MoveListPropsT
+): KeyHandlersT {
+  function handleKeyDown(e) {
+    if (props.highlightedMove) {
+      e.target.id == "moveList" &&
+        handleSelectionKeys(
+          e,
+          props.moves,
+          props.highlightedMove.id,
+          // TODO support shift selection with keyboard (e.shiftKey)
+          // Note: in that case, anchor != highlight
+          id => selectMoveById(id, false, false)
+        );
+    }
+  }
+
+  return {
+    handleKeyDown,
+  };
+}
+
 type MoveListPropsT = {|
+  isOwner: boolean,
   moves: Array<MoveT>,
   videoLinksByMoveId: VideoLinksByIdT,
   selectedMoveIds: Array<UUID>,
@@ -116,7 +126,10 @@ export function MoveList(props: MoveListPropsT) {
   };
 
   const draggingBvr: DraggingBvrT = useDragging();
-  const handlers = createHandlers(draggingBvr, selectMoveById, props);
+  const dragHandlers = props.isOwner
+    ? createDragHandlers(draggingBvr, props)
+    : undefined;
+  const keyHandlers = createKeyHandlers(selectMoveById, props);
   const highlightedMoveId = getId(props.highlightedMove);
 
   const moveNodes = props.moves.map((move, idx) => {
@@ -155,11 +168,13 @@ export function MoveList(props: MoveListPropsT) {
           }
         }}
         draggable={true}
-        onDragStart={e => handlers.handleDragStart(move.id)}
-        onDragOver={e => handlers.handleDragOver(e, move.id)}
-        onDragEnd={e => handlers.handleDragEnd(e, move.id)}
+        onDragStart={e => dragHandlers && dragHandlers.handleDragStart(move.id)}
+        onDragOver={e =>
+          dragHandlers && dragHandlers.handleDragOver(e, move.id)
+        }
+        onDragEnd={e => dragHandlers && dragHandlers.handleDragEnd(e, move.id)}
         onDrop={e => {
-          handlers.handleDrop(move.id);
+          dragHandlers && dragHandlers.handleDrop(move.id);
         }}
       >
         {move.name}
@@ -174,7 +189,7 @@ export function MoveList(props: MoveListPropsT) {
       ref={props.refs.moveListRef}
       id="moveList"
       tabIndex={123}
-      onKeyDown={handlers.handleKeyDown}
+      onKeyDown={keyHandlers.handleKeyDown}
     >
       <MenuProvider id="moveContextMenu">{moveNodes}</MenuProvider>
       {props.moveContextMenu}

@@ -122,10 +122,13 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
+  const isOwner = !!props.moveList && userId == props.moveList.ownerId;
+
   const moveList = (
     <Widgets.MoveList
       refs={refs}
       className=""
+      isOwner={isOwner}
       videoLinksByMoveId={props.videoLinksByMoveId}
       selectMoveById={props.selectMovesBvr.select}
       moves={props.moves}
@@ -135,19 +138,6 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
       moveContextMenu={moveContextMenu}
     />
   );
-
-  const staticMoveList = (
-    <Widgets.StaticMoveList
-      refs={refs}
-      moves={props.moves}
-      videoLinksByMoveId={props.videoLinksByMoveId}
-      highlightedMove={props.highlightedMove}
-      setHighlightedMoveId={props.moveCrudBvrs.newMoveBvr.setHighlightedItemId}
-      className=""
-    />
-  );
-
-  const showStatic = !(props.moveList && userId == props.moveList.ownerId);
 
   const newMoveListBtn = (
     <div
@@ -166,12 +156,11 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   return (
     <div className="moveListPanel flexrow" onKeyDown={handlers.onKeyDown}>
       <div className="moveListPanel__inner w-1/5 flexcol">
-        {!showStatic && buttonsDiv}
+        {isOwner && buttonsDiv}
         {moveListPicker}
-        {!showStatic && moveListHeader}
+        {isOwner && moveListHeader}
         {moveListFilter}
-        {!showStatic && moveList}
-        {showStatic && staticMoveList}
+        {moveList}
       </div>
       <div className="movePanel pl-4 w-4/5">{props.children}</div>
     </div>

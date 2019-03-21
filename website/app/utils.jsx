@@ -47,15 +47,10 @@ export function pickNeighbour(
 
 export function handleSelectionKeys(
   e: any,
-  targetId: UUID,
   allItems: Array<any>,
   selectedItemId: UUID,
   selectItemById: (id: UUID) => void
 ) {
-  if (targetId && e.target.id !== targetId) {
-    return false;
-  }
-
   const up = 38;
   const down = 40;
   if ([up, down].indexOf(e.keyCode) > -1) {

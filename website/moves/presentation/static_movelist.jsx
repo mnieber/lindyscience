@@ -32,13 +32,13 @@ function createHandlers(
 ): HandlersT {
   function handleKeyDown(e) {
     if (props.highlightedMove) {
-      handleSelectionKeys(
-        e,
-        "moveList",
-        props.moves,
-        props.highlightedMove.id,
-        otherBvr.setHighlightedMoveIdAndScroll
-      );
+      e.target.id == "moveList" &&
+        handleSelectionKeys(
+          e,
+          props.moves,
+          props.highlightedMove.id,
+          otherBvr.setHighlightedMoveIdAndScroll
+        );
     }
   }
 

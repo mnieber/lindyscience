@@ -48,15 +48,16 @@ function createHandlers(
 ): HandlersT {
   function handleKeyDown(e) {
     if (props.highlightedMove) {
-      handleSelectionKeys(
-        e,
-        "moveList",
-        props.moves,
-        props.highlightedMove.id,
-        // TODO support shift selection with keyboard (e.shiftKey)
-        // Note: in that case, anchor != highlight
-        id => selectMoveById(id, false, false)
-      );
+      e.target.id == "moveList" &&
+        handleSelectionKeys(
+          e,
+          "moveList",
+          props.moves,
+          props.highlightedMove.id,
+          // TODO support shift selection with keyboard (e.shiftKey)
+          // Note: in that case, anchor != highlight
+          id => selectMoveById(id, false, false)
+        );
     }
   }
 

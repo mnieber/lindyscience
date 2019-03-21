@@ -35,8 +35,8 @@ type MovePagePropsT = {
   highlightedMove: MoveT,
   actions: any,
   // the follower are inserted by the router
-  moveSlug: string,
-  moveId: ?UUID,
+  moveSlugPrm: string,
+  moveIdPrm: ?UUID,
 };
 
 function MovePage(props: MovePagePropsT) {
@@ -45,13 +45,13 @@ function MovePage(props: MovePagePropsT) {
   React.useEffect(() => {
     if (
       props.userProfile &&
-      props.moveSlug == newMoveSlug &&
+      props.moveSlugPrm == newMoveSlug &&
       !props.moveCrudBvrs.newMoveBvr.newItem
     ) {
       props.moveCrudBvrs.newMoveBvr.addNewItem();
     }
-    actions.actSetHighlightedMoveBySlug(props.moveSlug, props.moveId);
-  }, [props.moveSlug, props.moveId, props.userProfile]);
+    actions.actSetHighlightedMoveBySlug(props.moveSlugPrm, props.moveIdPrm);
+  }, [props.moveSlugPrm, props.moveIdPrm, props.userProfile]);
 
   if (!props.highlightedMove) {
     return (

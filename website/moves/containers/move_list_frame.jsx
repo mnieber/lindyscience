@@ -43,8 +43,8 @@ type MoveListFramePropsT = {
   moveList: ?MoveListT,
   children: any,
   // receive any actions as well
-  ownerUsername: string,
-  moveListSlug: string,
+  ownerUsernamePrm: string,
+  moveListSlugPrm: string,
 };
 
 function _MoveListFrame(props: MoveListFramePropsT) {
@@ -116,11 +116,11 @@ function _MoveListFrame(props: MoveListFramePropsT) {
   );
 }
 
-function MoveListFrame({ ownerUsername, moveListSlug, ...props }) {
+function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
   const actions: any = props;
   React.useEffect(() => {
-    actions.actSetSelectedMoveListUrl(ownerUsername, moveListSlug);
-  }, [ownerUsername, moveListSlug]);
+    actions.actSetSelectedMoveListUrl(ownerUsernamePrm, moveListSlugPrm);
+  }, [ownerUsernamePrm, moveListSlugPrm]);
 
   return <_MoveListFrame {...props} />;
 }

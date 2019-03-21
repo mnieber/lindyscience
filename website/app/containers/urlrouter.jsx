@@ -38,10 +38,10 @@ function UrlRouter(props: UrlRouterPropsT) {
     <Router primary={false} id="reachRouter">
       <AppFrame path="/app">
         <IndexPage path="/list" userProfile={props.userProfile} />
-        <MoveListFrame path="/list/:ownerUsername/:moveListSlug">
+        <MoveListFrame path="/list/:ownerUsernamePrm/:moveListSlugPrm">
           <MoveListDetailsPage path="/" />
-          <MovePage path=":moveSlug" />
-          <MovePage path=":moveSlug/:moveId" />
+          <MovePage path=":moveSlugPrm" />
+          <MovePage path=":moveSlugPrm/:moveIdPrm" />
         </MoveListFrame>
         <SignInPage path="/sign-in/" />
       </AppFrame>

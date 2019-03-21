@@ -60,7 +60,7 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   const moveListPicker = (
     <Widgets.MoveListPicker
       className="mb-4"
-      moveLists={props.moveLists}
+      moveLists={props.moveListCrudBvrs.insertMoveListsBvr.preview}
       defaultMoveListId={props.moveList ? props.moveList.id : ""}
       selectMoveListById={props.selectMoveListById}
     />
@@ -130,7 +130,7 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   return (
     <div className="moveListPanel flexrow">
       <div className="moveListPanel__inner w-1/5 flexcol">
-        {isOwner && buttonsDiv}
+        {buttonsDiv}
         {moveListPicker}
         {isOwner && moveListHeader}
         {moveListFilter}

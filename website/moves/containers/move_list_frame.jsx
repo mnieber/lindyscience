@@ -8,7 +8,7 @@ import AppCtr, { browseToMove } from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
-import { makeMoveListUrl } from "moves/utils";
+import { makeMoveListUrl, newMoveListSlug } from "moves/utils";
 import { pickNeighbour, scrollIntoView, getId } from "app/utils";
 
 import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
@@ -119,8 +119,15 @@ function _MoveListFrame(props: MoveListFramePropsT) {
 function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
   const actions: any = props;
   React.useEffect(() => {
+    if (
+      props.userProfile &&
+      moveListSlugPrm == newMoveListSlug &&
+      !props.moveListCrudBvrs.newMoveListBvr.newItem
+    ) {
+      props.moveListCrudBvrs.newMoveListBvr.addNewItem();
+    }
     actions.actSetSelectedMoveListUrl(ownerUsernamePrm, moveListSlugPrm);
-  }, [ownerUsernamePrm, moveListSlugPrm]);
+  }, [!!props.userProfile, ownerUsernamePrm, moveListSlugPrm]);
 
   return <_MoveListFrame {...props} />;
 }

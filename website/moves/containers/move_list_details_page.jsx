@@ -65,7 +65,7 @@ function _createOwnMoveListDetails(
 
   return (
     <div>
-      {editBtn}
+      {!props.moveListCrudBvrs.isEditing && editBtn}
       {div}
     </div>
   );

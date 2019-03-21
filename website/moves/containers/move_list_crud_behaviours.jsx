@@ -136,10 +136,10 @@ export function createMoveListCrudBvrs(
     newMoveList: MoveListT
   ) {
     actAddMoveLists(querySetListToDict([newMoveList]));
+    await browseToMove([makeMoveListUrl(newMoveList)], true);
     await api
       .saveMoveList(newMoveList)
       .catch(createErrorHandler("We could not save the movelist"));
-    browseToMove([makeMoveListUrl(newMoveList)], true);
   }
 
   const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(

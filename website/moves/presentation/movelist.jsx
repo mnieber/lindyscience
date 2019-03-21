@@ -4,6 +4,7 @@ import * as React from "react";
 import classnames from "classnames";
 import { Menu, Item, Separator, Submenu, MenuProvider } from "react-contexify";
 import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 import type { MoveT, VideoLinksByIdT } from "moves/types";
 import type { UUID } from "app/types";
 
@@ -85,10 +86,11 @@ function createKeyHandlers(
   selectMoveById: (UUID, boolean, boolean) => void,
   props: MoveListPropsT
 ): KeyHandlersT {
-  function handleKeyDown(e) {
+  function handleKeyDown(key, e) {
     if (props.highlightedMove) {
       e.target.id == "moveList" &&
         handleSelectionKeys(
+          key,
           e,
           props.moves,
           props.highlightedMove.id,
@@ -184,15 +186,19 @@ export function MoveList(props: MoveListPropsT) {
   });
 
   return (
-    <div
-      className={classnames(props.className, "moveList")}
-      ref={props.refs.moveListRef}
-      id="moveList"
-      tabIndex={123}
-      onKeyDown={keyHandlers.handleKeyDown}
+    <KeyboardEventHandler
+      handleKeys={["up", "down"]}
+      onKeyEvent={keyHandlers.handleKeyDown}
     >
-      <MenuProvider id="moveContextMenu">{moveNodes}</MenuProvider>
-      {props.moveContextMenu}
-    </div>
+      <div
+        className={classnames(props.className, "moveList")}
+        ref={props.refs.moveListRef}
+        tabIndex={123}
+        id="moveList"
+      >
+        <MenuProvider id="moveContextMenu">{moveNodes}</MenuProvider>
+        {props.moveContextMenu}
+      </div>
+    </KeyboardEventHandler>
   );
 }

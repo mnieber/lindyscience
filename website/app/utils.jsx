@@ -46,17 +46,16 @@ export function pickNeighbour(
 }
 
 export function handleSelectionKeys(
+  key: string,
   e: any,
   allItems: Array<any>,
   selectedItemId: UUID,
   selectItemById: (id: UUID) => void
 ) {
-  const up = 38;
-  const down = 40;
-  if ([up, down].indexOf(e.keyCode) > -1) {
+  if (["up", "down"].indexOf(key) > -1) {
     e.stopPropagation();
     if (
-      pickNeighbour(allItems, selectedItemId, e.keyCode == down, selectItemById)
+      pickNeighbour(allItems, selectedItemId, key == "down", selectItemById)
     ) {
       e.preventDefault();
     }

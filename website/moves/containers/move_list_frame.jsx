@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { compose } from "redux";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 import MovesCtr from "moves/containers/index";
 import AppCtr, { browseToMove } from "app/containers/index";
 
@@ -55,30 +56,45 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     }
   };
 
-  return (
-    <Widgets.MoveListPanel
-      userProfile={props.userProfile}
-      moveList={props.moveList}
-      moves={props.moveCrudBvrs.insertMovesBvr.preview}
-      moveCrudBvrs={props.moveCrudBvrs}
-      moveLists={props.moveLists}
-      moveListCrudBvrs={props.moveListCrudBvrs}
-      moveClipboardBvr={props.moveClipboardBvr}
-      selectMovesBvr={props.selectMovesBvr}
-      moveTags={props.moveTags}
-      videoLinksByMoveId={props.videoLinksByMoveId}
-      highlightedMove={props.highlightedMove}
-      filterMoves={filterMoves}
-      selectMoveListById={
-        props.moveListCrudBvrs.newMoveListBvr.setHighlightedItemId
+  const onKeyDown = (key, e) => {
+    const edit_e = 69;
+    if (key == "ctrl+e") {
+      e.preventDefault();
+      e.stopPropagation();
+      if (props.moveCrudBvrs.isEditing) {
+        props.moveCrudBvrs.saveMoveBvr.discardChanges();
+      } else {
+        props.moveCrudBvrs.setIsEditing(true);
       }
-    >
-      <MoveListCrudBvrsContext.Provider value={props.moveListCrudBvrs}>
-        <MoveCrudBvrsContext.Provider value={props.moveCrudBvrs}>
-          {props.children}
-        </MoveCrudBvrsContext.Provider>
-      </MoveListCrudBvrsContext.Provider>
-    </Widgets.MoveListPanel>
+    }
+  };
+
+  return (
+    <KeyboardEventHandler handleKeys={["ctrl+e"]} onKeyEvent={onKeyDown}>
+      <Widgets.MoveListPanel
+        userProfile={props.userProfile}
+        moveList={props.moveList}
+        moves={props.moveCrudBvrs.insertMovesBvr.preview}
+        moveCrudBvrs={props.moveCrudBvrs}
+        moveLists={props.moveLists}
+        moveListCrudBvrs={props.moveListCrudBvrs}
+        moveClipboardBvr={props.moveClipboardBvr}
+        selectMovesBvr={props.selectMovesBvr}
+        moveTags={props.moveTags}
+        videoLinksByMoveId={props.videoLinksByMoveId}
+        highlightedMove={props.highlightedMove}
+        filterMoves={filterMoves}
+        selectMoveListById={
+          props.moveListCrudBvrs.newMoveListBvr.setHighlightedItemId
+        }
+      >
+        <MoveListCrudBvrsContext.Provider value={props.moveListCrudBvrs}>
+          <MoveCrudBvrsContext.Provider value={props.moveCrudBvrs}>
+            {props.children}
+          </MoveCrudBvrsContext.Provider>
+        </MoveListCrudBvrsContext.Provider>
+      </Widgets.MoveListPanel>
+    </KeyboardEventHandler>
   );
 }
 

@@ -16,14 +16,9 @@ import type { SelectItemsBvrT } from "moves/containers/move_selection_behaviours
 
 type HandlersT = {
   onDrop: (sourceMoveId: UUID, targetId: UUID, isBefore: boolean) => void,
-  onKeyDown: (e: any) => void,
 };
 
-function createHandlers(
-  moves: Array<MoveT>,
-  bvrs: MoveCrudBvrsT,
-  moveListRef: any
-): HandlersT {
+function createHandlers(moves: Array<MoveT>, bvrs: MoveCrudBvrsT): HandlersT {
   const onDrop = (sourceMoveId, targetMoveId, isBefore) => {
     if (bvrs.newMoveBvr.newItem && bvrs.newMoveBvr.newItem.id != sourceMoveId) {
       bvrs.insertMovesBvr.insertDirectly(
@@ -34,25 +29,8 @@ function createHandlers(
     }
   };
 
-  const onKeyDown = e => {
-    const edit_e = 69;
-    if (e.ctrlKey && [edit_e].indexOf(e.keyCode) > -1) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (bvrs.isEditing) {
-        bvrs.saveMoveBvr.discardChanges();
-        if (moveListRef && moveListRef.current) {
-          moveListRef.current.focus();
-        }
-      } else {
-        bvrs.setIsEditing(true);
-      }
-    }
-  };
-
   return {
     onDrop,
-    onKeyDown,
   };
 }
 
@@ -75,11 +53,7 @@ export type MoveListPanelPropsT = {
 
 export function MoveListPanel(props: MoveListPanelPropsT) {
   const refs = {};
-  const handlers: HandlersT = createHandlers(
-    props.moves,
-    props.moveCrudBvrs,
-    refs.moveListRef
-  );
+  const handlers: HandlersT = createHandlers(props.moves, props.moveCrudBvrs);
 
   const userId = props.userProfile ? props.userProfile.userId : -1;
 
@@ -154,7 +128,7 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   );
 
   return (
-    <div className="moveListPanel flexrow" onKeyDown={handlers.onKeyDown}>
+    <div className="moveListPanel flexrow">
       <div className="moveListPanel__inner w-1/5 flexcol">
         {isOwner && buttonsDiv}
         {moveListPicker}

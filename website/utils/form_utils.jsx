@@ -79,6 +79,7 @@ export class FormField extends React.Component {
         <textarea
           ref={this.htmlElement}
           placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
           autoFocus={this.props.autoFocus}
           {...formFieldProps(this.props.formProps, this.props.fieldName, [
             "formField__field",
@@ -89,6 +90,7 @@ export class FormField extends React.Component {
           ref={this.htmlElement}
           type={this.props.type}
           placeholder={this.props.placeholder}
+          disabled={this.props.disabled}
           autoFocus={this.props.autoFocus}
           {...formFieldProps(this.props.formProps, this.props.fieldName, [
             "formField__field",

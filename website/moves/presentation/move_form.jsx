@@ -11,6 +11,7 @@ import {
   FormFieldLabel,
   strToPickerValue,
 } from "utils/form_utils";
+import { slugify } from "utils/utils";
 import {
   RichTextEditor,
   getContentFromEditor,
@@ -41,6 +42,40 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       placeholder="Name"
       autoFocus={props.autoFocus}
     />
+  );
+
+  const slugField = (
+    <FormField
+      classNames="flex-1"
+      label="Slug"
+      formProps={formProps}
+      fieldName="slug"
+      type="text"
+      placeholder="Slug"
+      disabled={true}
+      autoFocus={props.autoFocus}
+    />
+  );
+
+  const updateSlugBtn = (
+    <div
+      className={"button ml-2 flex-none"}
+      onClick={() => {
+        const newSlug = slugify(formProps.values.name);
+        if (newSlug) {
+          formProps.setFieldValue("slug", newSlug);
+        }
+      }}
+    >
+      Update
+    </div>
+  );
+
+  const slugFieldDiv = (
+    <div className="flexrow w-full">
+      {slugField}
+      {updateSlugBtn}
+    </div>
   );
 
   const description = (
@@ -76,6 +111,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={"moveForm flexcol"}>
         {nameField}
+        {slugFieldDiv}
         {description}
         {tags}
         <div className={"moveForm__buttonPanel flexrow mt-4"}>
@@ -119,6 +155,7 @@ export function MoveForm(props: MoveFormPropsT) {
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       name: props.move.name,
+      slug: props.move.slug,
       description: props.move.description,
       tags: props.move.tags,
     }),

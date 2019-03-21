@@ -25,7 +25,7 @@ function createHandlers(
   moveListRef: any
 ): HandlersT {
   const onDrop = (sourceMoveId, targetMoveId, isBefore) => {
-    if (bvrs.newMoveBvr.newItem?.id != sourceMoveId) {
+    if (bvrs.newMoveBvr.newItem && bvrs.newMoveBvr.newItem.id != sourceMoveId) {
       bvrs.insertMovesBvr.insertDirectly(
         [sourceMoveId],
         targetMoveId,

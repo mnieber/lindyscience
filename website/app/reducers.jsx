@@ -34,7 +34,7 @@ const statusReducer = function(
     case "SET_SIGNED_IN_EMAIL":
       return {
         ...state,
-        signedInEmail: action.username,
+        signedInEmail: action.email,
       };
     default:
       return state;

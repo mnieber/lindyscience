@@ -27,24 +27,20 @@ type AppFramePropsT = {
 function AppFrame(props: AppFramePropsT) {
   const actions: any = props;
 
-  const [hasLoadedMoveLists, setHasLoadedMoveLists] = React.useState(null);
+  const [hasLoadedMoveLists, setHasLoadedMoveLists] = React.useState(false);
   const [loadedEmail, setLoadedEmail] = React.useState("");
   const [loadedMoveListUrls, setLoadedMoveListUrls] = React.useState([]);
 
   async function _loadMoveListsAndEmail() {
-    if (hasLoadedMoveLists === null) {
-      setHasLoadedMoveLists(false);
-
-      const [email, moveLists] = await Promise.all([
-        AppCtr.api.getEmail(),
-        MovesCtr.api.loadMoveLists(),
-      ]);
-      if (email) {
-        actions.actSetSignedInEmail(email);
-      }
-      actions.actAddMoveLists(moveLists.entities.moveLists || {});
-      setHasLoadedMoveLists(true);
+    const [email, moveLists] = await Promise.all([
+      AppCtr.api.getEmail(),
+      MovesCtr.api.loadMoveLists(),
+    ]);
+    if (email) {
+      actions.actSetSignedInEmail(email);
     }
+    actions.actAddMoveLists(moveLists.entities.moveLists || {});
+    setHasLoadedMoveLists(true);
   }
 
   async function _loadUserProfile() {
@@ -92,7 +88,7 @@ function AppFrame(props: AppFramePropsT) {
 
   React.useEffect(() => {
     _loadMoveListsAndEmail();
-  });
+  }, []);
   React.useEffect(() => {
     _loadUserProfile();
   }, [hasLoadedMoveLists, props.signedInEmail]);

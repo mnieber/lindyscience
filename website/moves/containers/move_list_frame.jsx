@@ -9,6 +9,7 @@ import AppCtr, { browseToMove } from "app/containers/index";
 import Widgets from "moves/presentation/index";
 
 import { makeMoveListUrl } from "moves/utils";
+import { pickNeighbour, scrollIntoView, getId } from "app/utils";
 
 import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
@@ -67,10 +68,27 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         props.moveCrudBvrs.setIsEditing(true);
       }
     }
+    if (["ctrl+down", "ctrl+up"].includes(key)) {
+      if (props.highlightedMove) {
+        const selectMoveById = (moveId: UUID) => {
+          scrollIntoView(document.getElementById(moveId));
+          props.moveCrudBvrs.newMoveBvr.setHighlightedItemId(moveId);
+        };
+        pickNeighbour(
+          props.moveCrudBvrs.insertMovesBvr.preview,
+          props.highlightedMove.id,
+          key == "ctrl+down",
+          selectMoveById
+        );
+      }
+    }
   };
 
   return (
-    <KeyboardEventHandler handleKeys={["ctrl+e"]} onKeyEvent={onKeyDown}>
+    <KeyboardEventHandler
+      handleKeys={["ctrl+e", "ctrl+down", "ctrl+up"]}
+      onKeyEvent={onKeyDown}
+    >
       <Widgets.MoveListPanel
         userProfile={props.userProfile}
         moveList={props.moveList}

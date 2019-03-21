@@ -97,9 +97,7 @@ function _filterMoves(moves, tags, keywords) {
     return (
       (!tags.length || tags.every(tag => move.tags.includes(tag))) &&
       (!keywords.length ||
-        keywords.every(
-          keyword => move.name.toLowerCase().indexOf(keyword) >= 0
-        ))
+        keywords.every(keyword => move.name.toLowerCase().includes(keyword)))
     );
   }
 

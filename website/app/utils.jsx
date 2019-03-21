@@ -52,7 +52,7 @@ export function handleSelectionKeys(
   selectedItemId: UUID,
   selectItemById: (id: UUID) => void
 ) {
-  if (["up", "down"].indexOf(key) > -1) {
+  if (["up", "down"].includes(key)) {
     e.stopPropagation();
     if (
       pickNeighbour(allItems, selectedItemId, key == "down", selectItemById)
@@ -64,7 +64,7 @@ export function handleSelectionKeys(
 
   const pageUp = 33;
   const pageDown = 34;
-  if ([pageUp, pageDown].indexOf(e.keyCode) > -1) {
+  if ([pageUp, pageDown].includes(e.keyCode)) {
     e.preventDefault();
     e.stopPropagation();
     return true;

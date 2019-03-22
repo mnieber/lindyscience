@@ -124,7 +124,9 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   );
 
   const buttonsDiv = (
-    <div className={"move__name flexrow flex-wrap"}>{newMoveListBtn}</div>
+    <div className={"move__name flexrow flex-wrap"}>
+      {props.userProfile && newMoveListBtn}
+    </div>
   );
 
   return (

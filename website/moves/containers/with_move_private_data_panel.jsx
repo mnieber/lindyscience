@@ -25,6 +25,7 @@ export const withMovePrivateDataPanel = compose(
   MovesCtr.connect(
     state => ({
       move: MovesCtr.fromStore.getHighlightedMove(state),
+      userProfile: AppCtr.fromStore.getUserProfile(state),
     }),
     {
       ...AppCtr.actions,
@@ -56,6 +57,7 @@ export const withMovePrivateDataPanel = compose(
 
     const movePrivateDataPanel = (
       <Widgets.MovePrivateDataPanel
+        userProfile={props.userProfile}
         movePrivateData={move ? move.privateData : undefined}
         onSave={_onSave}
       />

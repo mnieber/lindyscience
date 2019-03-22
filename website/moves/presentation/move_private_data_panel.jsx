@@ -3,8 +3,10 @@
 import * as React from "react";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
 import type { MovePrivateDataT } from "moves/types";
+import type { UUID, UserProfileT } from "app/types";
 
 type MovePrivateDatasPanelPropsT = {
+  userProfile: UserProfileT,
   movePrivateData: ?MovePrivateDataT,
   onSave: () => void,
 };
@@ -30,7 +32,7 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
     />
   );
 
-  const buttons = isEditing ? [] : [editBtn];
+  const buttons = isEditing || !props.userProfile ? [] : [editBtn];
 
   const formDiv = (
     <MovePrivateDataForm

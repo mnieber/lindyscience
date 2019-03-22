@@ -7,6 +7,7 @@ import { navigate } from "@reach/router";
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
 
+import { createErrorHandler } from "app/utils";
 import { getObjectValues } from "utils/utils";
 import { createToastr } from "app/utils";
 import { findMoveListByUrl, newMoveListSlug } from "moves/utils";
@@ -96,6 +97,12 @@ function AppFrame(props: AppFramePropsT) {
     _loadSelectedMoveList();
   }, [hasLoadedMoveLists, props.selectedMoveListUrl]);
 
+  const signOut = () => {
+    AppCtr.api
+      .signOut()
+      .catch(createErrorHandler("Could not update the move list"));
+  };
+
   return (
     <div className="appFrame px-4 flex flex-col">
       {createToastr()}
@@ -105,6 +112,7 @@ function AppFrame(props: AppFramePropsT) {
           className=""
           userProfile={props.userProfile}
           signIn={() => navigate("/app/sign-in/")}
+          signOut={signOut}
         />
       </div>
       {props.children}

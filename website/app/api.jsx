@@ -115,6 +115,17 @@ export async function signIn(email: string, password: string) {
   return false;
 }
 
+export async function signOut() {
+  try {
+    await post("/auth/token/logout", {});
+    setToken("");
+    return true;
+  } catch (e) {
+    console.error(e);
+  }
+  return false;
+}
+
 export async function getEmail() {
   try {
     const rawResponse = await get("/auth/users/me");

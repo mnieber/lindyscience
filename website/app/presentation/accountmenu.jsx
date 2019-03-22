@@ -8,6 +8,7 @@ type AccountMenuPropsT = {
   className: string,
   userProfile: ?UserProfileT,
   signIn: () => void,
+  signOut: () => void,
 };
 
 export function AccountMenu(props: AccountMenuPropsT) {
@@ -47,8 +48,9 @@ export function AccountMenu(props: AccountMenuPropsT) {
             <a
               href="#"
               className="px-4 py-2 block text-black hover:bg-grey-light"
+              onClick={props.signOut}
             >
-              Logout
+              Sign out
             </a>
           </li>
         </ul>

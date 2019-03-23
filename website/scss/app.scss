@@ -4,9 +4,9 @@
 
 // Scss
 
-$panGreen: #3AB080;
+$panGreen: #3ab080;
 $panBlue: #006397;
-$panGrey: #BBBBBB;
+$panGrey: #bbbbbb;
 
 @responsive {
   .w-128 {
@@ -43,11 +43,11 @@ $panGrey: #BBBBBB;
 }
 
 .upVoteBtn--voted {
-  background-image: url('/static/img/upvote_1.png');
+  background-image: url("/static/img/upvote_1.png");
 }
 
 .upVoteBtn--notVoted {
-  background-image: url('/static/img/upvote_0.png');
+  background-image: url("/static/img/upvote_0.png");
 }
 
 .downVoteBtn {
@@ -55,11 +55,11 @@ $panGrey: #BBBBBB;
 }
 
 .downVoteBtn--voted {
-  background-image: url('/static/img/downvote_1.png');
+  background-image: url("/static/img/downvote_1.png");
 }
 
 .downVoteBtn--notVoted {
-  background-image: url('/static/img/downvote_0.png');
+  background-image: url("/static/img/downvote_0.png");
 }
 
 #reachRouter {
@@ -127,7 +127,7 @@ $panGrey: #BBBBBB;
 .move__tag {
   @apply mr-2 p-2 rounded;
   @apply text-sm;
-  background-color: #E6E6E6;
+  background-color: #e6e6e6;
 }
 
 .panel {

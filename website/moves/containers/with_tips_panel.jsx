@@ -48,8 +48,16 @@ export const withTipsPanel = compose(
 
     const saveTip = (tip: TipT) => {
       actions.actAddTips(querySetListToDict([tip]));
-      let response = MovesCtr.api.saveTip(move.id, tip);
-      response.catch(createErrorHandler("We could not save the tip"));
+      MovesCtr.api
+        .saveTip(move.id, tip)
+        .catch(createErrorHandler("We could not save the tip"));
+    };
+
+    const deleteTip = (tip: TipT) => {
+      actions.actRemoveTips([tip.id]);
+      MovesCtr.api
+        .deleteTip(tip.id)
+        .catch(createErrorHandler("We could not delete the tip"));
     };
 
     const voteTip = (id: UUID, vote: VoteT) => {
@@ -61,11 +69,12 @@ export const withTipsPanel = compose(
 
     const tipsPanel = (
       <Widgets.TipsPanel
-        moveId={getId(move)}
+        move={move}
         userProfile={props.userProfile}
         tips={props.tipsByMoveId[getId(move)]}
         voteByObjectId={props.voteByObjectId}
         saveTip={saveTip}
+        deleteTip={deleteTip}
         voteTip={voteTip}
       />
     );

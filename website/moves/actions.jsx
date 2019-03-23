@@ -67,6 +67,13 @@ export function actAddTips(tips: TipByIdT) {
   };
 }
 
+export function actRemoveTips(tips: Array<UUID>) {
+  return {
+    type: "REMOVE_TIPS",
+    tips,
+  };
+}
+
 export function actSetMoveFilter(name: string, filter: Function) {
   return (dispatch: Function, getState: Function): SlugidT => {
     const highlightedMove = fromStore.getHighlightedMove(getState());

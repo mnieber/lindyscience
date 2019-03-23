@@ -108,11 +108,12 @@ export function useSaveTip(
 }
 
 type TipsPanelPropsT = {
-  moveId: UUID,
+  move: MoveT,
   userProfile: UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
   saveTip: TipT => void,
+  deleteTip: TipT => void,
   voteTip: (UUID, VoteT) => void,
 };
 
@@ -121,11 +122,11 @@ export function TipsPanel(props: TipsPanelPropsT) {
   const newTipBvr = useNewTip(
     props.userProfile.userId,
     insertTipBvr,
-    props.moveId
+    props.move.id
   );
   const saveTipBvr = useSaveTip(
     newTipBvr,
-    props.moveId,
+    props.move.id,
     insertTipBvr.preview,
     props.saveTip
   );
@@ -146,9 +147,12 @@ export function TipsPanel(props: TipsPanelPropsT) {
         {addTipBtn}
       </div>
       <TipList
+        userProfile={props.userProfile}
+        move={props.move}
         items={insertTipBvr.preview}
         setVote={props.voteTip}
         saveTip={saveTipBvr.save}
+        deleteTip={props.deleteTip}
         cancelEditTip={saveTipBvr.discardChanges}
         voteByObjectId={props.voteByObjectId}
       />

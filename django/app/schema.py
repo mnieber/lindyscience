@@ -14,6 +14,7 @@ class Mutations(graphene.ObjectType):
     save_move_list = moves.schema.SaveMoveList.Field()
     save_move = moves.schema.SaveMove.Field()
     save_tip = moves.schema.SaveTip.Field()
+    delete_tip = moves.schema.DeleteTip.Field()
     save_video_link = moves.schema.SaveVideoLink.Field()
     save_video_link = moves.schema.SaveVideoLink.Field()
     save_move_private_data = moves.schema.SaveMovePrivateData.Field()

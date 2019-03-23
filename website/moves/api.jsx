@@ -59,6 +59,36 @@ export function saveTip(moveId: UUID, values: TipT) {
   );
 }
 
+export function deleteTip(id: UUID) {
+  return doQuery(
+    `mutation deleteTip(
+      $id: String!,
+    ) {
+      deleteTip(
+        pk: $id,
+      ) { ok }
+    }`,
+    {
+      id,
+    }
+  );
+}
+
+export function deleteVideoLink(id: UUID) {
+  return doQuery(
+    `mutation deleteVideoLink(
+      $id: String!,
+    ) {
+      deleteVideoLink(
+        pk: $id,
+      ) { ok }
+    }`,
+    {
+      id,
+    }
+  );
+}
+
 export function saveMoveList(values: MoveListT) {
   return doQuery(
     `mutation saveMoveList(

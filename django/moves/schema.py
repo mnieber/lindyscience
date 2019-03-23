@@ -133,6 +133,22 @@ class SaveTip(graphene.Mutation):
         return SaveTip(tip=tip, ok=True)
 
 
+class DeleteTip(graphene.Mutation):
+    class Arguments:
+        pk = graphene.String()
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, pk, **inputs):
+        user_id = info.context.user.id
+        tip = models.Tip.objects.get(pk=pk)
+        if tip.owner_id != user_id and tip.move.owner_id != user_id:
+            raise Exception("Not authorized to update object with id %s" % pk)
+
+        tip.delete()
+        return DeleteTip(ok=True)
+
+
 class SaveVideoLink(graphene.Mutation):
     class Arguments:
         pk = graphene.String()
@@ -149,6 +165,22 @@ class SaveVideoLink(graphene.Mutation):
         videolink, created = models.VideoLink.objects.update_or_create(
             inputs, pk=pk)
         return SaveVideoLink(videolink=videolink, ok=True)
+
+
+class DeleteVideoLink(graphene.Mutation):
+    class Arguments:
+        pk = graphene.String()
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, pk, **inputs):
+        user_id = info.context.user.id
+        videolink = models.VideoLink.objects.get(pk=pk)
+        if videolink.owner_id != user_id and videolink.move.owner_id != user_id:
+            raise Exception("Not authorized to update object with id %s" % pk)
+
+        videolink.delete()
+        return DeleteVideoLink(ok=True)
 
 
 class SaveMovePrivateData(graphene.Mutation):

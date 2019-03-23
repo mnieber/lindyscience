@@ -368,6 +368,13 @@ export function tipsReducer(state: TipsState = {}, action: any): TipsState {
         ...state,
         ...action.tips,
       };
+    case "REMOVE_TIPS":
+      return Object.keys(state)
+        .filter(x => !action.tips.includes(x))
+        .reduce((acc, id) => {
+          acc[id] = state[id];
+          return acc;
+        }, {});
     case "CAST_VOTE":
       if (!state[action.id]) return state;
       return {

@@ -51,6 +51,8 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
 // MoveListFilter
 
 type MoveListFilterPropsT = {|
+  isFilterEnabled: boolean,
+  setIsFilterEnabled: boolean => void,
   moveTags: Array<TagT>,
   filterMoves: (Array<TagT>, Array<string>) => void,
   className?: string,
@@ -61,7 +63,12 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
   const [tags, setTags] = React.useState([]);
   const [keywords, setKeywords] = React.useState([]);
 
-  React.useEffect(() => props.filterMoves(tags, keywords), [tags, keywords]);
+  React.useEffect(() => {
+    props.filterMoves(
+      props.isFilterEnabled ? tags : [],
+      props.isFilterEnabled ? keywords : []
+    );
+  }, [props.isFilterEnabled, tags, keywords]);
 
   function _onKeywordsChange(e) {
     if (inputRef.current) {
@@ -72,6 +79,22 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
   function _onTagsChange(pickedTags) {
     setTags(pickedTags.map(x => x.value));
   }
+
+  const onFlagChanged = () => {
+    props.setIsFilterEnabled(!props.isFilterEnabled);
+  };
+
+  const flag = (
+    <div>
+      <input
+        type="checkbox"
+        className="mr-2"
+        checked={props.isFilterEnabled}
+        onChange={onFlagChanged}
+      />
+      Filter
+    </div>
+  );
 
   const valuePicker = (
     <ValuePicker
@@ -93,7 +116,10 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
   );
 
   return (
-    <div className={classnames("moveListFilter mt-4", props.className)}>
+    <div
+      className={classnames("bg-grey p-2 moveListFilter mt-4", props.className)}
+    >
+      {flag}
       {valuePicker}
       {inputElm}
     </div>

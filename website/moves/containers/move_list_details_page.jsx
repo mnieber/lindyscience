@@ -15,7 +15,6 @@ import type { MoveListT, MoveListCrudBvrsT } from "moves/types";
 
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
-  moveLists: Array<MoveListT>,
   moveListTags: Array<TagT>,
   moveList: MoveListT,
   // receive any actions as well
@@ -97,7 +96,6 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
 MoveListDetailsPage = MovesCtr.connect(
   state => ({
     userProfile: AppCtr.fromStore.getUserProfile(state),
-    moveLists: MovesCtr.fromStore.getMoveLists(state),
     moveList: MovesCtr.fromStore.getSelectedMoveList(state),
     moveListTags: MovesCtr.fromStore.getMoveListTags(state),
   }),

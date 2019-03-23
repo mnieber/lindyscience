@@ -12,6 +12,7 @@ import {
   strToPickerValue,
 } from "utils/form_utils";
 import { slugify } from "utils/utils";
+import { newMoveSlug } from "moves/utils";
 import {
   RichTextEditor,
   getContentFromEditor,
@@ -111,7 +112,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={"moveForm flexcol"}>
         {nameField}
-        {slugFieldDiv}
+        {formProps.values.slug != newMoveSlug && slugFieldDiv}
         {description}
         {tags}
         <div className={"moveForm__buttonPanel flexrow mt-4"}>

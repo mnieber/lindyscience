@@ -1,3 +1,5 @@
+import { splitIntoKeywords } from "utils/utils";
+
 import type { MoveT, MoveListT } from "moves/types";
 import type { UUID, SlugidT } from "app/types";
 
@@ -77,4 +79,23 @@ export function findTargetId(
     targetItemId = idx < 0 ? "" : itemIds[idx];
   }
   return targetItemId;
+}
+
+export function createTagsAndKeywordsFilter(
+  tags: Array<TagT>,
+  keywords: Array<string>
+) {
+  function _filter(moves: Array<MoveT>) {
+    function match(move) {
+      const moveKeywords = splitIntoKeywords(move.name);
+      return (
+        (!tags.length || tags.every(tag => move.tags.includes(tag))) &&
+        (!keywords.length ||
+          keywords.every(keyword => move.name.toLowerCase().includes(keyword)))
+      );
+    }
+
+    return tags.length || keywords.length ? moves.filter(match) : moves;
+  }
+  return _filter;
 }

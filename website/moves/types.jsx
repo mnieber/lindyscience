@@ -43,6 +43,10 @@ export type MoveListByIdT = {
   [UUID]: MoveListT,
 };
 
+export type FunctionByIdT = {
+  [UUID]: Function,
+};
+
 export type VotableT = {};
 
 export type VideoLinkT = {

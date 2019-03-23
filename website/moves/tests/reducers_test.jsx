@@ -20,19 +20,6 @@ test("select highlighted move", function(t) {
   t.end();
 });
 
-test("set move list filter", function(t) {
-  let s = reducers.selectionReducer(undefined, {});
-  t.deepEqual(s.moveFilterTags, []);
-
-  s = reducers.selectionReducer(s, {
-    type: "SET_MOVE_LIST_FILTER",
-    tags: ["123"],
-  });
-  t.deepEqual(s.moveFilterTags, ["123"]);
-
-  t.end();
-});
-
 test("add move lists", function(t) {
   let sMoveList = reducers.moveListsReducer(undefined, {});
   t.deepEqual(sMoveList, {});

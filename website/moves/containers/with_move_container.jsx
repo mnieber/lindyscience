@@ -18,26 +18,25 @@ export const withMoveContainer = compose(
     state => ({
       moveList: MovesCtr.fromStore.getSelectedMoveList(state),
       filteredMoves: MovesCtr.fromStore.getFilteredMovesInList(state),
-      movePayload: MovesCtr.fromStore.getMovePayload(state),
     }),
     {
       actInsertMoves: MovesCtr.actions.actInsertMoves,
-      actSetMovePayload: MovesCtr.actions.actSetMovePayload,
+      actSetMoveFilter: MovesCtr.actions.actSetMoveFilter,
     }
   ),
   (WrappedComponent: any) => (props: any) => {
     const {
       moveList,
       filteredMoves,
-      movePayload,
       actInsertMoves,
-      actSetMovePayload,
+      actSetMoveFilter,
       ...passThroughProps
     } = props;
 
     const actions: any = props;
 
     const [targetItemId: UUID, setTargetItemId: Function] = React.useState("");
+    const [payload: Array<MoveT>, setPayload: Function] = React.useState([]);
     const moveListId = getId(moveList);
 
     function _insert(
@@ -53,14 +52,18 @@ export const withMoveContainer = compose(
     }
 
     const _setPayload = (payload: Array<MoveT>, targetItemId: UUID) => {
-      actSetMovePayload(payload);
+      function _filter(moves: Array<MoveT>) {
+        return getPreview<MoveT>(moves, payload, targetItemId);
+      }
+      actSetMoveFilter("insertMovePreview", _filter);
+      setPayload(payload);
       setTargetItemId(targetItemId);
     };
 
     const moveContainer: DataContainerT<MoveT> = {
       insert: _insert,
-      preview: getPreview<MoveT>(filteredMoves, movePayload, targetItemId),
-      payloadIds: movePayload.map(x => x.id),
+      preview: getPreview<MoveT>(filteredMoves, payload, targetItemId),
+      payloadIds: payload.map(x => x.id),
       targetItemId,
       setPayload: _setPayload,
     };

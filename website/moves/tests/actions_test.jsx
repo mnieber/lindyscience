@@ -4,6 +4,7 @@ import * as actions from "moves/actions";
 import * as data from "moves/tests/data";
 import * as fromStore from "moves/reducers";
 import { getObjectValues } from "utils/utils";
+import { createTagsAndKeywordsFilter } from "moves/utils";
 import { reducer } from "app/root_reducer";
 import { test } from "tape";
 import { Thunk, FlushThunks } from "redux-testkit";
@@ -27,17 +28,37 @@ test("test actSetMoveListFilter", function(t) {
   store.dispatch(actions.actSetHighlightedMoveBySlug("three-wall-swing-out"));
 
   t.equal(
-    store.dispatch(actions.actSetMoveListFilter(["fun"], [])),
+    store.dispatch(
+      actions.actSetMoveFilter(
+        "tagsAndKeywords",
+        createTagsAndKeywordsFilter(["fun"], [])
+      )
+    ),
     "basket-whip"
   );
-
-  // change filter, do not update highlighted move
-  t.equal(store.dispatch(actions.actSetMoveListFilter(["foo"], [])), "");
+  store.dispatch(actions.actSetHighlightedMoveBySlug("basket-whip"));
 
   // change filter, update highlighted move
   t.equal(
-    store.dispatch(actions.actSetMoveListFilter(["swing out"], [])),
+    store.dispatch(
+      actions.actSetMoveFilter(
+        "tagsAndKeywords",
+        createTagsAndKeywordsFilter(["swing out"], [])
+      )
+    ),
     "three-wall-swing-out"
+  );
+  store.dispatch(actions.actSetHighlightedMoveBySlug("three-wall-swing-out"));
+
+  // change filter, do not update highlighted move
+  t.equal(
+    store.dispatch(
+      actions.actSetMoveFilter(
+        "tagsAndKeywords",
+        createTagsAndKeywordsFilter(["foo"], [])
+      )
+    ),
+    ""
   );
 
   t.end();
@@ -53,7 +74,12 @@ test("test actSetMoveListFilter with duplicate slugs", function(t) {
   store.dispatch(actions.actSetHighlightedMoveBySlug(swingOut.slug));
 
   t.equal(
-    store.dispatch(actions.actSetMoveListFilter(["fun"], [])),
+    store.dispatch(
+      actions.actSetMoveFilter(
+        "tagsAndKeywords",
+        createTagsAndKeywordsFilter(["fun"], [])
+      )
+    ),
     "basket-whip/3ba5ed84-34d5-442c-921c-50da0dc022da",
     "Since the slug is duplicated, the slugid should contain the id"
   );

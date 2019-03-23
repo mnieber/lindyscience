@@ -37,6 +37,8 @@ function createHandlers(moves: Array<MoveT>, bvrs: MoveCrudBvrsT): HandlersT {
 export type MoveListPanelPropsT = {
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
+  isFilterEnabled: boolean,
+  setIsFilterEnabled: boolean => void,
   moves: Array<MoveT>,
   playMoves: Function,
   moveCrudBvrs: MoveCrudBvrsT,
@@ -61,7 +63,7 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   const moveListPicker = (
     <Widgets.MoveListPicker
       className="mb-4"
-      moveLists={props.moveListCrudBvrs.insertMoveListsBvr.preview}
+      moveLists={props.moveLists}
       defaultMoveListId={props.moveList ? props.moveList.id : ""}
       selectMoveListById={props.selectMoveListById}
     />
@@ -69,7 +71,10 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
 
   const moveListHeader = (
     <Widgets.MoveListHeader
-      addNewMove={props.moveCrudBvrs.newMoveBvr.addNewItem}
+      addNewMove={() => {
+        props.setIsFilterEnabled(false);
+        props.moveCrudBvrs.newMoveBvr.addNewItem();
+      }}
       playMoves={props.playMoves}
       className=""
     />
@@ -80,6 +85,8 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
       className="mb-4"
       filterMoves={props.filterMoves}
       moveTags={props.moveTags}
+      isFilterEnabled={props.isFilterEnabled}
+      setIsFilterEnabled={props.setIsFilterEnabled}
     />
   );
 

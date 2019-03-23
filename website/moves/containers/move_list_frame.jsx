@@ -8,7 +8,11 @@ import AppCtr, { browseToMove } from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
-import { makeMoveListUrl, newMoveListSlug } from "moves/utils";
+import {
+  makeMoveListUrl,
+  newMoveListSlug,
+  createTagsAndKeywordsFilter,
+} from "moves/utils";
 import { pickNeighbour, scrollIntoView, getId } from "app/utils";
 
 import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
@@ -39,6 +43,7 @@ type MoveListFramePropsT = {
   moveClipboardBvr: MoveClipboardBvrT,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
+  moves: Array<MoveT>,
   highlightedMove: ?MoveT,
   moveList: ?MoveListT,
   children: any,
@@ -49,9 +54,11 @@ type MoveListFramePropsT = {
 
 function _MoveListFrame(props: MoveListFramePropsT) {
   const actions: any = props;
+  const [isFilterEnabled, setIsFilterEnabled] = React.useState(true);
 
   const filterMoves = (tags, keywords) => {
-    const slugid = actions.actSetMoveListFilter(tags, keywords);
+    const _filter = createTagsAndKeywordsFilter(tags, keywords);
+    const slugid = actions.actSetMoveFilter("tagsAndKeywords", _filter);
     if (props.moveList && slugid) {
       browseToMove([makeMoveListUrl(props.moveList), slugid]);
     }
@@ -75,7 +82,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
           props.moveCrudBvrs.newMoveBvr.setHighlightedItemId(moveId);
         };
         pickNeighbour(
-          props.moveCrudBvrs.insertMovesBvr.preview,
+          props.moves,
           props.highlightedMove.id,
           key == "ctrl+down",
           selectMoveById
@@ -107,7 +114,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
       <Widgets.MoveListPanel
         userProfile={props.userProfile}
         moveList={props.moveList}
-        moves={props.moveCrudBvrs.insertMovesBvr.preview}
+        moves={props.moves}
         playMoves={playMoves}
         moveCrudBvrs={props.moveCrudBvrs}
         moveLists={props.moveLists}
@@ -118,6 +125,8 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         videoLinksByMoveId={props.videoLinksByMoveId}
         highlightedMove={props.highlightedMove}
         filterMoves={filterMoves}
+        isFilterEnabled={isFilterEnabled}
+        setIsFilterEnabled={setIsFilterEnabled}
         selectMoveListById={
           props.moveListCrudBvrs.newMoveListBvr.setHighlightedItemId
         }
@@ -157,7 +166,7 @@ MoveListFrame = compose(
       videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
       moves: MovesCtr.fromStore.getFilteredMovesInList(state),
       moveTags: MovesCtr.fromStore.getMoveTags(state),
-      moveLists: MovesCtr.fromStore.getMoveLists(state),
+      moveLists: MovesCtr.fromStore.getFilteredMoveLists(state),
       highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
       moveList: MovesCtr.fromStore.getSelectedMoveList(state),
     }),

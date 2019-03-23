@@ -44,7 +44,7 @@ export const withMoveListFrameBvrs = compose(
   MovesCtr.connect(
     state => ({
       userProfile: AppCtr.fromStore.getUserProfile(state),
-      moveLists: MovesCtr.fromStore.getMoveLists(state),
+      moveLists: MovesCtr.fromStore.getFilteredMoveLists(state),
       highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
       moveList: MovesCtr.fromStore.getSelectedMoveList(state),
     }),

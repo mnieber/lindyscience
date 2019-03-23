@@ -67,27 +67,24 @@ export function actAddTips(tips: TipByIdT) {
   };
 }
 
-export function actSetMoveListFilter(
-  tags: Array<TagT>,
-  keywords: Array<string>
-) {
+export function actSetMoveFilter(name: string, filter: Function) {
   return (dispatch: Function, getState: Function): SlugidT => {
+    const highlightedMove = fromStore.getHighlightedMove(getState());
+    const allMoves = fromStore.getMovesInList(getState());
+
     dispatch({
-      type: "SET_MOVE_LIST_FILTER",
-      tags,
-      keywords,
+      type: "SET_MOVE_FILTER",
+      filterName: name,
+      filter,
     });
 
-    const state = getState();
-    const allMoves = fromStore.getMovesInList(state);
-    const highlightedMove = fromStore.getHighlightedMove(state);
-
     if (highlightedMove) {
+      const state = getState();
       const allMoveIds = allMoves.map(x => x.id);
+      const highlightedIdx = allMoveIds.indexOf(highlightedMove.id);
       const filteredMoveIds = fromStore
         .getFilteredMovesInList(state)
         .map(x => x.id);
-      const highlightedIdx = allMoveIds.indexOf(highlightedMove.id);
 
       const newIdx =
         findNeighbourIdx(
@@ -105,6 +102,49 @@ export function actSetMoveListFilter(
         const isSlugUnique =
           allMoves.filter(x => x.slug == move.slug).length == 1;
         return makeSlugid(move.slug, isSlugUnique ? "" : move.id);
+      }
+    }
+    return "";
+  };
+}
+
+export function actSetMoveListFilter(name: string, filter: Function) {
+  return (dispatch: Function, getState: Function): SlugidT => {
+    const selectedMoveList = fromStore.getSelectedMoveList(getState());
+    const allMoveLists = fromStore.getMoveLists(getState());
+
+    dispatch({
+      type: "SET_MOVE_LIST_FILTER",
+      filterName: name,
+      filter,
+    });
+
+    if (selectedMoveList) {
+      const state = getState();
+      const allMoveListIds = allMoveLists.map(x => x.id);
+      const selectedIdx = allMoveListIds.indexOf(selectedMoveList.id);
+      const filteredMoveListIds = fromStore
+        .getFilteredMoveLists(state)
+        .map(x => x.id);
+
+      const newIdx =
+        findNeighbourIdx(
+          filteredMoveListIds,
+          allMoveListIds,
+          selectedIdx,
+          allMoveListIds.length,
+          1
+        ) ||
+        findNeighbourIdx(
+          filteredMoveListIds,
+          allMoveListIds,
+          selectedIdx,
+          -1,
+          -1
+        );
+
+      if (newIdx) {
+        return allMoveListIds[newIdx.result];
       }
     }
     return "";

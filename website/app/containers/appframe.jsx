@@ -46,17 +46,18 @@ function AppFrame(props: AppFramePropsT) {
 
   async function _loadUserProfile() {
     if (hasLoadedMoveLists && loadedEmail != props.signedInEmail) {
-      const [profile, votes, movePrivateDatas] = await Promise.all([
-        AppCtr.api.loadUserProfile(),
-        AppCtr.api.loadUserVotes(),
-        MovesCtr.api.loadMovePrivateDatas(),
-      ]);
-      actions.actSetUserProfile(profile);
-      actions.actSetVotes(votes);
-      actions.actAddMovePrivateDatas(
-        movePrivateDatas.entities.movePrivateDatas || {}
-      );
-
+      if (props.signedInEmail) {
+        const [profile, votes, movePrivateDatas] = await Promise.all([
+          AppCtr.api.loadUserProfile(),
+          AppCtr.api.loadUserVotes(),
+          MovesCtr.api.loadMovePrivateDatas(),
+        ]);
+        actions.actSetUserProfile(profile);
+        actions.actSetVotes(votes);
+        actions.actAddMovePrivateDatas(
+          movePrivateDatas.entities.movePrivateDatas || {}
+        );
+      }
       setLoadedEmail(props.signedInEmail);
     }
   }
@@ -101,6 +102,7 @@ function AppFrame(props: AppFramePropsT) {
     AppCtr.api
       .signOut()
       .catch(createErrorHandler("Could not update the move list"));
+    actions.actSetSignedInEmail("");
   };
 
   return (
@@ -123,7 +125,7 @@ function AppFrame(props: AppFramePropsT) {
 // $FlowFixMe
 AppFrame = MovesCtr.connect(
   state => ({
-    moveLists: MovesCtr.fromStore.getMoveLists(state),
+    moveLists: MovesCtr.fromStore.getFilteredMoveLists(state),
     userProfile: AppCtr.fromStore.getUserProfile(state),
     signedInEmail: AppCtr.fromStore.getSignedInEmail(state),
     selectedMoveListUrl: MovesCtr.fromStore.getSelectedMoveListUrl(state),

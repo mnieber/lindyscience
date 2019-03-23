@@ -74,6 +74,9 @@ export class FormField extends React.Component {
   }
 
   render() {
+    const selectAllOnFocus = event => {
+      event.target.select();
+    };
     const textField =
       this.props.type.toLowerCase() == "textarea" ? (
         <textarea
@@ -91,6 +94,7 @@ export class FormField extends React.Component {
           type={this.props.type}
           placeholder={this.props.placeholder}
           disabled={this.props.disabled}
+          onFocus={selectAllOnFocus}
           autoFocus={this.props.autoFocus}
           {...formFieldProps(this.props.formProps, this.props.fieldName, [
             "formField__field",

@@ -4,7 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import MovesCtr from "moves/containers/index";
-import AppCtr, { browseToMove } from "app/containers/index";
+import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -27,7 +27,6 @@ import type {
   MoveListCrudBvrsT,
 } from "moves/types";
 import type { UUID, UserProfileT, TagT } from "app/types";
-import type { NavigationBvrT } from "app/containers/navigation_bvr";
 import type { SelectMovesBvrT } from "moves/containers/with_move_list_frame_bvrs";
 import type { MoveClipboardBvrT } from "moves/containers/move_clipboard_behaviours";
 
@@ -36,7 +35,6 @@ import type { MoveClipboardBvrT } from "moves/containers/move_clipboard_behaviou
 type MoveListFramePropsT = {
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
-  navigationBvr: NavigationBvrT,
   moveCrudBvrs: MoveCrudBvrsT,
   moveListCrudBvrs: MoveListCrudBvrsT,
   selectMovesBvr: SelectMovesBvrT,
@@ -58,9 +56,9 @@ function _MoveListFrame(props: MoveListFramePropsT) {
 
   const filterMoves = (tags, keywords) => {
     const _filter = createTagsAndKeywordsFilter(tags, keywords);
-    const slugid = actions.actSetMoveFilter("tagsAndKeywords", _filter);
-    if (props.moveList && slugid) {
-      browseToMove([makeMoveListUrl(props.moveList), slugid]);
+    const moveId = actions.actSetMoveFilter("tagsAndKeywords", _filter);
+    if (moveId) {
+      props.moveCrudBvrs.newMoveBvr.setHighlightedItemId(moveId);
     }
   };
 

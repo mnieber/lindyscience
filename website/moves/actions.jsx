@@ -97,11 +97,7 @@ export function actSetMoveFilter(name: string, filter: Function) {
         findNeighbourIdx(filteredMoveIds, allMoveIds, highlightedIdx, -1, -1);
 
       if (newIdx) {
-        const moveId = allMoveIds[newIdx.result];
-        const move = fromStore.getMoveById(state)[moveId];
-        const isSlugUnique =
-          allMoves.filter(x => x.slug == move.slug).length == 1;
-        return makeSlugid(move.slug, isSlugUnique ? "" : move.id);
+        return allMoveIds[newIdx.result];
       }
     }
     return "";

@@ -23,9 +23,7 @@ function SignInPage(props: SignInPagePropsT) {
     if (await AppCtr.api.signIn(email, password)) {
       props.actSetSignedInEmail(email);
       const next = urlParam("next");
-      if (next) {
-        navigate(next);
-      }
+      navigate(next ? next : "/app/list");
     }
   }
 

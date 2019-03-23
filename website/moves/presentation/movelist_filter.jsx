@@ -71,12 +71,14 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
   }, [props.isFilterEnabled, tags, keywords]);
 
   function _onKeywordsChange(e) {
+    props.setIsFilterEnabled(true);
     if (inputRef.current) {
       setKeywords(splitIntoKeywords(inputRef.current.value));
     }
   }
 
   function _onTagsChange(pickedTags) {
+    props.setIsFilterEnabled(true);
     setTags(pickedTags.map(x => x.value));
   }
 

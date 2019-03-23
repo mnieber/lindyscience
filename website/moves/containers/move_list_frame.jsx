@@ -84,6 +84,21 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     }
   };
 
+  const playMoves = () => {
+    function playNextMove(moves: Array<MoveT>) {
+      if (moves.length) {
+        const move = moves.shift();
+        // $FlowFixMe
+        var utterance = new SpeechSynthesisUtterance(move.name);
+        window.speechSynthesis.speak(utterance);
+        setTimeout(() => playNextMove(moves), 12000);
+      }
+    }
+
+    const moves = [...props.selectMovesBvr.selectedItems];
+    playNextMove(moves);
+  };
+
   return (
     <KeyboardEventHandler
       handleKeys={["ctrl+e", "ctrl+down", "ctrl+up"]}
@@ -93,6 +108,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         userProfile={props.userProfile}
         moveList={props.moveList}
         moves={props.moveCrudBvrs.insertMovesBvr.preview}
+        playMoves={playMoves}
         moveCrudBvrs={props.moveCrudBvrs}
         moveLists={props.moveLists}
         moveListCrudBvrs={props.moveListCrudBvrs}

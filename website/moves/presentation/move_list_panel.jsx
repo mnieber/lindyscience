@@ -38,6 +38,7 @@ export type MoveListPanelPropsT = {
   userProfile: UserProfileT,
   videoLinksByMoveId: VideoLinksByIdT,
   moves: Array<MoveT>,
+  playMoves: Function,
   moveCrudBvrs: MoveCrudBvrsT,
   moveListCrudBvrs: MoveListCrudBvrsT,
   moveClipboardBvr: MoveClipboardBvrT,
@@ -69,6 +70,7 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   const moveListHeader = (
     <Widgets.MoveListHeader
       addNewMove={props.moveCrudBvrs.newMoveBvr.addNewItem}
+      playMoves={props.playMoves}
       className=""
     />
   );

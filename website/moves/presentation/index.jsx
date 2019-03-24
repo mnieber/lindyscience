@@ -14,6 +14,7 @@ import { MovePrivateDataPanel } from "moves/presentation/move_private_data_panel
 import { StaticVideoLinksPanel } from "moves/presentation/static_videolinks_panel";
 import { StaticTipsPanel } from "moves/presentation/static_tips_panel";
 import { MoveListPanel } from "moves/presentation/move_list_panel";
+import { MoveListPlayer } from "moves/presentation/move_list_player";
 import {
   MoveListFilter,
   MoveListPicker,
@@ -28,6 +29,7 @@ const Widgets = {
   MoveContextMenu,
   MoveListForm,
   MoveListPanel,
+  MoveListPlayer,
   MoveListDetails,
   VideoLinksPanel,
   MovePrivateDataPanel,

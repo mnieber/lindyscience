@@ -40,7 +40,7 @@ export type MoveListPanelPropsT = {
   isFilterEnabled: boolean,
   setIsFilterEnabled: boolean => void,
   moves: Array<MoveT>,
-  playMoves: Function,
+  playMove: MoveT => void,
   moveCrudBvrs: MoveCrudBvrsT,
   moveListCrudBvrs: MoveListCrudBvrsT,
   moveClipboardBvr: MoveClipboardBvrT,
@@ -69,13 +69,20 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
+  const moveListPlayer = (
+    <Widgets.MoveListPlayer
+      moves={props.selectMovesBvr.selectedItems}
+      playMove={props.playMove}
+      className=""
+    />
+  );
+
   const moveListHeader = (
     <Widgets.MoveListHeader
       addNewMove={() => {
         props.setIsFilterEnabled(false);
         props.moveCrudBvrs.newMoveBvr.addNewItem();
       }}
-      playMoves={props.playMoves}
       className=""
     />
   );
@@ -143,6 +150,7 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
       <div className="moveListPanel__inner w-1/5 flexcol">
         {buttonsDiv}
         {moveListPicker}
+        {moveListPlayer}
         {isOwner && moveListHeader}
         {moveListFilter}
         {moveList}

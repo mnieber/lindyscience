@@ -89,19 +89,13 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     }
   };
 
-  const playMoves = () => {
-    function playNextMove(moves: Array<MoveT>) {
-      if (moves.length) {
-        const move = moves.shift();
-        // $FlowFixMe
-        var utterance = new SpeechSynthesisUtterance(move.name);
-        window.speechSynthesis.speak(utterance);
-        setTimeout(() => playNextMove(moves), 12000);
-      }
-    }
-
-    const moves = [...props.selectMovesBvr.selectedItems];
-    playNextMove(moves);
+  const playMove = (move: MoveT) => {
+    const maxLength = 200;
+    // $FlowFixMe
+    const utterance = new SpeechSynthesisUtterance(
+      move.name.substr(0, maxLength)
+    );
+    return window.speechSynthesis.speak(utterance);
   };
 
   return (
@@ -113,7 +107,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         userProfile={props.userProfile}
         moveList={props.moveList}
         moves={props.moves}
-        playMoves={playMoves}
+        playMove={playMove}
         moveCrudBvrs={props.moveCrudBvrs}
         moveLists={props.moveLists}
         moveListCrudBvrs={props.moveListCrudBvrs}

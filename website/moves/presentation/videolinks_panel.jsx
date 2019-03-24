@@ -115,11 +115,12 @@ type VoteVideoLinkBvrT = {
 };
 
 type VideoLinksPanelPropsT = {
-  moveId: UUID,
+  move: MoveT,
   userProfile: UserProfileT,
   videoLinks: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
   saveVideoLink: VideoLinkT => void,
+  deleteVideoLink: VideoLinkT => void,
   voteVideoLink: (UUID, VoteT) => void,
 };
 
@@ -129,11 +130,11 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
   const newVideoLinkBvr = useNewVideoLink(
     props.userProfile.userId,
     insertVideoLinkBvr,
-    props.moveId
+    props.move.id
   );
   const saveVideoLinkBvr = useSaveVideoLink(
     newVideoLinkBvr,
-    props.moveId,
+    props.move.id,
     insertVideoLinkBvr.preview,
     props.saveVideoLink
   );
@@ -154,9 +155,12 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
         {addVideoLinkBtn}
       </div>
       <VideoLinkList
+        userProfile={props.userProfile}
+        move={props.move}
         items={insertVideoLinkBvr.preview}
         setVote={props.voteVideoLink}
         saveVideoLink={saveVideoLinkBvr.save}
+        deleteVideoLink={props.deleteVideoLink}
         cancelEditVideoLink={saveVideoLinkBvr.discardChanges}
         voteByObjectId={props.voteByObjectId}
       />

@@ -3,21 +3,24 @@
 import * as React from "react";
 import { VoteCount } from "app/presentation/vote_count";
 import { VideoLinkForm } from "moves/presentation/video_link_form";
-import type { UUID, VoteByIdT, VoteT } from "app/types";
-import type { VideoLinkT } from "moves/types";
+import type { UUID, VoteByIdT, VoteT, UserProfileT } from "app/types";
+import type { VideoLinkT, MoveT } from "moves/types";
 
 // VideoLinkeoLink
 
 type VideoLinkPropsT = {
+  isOwner: boolean,
   item: VideoLinkT,
   vote: VoteT,
   setVote: (UUID, VoteT) => void,
   saveVideoLink: Function,
+  deleteVideoLink: Function,
   cancelEditVideoLink: Function,
 };
 
 export function VideoLink(props: VideoLinkPropsT) {
   const [isEditing, setIsEditing] = React.useState(props.item.url == "");
+  const [armDelete, setArmDelete] = React.useState(false);
 
   if (isEditing) {
     function _onSubmit(values) {
@@ -70,11 +73,50 @@ export function VideoLink(props: VideoLinkPropsT) {
       </div>
     );
 
+    const deleteBtn = (
+      <div
+        className="videoLink__editButton ml-2"
+        onClick={() => setArmDelete(true)}
+      >
+        delete...
+      </div>
+    );
+
+    const confirmDeleteBtn = (
+      <div
+        className="videoLink__editButton mx-1"
+        onClick={() => {
+          props.deleteVideoLink(props.item);
+          setArmDelete(false);
+        }}
+      >
+        confirm
+      </div>
+    );
+
+    const cancelDeleteBtn = (
+      <div
+        className="videoLink__editButton mx-1"
+        onClick={() => setArmDelete(false)}
+      >
+        cancel
+      </div>
+    );
+
+    const cancelConfirmDiv = (
+      <div className="ml-2 px-2 flexrow bg-red-light content-center">
+        {confirmDeleteBtn}
+        {cancelDeleteBtn}
+      </div>
+    );
+
     return (
       <div className="videoLink">
         {voteCount}
         {link}
-        {editBtn}
+        {props.isOwner && editBtn}
+        {!armDelete && props.isOwner && deleteBtn}
+        {armDelete && props.isOwner && cancelConfirmDiv}
       </div>
     );
   }
@@ -82,22 +124,31 @@ export function VideoLink(props: VideoLinkPropsT) {
 
 // VideoLinkList
 type VideoLinkListPropsT = {
+  userProfile: UserProfileT,
+  move: MoveT,
   items: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
   setVote: (UUID, VoteT) => void,
   saveVideoLink: Function,
+  deleteVideoLink: Function,
   cancelEditVideoLink: Function,
 };
 
 export function VideoLinkList(props: VideoLinkListPropsT) {
   const itemNodes = props.items.map<React.Node>((item, idx) => {
+    const isOwner =
+      item.ownerId == props.userProfile.userId ||
+      props.move.ownerId == props.userProfile.userId;
+
     return (
       <VideoLink
         key={item.id}
         item={item}
+        isOwner={isOwner}
         vote={props.voteByObjectId[item.id] || 0}
         setVote={props.setVote}
         saveVideoLink={props.saveVideoLink}
+        deleteVideoLink={props.deleteVideoLink}
         cancelEditVideoLink={props.cancelEditVideoLink}
       />
     );

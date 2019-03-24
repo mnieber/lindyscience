@@ -325,6 +325,13 @@ export function videoLinksReducer(
         ...state,
         ...action.videoLinks,
       };
+    case "REMOVE_VIDEO_LINKS":
+      return Object.keys(state)
+        .filter(x => !action.videoLinks.includes(x))
+        .reduce((acc, id) => {
+          acc[id] = state[id];
+          return acc;
+        }, {});
     case "CAST_VOTE":
       if (!state[action.id]) return state;
       return {

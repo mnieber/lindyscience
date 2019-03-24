@@ -56,6 +56,13 @@ export const withVideoLinksPanel = compose(
       response.catch(createErrorHandler("We could not save the video link"));
     };
 
+    const deleteVideoLink = (videolink: VideoLinkT) => {
+      actions.actRemoveVideoLinks([videolink.id]);
+      MovesCtr.api
+        .deleteVideoLink(videolink.id)
+        .catch(createErrorHandler("We could not delete the videolink"));
+    };
+
     const voteVideoLink = (id: UUID, vote: VoteT) => {
       actions.actCastVote(id, vote);
       AppCtr.api
@@ -65,11 +72,12 @@ export const withVideoLinksPanel = compose(
 
     const videoLinksPanel = (
       <Widgets.VideoLinksPanel
-        moveId={getId(move)}
+        move={move}
         userProfile={userProfile}
         videoLinks={videoLinksByMoveId[getId(move)]}
         voteByObjectId={voteByObjectId}
         saveVideoLink={saveVideoLink}
+        deleteVideoLink={deleteVideoLink}
         voteVideoLink={voteVideoLink}
       />
     );

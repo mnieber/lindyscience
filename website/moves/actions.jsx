@@ -74,6 +74,13 @@ export function actRemoveTips(tips: Array<UUID>) {
   };
 }
 
+export function actRemoveVideoLinks(videoLinks: Array<UUID>) {
+  return {
+    type: "REMOVE_VIDEO_LINKS",
+    videoLinks,
+  };
+}
+
 export function actSetMoveFilter(name: string, filter: Function) {
   return (dispatch: Function, getState: Function): SlugidT => {
     const highlightedMove = fromStore.getHighlightedMove(getState());

@@ -55,6 +55,8 @@ const userProfileReducer = function(
   action
 ): UserProfileState {
   switch (action.type) {
+    case "SET_SIGNED_IN_EMAIL":
+      return null;
     case "SET_USER_PROFILE":
       return {
         ...state,
@@ -86,6 +88,8 @@ type VotesState = VoteByIdT;
 
 export function votesReducer(state: VotesState = {}, action: any): VotesState {
   switch (action.type) {
+    case "SET_SIGNED_IN_EMAIL":
+      return {};
     case "SET_VOTES":
       return {
         ...state,

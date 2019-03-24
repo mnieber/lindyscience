@@ -122,6 +122,8 @@ export function movePrivateDatasReducer(
   action: any
 ): MovePrivateDatasState {
   switch (action.type) {
+    case "SET_SIGNED_IN_EMAIL":
+      return {};
     case "ADD_MOVE_PRIVATE_DATAS":
       return { ...state, ...action.movePrivateDatas };
     default:

@@ -43,6 +43,7 @@
     "react-contexify": "^4.0.1",
     "react-dom": "16.8.3",
     "react-keyboard-event-handler": "^1.4.1",
+    "react-player": "^1.9.3",
     "react-redux": "^6.0.0",
     "react-redux-toastr": "^7.4.4",
     "react-select": "^2.0.0",

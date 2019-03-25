@@ -5,16 +5,12 @@ import { Link } from "@reach/router";
 import classnames from "classnames";
 import { SignInForm } from "app/presentation/signin_form";
 
-export function SignInDialog({
-  signIn,
-}: {
+type SignInDialogPropsT = {
   signIn: (email: string, password: string) => any,
-}) {
+};
+
+export function SignInDialog(props: SignInDialogPropsT) {
   const [isModal, setIsModel] = React.useState(true);
-  function _submitValues(values) {
-    const { email, password } = values;
-    signIn(email, password);
-  }
 
   const goToResetDiv = (
     <div>
@@ -33,7 +29,7 @@ export function SignInDialog({
         className={classnames("modalWindow", { "modalWindow--open": isModal })}
       >
         <div>
-          <SignInForm onSubmit={_submitValues} values={{}} />
+          <SignInForm signIn={props.signIn} />
           {goToResetDiv}
         </div>
       </div>

@@ -6,16 +6,12 @@ import classnames from "classnames";
 import { PasswordChangeForm } from "app/presentation/password_change_form";
 
 type PasswordChangeDialogPropsT = {
-  isPasswordChanged: ?boolean,
-  changePassword: (email: string) => any,
+  changePassword: (password: string) => any,
 };
 
 export function PasswordChangeDialog(props: PasswordChangeDialogPropsT) {
-  const [isModal, setIsModel] = React.useState(true);
-  function _submitValues(values) {
-    const { password } = values;
-    props.changePassword(password);
-  }
+  const [isModal, setIsModal] = React.useState(true);
+  const [isPasswordChanged, setIsPasswordChanged] = React.useState(false);
 
   const explanationDiv = <div>Please enter your new password.</div>;
   const confirmationDiv = (
@@ -26,15 +22,12 @@ export function PasswordChangeDialog(props: PasswordChangeDialogPropsT) {
       </Link>
     </div>
   );
-  const failedDiv = (
-    <div>
-      Oops, there was a problem with resetting your password. Please try
-      <Link className="ml-2" to={"/app/reset-password/"}>
-        resetting it again
-      </Link>
-      .
-    </div>
-  );
+
+  const _changePassword = async (password: string) => {
+    const errorState = await props.changePassword(password);
+    setIsPasswordChanged(!errorState);
+    return errorState;
+  };
 
   return (
     <React.Fragment>
@@ -43,11 +36,10 @@ export function PasswordChangeDialog(props: PasswordChangeDialogPropsT) {
         className={classnames("modalWindow", { "modalWindow--open": isModal })}
       >
         <div>
-          {props.isPasswordChanged == null && explanationDiv}
-          {props.isPasswordChanged == false && failedDiv}
-          {props.isPasswordChanged == true && confirmationDiv}
-          {props.isPasswordChanged == null && (
-            <PasswordChangeForm onSubmit={_submitValues} values={{}} />
+          {isPasswordChanged && confirmationDiv}
+          {!isPasswordChanged && explanationDiv}
+          {!isPasswordChanged && (
+            <PasswordChangeForm changePassword={_changePassword} />
           )}
         </div>
       </div>

@@ -3,40 +3,29 @@
 import React from "react";
 import { withFormik } from "formik";
 import * as yup from "yup";
-import { FormField } from "utils/form_utils";
+import {
+  emailField,
+  passwordField,
+  submitButton,
+  globalErrorDiv,
+  technicalProblemMsg,
+} from "app/presentation/signin_form";
 
-export function RegisterForm({
-  onSubmit,
-  values,
-}: {
-  onSubmit: any => void,
-  values: any,
-}) {
+type RegisterFormPropsT = {
+  register: (email: string, password: string) => any,
+};
+
+export function RegisterForm(props: RegisterFormPropsT) {
+  const [globalError, setGlobalError] = React.useState("");
+
   function InnerForm(formProps) {
     return (
       <form className="registerForm w-full" onSubmit={formProps.handleSubmit}>
+        {globalErrorDiv(globalError)}
         <div className={"flex flex-wrap"}>
-          <FormField
-            classNames="registerForm__email w-64"
-            formProps={formProps}
-            fieldName="email"
-            type="email"
-            placeholder="Email"
-          />
-          <FormField
-            classNames="registerForm__password w-64"
-            formProps={formProps}
-            fieldName="password"
-            type="password"
-            placeholder="Password"
-          />
-          <button
-            className="registerForm__submitButton ml-2"
-            type="submit"
-            disabled={false}
-          >
-            Register
-          </button>
+          {emailField(formProps)}
+          {passwordField(formProps)}
+          {submitButton("Register")}
         </div>
       </form>
     );
@@ -46,17 +35,17 @@ export function RegisterForm({
     mapPropsToValues: () => ({
       email: "",
       password: "",
-      ...values,
     }),
     validationSchema: yup.object().shape({
-      text: yup.string().required("This field is required"),
+      email: yup.string().required("This field is required"),
+      password: yup.string().required("This field is required"),
     }),
-    validate: (values, formProps) => {
-      let errors = {};
-      return errors;
-    },
-    handleSubmit: (values, { setSubmitting }) => {
-      onSubmit(values);
+    handleSubmit: ({ email, password }, { setSubmitting }) => {
+      const errorState = props.register(email, password);
+      if (errorState == "") {
+      } else if (errorState) {
+        setGlobalError(technicalProblemMsg);
+      }
     },
     displayName: "BasicForm", // helps with React DevTools
   })(InnerForm);

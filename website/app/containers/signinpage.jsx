@@ -16,11 +16,13 @@ type SignInPagePropsT = {
 
 function SignInPage(props: SignInPagePropsT) {
   async function _signIn(email: string, password: string) {
-    if (await AppCtr.api.signIn(email, password)) {
+    const errorState = await AppCtr.api.signIn(email, password);
+    if (!errorState) {
       props.actSetSignedInEmail(email);
       const next = urlParam("next");
       navigate(next ? next : "/app/list");
     }
+    return errorState;
   }
 
   return (

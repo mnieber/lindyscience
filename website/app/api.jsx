@@ -5,6 +5,11 @@ import { doQuery, setToken } from "app/client";
 import { get, post } from "utils/api_utils";
 import type { UUID, VoteT } from "app/types";
 
+function _hasError(e, fieldName, errorMsg) {
+  const errors = e.responseJSON[fieldName] || [];
+  return errors.includes(errorMsg);
+}
+
 // Api app
 
 export function loadUserProfile() {
@@ -101,16 +106,22 @@ export const voteVideoLink = (objectId: UUID, value: VoteT) =>
 
 export async function signIn(email: string, password: string) {
   try {
-    const rawResponse = await post("/auth/token/login", { email, password });
-    const response = toCamelCase(rawResponse);
+    const response = toCamelCase(
+      await post("/auth/token/login", { email, password })
+    );
     if (response.authToken) {
       setToken(response.authToken);
-      return true;
+      return "";
     }
   } catch (e) {
-    console.error(e);
+    return _hasError(
+      e,
+      "non_field_errors",
+      "Unable to login with provided credentials."
+    )
+      ? "bad_credentials"
+      : "cannot_sign_in";
   }
-  return false;
 }
 
 export async function signOut() {
@@ -126,8 +137,7 @@ export async function signOut() {
 
 export async function getEmail() {
   try {
-    const rawResponse = await get("/auth/users/me");
-    const response = toCamelCase(rawResponse);
+    const response = toCamelCase(await get("/auth/users/me"));
     return response.email;
   } catch (e) {
     return "";
@@ -136,12 +146,16 @@ export async function getEmail() {
 
 export async function resetPassword(email: string) {
   try {
-    await post("/auth/password/reset/", {
-      email: email,
-    });
-    return true;
+    const response = toCamelCase(
+      await post("/auth/password/reset/", {
+        email: email,
+      })
+    );
+    return "";
   } catch (e) {
-    return false;
+    return _hasError(e, "email", "Enter a valid email address.")
+      ? "invalid_email"
+      : "cannot_reset";
   }
 }
 
@@ -151,13 +165,34 @@ export async function changePassword(
   token: string
 ) {
   try {
-    await post("/auth/password/reset/confirm", {
-      uid,
-      token,
-      new_password: newPassword,
-    });
-    return true;
+    const response = toCamelCase(
+      await post("/auth/password/reset/confirm", {
+        uid,
+        token,
+        new_password: newPassword,
+      })
+    );
+    return "";
   } catch (e) {
-    return false;
+    return _hasError(e, "non_field_errors", "Invalid token for given user.")
+      ? "invalid_token"
+      : "cannot_sign_in";
+  }
+}
+
+export async function activateAccount(uid: string, token: string) {
+  try {
+    const response = toCamelCase(
+      await post("/auth/users/confirm/", {
+        uid,
+        token,
+      })
+    );
+    return "";
+  } catch (e) {
+    debugger;
+    return _hasError(e, "non_field_errors", "Invalid token for given user.")
+      ? "invalid_token"
+      : "cannot_sign_in";
   }
 }

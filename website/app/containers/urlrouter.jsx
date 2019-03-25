@@ -47,6 +47,7 @@ function UrlRouter(props: UrlRouterPropsT) {
         </MoveListFrame>
         <SignInPage path="/sign-in/" />
         <RegisterPage path="/register/" />
+        <RegisterPage path="/register/activate/:uidPrm/:tokenPrm" />
         <PasswordResetPage path="/sign-in/reset-password" />
         <PasswordResetPage path="/sign-in/reset-password/:uidPrm/:tokenPrm" />
       </AppFrame>

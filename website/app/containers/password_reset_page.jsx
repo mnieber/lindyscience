@@ -15,42 +15,27 @@ type PasswordResetPagePropsT = {
 };
 
 function PasswordResetPage(props: PasswordResetPagePropsT) {
-  const [isPasswordReset, setIsPasswordReset] = React.useState(null);
-  const [isPasswordChanged, setIsPasswordChanged] = React.useState(null);
-
   async function _resetPassword(email: string) {
-    const result = await AppCtr.api.resetPassword(email);
-    setIsPasswordReset(result);
+    return await AppCtr.api.resetPassword(email);
   }
 
   async function _changePassword(password: string) {
-    const result = await AppCtr.api.changePassword(
+    return await AppCtr.api.changePassword(
       password,
       props.uidPrm,
       props.tokenPrm
     );
-    setIsPasswordChanged(result);
   }
 
-  if (props.uidPrm && props.tokenPrm) {
-    return (
-      <div className="passwordResetPage flexrow">
-        <PasswordChangeDialog
-          changePassword={_changePassword}
-          isPasswordChanged={isPasswordChanged}
-        />
-      </div>
-    );
-  } else {
-    return (
-      <div className="passwordResetPage flexrow">
-        <PasswordResetDialog
-          isPasswordReset={isPasswordReset}
-          resetPassword={_resetPassword}
-        />
-      </div>
-    );
-  }
+  return props.uidPrm && props.tokenPrm ? (
+    <div className="passwordResetPage flexrow">
+      <PasswordChangeDialog changePassword={_changePassword} />
+    </div>
+  ) : (
+    <div className="passwordResetPage flexrow">
+      <PasswordResetDialog resetPassword={_resetPassword} />
+    </div>
+  );
 }
 
 // $FlowFixMe

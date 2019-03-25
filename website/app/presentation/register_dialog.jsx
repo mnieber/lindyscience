@@ -5,22 +5,18 @@ import { Link } from "@reach/router";
 import classnames from "classnames";
 import { RegisterForm } from "app/presentation/register_form";
 
-export function RegisterDialog({
-  register,
-}: {
+type RegisterDialogPropsT = {
   register: (email: string, password: string) => any,
-}) {
-  const [isModal, setIsModel] = React.useState(true);
-  function _submitValues(values) {
-    const { email, password } = values;
-    register(email, password);
-  }
+};
 
-  const goToResetDiv = (
+export function RegisterDialog(props: RegisterDialogPropsT) {
+  const [isModal, setIsModal] = React.useState(true);
+
+  const goToSignInDiv = (
     <div>
-      Did you
-      <Link className="ml-2" to={"/app/sign-in/reset-password/"}>
-        forget your password
+      If you are registered then you can
+      <Link className="ml-2" to={"/app/sign-in/"}>
+        sign in
       </Link>
       ?
     </div>
@@ -33,8 +29,8 @@ export function RegisterDialog({
         className={classnames("modalWindow", { "modalWindow--open": isModal })}
       >
         <div>
-          <RegisterForm onSubmit={_submitValues} values={{}} />
-          {goToResetDiv}
+          <RegisterForm register={props.register} />
+          {goToSignInDiv}
         </div>
       </div>
     </React.Fragment>

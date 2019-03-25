@@ -5,16 +5,12 @@ import classnames from "classnames";
 import { PasswordResetForm } from "app/presentation/password_reset_form";
 
 type PasswordResetDialogPropsT = {
-  isPasswordReset: ?boolean,
   resetPassword: (email: string) => any,
 };
 
 export function PasswordResetDialog(props: PasswordResetDialogPropsT) {
-  const [isModal, setIsModel] = React.useState(true);
-  function _submitValues(values) {
-    const { email } = values;
-    props.resetPassword(email);
-  }
+  const [isModal, setIsModal] = React.useState(true);
+  const [isPasswordReset, setIsPasswordReset] = React.useState(false);
 
   const confirmationDiv = (
     <div>
@@ -25,6 +21,12 @@ export function PasswordResetDialog(props: PasswordResetDialogPropsT) {
 
   const explanationDiv = <div>Enter your email to reset your password.</div>;
 
+  const _resetPassword = async (email: string) => {
+    const errorState = await props.resetPassword(email);
+    setIsPasswordReset(!errorState);
+    return errorState;
+  };
+
   return (
     <React.Fragment>
       <div
@@ -32,10 +34,10 @@ export function PasswordResetDialog(props: PasswordResetDialogPropsT) {
         className={classnames("modalWindow", { "modalWindow--open": isModal })}
       >
         <div>
-          {props.isPasswordReset && confirmationDiv}
-          {!props.isPasswordReset && explanationDiv}
-          {!props.isPasswordReset && (
-            <PasswordResetForm onSubmit={_submitValues} values={{}} />
+          {isPasswordReset && confirmationDiv}
+          {!isPasswordReset && explanationDiv}
+          {!isPasswordReset && (
+            <PasswordResetForm resetPassword={_resetPassword} />
           )}
         </div>
       </div>

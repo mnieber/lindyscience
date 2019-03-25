@@ -4,23 +4,41 @@ import * as React from "react";
 import AppCtr from "app/containers/index";
 import { navigate } from "@reach/router";
 import { RegisterDialog } from "app/presentation/register_dialog";
+import { ActivateAccountDialog } from "app/presentation/activate_account_dialog";
 
 // RegisterPage
 
 function createHandlers() {}
 
-type RegisterPagePropsT = {};
+type RegisterPagePropsT = {
+  uidPrm: ?string,
+  tokenPrm: ?string,
+};
 
 function RegisterPage(props: RegisterPagePropsT) {
-  const [isRegistered, setIsRegistered] = React.useState(false);
-
   async function _register(email: string, password: string) {
-    if (await AppCtr.api.register(email, password)) {
+    const errorState = await AppCtr.api.register(email, password);
+    if (!errorState) {
       navigate("/app/list");
     }
+    return errorState;
   }
 
-  return (
+  async function _activateAccount(uid: string, token: string) {
+    const errorState = await AppCtr.api.activateAccount(uid, token);
+    if (!errorState) {
+      navigate("/app/sign-in/");
+    }
+    return errorState;
+  }
+
+  return props.uidPrm && props.tokenPrm ? (
+    <ActivateAccountDialog
+      activateAccount={_activateAccount}
+      uid={props.uidPrm}
+      token={props.tokenPrm}
+    />
+  ) : (
     <div className="registerPage flexrow">
       <RegisterDialog register={_register} />
     </div>

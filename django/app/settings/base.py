@@ -226,7 +226,7 @@ DJOSER = {
         'password_reset': 'accounts.email.PasswordResetEmail',
         'confirmation': 'accounts.email.ConfirmationEmail',
     },
-    'PASSWORD_RESET_CONFIRM_URL': 'login/password-reset/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'sign-in/reset-password/{uid}/{token}',
     'PASSWORD_RESET_CONFIRM_RETYPE': False,
     'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRMATION_EMAIL': True,

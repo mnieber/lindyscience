@@ -135,3 +135,31 @@ export async function getEmail() {
     return "";
   }
 }
+
+export async function resetPassword(email: string) {
+  try {
+    await post("/auth/password/reset/", {
+      email: email,
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+export async function changePassword(
+  newPassword: string,
+  uid: string,
+  token: string
+) {
+  try {
+    await post("/auth/password/reset/confirm", {
+      uid,
+      token,
+      new_password: newPassword,
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

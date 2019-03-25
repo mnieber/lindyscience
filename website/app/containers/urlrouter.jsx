@@ -1,12 +1,14 @@
 // @flow
 
 import React from "react";
-import { Router, Link } from "@reach/router";
+import { Router } from "@reach/router";
 import MoveListFrame from "moves/containers/move_list_frame";
 import MovePage from "moves/containers/move_page";
 import MoveListDetailsPage from "moves/containers/move_list_details_page";
 import AppFrame from "app/containers/appframe";
 import SignInPage from "app/containers/signinpage";
+import RegisterPage from "app/containers/register_page";
+import PasswordResetPage from "app/containers/password_reset_page";
 import AppCtr, { browseToMove } from "app/containers/index";
 import MovesCtr from "moves/containers/index";
 import type { UserProfileT } from "app/types";
@@ -44,6 +46,9 @@ function UrlRouter(props: UrlRouterPropsT) {
           <MovePage path=":moveSlugPrm/:moveIdPrm" />
         </MoveListFrame>
         <SignInPage path="/sign-in/" />
+        <RegisterPage path="/register/" />
+        <PasswordResetPage path="/sign-in/reset-password" />
+        <PasswordResetPage path="/sign-in/reset-password/:uidPrm/:tokenPrm" />
       </AppFrame>
     </Router>
   );

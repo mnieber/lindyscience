@@ -103,6 +103,7 @@ function AppFrame(props: AppFramePropsT) {
       .signOut()
       .catch(createErrorHandler("Could not update the move list"));
     actions.actSetSignedInEmail("");
+    navigate("/app/sign-in/");
   };
 
   return (

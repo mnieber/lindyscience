@@ -5,7 +5,6 @@ import AppCtr from "app/containers/index";
 import { navigate } from "@reach/router";
 import { urlParam } from "utils/utils";
 import { SignInDialog } from "app/presentation/signin_dialog";
-import { getSignInPageBehaviours } from "app/containers/behaviours";
 
 // SignInPage
 
@@ -16,9 +15,6 @@ type SignInPagePropsT = {
 };
 
 function SignInPage(props: SignInPagePropsT) {
-  // const {} = getSignInPageBehaviours();
-  // const {} = createHandlers();
-
   async function _signIn(email: string, password: string) {
     if (await AppCtr.api.signIn(email, password)) {
       props.actSetSignedInEmail(email);

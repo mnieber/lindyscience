@@ -3,17 +3,17 @@
 import React from "react";
 import { Link } from "@reach/router";
 import classnames from "classnames";
-import { SignInForm } from "app/presentation/signin_form";
+import { RegisterForm } from "app/presentation/register_form";
 
-export function SignInDialog({
-  signIn,
+export function RegisterDialog({
+  register,
 }: {
-  signIn: (email: string, password: string) => any,
+  register: (email: string, password: string) => any,
 }) {
   const [isModal, setIsModel] = React.useState(true);
   function _submitValues(values) {
     const { email, password } = values;
-    signIn(email, password);
+    register(email, password);
   }
 
   const goToResetDiv = (
@@ -29,11 +29,11 @@ export function SignInDialog({
   return (
     <React.Fragment>
       <div
-        id="signInDialog"
+        id="registerDialog"
         className={classnames("modalWindow", { "modalWindow--open": isModal })}
       >
         <div>
-          <SignInForm onSubmit={_submitValues} values={{}} />
+          <RegisterForm onSubmit={_submitValues} values={{}} />
           {goToResetDiv}
         </div>
       </div>

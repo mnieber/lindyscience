@@ -9,8 +9,7 @@ import AppCtr from "app/containers/index";
 import Widgets from "moves/presentation/index";
 
 import { newMoveListSlug, createTagsAndKeywordsFilter } from "moves/utils";
-import { pickNeighbour, scrollIntoView } from "app/utils";
-
+import { pickNeighbour, scrollIntoView, getId } from "app/utils";
 import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 import { MoveListCrudBvrsContext } from "moves/containers/move_list_crud_behaviours";
@@ -53,7 +52,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
   const filterMoves = (tags, keywords) => {
     const _filter = createTagsAndKeywordsFilter(tags, keywords);
     const moveId = actions.actSetMoveFilter("tagsAndKeywords", _filter);
-    if (moveId) {
+    if (moveId != getId(props.highlightedMove)) {
       props.moveCrudBvrs.newMoveBvr.setHighlightedItemId(moveId);
     }
   };

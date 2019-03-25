@@ -3,7 +3,7 @@
 import * as React from "react";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
 import type { MovePrivateDataT } from "moves/types";
-import type { UUID, UserProfileT } from "app/types";
+import type { UserProfileT } from "app/types";
 
 type MovePrivateDatasPanelPropsT = {
   userProfile: UserProfileT,

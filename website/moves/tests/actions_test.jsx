@@ -8,7 +8,7 @@ import { createTagsAndKeywordsFilter } from "moves/utils";
 import { reducer } from "app/root_reducer";
 import { test } from "tape";
 import { Thunk, FlushThunks } from "redux-testkit";
-import { createStore, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { createNewMove } from "moves/containers/move_crud_behaviours";
 

@@ -2,14 +2,12 @@
 
 import React from "react";
 import { withFormik } from "formik";
-import * as yup from "yup";
-import { FormField, formFieldError, FormFieldLabel } from "utils/form_utils";
+import { formFieldError } from "utils/form_utils";
 import {
   RichTextEditor,
   getContentFromEditor,
 } from "moves/presentation/rich_text_editor";
-import { stateToHTML } from "draft-js-export-html";
-import type { MoveT, MovePrivateDataT } from "moves/types";
+import type { MovePrivateDataT } from "moves/types";
 
 // MovePrivateDataForm
 

@@ -17,10 +17,6 @@ import { getObjectValues } from "utils/utils";
 import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from "moves/containers/move_crud_behaviours";
 import { test } from "utils/test_utils";
 
-import type { MoveT } from "moves/types";
-import type { UUID } from "app/types";
-import type { DataContainerT } from "moves/containers/data_container";
-
 const sandbox = {};
 
 function TestComponent({

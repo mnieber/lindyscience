@@ -2,8 +2,6 @@
 
 import * as React from "react";
 
-import { getPreview } from "moves/utils";
-
 import type { UUID, ObjectT } from "app/types";
 import type { DataContainerT } from "moves/containers/data_container";
 

@@ -4,25 +4,20 @@ import { combineReducers, compose } from "redux";
 import { createSelector } from "reselect";
 import type {
   MoveByIdT,
-  MoveBySlugT,
   MoveT,
   MoveListT,
   MoveListByIdT,
   TipByIdT,
   TipsByIdT,
-  TipT,
   VideoLinkByIdT,
   VideoLinksByIdT,
-  VideoLinkT,
   MovePrivateDataByIdT,
   FunctionByIdT,
 } from "moves/types";
 import {
   reduceMapToMap,
   getObjectValues,
-  isNone,
   querySetListToDict,
-  addToSet,
   insertIdsIntoList,
 } from "utils/utils";
 import { findMove, findMoveBySlugid } from "moves/utils";

@@ -2,7 +2,6 @@
 
 import React from "react";
 import * as fromStore from "app/reducers";
-import { toTitleCase } from "utils/utils";
 import type { UserProfileT, UUID, VoteT, VoteByIdT } from "app/types";
 
 ///////////////////////////////////////////////////////////////////////

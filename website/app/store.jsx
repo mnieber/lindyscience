@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import jQuery from "jquery";
 import thunk from "redux-thunk";
 import { createLogger } from "redux-logger";
-import { createStore, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { reducer } from "app/root_reducer";
 
 function csrfSafeMethod(method) {

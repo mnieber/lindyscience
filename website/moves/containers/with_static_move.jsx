@@ -11,14 +11,8 @@ import { getId } from "app/utils";
 import Widgets from "moves/presentation/index";
 import { withMovePrivateDataPanel } from "moves/containers/with_move_private_data_panel";
 
-import type {
-  MoveT,
-  TipT,
-  TipsByIdT,
-  VideoLinksByIdT,
-  MoveListT,
-} from "moves/types";
-import type { UUID, VoteT, UserProfileT, VoteByIdT, TagT } from "app/types";
+import type { MoveT, TipsByIdT, VideoLinksByIdT, MoveListT } from "moves/types";
+import type { VoteByIdT, TagT } from "app/types";
 
 type PropsT = {
   move: MoveT,

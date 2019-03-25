@@ -5,8 +5,6 @@ import {
   Editor,
   EditorState,
   RichUtils,
-  convertFromRaw,
-  convertToRaw,
   // $FlowFixMe
 } from "draft-js";
 import { stateFromHTML } from "draft-js-import-html";

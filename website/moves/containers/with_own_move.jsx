@@ -12,15 +12,8 @@ import { withMoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 import { withVideoLinksPanel } from "moves/containers/with_videolinks_panel";
 import { withTipsPanel } from "moves/containers/with_tips_panel";
 
-import type {
-  MoveT,
-  TipT,
-  TipsByIdT,
-  VideoLinksByIdT,
-  MoveListT,
-  MoveCrudBvrsT,
-} from "moves/types";
-import type { UUID, VoteT, UserProfileT, VoteByIdT, TagT } from "app/types";
+import type { MoveT, MoveListT, MoveCrudBvrsT } from "moves/types";
+import type { UserProfileT, TagT } from "app/types";
 
 type PropsT = {
   move: MoveT,

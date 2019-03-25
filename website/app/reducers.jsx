@@ -4,8 +4,7 @@ import { combineReducers } from "redux";
 import { createSelector } from "reselect";
 import { insertIdsIntoList } from "utils/utils";
 
-import type { InputSelector } from "reselect";
-import type { UUID, VoteByIdT, UserProfileT } from "app/types";
+import type { VoteByIdT, UserProfileT } from "app/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 ///////////////////////////////////////////////////////////////////////

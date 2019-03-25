@@ -7,11 +7,10 @@ import { compose } from "redux";
 import MovesCtr from "moves/containers/index";
 import { findTargetId, getPreview } from "moves/utils";
 import { createErrorHandler, getId } from "app/utils";
-import { querySetListToDict } from "utils/utils";
 
 import type { DataContainerT } from "moves/containers/data_container";
 import type { UUID } from "app/types";
-import type { MoveT, MoveListT, MoveByIdT } from "moves/types";
+import type { MoveListT } from "moves/types";
 
 // $FlowFixMe
 export const withMoveListContainer = compose(

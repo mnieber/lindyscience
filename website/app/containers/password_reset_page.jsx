@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import AppCtr from "app/containers/index";
-import { navigate } from "@reach/router";
-import { urlParam } from "utils/utils";
 import { PasswordResetDialog } from "app/presentation/password_reset_dialog";
 import { PasswordChangeDialog } from "app/presentation/password_change_dialog";
 

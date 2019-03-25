@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { StaticVoteCount } from "app/presentation/static_vote_count";
-import { TipForm } from "moves/presentation/tip_form";
 import type { VoteByIdT, VoteT } from "app/types";
 import type { TipT } from "moves/types";
 

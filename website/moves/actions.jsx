@@ -3,19 +3,16 @@
 import React from "react";
 import * as fromStore from "moves/reducers";
 import * as fromAppStore from "app/reducers";
-import { toTitleCase } from "utils/utils";
-import { findMoveBySlugid, makeSlugid, findNeighbourIdx } from "moves/utils";
+import { makeSlugid, findNeighbourIdx } from "moves/utils";
 import type {
-  MoveByIdT,
   MoveListByIdT,
   MoveT,
   MoveListT,
-  TipT,
   TipByIdT,
   MovePrivateDataByIdT,
   VideoLinkByIdT,
 } from "moves/types";
-import type { UUID, SlugidT, TagT } from "app/types";
+import type { UUID, SlugidT } from "app/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions

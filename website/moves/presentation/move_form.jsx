@@ -2,7 +2,6 @@
 
 import React from "react";
 import { withFormik } from "formik";
-import * as yup from "yup";
 import {
   FormField,
   ValuePicker,
@@ -18,7 +17,7 @@ import {
   getContentFromEditor,
 } from "moves/presentation/rich_text_editor";
 import type { MoveT } from "moves/types";
-import type { UUID, UserProfileT, TagT } from "app/types";
+import type { UUID, TagT } from "app/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,

@@ -19,8 +19,8 @@ import {
 } from "moves/containers/crud_behaviours";
 
 import type { DataContainerT } from "moves/containers/data_container";
-import type { MoveListT, MoveListCrudBvrsT, MoveListByIdT } from "moves/types";
-import type { UUID, UserProfileT, VoteByIdT } from "app/types";
+import type { MoveListT, MoveListCrudBvrsT } from "moves/types";
+import type { UUID, UserProfileT } from "app/types";
 import type {
   InsertItemsBvrT,
   NewItemBvrT,

@@ -2,7 +2,7 @@
 
 import { flatten } from "utils/utils";
 import { normalize, schema } from "normalizr";
-import { client, doQuery } from "app/client";
+import { doQuery } from "app/client";
 import type {
   TipT,
   VideoLinkT,

@@ -1,10 +1,8 @@
 // @flow
 
-import { flatten, toCamelCase, deepCopy } from "utils/utils";
-import { normalize, schema } from "normalizr";
-import { client, doQuery, setToken } from "app/client";
+import { flatten, toCamelCase } from "utils/utils";
+import { doQuery, setToken } from "app/client";
 import { get, post } from "utils/api_utils";
-import type { TipT, VideoLinkT, MoveT } from "moves/types";
 import type { UUID, VoteT } from "app/types";
 
 // Api app

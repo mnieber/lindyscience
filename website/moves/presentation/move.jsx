@@ -4,7 +4,7 @@ import * as React from "react";
 import classnames from "classnames";
 import { Link } from "@reach/router";
 import type { MoveT, MoveListT } from "moves/types";
-import type { UserProfileT, TagT } from "app/types";
+import type { TagT } from "app/types";
 
 function Tags({ tags }: { tags: Array<TagT> }) {
   const items = tags.map((tagName, idx) => {

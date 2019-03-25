@@ -6,11 +6,10 @@ import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 import { isOwner } from "app/utils";
-import { findMoveListByUrl } from "moves/utils";
 
 import { MoveListCrudBvrsContext } from "moves/containers/move_list_crud_behaviours";
 
-import type { UUID, UserProfileT, TagT } from "app/types";
+import type { UserProfileT, TagT } from "app/types";
 import type { MoveListT, MoveListCrudBvrsT } from "moves/types";
 
 type MoveListDetailsPagePropsT = {

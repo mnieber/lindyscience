@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import { Link } from "@reach/router";
 import classnames from "classnames";
 import { PasswordResetForm } from "app/presentation/password_reset_form";
 

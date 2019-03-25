@@ -2,7 +2,6 @@
 
 import React from "react";
 import { withFormik } from "formik";
-import * as yup from "yup";
 import {
   FormField,
   ValuePicker,

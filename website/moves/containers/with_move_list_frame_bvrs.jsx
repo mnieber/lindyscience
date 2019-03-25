@@ -18,9 +18,8 @@ import { createMoveListCrudBvrs } from "moves/containers/move_list_crud_behaviou
 import { useNavigation } from "app/containers/navigation_bvr";
 
 import type { MoveListT, MoveT } from "moves/types";
-import type { UUID, UserProfileT } from "app/types";
+import type { UserProfileT } from "app/types";
 import type { DataContainerT } from "moves/containers/data_container"; // TODO
-import type { NavigationBvrT } from "app/containers/navigation_bvr";
 import type { SelectItemsBvrT } from "moves/containers/move_selection_behaviours";
 
 // MoveListFrame
@@ -72,13 +71,10 @@ export const withMoveListFrameBvrs = compose(
       moveContainer.preview
     );
 
-    const highlightedMoveId = getId(highlightedMove);
-    const selectedMoveListId = getId(moveList);
-
     const moveCrudBvrs = createMoveCrudBvrs(
       moveList,
       userProfile,
-      highlightedMoveId,
+      getId(highlightedMove),
       navigationBvr.setNextHighlightedMoveId,
       moveContainer,
       navigationBvr.browseToMove,
@@ -87,14 +83,14 @@ export const withMoveListFrameBvrs = compose(
 
     const selectMovesBvr = useSelectItems<MoveT>(
       moveContainer.preview,
-      highlightedMoveId,
+      getId(highlightedMove),
       moveCrudBvrs.newMoveBvr.setHighlightedItemId
     );
 
     const moveClipboardBvr = useMoveClipboard(
       moveLists,
       selectMovesBvr.selectedItems.map(x => x.id),
-      highlightedMoveId,
+      getId(highlightedMove),
       moveCrudBvrs.newMoveBvr.setHighlightedItemId,
       actions.actInsertMoves,
       actions.actRemoveMoves
@@ -103,7 +99,7 @@ export const withMoveListFrameBvrs = compose(
     const moveListCrudBvrs = createMoveListCrudBvrs(
       userProfile,
       moveListContainer,
-      selectedMoveListId,
+      getId(moveList),
       navigationBvr.setNextSelectedMoveListId,
       actions.actAddMoveLists
     );

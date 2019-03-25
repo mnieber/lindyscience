@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import classnames from "classnames";
-import { Menu, Item, Separator, Submenu, MenuProvider } from "react-contexify";
+import { Menu, MenuProvider } from "react-contexify";
 import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import type { MoveT, VideoLinksByIdT } from "moves/types";

@@ -2,13 +2,10 @@
 
 import * as React from "react";
 import * as data from "moves/tests/data";
-import sinon from "sinon";
 // $FlowFixMe
 import TestRenderer from "react-test-renderer";
 import { useSelectItems } from "moves/containers/move_selection_behaviours";
 import { getObjectValues } from "utils/utils";
-// $FlowFixMe
-import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from "moves/containers/move_crud_behaviours";
 import { test } from "utils/test_utils";
 
 import type { MoveT } from "moves/types";

@@ -8,13 +8,11 @@ import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
 
-import type { MoveT, TipT, TipsByIdT } from "moves/types";
-import type { UUID, VoteT, UserProfileT, VoteByIdT } from "app/types";
+import type { MoveT, TipT } from "moves/types";
+import type { UUID, VoteT } from "app/types";
 
 type PropsT = {
   move: MoveT,

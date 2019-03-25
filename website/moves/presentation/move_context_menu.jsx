@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { Menu, Item, Separator, Submenu } from "react-contexify";
+import { Menu, Item, Submenu } from "react-contexify";
 
 import type { MoveListT } from "moves/types";
 

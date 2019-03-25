@@ -5,26 +5,17 @@ import { compose } from "redux";
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
 
-import Widgets from "moves/presentation/index";
-import { withMovePrivateDataPanel } from "moves/containers/with_move_private_data_panel";
 import { withStaticMove } from "moves/containers/with_static_move";
 import { withOwnMove } from "moves/containers/with_own_move";
 import { withMoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { newMoveSlug } from "moves/utils";
 import { isOwner } from "app/utils";
 
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 
-import type { UUID, UserProfileT, VoteByIdT, TagT, VoteT } from "app/types";
-import type {
-  MoveT,
-  VideoLinksByIdT,
-  TipsByIdT,
-  MoveCrudBvrsT,
-} from "moves/types";
+import type { UUID, UserProfileT } from "app/types";
+import type { MoveT, MoveCrudBvrsT } from "moves/types";
 
 type MovePagePropsT = {
   movePrivateDataPanel: any,

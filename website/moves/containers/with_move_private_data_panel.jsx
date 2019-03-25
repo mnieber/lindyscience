@@ -13,7 +13,6 @@ import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
 
 import type { MoveT } from "moves/types";
-import type { UUID } from "app/types";
 
 type PropsT = {
   move: MoveT,

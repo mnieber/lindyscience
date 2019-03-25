@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from "react";
-import { navigate } from "@reach/router";
 import { makeSlugidMatcher } from "moves/utils";
 import { browseToMove } from "app/containers/index";
 import { newMoveSlug, newMoveListSlug, makeMoveListUrl } from "moves/utils";

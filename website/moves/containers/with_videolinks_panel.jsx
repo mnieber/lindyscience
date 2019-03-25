@@ -8,8 +8,6 @@ import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
 

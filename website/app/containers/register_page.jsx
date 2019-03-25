@@ -3,7 +3,6 @@
 import * as React from "react";
 import AppCtr from "app/containers/index";
 import { navigate } from "@reach/router";
-import { urlParam } from "utils/utils";
 import { RegisterDialog } from "app/presentation/register_dialog";
 
 // RegisterPage

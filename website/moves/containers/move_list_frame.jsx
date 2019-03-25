@@ -8,12 +8,8 @@ import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
-import {
-  makeMoveListUrl,
-  newMoveListSlug,
-  createTagsAndKeywordsFilter,
-} from "moves/utils";
-import { pickNeighbour, scrollIntoView, getId } from "app/utils";
+import { newMoveListSlug, createTagsAndKeywordsFilter } from "moves/utils";
+import { pickNeighbour, scrollIntoView } from "app/utils";
 
 import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";

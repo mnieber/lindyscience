@@ -8,7 +8,11 @@ import AppCtr from "app/containers/index";
 
 import Widgets from "moves/presentation/index";
 
-import { newMoveListSlug, createTagsAndKeywordsFilter } from "moves/utils";
+import {
+  makeMoveListUrl,
+  newMoveListSlug,
+  createTagsAndKeywordsFilter,
+} from "moves/utils";
 import { pickNeighbour, scrollIntoView, getId } from "app/utils";
 import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
@@ -93,6 +97,29 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     return window.speechSynthesis.speak(utterance);
   };
 
+  const _copyNamesToClipboard = () => {
+    const text = props.selectMovesBvr.selectedItems
+      .map(move => {
+        return move.name;
+      })
+      .join("\n");
+    navigator.clipboard.writeText(text);
+  };
+
+  const _copyLinksToClipboard = () => {
+    const text = props.selectMovesBvr.selectedItems
+      .map(move => {
+        return (
+          "http://www.lindyscience.org/app/list/" +
+          makeMoveListUrl(props.moveList) +
+          "/" +
+          move.slug
+        );
+      })
+      .join("\n");
+    navigator.clipboard.writeText(text);
+  };
+
   return (
     <KeyboardEventHandler
       handleKeys={["ctrl+e", "ctrl+down", "ctrl+up"]}
@@ -117,6 +144,8 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         selectMoveListById={
           props.moveListCrudBvrs.newMoveListBvr.setHighlightedItemId
         }
+        copyNamesToClipboard={_copyNamesToClipboard}
+        copyLinksToClipboard={_copyLinksToClipboard}
       >
         <MoveListCrudBvrsContext.Provider value={props.moveListCrudBvrs}>
           <MoveCrudBvrsContext.Provider value={props.moveCrudBvrs}>

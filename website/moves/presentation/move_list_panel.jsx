@@ -51,6 +51,8 @@ export type MoveListPanelPropsT = {
   moveList: ?MoveListT,
   filterMoves: (Array<TagT>, Array<string>) => void,
   selectMoveListById: (id: UUID) => void,
+  copyNamesToClipboard: MoveListT => void,
+  copyLinksToClipboard: MoveListT => void,
   children: any,
 };
 
@@ -109,6 +111,8 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
       targetMoveLists={props.moveClipboardBvr.targetMoveLists}
       shareMovesToList={props.moveClipboardBvr.shareToList}
       moveMovesToList={moveMovesToList}
+      copyNamesToClipboard={props.copyNamesToClipboard}
+      copyLinksToClipboard={props.copyLinksToClipboard}
     />
   );
 

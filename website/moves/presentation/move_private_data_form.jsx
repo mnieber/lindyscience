@@ -2,22 +2,35 @@
 
 import React from "react";
 import { withFormik } from "formik";
-import { formFieldError } from "utils/form_utils";
+import {
+  FormField,
+  ValuePicker,
+  formFieldError,
+  getValueFromPicker,
+  strToPickerValue,
+} from "utils/form_utils";
 import {
   RichTextEditor,
   getContentFromEditor,
 } from "moves/presentation/rich_text_editor";
 import type { MovePrivateDataT } from "moves/types";
+import type { TagT } from "app/types";
 
 // MovePrivateDataForm
 
 type InnerFormPropsT = {
   autoFocus: boolean,
+  tagPickerDefaultValue: Array<any>,
+  tagPickerOptions: Array<any>,
   setNotesEditorRef: any => void,
   onCancel: () => void,
+  setTagsPickerRef: any => void,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
+  const tagsPickerRef = React.useRef(null);
+  props.setTagsPickerRef(tagsPickerRef);
+
   const notesDiv = (
     <div className="movePrivateDataForm__notes mt-4">
       <RichTextEditor
@@ -29,6 +42,23 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     </div>
   );
 
+  const tags = (
+    <div className="movePrivateDataForm__tags mt-4">
+      <ValuePicker
+        zIndex={10}
+        ref={tagsPickerRef}
+        isCreatable={true}
+        label="Tags"
+        defaultValue={props.tagPickerDefaultValue}
+        fieldName="tags"
+        isMulti={true}
+        options={props.tagPickerOptions}
+        placeholder="Tags"
+      />
+      {formFieldError(formProps, "tags", ["formField__error"], "error")}
+    </div>
+  );
+
   return (
     <form
       className="movePrivateDataForm w-full"
@@ -36,6 +66,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     >
       <div className={"flexcol"}>
         {notesDiv}
+        {tags}
         <div className={"movePrivateDataForm__buttonPanel flexrow mt-4"}>
           <button
             className="button button--wide ml-2"
@@ -56,24 +87,29 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 type MovePrivateDataFormPropsT = {
   onCancel: () => void,
   onSubmit: (values: any) => void,
+  knownTags: Array<TagT>,
   movePrivateData: ?MovePrivateDataT,
   autoFocus: boolean,
 };
 
 export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
   const refs = {};
+  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
   const setNotesEditorRef = x => (refs.notesEditorRef = x);
 
   const notes = props.movePrivateData ? props.movePrivateData.notes || "" : "";
+  const tags = props.movePrivateData ? props.movePrivateData.tags || [] : [];
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       notes: notes,
+      tags: tags,
     }),
 
     validate: (values, formProps) => {
       // HACK: add values from non-input fields
       values.notes = getContentFromEditor(refs.notesEditorRef.current, "");
+      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
       let errors = {};
       return errors;
     },
@@ -85,8 +121,11 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
   })(
     InnerForm({
       autoFocus: props.autoFocus,
+      tagPickerOptions: props.knownTags.map(strToPickerValue),
+      tagPickerDefaultValue: tags.map(strToPickerValue),
       setNotesEditorRef: setNotesEditorRef,
       onCancel: props.onCancel,
+      setTagsPickerRef,
     })
   );
 

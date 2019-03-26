@@ -6,7 +6,7 @@ import { Link } from "@reach/router";
 import type { MoveT, MoveListT } from "moves/types";
 import type { TagT } from "app/types";
 
-function Tags({ tags }: { tags: Array<TagT> }) {
+export function Tags({ tags }: { tags: Array<TagT> }) {
   const items = tags.map((tagName, idx) => {
     return (
       <div key={idx} className="move__tag">

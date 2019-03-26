@@ -65,6 +65,8 @@ class MovePrivateData(Entity):
     move = models.ForeignKey(
         'Move', on_delete=models.CASCADE, related_name='private_datas')
     notes = models.TextField()
+    tags = TagField(
+        force_lowercase=True, max_count=10, space_delimiter=False, blank=True)
 
     def __str__(self):  # noqa
         return "Notes by %s on %s" % (self.owner, self.move)

@@ -94,6 +94,7 @@ export type VideoLinksByIdT = {
 
 export type MovePrivateDataT = {
   notes: string,
+  tags: Array<TagT>,
 };
 
 export type MovePrivateDataByIdT = { [UUID]: MovePrivateDataT };

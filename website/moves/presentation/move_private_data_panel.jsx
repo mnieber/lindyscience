@@ -2,13 +2,15 @@
 
 import * as React from "react";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
+import { Tags } from "moves/presentation/move";
 import type { MovePrivateDataT } from "moves/types";
-import type { UserProfileT } from "app/types";
+import type { UserProfileT, TagT } from "app/types";
 
 type MovePrivateDatasPanelPropsT = {
   userProfile: UserProfileT,
   movePrivateData: ?MovePrivateDataT,
-  onSave: () => void,
+  onSave: (values: any) => void,
+  moveTags: Array<TagT>,
 };
 
 export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
@@ -24,12 +26,17 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
     </div>
   );
 
+  const tags = (props.movePrivateData && props.movePrivateData.tags) || [];
+
   const staticDiv = (
-    <div
-      dangerouslySetInnerHTML={{
-        __html: props.movePrivateData && props.movePrivateData.notes,
-      }}
-    />
+    <div>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: props.movePrivateData && props.movePrivateData.notes,
+        }}
+      />
+      {tags.length ? <Tags tags={tags} /> : undefined}
+    </div>
   );
 
   const buttons = isEditing || !props.userProfile ? [] : [editBtn];
@@ -40,8 +47,12 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
       onCancel={() => {
         setIsEditing(false);
       }}
-      onSubmit={props.onSave}
+      onSubmit={values => {
+        props.onSave(values);
+        setIsEditing(false);
+      }}
       movePrivateData={props.movePrivateData}
+      knownTags={props.moveTags}
     />
   );
 

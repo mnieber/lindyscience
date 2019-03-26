@@ -13,9 +13,11 @@ import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
 
 import type { MoveT } from "moves/types";
+import type { TagT } from "app/types";
 
 type PropsT = {
   move: MoveT,
+  moveTags: Array<TagT>,
   // receive any actions as well
 };
 
@@ -25,6 +27,7 @@ export const withMovePrivateDataPanel = compose(
     state => ({
       move: MovesCtr.fromStore.getHighlightedMove(state),
       userProfile: AppCtr.fromStore.getUserProfile(state),
+      moveTags: MovesCtr.fromStore.getMoveTags(state),
     }),
     {
       ...AppCtr.actions,
@@ -32,7 +35,7 @@ export const withMovePrivateDataPanel = compose(
     }
   ),
   (WrappedComponent: any) => (props: any) => {
-    const { move, ...passThroughProps }: PropsT = props;
+    const { move, moveTags, ...passThroughProps }: PropsT = props;
 
     const actions: any = props;
 
@@ -59,6 +62,7 @@ export const withMovePrivateDataPanel = compose(
         userProfile={props.userProfile}
         movePrivateData={move ? move.privateData : undefined}
         onSave={_onSave}
+        moveTags={moveTags}
       />
     );
 

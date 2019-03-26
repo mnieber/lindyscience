@@ -27,6 +27,11 @@ class MovePrivateDataType(DjangoObjectType):
     class Meta:
         model = models.MovePrivateData
 
+    tags = graphene.List(of_type=graphene.String)
+
+    def resolve_tags(self, info, **kwargs):
+        return self.tags.get_tag_list()
+
 
 class MoveListType(DjangoObjectType):
     class Meta:
@@ -188,6 +193,7 @@ class SaveMovePrivateData(graphene.Mutation):
         pk = graphene.String()
         move_id = graphene.String()
         notes = graphene.String()
+        tags = graphene.List(of_type=graphene.String)
 
     ok = graphene.Boolean()
     movePrivateData = graphene.Field(MovePrivateDataType)

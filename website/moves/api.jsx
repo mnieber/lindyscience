@@ -141,11 +141,13 @@ export function saveMovePrivateData(values: MovePrivateDataT) {
       $id: String!,
       $moveId: String!,
       $notes: String!,
+      $tags: [String]!
     ) {
       saveMovePrivateData(
         pk: $id,
         moveId: $moveId,
         notes: $notes,
+        tags: $tags
       ) { ok }
     }`,
     {
@@ -282,6 +284,7 @@ export function loadMovePrivateDatas() {
       movePrivateDatas {
         id
         notes
+        tags
         move {
           id
         }

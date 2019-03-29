@@ -190,7 +190,6 @@ export async function activateAccount(uid: string, token: string) {
     );
     return "";
   } catch (e) {
-    debugger;
     return _hasError(e, "non_field_errors", "Invalid token for given user.")
       ? "invalid_token"
       : "cannot_sign_in";

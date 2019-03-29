@@ -71,6 +71,13 @@ const userProfileReducer = function(
         ...state,
         moveListIds: acc,
       };
+    case "REMOVE_MOVE_LISTS_FROM_PROFILE":
+      return {
+        ...state,
+        moveListIds: (state ? state.moveListIds : []).filter(
+          x => !action.moveListIds.includes(x)
+        ),
+      };
     default:
       return state;
   }

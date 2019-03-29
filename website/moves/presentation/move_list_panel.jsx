@@ -53,14 +53,13 @@ export type MoveListPanelPropsT = {
   selectMoveListById: (id: UUID) => void,
   copyNamesToClipboard: MoveListT => void,
   copyLinksToClipboard: MoveListT => void,
+  setIsFollowing: boolean => void,
   children: any,
 };
 
 export function MoveListPanel(props: MoveListPanelPropsT) {
   const refs = {};
   const handlers: HandlersT = createHandlers(props.moves, props.moveCrudBvrs);
-
-  const userId = props.userProfile ? props.userProfile.userId : -1;
 
   const moveListPicker = (
     <Widgets.MoveListPicker
@@ -116,7 +115,10 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
-  const isOwner = !!props.moveList && userId == props.moveList.ownerId;
+  const isOwner =
+    !!props.moveList &&
+    !!props.userProfile &&
+    props.userProfile.userId == props.moveList.ownerId;
 
   const moveList = (
     <Widgets.MoveList
@@ -143,9 +145,25 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     </div>
   );
 
+  const isFollowing =
+    !!props.moveList &&
+    !!props.userProfile &&
+    props.userProfile.moveListIds.includes(props.moveList.id);
+
+  const followMoveListBtn = (
+    <div
+      className={"button button--wide ml-2"}
+      onClick={() => props.setIsFollowing(!isFollowing)}
+      key={2}
+    >
+      {isFollowing ? "Stop following" : "Follow"}
+    </div>
+  );
+
   const buttonsDiv = (
     <div className={"move__name flexrow flex-wrap"}>
       {props.userProfile && newMoveListBtn}
+      {props.userProfile && followMoveListBtn}
     </div>
   );
 

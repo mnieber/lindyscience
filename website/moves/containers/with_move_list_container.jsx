@@ -19,14 +19,14 @@ export const withMoveListContainer = compose(
       moveLists: MovesCtr.fromStore.getMoveLists(state),
     }),
     {
-      actInsertMoveLists: MovesCtr.actions.actInsertMoveLists,
+      actInsertMoveListIds: MovesCtr.actions.actInsertMoveListIds,
       actSetMoveListFilter: MovesCtr.actions.actSetMoveListFilter,
     }
   ),
   (WrappedComponent: any) => (props: any) => {
     const {
       moveLists,
-      actInsertMoveLists,
+      actInsertMoveListIds,
       actSetMoveListFilter,
       ...passThroughProps
     } = props;
@@ -46,7 +46,7 @@ export const withMoveListContainer = compose(
         targetMoveListId,
         isBefore
       );
-      const allMoveListIds = actInsertMoveLists(payloadIds, predecessorId);
+      const allMoveListIds = actInsertMoveListIds(payloadIds, predecessorId);
       MovesCtr.api
         .saveMoveListOrdering(allMoveListIds)
         .catch(createErrorHandler("We could not update the move list"));

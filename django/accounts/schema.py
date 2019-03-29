@@ -33,6 +33,10 @@ class SaveMoveListOrdering(graphene.Mutation):
                         move_list_id=move_list_id,
                         profile_id=profile.id,
                         defaults={'order': move_list_ids.index(str(move_list_id))})
+                to_be_removed = models.ProfileToMoveList.objects \
+                    .filter(profile_id=profile.id) \
+                    .exclude(move_list_id__in=move_list_ids)
+                to_be_removed.delete()
             return SaveMoveListOrdering(ok=True)
 
         return try_n_times(try_it, n=5)

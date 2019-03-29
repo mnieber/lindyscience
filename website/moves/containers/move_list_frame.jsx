@@ -13,7 +13,12 @@ import {
   newMoveListSlug,
   createTagsAndKeywordsFilter,
 } from "moves/utils";
-import { pickNeighbour, scrollIntoView, getId } from "app/utils";
+import {
+  createErrorHandler,
+  pickNeighbour,
+  scrollIntoView,
+  getId,
+} from "app/utils";
 import { withMoveListFrameBvrs } from "moves/containers/with_move_list_frame_bvrs";
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 import { MoveListCrudBvrsContext } from "moves/containers/move_list_crud_behaviours";
@@ -120,6 +125,19 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     navigator.clipboard.writeText(text);
   };
 
+  const setIsFollowing = isFollowing => {
+    if (!!props.userProfile && !!props.moveList) {
+      const moveListId = props.moveList.id;
+      const newMoveListIds = isFollowing
+        ? actions.actInsertMoveListIds([moveListId], "")
+        : actions.actRemoveMoveListIds([moveListId]);
+      const term = isFollowing ? "follow" : "unfollow";
+      MovesCtr.api
+        .saveMoveListOrdering(newMoveListIds)
+        .catch(createErrorHandler(`Could not ${term} the move list`));
+    }
+  };
+
   return (
     <KeyboardEventHandler
       handleKeys={["ctrl+e", "ctrl+down", "ctrl+up"]}
@@ -127,6 +145,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     >
       <Widgets.MoveListPanel
         userProfile={props.userProfile}
+        setIsFollowing={setIsFollowing}
         moveList={props.moveList}
         moves={props.moves}
         playMove={playMove}

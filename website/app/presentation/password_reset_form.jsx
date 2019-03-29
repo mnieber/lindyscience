@@ -18,7 +18,6 @@ export function PasswordResetForm(props: PasswordResetFormPropsT) {
   const [globalError, setGlobalError] = React.useState("");
 
   function InnerForm(formProps) {
-    console.log(formProps);
     return (
       <form
         className="passwordResetForm w-full"

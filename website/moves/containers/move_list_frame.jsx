@@ -56,7 +56,7 @@ type MoveListFramePropsT = {
 
 function _MoveListFrame(props: MoveListFramePropsT) {
   const actions: any = props;
-  const [isFilterEnabled, setIsFilterEnabled] = React.useState(true);
+  const [isFilterEnabled, setIsFilterEnabled] = React.useState(false);
 
   const filterMoves = (tags, keywords) => {
     const _filter = createTagsAndKeywordsFilter(tags, keywords);
@@ -115,7 +115,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     const text = props.selectMovesBvr.selectedItems
       .map(move => {
         return (
-          "http://www.lindyscience.org/app/list/" +
+          "http://www.lindyscience.org/app/lists/" +
           makeMoveListUrl(props.moveList) +
           "/" +
           move.slug

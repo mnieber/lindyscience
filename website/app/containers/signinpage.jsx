@@ -20,7 +20,7 @@ function SignInPage(props: SignInPagePropsT) {
     if (!errorState) {
       props.actSetSignedInEmail(email);
       const next = urlParam("next");
-      navigate(next ? next : "/app/list");
+      navigate(next ? next : "/app/lists");
     }
     return errorState;
   }

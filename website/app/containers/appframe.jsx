@@ -28,43 +28,42 @@ type AppFramePropsT = {
 function AppFrame(props: AppFramePropsT) {
   const actions: any = props;
 
-  const [hasLoadedMoveLists, setHasLoadedMoveLists] = React.useState(false);
   const [loadedEmail, setLoadedEmail] = React.useState("");
   const [loadedMoveListUrls, setLoadedMoveListUrls] = React.useState([]);
 
-  async function _loadMoveListsAndEmail() {
-    const [email, moveLists] = await Promise.all([
-      AppCtr.api.getEmail(),
-      MovesCtr.api.loadMoveLists(),
-    ]);
+  async function _loadEmail() {
+    const [email] = await Promise.all([AppCtr.api.getEmail()]);
     if (email) {
       actions.actSetSignedInEmail(email);
     }
-    actions.actAddMoveLists(moveLists.entities.moveLists || {});
-    setHasLoadedMoveLists(true);
   }
 
   async function _loadUserProfile() {
-    if (hasLoadedMoveLists && loadedEmail != props.signedInEmail) {
-      if (props.signedInEmail) {
-        const [profile, votes, movePrivateDatas] = await Promise.all([
-          AppCtr.api.loadUserProfile(),
-          AppCtr.api.loadUserVotes(),
-          MovesCtr.api.loadMovePrivateDatas(),
-        ]);
-        actions.actSetUserProfile(profile);
-        actions.actSetVotes(votes);
-        actions.actAddMovePrivateDatas(
-          movePrivateDatas.entities.movePrivateDatas || {}
-        );
-      }
+    if (!!props.signedInEmail && loadedEmail != props.signedInEmail) {
+      const [profile, votes, movePrivateDatas] = await Promise.all([
+        AppCtr.api.loadUserProfile(),
+        AppCtr.api.loadUserVotes(),
+        MovesCtr.api.loadMovePrivateDatas(),
+      ]);
+      actions.actSetUserProfile(profile);
+      actions.actSetVotes(votes);
+      // TODO: use actSetMovePrivateDatas
+      actions.actAddMovePrivateDatas(
+        movePrivateDatas.entities.movePrivateDatas || {}
+      );
+
+      const [moveLists] = await Promise.all([
+        MovesCtr.api.findMoveLists(profile.username),
+      ]);
+      actions.actAddMoveLists(moveLists.entities.moveLists || {});
+
       setLoadedEmail(props.signedInEmail);
     }
   }
 
   async function _loadSelectedMoveList() {
     if (
-      hasLoadedMoveLists &&
+      !!props.selectedMoveListUrl &&
       !loadedMoveListUrls.includes(props.selectedMoveListUrl)
     ) {
       const moveListInStore = findMoveListByUrl(
@@ -89,14 +88,14 @@ function AppFrame(props: AppFramePropsT) {
   }
 
   React.useEffect(() => {
-    _loadMoveListsAndEmail();
+    _loadEmail();
   }, []);
   React.useEffect(() => {
     _loadUserProfile();
-  }, [hasLoadedMoveLists, props.signedInEmail]);
+  }, [props.signedInEmail]);
   React.useEffect(() => {
     _loadSelectedMoveList();
-  }, [hasLoadedMoveLists, props.selectedMoveListUrl]);
+  });
 
   const signOut = () => {
     AppCtr.api

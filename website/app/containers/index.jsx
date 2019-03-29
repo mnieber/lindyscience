@@ -17,7 +17,7 @@ export function browseToMove(
   if (mustUpdateProfile) {
     api.updateProfile(moveUrl);
   }
-  return navigate(`/app/list/${moveUrl}`);
+  return navigate(`/app/lists/${moveUrl}`);
 }
 
 export type ContainerT = {

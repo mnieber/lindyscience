@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
+from django.db.models import Q
 import graphene
 from graphene_django.types import DjangoObjectType
 from moves import models
@@ -71,7 +72,8 @@ class SaveMoveList(graphene.Mutation):
         assert_authorized(models.MoveList, pk, info.context.user.id)
         inputs['owner_id'] = info.context.user.id
 
-        moveList, created = models.MoveList.objects.update_or_create(inputs, pk=pk)
+        moveList, created = models.MoveList.objects.update_or_create(
+            inputs, pk=pk)
         return SaveMoveList(move_list=moveList, ok=True)
 
 
@@ -96,8 +98,7 @@ class SaveMoveOrdering(graphene.Mutation):
                 to_be_removed.delete()
             return SaveMoveOrdering(ok=True)
 
-        assert_authorized(models.MoveList, move_list_id,
-                          info.context.user.id)
+        assert_authorized(models.MoveList, move_list_id, info.context.user.id)
         return try_n_times(try_it, n=5)
 
 
@@ -199,8 +200,7 @@ class SaveMovePrivateData(graphene.Mutation):
     movePrivateData = graphene.Field(MovePrivateDataType)
 
     def mutate(self, info, pk, **inputs):
-        assert_authorized(models.MovePrivateData, pk,
-                          info.context.user.id)
+        assert_authorized(models.MovePrivateData, pk, info.context.user.id)
         inputs['owner_id'] = info.context.user.id
         movePrivateData, created = models.MovePrivateData.objects.update_or_create(
             inputs, pk=pk)
@@ -208,15 +208,19 @@ class SaveMovePrivateData(graphene.Mutation):
 
 
 class Query(object):
-    all_move_lists = graphene.List(MoveListType)
+    find_move_lists = graphene.List(
+        MoveListType, owner_username=graphene.String())
     move_list = graphene.Field(MoveListType, id=graphene.String())
     move_private_datas = graphene.List(MovePrivateDataType)
 
-    def resolve_all_move_lists(self, info, **kwargs):
-        return models.MoveList.objects.all()
+    def resolve_find_move_lists(self, info, owner_username, **kwargs):
+        return models.MoveList.objects.filter(
+            Q(owner__username=owner_username) & (Q(is_private=False)
+                                                 | Q(owner=info.context.user)))
 
     def resolve_move_list(self, info, id):
         return models.MoveList.objects.get(pk=id)
 
     def resolve_move_private_datas(self, info, **kwargs):
-        return models.MovePrivateData.objects.filter(owner_id=info.context.user.id)
+        return models.MovePrivateData.objects.filter(
+            owner_id=info.context.user.id)

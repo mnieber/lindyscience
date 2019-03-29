@@ -6930,10 +6930,10 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-player@^1000.4.1:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/react-player/-/react-player-1.9.3.tgz#ad74d4c3bf62f2d66ce7c79636642486a6ad7711"
-  integrity sha512-EruSLtMcnTrwy9F99hG1dAVVSg0ZNQDB4Df6CnKLkFcCppOCZrQAPq+abZOcuXun7VRaXPGpkOqhLCdiLfZZfw==
+react-player@^1.9.3:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/react-player/-/react-player-1.10.0.tgz#65c1add36e3831846003685f3d9e5781752e77c0"
+  integrity sha512-fmL+/VtwJ2C+PgXxu1/4V0q7+pTaKFMHWnjkq56KhKOi68xsYVSQs2CKkMADiz8l/ZtuSIO0+8fKO0GDPX668w==
   dependencies:
     deepmerge "^3.0.0"
     load-script "^1.0.0"
@@ -6968,6 +6968,13 @@ react-select@^2.0.0:
     raf "^3.4.0"
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
+
+react-table@^6.9.2:
+  version "6.9.2"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.9.2.tgz#6a59adfeb8d5deced288241ed1c7847035b5ec5f"
+  integrity sha512-sTbNHU8Um0xRtmCd1js873HXnXaMWeBwZoiljuj0l1d44eaqjKyYPK/3HCBbJg1yeE2O5pQJ3Km0tlm9niNL9w==
+  dependencies:
+    classnames "^2.2.5"
 
 react-test-renderer@16.8.3:
   version "16.8.3"

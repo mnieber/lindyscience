@@ -19,7 +19,7 @@ function RegisterPage(props: RegisterPagePropsT) {
   async function _register(email: string, password: string) {
     const errorState = await AppCtr.api.register(email, password);
     if (!errorState) {
-      navigate("/app/list");
+      navigate("/app/lists");
     }
     return errorState;
   }

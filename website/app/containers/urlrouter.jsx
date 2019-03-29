@@ -9,6 +9,7 @@ import AppFrame from "app/containers/appframe";
 import SignInPage from "app/containers/signinpage";
 import RegisterPage from "app/containers/register_page";
 import PasswordResetPage from "app/containers/password_reset_page";
+import ProfilePage from "moves/containers/profile_page";
 import AppCtr, { browseToMove } from "app/containers/index";
 import MovesCtr from "moves/containers/index";
 import type { UserProfileT } from "app/types";
@@ -39,8 +40,9 @@ function UrlRouter(props: UrlRouterPropsT) {
     // $FlowFixMe
     <Router primary={false} id="reachRouter">
       <AppFrame path="/app">
-        <IndexPage path="/list" userProfile={props.userProfile} />
-        <MoveListFrame path="/list/:ownerUsernamePrm/:moveListSlugPrm">
+        <IndexPage path="/lists" userProfile={props.userProfile} />
+        <ProfilePage path="/lists/:ownerUsernamePrm" />
+        <MoveListFrame path="/lists/:ownerUsernamePrm/:moveListSlugPrm">
           <MoveListDetailsPage path="/" />
           <MovePage path=":moveSlugPrm" />
           <MovePage path=":moveSlugPrm/:moveIdPrm" />

@@ -2,7 +2,9 @@
 
 import * as React from "react";
 import classnames from "classnames";
-import { Link } from "@reach/router";
+
+import { MoveListTitle } from "moves/presentation/move_list_details";
+
 import type { MoveT, MoveListT } from "moves/types";
 import type { TagT } from "app/types";
 
@@ -33,15 +35,11 @@ type MovePropsT = {
 
 export function Move(props: MovePropsT) {
   const nameDiv = (
-    <div className="flex flex-row">
-      <Link
-        className=""
-        to={`/app/list/${props.moveList.ownerUsername}/${props.moveList.slug}`}
-      >
-        <h1>{props.moveList.name}</h1>
-      </Link>
-      <div className={"move__name flexrow flex-wrap"}>
-        <h1>: {props.move.name}</h1>
+    <div className="flex flex-row items-center">
+      <MoveListTitle moveList={props.moveList} />
+      <h2>:</h2>
+      <div className={"move__name flexrow flex-wrap ml-2"}>
+        <h1>{props.move.name}</h1>
         {props.buttons}
       </div>
     </div>

@@ -8,6 +8,7 @@ import { MoveList } from "moves/presentation/movelist";
 import { MoveForm } from "moves/presentation/move_form";
 import { MoveContextMenu } from "moves/presentation/move_context_menu";
 import { MoveListForm } from "moves/presentation/move_list_form";
+import { MoveListTable } from "moves/presentation/move_list_table";
 import { MoveListDetails } from "moves/presentation/move_list_details";
 import { VideoLinksPanel } from "moves/presentation/videolinks_panel";
 import { MovePrivateDataPanel } from "moves/presentation/move_private_data_panel";
@@ -28,6 +29,7 @@ const Widgets = {
   MoveForm,
   MoveContextMenu,
   MoveListForm,
+  MoveListTable,
   MoveListPanel,
   MoveListPlayer,
   MoveListDetails,

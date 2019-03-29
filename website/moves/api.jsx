@@ -200,10 +200,10 @@ const moveList = new schema.Entity("moveLists", {
   moves: [move],
 });
 
-export function loadMoveLists() {
+export function findMoveLists(ownerUsername: string) {
   return doQuery(
-    `query queryMoveLists {
-      allMoveLists {
+    `query queryMoveLists($ownerUsername: String) {
+      findMoveLists(ownerUsername: $ownerUsername) {
         id
         name
         slug
@@ -217,10 +217,11 @@ export function loadMoveLists() {
           id
         }
       }
-    }`
+    }`,
+    { ownerUsername }
   )
-    .then(result => flatten(result, ["/allMoveLists/*/owner"]))
-    .then(result => normalize(result.allMoveLists, [moveList]));
+    .then(result => flatten(result, ["/findMoveLists/*/owner"]))
+    .then(result => normalize(result.findMoveLists, [moveList]));
 }
 
 export function loadMoveList(moveListId: UUID) {

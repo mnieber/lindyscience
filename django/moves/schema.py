@@ -220,7 +220,9 @@ class Query(object):
                                                  | Q(owner=info.context.user)))
 
     def resolve_move_list(self, info, id):
-        return models.MoveList.objects.get(pk=id)
+        return models.MoveList.objects.get(
+            Q(pk=id) & (Q(is_private=False)
+                        | Q(owner=info.context.user)))
 
     def resolve_move_private_datas(self, info, **kwargs):
         return models.MovePrivateData.objects.filter(

@@ -6,6 +6,7 @@ import MoveListFrame from "moves/containers/move_list_frame";
 import MovePage from "moves/containers/move_page";
 import MoveListDetailsPage from "moves/containers/move_list_details_page";
 import AppFrame from "app/containers/appframe";
+import MoveSearchPage from "moves/containers/move_search_page";
 import SignInPage from "app/containers/signinpage";
 import RegisterPage from "app/containers/register_page";
 import PasswordResetPage from "app/containers/password_reset_page";
@@ -41,6 +42,7 @@ function UrlRouter(props: UrlRouterPropsT) {
     <Router primary={false} id="reachRouter">
       <AppFrame path="/app">
         <IndexPage path="/lists" userProfile={props.userProfile} />
+        <MoveSearchPage path="/search" />
         <ProfilePage path="/lists/:ownerUsernamePrm" />
         <MoveListFrame path="/lists/:ownerUsernamePrm/:moveListSlugPrm">
           <MoveListDetailsPage path="/" />

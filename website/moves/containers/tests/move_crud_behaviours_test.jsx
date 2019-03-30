@@ -38,6 +38,7 @@ function TestComponent({
 
   sandbox.newMoveBvr = useNewMove(
     data.profile1,
+    data.moveList1.id,
     setHighlightedMoveId,
     highlightedMoveId,
     sandbox.insertMovesBvr,
@@ -56,7 +57,7 @@ function TestComponent({
 
 test("test useInsertMoves", function(t) {
   const moves = getObjectValues(data.moves);
-  const newMove = createNewMove(data.profile1);
+  const newMove = createNewMove(data.profile1, data.moveList1.id);
 
   if (newMove) {
     const expectedNewMoves = [moves[0], moves[1], newMove, moves[2], moves[3]];

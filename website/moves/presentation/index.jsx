@@ -9,6 +9,7 @@ import { MoveForm } from "moves/presentation/move_form";
 import { MoveContextMenu } from "moves/presentation/move_context_menu";
 import { MoveListForm } from "moves/presentation/move_list_form";
 import { MoveListTable } from "moves/presentation/move_list_table";
+import { MoveTable } from "moves/presentation/move_table";
 import { MoveListDetails } from "moves/presentation/move_list_details";
 import { VideoLinksPanel } from "moves/presentation/videolinks_panel";
 import { MovePrivateDataPanel } from "moves/presentation/move_private_data_panel";
@@ -16,6 +17,8 @@ import { StaticVideoLinksPanel } from "moves/presentation/static_videolinks_pane
 import { StaticTipsPanel } from "moves/presentation/static_tips_panel";
 import { MoveListPanel } from "moves/presentation/move_list_panel";
 import { MoveListPlayer } from "moves/presentation/move_list_player";
+import { SearchMovesDialog } from "moves/presentation/search_moves_dialog";
+import { SearchMovesForm } from "moves/presentation/search_moves_form";
 import {
   MoveListFilter,
   MoveListPicker,
@@ -30,6 +33,7 @@ const Widgets = {
   MoveContextMenu,
   MoveListForm,
   MoveListTable,
+  MoveTable,
   MoveListPanel,
   MoveListPlayer,
   MoveListDetails,
@@ -37,6 +41,8 @@ const Widgets = {
   MovePrivateDataPanel,
   StaticVideoLinksPanel,
   StaticTipsPanel,
+  SearchMovesDialog,
+  SearchMovesForm,
   MoveListFilter,
   MoveListPicker,
   MoveListHeader,

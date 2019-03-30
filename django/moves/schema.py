@@ -3,6 +3,7 @@ from django.db import transaction
 from django.db.models import Q
 import graphene
 from graphene_django.types import DjangoObjectType
+import graphene_django_optimizer as gql_optimizer
 from moves import models
 from app.utils import assert_authorized, try_n_times
 
@@ -108,12 +109,34 @@ class SaveMoveOrdering(graphene.Mutation):
         return try_n_times(try_it, n=5)
 
 
+class UpdateSourceMoveListId(graphene.Mutation):
+    class Arguments:
+        move_ids = graphene.List(graphene.String)
+        source_move_list_id = graphene.String()
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, move_ids, source_move_list_id, **inputs):
+        def try_it():
+            with transaction.atomic():
+                for move_id in move_ids:
+                    models.Move.objects.filter(
+                        pk=move_id, owner=info.context.user).update(
+                            source_move_list_id=source_move_list_id)
+            return UpdateSourceMoveListId(ok=True)
+
+        assert_authorized(models.MoveList, source_move_list_id,
+                          info.context.user.id)
+        return try_n_times(try_it, n=5)
+
+
 class SaveMove(graphene.Mutation):
     class Arguments:
         pk = graphene.String()
         name = graphene.String()
         slug = graphene.String()
         description = graphene.String()
+        source_move_list_id = graphene.String()
         tags = graphene.List(of_type=graphene.String)
 
     ok = graphene.Boolean()
@@ -216,6 +239,12 @@ class SaveMovePrivateData(graphene.Mutation):
 class Query(object):
     find_move_lists = graphene.List(
         MoveListType, owner_username=graphene.String())
+    find_moves = graphene.List(
+        MoveType,
+        owner_username=graphene.String(),
+        keywords=graphene.List(graphene.String),
+        tags=graphene.List(graphene.String),
+    )
     move_list = graphene.Field(MoveListType, id=graphene.String())
     move_private_datas = graphene.List(MovePrivateDataType)
     user_tags = graphene.Field(UserTagsType)
@@ -224,6 +253,22 @@ class Query(object):
         return models.MoveList.objects.filter(
             Q(owner__username=owner_username) & (Q(is_private=False)
                                                  | Q(owner=info.context.user)))
+
+    def resolve_find_moves(self, info, owner_username, keywords, tags,
+                           **kwargs):
+        result = models.Move.objects.select_related('source_move_list',
+                                                    'source_move_list__owner')
+        result = result.filter(
+            Q(source_move_list__is_private=False) | Q(owner=info.context.user))
+        if owner_username:
+            result = result.filter(
+                source_move_list__owner__username=owner_username)
+        for keyword in keywords:
+            result = result.filter(name__icontains=keyword)
+        for tag in tags:
+            result = result.filter(tags=tag)
+
+        return gql_optimizer.query(result, info)
 
     def resolve_move_list(self, info, id):
         return models.MoveList.objects.get(

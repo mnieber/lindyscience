@@ -39,7 +39,10 @@ export const withMoveCrudBvrsContext = (WrappedComponent: any) => (
   );
 };
 
-export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
+export function createNewMove(
+  userProfile: ?UserProfileT,
+  sourceMoveListId: UUID
+): ?MoveT {
   if (!userProfile) {
     return null;
   }
@@ -53,6 +56,7 @@ export function createNewMove(userProfile: ?UserProfileT): ?MoveT {
     videoLinks: [],
     tags: [],
     ownerId: userProfile.userId,
+    sourceMoveListId: sourceMoveListId,
     privateData: null,
   };
 }
@@ -86,13 +90,14 @@ export type NewMoveBvrT = NewItemBvrT<MoveT>;
 
 export function useNewMove(
   userProfile: ?UserProfileT,
+  sourceMoveListId: UUID,
   setNextHighlightedMoveId: UUID => void,
   highlightedMoveId: UUID,
   insertMovesBvr: InsertMovesBvrT,
   setIsEditing: boolean => void
 ): NewMoveBvrT {
   function _createNewMove() {
-    return createNewMove(userProfile);
+    return createNewMove(userProfile, sourceMoveListId);
   }
 
   return useNewItem<MoveT>(
@@ -140,6 +145,7 @@ export function createMoveCrudBvrs(
 
   const newMoveBvr: NewMoveBvrT = useNewMove(
     userProfile,
+    moveList ? moveList.id : "",
     setNextHighlightedMoveId,
     highlightedMoveId,
     insertMovesBvr,

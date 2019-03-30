@@ -19,6 +19,7 @@ class Mutations(graphene.ObjectType):
     delete_video_link = moves.schema.DeleteVideoLink.Field()
     save_move_private_data = moves.schema.SaveMovePrivateData.Field()
     save_move_ordering = moves.schema.SaveMoveOrdering.Field()
+    update_source_move_list_id = moves.schema.UpdateSourceMoveListId.Field()
     cast_vote = votes.schema.CastVote.Field()
     update_profile = accounts.schema.UpdateProfile.Field()
     save_move_list_ordering = accounts.schema.SaveMoveListOrdering.Field()

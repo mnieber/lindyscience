@@ -89,8 +89,8 @@ test("test actSetMoveListFilter with duplicate slugs", function(t) {
 
 test("test actInsertMoves", function(t) {
   const { store } = _setUp();
-  const move1 = createNewMove(data.profile1);
-  const move2 = createNewMove(data.profile1);
+  const move1 = createNewMove(data.profile1, data.moveList1.id);
+  const move2 = createNewMove(data.profile1, data.moveList1.id);
   if (move1 && move2) {
     const newMoves = [move1, move2];
     const newMoveIds = newMoves.map(x => x.id);

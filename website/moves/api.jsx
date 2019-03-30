@@ -10,7 +10,7 @@ import type {
   MoveListT,
   MovePrivateDataT,
 } from "moves/types";
-import type { UUID } from "app/types";
+import type { UUID, TagT } from "app/types";
 
 // Api moves
 
@@ -122,6 +122,7 @@ export function saveMove(values: MoveT) {
       $slug: String!,
       $description: String!,
       $tags: [String]!
+      $sourceMoveListId: String!
     ) {
       saveMove(
         pk: $id,
@@ -129,10 +130,32 @@ export function saveMove(values: MoveT) {
         slug: $slug,
         description: $description,
         tags: $tags
+        sourceMoveListId: $sourceMoveListId
       ) { ok }
     }`,
     {
       ...values,
+    }
+  );
+}
+
+export function updateSourceMoveListId(
+  moveIds: Array<UUID>,
+  sourceMoveListId: UUID
+) {
+  return doQuery(
+    `mutation updateSourceMoveListId(
+      $moveIds: [String]!,
+      $sourceMoveListId: String!
+    ) {
+      updateSourceMoveListId(
+        moveIds: $moveIds,
+        sourceMoveListId: $sourceMoveListId
+      ) { ok }
+    }`,
+    {
+      moveIds,
+      sourceMoveListId,
     }
   );
 }
@@ -228,6 +251,33 @@ export function findMoveLists(ownerUsername: string) {
     .then(result => normalize(result.findMoveLists, [moveList]));
 }
 
+export function findMoves(
+  ownerUsername: string,
+  keywords: Array<string>,
+  tags: Array<TagT>
+) {
+  return doQuery(
+    `query queryFindMoves($ownerUsername: String, $keywords: [String], $tags: [String]) {
+      findMoves(ownerUsername: $ownerUsername, keywords: $keywords, tags: $tags) {
+        id
+        name
+        slug
+        sourceMoveList {
+          id
+          slug
+          name
+          owner {
+            username
+          }
+        }
+      }
+    }`,
+    { ownerUsername, keywords, tags }
+  ).then(
+    result => flatten(result, ["/findMoves/*/sourceMoveList/owner"]).findMoves
+  );
+}
+
 export function loadMoveList(moveListId: UUID) {
   return doQuery(
     `query queryMoveList($moveListId: String!) {
@@ -249,6 +299,7 @@ export function loadMoveList(moveListId: UUID) {
           name
           slug
           description
+          sourceMoveList { id }
           tags
           videoLinks {
             id
@@ -276,6 +327,7 @@ export function loadMoveList(moveListId: UUID) {
       flatten(result, [
         "/moveList/owner",
         "/moveList/moves/*/owner",
+        "/moveList/moves/*/sourceMoveList",
         "/moveList/moves/*/videoLinks/*/move",
         "/moveList/moves/*/videoLinks/*/owner",
         "/moveList/moves/*/tips/*/move",

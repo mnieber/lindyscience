@@ -25,7 +25,15 @@ export type MoveT = {
   name: string,
   slug: string,
   ownerId: number,
+  sourceMoveListId: string,
   privateData: ?MovePrivateDataT,
+};
+
+export type MoveSearchResultT = {
+  id: UUID,
+  name: string,
+  slug: string,
+  sourceMoveList: any,
 };
 
 export type MoveListT = {

@@ -105,11 +105,21 @@ function AppFrame(props: AppFramePropsT) {
     navigate("/app/sign-in/");
   };
 
+  const searchMovesBtn = (
+    <div
+      className={"button button--wide ml-2"}
+      onClick={() => navigate("/app/search")}
+    >
+      Search
+    </div>
+  );
+
   return (
     <div className="appFrame px-4 flex flex-col">
       {createToastr()}
       <div className="appFrame__banner flex flex-row justify-between h-16">
         <h1 onClick={() => alert("TODO")}>Lindy Science</h1>
+        {searchMovesBtn}
         <AccountMenu
           className=""
           userProfile={props.userProfile}

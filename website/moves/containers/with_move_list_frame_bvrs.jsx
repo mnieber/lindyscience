@@ -89,7 +89,7 @@ export const withMoveListFrameBvrs = compose(
 
     const moveClipboardBvr = useMoveClipboard(
       moveLists,
-      selectMovesBvr.selectedItems.map(x => x.id),
+      selectMovesBvr.selectedItems,
       getId(highlightedMove),
       moveCrudBvrs.newMoveBvr.setHighlightedItemId,
       actions.actInsertMoves,

@@ -32,6 +32,8 @@ class Move(Entity):
     name = models.CharField(max_length=200, unique=False)
     slug = models.CharField(max_length=200, unique=False)
     description = models.TextField()
+    source_move_list = models.ForeignKey(
+        'MoveList', on_delete=models.CASCADE, related_name='sourced_moves')
     tags = TagField(force_lowercase=True, max_count=10, space_delimiter=False)
 
     def __str__(self):  # noqa

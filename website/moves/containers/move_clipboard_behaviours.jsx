@@ -8,7 +8,7 @@ import { findNeighbourIdx } from "moves/utils";
 import { createErrorHandler } from "app/utils";
 
 import type { UUID } from "app/types";
-import type { MoveListT } from "moves/types";
+import type { MoveT, MoveListT } from "moves/types";
 
 export type MoveClipboardBvrT = {|
   targetMoveLists: Array<MoveListT>,
@@ -18,7 +18,7 @@ export type MoveClipboardBvrT = {|
 
 export function useMoveClipboard(
   moveLists: Array<MoveListT>,
-  selectedMoveIds: Array<UUID>,
+  selectedMoves: Array<MoveT>,
   highlightedMoveId: UUID,
   setHighlightedMoveId: UUID => void,
   actInsertMoves: (
@@ -29,15 +29,16 @@ export function useMoveClipboard(
   actRemoveMoves: (moveIds: Array<UUID>, moveList: UUID) => Array<UUID>
 ): MoveClipboardBvrT {
   function isTarget(moveList: MoveListT): boolean {
-    return selectedMoveIds.some(moveId => !moveList.moves.includes(moveId));
+    return selectedMoves
+      .map(x => x.id)
+      .some(moveId => !moveList.moves.includes(moveId));
   }
 
   const targetMoveLists: Array<MoveListT> = moveLists.filter(isTarget);
-
   function shareToList(targetMoveList: MoveListT) {
     if (isTarget(targetMoveList)) {
       const moveIdsInTargetMoveList = actInsertMoves(
-        selectedMoveIds,
+        selectedMoves.map(x => x.id),
         targetMoveList.id,
         ""
       );
@@ -54,9 +55,22 @@ export function useMoveClipboard(
       return false;
     }
 
+    const selectedMoveIds: Array<UUID> = selectedMoves.map(x => x.id);
+
     const anchorIdx = selectedMoveIds.includes(highlightedMoveId)
       ? selectedMoveIds.indexOf(highlightedMoveId)
       : selectedMoveIds[0];
+
+    const idsOfMovesWithNewSourceMoveList = selectedMoves
+      .filter(x => x.sourceMoveListId == sourceMoveList.id)
+      .map(x => x.id);
+
+    api
+      .updateSourceMoveListId(
+        idsOfMovesWithNewSourceMoveList,
+        targetMoveList.id
+      )
+      .catch(createErrorHandler("Could not update move"));
 
     const newMoveIds = actRemoveMoves(selectedMoveIds, sourceMoveList.id);
     api

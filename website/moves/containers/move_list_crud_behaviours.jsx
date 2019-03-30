@@ -36,6 +36,8 @@ export function createNewMoveList(userId: number, username: string): MoveListT {
     slug: newMoveListSlug,
     name: "New move list",
     description: "",
+    isPrivate: false,
+    isTrash: false,
     tags: [],
     moves: [],
     ownerId: userId,

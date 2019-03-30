@@ -96,6 +96,7 @@ export function saveMoveList(values: MoveListT) {
       $name: String!,
       $slug: String!,
       $description: String!,
+      $isPrivate: Boolean!,
       $tags: [String]!
     ) {
       saveMoveList(
@@ -103,6 +104,7 @@ export function saveMoveList(values: MoveListT) {
         name: $name,
         slug: $slug,
         description: $description,
+        isPrivate: $isPrivate,
         tags: $tags
       ) { ok }
     }`,
@@ -208,6 +210,8 @@ export function findMoveLists(ownerUsername: string) {
         name
         slug
         description
+        isPrivate
+        isTrash
         tags
         owner {
           username
@@ -232,6 +236,8 @@ export function loadMoveList(moveListId: UUID) {
         name
         slug
         description
+        isPrivate
+        isTrash
         tags
         owner {
           username

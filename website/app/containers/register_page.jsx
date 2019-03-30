@@ -8,8 +8,6 @@ import { ActivateAccountDialog } from "app/presentation/activate_account_dialog"
 
 // RegisterPage
 
-function createHandlers() {}
-
 type RegisterPagePropsT = {
   uidPrm: ?string,
   tokenPrm: ?string,

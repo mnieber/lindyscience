@@ -62,6 +62,7 @@ class SaveMoveList(graphene.Mutation):
         pk = graphene.String()
         name = graphene.String()
         description = graphene.String()
+        is_private = graphene.Boolean()
         tags = graphene.List(of_type=graphene.String)
         slug = graphene.String()
 

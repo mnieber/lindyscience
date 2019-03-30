@@ -6,18 +6,6 @@ import Select from "react-select";
 import jquery from "jquery";
 import Creatable from "react-select/lib/Creatable";
 
-export function formField(errors, label, field) {
-  return (
-    <React.Fragment>
-      <div htmlFor={field.props.id} className="labeledField__label">
-        {label}
-      </div>
-      <div className="labeledField__field">{field}</div>
-      <div className="labeledField__error">{errors[field.props.field]}</div>
-    </React.Fragment>
-  );
-}
-
 export function isNonEmptyString(x) {
   return (x || "").trim() !== "";
 }
@@ -26,10 +14,11 @@ export function validateField(formApi, field, validator, errorMsg) {
   return !validator(field) ? errorMsg : null;
 }
 
-export function formFieldProps(formProps, fieldName, classNames) {
+export function formFieldProps(fieldType, formProps, fieldName, classNames) {
+  const valueField = fieldType == "checkbox" ? "checked" : "value";
   return {
     id: fieldName,
-    value: formProps.values[fieldName],
+    [valueField]: formProps.values[fieldName],
     onChange: formProps.handleChange,
     onBlur: formProps.handleBlur,
     className: classnames(classNames, {
@@ -84,9 +73,12 @@ export class FormField extends React.Component {
           placeholder={this.props.placeholder}
           disabled={this.props.disabled}
           autoFocus={this.props.autoFocus}
-          {...formFieldProps(this.props.formProps, this.props.fieldName, [
-            "formField__field",
-          ])}
+          {...formFieldProps(
+            this.props.type,
+            this.props.formProps,
+            this.props.fieldName,
+            ["formField__field"]
+          )}
         />
       ) : (
         <input
@@ -96,9 +88,12 @@ export class FormField extends React.Component {
           disabled={this.props.disabled}
           onFocus={selectAllOnFocus}
           autoFocus={this.props.autoFocus}
-          {...formFieldProps(this.props.formProps, this.props.fieldName, [
-            "formField__field",
-          ])}
+          {...formFieldProps(
+            this.props.type,
+            this.props.formProps,
+            this.props.fieldName,
+            ["formField__field"]
+          )}
         />
       );
 

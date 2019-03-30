@@ -56,6 +56,16 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     </div>
   );
 
+  const isPrivateField = (
+    <FormField
+      classNames="w-full"
+      label="Is private"
+      formProps={formProps}
+      fieldName="isPrivate"
+      type="checkbox"
+    />
+  );
+
   const tags = (
     <div className="moveListForm__tags mt-4">
       <ValuePicker
@@ -78,6 +88,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       <div className={"moveListForm flexcol"}>
         {nameField}
         {description}
+        {!formProps.values.isTrash && isPrivateField}
         {tags}
         <div className={"moveListForm__buttonPanel flexrow mt-4"}>
           <button
@@ -118,6 +129,8 @@ export function MoveListForm(props: MoveListFormPropsT) {
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       name: props.moveList.name,
+      isPrivate: props.moveList.isPrivate,
+      isTrash: props.moveList.isTrash,
       description: props.moveList.description,
       tags: props.moveList.tags,
     }),

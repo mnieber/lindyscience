@@ -40,9 +40,10 @@ function AppFrame(props: AppFramePropsT) {
 
   async function _loadUserProfile() {
     if (!!props.signedInEmail && loadedEmail != props.signedInEmail) {
-      const [profile, votes, movePrivateDatas] = await Promise.all([
+      const [profile, votes, tags, movePrivateDatas] = await Promise.all([
         AppCtr.api.loadUserProfile(),
         AppCtr.api.loadUserVotes(),
+        AppCtr.api.loadUserTags(),
         MovesCtr.api.loadMovePrivateDatas(),
       ]);
       actions.actSetUserProfile(profile);

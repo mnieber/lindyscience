@@ -14,6 +14,11 @@ class UserModelType(DjangoObjectType):
         model = get_user_model()
 
 
+class UserTagsType(graphene.ObjectType):
+    move_tags = graphene.List(of_type=graphene.String)
+    move_list_tags = graphene.List(of_type=graphene.String)
+
+
 class VideoLinkType(DjangoObjectType):
     class Meta:
         model = models.VideoLink
@@ -213,6 +218,7 @@ class Query(object):
         MoveListType, owner_username=graphene.String())
     move_list = graphene.Field(MoveListType, id=graphene.String())
     move_private_datas = graphene.List(MovePrivateDataType)
+    user_tags = graphene.Field(UserTagsType)
 
     def resolve_find_move_lists(self, info, owner_username, **kwargs):
         return models.MoveList.objects.filter(
@@ -227,3 +233,7 @@ class Query(object):
     def resolve_move_private_datas(self, info, **kwargs):
         return models.MovePrivateData.objects.filter(
             owner_id=info.context.user.id)
+
+    def resolve_user_tags(self, info, **kwargs):
+        result = UserTagsType()
+        return result

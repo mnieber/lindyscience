@@ -12,7 +12,7 @@ import type {
   MovePrivateDataByIdT,
   VideoLinkByIdT,
 } from "moves/types";
-import type { UUID, SlugidT } from "app/types";
+import type { UUID, SlugidT, TagT } from "app/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
@@ -242,5 +242,19 @@ export function actSetMoveListPayload(moveLists: Array<MoveListT>) {
   return {
     type: "SET_MOVE_LIST_PAYLOAD",
     moveLists,
+  };
+}
+
+export function actSetMoveTags(tags: Array<TagT>) {
+  return {
+    type: "SET_MOVE_TAGS",
+    tags,
+  };
+}
+
+export function actSetMoveListTags(tags: Array<TagT>) {
+  return {
+    type: "SET_MOVE_LIST_TAGS",
+    tags,
   };
 }

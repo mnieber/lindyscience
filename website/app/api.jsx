@@ -70,6 +70,17 @@ export function loadUserVotes() {
   );
 }
 
+export function loadUserTags() {
+  return doQuery(
+    `query queryUserTags {
+      userTags {
+        moveTags
+        moveListTags
+      }
+    }`
+  );
+}
+
 function _castVote(
   appLabel: string,
   model: string,

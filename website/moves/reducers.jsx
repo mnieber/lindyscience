@@ -270,6 +270,16 @@ export function tagsReducer(
   action: any
 ): TagsState {
   switch (action.type) {
+    case "SET_MOVE_TAGS":
+      return {
+        ...state,
+        moveTags: action.tags,
+      };
+    case "SET_MOVE_LIST_TAGS":
+      return {
+        ...state,
+        moveListTags: action.tags,
+      };
     case "ADD_MOVES":
       return {
         ...state,

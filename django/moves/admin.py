@@ -37,3 +37,4 @@ admin.site.register(models.MoveList, MoveListAdmin)
 admin.site.register(models.MovePrivateData)
 
 tagulous.admin.register(models.Move.tags.tag_model)
+tagulous.admin.register(models.MoveList.tags.tag_model)

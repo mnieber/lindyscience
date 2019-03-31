@@ -50,7 +50,7 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
     <Item onClick={props.copyNamesToClipboard} key={1}>
       Copy names
     </Item>,
-    <Item onClick={props.copyLinksToClipboard} key={1}>
+    <Item onClick={props.copyLinksToClipboard} key={2}>
       Copy links
     </Item>,
   ];

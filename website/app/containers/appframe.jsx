@@ -48,8 +48,7 @@ function AppFrame(props: AppFramePropsT) {
       ]);
       actions.actSetUserProfile(profile);
       actions.actSetVotes(votes);
-      // TODO: use actSetMovePrivateDatas
-      actions.actAddMovePrivateDatas(
+      actions.actSetMovePrivateDatas(
         movePrivateDatas.entities.movePrivateDatas || {}
       );
 

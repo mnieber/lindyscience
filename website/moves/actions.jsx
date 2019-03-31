@@ -64,6 +64,13 @@ export function actAddMovePrivateDatas(movePrivateDatas: MovePrivateDataByIdT) {
   };
 }
 
+export function actSetMovePrivateDatas(movePrivateDatas: MovePrivateDataByIdT) {
+  return {
+    type: "SET_MOVE_PRIVATE_DATAS",
+    movePrivateDatas: movePrivateDatas,
+  };
+}
+
 export function actAddVideoLinks(videoLinks: VideoLinkByIdT) {
   return {
     type: "ADD_VIDEO_LINKS",

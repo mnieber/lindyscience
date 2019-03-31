@@ -121,6 +121,8 @@ export function movePrivateDatasReducer(
       return {};
     case "ADD_MOVE_PRIVATE_DATAS":
       return { ...state, ...action.movePrivateDatas };
+    case "SET_MOVE_PRIVATE_DATAS":
+      return { ...action.movePrivateDatas };
     default:
       return state;
   }

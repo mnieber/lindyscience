@@ -49,6 +49,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       <FormFieldLabel label="Description" />
       <RichTextEditor
         autoFocus={false}
+        readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}
         content={formProps.values.description}
       />

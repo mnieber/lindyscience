@@ -4,6 +4,7 @@ import * as React from "react";
 import classnames from "classnames";
 
 import { MoveListTitle } from "moves/presentation/move_list_details";
+import { RichTextEditor } from "moves/presentation/rich_text_editor";
 
 import type { MoveT, MoveListT } from "moves/types";
 import type { TagT } from "app/types";
@@ -54,7 +55,13 @@ export function Move(props: MovePropsT) {
   const descriptionDiv = (
     <div className={"move__description panel"}>
       <h2>Description</h2>
-      <div dangerouslySetInnerHTML={{ __html: props.move.description }} />
+      <RichTextEditor
+        key={props.move.id}
+        content={props.move.description}
+        readOnly={true}
+        autoFocus={false}
+        setEditorRef={() => {}}
+      />
     </div>
   );
 

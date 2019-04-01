@@ -12,10 +12,7 @@ import {
 } from "utils/form_utils";
 import { slugify } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
-import {
-  RichTextEditor,
-  getContentFromEditor,
-} from "moves/presentation/rich_text_editor";
+import { RichTextEditor } from "moves/presentation/rich_text_editor";
 import type { MoveT } from "moves/types";
 import type { UUID, TagT } from "app/types";
 

@@ -35,6 +35,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="movePrivateDataForm__notes mt-4">
       <RichTextEditor
         autoFocus={true}
+        readOnly={false}
         setEditorRef={props.setNotesEditorRef}
         content={formProps.values.notes}
       />

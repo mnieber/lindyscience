@@ -21,6 +21,7 @@ type AppFramePropsT = {
   selectedMoveListUrl: string,
   userProfile: ?UserProfileT,
   signedInEmail: string,
+  loadedMoveListUrls: Array<string>,
   children: any,
   // also receive any actions
 };
@@ -29,7 +30,6 @@ function AppFrame(props: AppFramePropsT) {
   const actions: any = props;
 
   const [loadedEmail, setLoadedEmail] = React.useState("");
-  const [loadedMoveListUrls, setLoadedMoveListUrls] = React.useState([]);
 
   async function _loadEmail() {
     const [email] = await Promise.all([AppCtr.api.getEmail()]);
@@ -64,7 +64,7 @@ function AppFrame(props: AppFramePropsT) {
   async function _loadSelectedMoveList() {
     if (
       !!props.selectedMoveListUrl &&
-      !loadedMoveListUrls.includes(props.selectedMoveListUrl)
+      !props.loadedMoveListUrls.includes(props.selectedMoveListUrl)
     ) {
       const moveListInStore = findMoveListByUrl(
         props.moveLists,
@@ -79,8 +79,8 @@ function AppFrame(props: AppFramePropsT) {
         actions.actAddMoveLists(moveList.entities.moveLists);
         actions.actAddVideoLinks(moveList.entities.videoLinks || {});
         actions.actAddTips(moveList.entities.tips || {});
-        setLoadedMoveListUrls([
-          ...loadedMoveListUrls,
+        actions.actSetLoadedMoveListUrls([
+          ...props.loadedMoveListUrls,
           props.selectedMoveListUrl,
         ]);
       }
@@ -139,6 +139,7 @@ AppFrame = MovesCtr.connect(
     userProfile: AppCtr.fromStore.getUserProfile(state),
     signedInEmail: AppCtr.fromStore.getSignedInEmail(state),
     selectedMoveListUrl: MovesCtr.fromStore.getSelectedMoveListUrl(state),
+    loadedMoveListUrls: AppCtr.fromStore.getLoadedMoveListUrls(state),
   }),
   {
     ...MovesCtr.actions,

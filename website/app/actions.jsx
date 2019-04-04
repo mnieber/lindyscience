@@ -41,3 +41,10 @@ export function actCastVote(id: UUID, vote: VoteT) {
     });
   };
 }
+
+export function actSetLoadedMoveListUrls(moveListUrls: Array<string>) {
+  return {
+    type: "SET_LOADED_MOVE_LIST_URLS",
+    moveListUrls,
+  };
+}

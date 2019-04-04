@@ -91,6 +91,10 @@ export const getHighlightedMoveSlugid = (state: RootReducerStateT) =>
   state.moves.selection.highlightedMoveSlugid;
 export const getSelectedMoveListUrl = (state: RootReducerStateT) =>
   state.moves.selection.moveListUrl;
+export const hasLoadedSelectedMoveList = (state: RootReducerStateT) =>
+  state.app.status.loadedMoveListUrls.includes(
+    state.moves.selection.moveListUrl
+  );
 
 type MoveListFiltersState = FunctionByIdT;
 

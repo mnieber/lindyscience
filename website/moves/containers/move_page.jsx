@@ -24,6 +24,7 @@ type MovePagePropsT = {
   moveCrudBvrs: MoveCrudBvrsT,
   userProfile: UserProfileT,
   highlightedMove: MoveT,
+  hasLoadedSelectedMoveList: boolean,
   actions: any,
   // the follower are inserted by the router
   moveSlugPrm: string,
@@ -45,9 +46,11 @@ function MovePage(props: MovePagePropsT) {
   }, [props.moveSlugPrm, props.moveIdPrm, props.userProfile]);
 
   if (!props.highlightedMove) {
-    return (
-      <div className="noMoveHighlighted">Oops, I cannot find this move</div>
-    );
+    const msg = props.hasLoadedSelectedMoveList
+      ? "Oops, I cannot find this move"
+      : "Loading, please wait...";
+
+    return <div className="noMoveHighlighted">{msg}</div>;
   }
 
   return isOwner(props.userProfile, props.highlightedMove.ownerId)
@@ -64,6 +67,9 @@ MovePage = compose(
     state => ({
       userProfile: AppCtr.fromStore.getUserProfile(state),
       highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
+      hasLoadedSelectedMoveList: MovesCtr.fromStore.hasLoadedSelectedMoveList(
+        state
+      ),
     }),
     {
       ...AppCtr.actions,

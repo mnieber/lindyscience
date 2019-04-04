@@ -21,11 +21,13 @@ const _stateVotes = (state: RootReducerStateT): VotesState => state.app.votes;
 
 type StatusState = {
   signedInEmail: string,
+  loadedMoveListUrls: Array<string>,
 };
 
 const statusReducer = function(
   state: StatusState = {
     signedInEmail: "",
+    loadedMoveListUrls: [],
   },
   action
 ): StatusState {
@@ -35,6 +37,11 @@ const statusReducer = function(
         ...state,
         signedInEmail: action.email,
       };
+    case "SET_LOADED_MOVE_LIST_URLS":
+      return {
+        ...state,
+        loadedMoveListUrls: [...action.moveListUrls],
+      };
     default:
       return state;
   }
@@ -42,6 +49,9 @@ const statusReducer = function(
 
 export const getSignedInEmail = (state: RootReducerStateT): string =>
   state.app.status.signedInEmail;
+export const getLoadedMoveListUrls = (
+  state: RootReducerStateT
+): Array<string> => state.app.status.loadedMoveListUrls;
 
 ///////////////////////////////////////////////////////////////////////
 // Profile

@@ -1,11 +1,11 @@
 ---
 Create destination for copying source files:
   file.directory:
-    - name: /srv/linsci/src
+    - name: {{ pillar['srv_dir'] }}/src
 
 Copy website source files:
   file.recurse:
-    - name: /srv/linsci/src/website
+    - name: {{ pillar['srv_dir'] }}/src/website
     - source: salt://website/source_files
     - user: root
     - group: root
@@ -14,6 +14,6 @@ Copy website source files:
 
 Record git sha on remote server:
   file.managed:
-    - name: /srv/linsci/deployed_version.txt
+    - name: {{ pillar['srv_dir'] }}/deployed_version.txt
     - contents:
       - {{ pillar['git_sha'] }}

@@ -1,4 +1,7 @@
+// @Flow
+
 import { splitIntoKeywords } from "utils/utils";
+import parse from "url-parse";
 
 import type { MoveT, MoveListT } from "moves/types";
 import type { UUID, SlugidT } from "app/types";
@@ -34,15 +37,15 @@ export const newMoveSlug = "new-move";
 export const newMoveListSlug = "new-move-list";
 
 export function findNeighbourIdx(
-  filteredMoveIds,
-  allMoveIds,
+  filteredIds,
+  allIds,
   beginIndex,
   endIndex,
   step
 ) {
-  for (var moveIdx = beginIndex; moveIdx != endIndex; moveIdx += step) {
-    if (filteredMoveIds.includes(allMoveIds[moveIdx])) {
-      return { result: moveIdx };
+  for (var idx = beginIndex; idx != endIndex; idx += step) {
+    if (filteredIds.includes(allIds[idx])) {
+      return { result: idx };
     }
   }
   return undefined;
@@ -98,4 +101,19 @@ export function createTagsAndKeywordsFilter(
     return tags.length || keywords.length ? moves.filter(match) : moves;
   }
   return _filter;
+}
+
+export function validateVideoLinkUrl(url: string) {
+  const parsedUrl = parse(url);
+  var netloc = parsedUrl.hostname;
+  if (netloc.startsWith("www.")) {
+    netloc = netloc.substring(4);
+  }
+  if (netloc.startsWith("youtube") || netloc.startsWith("youtu.be")) {
+    const query = parse.qs.parse(parsedUrl.query);
+    if (isNone(query["t"])) {
+      return "Missing t=<timestamp> parameter in youtube url";
+    }
+  }
+  return undefined;
 }

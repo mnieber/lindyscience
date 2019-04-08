@@ -3,7 +3,8 @@
 import React from "react";
 import { withFormik } from "formik";
 import * as yup from "yup";
-import { FormField, validateVideoLinkUrl } from "utils/form_utils";
+import { FormField } from "utils/form_utils";
+import { validateVideoLinkUrl } from "moves/utils";
 
 export function VideoLinkForm({
   onSubmit,

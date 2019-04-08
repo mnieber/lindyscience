@@ -1,14 +1,9 @@
 import React from "react";
 import classnames from "classnames";
 import { isNone, stripQuotes } from "utils/utils";
-import parse from "url-parse";
 import Select from "react-select";
 import jquery from "jquery";
 import Creatable from "react-select/lib/Creatable";
-
-export function isNonEmptyString(x) {
-  return (x || "").trim() !== "";
-}
 
 export function validateField(formApi, field, validator, errorMsg) {
   return !validator(field) ? errorMsg : null;
@@ -126,22 +121,7 @@ export function Row2({ w1, w2, padding = 1 }) {
   );
 }
 
-export function validateVideoLinkUrl(url) {
-  const parsedUrl = parse(url);
-  var netloc = parsedUrl.hostname;
-  if (netloc.startsWith("www.")) {
-    netloc = netloc.substring(4);
-  }
-  if (netloc.startsWith("youtube") || netloc.startsWith("youtu.be")) {
-    const query = parse.qs.parse(parsedUrl.query);
-    if (isNone(query["t"])) {
-      return "Missing t=<timestamp> parameter in youtube url";
-    }
-  }
-  return undefined;
-}
-
-export function handleEnterAsTabToNext(event, isPreventDefault) {
+export function handleEnterAsTabToNext(event: any, isPreventDefault: boolean) {
   const form = event.target.form;
   if (form && event.keyCode === 13) {
     const index = Array.prototype.indexOf.call(form, event.target);
@@ -211,7 +191,7 @@ export class ValuePicker extends React.Component {
   }
 }
 
-export function getValueFromPicker(picker, defaultValue) {
+export function getValueFromPicker(picker: any, defaultValue: any) {
   const value = picker.state.value;
   return value
     ? jquery.isArray(value)
@@ -220,7 +200,7 @@ export function getValueFromPicker(picker, defaultValue) {
     : defaultValue;
 }
 
-export function strToPickerValue(value) {
+export function strToPickerValue(value: string) {
   return {
     value: stripQuotes(value),
     label: stripQuotes(value),

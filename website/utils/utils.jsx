@@ -168,3 +168,7 @@ export function range(start: number, stop: number) {
   }
   return ans;
 }
+
+export function isNonEmptyString(x: string) {
+  return (x || "").trim() !== "";
+}

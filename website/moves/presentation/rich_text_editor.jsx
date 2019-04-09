@@ -10,35 +10,19 @@ import {
   KeyBindingUtil,
   CompositeDecorator,
   convertToRaw,
-  convertFromRaw,
   // $FlowFixMe
 } from "draft-js";
-import { stateFromHTML } from "draft-js-import-html";
-import { createReadOnlyEditorState } from "moves/utils/editor_state";
 
 function customKeyBindingFn(e: any): string {
   return getDefaultKeyBinding(e);
 }
 
 type RichTextEditorPropsT = {
-  content: string,
+  initialEditorState: any,
   autoFocus: boolean,
   readOnly: boolean,
   setEditorRef: any => void,
-};
-
-const styleMap = {
-  TIMING: {
-    fontSize: "0.85em",
-    // fontWeight: "700",
-    verticalAlign: "super",
-  },
-  TIMED: {
-    textDecoration: "underline",
-  },
-  VARIATION: {
-    backgroundColor: "#e8eff4",
-  },
+  customStyleMap?: any,
 };
 
 // TODO: before editing, convert from "draft" to "markdown".
@@ -48,21 +32,12 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
   const editorRef = React.useRef(null);
   props.setEditorRef(editorRef);
 
-  const [writableEditorState, setWritableEditorState] = React.useState(
-    EditorState.createWithContent(
-      props.content.startsWith("<")
-        ? stateFromHTML(props.content)
-        : convertFromRaw(JSON.parse(props.content))
-    )
+  const [editorState, setEditorState] = React.useState(
+    props.initialEditorState
   );
 
-  const [readOnlyEditorState, setReadOnlyEditorState] = React.useState(
-    createReadOnlyEditorState(writableEditorState)
-  );
-
-  const setEditorState = editorState => {
-    setWritableEditorState(editorState);
-    setReadOnlyEditorState(createReadOnlyEditorState(editorState));
+  const _setEditorState = editorState => {
+    setEditorState(editorState);
   };
 
   React.useEffect(() => {
@@ -75,25 +50,21 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
 
     if (newState) {
-      setEditorState(newState);
+      _setEditorState(newState);
       return "handled";
     }
     return "not-handled";
   };
 
-  const _onChange = newState => {
-    setEditorState(newState);
-  };
-
   return (
     <Editor
       ref={editorRef}
-      editorState={props.readOnly ? readOnlyEditorState : writableEditorState}
+      editorState={editorState}
       handleKeyCommand={handleKeyCommand}
       keyBindingFn={customKeyBindingFn}
-      onChange={_onChange}
+      onChange={_setEditorState}
       readOnly={props.readOnly}
-      customStyleMap={styleMap}
+      customStyleMap={props.customStyleMap}
     />
   );
 }

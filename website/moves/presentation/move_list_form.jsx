@@ -14,6 +14,8 @@ import {
   RichTextEditor,
   getContentFromEditor,
 } from "moves/presentation/rich_text_editor";
+import { toEditorState } from "moves/utils/editor_state";
+
 import type { MoveListT } from "moves/types";
 import type { UUID, TagT } from "app/types";
 
@@ -51,7 +53,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         autoFocus={false}
         readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}
-        content={formProps.values.description}
+        initialEditorState={toEditorState(formProps.values.description)}
       />
       {formFieldError(formProps, "description", ["formField__error"])}
     </div>

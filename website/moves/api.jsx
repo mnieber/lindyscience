@@ -121,15 +121,17 @@ export function saveMove(values: MoveT) {
       $name: String!,
       $slug: String!,
       $description: String!,
-      $tags: [String]!
-      $sourceMoveListId: String!
+      $tags: [String]!,
+      $variationNames: [String]!,
+      $sourceMoveListId: String!,
     ) {
       saveMove(
         pk: $id,
         name: $name,
         slug: $slug,
         description: $description,
-        tags: $tags
+        tags: $tags,
+        variationNames: $variationNames,
         sourceMoveListId: $sourceMoveListId
       ) { ok }
     }`,

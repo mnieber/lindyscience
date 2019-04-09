@@ -13,6 +13,8 @@ import {
   RichTextEditor,
   getContentFromEditor,
 } from "moves/presentation/rich_text_editor";
+import { toEditorState } from "moves/utils/editor_state";
+
 import type { MovePrivateDataT } from "moves/types";
 import type { TagT } from "app/types";
 
@@ -37,7 +39,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         autoFocus={true}
         readOnly={false}
         setEditorRef={props.setNotesEditorRef}
-        content={formProps.values.notes}
+        initialEditorState={toEditorState(formProps.values.notes)}
       />
       {formFieldError(formProps, "notes", ["formField__error"])}
     </div>

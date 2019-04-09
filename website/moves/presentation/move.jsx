@@ -5,6 +5,10 @@ import classnames from "classnames";
 
 import { MoveListTitle } from "moves/presentation/move_list_details";
 import { RichTextEditor } from "moves/presentation/rich_text_editor";
+import {
+  createReadOnlyEditorState,
+  toEditorState,
+} from "moves/utils/editor_state";
 
 import type { MoveT, MoveListT } from "moves/types";
 import type { TagT } from "app/types";
@@ -20,6 +24,23 @@ export function Tags({ tags }: { tags: Array<TagT> }) {
 
   return <div className={"move__tags"}>{items}</div>;
 }
+
+const styleMap = {
+  TIMING: {
+    fontSize: "0.85em",
+    // fontWeight: "700",
+    verticalAlign: "super",
+  },
+  TIMED: {
+    textDecoration: "underline",
+  },
+  VARIATION_NAME: {
+    backgroundColor: "#e8eff4",
+  },
+  VARIATION_DESCRIPTION: {
+    backgroundColor: "#d8eff4",
+  },
+};
 
 // Move
 
@@ -52,15 +73,21 @@ export function Move(props: MovePropsT) {
     undefined
   );
 
+  const {
+    state: readOnlyEditorState,
+    variationNames,
+  } = createReadOnlyEditorState(toEditorState(props.move.description));
+
   const descriptionDiv = (
     <div className={"move__description panel"}>
       <h2>Description</h2>
       <RichTextEditor
         key={props.move.id}
-        content={props.move.description}
+        initialEditorState={readOnlyEditorState}
         readOnly={true}
         autoFocus={false}
         setEditorRef={() => {}}
+        customStyleMap={styleMap}
       />
     </div>
   );

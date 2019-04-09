@@ -79,8 +79,8 @@ class SaveMoveList(graphene.Mutation):
         assert_authorized(models.MoveList, pk, info.context.user.id)
         inputs['owner_id'] = info.context.user.id
 
-        moveList, created = models.MoveList.objects.update_or_create(
-            inputs, pk=pk)
+        moveList, created = models.MoveList.objects.update_or_create(inputs,
+                                                                     pk=pk)
         return SaveMoveList(move_list=moveList, ok=True)
 
 
@@ -138,6 +138,7 @@ class SaveMove(graphene.Mutation):
         description = graphene.String()
         source_move_list_id = graphene.String()
         tags = graphene.List(of_type=graphene.String)
+        variation_names = graphene.List(of_type=graphene.String)
 
     ok = graphene.Boolean()
     move = graphene.Field(MoveType)
@@ -197,8 +198,8 @@ class SaveVideoLink(graphene.Mutation):
     def mutate(self, info, pk, **inputs):
         assert_authorized(models.VideoLink, pk, info.context.user.id)
         inputs['owner_id'] = info.context.user.id
-        videolink, created = models.VideoLink.objects.update_or_create(
-            inputs, pk=pk)
+        videolink, created = models.VideoLink.objects.update_or_create(inputs,
+                                                                       pk=pk)
         return SaveVideoLink(videolink=videolink, ok=True)
 
 
@@ -237,8 +238,8 @@ class SaveMovePrivateData(graphene.Mutation):
 
 
 class Query(object):
-    find_move_lists = graphene.List(
-        MoveListType, owner_username=graphene.String())
+    find_move_lists = graphene.List(MoveListType,
+                                    owner_username=graphene.String())
     find_moves = graphene.List(
         MoveType,
         owner_username=graphene.String(),

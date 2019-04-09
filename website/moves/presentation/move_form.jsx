@@ -16,6 +16,11 @@ import {
   RichTextEditor,
   getContentFromEditor,
 } from "moves/presentation/rich_text_editor";
+import {
+  createReadOnlyEditorState,
+  toEditorState,
+} from "moves/utils/editor_state";
+
 import type { MoveT } from "moves/types";
 import type { UUID, TagT } from "app/types";
 
@@ -85,7 +90,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         autoFocus={false}
         readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}
-        content={formProps.values.description}
+        initialEditorState={toEditorState(formProps.values.description)}
       />
       {formFieldError(formProps, "description", ["formField__error"])}
     </div>
@@ -179,7 +184,12 @@ export function MoveForm(props: MoveFormPropsT) {
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      props.onSubmit(props.move.id, values);
+      const {
+        state: readOnlyEditorState,
+        variationNames,
+      } = createReadOnlyEditorState(toEditorState(values.description));
+
+      props.onSubmit(props.move.id, { ...values, variationNames });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(

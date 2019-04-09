@@ -1,14 +1,16 @@
 from .utils import validate_video_url
 from django.db import models
 from tagulous.models import TagField
+from django.contrib.postgres.fields import ArrayField
 from app.models import Entity
 
 # Moves models
 
 
 class VideoLink(Entity):
-    move = models.ForeignKey(
-        'Move', on_delete=models.CASCADE, related_name='video_links')
+    move = models.ForeignKey('Move',
+                             on_delete=models.CASCADE,
+                             related_name='video_links')
     url = models.URLField()
     title = models.CharField(max_length=255, blank=True, null=True)
     vote_count = models.IntegerField(default=0)
@@ -22,8 +24,9 @@ class VideoLink(Entity):
 
 
 class Tip(Entity):
-    move = models.ForeignKey(
-        'Move', on_delete=models.CASCADE, related_name='tips')
+    move = models.ForeignKey('Move',
+                             on_delete=models.CASCADE,
+                             related_name='tips')
     text = models.CharField(max_length=255, blank=True, null=True)
     vote_count = models.IntegerField(default=0)
 
@@ -31,9 +34,14 @@ class Tip(Entity):
 class Move(Entity):
     name = models.CharField(max_length=200, unique=False)
     slug = models.CharField(max_length=200, unique=False)
+    variation_names = ArrayField(models.CharField(max_length=200),
+                                 blank=True,
+                                 default=list)
+
     description = models.TextField()
-    source_move_list = models.ForeignKey(
-        'MoveList', on_delete=models.CASCADE, related_name='sourced_moves')
+    source_move_list = models.ForeignKey('MoveList',
+                                         on_delete=models.CASCADE,
+                                         related_name='sourced_moves')
     tags = TagField(force_lowercase=True, max_count=10, space_delimiter=False)
 
     def __str__(self):  # noqa
@@ -52,14 +60,16 @@ class MoveList2Move(models.Model):
 class MoveList(Entity):
     name = models.CharField(max_length=200, unique=True)
     slug = models.CharField(max_length=200, unique=True)
-    role = models.CharField(
-        max_length=200,
-        choices=[('', 'default'), ('drafts', 'drafts'), ('trash', 'trash')],
-        default='')
+    role = models.CharField(max_length=200,
+                            choices=[('', 'default'), ('drafts', 'drafts'),
+                                     ('trash', 'trash')],
+                            default='')
     is_private = models.BooleanField(default=False)
     description = models.TextField()
-    tags = TagField(
-        force_lowercase=True, max_count=10, space_delimiter=False, blank=True)
+    tags = TagField(force_lowercase=True,
+                    max_count=10,
+                    space_delimiter=False,
+                    blank=True)
     moves = models.ManyToManyField(Move, through=MoveList2Move)
 
     def __str__(self):  # noqa
@@ -67,11 +77,14 @@ class MoveList(Entity):
 
 
 class MovePrivateData(Entity):
-    move = models.ForeignKey(
-        'Move', on_delete=models.CASCADE, related_name='private_datas')
+    move = models.ForeignKey('Move',
+                             on_delete=models.CASCADE,
+                             related_name='private_datas')
     notes = models.TextField()
-    tags = TagField(
-        force_lowercase=True, max_count=10, space_delimiter=False, blank=True)
+    tags = TagField(force_lowercase=True,
+                    max_count=10,
+                    space_delimiter=False,
+                    blank=True)
 
     def __str__(self):  # noqa
         return "Notes by %s on %s" % (self.owner, self.move)

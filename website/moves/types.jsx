@@ -42,7 +42,7 @@ export type MoveListT = {
   slug: string,
   description: string,
   isPrivate: boolean,
-  isTrash: boolean,
+  role: string,
   tags: Array<TagT>,
   moves: Array<UUID>,
   ownerId: number,

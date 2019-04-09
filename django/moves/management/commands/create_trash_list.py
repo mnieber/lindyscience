@@ -11,7 +11,7 @@ class Command(BaseCommand):
         return models.MoveList(
             name='Trash',
             slug='trash',
-            is_trash=True,
+            role='trash',
             is_private=True,
             description=
             'This list contains moves which were moved to the trash',
@@ -21,6 +21,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for user in get_user_model().objects.all():
             if not models.MoveList.objects.filter(
-                    owner_id=user.id, is_trash=True).exists():
+                    owner_id=user.id, role='trash').exists():
                 trash_list = self._create_trash_movelist(user)
                 trash_list.save()

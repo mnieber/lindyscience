@@ -37,7 +37,7 @@ export function createNewMoveList(userId: number, username: string): MoveListT {
     name: "New move list",
     description: "",
     isPrivate: false,
-    isTrash: false,
+    role: "",
     tags: [],
     moves: [],
     ownerId: userId,

@@ -52,8 +52,11 @@ class MoveList2Move(models.Model):
 class MoveList(Entity):
     name = models.CharField(max_length=200, unique=True)
     slug = models.CharField(max_length=200, unique=True)
+    role = models.CharField(
+        max_length=200,
+        choices=[('', 'default'), ('drafts', 'drafts'), ('trash', 'trash')],
+        default='')
     is_private = models.BooleanField(default=False)
-    is_trash = models.BooleanField(default=False)
     description = models.TextField()
     tags = TagField(
         force_lowercase=True, max_count=10, space_delimiter=False, blank=True)

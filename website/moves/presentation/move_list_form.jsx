@@ -89,7 +89,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       <div className={"moveListForm flexcol"}>
         {nameField}
         {description}
-        {!formProps.values.isTrash && isPrivateField}
+        {!formProps.values.role == "trash" && isPrivateField}
         {tags}
         <div className={"moveListForm__buttonPanel flexrow mt-4"}>
           <button
@@ -131,7 +131,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
     mapPropsToValues: () => ({
       name: props.moveList.name,
       isPrivate: props.moveList.isPrivate,
-      isTrash: props.moveList.isTrash,
+      role: props.moveList.role,
       description: props.moveList.description,
       tags: props.moveList.tags,
     }),

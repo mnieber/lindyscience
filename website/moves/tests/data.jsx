@@ -12,7 +12,7 @@ export const moveList1 = {
   description: "All the moves",
   id: "02f82088-dee1-4b80-9c1c-0bec2b8255a3",
   isPrivate: false,
-  isTrash: false,
+  role: "",
   moves: [
     "18561d09-0727-441d-bdd9-d3d8c33ebde3",
     "3ba5ed84-34d5-442c-921c-50da0dc022da",
@@ -28,7 +28,7 @@ export const moveList2 = {
   description: "Some moves",
   id: "jJroEMamLu",
   isPrivate: true,
-  isTrash: false,
+  role: "",
   moves: [
     "18561d09-0727-441d-bdd9-d3d8c33ebde3",
     "3ba5ed84-34d5-442c-921c-50da0dc022da",

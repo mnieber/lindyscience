@@ -234,7 +234,7 @@ export function findMoveLists(ownerUsername: string) {
         slug
         description
         isPrivate
-        isTrash
+        role
         tags
         owner {
           username
@@ -287,7 +287,7 @@ export function loadMoveList(moveListId: UUID) {
         slug
         description
         isPrivate
-        isTrash
+        role
         tags
         owner {
           username

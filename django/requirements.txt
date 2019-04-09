@@ -21,3 +21,4 @@ python-memcached==1.59
 pytz==2018.4
 PyYAML==3.12
 requests==2.18.4
+beautifulsoup4==4.7.1

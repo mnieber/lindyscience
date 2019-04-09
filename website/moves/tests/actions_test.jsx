@@ -34,7 +34,7 @@ test("test actSetMoveListFilter", function(t) {
         createTagsAndKeywordsFilter(["fun"], [])
       )
     ),
-    "basket-whip"
+    "3ba5ed84-34d5-442c-921c-50da0dc022da"
   );
   store.dispatch(actions.actSetHighlightedMoveBySlug("basket-whip"));
 
@@ -46,7 +46,7 @@ test("test actSetMoveListFilter", function(t) {
         createTagsAndKeywordsFilter(["swing out"], [])
       )
     ),
-    "three-wall-swing-out"
+    "18561d09-0727-441d-bdd9-d3d8c33ebde3"
   );
   store.dispatch(actions.actSetHighlightedMoveBySlug("three-wall-swing-out"));
 
@@ -59,29 +59,6 @@ test("test actSetMoveListFilter", function(t) {
       )
     ),
     ""
-  );
-
-  t.end();
-});
-
-test("test actSetMoveListFilter with duplicate slugs", function(t) {
-  const { store } = _setUp();
-
-  const swingOut = getObjectValues(data.moves)[0];
-  swingOut.slug = getObjectValues(data.moves)[1].slug;
-  store.dispatch(actions.actAddMoves([swingOut]));
-
-  store.dispatch(actions.actSetHighlightedMoveBySlug(swingOut.slug));
-
-  t.equal(
-    store.dispatch(
-      actions.actSetMoveFilter(
-        "tagsAndKeywords",
-        createTagsAndKeywordsFilter(["fun"], [])
-      )
-    ),
-    "basket-whip/3ba5ed84-34d5-442c-921c-50da0dc022da",
-    "Since the slug is duplicated, the slugid should contain the id"
   );
 
   t.end();

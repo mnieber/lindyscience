@@ -1,5 +1,7 @@
 """Utility functions for testing."""
 
+from rest_framework import status
+
 test_email = 'test@lindyscience.co'
 test_password = '12345678'
 
@@ -19,13 +21,20 @@ def create_user(client):
     return user
 
 
-def create_logged_in_user(client):
-    """Create user and log them in."""
-    user = create_user(client)
-    client.post('/api/login/', {
-        'email': test_email,
-        'password': test_password,
+def log_in_user(client, email=test_email, password=test_password):
+    res = client.post('/auth/token/login/', {
+        'email': email,
+        'password': password
     })
-    assert user.is_active
-    assert user.is_authenticated
-    return user
+    if res.status_code != status.HTTP_200_OK:
+        return False
+
+    auth_token = res.json()['auth_token']
+    client.credentials(HTTP_AUTHORIZATION='Token ' + auth_token)
+    return auth_token
+
+
+def log_out_user(client):
+    res = client.post('/auth/token/logout/', {})
+    client.credentials()
+    return res.status_code == status.HTTP_204_NO_CONTENT

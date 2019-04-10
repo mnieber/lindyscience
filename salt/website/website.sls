@@ -6,5 +6,5 @@ include:
 {% if grains['id'] != 'dev' %}
   - website._npm_packages
 {% endif %}
-  - website.django_wagtail.django_wagtail
+  - website.django.django
   - website._apache._apache

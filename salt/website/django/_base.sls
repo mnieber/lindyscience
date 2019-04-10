@@ -16,7 +16,7 @@ Install django apt packages:
       - redis-server
       - libpq-dev
 
-Install django wagtail virtual env:
+Install django virtual env:
   virtualenv.managed:
     - name: {{ pillar['srv_dir'] }}/env
     - python: python3

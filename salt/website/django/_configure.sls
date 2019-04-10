@@ -6,13 +6,13 @@ Create migrations_local directory:
 Django migrate:
   cmd.run:
     - name: {{ pillar['srv_dir'] }}/env/bin/python manage.py migrate-local
-    - cwd: {{ pillar['srv_dir'] }}/src/website/django_wagtail
+    - cwd: {{ pillar['srv_dir'] }}/src/website/django
     - env:
       - DJANGO_SETTINGS_MODULE: 'app.settings.prod'
 
 Collect static files:
   cmd.run:
     - name: {{ pillar['srv_dir'] }}/env/bin/python manage.py collectstatic --noinput
-    - cwd: {{ pillar['srv_dir'] }}/src/website/django_wagtail
+    - cwd: {{ pillar['srv_dir'] }}/src/website/django
     - env:
       - DJANGO_SETTINGS_MODULE: 'app.settings.prod'

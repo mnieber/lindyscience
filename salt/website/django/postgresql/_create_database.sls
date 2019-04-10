@@ -15,6 +15,6 @@ Create database:
 
 Change default postgres settings:
   cmd.script:
-    - name: salt://website/django_wagtail/postgresql/alter-roles.sh
+    - name: salt://website/django/postgresql/alter-roles.sh
     - runas: postgres
     - template: jinja

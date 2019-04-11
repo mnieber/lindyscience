@@ -23,6 +23,7 @@ type RichTextEditorPropsT = {
   readOnly: boolean,
   setEditorRef: any => void,
   customStyleMap?: any,
+  placeholder?: string,
 };
 
 // TODO: before editing, convert from "draft" to "markdown".
@@ -65,6 +66,7 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
       onChange={_setEditorState}
       readOnly={props.readOnly}
       customStyleMap={props.customStyleMap}
+      placeholder={props.placeholder}
     />
   );
 }

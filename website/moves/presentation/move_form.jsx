@@ -83,6 +83,10 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     </div>
   );
 
+  const placeholder =
+    "You can add timing information (the move starts with a |rock step|1,2|) and move variations " +
+    "(in the ^fancy variation^the follower swivels in place^).";
+
   const description = (
     <div className="moveForm__description mt-4">
       <FormFieldLabel label="Description" />
@@ -91,6 +95,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}
         initialEditorState={toEditorState(formProps.values.description)}
+        placeholder={placeholder}
       />
       {formFieldError(formProps, "description", ["formField__error"])}
     </div>

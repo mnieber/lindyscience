@@ -1,6 +1,5 @@
 from __future__ import absolute_import, unicode_literals
 from .base import *  # noqa
-import os
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -21,11 +20,8 @@ except ImportError:
     pass
 
 
-if os.environ.get('PG_PORT_5432_TCP_ADDR'):
-    # set postgres host and port to the values from the linked docker container
-    DATABASES['default']['HOST'] = os.environ['PG_PORT_5432_TCP_ADDR']
-    DATABASES['default']['PORT'] = os.environ['PG_PORT_5432_TCP_PORT']
+DATABASES['default']['HOST'] = 'db'
 
-    CACHES['default'] = {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
+CACHES['default'] = {
+    'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+}

@@ -1,0 +1,31 @@
+version : '2'
+
+services :
+  app:
+    image: linsci:base
+    depends_on:
+    - db
+    tty: True
+    environment:
+      DJANGO_SETTINGS_MODULE: ${/DJANGO/settings_module}
+    volumes_from:
+    - container:dc_linsci_pip_packages
+    - container:dc_linsci_node_modules
+    volumes:
+      # map the src directory to opt/app-root/src
+      - ${/ROOT/src_dir}:${/SERVER/src_dir}
+      # Preserve the following directories written by the docker container
+      # Note: first run `sudo python dev/configure.py` to create /srv/linsci
+      - /srv/linsci/.pytest_report:${/SERVER/install_dir}/.pytest_report
+      - /srv/linsci/.ipython:${/SERVER/install_dir}/.ipython
+      - /srv/linsci/.bashrc:${/SERVER/install_dir}/.bashrc
+      - /srv/linsci/.config:${/SERVER/install_dir}/.config
+      - /srv/linsci/.bash_history:${/SERVER/install_dir}/.bash_history
+    command: sleep 10000000
+  db:
+    image: linsci:base
+    ports:
+      - "5432:5432"
+    volumes_from:
+      - container:dc_linsci_pg
+    command: sudo -u postgres /usr/lib/postgresql/9.5/bin/postgres -D /var/lib/postgresql/9.5/main -c config_file=/etc/postgresql/9.5/main/postgresql.conf

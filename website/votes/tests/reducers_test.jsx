@@ -1,10 +1,10 @@
 // @flow
 
 import { test } from "tape";
-import * as data from "app/tests/data";
+import * as data from "votes/tests/data";
 
-import * as reducers from "app/reducers";
-import * as actions from "app/actions";
+import * as reducers from "votes/reducers";
+import * as actions from "votes/actions";
 
 test("cast vote", function(t) {
   const id = "759b488d-ffa4-467c-8157-6ca27114bda9";

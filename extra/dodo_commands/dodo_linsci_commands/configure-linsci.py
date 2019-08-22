@@ -26,7 +26,7 @@ if Dodo.is_main(__name__, safe=True):
     base_dir = '/srv/linsci'
     _make_dir_0x777(base_dir)
 
-    dirnames = ['.config', '.pytest_report', '.ipython']
+    dirnames = ['.config', '.pytest_report', '.ipython', 'static', 'dumps']
     for dirname in [os.path.join(base_dir, x) for x in dirnames]:
         _make_dir_0x777(dirname)
 

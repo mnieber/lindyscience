@@ -2,10 +2,12 @@ version : '2'
 
 services :
   app:
-    image: linsci:base
     depends_on:
     - db
-    tty: True
+    image: linsci:base
+    ports:
+      - "8000:8000"
+    # tty: True
     environment:
       DJANGO_SETTINGS_MODULE: ${/DJANGO/settings_module}
     volumes_from:
@@ -16,6 +18,8 @@ services :
       - ${/ROOT/src_dir}:${/SERVER/src_dir}
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
+      - /srv/linsci/static:${/SERVER/install_dir}/static
+      - /srv/linsci/dumps:${/SERVER/install_dir}/dumps
       - /srv/linsci/.pytest_report:${/SERVER/install_dir}/.pytest_report
       - /srv/linsci/.ipython:${/SERVER/install_dir}/.ipython
       - /srv/linsci/.bashrc:${/SERVER/install_dir}/.bashrc

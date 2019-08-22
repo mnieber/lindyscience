@@ -1,6 +1,6 @@
 // @Flow
 
-import { splitIntoKeywords } from "utils/utils";
+import { splitIntoKeywords, isNone } from "utils/utils";
 import parse from "url-parse";
 
 import type { MoveT, MoveListT } from "moves/types";

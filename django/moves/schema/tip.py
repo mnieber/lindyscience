@@ -40,3 +40,12 @@ class DeleteTip(graphene.Mutation):
 
         tip.delete()
         return DeleteTip(ok=True)
+
+
+class TipQuery:
+    pass
+
+
+class TipMutations:
+    save_tip = SaveTip.Field()
+    delete_tip = DeleteTip.Field()

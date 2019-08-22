@@ -40,7 +40,7 @@ class SaveMove(graphene.Mutation):
         return SaveMove(move=move, ok=True)
 
 
-class Query(object):
+class MoveQuery(object):
     find_moves = graphene.List(
         MoveType,
         owner_username=graphene.String(),
@@ -63,3 +63,7 @@ class Query(object):
             result = result.filter(tags=tag)
 
         return gql_optimizer.query(result, info)
+
+
+class MoveMutations:
+    save_move = SaveMove.Field()

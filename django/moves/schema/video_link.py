@@ -42,3 +42,12 @@ class DeleteVideoLink(graphene.Mutation):
 
         videolink.delete()
         return DeleteVideoLink(ok=True)
+
+
+class VideoLinkQuery:
+    pass
+
+
+class VideoLinkMutations:
+    save_video_link = SaveVideoLink.Field()
+    delete_video_link = DeleteVideoLink.Field()

@@ -33,9 +33,13 @@ class SaveMovePrivateData(graphene.Mutation):
         return SaveMovePrivateData(movePrivateData=movePrivateData, ok=True)
 
 
-class Query(object):
+class MovePrivateDataQuery(object):
     move_private_datas = graphene.List(MovePrivateDataType)
 
     def resolve_move_private_datas(self, info, **kwargs):
         return models.MovePrivateData.objects.filter(
             owner_id=info.context.user.id)
+
+
+class MovePrivateDataMutations:
+    save_move_private_data = SaveMovePrivateData.Field()

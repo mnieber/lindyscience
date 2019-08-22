@@ -87,7 +87,7 @@ class UpdateSourceMoveListId(graphene.Mutation):
         return try_n_times(try_it, n=5)
 
 
-class Query(object):
+class MoveListQuery(object):
     find_move_lists = graphene.List(MoveListType,
                                     owner_username=graphene.String())
     move_list = graphene.Field(MoveListType, id=graphene.String())
@@ -101,3 +101,9 @@ class Query(object):
         return models.MoveList.objects.get(
             Q(pk=id) & (Q(is_private=False)
                         | Q(owner=info.context.user)))
+
+
+class MoveListMutations:
+    save_move_list = SaveMoveList.Field()
+    update_source_move_list_id = UpdateSourceMoveListId.Field()
+    save_move_ordering = SaveMoveOrdering.Field()

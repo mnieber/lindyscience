@@ -1,15 +1,12 @@
 from django.contrib.auth import get_user_model
 import graphene
 from graphene_django.types import DjangoObjectType
-from .video_link import VideoLinkType, SaveVideoLink, DeleteVideoLink  # noqa
-from .tip import TipType, SaveTip, DeleteTip  # noqa
-from .move_private_data import MovePrivateDataType, SaveMovePrivateData  # noqa
-from .move_private_data import Query as MovePrivateDataQuery  # noqa
-from .move_list import MoveListType, SaveMoveList, SaveMoveOrdering, UpdateSourceMoveListId  # noqa
-from .move_list import Query as MoveListQuery  # noqa
-from .move import MoveType, SaveMove  # noqa
-from .move import Query as MoveQuery  # noqa
-# Moves schema
+
+from .video_link import VideoLinkQuery, VideoLinkMutations
+from .tip import TipQuery, TipMutations
+from .move_private_data import MovePrivateDataQuery, MovePrivateDataMutations
+from .move_list import MoveListQuery, MoveListMutations
+from .move import MoveQuery, MoveMutations
 
 
 class UserModelType(DjangoObjectType):
@@ -22,9 +19,15 @@ class UserTagsType(graphene.ObjectType):
     move_list_tags = graphene.List(of_type=graphene.String)
 
 
-class Query(MovePrivateDataQuery, MoveListQuery, MoveQuery, graphene.ObjectType):
+class Query(MovePrivateDataQuery, MoveListQuery, MoveQuery, TipQuery,
+            VideoLinkQuery, graphene.ObjectType):
     user_tags = graphene.Field(UserTagsType)
 
     def resolve_user_tags(self, info, **kwargs):
         result = UserTagsType()
         return result
+
+
+class Mutations(MovePrivateDataMutations, MoveListMutations, MoveMutations,
+                TipMutations, VideoLinkMutations):
+    pass

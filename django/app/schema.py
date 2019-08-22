@@ -10,16 +10,7 @@ class Query(accounts.schema.Query, moves.schema.Query, votes.schema.Query,
     pass
 
 
-class Mutations(graphene.ObjectType):
-    save_move_list = moves.schema.SaveMoveList.Field()
-    save_move = moves.schema.SaveMove.Field()
-    save_tip = moves.schema.SaveTip.Field()
-    delete_tip = moves.schema.DeleteTip.Field()
-    save_video_link = moves.schema.SaveVideoLink.Field()
-    delete_video_link = moves.schema.DeleteVideoLink.Field()
-    save_move_private_data = moves.schema.SaveMovePrivateData.Field()
-    save_move_ordering = moves.schema.SaveMoveOrdering.Field()
-    update_source_move_list_id = moves.schema.UpdateSourceMoveListId.Field()
+class Mutations(moves.schema.Mutations, graphene.ObjectType):
     cast_vote = votes.schema.CastVote.Field()
     update_profile = accounts.schema.UpdateProfile.Field()
     save_move_list_ordering = accounts.schema.SaveMoveListOrdering.Field()

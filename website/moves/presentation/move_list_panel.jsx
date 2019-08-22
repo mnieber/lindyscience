@@ -20,7 +20,10 @@ type HandlersT = {
 
 function createHandlers(moves: Array<MoveT>, bvrs: MoveCrudBvrsT): HandlersT {
   const onDrop = (sourceMoveId, targetMoveId, isBefore) => {
-    if (bvrs.newMoveBvr.newItem && bvrs.newMoveBvr.newItem.id != sourceMoveId) {
+    if (
+      !bvrs.newMoveBvr.newItem ||
+      bvrs.newMoveBvr.newItem.id != sourceMoveId
+    ) {
       bvrs.insertMovesBvr.insertDirectly(
         [sourceMoveId],
         targetMoveId,

@@ -5,7 +5,7 @@ from accounts.models import Profile, ProfileToMoveList
 
 
 @receiver(user_activated)
-def login_on_activation(sender, user, request, **kwargs):
+def create_profile_on_activation(sender, user, request, **kwargs):
     trash = models.MoveList(
         role='trash',
         name='Trash',

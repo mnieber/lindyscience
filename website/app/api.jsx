@@ -3,7 +3,7 @@
 import { flatten, toCamelCase } from "utils/utils";
 import { doQuery, setToken } from "app/client";
 import { get, post } from "utils/api_utils";
-import type { UUID, VoteT } from "app/types";
+import type { UUID } from "app/types";
 
 function _hasError(e, fieldName, errorMsg) {
   const errors = e.responseJSON[fieldName] || [];
@@ -54,22 +54,6 @@ export function updateProfile(moveUrl: string) {
   );
 }
 
-export function loadUserVotes() {
-  return doQuery(
-    `query queryUserVotes {
-      userVotes {
-        objectId
-        value
-      }
-    }`
-  ).then(result =>
-    result.userVotes.reduce((acc, vote) => {
-      acc[vote.objectId] = vote.value;
-      return acc;
-    }, {})
-  );
-}
-
 export function loadUserTags() {
   return doQuery(
     `query queryUserTags {
@@ -80,40 +64,6 @@ export function loadUserTags() {
     }`
   );
 }
-
-function _castVote(
-  appLabel: string,
-  model: string,
-  objectId: UUID,
-  value: VoteT
-) {
-  return doQuery(
-    `mutation castVote(
-      $appLabel: String!,
-      $model: String!,
-      $objectId: String!,
-      $value: Int!
-    ) {
-      castVote(
-        appLabel: $appLabel,
-        model: $model,
-        objectId: $objectId,
-        value: $value
-      ) {
-        ok
-        vote {
-          value
-        }
-      }
-    }`,
-    { appLabel, model, objectId, value }
-  );
-}
-
-export const voteTip = (objectId: UUID, value: VoteT) =>
-  _castVote("moves", "Tip", objectId, value);
-export const voteVideoLink = (objectId: UUID, value: VoteT) =>
-  _castVote("moves", "VideoLink", objectId, value);
 
 export async function signIn(email: string, password: string) {
   try {

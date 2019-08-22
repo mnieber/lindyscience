@@ -1,8 +1,7 @@
 // @flow
 
 import React from "react";
-import * as fromStore from "app/reducers";
-import type { UserProfileT, UUID, VoteT, VoteByIdT } from "app/types";
+import type { UserProfileT } from "app/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
@@ -15,30 +14,10 @@ export function actSetUserProfile(profile: UserProfileT) {
   };
 }
 
-export function actSetVotes(votes: VoteByIdT) {
-  return {
-    type: "SET_VOTES",
-    votes: votes,
-  };
-}
-
 export function actSetSignedInEmail(email: string) {
   return {
     type: "SET_SIGNED_IN_EMAIL",
     email,
-  };
-}
-
-export function actCastVote(id: UUID, vote: VoteT) {
-  return (dispatch: Function, getState: Function) => {
-    const prevVote = fromStore.getVoteByObjectId(getState())[id] || 0;
-
-    dispatch({
-      type: "CAST_VOTE",
-      id: id,
-      vote: vote,
-      prevVote: prevVote,
-    });
   };
 }
 

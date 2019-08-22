@@ -5,6 +5,7 @@ import { compose } from "redux";
 
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
+import VotesCtr from "votes/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -12,7 +13,8 @@ import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
 
 import type { MoveT, TipT } from "moves/types";
-import type { UUID, VoteT } from "app/types";
+import type { UUID } from "app/types";
+import type { VoteT } from "votes/types";
 
 type PropsT = {
   move: MoveT,
@@ -26,11 +28,12 @@ export const withTipsPanel = compose(
       move: MovesCtr.fromStore.getHighlightedMove(state),
       userProfile: AppCtr.fromStore.getUserProfile(state),
       tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state),
-      voteByObjectId: AppCtr.fromStore.getVoteByObjectId(state),
+      voteByObjectId: VotesCtr.fromStore.getVoteByObjectId(state),
     }),
     {
       ...AppCtr.actions,
       ...MovesCtr.actions,
+      ...VotesCtr.actions,
     }
   ),
   (WrappedComponent: any) => (props: any) => {

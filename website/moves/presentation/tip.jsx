@@ -1,9 +1,10 @@
 // @flow
 
 import * as React from "react";
-import { VoteCount } from "app/presentation/vote_count";
+import { VoteCount } from "votes/presentation/vote_count";
 import { TipForm } from "moves/presentation/tip_form";
-import type { UUID, VoteByIdT, VoteT, UserProfileT } from "app/types";
+import type { UUID, UserProfileT } from "app/types";
+import type { VoteByIdT, VoteT } from "votes/types";
 import type { TipT, MoveT } from "moves/types";
 
 // Tip

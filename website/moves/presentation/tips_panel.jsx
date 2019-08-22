@@ -7,7 +7,8 @@ import { TipList } from "moves/presentation/tip";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 
-import type { UUID, VoteT, VoteByIdT, UserProfileT } from "app/types";
+import type { UUID, UserProfileT } from "app/types";
+import type { VoteT, VoteByIdT } from "votes/types";
 import type { MoveT, TipT } from "moves/types";
 
 // Behaviours

@@ -6,6 +6,7 @@ import { navigate } from "@reach/router";
 
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
+import VotesCtr from "votes/containers/index";
 
 import { createErrorHandler } from "app/utils";
 import { getObjectValues } from "utils/utils";
@@ -42,12 +43,12 @@ function AppFrame(props: AppFramePropsT) {
     if (!!props.signedInEmail && loadedEmail != props.signedInEmail) {
       const [profile, votes, tags, movePrivateDatas] = await Promise.all([
         AppCtr.api.loadUserProfile(),
-        AppCtr.api.loadUserVotes(),
+        VotesCtr.api.loadUserVotes(),
         AppCtr.api.loadUserTags(),
         MovesCtr.api.loadMovePrivateDatas(),
       ]);
       actions.actSetUserProfile(profile);
-      actions.actSetVotes(votes);
+      VotesCtr.actions.actSetVotes(votes);
       actions.actSetMovePrivateDatas(
         movePrivateDatas.entities.movePrivateDatas || {}
       );
@@ -144,6 +145,7 @@ AppFrame = MovesCtr.connect(
   {
     ...MovesCtr.actions,
     ...AppCtr.actions,
+    ...VotesCtr.actions,
   }
 )(AppFrame);
 

@@ -52,14 +52,14 @@ test("add move lists", function(t) {
 });
 
 test("add move private datas", function(t) {
-  let sVotes = reducers.movePrivateDatasReducer(undefined, {});
-  t.deepEqual(sVotes, {});
+  let sMovePrivateDatas = reducers.movePrivateDatasReducer(undefined, {});
+  t.deepEqual(sMovePrivateDatas, {});
 
-  sVotes = reducers.movePrivateDatasReducer(
-    sVotes,
+  sMovePrivateDatas = reducers.movePrivateDatasReducer(
+    sMovePrivateDatas,
     actions.actAddMovePrivateDatas(data.movePrivateDatas)
   );
-  t.deepEqual(sVotes, data.movePrivateDatas);
+  t.deepEqual(sMovePrivateDatas, data.movePrivateDatas);
 
   t.end();
 });

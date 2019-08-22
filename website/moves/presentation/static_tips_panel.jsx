@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { StaticTipList } from "moves/presentation/static_tip";
-import type { VoteByIdT } from "app/types";
+import type { VoteByIdT } from "votes/types";
 import type { TipT } from "moves/types";
 
 type StaticTipsPanelPropsT = {

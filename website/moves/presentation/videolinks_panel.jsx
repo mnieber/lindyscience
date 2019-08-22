@@ -7,7 +7,8 @@ import { VideoLinkList } from "moves/presentation/videolink";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 
-import type { UUID, VoteT, VoteByIdT, UserProfileT } from "app/types";
+import type { UUID, UserProfileT } from "app/types";
+import type { VoteT, VoteByIdT } from "votes/types";
 import type { MoveT, VideoLinkT } from "moves/types";
 
 // Behaviours

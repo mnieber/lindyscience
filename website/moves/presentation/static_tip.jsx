@@ -1,8 +1,8 @@
 // @flow
 
 import * as React from "react";
-import { StaticVoteCount } from "app/presentation/static_vote_count";
-import type { VoteByIdT, VoteT } from "app/types";
+import { StaticVoteCount } from "votes/presentation/static_vote_count";
+import type { VoteByIdT, VoteT } from "votes/types";
 import type { TipT } from "moves/types";
 
 // Tip

@@ -4,7 +4,7 @@ import { combineReducers } from "redux";
 import { createSelector } from "reselect";
 import { insertIdsIntoList } from "utils/utils";
 
-import type { VoteByIdT, UserProfileT } from "app/types";
+import type { UserProfileT } from "app/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 ///////////////////////////////////////////////////////////////////////
@@ -13,7 +13,6 @@ import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 const _stateStatus = (state: RootReducerStateT): StatusState =>
   state.app.status;
-const _stateVotes = (state: RootReducerStateT): VotesState => state.app.votes;
 
 ///////////////////////////////////////////////////////////////////////
 // Status
@@ -96,48 +95,13 @@ const userProfileReducer = function(
 export const getUserProfile = (state: RootReducerStateT): UserProfileState =>
   state.app.userProfile;
 
-///////////////////////////////////////////////////////////////////////
-// Votes
-///////////////////////////////////////////////////////////////////////
-
-type VotesState = VoteByIdT;
-
-export function votesReducer(state: VotesState = {}, action: any): VotesState {
-  switch (action.type) {
-    case "SET_SIGNED_IN_EMAIL":
-      return {};
-    case "SET_VOTES":
-      return {
-        ...state,
-        ...action.votes,
-      };
-    case "CAST_VOTE":
-      return {
-        ...state,
-        [action.id]: action.vote,
-      };
-    default:
-      return state;
-  }
-}
-
-export const getVoteByObjectId: Selector<VoteByIdT> = createSelector(
-  [_stateVotes],
-
-  (stateVotes): VoteByIdT => {
-    return stateVotes;
-  }
-);
-
 export type ReducerStateT = {
   status: StatusState,
   userProfile: UserProfileState,
-  votes: VotesState,
 };
 
 // $FlowFixMe
 export const reducer = combineReducers({
   status: statusReducer,
   userProfile: userProfileReducer,
-  votes: votesReducer,
 });

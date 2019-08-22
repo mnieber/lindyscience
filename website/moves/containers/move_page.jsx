@@ -14,7 +14,8 @@ import { isOwner } from "app/utils";
 
 import { MoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 
-import type { UUID, UserProfileT } from "app/types";
+import type { UUID } from "app/types";
+import type { UserProfileT } from "profiles/types";
 import type { MoveT, MoveCrudBvrsT } from "moves/types";
 
 type MovePagePropsT = {

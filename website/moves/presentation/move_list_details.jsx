@@ -5,7 +5,7 @@ import classnames from "classnames";
 import { Link } from "@reach/router";
 
 import type { MoveListT } from "moves/types";
-import type { UserProfileT } from "app/types";
+import type { UserProfileT } from "profiles/types";
 
 // MoveListDetails
 

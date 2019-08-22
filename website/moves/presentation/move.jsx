@@ -11,7 +11,7 @@ import {
 } from "moves/utils/editor_state";
 
 import type { MoveT, MoveListT } from "moves/types";
-import type { TagT } from "app/types";
+import type { TagT } from "profiles/types";
 
 export function Tags({ tags }: { tags: Array<TagT> }) {
   const items = tags.map((tagName, idx) => {

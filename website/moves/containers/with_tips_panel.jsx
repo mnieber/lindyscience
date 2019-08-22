@@ -6,6 +6,7 @@ import { compose } from "redux";
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
 import VotesCtr from "votes/containers/index";
+import ProfilesCtr from "profiles/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -26,7 +27,7 @@ export const withTipsPanel = compose(
   MovesCtr.connect(
     state => ({
       move: MovesCtr.fromStore.getHighlightedMove(state),
-      userProfile: AppCtr.fromStore.getUserProfile(state),
+      userProfile: ProfilesCtr.fromStore.getUserProfile(state),
       tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state),
       voteByObjectId: VotesCtr.fromStore.getVoteByObjectId(state),
     }),
@@ -34,6 +35,7 @@ export const withTipsPanel = compose(
       ...AppCtr.actions,
       ...MovesCtr.actions,
       ...VotesCtr.actions,
+      ...ProfilesCtr.actions,
     }
   ),
   (WrappedComponent: any) => (props: any) => {

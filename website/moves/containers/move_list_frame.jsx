@@ -30,7 +30,8 @@ import type {
   MoveCrudBvrsT,
   MoveListCrudBvrsT,
 } from "moves/types";
-import type { UUID, UserProfileT, TagT } from "app/types";
+import type { UUID } from "app/types";
+import type { UserProfileT, TagT } from "profiles/types";
 import type { SelectMovesBvrT } from "moves/containers/with_move_list_frame_bvrs";
 import type { MoveClipboardBvrT } from "moves/containers/move_clipboard_behaviours";
 

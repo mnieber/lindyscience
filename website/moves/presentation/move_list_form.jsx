@@ -17,7 +17,8 @@ import {
 import { toEditorState } from "moves/utils/editor_state";
 
 import type { MoveListT } from "moves/types";
-import type { UUID, TagT } from "app/types";
+import type { UUID } from "app/types";
+import type { TagT } from "profiles/types";
 
 // MoveListForm
 

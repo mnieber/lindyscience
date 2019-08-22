@@ -22,7 +22,8 @@ import {
 } from "utils/utils";
 import { findMove, findMoveBySlugid } from "moves/utils";
 
-import type { UUID, TagT, TagMapT } from "app/types";
+import type { UUID } from "app/types";
+import type { TagT, TagMapT } from "profile/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 ///////////////////////////////////////////////////////////////////////

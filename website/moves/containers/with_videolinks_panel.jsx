@@ -6,6 +6,7 @@ import { compose } from "redux";
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
 import VotesCtr from "votes/containers/index";
+import ProfilesCtr from "profiles/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -13,7 +14,8 @@ import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
 
 import type { MoveT, VideoLinkT, VideoLinksByIdT } from "moves/types";
-import type { UUID, UserProfileT } from "app/types";
+import type { UUID } from "app/types";
+import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
 
 type PropsT = {
@@ -30,7 +32,7 @@ export const withVideoLinksPanel = compose(
   MovesCtr.connect(
     state => ({
       move: MovesCtr.fromStore.getHighlightedMove(state),
-      userProfile: AppCtr.fromStore.getUserProfile(state),
+      userProfile: ProfilesCtr.fromStore.getUserProfile(state),
       videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
       voteByObjectId: VotesCtr.fromStore.getVoteByObjectId(state),
     }),
@@ -38,6 +40,7 @@ export const withVideoLinksPanel = compose(
       ...AppCtr.actions,
       ...MovesCtr.actions,
       ...VotesCtr.actions,
+      ...ProfilesCtr.actions,
     }
   ),
   (WrappedComponent: any) => (props: any) => {

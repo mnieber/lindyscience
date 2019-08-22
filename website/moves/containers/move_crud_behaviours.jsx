@@ -17,7 +17,8 @@ import {
 
 import type { DataContainerT } from "moves/containers/data_container";
 import type { MoveT, MoveListT, MoveCrudBvrsT } from "moves/types";
-import type { UUID, UserProfileT } from "app/types";
+import type { UUID } from "app/types";
+import type { UserProfileT } from "profiles/types";
 import type {
   InsertItemsBvrT,
   NewItemBvrT,

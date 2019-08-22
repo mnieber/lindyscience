@@ -16,7 +16,7 @@ import {
 import { toEditorState } from "moves/utils/editor_state";
 
 import type { MovePrivateDataT } from "moves/types";
-import type { TagT } from "app/types";
+import type { TagT } from "profiles/types";
 
 // MovePrivateDataForm
 

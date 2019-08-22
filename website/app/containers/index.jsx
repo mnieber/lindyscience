@@ -8,6 +8,7 @@ import * as appActions from "app/actions";
 import * as fromAppStore from "app/reducers";
 import * as fromRootReducer from "app/root_reducer";
 import * as api from "app/api";
+import ProfilesCtr from "Profiles/containers/index";
 
 export function browseToMove(
   moveUrlParts: Array<string>,
@@ -15,7 +16,7 @@ export function browseToMove(
 ) {
   const moveUrl = moveUrlParts.filter(x => !!x).join("/");
   if (mustUpdateProfile) {
-    api.updateProfile(moveUrl);
+    ProfilesCtr.api.updateProfile(moveUrl);
   }
   return navigate(`/app/lists/${moveUrl}`);
 }

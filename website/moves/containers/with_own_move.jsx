@@ -5,6 +5,7 @@ import { compose } from "redux";
 
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
+import ProfilesCtr from "profiles/containers/index";
 
 import Widgets from "moves/presentation/index";
 import { withMovePrivateDataPanel } from "moves/containers/with_move_private_data_panel";
@@ -13,7 +14,7 @@ import { withVideoLinksPanel } from "moves/containers/with_videolinks_panel";
 import { withTipsPanel } from "moves/containers/with_tips_panel";
 
 import type { MoveT, MoveListT, MoveCrudBvrsT } from "moves/types";
-import type { UserProfileT, TagT } from "app/types";
+import type { UserProfileT, TagT } from "profiles/types";
 
 type PropsT = {
   move: MoveT,
@@ -35,7 +36,7 @@ export const withOwnMove = compose(
   withVideoLinksPanel,
   MovesCtr.connect(
     state => ({
-      userProfile: AppCtr.fromStore.getUserProfile(state),
+      userProfile: ProfilesCtr.fromStore.getUserProfile(state),
       move: MovesCtr.fromStore.getHighlightedMove(state),
       moveList: MovesCtr.fromStore.getSelectedMoveList(state),
       moveTags: MovesCtr.fromStore.getMoveTags(state),
@@ -43,6 +44,7 @@ export const withOwnMove = compose(
     {
       ...AppCtr.actions,
       ...MovesCtr.actions,
+      ...ProfilesCtr.actions,
     }
   ),
   (WrappedComponent: any) => (props: any) => {

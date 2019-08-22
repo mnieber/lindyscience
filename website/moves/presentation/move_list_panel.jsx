@@ -3,7 +3,8 @@
 import * as React from "react";
 import Widgets from "moves/presentation/index";
 import { MoveList } from "moves/presentation/movelist";
-import type { UUID, UserProfileT, TagT } from "app/types";
+import type { UUID } from "app/types";
+import type { UserProfileT, TagT } from "profiles/types";
 import type {
   MoveListT,
   VideoLinksByIdT,

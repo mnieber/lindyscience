@@ -14,7 +14,7 @@ import { withMovePrivateDataPanel } from "moves/containers/with_move_private_dat
 
 import type { MoveT, TipsByIdT, VideoLinksByIdT, MoveListT } from "moves/types";
 import type { VoteByIdT } from "votes/types";
-import type { TagT } from "app/types";
+import type { TagT } from "profiles/types";
 
 type PropsT = {
   move: MoveT,

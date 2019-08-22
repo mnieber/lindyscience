@@ -2,7 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import type { UserProfileT } from "app/types";
+import type { UserProfileT } from "profiles/types";
 
 type AccountMenuPropsT = {
   className: string,

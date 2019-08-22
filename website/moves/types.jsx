@@ -4,7 +4,8 @@
 // Types
 ///////////////////////////////////////////////////////////////////////
 
-import type { UUID, TagT } from "app/types";
+import type { UUID } from "app/types";
+import type { TagT } from "profiles/types";
 import type {
   SaveMoveBvrT,
   InsertMovesBvrT,

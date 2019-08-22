@@ -2,7 +2,6 @@
 
 import React from "react";
 import * as fromStore from "moves/reducers";
-import * as fromAppStore from "app/reducers";
 import { makeSlugid, findNeighbourIdx } from "moves/utils";
 import type {
   MoveListByIdT,
@@ -12,43 +11,12 @@ import type {
   MovePrivateDataByIdT,
   VideoLinkByIdT,
 } from "moves/types";
-import type { UUID, SlugidT, TagT } from "app/types";
+import type { UUID, SlugidT } from "app/types";
+import type { TagT } from "profiles/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
 ///////////////////////////////////////////////////////////////////////
-
-export function actInsertMoveListIds(
-  moveListIds: Array<UUID>,
-  targetMoveListId: UUID
-) {
-  const createAction = () => ({
-    type: "INSERT_MOVE_LISTS_INTO_PROFILE",
-    moveListIds,
-    targetMoveListId,
-  });
-
-  return (dispatch: Function, getState: Function) => {
-    dispatch(createAction());
-    // $FlowFixMe
-    const profile: UserProfileT = fromAppStore.getUserProfile(getState());
-    return profile.moveListIds;
-  };
-}
-
-export function actRemoveMoveListIds(moveListIds: Array<UUID>) {
-  const createAction = () => ({
-    type: "REMOVE_MOVE_LISTS_FROM_PROFILE",
-    moveListIds,
-  });
-
-  return (dispatch: Function, getState: Function) => {
-    dispatch(createAction());
-    // $FlowFixMe
-    const profile: UserProfileT = fromAppStore.getUserProfile(getState());
-    return profile.moveListIds;
-  };
-}
 
 export function actAddMoveLists(moveLists: MoveListByIdT) {
   return {

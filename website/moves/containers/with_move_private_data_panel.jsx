@@ -5,6 +5,7 @@ import { compose } from "redux";
 
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
+import ProfilesCtr from "profiles/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -13,7 +14,7 @@ import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
 
 import type { MoveT } from "moves/types";
-import type { TagT } from "app/types";
+import type { TagT } from "profiles/types";
 
 type PropsT = {
   move: MoveT,
@@ -26,12 +27,13 @@ export const withMovePrivateDataPanel = compose(
   MovesCtr.connect(
     state => ({
       move: MovesCtr.fromStore.getHighlightedMove(state),
-      userProfile: AppCtr.fromStore.getUserProfile(state),
+      userProfile: ProfilesCtr.fromStore.getUserProfile(state),
       moveTags: MovesCtr.fromStore.getMoveTags(state),
     }),
     {
       ...AppCtr.actions,
       ...MovesCtr.actions,
+      ...ProfilesCtr.actions,
     }
   ),
   (WrappedComponent: any) => (props: any) => {

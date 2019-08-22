@@ -5,7 +5,7 @@ import AppCtr from "app/containers/index";
 import MovesCtr from "moves/containers/index";
 import Widgets from "moves/presentation/index";
 
-import type { TagT, UserProfileT } from "app/types";
+import type { TagT, UserProfileT } from "profiles/types";
 
 // SearchMovesPage
 

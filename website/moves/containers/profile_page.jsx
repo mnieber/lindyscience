@@ -8,7 +8,8 @@ import Widgets from "moves/presentation/index";
 import { isOwner } from "app/utils";
 import { getObjectValues } from "utils/utils";
 
-import type { UserProfileT, TagT, UUID } from "app/types";
+import type { UUID } from "app/types";
+import type { UserProfileT, TagT } from "profiles/types";
 import type { MoveListT, MoveListCrudBvrsT } from "moves/types";
 
 type ProfilePagePropsT = {

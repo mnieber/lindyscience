@@ -7,13 +7,14 @@ import { navigate } from "@reach/router";
 import MovesCtr from "moves/containers/index";
 import AppCtr from "app/containers/index";
 import VotesCtr from "votes/containers/index";
+import ProfilesCtr from "Profiles/containers/index";
 
 import { createErrorHandler } from "app/utils";
 import { getObjectValues } from "utils/utils";
 import { createToastr } from "app/utils";
 import { findMoveListByUrl, newMoveListSlug } from "moves/utils";
 
-import type { UserProfileT } from "app/types";
+import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "moves/types";
 
 // AppFrame
@@ -42,9 +43,9 @@ function AppFrame(props: AppFramePropsT) {
   async function _loadUserProfile() {
     if (!!props.signedInEmail && loadedEmail != props.signedInEmail) {
       const [profile, votes, tags, movePrivateDatas] = await Promise.all([
-        AppCtr.api.loadUserProfile(),
+        ProfilesCtr.api.loadUserProfile(),
         VotesCtr.api.loadUserVotes(),
-        AppCtr.api.loadUserTags(),
+        ProfilesCtr.api.loadUserTags(),
         MovesCtr.api.loadMovePrivateDatas(),
       ]);
       actions.actSetUserProfile(profile);
@@ -137,7 +138,7 @@ function AppFrame(props: AppFramePropsT) {
 AppFrame = MovesCtr.connect(
   state => ({
     moveLists: MovesCtr.fromStore.getFilteredMoveLists(state),
-    userProfile: AppCtr.fromStore.getUserProfile(state),
+    userProfile: ProfilesCtr.fromStore.getUserProfile(state),
     signedInEmail: AppCtr.fromStore.getSignedInEmail(state),
     selectedMoveListUrl: MovesCtr.fromStore.getSelectedMoveListUrl(state),
     loadedMoveListUrls: AppCtr.fromStore.getLoadedMoveListUrls(state),
@@ -146,6 +147,7 @@ AppFrame = MovesCtr.connect(
     ...MovesCtr.actions,
     ...AppCtr.actions,
     ...VotesCtr.actions,
+    ...ProfilesCtr.actions,
   }
 )(AppFrame);
 

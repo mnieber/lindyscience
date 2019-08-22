@@ -22,7 +22,8 @@ import {
 } from "moves/utils/editor_state";
 
 import type { MoveT } from "moves/types";
-import type { UUID, TagT } from "app/types";
+import type { UUID } from "app/types";
+import type { TagT } from "profiles/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,

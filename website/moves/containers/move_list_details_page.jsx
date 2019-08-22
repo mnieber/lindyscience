@@ -9,7 +9,7 @@ import { isOwner } from "app/utils";
 
 import { MoveListCrudBvrsContext } from "moves/containers/move_list_crud_behaviours";
 
-import type { UserProfileT, TagT } from "app/types";
+import type { UserProfileT, TagT } from "profiles/types";
 import type { MoveListT, MoveListCrudBvrsT } from "moves/types";
 
 type MoveListDetailsPagePropsT = {

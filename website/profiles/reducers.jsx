@@ -1,9 +1,9 @@
 // @flow
 
-import { combineReducers } from "redux";
+import type { RootReducerStateT } from "app/root_reducer";
 import { insertIdsIntoList } from "utils/utils";
 
-import type { UserProfileT } from "profiles/types";
+import type { UUID, UserProfileT } from "profiles/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Profile
@@ -11,9 +11,11 @@ import type { UserProfileT } from "profiles/types";
 
 type UserProfileState = ?UserProfileT;
 
+export type ReducerStateT = UserProfileState;
+
 const userProfileReducer = function(
   state: UserProfileState = null,
-  action
+  action: any
 ): UserProfileState {
   switch (action.type) {
     case "SET_SIGNED_IN_EMAIL":
@@ -46,6 +48,6 @@ const userProfileReducer = function(
 };
 
 export const getUserProfile = (state: RootReducerStateT): UserProfileState =>
-  state.app.userProfile;
+  state.profile;
 
 export const reducer = userProfileReducer;

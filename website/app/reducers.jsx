@@ -8,18 +8,20 @@ import type { RootReducerStateT } from "app/root_reducer";
 // Status
 ///////////////////////////////////////////////////////////////////////
 
-type StatusState = {
+type StatusStateT = {
   signedInEmail: string,
   loadedMoveListUrls: Array<string>,
 };
 
+export type ReducerStateT = StatusStateT;
+
 const statusReducer = function(
-  state: StatusState = {
+  state: StatusStateT = {
     signedInEmail: "",
     loadedMoveListUrls: [],
   },
-  action
-): StatusState {
+  action: any
+): StatusStateT {
   switch (action.type) {
     case "SET_SIGNED_IN_EMAIL":
       return {

@@ -23,7 +23,7 @@ import {
 import { findMove, findMoveBySlugid } from "moves/utils";
 
 import type { UUID } from "app/types";
-import type { TagT, TagMapT } from "profile/types";
+import type { TagT, TagMapT } from "profiles/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 ///////////////////////////////////////////////////////////////////////
@@ -93,9 +93,7 @@ export const getHighlightedMoveSlugid = (state: RootReducerStateT) =>
 export const getSelectedMoveListUrl = (state: RootReducerStateT) =>
   state.moves.selection.moveListUrl;
 export const hasLoadedSelectedMoveList = (state: RootReducerStateT) =>
-  state.app.status.loadedMoveListUrls.includes(
-    state.moves.selection.moveListUrl
-  );
+  state.app.loadedMoveListUrls.includes(state.moves.selection.moveListUrl);
 
 type MoveListFiltersState = FunctionByIdT;
 

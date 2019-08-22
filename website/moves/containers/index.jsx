@@ -34,12 +34,12 @@ const Container: ContainerT = {
     ...movesApi,
     ...votesApi,
     ...profilesApi,
-  }
+  },
   fromStore: {
     ...fromMovesStore,
     ...fromVotesStore,
     ...fromProfilesStore,
-  }
+  },
 };
 
 export default Container;

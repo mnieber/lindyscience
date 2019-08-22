@@ -10,6 +10,8 @@
 [options]
 
 module.name_mapper='^moves/\(.*\)$' -> '<PROJECT_ROOT>/moves/\1'
+module.name_mapper='^votes/\(.*\)$' -> '<PROJECT_ROOT>/votes/\1'
+module.name_mapper='^profiles/\(.*\)$' -> '<PROJECT_ROOT>/profiles/\1'
 module.name_mapper='^move_list/\(.*\)$' -> '<PROJECT_ROOT>/move_list/\1'
 module.name_mapper='^app/\(.*\)$' -> '<PROJECT_ROOT>/app/\1'
 module.name_mapper='^utils/\(.*\)$' -> '<PROJECT_ROOT>/utils/\1'

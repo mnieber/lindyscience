@@ -1,8 +1,8 @@
 // @flow
 
-import * as actions from "app/actions";
-import * as data from "app/tests/data";
-import * as fromStore from "app/reducers";
+import * as actions from "votes/actions";
+import * as data from "votes/tests/data";
+import * as fromStore from "votes/reducers";
 import { test } from "tape";
 import { Thunk } from "redux-testkit";
 

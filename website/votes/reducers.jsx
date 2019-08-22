@@ -1,23 +1,21 @@
 // @flow
 
-import { createSelector } from "reselect";
+import type { RootReducerStateT } from "app/root_reducer";
 
-import type { VoteByIdT } from "app/types";
-import type { RootReducerStateT, Selector } from "app/root_reducer";
-
-///////////////////////////////////////////////////////////////////////
-// Private state helpers
-///////////////////////////////////////////////////////////////////////
-
-const _stateVotes = (state: RootReducerStateT): VotesState => state.votes;
+import type { VoteByIdT } from "votes/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Votes
 ///////////////////////////////////////////////////////////////////////
 
-type VotesState = VoteByIdT;
+type VotesStateT = VoteByIdT;
 
-export function votesReducer(state: VotesState = {}, action: any): VotesState {
+export type ReducerStateT = VotesStateT;
+
+export function votesReducer(
+  state: VotesStateT = {},
+  action: any
+): VotesStateT {
   switch (action.type) {
     case "SET_SIGNED_IN_EMAIL": // TODO: remove?
       return {};
@@ -36,13 +34,7 @@ export function votesReducer(state: VotesState = {}, action: any): VotesState {
   }
 }
 
-export const getVoteByObjectId: Selector<VoteByIdT> = createSelector(
-  [_stateVotes],
+export const getVoteByObjectId = (state: RootReducerStateT): VoteByIdT =>
+  state.votes;
 
-  (stateVotes): VoteByIdT => {
-    return stateVotes;
-  }
-);
-
-// $FlowFixMe
 export const reducer = votesReducer;

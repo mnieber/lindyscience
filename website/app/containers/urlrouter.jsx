@@ -11,9 +11,7 @@ import SignInPage from "app/containers/signinpage";
 import RegisterPage from "app/containers/register_page";
 import PasswordResetPage from "app/containers/password_reset_page";
 import ProfilePage from "moves/containers/profile_page";
-import AppCtr, { browseToMove } from "app/containers/index";
-import MovesCtr from "moves/containers/index";
-import ProfilesCtr from "profiles/containers/index";
+import Ctr, { browseToMove } from "app/containers/index";
 import type { UserProfileT } from "profiles/types";
 
 export type IndexPagePropsT = {
@@ -61,13 +59,11 @@ function UrlRouter(props: UrlRouterPropsT) {
 }
 
 // $FlowFixMe
-UrlRouter = AppCtr.connect(
+UrlRouter = Ctr.connect(
   state => ({
-    userProfile: ProfilesCtr.fromStore.getUserProfile(state),
+    userProfile: Ctr.fromStore.getUserProfile(state),
   }),
-  {
-    ...MovesCtr.actions,
-  }
+  Ctr.actions
 )(UrlRouter);
 
 export default UrlRouter;

@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import AppCtr from "app/containers/index";
+import Ctr from "app/containers/index";
 import { navigate } from "@reach/router";
 import { urlParam } from "utils/utils";
 import { SignInDialog } from "app/presentation/signin_dialog";
@@ -16,7 +16,7 @@ type SignInPagePropsT = {
 
 function SignInPage(props: SignInPagePropsT) {
   async function _signIn(email: string, password: string) {
-    const errorState = await AppCtr.api.signIn(email, password);
+    const errorState = await Ctr.api.signIn(email, password);
     if (!errorState) {
       props.actSetSignedInEmail(email);
       const next = urlParam("next");
@@ -33,6 +33,6 @@ function SignInPage(props: SignInPagePropsT) {
 }
 
 // $FlowFixMe
-SignInPage = AppCtr.connect(state => ({}), AppCtr.actions)(SignInPage);
+SignInPage = Ctr.connect(state => ({}), Ctr.actions)(SignInPage);
 
 export default SignInPage;

@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import AppCtr from "app/containers/index";
+import Ctr from "app/containers/index";
 import { navigate } from "@reach/router";
 import { RegisterDialog } from "app/presentation/register_dialog";
 import { ActivateAccountDialog } from "app/presentation/activate_account_dialog";
@@ -15,7 +15,7 @@ type RegisterPagePropsT = {
 
 function RegisterPage(props: RegisterPagePropsT) {
   async function _register(email: string, password: string) {
-    const errorState = await AppCtr.api.register(email, password);
+    const errorState = await Ctr.api.register(email, password);
     if (!errorState) {
       navigate("/app/lists");
     }
@@ -23,7 +23,7 @@ function RegisterPage(props: RegisterPagePropsT) {
   }
 
   async function _activateAccount(uid: string, token: string) {
-    const errorState = await AppCtr.api.activateAccount(uid, token);
+    const errorState = await Ctr.api.activateAccount(uid, token);
     if (!errorState) {
       navigate("/app/sign-in/");
     }
@@ -44,6 +44,6 @@ function RegisterPage(props: RegisterPagePropsT) {
 }
 
 // $FlowFixMe
-RegisterPage = AppCtr.connect(state => ({}), AppCtr.actions)(RegisterPage);
+RegisterPage = Ctr.connect(state => ({}), Ctr.actions)(RegisterPage);
 
 export default RegisterPage;

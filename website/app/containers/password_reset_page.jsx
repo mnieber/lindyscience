@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import AppCtr from "app/containers/index";
+import Ctr from "app/containers/index";
 import { PasswordResetDialog } from "app/presentation/password_reset_dialog";
 import { PasswordChangeDialog } from "app/presentation/password_change_dialog";
 
@@ -16,15 +16,11 @@ type PasswordResetPagePropsT = {
 
 function PasswordResetPage(props: PasswordResetPagePropsT) {
   async function _resetPassword(email: string) {
-    return await AppCtr.api.resetPassword(email);
+    return await Ctr.api.resetPassword(email);
   }
 
   async function _changePassword(password: string) {
-    return await AppCtr.api.changePassword(
-      password,
-      props.uidPrm,
-      props.tokenPrm
-    );
+    return await Ctr.api.changePassword(password, props.uidPrm, props.tokenPrm);
   }
 
   return props.uidPrm && props.tokenPrm ? (
@@ -39,8 +35,6 @@ function PasswordResetPage(props: PasswordResetPagePropsT) {
 }
 
 // $FlowFixMe
-PasswordResetPage = AppCtr.connect(state => ({}), AppCtr.actions)(
-  PasswordResetPage
-);
+PasswordResetPage = Ctr.connect(state => ({}), Ctr.actions)(PasswordResetPage);
 
 export default PasswordResetPage;

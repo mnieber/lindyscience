@@ -1,8 +1,7 @@
 // @flow
 
 import * as React from "react";
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
+import Ctr from "moves/containers/index";
 
 import Widgets from "moves/presentation/index";
 import { isOwner } from "app/utils";
@@ -27,7 +26,7 @@ export function ProfilePage(props: ProfilePagePropsT) {
   const username = props.userProfile ? props.userProfile.username : "";
 
   async function _loadOwnMoveLists() {
-    const moveLists = await MovesCtr.api.findMoveLists(username);
+    const moveLists = await Ctr.api.findMoveLists(username);
     setOwnMoveLists(getObjectValues(moveLists.entities.moveLists));
   }
 
@@ -47,15 +46,12 @@ export function ProfilePage(props: ProfilePagePropsT) {
 }
 
 // $FlowFixMe
-ProfilePage = MovesCtr.connect(
+ProfilePage = Ctr.connect(
   state => ({
-    userProfile: AppCtr.fromStore.getUserProfile(state),
-    moveLists: MovesCtr.fromStore.getMoveLists(state),
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    moveLists: Ctr.fromStore.getMoveLists(state),
   }),
-  {
-    ...AppCtr.actions,
-    ...MovesCtr.actions,
-  }
+  Ctr.actions
 )(ProfilePage);
 
 export default ProfilePage;

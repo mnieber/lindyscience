@@ -1,8 +1,7 @@
 // @flow
 
 import * as React from "react";
-import AppCtr from "app/containers/index";
-import MovesCtr from "moves/containers/index";
+import Ctr from "moves/containers/index";
 import Widgets from "moves/presentation/index";
 
 import type { TagT, UserProfileT } from "profiles/types";
@@ -19,7 +18,7 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
   const [latestOptions, setLatestOptions] = React.useState([]);
 
   const _findMoves = async (values: any) => {
-    const searchResults = await MovesCtr.api.findMoves(
+    const searchResults = await Ctr.api.findMoves(
       values.myMoveLists && props.userProfile ? props.userProfile.username : "",
       values.keywords,
       values.tags
@@ -42,12 +41,12 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
 }
 
 // $FlowFixMe
-SearchMovesPage = MovesCtr.connect(
+SearchMovesPage = Ctr.connect(
   state => ({
-    moveTags: MovesCtr.fromStore.getMoveTags(state),
-    userProfile: AppCtr.fromStore.getUserProfile(state),
+    moveTags: Ctr.fromStore.getMoveTags(state),
+    userProfile: Ctr.fromStore.getUserProfile(state),
   }),
-  MovesCtr.actions
+  Ctr.actions
 )(SearchMovesPage);
 
 export default SearchMovesPage;

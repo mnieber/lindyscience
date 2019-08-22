@@ -1,8 +1,7 @@
 // @flow
 
 import * as React from "react";
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
+import Ctr from "moves/containers/index";
 
 import Widgets from "moves/presentation/index";
 import { isOwner } from "app/utils";
@@ -92,16 +91,13 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
 }
 
 // $FlowFixMe
-MoveListDetailsPage = MovesCtr.connect(
+MoveListDetailsPage = Ctr.connect(
   state => ({
-    userProfile: AppCtr.fromStore.getUserProfile(state),
-    moveList: MovesCtr.fromStore.getSelectedMoveList(state),
-    moveListTags: MovesCtr.fromStore.getMoveListTags(state),
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    moveList: Ctr.fromStore.getSelectedMoveList(state),
+    moveListTags: Ctr.fromStore.getMoveListTags(state),
   }),
-  {
-    ...AppCtr.actions,
-    ...MovesCtr.actions,
-  }
+  Ctr.actions
 )(MoveListDetailsPage);
 
 export default MoveListDetailsPage;

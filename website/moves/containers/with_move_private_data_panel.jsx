@@ -3,10 +3,7 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
-import ProfilesCtr from "profiles/containers/index";
-
+import Ctr from "moves/containers/index";
 import Widgets from "moves/presentation/index";
 
 // $FlowFixMe
@@ -24,17 +21,13 @@ type PropsT = {
 
 // $FlowFixMe
 export const withMovePrivateDataPanel = compose(
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      move: MovesCtr.fromStore.getHighlightedMove(state),
-      userProfile: ProfilesCtr.fromStore.getUserProfile(state),
-      moveTags: MovesCtr.fromStore.getMoveTags(state),
+      move: Ctr.fromStore.getHighlightedMove(state),
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      moveTags: Ctr.fromStore.getMoveTags(state),
     }),
-    {
-      ...AppCtr.actions,
-      ...MovesCtr.actions,
-      ...ProfilesCtr.actions,
-    }
+    Ctr.actions
   ),
   (WrappedComponent: any) => (props: any) => {
     const { move, moveTags, ...passThroughProps }: PropsT = props;
@@ -50,7 +43,7 @@ export const withMovePrivateDataPanel = compose(
       };
 
       actions.actAddMovePrivateDatas([movePrivateData]);
-      MovesCtr.api
+      Ctr.api
         .saveMovePrivateData(movePrivateData)
         .catch(
           createErrorHandler(

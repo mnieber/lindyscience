@@ -2,8 +2,7 @@
 
 import * as React from "react";
 import { compose } from "redux";
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
+import Ctr from "moves/containers/index";
 
 import { withStaticMove } from "moves/containers/with_static_move";
 import { withOwnMove } from "moves/containers/with_own_move";
@@ -64,18 +63,13 @@ MovePage = compose(
   withStaticMove,
   withOwnMove,
   withMoveCrudBvrsContext,
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      userProfile: AppCtr.fromStore.getUserProfile(state),
-      highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
-      hasLoadedSelectedMoveList: MovesCtr.fromStore.hasLoadedSelectedMoveList(
-        state
-      ),
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      highlightedMove: Ctr.fromStore.getHighlightedMove(state),
+      hasLoadedSelectedMoveList: Ctr.fromStore.hasLoadedSelectedMoveList(state),
     }),
-    {
-      ...AppCtr.actions,
-      ...MovesCtr.actions,
-    }
+    Ctr.actions
   )
 )(MovePage);
 

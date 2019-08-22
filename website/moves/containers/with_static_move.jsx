@@ -3,9 +3,7 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
-import VotesCtr from "votes/containers/index";
+import Ctr from "moves/containers/index";
 
 import { getId } from "app/utils";
 
@@ -30,20 +28,16 @@ type PropsT = {
 // $FlowFixMe
 export const withStaticMove = compose(
   withMovePrivateDataPanel,
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      move: MovesCtr.fromStore.getHighlightedMove(state),
-      moveList: MovesCtr.fromStore.getSelectedMoveList(state),
-      moveTags: MovesCtr.fromStore.getMoveTags(state),
-      tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state),
-      voteByObjectId: VotesCtr.fromStore.getVoteByObjectId(state),
-      videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
+      move: Ctr.fromStore.getHighlightedMove(state),
+      moveList: Ctr.fromStore.getSelectedMoveList(state),
+      moveTags: Ctr.fromStore.getMoveTags(state),
+      tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
+      voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
+      videoLinksByMoveId: Ctr.fromStore.getVideoLinksByMoveId(state),
     }),
-    {
-      ...AppCtr.actions,
-      ...MovesCtr.actions,
-      ...VotesCtr.actions,
-    }
+    Ctr.actions
   ),
   (WrappedComponent: any) => (props: any) => {
     const {

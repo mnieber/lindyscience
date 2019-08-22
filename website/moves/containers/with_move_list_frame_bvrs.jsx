@@ -3,8 +3,7 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
+import Ctr from "moves/containers/index";
 
 import { withMoveContainer } from "moves/containers/with_move_container";
 import { withMoveListContainer } from "moves/containers/with_move_list_container";
@@ -40,17 +39,14 @@ export type SelectMovesBvrT = SelectItemsBvrT<MoveT>;
 export const withMoveListFrameBvrs = compose(
   withMoveContainer,
   withMoveListContainer,
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      userProfile: AppCtr.fromStore.getUserProfile(state),
-      moveLists: MovesCtr.fromStore.getFilteredMoveLists(state),
-      highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
-      moveList: MovesCtr.fromStore.getSelectedMoveList(state),
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      moveLists: Ctr.fromStore.getFilteredMoveLists(state),
+      highlightedMove: Ctr.fromStore.getHighlightedMove(state),
+      moveList: Ctr.fromStore.getSelectedMoveList(state),
     }),
-    {
-      ...AppCtr.actions,
-      ...MovesCtr.actions,
-    }
+    Ctr.actions
   ),
   (WrappedComponent: any) => (props: any) => {
     const {

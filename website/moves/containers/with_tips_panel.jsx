@@ -3,10 +3,7 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
-import VotesCtr from "votes/containers/index";
-import ProfilesCtr from "profiles/containers/index";
+import Ctr from "moves/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -24,19 +21,14 @@ type PropsT = {
 
 // $FlowFixMe
 export const withTipsPanel = compose(
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      move: MovesCtr.fromStore.getHighlightedMove(state),
-      userProfile: ProfilesCtr.fromStore.getUserProfile(state),
-      tipsByMoveId: MovesCtr.fromStore.getTipsByMoveId(state),
-      voteByObjectId: VotesCtr.fromStore.getVoteByObjectId(state),
+      move: Ctr.fromStore.getHighlightedMove(state),
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
+      voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
     }),
-    {
-      ...AppCtr.actions,
-      ...MovesCtr.actions,
-      ...VotesCtr.actions,
-      ...ProfilesCtr.actions,
-    }
+    Ctr.actions
   ),
   (WrappedComponent: any) => (props: any) => {
     const {
@@ -51,21 +43,21 @@ export const withTipsPanel = compose(
 
     const saveTip = (tip: TipT) => {
       actions.actAddTips(querySetListToDict([tip]));
-      MovesCtr.api
+      Ctr.api
         .saveTip(move.id, tip)
         .catch(createErrorHandler("We could not save the tip"));
     };
 
     const deleteTip = (tip: TipT) => {
       actions.actRemoveTips([tip.id]);
-      MovesCtr.api
+      Ctr.api
         .deleteTip(tip.id)
         .catch(createErrorHandler("We could not delete the tip"));
     };
 
     const voteTip = (id: UUID, vote: VoteT) => {
       actions.actCastVote(id, vote);
-      AppCtr.api
+      Ctr.api
         .voteTip(id, vote)
         .catch(createErrorHandler("We could not save your vote"));
     };

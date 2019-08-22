@@ -3,9 +3,7 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
-import ProfilesCtr from "profiles/containers/index";
+import Ctr from "moves/containers/index";
 
 import Widgets from "moves/presentation/index";
 import { withMovePrivateDataPanel } from "moves/containers/with_move_private_data_panel";
@@ -34,18 +32,14 @@ export const withOwnMove = compose(
   withMoveCrudBvrsContext,
   withTipsPanel,
   withVideoLinksPanel,
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      userProfile: ProfilesCtr.fromStore.getUserProfile(state),
-      move: MovesCtr.fromStore.getHighlightedMove(state),
-      moveList: MovesCtr.fromStore.getSelectedMoveList(state),
-      moveTags: MovesCtr.fromStore.getMoveTags(state),
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      move: Ctr.fromStore.getHighlightedMove(state),
+      moveList: Ctr.fromStore.getSelectedMoveList(state),
+      moveTags: Ctr.fromStore.getMoveTags(state),
     }),
-    {
-      ...AppCtr.actions,
-      ...MovesCtr.actions,
-      ...ProfilesCtr.actions,
-    }
+    Ctr.actions
   ),
   (WrappedComponent: any) => (props: any) => {
     const {

@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { compose } from "redux";
 
-import MovesCtr from "moves/containers/index";
+import Ctr from "moves/containers/index";
 import { findTargetId, getPreview } from "moves/utils";
 import { createErrorHandler, getId } from "app/utils";
 
@@ -14,14 +14,14 @@ import type { MoveT } from "moves/types";
 
 // $FlowFixMe
 export const withMoveContainer = compose(
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      moveList: MovesCtr.fromStore.getSelectedMoveList(state),
-      filteredMoves: MovesCtr.fromStore.getFilteredMovesInList(state),
+      moveList: Ctr.fromStore.getSelectedMoveList(state),
+      filteredMoves: Ctr.fromStore.getFilteredMovesInList(state),
     }),
     {
-      actInsertMoves: MovesCtr.actions.actInsertMoves,
-      actSetMoveFilter: MovesCtr.actions.actSetMoveFilter,
+      actInsertMoves: Ctr.actions.actInsertMoves,
+      actSetMoveFilter: Ctr.actions.actSetMoveFilter,
     }
   ),
   (WrappedComponent: any) => (props: any) => {
@@ -46,7 +46,7 @@ export const withMoveContainer = compose(
     ) {
       const predecessorId = findTargetId(payloadIds, targetMoveId, isBefore);
       const allMoveIds = actInsertMoves(payloadIds, moveListId, predecessorId);
-      MovesCtr.api
+      Ctr.api
         .saveMoveOrdering(moveListId, allMoveIds)
         .catch(createErrorHandler("We could not update the move list"));
     }

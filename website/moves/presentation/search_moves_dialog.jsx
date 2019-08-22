@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import MovesCtr from "moves/containers/index";
+import Ctr from "moves/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -19,7 +19,7 @@ export function SearchMovesDialog(props: SearchMovesDialogPropsT) {
   const [latestOptions, setLatestOptions] = React.useState([]);
 
   const _findMoves = async (values: any) => {
-    const searchResults = await MovesCtr.api.findMoves(
+    const searchResults = await Ctr.api.findMoves(
       values.myMoveLists && props.userProfile ? props.userProfile.username : "",
       values.keywords,
       values.tags

@@ -3,8 +3,7 @@
 import * as React from "react";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
-import MovesCtr from "moves/containers/index";
-import AppCtr from "app/containers/index";
+import Ctr from "moves/containers/index";
 
 import Widgets from "moves/presentation/index";
 
@@ -133,7 +132,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         ? actions.actInsertMoveListIds([moveListId], "")
         : actions.actRemoveMoveListIds([moveListId]);
       const term = isFollowing ? "follow" : "unfollow";
-      MovesCtr.api
+      Ctr.api
         .saveMoveListOrdering(newMoveListIds)
         .catch(createErrorHandler(`Could not ${term} the move list`));
     }
@@ -196,20 +195,17 @@ function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
 // $FlowFixMe
 MoveListFrame = compose(
   withMoveListFrameBvrs,
-  MovesCtr.connect(
+  Ctr.connect(
     state => ({
-      userProfile: AppCtr.fromStore.getUserProfile(state),
-      videoLinksByMoveId: MovesCtr.fromStore.getVideoLinksByMoveId(state),
-      moves: MovesCtr.fromStore.getFilteredMovesInList(state),
-      moveTags: MovesCtr.fromStore.getMoveTags(state),
-      moveLists: MovesCtr.fromStore.getFilteredMoveLists(state),
-      highlightedMove: MovesCtr.fromStore.getHighlightedMove(state),
-      moveList: MovesCtr.fromStore.getSelectedMoveList(state),
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      videoLinksByMoveId: Ctr.fromStore.getVideoLinksByMoveId(state),
+      moves: Ctr.fromStore.getFilteredMovesInList(state),
+      moveTags: Ctr.fromStore.getMoveTags(state),
+      moveLists: Ctr.fromStore.getFilteredMoveLists(state),
+      highlightedMove: Ctr.fromStore.getHighlightedMove(state),
+      moveList: Ctr.fromStore.getSelectedMoveList(state),
     }),
-    {
-      ...AppCtr.actions,
-      ...MovesCtr.actions,
-    }
+    Ctr.actions
   )
 )(MoveListFrame);
 

@@ -3,12 +3,12 @@
 import * as React from "react";
 import Widgets from "screens/presentation/index";
 import { MoveList } from "screens/presentation/movelist";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT, TagT } from "profiles/types";
 import type { MoveT } from "moves/types";
+import type { VideoLinksByIdT } from "videolinks/types";
 import type {
   MoveListT,
-  VideoLinksByIdT,
   MoveCrudBvrsT,
   MoveListCrudBvrsT,
 } from "screens/types";
@@ -124,12 +124,25 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     !!props.userProfile &&
     props.userProfile.userId == props.moveList.ownerId;
 
+  const createHostedPanels = moveId => {
+    const videoLinks = props.videoLinksByMoveId[moveId] || [];
+    const videoLinkDiv =
+      videoLinks && videoLinks.length ? (
+        <a className="ml-2" href={videoLinks[0].url} target="blank">
+          VIDEO
+        </a>
+      ) : (
+        undefined
+      );
+    return videoLinkDiv;
+  };
+
   const moveList = (
     <Widgets.MoveList
       refs={refs}
       className=""
       isOwner={isOwner}
-      videoLinksByMoveId={props.videoLinksByMoveId}
+      createHostedPanels={createHostedPanels}
       selectMoveById={props.selectMovesBvr.select}
       moves={props.moves}
       selectedMoveIds={props.selectMovesBvr.selectedItems.map(x => x.id)}

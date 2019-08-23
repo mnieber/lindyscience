@@ -4,7 +4,7 @@
 // Types
 ///////////////////////////////////////////////////////////////////////
 
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { TagT } from "profiles/types";
 import type {
   SaveMoveBvrT,
@@ -47,21 +47,11 @@ export type FunctionByIdT = {
 
 export type VotableT = {};
 
-export type VideoLinkT = {
-  id: UUID,
-  moveId: UUID,
-  ownerId: number,
-  title: string,
-  url: string,
-  initialVoteCount: number,
-  voteCount: number,
-};
-
 export type TipT = {|
   id: UUID,
+  ownerId: number,
   moveId: UUID,
   text: string,
-  ownerId: number,
   initialVoteCount: number,
   voteCount: number,
 |};
@@ -72,14 +62,6 @@ export type TipByIdT = {
 
 export type TipsByIdT = {
   [UUID]: Array<TipT>,
-};
-
-export type VideoLinkByIdT = {
-  [UUID]: VideoLinkT,
-};
-
-export type VideoLinksByIdT = {
-  [UUID]: Array<VideoLinkT>,
 };
 
 export type MovePrivateDataT = {

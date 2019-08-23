@@ -12,7 +12,6 @@ import Widgets from "screens/presentation/index";
 import { MoveListTitle } from "screens/presentation/move_list_details";
 import { withHostedStaticMovePanels } from "screens/containers/with_hosted_static_move_panels";
 
-import type { VideoLinksByIdT } from "screens/types";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "screens/types";
 import type { TagT } from "profiles/types";
@@ -21,7 +20,6 @@ type PropsT = {
   move: MoveT,
   moveList: MoveListT,
   moveTags: Array<TagT>,
-  videoLinksByMoveId: VideoLinksByIdT,
   hostedStaticMovePanels: any,
   // receive any actions as well
 };
@@ -39,7 +37,6 @@ export const withStaticMove = compose(
       move: Ctr.fromStore.getHighlightedMove(state),
       moveList: Ctr.fromStore.getSelectedMoveList(state),
       moveTags: Ctr.fromStore.getMoveTags(state),
-      videoLinksByMoveId: Ctr.fromStore.getVideoLinksByMoveId(state),
     }),
     Ctr.actions
   ),
@@ -48,7 +45,6 @@ export const withStaticMove = compose(
       move,
       moveList,
       moveTags,
-      videoLinksByMoveId,
       hostedStaticMovePanels,
       ...passThroughProps
     }: PropsT = props;
@@ -63,7 +59,6 @@ export const withStaticMove = compose(
         moveListTitle={moveListTitle}
         key={getId(move)}
         moveTags={moveTags}
-        videoLinks={videoLinksByMoveId[getId(move)]}
         hostedPanels={hostedStaticMovePanels}
       />
     );

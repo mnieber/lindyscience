@@ -9,7 +9,7 @@ import { findTargetId, getPreview } from "screens/utils";
 import { createErrorHandler, getId } from "app/utils";
 
 import type { DataContainerT } from "screens/containers/data_container";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { MoveListT } from "screens/types";
 
 // $FlowFixMe

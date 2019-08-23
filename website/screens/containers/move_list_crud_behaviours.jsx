@@ -20,7 +20,7 @@ import {
 
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT, MoveListCrudBvrsT } from "screens/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type {
   InsertItemsBvrT,

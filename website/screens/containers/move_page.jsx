@@ -13,7 +13,7 @@ import { isOwner } from "app/utils";
 
 import { MoveCrudBvrsContext } from "screens/containers/move_crud_behaviours";
 
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { MoveCrudBvrsT } from "screens/types";
 import type { MoveT } from "moves/types";

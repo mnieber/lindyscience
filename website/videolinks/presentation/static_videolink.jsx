@@ -3,7 +3,7 @@
 import * as React from "react";
 import { StaticVoteCount } from "votes/presentation/static_vote_count";
 import type { VoteByIdT, VoteT } from "votes/types";
-import type { VideoLinkT } from "screens/types";
+import type { VideoLinkT } from "videolinks/types";
 
 // VideoLinkeoLink
 

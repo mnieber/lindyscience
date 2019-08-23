@@ -24,12 +24,12 @@ import { MoveListCrudBvrsContext } from "screens/containers/move_list_crud_behav
 
 import type {
   MoveListT,
-  VideoLinksByIdT,
   MoveCrudBvrsT,
   MoveListCrudBvrsT,
 } from "screens/types";
+import type { VideoLinksByIdT } from "videolinks/types";
 import type { MoveT } from "moves/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT, TagT } from "profiles/types";
 import type { SelectMovesBvrT } from "screens/containers/with_move_list_frame_bvrs";
 import type { MoveClipboardBvrT } from "screens/containers/move_clipboard_behaviours";

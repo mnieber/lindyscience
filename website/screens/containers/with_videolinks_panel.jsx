@@ -11,8 +11,8 @@ import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
 
 import type { MoveT } from "moves/types";
-import type { VideoLinkT, VideoLinksByIdT } from "screens/types";
-import type { UUID } from "app/types";
+import type { VideoLinkT, VideoLinksByIdT } from "videolinks/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
 
@@ -68,7 +68,7 @@ export const withVideoLinksPanel = getMove =>
 
       const videoLinksPanel = (
         <Widgets.VideoLinksPanel
-          move={move}
+          parentObject={move}
           userProfile={userProfile}
           videoLinks={videoLinksByMoveId[getId(move)]}
           voteByObjectId={voteByObjectId}

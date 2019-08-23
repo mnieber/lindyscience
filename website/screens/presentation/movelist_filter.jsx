@@ -5,7 +5,7 @@ import classnames from "classnames";
 import { ValuePicker, strToPickerValue } from "utils/form_utils";
 import { splitIntoKeywords } from "utils/utils";
 import type { MoveListT } from "screens/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { TagT } from "profiles/types";
 
 // MoveListPicker

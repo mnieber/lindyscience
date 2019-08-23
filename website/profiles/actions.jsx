@@ -1,7 +1,8 @@
 // @flow
 
 import React from "react";
-import type { UUID, UserProfileT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { UUID } from "kernel/types";
 import * as fromStore from "profiles/reducers";
 
 ///////////////////////////////////////////////////////////////////////

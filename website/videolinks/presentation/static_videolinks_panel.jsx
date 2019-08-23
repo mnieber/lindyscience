@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { StaticVideoLinkList } from "screens/presentation/static_videolink";
+import { StaticVideoLinkList } from "videolinks/presentation/static_videolink";
 import type { VoteByIdT } from "votes/types";
-import type { VideoLinkT } from "screens/types";
+import type { VideoLinkT } from "videolinks/types";
 
 type StaticVideoLinksPanelPropsT = {
   videoLinks: Array<VideoLinkT>,

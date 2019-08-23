@@ -2,17 +2,17 @@
 
 import * as React from "react";
 import { VoteCount } from "votes/presentation/vote_count";
-import { VideoLinkForm } from "screens/presentation/video_link_form";
-import type { UUID } from "app/types";
+import { VideoLinkForm } from "videolinks/presentation/video_link_form";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteByIdT, VoteT } from "votes/types";
-import type { MoveT } from "moves/types";
-import type { VideoLinkT } from "screens/types";
+import type { OwnedObjectT } from "kernel/types";
+import type { VideoLinkT } from "videolinks/types";
 
 // VideoLinkeoLink
 
 type VideoLinkPropsT = {
-  isOwner: boolean,
+  canEdit: boolean,
   item: VideoLinkT,
   vote: VoteT,
   setVote: (UUID, VoteT) => void,
@@ -117,9 +117,9 @@ export function VideoLink(props: VideoLinkPropsT) {
       <div className="videoLink">
         {voteCount}
         {link}
-        {props.isOwner && editBtn}
-        {!armDelete && props.isOwner && deleteBtn}
-        {armDelete && props.isOwner && cancelConfirmDiv}
+        {props.canEdit && editBtn}
+        {!armDelete && props.canEdit && deleteBtn}
+        {armDelete && props.canEdit && cancelConfirmDiv}
       </div>
     );
   }
@@ -128,7 +128,7 @@ export function VideoLink(props: VideoLinkPropsT) {
 // VideoLinkList
 type VideoLinkListPropsT = {
   userProfile: UserProfileT,
-  move: MoveT,
+  parentObject: OwnedObjectT,
   items: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
   setVote: (UUID, VoteT) => void,
@@ -139,15 +139,15 @@ type VideoLinkListPropsT = {
 
 export function VideoLinkList(props: VideoLinkListPropsT) {
   const itemNodes = props.items.map<React.Node>((item, idx) => {
-    const isOwner =
+    const canEdit =
       item.ownerId == props.userProfile.userId ||
-      props.move.ownerId == props.userProfile.userId;
+      props.parentObject.ownerId == props.userProfile.userId;
 
     return (
       <VideoLink
         key={item.id}
         item={item}
-        isOwner={isOwner}
+        canEdit={canEdit}
         vote={props.voteByObjectId[item.id] || 0}
         setVote={props.setVote}
         saveVideoLink={props.saveVideoLink}

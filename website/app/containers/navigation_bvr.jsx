@@ -7,7 +7,7 @@ import { newMoveSlug, newMoveListSlug, makeMoveListUrl } from "screens/utils";
 
 import type { MoveListT } from "screens/types";
 import type { MoveT } from "moves/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 
 function _browseToMove(moves: Array<MoveT>, move: MoveT, moveListUrl: string) {
   const matcher = makeSlugidMatcher(move.slug);

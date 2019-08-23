@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { range } from "utils/utils";
 
-import type { UUID, ObjectT } from "app/types";
+import type { UUID, ObjectT } from "kernel/types";
 
 // InsertItem Behaviour
 

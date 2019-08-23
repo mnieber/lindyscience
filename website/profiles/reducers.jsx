@@ -3,7 +3,8 @@
 import type { RootReducerStateT } from "app/root_reducer";
 import { insertIdsIntoList } from "utils/utils";
 
-import type { UUID, UserProfileT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { UUID } from "kernel/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Profile

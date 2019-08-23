@@ -12,7 +12,7 @@ import { querySetListToDict } from "utils/utils";
 
 import type { MoveT } from "moves/types";
 import type { TipT } from "screens/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { VoteT } from "votes/types";
 import type { UserProfileT } from "profiles/types";
 
@@ -35,7 +35,7 @@ export const withTipsPanel = getMove =>
     (WrappedComponent: any) => (props: any) => {
       const {
         userProfile,
-        videoLinksByMoveId,
+        tipsByMoveId,
         voteByObjectId,
         ...passThroughProps
       }: PropsT = props;

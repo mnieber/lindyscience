@@ -11,7 +11,8 @@ import { getId } from "app/utils";
 
 import { withMovePrivateDataPanel } from "screens/containers/with_move_private_data_panel";
 
-import type { TipsByIdT, VideoLinksByIdT } from "screens/types";
+import type { VideoLinksByIdT } from "videolinks/types";
+import type { TipsByIdT } from "screens/types";
 import type { MoveT } from "moves/types";
 import type { VoteByIdT } from "votes/types";
 

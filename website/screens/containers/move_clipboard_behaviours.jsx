@@ -7,7 +7,7 @@ import * as api from "screens/api";
 import { findNeighbourIdx } from "screens/utils";
 import { createErrorHandler } from "app/utils";
 
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "screens/types";
 

@@ -4,19 +4,16 @@
 // Types
 ///////////////////////////////////////////////////////////////////////
 
-import type { UUID } from "app/types";
+import type { OwnedObjectT } from "kernel/types";
 import type { MovePrivateDataT } from "screens/types";
 import type { TagT } from "profiles/types";
+import type { UUID } from "kernel/types";
 
-export type MoveT = {
-  id: UUID,
+export type MoveT = OwnedObjectT & {
   description: string,
   tags: Array<TagT>,
-  videoLinks: Array<UUID>,
-  tips: Array<UUID>,
   name: string,
   slug: string,
-  ownerId: number,
   sourceMoveListId: string,
   privateData: ?MovePrivateDataT,
 };

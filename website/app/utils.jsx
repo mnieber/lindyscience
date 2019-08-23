@@ -8,7 +8,7 @@ import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 import { stripQuotes } from "utils/utils";
 
 import type { UserProfileT, TagT } from "profiles/types";
-import type { UUID, ObjectT } from "app/types";
+import type { UUID, ObjectT } from "kernel/types";
 
 export function createToastr() {
   return (

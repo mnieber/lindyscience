@@ -5,7 +5,7 @@ import parse from "url-parse";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "screens/types";
-import type { UUID, SlugidT } from "app/types";
+import type { UUID, SlugidT } from "kernel/types";
 
 export function makeSlugid(slug: string, id: UUID) {
   return slug + (id ? "/" + id : "");

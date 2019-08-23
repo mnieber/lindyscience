@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import type { UUID, ObjectT } from "app/types";
+import type { UUID, ObjectT } from "kernel/types";
 import type { DataContainerT } from "screens/containers/data_container";
 
 // InsertItem Behaviour

@@ -4,7 +4,7 @@
 // Types
 ///////////////////////////////////////////////////////////////////////
 
-export type UUID = string;
+import type { UUID } from "kernel/types";
 
 export type UserProfileT = {
   moveListIds: Array<UUID>,

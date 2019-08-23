@@ -3,7 +3,7 @@
 import * as React from "react";
 import { VoteCount } from "votes/presentation/vote_count";
 import { TipForm } from "screens/presentation/tip_form";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteByIdT, VoteT } from "votes/types";
 import type { MoveT } from "moves/types";

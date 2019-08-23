@@ -18,7 +18,7 @@ import {
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT, MoveCrudBvrsT } from "screens/types";
 import type { MoveT } from "moves/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type {
   InsertItemsBvrT,
@@ -54,8 +54,6 @@ export function createNewMove(
     slug: newMoveSlug,
     name: "New move",
     description: "",
-    tips: [],
-    videoLinks: [],
     tags: [],
     ownerId: userProfile.userId,
     sourceMoveListId: sourceMoveListId,

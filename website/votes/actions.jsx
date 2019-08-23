@@ -2,7 +2,8 @@
 
 import React from "react";
 import * as fromStore from "votes/reducers";
-import type { UUID, VoteT, VoteByIdT } from "votes/types";
+import type { VoteT, VoteByIdT } from "votes/types";
+import type { UUID } from "kernel/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions

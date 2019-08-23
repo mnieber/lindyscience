@@ -2,16 +2,16 @@
 
 import * as React from "react";
 
-import { VideoLinkList } from "screens/presentation/videolink";
+import { VideoLinkList } from "videolinks/presentation/videolink";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
-import type { MoveT } from "moves/types";
-import type { VideoLinkT } from "screens/types";
+import type { OwnedObjectT } from "kernel/types";
+import type { VideoLinkT } from "videolinks/types";
 
 // Behaviours
 
@@ -118,7 +118,7 @@ type VoteVideoLinkBvrT = {
 };
 
 type VideoLinksPanelPropsT = {
-  move: MoveT,
+  parentObject: OwnedObjectT,
   userProfile: UserProfileT,
   videoLinks: Array<VideoLinkT>,
   voteByObjectId: VoteByIdT,
@@ -133,11 +133,11 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
   const newVideoLinkBvr = useNewVideoLink(
     props.userProfile.userId,
     insertVideoLinkBvr,
-    props.move.id
+    props.parentObject.id
   );
   const saveVideoLinkBvr = useSaveVideoLink(
     newVideoLinkBvr,
-    props.move.id,
+    props.parentObject.id,
     insertVideoLinkBvr.preview,
     props.saveVideoLink
   );
@@ -159,7 +159,7 @@ export function VideoLinksPanel(props: VideoLinksPanelPropsT) {
       </div>
       <VideoLinkList
         userProfile={props.userProfile}
-        move={props.move}
+        parentObject={props.parentObject}
         items={insertVideoLinkBvr.preview}
         setVote={props.voteVideoLink}
         saveVideoLink={saveVideoLinkBvr.save}

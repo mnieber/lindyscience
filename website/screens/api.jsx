@@ -3,42 +3,12 @@
 import { flatten } from "utils/utils";
 import { normalize, schema } from "normalizr";
 import { doQuery } from "app/client";
-import type {
-  TipT,
-  VideoLinkT,
-  MoveListT,
-  MovePrivateDataT,
-} from "screens/types";
+import type { TipT, MoveListT, MovePrivateDataT } from "screens/types";
 import type { MoveT } from "moves/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { TagT } from "profiles/types";
 
 // Api moves
-
-export function saveVideoLink(moveId: UUID, values: VideoLinkT) {
-  if (!values.url.startsWith("http://") && !values.url.startsWith("https://")) {
-    values = { ...values, url: "http://" + values.url };
-  }
-  return doQuery(
-    `mutation saveVideoLink(
-      $id: String!,
-      $moveId: String!
-      $url: String!,
-      $title: String!,
-    ) {
-      saveVideoLink(
-        pk: $id,
-        moveId: $moveId,
-        url: $url,
-        title: $title,
-      ) { ok }
-    }`,
-    {
-      ...values,
-      moveId,
-    }
-  );
-}
 
 export function saveTip(moveId: UUID, values: TipT) {
   return doQuery(
@@ -66,21 +36,6 @@ export function deleteTip(id: UUID) {
       $id: String!,
     ) {
       deleteTip(
-        pk: $id,
-      ) { ok }
-    }`,
-    {
-      id,
-    }
-  );
-}
-
-export function deleteVideoLink(id: UUID) {
-  return doQuery(
-    `mutation deleteVideoLink(
-      $id: String!,
-    ) {
-      deleteVideoLink(
         pk: $id,
       ) { ok }
     }`,

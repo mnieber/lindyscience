@@ -8,8 +8,6 @@ import type {
   MoveListByIdT,
   TipByIdT,
   TipsByIdT,
-  VideoLinkByIdT,
-  VideoLinksByIdT,
   MovePrivateDataByIdT,
   FunctionByIdT,
 } from "screens/types";
@@ -21,7 +19,7 @@ import {
 } from "utils/utils";
 import { findMove, findMoveBySlugid } from "screens/utils";
 
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { TagT, TagMapT } from "profiles/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
@@ -35,8 +33,6 @@ const _stateMoveLists = (state: RootReducerStateT): MoveListsState =>
   state.screens.moveLists;
 const _stateTags = (state: RootReducerStateT): TagsState => state.screens.tags;
 const _stateTips = (state: RootReducerStateT): TipsState => state.screens.tips;
-const _stateVideoLinks = (state: RootReducerStateT): VideoLinksState =>
-  state.screens.videoLinks;
 const _stateMovePrivateDatas = (
   state: RootReducerStateT
 ): MovePrivateDatasState => state.screens.movePrivateDatas;
@@ -161,9 +157,9 @@ export function movesReducer(state: MovesState = {}, action: any): MovesState {
 }
 
 export const getMoveById: Selector<MoveByIdT> = createSelector(
-  [_stateMoves, _stateSelection, getPrivateDataByMoveId],
+  [_stateMoves, getPrivateDataByMoveId],
 
-  (stateMoves, stateSelection, privateDataByMoveId): MoveByIdT => {
+  (stateMoves, privateDataByMoveId): MoveByIdT => {
     return reduceMapToMap<MoveByIdT>(
       stateMoves,
       (acc, id: UUID, move: MoveT) => {
@@ -322,59 +318,6 @@ export const getMoveListTags: Selector<Array<TagT>> = createSelector(
 );
 
 ///////////////////////////////////////////////////////////////////////
-// Videolinks
-///////////////////////////////////////////////////////////////////////
-
-type VideoLinksState = VideoLinkByIdT;
-
-export function videoLinksReducer(
-  state: VideoLinksState = {},
-  action: any
-): VideoLinksState {
-  switch (action.type) {
-    case "ADD_VIDEO_LINKS":
-      return {
-        ...state,
-        ...action.videoLinks,
-      };
-    case "REMOVE_VIDEO_LINKS":
-      return Object.keys(state)
-        .filter(x => !action.videoLinks.includes(x))
-        .reduce((acc, id) => {
-          acc[id] = state[id];
-          return acc;
-        }, {});
-    case "CAST_VOTE":
-      if (!state[action.id]) return state;
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          voteCount:
-            state[action.id].voteCount + (action.vote - action.prevVote),
-        },
-      };
-    default:
-      return state;
-  }
-}
-
-export const getVideoLinksByMoveId: Selector<VideoLinksByIdT> = createSelector(
-  [_stateMoves, _stateVideoLinks],
-
-  (stateMoves, stateVideoLinks): VideoLinksByIdT => {
-    return reduceMapToMap<VideoLinksByIdT>(stateMoves, (acc, moveId, move) => {
-      acc[moveId] = getObjectValues(stateVideoLinks)
-        .filter(videoLink => videoLink.moveId == moveId)
-        .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
-    });
-  }
-);
-export function getVideoLinkById(state: RootReducerStateT) {
-  return state.screens.videoLinks;
-}
-
-///////////////////////////////////////////////////////////////////////
 // Tips
 ///////////////////////////////////////////////////////////////////////
 
@@ -431,7 +374,6 @@ export type ReducerStateT = {
   moveLists: MoveListsState,
   selection: SelectionState,
   movePrivateDatas: MovePrivateDatasState,
-  videoLinks: VideoLinksState,
   tips: TipsState,
   tags: TagsState,
 };
@@ -444,7 +386,6 @@ export const reducer = combineReducers({
   moveLists: moveListsReducer,
   selection: selectionReducer,
   movePrivateDatas: movePrivateDatasReducer,
-  videoLinks: videoLinksReducer,
   tips: tipsReducer,
   tags: tagsReducer,
 });

@@ -14,7 +14,7 @@ import { slugify } from "utils/utils";
 import { newMoveSlug } from "screens/utils";
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
 import type { MoveT } from "moves/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { TagT } from "profiles/types";
 
 type InnerFormPropsT = {

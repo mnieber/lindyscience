@@ -6,7 +6,7 @@ import { getPreview, findTargetId } from "screens/utils";
 import { insertIdsIntoList } from "utils/utils";
 import { querySetListToDict } from "utils/utils";
 
-import type { UUID, ObjectT } from "app/types";
+import type { UUID, ObjectT } from "kernel/types";
 type ItemById<ItemT> = { [UUID]: ItemT };
 
 // DataContainer

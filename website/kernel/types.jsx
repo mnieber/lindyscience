@@ -11,3 +11,9 @@ export type SlugidT = string;
 export type ObjectT = {
   id: UUID,
 };
+
+export type OwnedT = {
+  ownerId: number,
+};
+
+export type OwnedObjectT = ObjectT & OwnedT;

@@ -10,7 +10,7 @@ import { getObjectValues } from "utils/utils";
 import classnames from "classnames";
 
 import type { MoveSearchResultT } from "screens/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 
 type MoveTablePropsT = {
   moves: Array<MoveSearchResultT>,

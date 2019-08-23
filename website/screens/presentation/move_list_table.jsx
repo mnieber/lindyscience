@@ -11,7 +11,7 @@ import { makeMoveListUrl } from "screens/utils";
 import classnames from "classnames";
 
 import type { MoveListT } from "screens/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 
 const LoadingComponent = ({ className, loading, loadingText, ...rest }) => (
   <div

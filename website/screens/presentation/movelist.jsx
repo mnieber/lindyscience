@@ -6,8 +6,7 @@ import { Menu, MenuProvider } from "react-contexify";
 import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import type { MoveT } from "moves/types";
-import type { VideoLinksByIdT } from "screens/types";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 
 // MoveList
 
@@ -110,7 +109,7 @@ function createKeyHandlers(
 type MoveListPropsT = {|
   isOwner: boolean,
   moves: Array<MoveT>,
-  videoLinksByMoveId: VideoLinksByIdT,
+  createHostedPanels: UUID => any,
   selectedMoveIds: Array<UUID>,
   highlightedMove: ?MoveT,
   selectMoveById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
@@ -136,15 +135,7 @@ export function MoveList(props: MoveListPropsT) {
   const highlightedMoveId = getId(props.highlightedMove);
 
   const moveNodes = props.moves.map((move, idx) => {
-    const videoLinks = props.videoLinksByMoveId[move.id] || [];
-    const videoLinkDiv =
-      videoLinks && videoLinks.length ? (
-        <a className="ml-2" href={videoLinks[0].url} target="blank">
-          VIDEO
-        </a>
-      ) : (
-        undefined
-      );
+    const hostedPanels = props.createHostedPanels(move.id);
 
     return (
       <div
@@ -181,7 +172,7 @@ export function MoveList(props: MoveListPropsT) {
         }}
       >
         {move.name}
-        {videoLinkDiv}
+        {hostedPanels}
       </div>
     );
   });

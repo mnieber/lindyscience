@@ -7,7 +7,7 @@ import Widgets from "screens/presentation/index";
 import { isOwner } from "app/utils";
 import { getObjectValues } from "utils/utils";
 
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT, TagT } from "profiles/types";
 import type { MoveListT, MoveListCrudBvrsT } from "screens/types";
 

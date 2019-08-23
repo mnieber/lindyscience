@@ -7,7 +7,7 @@ import { TipList } from "screens/presentation/tip";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
 import type { MoveT } from "moves/types";

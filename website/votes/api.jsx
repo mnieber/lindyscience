@@ -2,7 +2,8 @@
 
 import { doQuery } from "app/client";
 import { get, post } from "utils/api_utils";
-import type { UUID, VoteT } from "votes/types";
+import type { UUID } from "kernel/types";
+import type { VoteT } from "votes/types";
 
 // Api votes
 

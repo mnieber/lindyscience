@@ -3,7 +3,7 @@
 import { toCamelCase } from "utils/utils";
 import { doQuery, setToken } from "app/client";
 import { get, post } from "utils/api_utils";
-import type { UUID } from "app/types";
+import type { UUID } from "kernel/types";
 
 function _hasError(e, fieldName, errorMsg) {
   const errors = e.responseJSON[fieldName] || [];

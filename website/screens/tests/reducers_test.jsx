@@ -64,19 +64,6 @@ test("add move private datas", function(t) {
   t.end();
 });
 
-test("add video links", function(t) {
-  let sVideoLinks = reducers.videoLinksReducer(undefined, {});
-  t.deepEqual(sVideoLinks, {});
-
-  sVideoLinks = reducers.videoLinksReducer(
-    sVideoLinks,
-    actions.actAddVideoLinks(data.videoLinks)
-  );
-  t.deepEqual(sVideoLinks, data.videoLinks);
-
-  t.end();
-});
-
 test("add tips", function(t) {
   let sTips = reducers.tipsReducer(undefined, {});
   t.deepEqual(sTips, {});

@@ -8,10 +8,9 @@ import type {
   MoveListT,
   TipByIdT,
   MovePrivateDataByIdT,
-  VideoLinkByIdT,
 } from "screens/types";
 import type { MoveT } from "moves/types";
-import type { UUID, SlugidT } from "app/types";
+import type { UUID, SlugidT } from "kernel/types";
 import type { TagT } from "profiles/types";
 
 ///////////////////////////////////////////////////////////////////////
@@ -39,13 +38,6 @@ export function actSetMovePrivateDatas(movePrivateDatas: MovePrivateDataByIdT) {
   };
 }
 
-export function actAddVideoLinks(videoLinks: VideoLinkByIdT) {
-  return {
-    type: "ADD_VIDEO_LINKS",
-    videoLinks,
-  };
-}
-
 export function actAddTips(tips: TipByIdT) {
   return {
     type: "ADD_TIPS",
@@ -57,13 +49,6 @@ export function actRemoveTips(tips: Array<UUID>) {
   return {
     type: "REMOVE_TIPS",
     tips,
-  };
-}
-
-export function actRemoveVideoLinks(videoLinks: Array<UUID>) {
-  return {
-    type: "REMOVE_VIDEO_LINKS",
-    videoLinks,
   };
 }
 

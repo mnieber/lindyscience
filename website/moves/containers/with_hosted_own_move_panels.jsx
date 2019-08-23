@@ -17,32 +17,33 @@ type PropsT = {
 };
 
 // $FlowFixMe
-export const withHostedOwnMovePanels = compose(
-  withMovePrivateDataPanel,
-  withTipsPanel,
-  withVideoLinksPanel,
-  Ctr.connect(state => ({}), Ctr.actions),
-  (WrappedComponent: any) => (props: any) => {
-    const {
-      videoLinksPanel,
-      tipsPanel,
-      movePrivateDataPanel,
-      ...passThroughProps
-    }: PropsT = props;
+export const withHostedOwnMovePanels = getMove =>
+  compose(
+    withMovePrivateDataPanel(getMove),
+    withTipsPanel(getMove),
+    withVideoLinksPanel(getMove),
+    Ctr.connect(state => ({}), Ctr.actions),
+    (WrappedComponent: any) => (props: any) => {
+      const {
+        videoLinksPanel,
+        tipsPanel,
+        movePrivateDataPanel,
+        ...passThroughProps
+      }: PropsT = props;
 
-    const hostedOwnMovePanels = (
-      <React.Fragment>
-        {movePrivateDataPanel}
-        {tipsPanel}
-        {videoLinksPanel}
-      </React.Fragment>
-    );
+      const hostedOwnMovePanels = (
+        <React.Fragment>
+          {movePrivateDataPanel}
+          {tipsPanel}
+          {videoLinksPanel}
+        </React.Fragment>
+      );
 
-    return (
-      <WrappedComponent
-        hostedOwnMovePanels={hostedOwnMovePanels}
-        {...passThroughProps}
-      />
-    );
-  }
-);
+      return (
+        <WrappedComponent
+          hostedOwnMovePanels={hostedOwnMovePanels}
+          {...passThroughProps}
+        />
+      );
+    }
+  );

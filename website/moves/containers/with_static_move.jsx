@@ -6,6 +6,7 @@ import { compose } from "redux";
 import Ctr from "moves/containers/index";
 
 import { getId } from "app/utils";
+import { getStore } from "app/store";
 
 import Widgets from "moves/presentation/index";
 import { withHostedStaticMovePanels } from "moves/containers/with_hosted_static_move_panels";
@@ -23,9 +24,14 @@ type PropsT = {
   // receive any actions as well
 };
 
+function getMoveId() {
+  const state = getStore().getState();
+  return getId(Ctr.fromStore.getHighlightedMove(state));
+}
+
 // $FlowFixMe
 export const withStaticMove = compose(
-  withHostedStaticMovePanels,
+  withHostedStaticMovePanels(getMoveId),
   Ctr.connect(
     state => ({
       move: Ctr.fromStore.getHighlightedMove(state),

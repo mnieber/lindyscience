@@ -135,7 +135,7 @@ export function MoveList(props: MoveListPropsT) {
   const highlightedMoveId = getId(props.highlightedMove);
 
   const moveNodes = props.moves.map((move, idx) => {
-    const videoLinks = props.videoLinksByMoveId[move.id];
+    const videoLinks = props.videoLinksByMoveId[move.id] || [];
     const videoLinkDiv =
       videoLinks && videoLinks.length ? (
         <a className="ml-2" href={videoLinks[0].url} target="blank">

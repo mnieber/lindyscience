@@ -5,6 +5,8 @@ import { compose } from "redux";
 
 import Ctr from "moves/containers/index";
 
+import { getStore } from "app/store";
+
 import Widgets from "moves/presentation/index";
 import { withHostedOwnMovePanels } from "moves/containers/with_hosted_own_move_panels";
 import { withMoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
@@ -22,10 +24,15 @@ type PropsT = {
   // receive any actions as well
 };
 
+function getMove() {
+  const state = getStore().getState();
+  return Ctr.fromStore.getHighlightedMove(state);
+}
+
 // $FlowFixMe
 export const withOwnMove = compose(
   withMoveCrudBvrsContext,
-  withHostedOwnMovePanels,
+  withHostedOwnMovePanels(getMove),
   Ctr.connect(
     state => ({
       userProfile: Ctr.fromStore.getUserProfile(state),

@@ -13,8 +13,8 @@ import {
 import {
   RichTextEditor,
   getContentFromEditor,
-} from "moves/presentation/rich_text_editor";
-import { toEditorState } from "moves/utils/editor_state";
+} from "rich_text/presentation/rich_text_editor";
+import { toEditorState } from "rich_text/utils/editor_state";
 
 import type { MoveListT } from "moves/types";
 import type { UUID } from "app/types";

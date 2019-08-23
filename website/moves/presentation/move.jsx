@@ -4,11 +4,11 @@ import * as React from "react";
 import classnames from "classnames";
 
 import { MoveListTitle } from "moves/presentation/move_list_details";
-import { RichTextEditor } from "moves/presentation/rich_text_editor";
+import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
 import {
   createReadOnlyEditorState,
   toEditorState,
-} from "moves/utils/editor_state";
+} from "rich_text/utils/editor_state";
 
 import type { MoveT, MoveListT } from "moves/types";
 import type { TagT } from "profiles/types";

@@ -15,11 +15,11 @@ import { newMoveSlug } from "moves/utils";
 import {
   RichTextEditor,
   getContentFromEditor,
-} from "moves/presentation/rich_text_editor";
+} from "rich_text/presentation/rich_text_editor";
 import {
   createReadOnlyEditorState,
   toEditorState,
-} from "moves/utils/editor_state";
+} from "rich_text/utils/editor_state";
 
 import type { MoveT } from "moves/types";
 import type { UUID } from "app/types";

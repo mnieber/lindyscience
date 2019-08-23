@@ -9,6 +9,7 @@ import { getId } from "app/utils";
 import { getStore } from "app/store";
 
 import Widgets from "moves/presentation/index";
+import { MoveListTitle } from "moves/presentation/move_list_details";
 import { withHostedStaticMovePanels } from "moves/containers/with_hosted_static_move_panels";
 
 import type { VideoLinksByIdT } from "moves/types";
@@ -53,10 +54,12 @@ export const withStaticMove = compose(
 
     const actions: any = props;
 
+    const moveListTitle = <MoveListTitle moveList={moveList} />;
+
     const staticMove = (
       <Widgets.Move
         move={move}
-        moveList={moveList}
+        moveListTitle={moveListTitle}
         key={getId(move)}
         moveTags={moveTags}
         videoLinks={videoLinksByMoveId[getId(move)]}

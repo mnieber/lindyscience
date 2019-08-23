@@ -8,6 +8,7 @@ import Ctr from "moves/containers/index";
 import { getStore } from "app/store";
 
 import Widgets from "moves/presentation/index";
+import { MoveListTitle } from "moves/presentation/move_list_details";
 import { withHostedOwnMovePanels } from "moves/containers/with_hosted_own_move_panels";
 import { withMoveCrudBvrsContext } from "moves/containers/move_crud_behaviours";
 
@@ -55,6 +56,8 @@ export const withOwnMove = compose(
 
     const actions: any = props;
 
+    const moveListTitle = <MoveListTitle moveList={moveList} />;
+
     const editMoveBtn = (
       <div
         className={"move__editBtn button button--wide ml-2"}
@@ -80,7 +83,7 @@ export const withOwnMove = compose(
       <Widgets.Move
         move={move}
         userProfile={userProfile}
-        moveList={moveList}
+        moveListTitle={moveListTitle}
         moveTags={moveTags}
         buttons={[editMoveBtn]}
         hostedPanels={hostedOwnMovePanels}

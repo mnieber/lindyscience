@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
-import { Tags } from "moves/presentation/move";
+import { Tags } from "profiles/presentation/tags";
 import type { MovePrivateDataT } from "moves/types";
 import type { UserProfileT, TagT } from "profiles/types";
 

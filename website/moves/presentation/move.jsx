@@ -3,27 +3,15 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import { MoveListTitle } from "moves/presentation/move_list_details";
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
+import { Tags } from "profiles/presentation/tags";
 import {
   createReadOnlyEditorState,
   toEditorState,
 } from "rich_text/utils/editor_state";
 
-import type { MoveT, MoveListT } from "moves/types";
+import type { MoveT } from "moves/types";
 import type { TagT } from "profiles/types";
-
-export function Tags({ tags }: { tags: Array<TagT> }) {
-  const items = tags.map((tagName, idx) => {
-    return (
-      <div key={idx} className="move__tag">
-        {tagName}
-      </div>
-    );
-  });
-
-  return <div className={"move__tags"}>{items}</div>;
-}
 
 const styleMap = {
   TIMING: {
@@ -46,7 +34,7 @@ const styleMap = {
 
 type MovePropsT = {
   move: MoveT,
-  moveList: MoveListT,
+  moveListTitle: any,
   moveTags: Array<TagT>,
   buttons?: Array<React.Node>,
   className?: string,
@@ -56,7 +44,7 @@ type MovePropsT = {
 export function Move(props: MovePropsT) {
   const nameDiv = (
     <div className="flex flex-row items-center">
-      <MoveListTitle moveList={props.moveList} />
+      {props.moveListTitle}
       <h2>:</h2>
       <div className={"move__name flexrow flex-wrap ml-2"}>
         <h1>{props.move.name}</h1>

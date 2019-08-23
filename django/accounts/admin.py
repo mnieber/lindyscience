@@ -11,4 +11,5 @@ class ProfileAdmin(admin.ModelAdmin):
     inlines = (ProfileToMoveListInline, )
 
 
+admin.site.register(models.User)
 admin.site.register(models.Profile, ProfileAdmin)

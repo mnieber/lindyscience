@@ -11,7 +11,7 @@ import {
   strToPickerValue,
 } from "utils/form_utils";
 import { slugify } from "utils/utils";
-import { newMoveSlug } from "screens/utils";
+import { newMoveSlug } from "moves/utils";
 import {
   RichTextEditor,
   getContentFromEditor,

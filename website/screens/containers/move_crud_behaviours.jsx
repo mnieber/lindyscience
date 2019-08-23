@@ -6,7 +6,7 @@ import * as api from "screens/api";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 import { createErrorHandler } from "app/utils";
-import { newMoveSlug } from "screens/utils";
+import { newMoveSlug } from "moves/utils";
 import { slugify } from "utils/utils";
 
 import {

@@ -8,7 +8,7 @@ import { withStaticMove } from "screens/containers/with_static_move";
 import { withOwnMove } from "screens/containers/with_own_move";
 import { withMoveCrudBvrsContext } from "screens/containers/move_crud_behaviours";
 
-import { newMoveSlug } from "screens/utils";
+import { newMoveSlug } from "moves/utils";
 import { isOwner } from "app/utils";
 
 import { MoveCrudBvrsContext } from "screens/containers/move_crud_behaviours";

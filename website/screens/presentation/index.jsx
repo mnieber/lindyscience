@@ -5,7 +5,7 @@ import * as React from "react";
 import { Move } from "moves/presentation/move";
 import { TipsPanel } from "screens/presentation/tips_panel";
 import { MoveList } from "screens/presentation/movelist";
-import { MoveForm } from "screens/presentation/move_form";
+import { MoveForm } from "moves/presentation/move_form";
 import { MoveContextMenu } from "screens/presentation/move_context_menu";
 import { MoveListForm } from "screens/presentation/move_list_form";
 import { MoveListTable } from "screens/presentation/move_list_table";

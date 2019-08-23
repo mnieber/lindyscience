@@ -3,7 +3,8 @@
 import * as React from "react";
 import { makeSlugidMatcher } from "screens/utils";
 import { browseToMove } from "app/containers/index";
-import { newMoveSlug, newMoveListSlug, makeMoveListUrl } from "screens/utils";
+import { newMoveSlug } from "moves/utils";
+import { newMoveListSlug, makeMoveListUrl } from "screens/utils";
 
 import type { MoveListT } from "screens/types";
 import type { MoveT } from "moves/types";

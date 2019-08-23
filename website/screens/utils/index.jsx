@@ -33,8 +33,6 @@ export function findMoveListByUrl(moveLists: Array<MoveListT>, url: string) {
   return moveLists.find(x => makeMoveListUrl(x) == url);
 }
 
-export const newMoveSlug = "new-move";
-
 export const newMoveListSlug = "new-move-list";
 
 export function findNeighbourIdx(

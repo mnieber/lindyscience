@@ -2,15 +2,15 @@
 
 import React from "react";
 import { Router } from "@reach/router";
-import MoveListFrame from "moves/containers/move_list_frame";
-import MovePage from "moves/containers/move_page";
-import MoveListDetailsPage from "moves/containers/move_list_details_page";
+import MoveListFrame from "screens/containers/move_list_frame";
+import MovePage from "screens/containers/move_page";
+import MoveListDetailsPage from "screens/containers/move_list_details_page";
 import AppFrame from "app/containers/appframe";
-import SearchMovesPage from "moves/containers/search_moves_page";
+import SearchMovesPage from "screens/containers/search_moves_page";
 import SignInPage from "app/containers/signinpage";
 import RegisterPage from "app/containers/register_page";
 import PasswordResetPage from "app/containers/password_reset_page";
-import ProfilePage from "moves/containers/profile_page";
+import ProfilePage from "screens/containers/profile_page";
 import Ctr, { browseToMove } from "app/containers/index";
 import type { UserProfileT } from "profiles/types";
 

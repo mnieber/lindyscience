@@ -1,11 +1,12 @@
 // @flow
 
 import * as React from "react";
-import { makeSlugidMatcher } from "moves/utils";
+import { makeSlugidMatcher } from "screens/utils";
 import { browseToMove } from "app/containers/index";
-import { newMoveSlug, newMoveListSlug, makeMoveListUrl } from "moves/utils";
+import { newMoveSlug, newMoveListSlug, makeMoveListUrl } from "screens/utils";
 
-import type { MoveT, MoveListT } from "moves/types";
+import type { MoveListT } from "screens/types";
+import type { MoveT } from "moves/types";
 import type { UUID } from "app/types";
 
 function _browseToMove(moves: Array<MoveT>, move: MoveT, moveListUrl: string) {

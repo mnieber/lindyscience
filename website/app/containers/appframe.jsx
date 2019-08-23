@@ -9,10 +9,10 @@ import Ctr from "app/containers/index";
 import { createErrorHandler } from "app/utils";
 import { getObjectValues } from "utils/utils";
 import { createToastr } from "app/utils";
-import { findMoveListByUrl, newMoveListSlug } from "moves/utils";
+import { findMoveListByUrl, newMoveListSlug } from "screens/utils";
 
 import type { UserProfileT } from "profiles/types";
-import type { MoveListT } from "moves/types";
+import type { MoveListT } from "screens/types";
 
 // AppFrame
 type AppFramePropsT = {

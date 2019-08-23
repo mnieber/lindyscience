@@ -66,6 +66,14 @@ export const withOwnMove = compose(
       </div>
     );
 
+    const hostedPanels = (
+      <React.Fragment>
+        {movePrivateDataPanel}
+        {tipsPanel}
+        {videoLinksPanel}
+      </React.Fragment>
+    );
+
     const ownMove = moveCrudBvrs.isEditing ? (
       <div>
         <Widgets.MoveForm
@@ -84,9 +92,7 @@ export const withOwnMove = compose(
         moveList={moveList}
         moveTags={moveTags}
         buttons={[editMoveBtn]}
-        videoLinksPanel={videoLinksPanel}
-        tipsPanel={tipsPanel}
-        movePrivateDataPanel={movePrivateDataPanel}
+        hostedPanels={hostedPanels}
       />
     );
 

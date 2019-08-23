@@ -67,16 +67,22 @@ export const withStaticMove = compose(
       />
     );
 
+    const hostedPanels = (
+      <React.Fragment>
+        {movePrivateDataPanel}
+        {tipsPanel}
+        {videoLinksPanel}
+      </React.Fragment>
+    );
+
     const staticMove = (
       <Widgets.Move
         move={move}
         moveList={moveList}
         key={getId(move)}
         moveTags={moveTags}
-        tipsPanel={tipsPanel}
-        videoLinksPanel={videoLinksPanel}
         videoLinks={videoLinksByMoveId[getId(move)]}
-        movePrivateDataPanel={movePrivateDataPanel}
+        hostedPanels={hostedPanels}
       />
     );
 

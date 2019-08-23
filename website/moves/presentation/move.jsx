@@ -50,9 +50,7 @@ type MovePropsT = {
   moveTags: Array<TagT>,
   buttons?: Array<React.Node>,
   className?: string,
-  tipsPanel: any,
-  videoLinksPanel: any,
-  movePrivateDataPanel: any,
+  hostedPanels: any,
 };
 
 export function Move(props: MovePropsT) {
@@ -97,9 +95,7 @@ export function Move(props: MovePropsT) {
       {nameDiv}
       {tagsDiv}
       {descriptionDiv}
-      {props.movePrivateDataPanel}
-      {props.tipsPanel}
-      {props.videoLinksPanel}
+      {props.hostedPanels}
     </div>
   );
 }

@@ -2,12 +2,11 @@
 
 import * as React from "react";
 import { VoteCount } from "votes/presentation/vote_count";
-import { TipForm } from "screens/presentation/tip_form";
-import type { UUID } from "kernel/types";
+import { TipForm } from "tips/presentation/tip_form";
+import type { UUID, OwnedObjectT } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteByIdT, VoteT } from "votes/types";
-import type { MoveT } from "moves/types";
-import type { TipT } from "screens/types";
+import type { TipT } from "tips/types";
 
 // Tip
 type TipPropsT = {
@@ -114,7 +113,7 @@ export function Tip(props: TipPropsT) {
 
 type TipListPropsT = {
   userProfile: UserProfileT,
-  move: MoveT,
+  parentObject: OwnedObjectT,
   items: Array<TipT>,
   voteByObjectId: VoteByIdT,
   setVote: (UUID, VoteT) => void,
@@ -127,7 +126,7 @@ export function TipList(props: TipListPropsT) {
   const itemNodes: Array<React.Node> = props.items.map((item, idx) => {
     const isOwner =
       item.ownerId == props.userProfile.userId ||
-      props.move.ownerId == props.userProfile.userId;
+      props.parentObject.ownerId == props.userProfile.userId;
 
     return (
       <Tip

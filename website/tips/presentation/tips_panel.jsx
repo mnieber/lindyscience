@@ -2,16 +2,15 @@
 
 import * as React from "react";
 
-import { TipList } from "screens/presentation/tip";
+import { TipList } from "tips/presentation/tip";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 
-import type { UUID } from "kernel/types";
+import type { UUID, OwnedObjectT } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
-import type { MoveT } from "moves/types";
-import type { TipT } from "screens/types";
+import type { TipT } from "tips/types";
 
 // Behaviours
 
@@ -110,7 +109,7 @@ export function useSaveTip(
 }
 
 type TipsPanelPropsT = {
-  move: MoveT,
+  parentObject: OwnedObjectT,
   userProfile: UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
@@ -124,11 +123,11 @@ export function TipsPanel(props: TipsPanelPropsT) {
   const newTipBvr = useNewTip(
     props.userProfile.userId,
     insertTipBvr,
-    props.move.id
+    props.parentObject.id
   );
   const saveTipBvr = useSaveTip(
     newTipBvr,
-    props.move.id,
+    props.parentObject.id,
     insertTipBvr.preview,
     props.saveTip
   );
@@ -150,7 +149,7 @@ export function TipsPanel(props: TipsPanelPropsT) {
       </div>
       <TipList
         userProfile={props.userProfile}
-        move={props.move}
+        parentObject={props.parentObject}
         items={insertTipBvr.preview}
         setVote={props.voteTip}
         saveTip={saveTipBvr.save}

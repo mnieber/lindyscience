@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { StaticTipList } from "screens/presentation/static_tip";
+import { StaticTipList } from "tips/presentation/static_tip";
 import type { VoteByIdT } from "votes/types";
-import type { TipT } from "screens/types";
+import type { TipT } from "tips/types";
 
 type StaticTipsPanelPropsT = {
   tips: Array<TipT>,

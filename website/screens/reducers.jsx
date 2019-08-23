@@ -6,8 +6,6 @@ import type { MoveT, MoveByIdT } from "moves/types";
 import type {
   MoveListT,
   MoveListByIdT,
-  TipByIdT,
-  TipsByIdT,
   MovePrivateDataByIdT,
   FunctionByIdT,
 } from "screens/types";
@@ -32,7 +30,6 @@ const _stateMoves = (state: RootReducerStateT): MovesState =>
 const _stateMoveLists = (state: RootReducerStateT): MoveListsState =>
   state.screens.moveLists;
 const _stateTags = (state: RootReducerStateT): TagsState => state.screens.tags;
-const _stateTips = (state: RootReducerStateT): TipsState => state.screens.tips;
 const _stateMovePrivateDatas = (
   state: RootReducerStateT
 ): MovePrivateDatasState => state.screens.movePrivateDatas;
@@ -317,56 +314,6 @@ export const getMoveListTags: Selector<Array<TagT>> = createSelector(
   }
 );
 
-///////////////////////////////////////////////////////////////////////
-// Tips
-///////////////////////////////////////////////////////////////////////
-
-type TipsState = TipByIdT;
-
-export function tipsReducer(state: TipsState = {}, action: any): TipsState {
-  switch (action.type) {
-    case "ADD_TIPS":
-      return {
-        ...state,
-        ...action.tips,
-      };
-    case "REMOVE_TIPS":
-      return Object.keys(state)
-        .filter(x => !action.tips.includes(x))
-        .reduce((acc, id) => {
-          acc[id] = state[id];
-          return acc;
-        }, {});
-    case "CAST_VOTE":
-      if (!state[action.id]) return state;
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          voteCount:
-            state[action.id].voteCount + (action.vote - action.prevVote),
-        },
-      };
-    default:
-      return state;
-  }
-}
-
-export function getTipById(state: RootReducerStateT) {
-  return state.screens.tips;
-}
-export const getTipsByMoveId: Selector<TipsByIdT> = createSelector(
-  [_stateMoves, _stateTips],
-
-  (stateMoves, stateTips): TipsByIdT => {
-    return reduceMapToMap<TipsByIdT>(stateMoves, (acc, moveId, move) => {
-      acc[moveId] = getObjectValues(stateTips)
-        .filter(tip => tip.moveId == moveId)
-        .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
-    });
-  }
-);
-
 export type ReducerStateT = {
   moves: MovesState,
   moveFilters: MoveFiltersState,
@@ -374,7 +321,6 @@ export type ReducerStateT = {
   moveLists: MoveListsState,
   selection: SelectionState,
   movePrivateDatas: MovePrivateDatasState,
-  tips: TipsState,
   tags: TagsState,
 };
 
@@ -386,7 +332,6 @@ export const reducer = combineReducers({
   moveLists: moveListsReducer,
   selection: selectionReducer,
   movePrivateDatas: movePrivateDatasReducer,
-  tips: tipsReducer,
   tags: tagsReducer,
 });
 

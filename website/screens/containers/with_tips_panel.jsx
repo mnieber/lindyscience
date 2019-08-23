@@ -65,7 +65,7 @@ export const withTipsPanel = getMove =>
 
       const tipsPanel = (
         <Widgets.TipsPanel
-          move={move}
+          parentObject={move}
           userProfile={props.userProfile}
           tips={props.tipsByMoveId[getId(move)] || []}
           voteByObjectId={props.voteByObjectId}

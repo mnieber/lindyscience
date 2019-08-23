@@ -3,47 +3,12 @@
 import { flatten } from "utils/utils";
 import { normalize, schema } from "normalizr";
 import { doQuery } from "app/client";
-import type { TipT, MoveListT, MovePrivateDataT } from "screens/types";
+import type { MoveListT, MovePrivateDataT } from "screens/types";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "profiles/types";
 
 // Api moves
-
-export function saveTip(moveId: UUID, values: TipT) {
-  return doQuery(
-    `mutation saveTip(
-      $id: String!,
-      $moveId: String!
-      $text: String!,
-    ) {
-      saveTip(
-        pk: $id,
-        moveId: $moveId,
-        text: $text,
-      ) { ok }
-    }`,
-    {
-      ...values,
-      moveId,
-    }
-  );
-}
-
-export function deleteTip(id: UUID) {
-  return doQuery(
-    `mutation deleteTip(
-      $id: String!,
-    ) {
-      deleteTip(
-        pk: $id,
-      ) { ok }
-    }`,
-    {
-      id,
-    }
-  );
-}
 
 export function saveMoveList(values: MoveListT) {
   return doQuery(

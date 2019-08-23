@@ -6,7 +6,6 @@ import { makeSlugid, findNeighbourIdx } from "screens/utils";
 import type {
   MoveListByIdT,
   MoveListT,
-  TipByIdT,
   MovePrivateDataByIdT,
 } from "screens/types";
 import type { MoveT } from "moves/types";
@@ -35,20 +34,6 @@ export function actSetMovePrivateDatas(movePrivateDatas: MovePrivateDataByIdT) {
   return {
     type: "SET_MOVE_PRIVATE_DATAS",
     movePrivateDatas: movePrivateDatas,
-  };
-}
-
-export function actAddTips(tips: TipByIdT) {
-  return {
-    type: "ADD_TIPS",
-    tips,
-  };
-}
-
-export function actRemoveTips(tips: Array<UUID>) {
-  return {
-    type: "REMOVE_TIPS",
-    tips,
   };
 }
 

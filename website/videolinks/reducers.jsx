@@ -1,5 +1,7 @@
 import type { VideoLinkByIdT, VideoLinksByIdT } from "screens/types";
 
+import { isNone } from "utils/utils";
+
 const _stateVideoLinks = (state: RootReducerStateT): VideoLinksState =>
   state.videoLinks;
 
@@ -65,3 +67,5 @@ export const getVideoLinksByMoveId: Selector<VideoLinksByIdT> = createSelector(
 export function getVideoLinkById(state: RootReducerStateT) {
   return state.videoLinks;
 }
+
+export const reducer = videoLinksReducer;

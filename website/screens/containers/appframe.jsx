@@ -4,7 +4,7 @@ import React from "react";
 import { AccountMenu } from "app/presentation/accountmenu";
 import { navigate } from "@reach/router";
 
-import Ctr from "app/containers/index";
+import Ctr from "screens/containers/index";
 
 import { createErrorHandler } from "app/utils";
 import { getObjectValues } from "utils/utils";

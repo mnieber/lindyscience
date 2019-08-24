@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { makeSlugidMatcher } from "screens/utils";
-import { browseToMove } from "app/containers/index";
+import { browseToMove } from "screens/containers/index";
 import { newMoveSlug } from "moves/utils";
 import { newMoveListSlug, makeMoveListUrl } from "screens/utils";
 

@@ -10,7 +10,7 @@ import { createErrorHandler } from "app/utils";
 import { slugify } from "utils/utils";
 import { makeMoveListUrl } from "screens/utils";
 import { querySetListToDict } from "utils/utils";
-import { browseToMove } from "app/containers/index";
+import { browseToMove } from "screens/containers/index";
 
 import {
   useInsertItems,

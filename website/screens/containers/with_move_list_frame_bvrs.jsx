@@ -14,7 +14,7 @@ import { useSelectItems } from "screens/containers/move_selection_behaviours";
 import { useMoveClipboard } from "screens/containers/move_clipboard_behaviours";
 import { createMoveCrudBvrs } from "screens/containers/move_crud_behaviours";
 import { createMoveListCrudBvrs } from "screens/containers/move_list_crud_behaviours";
-import { useNavigation } from "app/containers/navigation_bvr";
+import { useNavigation } from "screens/containers/navigation_bvr";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "screens/types";

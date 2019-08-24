@@ -2,21 +2,15 @@
 
 import React from "react";
 import * as fromStore from "screens/reducers";
+import * as fromMoveListsStore from "move_lists/reducers";
 import { makeSlugid, findNeighbourIdx } from "screens/utils";
-import type { MoveListByIdT, MoveListT } from "screens/types";
+import type { MoveListByIdT, MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { UUID, SlugidT } from "kernel/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
 ///////////////////////////////////////////////////////////////////////
-
-export function actAddMoveLists(moveLists: MoveListByIdT) {
-  return {
-    type: "ADD_MOVE_LISTS",
-    moveLists,
-  };
-}
 
 export function actSetMoveFilter(name: string, filter: Function) {
   return (dispatch: Function, getState: Function): SlugidT => {
@@ -58,7 +52,7 @@ export function actSetMoveFilter(name: string, filter: Function) {
 export function actSetMoveListFilter(name: string, filter: Function) {
   return (dispatch: Function, getState: Function): SlugidT => {
     const selectedMoveList = fromStore.getSelectedMoveList(getState());
-    const allMoveLists = fromStore.getMoveLists(getState());
+    const allMoveLists = fromMoveListsStore.getMoveLists(getState());
 
     dispatch({
       type: "SET_MOVE_LIST_FILTER",
@@ -95,41 +89,6 @@ export function actSetMoveListFilter(name: string, filter: Function) {
       }
     }
     return "";
-  };
-}
-
-export function actInsertMoves(
-  moveIds: Array<UUID>,
-  moveListId: UUID,
-  targetMoveId: UUID
-) {
-  const createAction = () => ({
-    type: "INSERT_MOVES_INTO_LIST",
-    moveIds,
-    moveListId,
-    targetMoveId,
-  });
-
-  return (dispatch: Function, getState: Function) => {
-    dispatch(createAction());
-    // $FlowFixMe
-    const moveList = fromStore.getMoveListById(getState())[moveListId];
-    return moveList.moves;
-  };
-}
-
-export function actRemoveMoves(moveIds: Array<UUID>, moveListId: UUID) {
-  const createAction = () => ({
-    type: "REMOVE_MOVES_FROM_LIST",
-    moveIds,
-    moveListId,
-  });
-
-  return (dispatch: Function, getState: Function) => {
-    dispatch(createAction());
-    // $FlowFixMe
-    const moveList = fromStore.getMoveListById(getState())[moveListId];
-    return moveList.moves;
   };
 }
 

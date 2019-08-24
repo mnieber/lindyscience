@@ -2,14 +2,14 @@
 
 import * as React from "react";
 
-import * as api from "screens/api";
+import * as moveListsApi from "move_lists/api";
 
 import { findNeighbourIdx } from "screens/utils";
 import { createErrorHandler } from "app/utils";
 
 import type { UUID } from "kernel/types";
 import type { MoveT } from "moves/types";
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 
 export type MoveClipboardBvrT = {|
   targetMoveLists: Array<MoveListT>,
@@ -43,7 +43,7 @@ export function useMoveClipboard(
         targetMoveList.id,
         ""
       );
-      api
+      moveListsApi
         .saveMoveOrdering(targetMoveList.id, moveIdsInTargetMoveList)
         .catch(createErrorHandler("Could not update the move list"));
       return true;
@@ -66,7 +66,7 @@ export function useMoveClipboard(
       .filter(x => x.sourceMoveListId == sourceMoveList.id)
       .map(x => x.id);
 
-    api
+    moveListsApi
       .updateSourceMoveListId(
         idsOfMovesWithNewSourceMoveList,
         targetMoveList.id
@@ -74,7 +74,7 @@ export function useMoveClipboard(
       .catch(createErrorHandler("Could not update move"));
 
     const newMoveIds = actRemoveMoves(selectedMoveIds, sourceMoveList.id);
-    api
+    moveListsApi
       .saveMoveOrdering(sourceMoveList.id, newMoveIds)
       .catch(createErrorHandler("Could not update the move list"));
 

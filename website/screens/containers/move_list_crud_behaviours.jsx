@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import * as api from "screens/api";
+import * as moveListsApi from "move_lists/api";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
@@ -19,7 +19,8 @@ import {
 } from "screens/containers/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
-import type { MoveListT, MoveListCrudBvrsT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
+import type { MoveListCrudBvrsT } from "screens/types";
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type {
@@ -139,7 +140,7 @@ export function createMoveListCrudBvrs(
     newMoveList: MoveListT
   ) {
     actAddMoveLists(querySetListToDict([newMoveList]));
-    await api
+    await moveListsApi
       .saveMoveList(newMoveList)
       .catch(createErrorHandler("We could not save the movelist"));
     await browseToMove([makeMoveListUrl(newMoveList)], true);

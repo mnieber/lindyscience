@@ -24,23 +24,6 @@ export type MoveSearchResultT = {
   sourceMoveList: any,
 };
 
-export type MoveListT = {
-  id: UUID,
-  name: string,
-  slug: string,
-  description: string,
-  isPrivate: boolean,
-  role: string,
-  tags: Array<TagT>,
-  moves: Array<UUID>,
-  ownerId: number,
-  ownerUsername: string,
-};
-
-export type MoveListByIdT = {
-  [UUID]: MoveListT,
-};
-
 export type FunctionByIdT = {
   [UUID]: Function,
 };

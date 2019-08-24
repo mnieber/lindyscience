@@ -10,7 +10,7 @@ import { getObjectValues } from "utils/utils";
 import { makeMoveListUrl } from "screens/utils";
 import classnames from "classnames";
 
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 
 const LoadingComponent = ({ className, loading, loadingText, ...rest }) => (

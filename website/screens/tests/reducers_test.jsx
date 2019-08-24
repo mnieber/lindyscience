@@ -6,8 +6,10 @@ import * as data from "screens/tests/data";
 import * as reducers from "screens/reducers";
 import * as tagsReducers from "tags/reducers";
 import * as movesReducers from "moves/reducers";
+import * as moveListsReducers from "move_lists/reducers";
 import * as actions from "screens/actions";
 import * as movesActions from "moves/actions";
+import * as moveListsActions from "move_lists/actions";
 import { getObjectValues } from "utils/utils";
 
 test("select highlighted move", function(t) {
@@ -24,16 +26,18 @@ test("select highlighted move", function(t) {
 });
 
 test("add move lists", function(t) {
-  let sMoveList = reducers.moveListsReducer(undefined, {});
+  let sMoveList = moveListsReducers(undefined, {});
   t.deepEqual(sMoveList, {});
 
   let sMoves = movesReducers.movesReducer(undefined, {});
   t.deepEqual(sMoves, {});
 
-  const a = actions.actAddMoveLists({ [data.moveList1.id]: data.moveList1 });
+  const a = moveListsActions.actAddMoveLists({
+    [data.moveList1.id]: data.moveList1,
+  });
   const a2 = movesActions.actAddMoves(getObjectValues(data.moves));
 
-  sMoveList = reducers.moveListsReducer(sMoveList, a);
+  sMoveList = moveListsReducers(sMoveList, a);
   t.deepEqual(sMoveList, { [data.moveList1.id]: data.moveList1 });
 
   sMoves = movesReducers.movesReducer(sMoves, a2);
@@ -55,9 +59,9 @@ test("add move lists", function(t) {
 });
 
 test("insert moves into list", function(t) {
-  let sMoveList = reducers.moveListsReducer(
+  let sMoveList = moveListsReducers(
     undefined,
-    actions.actAddMoveLists({ [data.moveList1.id]: data.moveList1 })
+    moveListsActions.actAddMoveLists({ [data.moveList1.id]: data.moveList1 })
   );
   let sMoves = movesReducers.movesReducer(
     undefined,
@@ -67,7 +71,7 @@ test("insert moves into list", function(t) {
   const moveIds = ["123"];
   const moveListId = data.moveList1.id;
 
-  sMoveList = reducers.moveListsReducer(sMoveList, {
+  sMoveList = moveListsReducers(sMoveList, {
     type: "INSERT_MOVES_INTO_LIST",
     moveIds,
     moveListId,

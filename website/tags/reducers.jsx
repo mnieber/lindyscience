@@ -4,7 +4,7 @@ import { getObjectValues } from "utils/utils";
 
 import type { TagT, TagMapT } from "tags/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
-import type { MoveListT } from "screens/types"; // TODO
+import type { MoveListT } from "move_lists/types"; // TODO
 import type { MoveT } from "moves/types"; // TODO
 
 const _stateTags = (state: RootReducerStateT): TagsStateT => state.tags;

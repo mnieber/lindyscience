@@ -9,11 +9,11 @@ import { getId } from "app/utils";
 import { getStore } from "app/store";
 
 import Widgets from "screens/presentation/index";
-import { MoveListTitle } from "screens/presentation/move_list_details";
+import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { withHostedStaticMovePanels } from "screens/containers/with_hosted_static_move_panels";
 
 import type { MoveT } from "moves/types";
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { TagT } from "tags/types";
 
 type PropsT = {

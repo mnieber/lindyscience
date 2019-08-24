@@ -17,7 +17,7 @@ import { createMoveListCrudBvrs } from "screens/containers/move_list_crud_behavi
 import { useNavigation } from "screens/containers/navigation_bvr";
 
 import type { MoveT } from "moves/types";
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { UserProfileT } from "profiles/types";
 import type { DataContainerT } from "screens/containers/data_container";
 import type { SelectItemsBvrT } from "screens/containers/move_selection_behaviours";

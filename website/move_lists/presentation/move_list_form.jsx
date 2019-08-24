@@ -16,7 +16,7 @@ import {
 } from "rich_text/presentation/rich_text_editor";
 import { toEditorState } from "rich_text/utils/editor_state";
 
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
 

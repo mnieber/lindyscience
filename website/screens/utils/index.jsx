@@ -4,7 +4,7 @@ import { splitIntoKeywords, isNone } from "utils/utils";
 import parse from "url-parse";
 
 import type { MoveT } from "moves/types";
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { UUID, SlugidT } from "kernel/types";
 
 export function makeSlugid(slug: string, id: UUID) {

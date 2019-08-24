@@ -4,7 +4,7 @@ import * as React from "react";
 import classnames from "classnames";
 import { Link } from "@reach/router";
 
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { UserProfileT } from "profiles/types";
 
 // MoveListDetails

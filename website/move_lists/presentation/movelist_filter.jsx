@@ -4,7 +4,7 @@ import * as React from "react";
 import classnames from "classnames";
 import { ValuePicker, strToPickerValue } from "utils/form_utils";
 import { splitIntoKeywords } from "utils/utils";
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
 

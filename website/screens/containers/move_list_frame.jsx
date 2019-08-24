@@ -21,12 +21,8 @@ import {
 import { withMoveListFrameBvrs } from "screens/containers/with_move_list_frame_bvrs";
 import { MoveCrudBvrsContext } from "screens/containers/move_crud_behaviours";
 import { MoveListCrudBvrsContext } from "screens/containers/move_list_crud_behaviours";
-
-import type {
-  MoveListT,
-  MoveCrudBvrsT,
-  MoveListCrudBvrsT,
-} from "screens/types";
+import type { MoveListT } from "move_lists/types";
+import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
 import type { VideoLinksByIdT } from "videolinks/types";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";

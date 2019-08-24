@@ -1,13 +1,14 @@
 // @flow
 
+import { test } from "tape";
 import * as actions from "screens/actions";
 import * as movesActions from "moves/actions";
+import * as moveListsActions from "move_lists/actions";
 import * as data from "screens/tests/data";
 import * as fromStore from "screens/reducers";
 import { getObjectValues } from "utils/utils";
 import { createTagsAndKeywordsFilter } from "screens/utils";
 import { reducer } from "app/root_reducer";
-import { test } from "tape";
 import { Thunk, FlushThunks } from "redux-testkit";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
@@ -65,6 +66,7 @@ test("test actSetMoveListFilter", function(t) {
   t.end();
 });
 
+// TODO: move to move_lists
 test("test actInsertMoves", function(t) {
   const { store } = _setUp();
   const move1 = createNewMove(data.profile1, data.moveList1.id);
@@ -75,7 +77,7 @@ test("test actInsertMoves", function(t) {
 
     store.dispatch(movesActions.actAddMoves(newMoves));
     const moveIdsInList = store.dispatch(
-      actions.actInsertMoves(newMoveIds, data.moveList1.id, "")
+      moveListsActions.actInsertMoves(newMoveIds, data.moveList1.id, "")
     );
 
     t.deepEqual(

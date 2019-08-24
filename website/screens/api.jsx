@@ -3,90 +3,10 @@
 import { flatten } from "utils/utils";
 import { normalize, schema } from "normalizr";
 import { doQuery } from "app/client";
-import type { MoveListT } from "screens/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
 
 // Api moves
-
-export function saveMoveList(values: MoveListT) {
-  return doQuery(
-    `mutation saveMoveList(
-      $id: String!,
-      $name: String!,
-      $slug: String!,
-      $description: String!,
-      $isPrivate: Boolean!,
-      $tags: [String]!
-    ) {
-      saveMoveList(
-        pk: $id,
-        name: $name,
-        slug: $slug,
-        description: $description,
-        isPrivate: $isPrivate,
-        tags: $tags
-      ) { ok }
-    }`,
-    {
-      ...values,
-    }
-  );
-}
-
-export function updateSourceMoveListId(
-  moveIds: Array<UUID>,
-  sourceMoveListId: UUID
-) {
-  return doQuery(
-    `mutation updateSourceMoveListId(
-      $moveIds: [String]!,
-      $sourceMoveListId: String!
-    ) {
-      updateSourceMoveListId(
-        moveIds: $moveIds,
-        sourceMoveListId: $sourceMoveListId
-      ) { ok }
-    }`,
-    {
-      moveIds,
-      sourceMoveListId,
-    }
-  );
-}
-
-export function saveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
-  return doQuery(
-    `mutation saveMoveOrdering(
-      $moveListId: String!,
-      $moveIds: [String]!,
-    ) {
-      saveMoveOrdering(
-        moveListId: $moveListId,
-        moveIds: $moveIds
-      ) { ok }
-    }`,
-    {
-      moveListId,
-      moveIds,
-    }
-  );
-}
-
-export function saveMoveListOrdering(moveListIds: Array<UUID>) {
-  return doQuery(
-    `mutation saveMoveListOrdering(
-      $moveListIds: [String]!,
-    ) {
-      saveMoveListOrdering(
-        moveListIds: $moveListIds
-      ) { ok }
-    }`,
-    {
-      moveListIds,
-    }
-  );
-}
 
 const videoLink = new schema.Entity("videoLinks");
 const tip = new schema.Entity("tips");

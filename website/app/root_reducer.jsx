@@ -9,6 +9,7 @@ import { reducer as tipsReducer } from "tips/reducers";
 import { reducer as videoLinksReducer } from "videolinks/reducers";
 import { reducer as profileReducer } from "profiles/reducers";
 import { reducer as appReducer } from "app/reducers";
+import { reducer as moveListsReducer } from "move_lists/reducers";
 import { reducer as toastrReducer } from "react-redux-toastr";
 
 import type { ReducerStateT as ScreensReducerStateT } from "screens/reducers";
@@ -18,6 +19,7 @@ import type { ReducerStateT as VideoLinksReducerStateT } from "videolinks/reduce
 import type { ReducerStateT as TipsReducerStateT } from "tips/reducers";
 import type { ReducerStateT as VotesReducerStateT } from "votes/reducers";
 import type { ReducerStateT as AppReducerStateT } from "app/reducers";
+import type { ReducerStateT as MoveListsReducerStateT } from "move_lists/reducers";
 import type { ReducerStateT as ProfilesReducerStateT } from "profiles/reducers";
 import type { InputSelector } from "reselect";
 
@@ -31,6 +33,7 @@ export type RootReducerStateT = {
   videoLinks: VideoLinksReducerStateT,
   tips: TipsReducerStateT,
   tags: TagsReducerStateT,
+  moveLists: MoveListsReducerStateT,
 };
 
 export type Selector<TResult> = InputSelector<RootReducerStateT, void, TResult>;
@@ -46,4 +49,5 @@ export const reducer: RootReducerStateT = combineReducers({
   videoLinks: videoLinksReducer,
   tips: tipsReducer,
   tags: tagsReducer,
+  moveLists: moveListsReducer,
 });

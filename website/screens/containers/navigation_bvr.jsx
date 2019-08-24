@@ -6,7 +6,7 @@ import { browseToMove } from "screens/containers/index";
 import { newMoveSlug } from "moves/utils";
 import { newMoveListSlug, makeMoveListUrl } from "screens/utils";
 
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
 

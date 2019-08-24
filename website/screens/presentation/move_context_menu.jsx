@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Menu, Item, Submenu } from "react-contexify";
 
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 
 type MoveContextMenuPropsT = {
   targetMoveLists: Array<MoveListT>,

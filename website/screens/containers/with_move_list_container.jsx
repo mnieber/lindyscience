@@ -10,7 +10,7 @@ import { createErrorHandler, getId } from "app/utils";
 
 import type { DataContainerT } from "screens/containers/data_container";
 import type { UUID } from "kernel/types";
-import type { MoveListT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
 
 // $FlowFixMe
 export const withMoveListContainer = compose(

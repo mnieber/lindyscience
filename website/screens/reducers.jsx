@@ -10,9 +10,11 @@ import {
 } from "utils/utils";
 import { findMove, findMoveBySlugid } from "screens/utils";
 import { getMoveById } from "moves/reducers";
+import { getMoveLists } from "move_lists/reducers";
 
 import type { MoveT, MoveByIdT } from "moves/types";
-import type { MoveListT, MoveListByIdT, FunctionByIdT } from "screens/types";
+import type { MoveListT, MoveListByIdT } from "move_lists/types";
+import type { FunctionByIdT } from "screens/types";
 import type { UUID } from "kernel/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
@@ -20,8 +22,6 @@ import type { RootReducerStateT, Selector } from "app/root_reducer";
 // Private state helpers
 ///////////////////////////////////////////////////////////////////////
 
-const _stateMoveLists = (state: RootReducerStateT): MoveListsState =>
-  state.screens.moveLists;
 const _stateSelection = (state: RootReducerStateT): SelectionState =>
   state.screens.selection;
 const _stateMoveFilters = (state: RootReducerStateT): MoveFiltersState =>
@@ -91,66 +91,9 @@ export function moveListFiltersReducer(
   }
 }
 
-///////////////////////////////////////////////////////////////////////
-// MoveList
-///////////////////////////////////////////////////////////////////////
-
-type MoveListsState = MoveListByIdT;
-
-export function moveListsReducer(
-  state: MoveListsState = {},
-  action: any
-): MoveListsState {
-  switch (action.type) {
-    case "ADD_MOVE_LISTS":
-      return {
-        ...state,
-        ...action.moveLists,
-      };
-    case "INSERT_MOVES_INTO_LIST":
-      const acc = insertIdsIntoList(
-        action.moveIds,
-        state[action.moveListId].moves,
-        action.targetMoveId
-      );
-      return {
-        ...state,
-        [action.moveListId]: {
-          ...state[action.moveListId],
-          moves: acc,
-        },
-      };
-    case "REMOVE_MOVES_FROM_LIST":
-      const moves = state[action.moveListId].moves.filter(
-        x => !action.moveIds.includes(x)
-      );
-
-      return {
-        ...state,
-        [action.moveListId]: {
-          ...state[action.moveListId],
-          moves: moves,
-        },
-      };
-
-    default:
-      return state;
-  }
-}
-
-export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
-  [_stateMoveLists, _stateSelection],
-
-  (stateMoveLists, stateSelection): Array<MoveListT> => {
-    return getObjectValues(stateMoveLists);
-  }
-);
-export const getMoveListById = _stateMoveLists;
-
 export type ReducerStateT = {
   moveFilters: MoveFiltersState,
   moveListFilters: MoveListFiltersState,
-  moveLists: MoveListsState,
   selection: SelectionState,
 };
 
@@ -158,7 +101,6 @@ export type ReducerStateT = {
 export const reducer = combineReducers({
   moveFilters: moveFiltersReducer,
   moveListFilters: moveListFiltersReducer,
-  moveLists: moveListsReducer,
   selection: selectionReducer,
 });
 

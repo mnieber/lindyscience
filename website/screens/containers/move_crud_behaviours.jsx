@@ -17,7 +17,8 @@ import {
 } from "screens/containers/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
-import type { MoveListT, MoveCrudBvrsT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
+import type { MoveCrudBvrsT } from "screens/types";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";

@@ -4,7 +4,8 @@ import * as React from "react";
 import Widgets from "screens/presentation/index";
 import { MoveList } from "screens/presentation/movelist";
 import type { UUID } from "kernel/types";
-import type { UserProfileT, TagT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { TagT } from "tags/types";
 import type { MoveT } from "moves/types";
 import type { VideoLinksByIdT } from "videolinks/types";
 import type {

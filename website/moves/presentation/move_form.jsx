@@ -23,7 +23,7 @@ import {
 
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,

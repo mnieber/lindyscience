@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
-import { Tags } from "profiles/presentation/tags";
+import { Tags } from "tags/presentation/tags";
 import type { MovePrivateDataT } from "moves/types";
-import type { UserProfileT, TagT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 type MovePrivateDatasPanelPropsT = {
   userProfile: UserProfileT,

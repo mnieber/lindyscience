@@ -14,7 +14,8 @@ import { withMoveCrudBvrsContext } from "screens/containers/move_crud_behaviours
 
 import type { MoveT } from "moves/types";
 import type { MoveListT, MoveCrudBvrsT } from "screens/types";
-import type { UserProfileT, TagT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 type PropsT = {
   move: MoveT,

@@ -12,6 +12,7 @@ import * as profilesActions from "profiles/actions";
 import * as videoLinksActions from "videolinks/actions";
 import * as tipsActions from "tips/actions";
 import * as movesActions from "moves/actions";
+import * as tagsActions from "tags/actions";
 
 import * as fromAppStore from "app/reducers";
 import * as fromScreensStore from "screens/reducers";
@@ -20,6 +21,7 @@ import * as fromProfilesStore from "profiles/reducers";
 import * as fromVideoLinksStore from "videolinks/reducers";
 import * as fromTipsStore from "tips/reducers";
 import * as fromMovesStore from "moves/reducers";
+import * as fromTagsStore from "tags/reducers";
 
 import * as appApi from "app/api";
 import * as screensApi from "screens/api";
@@ -28,6 +30,7 @@ import * as profilesApi from "profiles/api";
 import * as videoLinksApi from "videolinks/api";
 import * as tipsApi from "tips/api";
 import * as movesApi from "moves/api";
+import * as tagsApi from "tags/api";
 
 export type ContainerT = {
   connect: Function,
@@ -57,6 +60,7 @@ const Container: ContainerT = {
     ...videoLinksActions,
     ...tipsActions,
     ...movesActions,
+    ...tagsActions,
   },
   api: {
     ...appApi,
@@ -66,6 +70,7 @@ const Container: ContainerT = {
     ...videoLinksApi,
     ...tipsApi,
     ...movesApi,
+    ...tagsApi,
   },
   fromStore: {
     ...fromAppStore,
@@ -75,6 +80,7 @@ const Container: ContainerT = {
     ...fromVideoLinksStore,
     ...fromTipsStore,
     ...fromMovesStore,
+    ...fromTagsStore,
   },
   browseToMove,
 };

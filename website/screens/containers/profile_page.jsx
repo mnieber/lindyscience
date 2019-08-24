@@ -8,7 +8,8 @@ import { isOwner } from "app/utils";
 import { getObjectValues } from "utils/utils";
 
 import type { UUID } from "kernel/types";
-import type { UserProfileT, TagT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { TagT } from "tags/types";
 import type { MoveListT, MoveListCrudBvrsT } from "screens/types";
 
 type ProfilePagePropsT = {

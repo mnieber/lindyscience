@@ -4,7 +4,8 @@ import * as React from "react";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 
-import type { TagT, UserProfileT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 // SearchMovesPage
 

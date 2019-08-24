@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 export function Tags({ tags }: { tags: Array<TagT> }) {
   const items = tags.map((tagName, idx) => {

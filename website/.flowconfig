@@ -11,6 +11,7 @@
 
 module.name_mapper='^kernel/\(.*\)$' -> '<PROJECT_ROOT>/kernel/\1'
 module.name_mapper='^screens/\(.*\)$' -> '<PROJECT_ROOT>/screens/\1'
+module.name_mapper='^tags/\(.*\)$' -> '<PROJECT_ROOT>/tags/\1'
 module.name_mapper='^tips/\(.*\)$' -> '<PROJECT_ROOT>/tips/\1'
 module.name_mapper='^videolinks/\(.*\)$' -> '<PROJECT_ROOT>/videolinks/\1'
 module.name_mapper='^moves/\(.*\)$' -> '<PROJECT_ROOT>/moves/\1'

@@ -46,14 +46,3 @@ export function updateProfile(moveUrl: string) {
     { moveUrl }
   );
 }
-
-export function loadUserTags() {
-  return doQuery(
-    `query queryUserTags {
-      userTags {
-        moveTags
-        moveListTags
-      }
-    }`
-  );
-}

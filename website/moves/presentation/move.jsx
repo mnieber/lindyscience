@@ -4,14 +4,14 @@ import * as React from "react";
 import classnames from "classnames";
 
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
-import { Tags } from "profiles/presentation/tags";
+import { Tags } from "tags/presentation/tags";
 import {
   createReadOnlyEditorState,
   toEditorState,
 } from "rich_text/utils/editor_state";
 
 import type { MoveT } from "moves/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 const styleMap = {
   TIMING: {

@@ -18,7 +18,7 @@ import { toEditorState } from "rich_text/utils/editor_state";
 
 import type { MoveListT } from "screens/types";
 import type { UUID } from "kernel/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 // MoveListForm
 

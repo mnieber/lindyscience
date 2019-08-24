@@ -14,7 +14,6 @@ import { getMoveById } from "moves/reducers";
 import type { MoveT, MoveByIdT } from "moves/types";
 import type { MoveListT, MoveListByIdT, FunctionByIdT } from "screens/types";
 import type { UUID } from "kernel/types";
-import type { TagT, TagMapT } from "profiles/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 ///////////////////////////////////////////////////////////////////////
@@ -23,7 +22,6 @@ import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 const _stateMoveLists = (state: RootReducerStateT): MoveListsState =>
   state.screens.moveLists;
-const _stateTags = (state: RootReducerStateT): TagsState => state.screens.tags;
 const _stateSelection = (state: RootReducerStateT): SelectionState =>
   state.screens.selection;
 const _stateMoveFilters = (state: RootReducerStateT): MoveFiltersState =>
@@ -149,94 +147,11 @@ export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
 );
 export const getMoveListById = _stateMoveLists;
 
-///////////////////////////////////////////////////////////////////////
-// Tags
-///////////////////////////////////////////////////////////////////////
-
-const _createTagMap = (tags: Array<string>): TagMapT => {
-  return tags.reduce((acc, tag) => {
-    acc[tag] = true;
-    return acc;
-  }, ({}: TagMapT));
-};
-
-type TagsState = {
-  moveTags: TagMapT,
-  moveListTags: TagMapT,
-};
-
-function _addTags(listOfTagLists: Array<Array<TagT>>, tagMap: TagMapT) {
-  return listOfTagLists.reduce(
-    (acc, tags) => {
-      tags.forEach(tag => {
-        acc[tag] = true;
-      });
-      return acc;
-    },
-    { ...tagMap }
-  );
-}
-
-export function tagsReducer(
-  state: TagsState = {
-    moveTags: {},
-    moveListTags: {},
-  },
-  action: any
-): TagsState {
-  switch (action.type) {
-    case "SET_MOVE_TAGS":
-      return {
-        ...state,
-        moveTags: action.tags,
-      };
-    case "SET_MOVE_LIST_TAGS":
-      return {
-        ...state,
-        moveListTags: action.tags,
-      };
-    case "ADD_MOVES":
-      return {
-        ...state,
-        moveTags: _addTags(
-          getObjectValues(action.moves).map(x => x.tags),
-          state.moveTags
-        ),
-      };
-    case "ADD_MOVE_LISTS":
-      return {
-        ...state,
-        moveListTags: _addTags(
-          getObjectValues(action.moveLists).map((x: MoveListT) => x.tags),
-          state.moveListTags
-        ),
-      };
-    default:
-      return state;
-  }
-}
-
-export const getMoveTags: Selector<Array<TagT>> = createSelector(
-  [_stateTags],
-
-  (stateTags): Array<TagT> => {
-    return Object.keys(stateTags.moveTags);
-  }
-);
-export const getMoveListTags: Selector<Array<TagT>> = createSelector(
-  [_stateTags],
-
-  (stateTags): Array<TagT> => {
-    return Object.keys(stateTags.moveListTags);
-  }
-);
-
 export type ReducerStateT = {
   moveFilters: MoveFiltersState,
   moveListFilters: MoveListFiltersState,
   moveLists: MoveListsState,
   selection: SelectionState,
-  tags: TagsState,
 };
 
 // $FlowFixMe
@@ -245,7 +160,6 @@ export const reducer = combineReducers({
   moveListFilters: moveListFiltersReducer,
   moveLists: moveListsReducer,
   selection: selectionReducer,
-  tags: tagsReducer,
 });
 
 export const getFilteredMoveLists: Selector<Array<MoveListT>> = createSelector(

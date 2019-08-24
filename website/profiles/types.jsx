@@ -12,9 +12,3 @@ export type UserProfileT = {
   username: string,
   recentMoveUrl: string,
 };
-
-export type TagT = string;
-
-export type TagMapT = {
-  [TagT]: boolean,
-};

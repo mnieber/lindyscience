@@ -5,7 +5,7 @@ import { normalize, schema } from "normalizr";
 import { doQuery } from "app/client";
 import type { MoveListT } from "screens/types";
 import type { UUID } from "kernel/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 // Api moves
 

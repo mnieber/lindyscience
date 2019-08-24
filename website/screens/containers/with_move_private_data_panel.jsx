@@ -11,7 +11,7 @@ import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
 
 import type { MoveT } from "moves/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
 
 type PropsT = {

@@ -30,7 +30,8 @@ import type {
 import type { VideoLinksByIdT } from "videolinks/types";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
-import type { UserProfileT, TagT } from "profiles/types";
+import type { UserProfileT } from "profiles/types";
+import type { TagT } from "tags/types";
 import type { SelectMovesBvrT } from "screens/containers/with_move_list_frame_bvrs";
 import type { MoveClipboardBvrT } from "screens/containers/move_clipboard_behaviours";
 

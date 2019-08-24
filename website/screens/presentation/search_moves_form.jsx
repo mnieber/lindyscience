@@ -15,7 +15,7 @@ import { newMoveSlug } from "moves/utils";
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,

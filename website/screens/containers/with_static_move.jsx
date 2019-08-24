@@ -14,7 +14,7 @@ import { withHostedStaticMovePanels } from "screens/containers/with_hosted_stati
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "screens/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 
 type PropsT = {
   move: MoveT,

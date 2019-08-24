@@ -5,7 +5,7 @@
 ///////////////////////////////////////////////////////////////////////
 
 import type { UUID } from "kernel/types";
-import type { TagT } from "profiles/types";
+import type { TagT } from "tags/types";
 import type {
   SaveMoveBvrT,
   InsertMovesBvrT,

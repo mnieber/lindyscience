@@ -6,7 +6,6 @@ import { makeSlugid, findNeighbourIdx } from "screens/utils";
 import type { MoveListByIdT, MoveListT } from "screens/types";
 import type { MoveT } from "moves/types";
 import type { UUID, SlugidT } from "kernel/types";
-import type { TagT } from "profiles/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
@@ -148,19 +147,5 @@ export function actSetSelectedMoveListUrl(
   return {
     type: "SET_SELECTED_MOVE_LIST_URL",
     moveListUrl: ownerUsername + "/" + moveListSlug,
-  };
-}
-
-export function actSetMoveTags(tags: Array<TagT>) {
-  return {
-    type: "SET_MOVE_TAGS",
-    tags,
-  };
-}
-
-export function actSetMoveListTags(tags: Array<TagT>) {
-  return {
-    type: "SET_MOVE_LIST_TAGS",
-    tags,
   };
 }

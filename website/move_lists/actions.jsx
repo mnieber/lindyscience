@@ -5,6 +5,7 @@ import * as fromStore from "move_lists/reducers";
 
 import type { MoveListByIdT } from "move_lists/types";
 import type { UUID } from "kernel/types";
+import type { TagT } from "tags/types";
 
 export function actAddMoveLists(moveLists: MoveListByIdT) {
   return {
@@ -45,5 +46,12 @@ export function actRemoveMoves(moveIds: Array<UUID>, moveListId: UUID) {
     // $FlowFixMe
     const moveList = fromStore.getMoveListById(getState())[moveListId];
     return moveList.moves;
+  };
+}
+
+export function actSetMoveListTags(tags: Array<TagT>) {
+  return {
+    type: "SET_MOVE_LIST_TAGS",
+    tags,
   };
 }

@@ -1,14 +1,16 @@
 // @flow
 
-import { combineReducers, compose } from "redux";
+import { combineReducers } from "redux";
 import { createSelector } from "reselect";
 import {
   reduceMapToMap,
   getObjectValues,
   querySetListToDict,
 } from "utils/utils";
+import { addTags } from "tags/utils";
 
 import type { UUID } from "kernel/types";
+import type { TagT, TagMapT } from "tags/types";
 import type { MoveT, MoveByIdT, MovePrivateDataByIdT } from "moves/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 
@@ -16,21 +18,23 @@ import type { RootReducerStateT, Selector } from "app/root_reducer";
 // Private state helpers
 ///////////////////////////////////////////////////////////////////////
 
-const _stateMoves = (state: RootReducerStateT): MovesState => state.moves.moves;
+const _stateMoves = (state: RootReducerStateT): MovesStateT =>
+  state.moves.moves;
+const _stateTags = (state: RootReducerStateT): TagsStateT => state.moves.tags;
 const _stateMovePrivateDatas = (
   state: RootReducerStateT
-): MovePrivateDatasState => state.moves.movePrivateDatas;
+): MovePrivateDatasStateT => state.moves.movePrivateDatas;
 
 ///////////////////////////////////////////////////////////////////////
 // Private data
 ///////////////////////////////////////////////////////////////////////
 
-type MovePrivateDatasState = MovePrivateDataByIdT;
+type MovePrivateDatasStateT = MovePrivateDataByIdT;
 
 export function movePrivateDatasReducer(
-  state: MovePrivateDatasState = {},
+  state: MovePrivateDatasStateT = {},
   action: any
-): MovePrivateDatasState {
+): MovePrivateDatasStateT {
   switch (action.type) {
     case "SET_SIGNED_IN_EMAIL":
       return {};
@@ -58,9 +62,12 @@ export const getPrivateDataByMoveId: Selector<MovePrivateDataByIdT> = createSele
 // Moves
 ///////////////////////////////////////////////////////////////////////
 
-type MovesState = MoveByIdT;
+type MovesStateT = MoveByIdT;
 
-export function movesReducer(state: MovesState = {}, action: any): MovesState {
+export function movesReducer(
+  state: MovesStateT = {},
+  action: any
+): MovesStateT {
   switch (action.type) {
     case "ADD_MOVES":
       return {
@@ -71,6 +78,36 @@ export function movesReducer(state: MovesState = {}, action: any): MovesState {
       return state;
   }
 }
+
+type TagsStateT = TagMapT;
+
+export function tagsReducer(state: TagsStateT = {}, action: any): TagsStateT {
+  switch (action.type) {
+    case "SET_MOVE_TAGS":
+      return {
+        ...state,
+        moveTags: action.tags,
+      };
+    case "ADD_MOVES":
+      return {
+        ...state,
+        moveTags: addTags(
+          getObjectValues(action.moves).map(x => x.tags),
+          state
+        ),
+      };
+    default:
+      return state;
+  }
+}
+
+export const getMoveTags: Selector<Array<TagT>> = createSelector(
+  [_stateTags],
+
+  (stateTags): Array<TagT> => {
+    return Object.keys(stateTags);
+  }
+);
 
 export const getMoveById: Selector<MoveByIdT> = createSelector(
   [_stateMoves, getPrivateDataByMoveId],
@@ -96,12 +133,14 @@ export const getMoves: Selector<Array<MoveT>> = createSelector(
 );
 
 export type ReducerStateT = {
-  moves: MovesState,
-  movePrivateDatas: MovePrivateDatasState,
+  moves: MovesStateT,
+  tags: TagsStateT,
+  movePrivateDatas: MovePrivateDatasStateT,
 };
 
 // $FlowFixMe
 export const reducer = combineReducers({
+  tags: tagsReducer,
   moves: movesReducer,
   movePrivateDatas: movePrivateDatasReducer,
 });

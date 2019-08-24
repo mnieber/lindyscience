@@ -1,17 +1,21 @@
+import { combineReducers } from "redux";
 import { createSelector } from "reselect";
 import { getObjectValues, insertIdsIntoList } from "utils/utils";
+import { addTags } from "tags/utils";
 
 import type { MoveListT, MoveListByIdT } from "move_lists/types";
+import type { TagT, TagMapT } from "tags/types";
 
 const _stateMoveLists = (state: RootReducerStateT): MoveListsStateT =>
-  state.moveLists;
+  state.moveLists.moveLists;
+const _stateTags = (state: RootReducerStateT): MoveListsStateT =>
+  state.moveLists.tags;
 
 ///////////////////////////////////////////////////////////////////////
 // MoveList
 ///////////////////////////////////////////////////////////////////////
 
 type MoveListsStateT = MoveListByIdT;
-export type ReducerStateT = MoveListsStateT;
 
 export function moveListsReducer(
   state: MoveListsStateT = {},
@@ -54,6 +58,33 @@ export function moveListsReducer(
   }
 }
 
+export function tagsReducer(state: TagMapT = {}, action: any): TagsStateT {
+  switch (action.type) {
+    case "SET_MOVE_LIST_TAGS":
+      return {
+        ...state,
+        moveListTags: action.tags,
+      };
+    case "ADD_MOVE_LISTS":
+      return {
+        ...state,
+        moveListTags: addTags(
+          getObjectValues(action.moveLists).map((x: MoveListT) => x.tags),
+          state
+        ),
+      };
+    default:
+      return state;
+  }
+}
+export const getMoveListTags: Selector<Array<TagT>> = createSelector(
+  [_stateTags],
+
+  (stateTags): Array<TagT> => {
+    return Object.keys(stateTags);
+  }
+);
+
 export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
   [_stateMoveLists],
 
@@ -63,4 +94,13 @@ export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
 );
 export const getMoveListById = _stateMoveLists;
 
-export const reducer = moveListsReducer;
+export type ReducerStateT = {
+  moveLists: MoveListsStateT,
+  tags: TagsStateT,
+};
+
+// $FlowFixMe
+export const reducer = combineReducers({
+  tags: tagsReducer,
+  moveLists: moveListsReducer,
+});

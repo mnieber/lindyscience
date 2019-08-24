@@ -12,7 +12,6 @@ import * as profilesActions from "profiles/actions";
 import * as videoLinksActions from "videolinks/actions";
 import * as tipsActions from "tips/actions";
 import * as movesActions from "moves/actions";
-import * as tagsActions from "tags/actions";
 import * as moveListsActions from "move_lists/actions";
 
 import * as fromAppStore from "app/reducers";
@@ -22,7 +21,6 @@ import * as fromProfilesStore from "profiles/reducers";
 import * as fromVideoLinksStore from "videolinks/reducers";
 import * as fromTipsStore from "tips/reducers";
 import * as fromMovesStore from "moves/reducers";
-import * as fromTagsStore from "tags/reducers";
 import * as fromMoveListsStore from "move_lists/reducers";
 
 import * as appApi from "app/api";
@@ -63,7 +61,6 @@ const Container: ContainerT = {
     ...videoLinksActions,
     ...tipsActions,
     ...movesActions,
-    ...tagsActions,
     ...moveListsActions,
   },
   api: {
@@ -85,7 +82,6 @@ const Container: ContainerT = {
     ...fromVideoLinksStore,
     ...fromTipsStore,
     ...fromMovesStore,
-    ...fromTagsStore,
     ...fromMoveListsStore,
   },
   browseToMove,

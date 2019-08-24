@@ -4,7 +4,6 @@ import { test } from "tape";
 import * as data from "screens/tests/data";
 
 import * as reducers from "screens/reducers";
-import * as tagsReducers from "tags/reducers";
 import * as movesReducers from "moves/reducers";
 import * as moveListsReducers from "move_lists/reducers";
 import * as actions from "screens/actions";
@@ -43,11 +42,11 @@ test("add move lists", function(t) {
   sMoves = movesReducers.movesReducer(sMoves, a2);
   t.deepEqual(sMoves, data.moves);
 
-  let sTags = tagsReducers.tagsReducer(undefined, {});
+  let sTags = movesReducers.tagsReducer(undefined, {});
   t.deepEqual(sTags.moveListTags, {});
 
-  sTags = tagsReducers.tagsReducer(sTags, a);
-  sTags = tagsReducers.tagsReducer(sTags, a2);
+  sTags = movesReducers.tagsReducer(sTags, a);
+  sTags = movesReducers.tagsReducer(sTags, a2);
   t.deepEqual(sTags.moveListTags, { one: true, two: true, three: true });
   t.deepEqual(sTags.moveTags, {
     "swing out": true,

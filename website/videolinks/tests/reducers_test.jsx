@@ -1,7 +1,7 @@
 // @flow
 
 import { test } from "tape";
-import * as data from "screens/tests/data"; // TODO
+import * as data from "videolinks/tests/data";
 
 import * as reducers from "videolinks/reducers";
 import * as actions from "videolinks/actions";

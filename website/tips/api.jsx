@@ -1,3 +1,5 @@
+import { doQuery } from "app/client";
+
 import type { TipT } from "tips/types";
 import type { UUID } from "kernel/types";
 

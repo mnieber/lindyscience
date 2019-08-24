@@ -1,3 +1,5 @@
+import { doQuery } from "app/client";
+
 import type { VideoLinkT } from "videolinks/types";
 
 export function saveVideoLink(moveId: UUID, values: VideoLinkT) {

@@ -1,5 +1,5 @@
 import { test } from "tape";
-import * as data from "screens/tests/data"; // TODO
+import * as data from "tips/tests/data";
 
 test("add tips", function(t) {
   let sTips = reducers.tipsReducer(undefined, {});

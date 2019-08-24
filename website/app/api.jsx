@@ -1,7 +1,7 @@
 // @flow
 
 import { toCamelCase } from "utils/utils";
-import { doQuery, setToken } from "app/client";
+import { setToken } from "app/client";
 import { get, post } from "utils/api_utils";
 import type { UUID } from "kernel/types";
 

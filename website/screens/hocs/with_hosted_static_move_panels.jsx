@@ -9,7 +9,7 @@ import Widgets from "screens/presentation/index";
 
 import { getId } from "app/utils";
 
-import { withMovePrivateDataPanel } from "screens/containers/with_move_private_data_panel";
+import { withMovePrivateDataPanel } from "screens/hocs/with_move_private_data_panel";
 
 import type { VideoLinksByIdT } from "videolinks/types";
 import type { TipsByIdT } from "tips/types";

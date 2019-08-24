@@ -10,8 +10,8 @@ import type { MoveT } from "moves/types";
 import type { VideoLinksByIdT } from "videolinks/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
-import type { MoveClipboardBvrT } from "screens/containers/move_clipboard_behaviours";
-import type { SelectItemsBvrT } from "screens/containers/move_selection_behaviours";
+import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
+import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
 
 type HandlersT = {
   onDrop: (sourceMoveId: UUID, targetId: UUID, isBefore: boolean) => void,

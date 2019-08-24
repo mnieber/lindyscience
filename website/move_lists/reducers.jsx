@@ -1,9 +1,10 @@
+import { createSelector } from "reselect";
 import { getObjectValues, insertIdsIntoList } from "utils/utils";
 
 import type { MoveListT, MoveListByIdT } from "move_lists/types";
 
 const _stateMoveLists = (state: RootReducerStateT): MoveListsStateT =>
-  state.screens.moveLists;
+  state.moveLists;
 
 ///////////////////////////////////////////////////////////////////////
 // MoveList
@@ -54,9 +55,9 @@ export function moveListsReducer(
 }
 
 export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
-  [_stateMoveLists, _stateSelection],
+  [_stateMoveLists],
 
-  (stateMoveLists, stateSelection): Array<MoveListT> => {
+  (stateMoveLists): Array<MoveListT> => {
     return getObjectValues(stateMoveLists);
   }
 );

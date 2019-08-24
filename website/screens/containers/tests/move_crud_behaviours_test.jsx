@@ -9,12 +9,12 @@ import {
   useNewMove,
   useSaveMove,
   createNewMove,
-} from "screens/containers/move_crud_behaviours";
-import { useInsertItems } from "screens/containers/crud_behaviours";
+} from "screens/bvrs/move_crud_behaviours";
+import { useInsertItems } from "screens/bvrs/crud_behaviours";
 import { createDataContainerWithLocalState } from "screens/containers/data_container";
 import { getObjectValues } from "utils/utils";
 // $FlowFixMe
-import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from "screens/containers/move_crud_behaviours";
+import { __RewireAPI__ as MoveCrudBehavioursRewireAPI } from "screens/bvrs/move_crud_behaviours";
 import { test } from "utils/test_utils";
 
 const sandbox = {};

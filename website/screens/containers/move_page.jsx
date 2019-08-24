@@ -4,14 +4,14 @@ import * as React from "react";
 import { compose } from "redux";
 import Ctr from "screens/containers/index";
 
-import { withStaticMove } from "screens/containers/with_static_move";
-import { withOwnMove } from "screens/containers/with_own_move";
-import { withMoveCrudBvrsContext } from "screens/containers/move_crud_behaviours";
+import { withStaticMove } from "screens/hocs/with_static_move";
+import { withOwnMove } from "screens/hocs/with_own_move";
+import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 
 import { newMoveSlug } from "moves/utils";
 import { isOwner } from "app/utils";
 
-import { MoveCrudBvrsContext } from "screens/containers/move_crud_behaviours";
+import { MoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";

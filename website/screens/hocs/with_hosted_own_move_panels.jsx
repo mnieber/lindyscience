@@ -5,9 +5,9 @@ import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
 
-import { withMovePrivateDataPanel } from "screens/containers/with_move_private_data_panel";
-import { withVideoLinksPanel } from "screens/containers/with_videolinks_panel";
-import { withTipsPanel } from "screens/containers/with_tips_panel";
+import { withMovePrivateDataPanel } from "screens/hocs/with_move_private_data_panel";
+import { withVideoLinksPanel } from "screens/hocs/with_videolinks_panel";
+import { withTipsPanel } from "screens/hocs/with_tips_panel";
 
 type PropsT = {
   movePrivateDataPanel: any,

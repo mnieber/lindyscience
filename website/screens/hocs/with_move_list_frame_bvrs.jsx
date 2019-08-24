@@ -5,22 +5,22 @@ import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
 
-import { withMoveContainer } from "screens/containers/with_move_container";
-import { withMoveListContainer } from "screens/containers/with_move_list_container";
+import { withMoveContainer } from "screens/hocs/with_move_container";
+import { withMoveListContainer } from "screens/hocs/with_move_list_container";
 
 import { getId } from "app/utils";
 
-import { useSelectItems } from "screens/containers/move_selection_behaviours";
-import { useMoveClipboard } from "screens/containers/move_clipboard_behaviours";
-import { createMoveCrudBvrs } from "screens/containers/move_crud_behaviours";
-import { createMoveListCrudBvrs } from "screens/containers/move_list_crud_behaviours";
+import { useSelectItems } from "screens/bvrs/move_selection_behaviours";
+import { useMoveClipboard } from "screens/bvrs/move_clipboard_behaviours";
+import { createMoveCrudBvrs } from "screens/bvrs/move_crud_behaviours";
+import { createMoveListCrudBvrs } from "screens/bvrs/move_list_crud_behaviours";
 import { useNavigation } from "screens/containers/navigation_bvr";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import type { UserProfileT } from "profiles/types";
 import type { DataContainerT } from "screens/containers/data_container";
-import type { SelectItemsBvrT } from "screens/containers/move_selection_behaviours";
+import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
 
 // MoveListFrame
 

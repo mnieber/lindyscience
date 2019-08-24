@@ -10,12 +10,12 @@ import type {
   SaveMoveBvrT,
   InsertMovesBvrT,
   NewMoveBvrT,
-} from "screens/containers/move_crud_behaviours";
+} from "screens/bvrs/move_crud_behaviours";
 import type {
   SaveMoveListBvrT,
   InsertMoveListsBvrT,
   NewMoveListBvrT,
-} from "screens/containers/move_list_crud_behaviours";
+} from "screens/bvrs/move_list_crud_behaviours";
 
 export type MoveSearchResultT = {
   id: UUID,

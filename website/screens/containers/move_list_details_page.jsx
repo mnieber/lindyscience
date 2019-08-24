@@ -6,7 +6,7 @@ import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 import { isOwner } from "app/utils";
 
-import { MoveListCrudBvrsContext } from "screens/containers/move_list_crud_behaviours";
+import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
 
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";

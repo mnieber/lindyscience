@@ -12,7 +12,7 @@ import { reducer } from "app/root_reducer";
 import { Thunk, FlushThunks } from "redux-testkit";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import { createNewMove } from "screens/containers/move_crud_behaviours";
+import { createNewMove } from "screens/bvrs/move_crud_behaviours";
 
 function _setUp() {
   const flushThunks = FlushThunks.createMiddleware();

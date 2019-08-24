@@ -4,7 +4,7 @@ import * as React from "react";
 import * as data from "screens/tests/data";
 // $FlowFixMe
 import TestRenderer from "react-test-renderer";
-import { useSelectItems } from "screens/containers/move_selection_behaviours";
+import { useSelectItems } from "screens/bvrs/move_selection_behaviours";
 import { getObjectValues } from "utils/utils";
 import { test } from "utils/test_utils";
 

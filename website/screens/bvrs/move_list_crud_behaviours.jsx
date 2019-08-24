@@ -16,7 +16,7 @@ import {
   useInsertItems,
   useNewItem,
   useSaveItem,
-} from "screens/containers/crud_behaviours";
+} from "screens/bvrs/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT } from "move_lists/types";
@@ -27,7 +27,7 @@ import type {
   InsertItemsBvrT,
   NewItemBvrT,
   SaveItemBvrT,
-} from "screens/containers/crud_behaviours";
+} from "screens/bvrs/crud_behaviours";
 
 // $FlowFixMe
 export const MoveListCrudBvrsContext = React.createContext({});

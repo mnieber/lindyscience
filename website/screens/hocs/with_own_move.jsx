@@ -9,8 +9,8 @@ import { getStore } from "app/store";
 
 import Widgets from "screens/presentation/index";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
-import { withHostedOwnMovePanels } from "screens/containers/with_hosted_own_move_panels";
-import { withMoveCrudBvrsContext } from "screens/containers/move_crud_behaviours";
+import { withHostedOwnMovePanels } from "screens/hocs/with_hosted_own_move_panels";
+import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";

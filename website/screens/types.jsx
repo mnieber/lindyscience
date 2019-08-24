@@ -47,30 +47,6 @@ export type FunctionByIdT = {
 
 export type VotableT = {};
 
-export type TipT = {|
-  id: UUID,
-  ownerId: number,
-  moveId: UUID,
-  text: string,
-  initialVoteCount: number,
-  voteCount: number,
-|};
-
-export type TipByIdT = {
-  [UUID]: TipT,
-};
-
-export type TipsByIdT = {
-  [UUID]: Array<TipT>,
-};
-
-export type MovePrivateDataT = {
-  notes: string,
-  tags: Array<TagT>,
-};
-
-export type MovePrivateDataByIdT = { [UUID]: MovePrivateDataT };
-
 export type MoveCrudBvrsT = {
   newMoveBvr: NewMoveBvrT,
   insertMovesBvr: InsertMovesBvrT,

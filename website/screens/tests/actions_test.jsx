@@ -1,6 +1,7 @@
 // @flow
 
 import * as actions from "screens/actions";
+import * as movesActions from "moves/actions";
 import * as data from "screens/tests/data";
 import * as fromStore from "screens/reducers";
 import { getObjectValues } from "utils/utils";
@@ -72,7 +73,7 @@ test("test actInsertMoves", function(t) {
     const newMoves = [move1, move2];
     const newMoveIds = newMoves.map(x => x.id);
 
-    store.dispatch(actions.actAddMoves(newMoves));
+    store.dispatch(movesActions.actAddMoves(newMoves));
     const moveIdsInList = store.dispatch(
       actions.actInsertMoves(newMoveIds, data.moveList1.id, "")
     );

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as api from "screens/api";
+import * as movesApi from "moves/api";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
@@ -157,7 +158,7 @@ export function createMoveCrudBvrs(
     if (highlightedMoveId == oldMove.id) {
       browseToMove(newMove);
     }
-    return api
+    return movesApi
       .saveMove(newMove)
       .catch(createErrorHandler("We could not save the move"));
   }

@@ -1,20 +1,25 @@
-import type { VideoLinkByIdT, VideoLinksByIdT } from "screens/types";
+// @flow
 
-import { isNone } from "utils/utils";
+import { createSelector } from "reselect";
+import { isNone, reduceMapToMap } from "utils/utils";
 
-const _stateVideoLinks = (state: RootReducerStateT): VideoLinksState =>
+import type { VideoLinkByIdT, VideoLinksByIdT } from "videolinks/types";
+import type { RootReducerStateT, Selector } from "app/root_reducer";
+
+const _stateVideoLinks = (state: RootReducerStateT): VideoLinksStateT =>
   state.videoLinks;
 
 ///////////////////////////////////////////////////////////////////////
 // Videolinks
 ///////////////////////////////////////////////////////////////////////
 
-type VideoLinksState = VideoLinkByIdT;
+type VideoLinksStateT = VideoLinkByIdT;
+export type ReducerStateT = VideoLinksStateT;
 
 export function videoLinksReducer(
-  state: VideoLinksState = {},
+  state: VideoLinksStateT = {},
   action: any
-): VideoLinksState {
+): VideoLinksStateT {
   switch (action.type) {
     case "ADD_VIDEO_LINKS":
       return {
@@ -47,10 +52,8 @@ export const getVideoLinksByMoveId: Selector<VideoLinksByIdT> = createSelector(
   [_stateVideoLinks],
 
   (stateVideoLinks): VideoLinksByIdT => {
-    return (
-      reduceMapToMap <
-      VideoLinksByIdT >
-      (stateVideoLinks,
+    return reduceMapToMap<VideoLinksByIdT>(
+      stateVideoLinks,
       (acc, videoLinkId, videoLink) => {
         if (isNone(acc[videoLink.moveId])) {
           acc[videoLink.moveId] = [];
@@ -59,7 +62,7 @@ export const getVideoLinksByMoveId: Selector<VideoLinksByIdT> = createSelector(
         // TODO:
         // acc[videoLink.moveId] = acc[videoLink.moveId]
         //   .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
-      })
+      }
     );
   }
 );

@@ -3,8 +3,7 @@
 import { flatten } from "utils/utils";
 import { normalize, schema } from "normalizr";
 import { doQuery } from "app/client";
-import type { MoveListT, MovePrivateDataT } from "screens/types";
-import type { MoveT } from "moves/types";
+import type { MoveListT } from "screens/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "profiles/types";
 
@@ -35,33 +34,6 @@ export function saveMoveList(values: MoveListT) {
   );
 }
 
-export function saveMove(values: MoveT) {
-  return doQuery(
-    `mutation saveMove(
-      $id: String!,
-      $name: String!,
-      $slug: String!,
-      $description: String!,
-      $tags: [String]!,
-      $variationNames: [String]!,
-      $sourceMoveListId: String!,
-    ) {
-      saveMove(
-        pk: $id,
-        name: $name,
-        slug: $slug,
-        description: $description,
-        tags: $tags,
-        variationNames: $variationNames,
-        sourceMoveListId: $sourceMoveListId
-      ) { ok }
-    }`,
-    {
-      ...values,
-    }
-  );
-}
-
 export function updateSourceMoveListId(
   moveIds: Array<UUID>,
   sourceMoveListId: UUID
@@ -79,27 +51,6 @@ export function updateSourceMoveListId(
     {
       moveIds,
       sourceMoveListId,
-    }
-  );
-}
-
-export function saveMovePrivateData(values: MovePrivateDataT) {
-  return doQuery(
-    `mutation saveMovePrivateData(
-      $id: String!,
-      $moveId: String!,
-      $notes: String!,
-      $tags: [String]!
-    ) {
-      saveMovePrivateData(
-        pk: $id,
-        moveId: $moveId,
-        notes: $notes,
-        tags: $tags
-      ) { ok }
-    }`,
-    {
-      ...values,
     }
   );
 }
@@ -139,7 +90,6 @@ export function saveMoveListOrdering(moveListIds: Array<UUID>) {
 
 const videoLink = new schema.Entity("videoLinks");
 const tip = new schema.Entity("tips");
-const movePrivateData = new schema.Entity("movePrivateDatas");
 const move = new schema.Entity("moves", {
   videoLinks: [videoLink],
   tips: [tip],
@@ -258,21 +208,4 @@ export function loadMoveList(moveListId: UUID) {
       ])
     )
     .then(result => normalize(result.moveList, moveList));
-}
-
-export function loadMovePrivateDatas() {
-  return doQuery(
-    `query queryMovePrivateDatas {
-      movePrivateDatas {
-        id
-        notes
-        tags
-        move {
-          id
-        }
-      }
-    }`
-  )
-    .then(result => flatten(result, ["/movePrivateDatas/*/move"]))
-    .then(result => normalize(result.movePrivateDatas, [movePrivateData]));
 }

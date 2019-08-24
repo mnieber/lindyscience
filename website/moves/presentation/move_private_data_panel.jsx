@@ -1,9 +1,9 @@
 // @flow
 
 import * as React from "react";
-import { MovePrivateDataForm } from "screens/presentation/move_private_data_form";
+import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
 import { Tags } from "profiles/presentation/tags";
-import type { MovePrivateDataT } from "screens/types";
+import type { MovePrivateDataT } from "moves/types";
 import type { UserProfileT, TagT } from "profiles/types";
 
 type MovePrivateDatasPanelPropsT = {

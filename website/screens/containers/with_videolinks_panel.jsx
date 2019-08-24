@@ -70,7 +70,7 @@ export const withVideoLinksPanel = getMove =>
         <Widgets.VideoLinksPanel
           parentObject={move}
           userProfile={userProfile}
-          videoLinks={videoLinksByMoveId[getId(move)]}
+          videoLinks={videoLinksByMoveId[getId(move)] || []}
           voteByObjectId={voteByObjectId}
           saveVideoLink={saveVideoLink}
           deleteVideoLink={deleteVideoLink}

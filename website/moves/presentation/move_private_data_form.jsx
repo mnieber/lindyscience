@@ -15,7 +15,7 @@ import {
 } from "rich_text/presentation/rich_text_editor";
 import { toEditorState } from "rich_text/utils/editor_state";
 
-import type { MovePrivateDataT } from "screens/types";
+import type { MovePrivateDataT } from "moves/types";
 import type { TagT } from "profiles/types";
 
 // MovePrivateDataForm

@@ -11,7 +11,7 @@ import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
 
 import type { MoveT } from "moves/types";
-import type { TipT } from "screens/types";
+import type { TipT } from "tips/types";
 import type { UUID } from "kernel/types";
 import type { VoteT } from "votes/types";
 import type { UserProfileT } from "profiles/types";

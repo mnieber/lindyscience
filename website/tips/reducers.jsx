@@ -3,7 +3,7 @@
 import { createSelector } from "reselect";
 import { isNone, reduceMapToMap } from "utils/utils";
 
-import type { TipByIdT, TipsByIdT } from "screens/types";
+import type { TipByIdT, TipsByIdT } from "tips/types";
 import type { UUID } from "kernel/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
 

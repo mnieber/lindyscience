@@ -4,7 +4,9 @@ import { test } from "tape";
 import * as data from "screens/tests/data";
 
 import * as reducers from "screens/reducers";
+import * as movesReducers from "moves/reducers";
 import * as actions from "screens/actions";
+import * as movesActions from "moves/actions";
 import { getObjectValues } from "utils/utils";
 
 test("select highlighted move", function(t) {
@@ -24,16 +26,16 @@ test("add move lists", function(t) {
   let sMoveList = reducers.moveListsReducer(undefined, {});
   t.deepEqual(sMoveList, {});
 
-  let sMoves = reducers.movesReducer(undefined, {});
+  let sMoves = movesReducers.movesReducer(undefined, {});
   t.deepEqual(sMoves, {});
 
   const a = actions.actAddMoveLists({ [data.moveList1.id]: data.moveList1 });
-  const a2 = actions.actAddMoves(getObjectValues(data.moves));
+  const a2 = movesActions.actAddMoves(getObjectValues(data.moves));
 
   sMoveList = reducers.moveListsReducer(sMoveList, a);
   t.deepEqual(sMoveList, { [data.moveList1.id]: data.moveList1 });
 
-  sMoves = reducers.movesReducer(sMoves, a2);
+  sMoves = movesReducers.movesReducer(sMoves, a2);
   t.deepEqual(sMoves, data.moves);
 
   let sTags = reducers.tagsReducer(undefined, {});
@@ -51,27 +53,14 @@ test("add move lists", function(t) {
   t.end();
 });
 
-test("add move private datas", function(t) {
-  let sMovePrivateDatas = reducers.movePrivateDatasReducer(undefined, {});
-  t.deepEqual(sMovePrivateDatas, {});
-
-  sMovePrivateDatas = reducers.movePrivateDatasReducer(
-    sMovePrivateDatas,
-    actions.actAddMovePrivateDatas(data.movePrivateDatas)
-  );
-  t.deepEqual(sMovePrivateDatas, data.movePrivateDatas);
-
-  t.end();
-});
-
 test("insert moves into list", function(t) {
   let sMoveList = reducers.moveListsReducer(
     undefined,
     actions.actAddMoveLists({ [data.moveList1.id]: data.moveList1 })
   );
-  let sMoves = reducers.movesReducer(
+  let sMoves = movesReducers.movesReducer(
     undefined,
-    actions.actAddMoves(getObjectValues(data.moves))
+    movesActions.actAddMoves(getObjectValues(data.moves))
   );
 
   const moveIds = ["123"];
@@ -84,14 +73,6 @@ test("insert moves into list", function(t) {
     undefined,
   });
   t.deepEqual(sMoveList[moveListId].moves, ["123", ...data.moveList1.moves]);
-
-  t.end();
-});
-
-test("update moves", function(t) {
-  const move = data.moves["18561d09-0727-441d-bdd9-d3d8c33ebde3"];
-  let sMoves = reducers.movesReducer(undefined, actions.actAddMoves([move]));
-  t.deepEqual(sMoves, { [move.id]: move });
 
   t.end();
 });

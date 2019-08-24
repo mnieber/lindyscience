@@ -5,7 +5,6 @@
 ///////////////////////////////////////////////////////////////////////
 
 import type { OwnedObjectT } from "kernel/types";
-import type { MovePrivateDataT } from "screens/types";
 import type { TagT } from "profiles/types";
 import type { UUID } from "kernel/types";
 
@@ -25,3 +24,10 @@ export type MoveByIdT = {
 export type MoveBySlugT = {
   [string]: MoveT,
 };
+
+export type MovePrivateDataT = {
+  notes: string,
+  tags: Array<TagT>,
+};
+
+export type MovePrivateDataByIdT = { [UUID]: MovePrivateDataT };

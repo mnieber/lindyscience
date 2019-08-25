@@ -159,6 +159,7 @@ export function createMoveListCrudBvrs(
     insertMoveListsBvr,
     newMoveListBvr,
     saveMoveListBvr,
+    setHighlightedMoveListId: newMoveListBvr.setHighlightedItemId,
   };
 
   return bvrs;

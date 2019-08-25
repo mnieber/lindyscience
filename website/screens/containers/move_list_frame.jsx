@@ -80,7 +80,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
       if (props.highlightedMove) {
         const selectMoveById = (moveId: UUID) => {
           scrollIntoView(document.getElementById(moveId));
-          props.moveCrudBvrs.newMoveBvr.setHighlightedItemId(moveId);
+          props.moveCrudBvrs.setHighlightedMoveId(moveId);
         };
         pickNeighbour(
           props.moves,
@@ -160,9 +160,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         filterMoves={filterMoves}
         isFilterEnabled={isFilterEnabled}
         setIsFilterEnabled={setIsFilterEnabled}
-        selectMoveListById={
-          props.moveListCrudBvrs.newMoveListBvr.setHighlightedItemId
-        }
+        selectMoveListById={props.moveListCrudBvrs.setHighlightedMoveListId}
         copyNamesToClipboard={_copyNamesToClipboard}
         copyLinksToClipboard={_copyLinksToClipboard}
       >

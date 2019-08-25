@@ -45,4 +45,5 @@ export type MoveListCrudBvrsT = {
   saveMoveListBvr: SaveMoveListBvrT,
   isEditing: boolean,
   setIsEditing: boolean => void,
+  setHighlightedMoveListId: UUID => void,
 };

@@ -44,7 +44,11 @@ export const withMoveContainer = compose(
       targetMoveId: UUID,
       isBefore: boolean
     ) {
-      const predecessorId = findTargetId(payloadIds, targetMoveId, isBefore);
+      const predecessorId = findTargetId(
+        filteredMoves.map(x => x.id),
+        targetMoveId,
+        isBefore
+      );
       const allMoveIds = actInsertMoves(payloadIds, moveListId, predecessorId);
       Ctr.api
         .saveMoveOrdering(moveListId, allMoveIds)

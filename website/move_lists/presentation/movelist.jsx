@@ -5,6 +5,8 @@ import classnames from "classnames";
 import { Menu, MenuProvider } from "react-contexify";
 import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
 import KeyboardEventHandler from "react-keyboard-event-handler";
+import { isNone } from "utils/utils";
+
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
 
@@ -50,6 +52,7 @@ function createDragHandlers(
   }
 
   function handleDragEnd(sourceMoveId) {
+    draggingBvr.setDragSourceMoveId("");
     draggingBvr.setDraggingOverMoveId([undefined, false]);
   }
 
@@ -122,6 +125,8 @@ type MoveListPropsT = {|
 export function MoveList(props: MoveListPropsT) {
   props.refs.moveListRef = React.useRef(null);
 
+  const [swallowMouseUp: boolean, setSwallowMouseUp] = React.useState(false);
+
   const selectMoveById = (moveId: UUID, isShift: boolean, isCtrl: boolean) => {
     scrollIntoView(document.getElementById(moveId));
     props.selectMoveById(moveId, isShift, isCtrl);
@@ -151,15 +156,20 @@ export function MoveList(props: MoveListPropsT) {
         id={move.id}
         key={idx}
         onMouseDown={e => {
+          if (e.button == 0 && !props.selectedMoveIds.includes(move.id)) {
+            selectMoveById(move.id, e.shiftKey, e.ctrlKey);
+            setSwallowMouseUp(true);
+          }
+        }}
+        onMouseUp={e => {
           if (
-            e.button == 0 ||
-            !(
-              props.selectedMoveIds.length &&
-              props.selectedMoveIds.includes(move.id)
-            )
+            e.button == 0 &&
+            !swallowMouseUp &&
+            (!e.ctrlKey || props.selectedMoveIds.includes(move.id))
           ) {
             selectMoveById(move.id, e.shiftKey, e.ctrlKey);
           }
+          setSwallowMouseUp(false);
         }}
         draggable={true}
         onDragStart={e => dragHandlers && dragHandlers.handleDragStart(move.id)}

@@ -87,7 +87,7 @@ type MoveListPropsT = {|
   highlightedMove: ?MoveT,
   selectMoveById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   moveContextMenu: any,
-  onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void,
+  onDrop: (sourceIds: Array<UUID>, targetId: UUID, isBefore: boolean) => void,
   className?: string,
   refs: any,
 |};
@@ -133,7 +133,10 @@ export function MoveList(props: MoveListPropsT) {
         }
         onDragEnd={e => dragHandlers && dragHandlers.handleDragEnd()}
         onDrop={e => {
-          dragHandlers && dragHandlers.handleDrop(move.id);
+          const payloadIds = props.moves
+            .map(x => x.id)
+            .filter(x => props.selectedMoveIds.includes(x));
+          dragHandlers && dragHandlers.handleDrop(payloadIds, move.id);
         }}
       >
         {move.name}

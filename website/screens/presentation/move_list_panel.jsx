@@ -14,20 +14,16 @@ import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
 import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
 
 type HandlersT = {
-  onDrop: (sourceMoveId: UUID, targetId: UUID, isBefore: boolean) => void,
+  onDrop: (payloadIds: Array<UUID>, targetId: UUID, isBefore: boolean) => void,
 };
 
-function createHandlers(moves: Array<MoveT>, bvrs: MoveCrudBvrsT): HandlersT {
-  const onDrop = (sourceMoveId, targetMoveId, isBefore) => {
+function createHandlers(bvrs: MoveCrudBvrsT): HandlersT {
+  const onDrop = (payloadIds, targetMoveId, isBefore) => {
     if (
       !bvrs.newMoveBvr.newItem ||
-      bvrs.newMoveBvr.newItem.id != sourceMoveId
+      !(payloadIds.length === 1 && payloadIds[0] === bvrs.newMoveBvr.newItem.id)
     ) {
-      bvrs.insertMovesBvr.insertDirectly(
-        [sourceMoveId],
-        targetMoveId,
-        isBefore
-      );
+      bvrs.insertMovesBvr.insertDirectly(payloadIds, targetMoveId, isBefore);
     }
   };
 
@@ -61,7 +57,7 @@ export type MoveListPanelPropsT = {
 
 export function MoveListPanel(props: MoveListPanelPropsT) {
   const refs = {};
-  const handlers: HandlersT = createHandlers(props.moves, props.moveCrudBvrs);
+  const handlers: HandlersT = createHandlers(props.moveCrudBvrs);
 
   const moveListPicker = (
     <Widgets.MoveListPicker

@@ -8,8 +8,6 @@ export type DraggingBvrT = {|
   draggingOverId: UUID,
   isBefore: boolean,
   setDraggingOverId: Function, // (Array<UUID | boolean>) => void
-  dragSourceId: UUID,
-  setDragSourceId: UUID => void,
 |};
 
 export function useDragging(): DraggingBvrT {
@@ -17,14 +15,11 @@ export function useDragging(): DraggingBvrT {
     [draggingOverId: UUID, isBefore: boolean],
     setDraggingOverId,
   ] = React.useState(["", false]);
-  const [dragSourceId: UUID, setDragSourceId] = React.useState("");
 
   return {
     draggingOverId,
     isBefore,
     setDraggingOverId,
-    dragSourceId,
-    setDragSourceId,
   };
 }
 
@@ -37,19 +32,16 @@ type DragHandlersT = {|
 
 export function createDragHandlers(
   draggingBvr: DraggingBvrT,
-  onDrop: (sourceId: UUID, targetId: UUID, isBefore: boolean) => void
+  onDrop: (sourceIds: Array<UUID>, targetId: UUID, isBefore: boolean) => void
 ): DragHandlersT {
-  function handleDragStart(sourceId) {
-    draggingBvr.setDragSourceId(sourceId);
-  }
+  function handleDragStart(sourceId) {}
 
   function handleDragEnd() {
-    draggingBvr.setDragSourceId("");
     draggingBvr.setDraggingOverId([undefined, false]);
   }
 
-  function handleDrop(targetId) {
-    onDrop(draggingBvr.dragSourceId, targetId, draggingBvr.isBefore);
+  function handleDrop(payloadIds, targetId) {
+    onDrop(payloadIds, targetId, draggingBvr.isBefore);
     draggingBvr.setDraggingOverId([undefined, false]);
   }
 

@@ -25,7 +25,7 @@ test("select highlighted move", function(t) {
 });
 
 test("add move lists", function(t) {
-  let sMoveList = moveListsReducers(undefined, {});
+  let sMoveList = moveListsReducers.moveListsReducer(undefined, {});
   t.deepEqual(sMoveList, {});
 
   let sMoves = movesReducers.movesReducer(undefined, {});
@@ -36,19 +36,27 @@ test("add move lists", function(t) {
   });
   const a2 = movesActions.actAddMoves(getObjectValues(data.moves));
 
-  sMoveList = moveListsReducers(sMoveList, a);
+  sMoveList = moveListsReducers.moveListsReducer(sMoveList, a);
   t.deepEqual(sMoveList, { [data.moveList1.id]: data.moveList1 });
 
   sMoves = movesReducers.movesReducer(sMoves, a2);
   t.deepEqual(sMoves, data.moves);
 
-  let sTags = movesReducers.tagsReducer(undefined, {});
-  t.deepEqual(sTags.moveListTags, {});
+  let sMoveListsTags = moveListsReducers.tagsReducer(undefined, {});
+  t.deepEqual(sMoveListsTags, {});
 
-  sTags = movesReducers.tagsReducer(sTags, a);
-  sTags = movesReducers.tagsReducer(sTags, a2);
-  t.deepEqual(sTags.moveListTags, { one: true, two: true, three: true });
-  t.deepEqual(sTags.moveTags, {
+  sMoveListsTags = moveListsReducers.tagsReducer(sMoveListsTags, a);
+  t.deepEqual(sMoveListsTags.moveListTags, {
+    one: true,
+    two: true,
+    three: true,
+  });
+
+  let sMovesTags = movesReducers.tagsReducer(undefined, {});
+  t.deepEqual(sMovesTags, {});
+
+  sMovesTags = movesReducers.tagsReducer(sMovesTags, a2);
+  t.deepEqual(sMovesTags.moveTags, {
     "swing out": true,
     "basket whip": true,
     fun: true,
@@ -58,7 +66,7 @@ test("add move lists", function(t) {
 });
 
 test("insert moves into list", function(t) {
-  let sMoveList = moveListsReducers(
+  let sMoveList = moveListsReducers.moveListsReducer(
     undefined,
     moveListsActions.actAddMoveLists({ [data.moveList1.id]: data.moveList1 })
   );
@@ -70,7 +78,7 @@ test("insert moves into list", function(t) {
   const moveIds = ["123"];
   const moveListId = data.moveList1.id;
 
-  sMoveList = moveListsReducers(sMoveList, {
+  sMoveList = moveListsReducers.moveListsReducer(sMoveList, {
     type: "INSERT_MOVES_INTO_LIST",
     moveIds,
     moveListId,

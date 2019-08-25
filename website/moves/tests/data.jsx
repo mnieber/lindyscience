@@ -153,19 +153,19 @@ export const tips = {
 export const state = {
   moves: {
     moves: moves,
+    movePrivateDatas: {},
+    tags: {}
+  },
+  moveLists: {
     moveLists: moveLists,
+    tags: {}
+  },
+  screens:
     selection: {
       moveListUrl: moveList1.ownerUsername + "/" + moveList1.slug,
       highlightedMoveSlug: "",
       highlightedMoveId: "",
       moveFilterTags: [],
-    },
-    movePrivateDatas: {},
-    videoLinks: videoLinks,
-    tips: tips,
-    tags: {
-      moveTags: {},
-      moveListTags: {},
     },
   },
 };

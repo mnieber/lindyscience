@@ -3,6 +3,9 @@
 import * as React from "react";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
 import { Tags } from "tags/presentation/tags";
+import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
+import { toReadOnlyEditorState } from "rich_text/utils/editor_state";
+
 import type { MovePrivateDataT } from "moves/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
@@ -28,13 +31,18 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
   );
 
   const tags = (props.movePrivateData && props.movePrivateData.tags) || [];
+  const id = (props.movePrivateData && props.movePrivateData.id) || undefined;
 
   const staticDiv = (
     <div>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: props.movePrivateData && props.movePrivateData.notes,
-        }}
+      <RichTextEditor
+        key={id}
+        initialEditorState={toReadOnlyEditorState(
+          props.movePrivateData ? props.movePrivateData.notes : ""
+        )}
+        readOnly={true}
+        autoFocus={false}
+        setEditorRef={() => {}}
       />
       {tags.length ? <Tags tags={tags} /> : undefined}
     </div>

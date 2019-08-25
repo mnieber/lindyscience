@@ -248,3 +248,9 @@ export function toEditorState(text: string) {
     ? EditorState.createWithContent(toContentState(text))
     : EditorState.createEmpty();
 }
+
+export function toReadOnlyEditorState(text: string) {
+  const editorState = toEditorState(text);
+  const { state } = createReadOnlyEditorState(editorState);
+  return state;
+}

@@ -26,6 +26,7 @@ export type MoveBySlugT = {
 };
 
 export type MovePrivateDataT = {
+  id: UUID,
   notes: string,
   tags: Array<TagT>,
 };

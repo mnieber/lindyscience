@@ -3,6 +3,8 @@
 import * as React from "react";
 import classnames from "classnames";
 import { Link } from "@reach/router";
+import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
+import { toReadOnlyEditorState } from "rich_text/utils/editor_state";
 
 import type { MoveListT } from "move_lists/types";
 import type { UserProfileT } from "profiles/types";
@@ -39,7 +41,13 @@ export function MoveListDetails(props: MoveListDetailsPropsT) {
   return (
     <div className={classnames("moveListDetails flex flex-col")}>
       <MoveListTitle moveList={props.moveList} />
-      <div dangerouslySetInnerHTML={{ __html: props.moveList.description }} />
+      <RichTextEditor
+        key={props.moveList.id}
+        initialEditorState={toReadOnlyEditorState(props.moveList.description)}
+        readOnly={true}
+        autoFocus={false}
+        setEditorRef={() => {}}
+      />
     </div>
   );
 }

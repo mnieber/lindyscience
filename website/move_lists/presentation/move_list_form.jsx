@@ -2,6 +2,8 @@
 
 import React from "react";
 import { withFormik } from "formik";
+// $FlowFixMe
+import uuidv4 from "uuid/v4";
 import {
   FormField,
   ValuePicker,
@@ -51,6 +53,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveListForm__description mt-4">
       <FormFieldLabel label="Description" />
       <RichTextEditor
+        key={uuidv4()}
         autoFocus={false}
         readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}

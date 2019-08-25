@@ -177,6 +177,7 @@ export function createMoveCrudBvrs(
     insertMovesBvr,
     newMoveBvr,
     saveMoveBvr,
+    setHighlightedMoveId: newMoveBvr.setHighlightedItemId,
   };
 
   return bvrs;

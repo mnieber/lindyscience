@@ -8,8 +8,6 @@ import { SignInDialog } from "app/presentation/signin_dialog";
 
 // SignInPage
 
-function createHandlers() {}
-
 type SignInPagePropsT = {
   actSetSignedInEmail: (email: string) => void,
 };

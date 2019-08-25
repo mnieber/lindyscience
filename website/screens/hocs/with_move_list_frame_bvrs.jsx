@@ -15,12 +15,17 @@ import { useMoveClipboard } from "screens/bvrs/move_clipboard_behaviours";
 import { createMoveCrudBvrs } from "screens/bvrs/move_crud_behaviours";
 import { createMoveListCrudBvrs } from "screens/bvrs/move_list_crud_behaviours";
 import { useNavigation } from "screens/containers/navigation_bvr";
+import {
+  useDragging,
+  createDraggingBvr,
+} from "move_lists/bvrs/drag_behaviours";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import type { UserProfileT } from "profiles/types";
 import type { DataContainerT } from "screens/containers/data_container";
 import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
+import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 
 // MoveListFrame
 
@@ -81,14 +86,14 @@ export const withMoveListFrameBvrs = compose(
     const selectMovesBvr = useSelectItems<MoveT>(
       moveContainer.preview,
       getId(highlightedMove),
-      moveCrudBvrs.newMoveBvr.setHighlightedItemId
+      moveCrudBvrs.setHighlightedMoveId
     );
 
     const moveClipboardBvr = useMoveClipboard(
       moveLists,
       selectMovesBvr.selectedItems,
       getId(highlightedMove),
-      moveCrudBvrs.newMoveBvr.setHighlightedItemId,
+      moveCrudBvrs.setHighlightedMoveId,
       actions.actInsertMoves,
       actions.actRemoveMoves
     );
@@ -101,6 +106,13 @@ export const withMoveListFrameBvrs = compose(
       actions.actAddMoveLists
     );
 
+    const draggingBvr: DraggingBvrT = createDraggingBvr(
+      moveContainer.preview,
+      selectMovesBvr,
+      moveCrudBvrs.newMoveBvr,
+      moveCrudBvrs.insertMovesBvr
+    );
+
     return (
       <WrappedComponent
         moveCrudBvrs={moveCrudBvrs}
@@ -108,6 +120,7 @@ export const withMoveListFrameBvrs = compose(
         navigationBvr={navigationBvr}
         selectMovesBvr={selectMovesBvr}
         moveClipboardBvr={moveClipboardBvr}
+        draggingBvr={draggingBvr}
         {...passThroughProps}
       />
     );

@@ -3,60 +3,61 @@
 import * as React from "react";
 
 import type { UUID } from "kernel/types";
+import type { MoveT } from "moves/types";
+import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
+import type {
+  InsertItemsBvrT,
+  NewItemBvrT,
+} from "screens/bvrs/crud_behaviours";
 
 export type DraggingBvrT = {|
   draggingOverId: UUID,
   isBefore: boolean,
   setDraggingOverId: Function, // (Array<UUID | boolean>) => void
+  finish: (drop: boolean) => void,
 |};
 
-export function useDragging(): DraggingBvrT {
+export function useDragging(
+  onDrop: (targetId: UUID, isBefore: boolean) => void
+): DraggingBvrT {
   const [
     [draggingOverId: UUID, isBefore: boolean],
     setDraggingOverId,
   ] = React.useState(["", false]);
 
+  const finish = (drop: boolean) => {
+    if (drop) {
+      onDrop(draggingOverId, isBefore);
+    }
+    setDraggingOverId(["", false]);
+  };
+
   return {
     draggingOverId,
     isBefore,
     setDraggingOverId,
+    finish,
   };
 }
 
-type DragHandlersT = {|
-  handleDragStart: Function,
-  handleDrop: Function,
-  handleDragOver: Function,
-  handleDragEnd: Function,
-|};
+export const createDraggingBvr = (
+  moves: Array<MoveT>,
+  selectMovesBvr: SelectItemsBvrT<MoveT>,
+  newMoveBvr: NewItemBvrT<MoveT>,
+  insertMovesBvr: InsertItemsBvrT<MoveT>
+): DraggingBvrT => {
+  const selectedMoveIds = selectMovesBvr.selectedItems.map(x => x.id);
+  const onDrop = (targetId: UUID, isBefore: boolean) => {
+    const payloadIds = moves
+      .map(x => x.id)
+      .filter(x => selectedMoveIds.includes(x));
 
-export function createDragHandlers(
-  draggingBvr: DraggingBvrT,
-  onDrop: (sourceIds: Array<UUID>, targetId: UUID, isBefore: boolean) => void
-): DragHandlersT {
-  function handleDragStart(sourceId) {}
-
-  function handleDragEnd() {
-    draggingBvr.setDraggingOverId([undefined, false]);
-  }
-
-  function handleDrop(payloadIds, targetId) {
-    onDrop(payloadIds, targetId, draggingBvr.isBefore);
-    draggingBvr.setDraggingOverId([undefined, false]);
-  }
-
-  function handleDragOver(e, moveId) {
-    e.preventDefault();
-    const boundingRect = e.target.getBoundingClientRect();
-    const height = boundingRect.bottom - boundingRect.top;
-    const isBefore = e.clientY - boundingRect.top < 0.5 * height;
-    draggingBvr.setDraggingOverId([moveId, isBefore]);
-  }
-
-  return {
-    handleDragStart,
-    handleDrop,
-    handleDragOver,
-    handleDragEnd,
+    if (
+      !newMoveBvr.newItem ||
+      !(payloadIds.length === 1 && payloadIds[0] === newMoveBvr.newItem.id)
+    ) {
+      insertMovesBvr.insertDirectly(payloadIds, targetId, isBefore);
+    }
   };
-}
+  return useDragging(onDrop);
+};

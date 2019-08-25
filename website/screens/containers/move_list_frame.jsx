@@ -30,6 +30,7 @@ import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 import type { SelectMovesBvrT } from "screens/hocs/with_move_list_frame_bvrs";
 import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
+import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 
 // MoveListFrame
 
@@ -40,6 +41,7 @@ type MoveListFramePropsT = {
   moveListCrudBvrs: MoveListCrudBvrsT,
   selectMovesBvr: SelectMovesBvrT,
   moveClipboardBvr: MoveClipboardBvrT,
+  draggingBvr: DraggingBvrT,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
   moves: Array<MoveT>,
@@ -59,7 +61,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     const _filter = createTagsAndKeywordsFilter(tags, keywords);
     const moveId = actions.actSetMoveFilter("tagsAndKeywords", _filter);
     if (moveId != getId(props.highlightedMove)) {
-      props.moveCrudBvrs.newMoveBvr.setHighlightedItemId(moveId);
+      props.moveCrudBvrs.setHighlightedMoveId(moveId);
     }
   };
 
@@ -151,6 +153,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         moveListCrudBvrs={props.moveListCrudBvrs}
         moveClipboardBvr={props.moveClipboardBvr}
         selectMovesBvr={props.selectMovesBvr}
+        draggingBvr={props.draggingBvr}
         moveTags={props.moveTags}
         videoLinksByMoveId={props.videoLinksByMoveId}
         highlightedMove={props.highlightedMove}

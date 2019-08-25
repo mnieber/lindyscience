@@ -5,10 +5,6 @@ import classnames from "classnames";
 import { Menu, MenuProvider } from "react-contexify";
 import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
 import KeyboardEventHandler from "react-keyboard-event-handler";
-import {
-  useDragging,
-  createDragHandlers,
-} from "move_lists/bvrs/drag_behaviours";
 
 import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 import type { MoveT } from "moves/types";
@@ -79,6 +75,40 @@ function createClickHandlers(
   };
 }
 
+type DragHandlersT = {|
+  handleDragStart: Function,
+  handleDrop: Function,
+  handleDragOver: Function,
+  handleDragEnd: Function,
+|};
+
+function createDragHandlers(draggingBvr: DraggingBvrT): DragHandlersT {
+  function handleDragStart(sourceId) {}
+
+  function handleDragEnd() {
+    draggingBvr.finish(false);
+  }
+
+  function handleDrop() {
+    draggingBvr.finish(true);
+  }
+
+  function handleDragOver(e, moveId) {
+    e.preventDefault();
+    const boundingRect = e.target.getBoundingClientRect();
+    const height = boundingRect.bottom - boundingRect.top;
+    const isBefore = e.clientY - boundingRect.top < 0.5 * height;
+    draggingBvr.setDraggingOverId([moveId, isBefore]);
+  }
+
+  return {
+    handleDragStart,
+    handleDrop,
+    handleDragOver,
+    handleDragEnd,
+  };
+}
+
 type MoveListPropsT = {|
   isOwner: boolean,
   moves: Array<MoveT>,
@@ -87,7 +117,7 @@ type MoveListPropsT = {|
   highlightedMove: ?MoveT,
   selectMoveById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   moveContextMenu: any,
-  onDrop: (sourceIds: Array<UUID>, targetId: UUID, isBefore: boolean) => void,
+  draggingBvr: DraggingBvrT,
   className?: string,
   refs: any,
 |};
@@ -100,9 +130,8 @@ export function MoveList(props: MoveListPropsT) {
     props.selectMoveById(moveId, isShift, isCtrl);
   };
 
-  const draggingBvr: DraggingBvrT = useDragging();
   const dragHandlers = props.isOwner
-    ? createDragHandlers(draggingBvr, props.onDrop)
+    ? createDragHandlers(props.draggingBvr)
     : undefined;
   const keyHandlers = createKeyHandlers(selectMoveById, props);
   const clickHandlers = createClickHandlers(selectMoveById, props);
@@ -118,9 +147,11 @@ export function MoveList(props: MoveListPropsT) {
           "moveList__item--selected": props.selectedMoveIds.includes(move.id),
           "moveList__item--highlighted": move.id == highlightedMoveId,
           "moveList__item--drag_before":
-            draggingBvr.isBefore && draggingBvr.draggingOverId == move.id,
+            props.draggingBvr.isBefore &&
+            props.draggingBvr.draggingOverId == move.id,
           "moveList__item--drag_after":
-            !draggingBvr.isBefore && draggingBvr.draggingOverId == move.id,
+            !props.draggingBvr.isBefore &&
+            props.draggingBvr.draggingOverId == move.id,
         })}
         id={move.id}
         key={idx}
@@ -132,12 +163,7 @@ export function MoveList(props: MoveListPropsT) {
           dragHandlers && dragHandlers.handleDragOver(e, move.id)
         }
         onDragEnd={e => dragHandlers && dragHandlers.handleDragEnd()}
-        onDrop={e => {
-          const payloadIds = props.moves
-            .map(x => x.id)
-            .filter(x => props.selectedMoveIds.includes(x));
-          dragHandlers && dragHandlers.handleDrop(payloadIds, move.id);
-        }}
+        onDrop={e => dragHandlers && dragHandlers.handleDrop()}
       >
         {move.name}
         {hostedPanels}

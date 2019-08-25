@@ -7,8 +7,6 @@ import { PasswordChangeDialog } from "app/presentation/password_change_dialog";
 
 // PasswordResetPage
 
-function createHandlers() {}
-
 type PasswordResetPagePropsT = {
   uidPrm: ?string,
   tokenPrm: ?string,

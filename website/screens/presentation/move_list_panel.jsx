@@ -3,6 +3,7 @@
 import * as React from "react";
 import Widgets from "screens/presentation/index";
 import { MoveList } from "move_lists/presentation/movelist";
+
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
@@ -12,25 +13,7 @@ import type { MoveListT } from "move_lists/types";
 import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
 import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
 import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
-
-type HandlersT = {
-  onDrop: (payloadIds: Array<UUID>, targetId: UUID, isBefore: boolean) => void,
-};
-
-function createHandlers(bvrs: MoveCrudBvrsT): HandlersT {
-  const onDrop = (payloadIds, targetMoveId, isBefore) => {
-    if (
-      !bvrs.newMoveBvr.newItem ||
-      !(payloadIds.length === 1 && payloadIds[0] === bvrs.newMoveBvr.newItem.id)
-    ) {
-      bvrs.insertMovesBvr.insertDirectly(payloadIds, targetMoveId, isBefore);
-    }
-  };
-
-  return {
-    onDrop,
-  };
-}
+import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 
 export type MoveListPanelPropsT = {
   userProfile: UserProfileT,
@@ -43,6 +26,7 @@ export type MoveListPanelPropsT = {
   moveListCrudBvrs: MoveListCrudBvrsT,
   moveClipboardBvr: MoveClipboardBvrT,
   selectMovesBvr: SelectItemsBvrT<MoveT>,
+  draggingBvr: DraggingBvrT,
   moveTags: Array<TagT>,
   moveLists: Array<MoveListT>,
   highlightedMove: ?MoveT,
@@ -57,7 +41,6 @@ export type MoveListPanelPropsT = {
 
 export function MoveListPanel(props: MoveListPanelPropsT) {
   const refs = {};
-  const handlers: HandlersT = createHandlers(props.moveCrudBvrs);
 
   const moveListPicker = (
     <Widgets.MoveListPicker
@@ -131,6 +114,8 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     return videoLinkDiv;
   };
 
+  const selectedMoveIds = props.selectMovesBvr.selectedItems.map(x => x.id);
+
   const moveList = (
     <Widgets.MoveList
       refs={refs}
@@ -139,9 +124,9 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
       createHostedPanels={createHostedPanels}
       selectMoveById={props.selectMovesBvr.select}
       moves={props.moves}
-      selectedMoveIds={props.selectMovesBvr.selectedItems.map(x => x.id)}
+      selectedMoveIds={selectedMoveIds}
       highlightedMove={props.highlightedMove}
-      onDrop={handlers.onDrop}
+      draggingBvr={props.draggingBvr}
       moveContextMenu={moveContextMenu}
     />
   );

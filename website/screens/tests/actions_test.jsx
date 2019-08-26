@@ -66,7 +66,6 @@ test("test actSetMoveListFilter", function(t) {
   t.end();
 });
 
-// TODO: move to move_lists
 test("test actInsertMoves", function(t) {
   const { store } = _setUp();
   const move1 = createNewMove(data.profile1, data.moveList1.id);

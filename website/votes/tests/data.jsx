@@ -5,7 +5,5 @@ export const votes = {
 };
 
 export const state = {
-  app: {
-    votes: votes,
-  },
+  votes: votes,
 };

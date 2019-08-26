@@ -24,47 +24,6 @@ test("select highlighted move", function(t) {
   t.end();
 });
 
-test("add move lists", function(t) {
-  let sMoveList = moveListsReducers.moveListsReducer(undefined, {});
-  t.deepEqual(sMoveList, {});
-
-  let sMoves = movesReducers.movesReducer(undefined, {});
-  t.deepEqual(sMoves, {});
-
-  const a = moveListsActions.actAddMoveLists({
-    [data.moveList1.id]: data.moveList1,
-  });
-  const a2 = movesActions.actAddMoves(getObjectValues(data.moves));
-
-  sMoveList = moveListsReducers.moveListsReducer(sMoveList, a);
-  t.deepEqual(sMoveList, { [data.moveList1.id]: data.moveList1 });
-
-  sMoves = movesReducers.movesReducer(sMoves, a2);
-  t.deepEqual(sMoves, data.moves);
-
-  let sMoveListsTags = moveListsReducers.tagsReducer(undefined, {});
-  t.deepEqual(sMoveListsTags, {});
-
-  sMoveListsTags = moveListsReducers.tagsReducer(sMoveListsTags, a);
-  t.deepEqual(sMoveListsTags.moveListTags, {
-    one: true,
-    two: true,
-    three: true,
-  });
-
-  let sMovesTags = movesReducers.tagsReducer(undefined, {});
-  t.deepEqual(sMovesTags, {});
-
-  sMovesTags = movesReducers.tagsReducer(sMovesTags, a2);
-  t.deepEqual(sMovesTags.moveTags, {
-    "swing out": true,
-    "basket whip": true,
-    fun: true,
-  });
-
-  t.end();
-});
-
 test("insert moves into list", function(t) {
   let sMoveList = moveListsReducers.moveListsReducer(
     undefined,

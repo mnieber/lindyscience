@@ -86,15 +86,12 @@ export function tagsReducer(state: TagsStateT = {}, action: any): TagsStateT {
     case "SET_MOVE_TAGS":
       return {
         ...state,
-        moveTags: action.tags,
+        ...action.tags,
       };
     case "ADD_MOVES":
       return {
         ...state,
-        moveTags: addTags(
-          getObjectValues(action.moves).map(x => x.tags),
-          state
-        ),
+        ...addTags(getObjectValues(action.moves).map(x => x.tags), state),
       };
     default:
       return state;

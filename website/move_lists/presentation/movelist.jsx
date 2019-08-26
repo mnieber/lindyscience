@@ -52,7 +52,7 @@ function createClickHandlers(
   const [swallowMouseUp: boolean, setSwallowMouseUp] = React.useState(false);
 
   function handleMouseDown(e, moveId) {
-    if (e.button == 0 && !props.selectedMoveIds.includes(moveId)) {
+    if (!props.selectedMoveIds.includes(moveId)) {
       selectMoveById(moveId, e.shiftKey, e.ctrlKey);
       setSwallowMouseUp(true);
     }
@@ -60,7 +60,6 @@ function createClickHandlers(
 
   function handleMouseUp(e, moveId) {
     if (
-      e.button == 0 &&
       !swallowMouseUp &&
       (!e.ctrlKey || props.selectedMoveIds.includes(moveId))
     ) {

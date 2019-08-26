@@ -56,7 +56,7 @@ export function stripQuotes(value: string) {
   return value;
 }
 
-export function deepCopy(obj: {}) {
+export function deepCopy(obj: {} | Array<any>) {
   return JSON.parse(JSON.stringify(obj));
 }
 

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import classnames from "classnames";
+import { deepCopy } from "utils/utils";
 
 import type { MoveT } from "moves/types";
 
@@ -16,12 +17,13 @@ type MoveListPlayerPropsT = {|
 export function MoveListPlayer(props: MoveListPlayerPropsT) {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [moveIdx, setMoveIdx] = React.useState(0);
+  const [moves, setMoves] = React.useState([]);
 
   // $FlowFixMe
   React.useEffect(() => {
-    if (isPlaying && props.moves.length) {
-      props.playMove(props.moves[moveIdx % props.moves.length]);
-      setTimeout(() => setMoveIdx((moveIdx + 1) % props.moves.length), 12000);
+    if (isPlaying && moves.length) {
+      props.playMove(moves[moveIdx % moves.length]);
+      setTimeout(() => setMoveIdx((moveIdx + 1) % moves.length), 12000);
     }
   }, [isPlaying, moveIdx]);
 
@@ -30,6 +32,7 @@ export function MoveListPlayer(props: MoveListPlayerPropsT) {
       className={"moveListPlayer__playButton button button--wide"}
       onClick={() => {
         setMoveIdx(0);
+        setMoves(deepCopy(props.moves));
         setIsPlaying(true);
       }}
     >

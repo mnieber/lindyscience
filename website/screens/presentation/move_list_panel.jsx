@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import { compose } from "redux";
 import Widgets from "screens/presentation/index";
 import { MoveList } from "move_lists/presentation/movelist";
 import { getId } from "app/utils";
@@ -16,33 +17,37 @@ import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
 import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
 import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 
-export type MoveListPanelPropsT = {
-  userProfile: UserProfileT,
-  videoLinksByMoveId: VideoLinksByIdT,
-  isFilterEnabled: boolean,
-  setIsFilterEnabled: boolean => void,
-  moves: Array<MoveT>,
-  playMove: MoveT => void,
-  moveCrudBvrs: MoveCrudBvrsT,
-  moveListCrudBvrs: MoveListCrudBvrsT,
-  moveClipboardBvr: MoveClipboardBvrT,
-  selectMovesBvr: SelectItemsBvrT<MoveT>,
-  draggingBvr: DraggingBvrT,
-  moveTags: Array<TagT>,
-  moveLists: Array<MoveListT>,
-  highlightedMove: ?MoveT,
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type IsOwnerHOCPropsT = {
   moveList: ?MoveListT,
-  filterMoves: (Array<TagT>, Array<string>) => void,
-  selectMoveListById: (id: UUID) => void,
-  copyNamesToClipboard: MoveListT => void,
-  copyLinksToClipboard: MoveListT => void,
-  setIsFollowing: boolean => void,
-  children: any,
+  userProfile: UserProfileT,
 };
 
-export function MoveListPanel(props: MoveListPanelPropsT) {
-  const refs = {};
+const withIsOwner = (WrappedComponent: any) => (props: IsOwnerHOCPropsT) => {
+  const isOwner =
+    !!props.moveList &&
+    !!props.userProfile &&
+    props.userProfile.userId == props.moveList.ownerId;
 
+  return <WrappedComponent isOwner={isOwner} {...props} />;
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type MoveListPickerHOCPropsT = {
+  moveList: ?MoveListT,
+  moveLists: Array<MoveListT>,
+  selectMoveListById: (id: UUID) => void,
+};
+
+const withMoveListPicker = (WrappedComponent: any) => (
+  props: MoveListPickerHOCPropsT
+) => {
   const moveListPicker = (
     <Widgets.MoveListPicker
       className="mb-4"
@@ -52,6 +57,21 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
+  return <WrappedComponent moveListPicker={moveListPicker} {...props} />;
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type MoveListPlayerHOCPropsT = {
+  selectMovesBvr: SelectItemsBvrT<MoveT>,
+  playMove: MoveT => void,
+};
+
+const withMoveListPlayer = (WrappedComponent: any) => (
+  props: MoveListPlayerHOCPropsT
+) => {
   const moveListPlayer = (
     <Widgets.MoveListPlayer
       moves={props.selectMovesBvr.selectedItems}
@@ -60,6 +80,21 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
+  return <WrappedComponent moveListPlayer={moveListPlayer} {...props} />;
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type MoveListHeaderHOCPropsT = {
+  setIsFilterEnabled: boolean => void,
+  moveCrudBvrs: MoveCrudBvrsT,
+};
+
+const withMoveListHeader = (WrappedComponent: any) => (
+  props: MoveListHeaderHOCPropsT
+) => {
   const moveListHeader = (
     <Widgets.MoveListHeader
       addNewMove={() => {
@@ -70,6 +105,23 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
+  return <WrappedComponent moveListHeader={moveListHeader} {...props} />;
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type MoveListFilterHOCPropsT = {
+  filterMoves: (Array<TagT>, Array<string>) => void,
+  moveTags: Array<TagT>,
+  isFilterEnabled: boolean,
+  setIsFilterEnabled: boolean => void,
+};
+
+const withMoveListFilter = (WrappedComponent: any) => (
+  props: MoveListFilterHOCPropsT
+) => {
   const moveListFilter = (
     <Widgets.MoveListFilter
       className="mb-4"
@@ -80,6 +132,24 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
+  return <WrappedComponent moveListFilter={moveListFilter} {...props} />;
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type MoveContextMenuHOCPropsT = {
+  moveList: ?MoveListT,
+  moveLists: Array<MoveListT>,
+  moveClipboardBvr: MoveClipboardBvrT,
+  copyNamesToClipboard: MoveListT => void,
+  copyLinksToClipboard: MoveListT => void,
+};
+
+const withMoveContextMenu = (WrappedComponent: any) => (
+  props: MoveContextMenuHOCPropsT
+) => {
   const moveMovesToList = targetMoveList => {
     return (
       !!props.moveList &&
@@ -102,10 +172,27 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     />
   );
 
-  const isOwner =
-    !!props.moveList &&
-    !!props.userProfile &&
-    props.userProfile.userId == props.moveList.ownerId;
+  return <WrappedComponent moveContextMenu={moveContextMenu} {...props} />;
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type MoveListWidgetHOCPropsT = {
+  videoLinksByMoveId: VideoLinksByIdT,
+  selectMovesBvr: SelectItemsBvrT<MoveT>,
+  isOwner: boolean,
+  moves: Array<MoveT>,
+  highlightedMove: ?MoveT,
+  draggingBvr: DraggingBvrT,
+  moveContextMenu: any,
+};
+
+const withMoveListWidget = (WrappedComponent: any) => (
+  props: MoveListWidgetHOCPropsT
+) => {
+  const refs = {};
 
   const createHostedPanels = moveId => {
     const videoLinks = props.videoLinksByMoveId[moveId] || [];
@@ -122,21 +209,38 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
 
   const selectedMoveIds = props.selectMovesBvr.selectedItems.map(x => x.id);
 
-  const moveList = (
+  const moveListWidget = (
     <Widgets.MoveList
       refs={refs}
       className=""
-      isOwner={isOwner}
+      isOwner={props.isOwner}
       createHostedPanels={createHostedPanels}
       selectMoveById={props.selectMovesBvr.select}
       moves={props.moves}
       selectedMoveIds={selectedMoveIds}
       highlightedMove={props.highlightedMove}
       draggingBvr={props.draggingBvr}
-      moveContextMenu={moveContextMenu}
+      moveContextMenu={props.moveContextMenu}
     />
   );
 
+  return <WrappedComponent moveListWidget={moveListWidget} {...props} />;
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+type MoveListPanelButtonsHOCPropsT = {
+  moveListCrudBvrs: MoveListCrudBvrsT,
+  userProfile: UserProfileT,
+  moveList: ?MoveListT,
+  setIsFollowing: boolean => void,
+};
+
+const withMoveListPanelButtons = (WrappedComponent: any) => (
+  props: MoveListPanelButtonsHOCPropsT
+) => {
   const newMoveListBtn = (
     <div
       className={"button button--wide"}
@@ -162,7 +266,7 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     </div>
   );
 
-  const buttonsDiv = (
+  const moveListPanelButtons = (
     <div className={"move__name flexrow flex-wrap"}>
       {props.userProfile && newMoveListBtn}
       {props.userProfile && followMoveListBtn}
@@ -170,16 +274,56 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
   );
 
   return (
+    <WrappedComponent moveListPanelButtons={moveListPanelButtons} {...props} />
+  );
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////
+
+export type MoveListPanelPropsT = MoveListPickerHOCPropsT &
+  IsOwnerHOCPropsT &
+  MoveListPlayerHOCPropsT &
+  MoveListHeaderHOCPropsT &
+  MoveListFilterHOCPropsT &
+  MoveContextMenuHOCPropsT &
+  MoveListWidgetHOCPropsT &
+  MoveListPanelButtonsHOCPropsT &
+  MoveListPanelButtonsHOCPropsT & {
+    isOwner: boolean,
+    moveListPicker: any,
+    moveListPlayer: any,
+    moveListHeader: any,
+    moveListFilter: any,
+    moveListWidget: any,
+    moveListPanelButtons: any,
+    children: any,
+  };
+
+function MoveListPanel_(props: MoveListPanelPropsT) {
+  return (
     <div className="moveListPanel flexrow">
       <div className="moveListPanel__inner w-1/5 flexcol">
-        {buttonsDiv}
-        {moveListPicker}
-        {moveListPlayer}
-        {isOwner && moveListHeader}
-        {moveListFilter}
-        {moveList}
+        {props.moveListPanelButtons}
+        {props.moveListPicker}
+        {props.moveListPlayer}
+        {props.isOwner && props.moveListHeader}
+        {props.moveListFilter}
+        {props.moveListWidget}
       </div>
       <div className="movePanel pl-4 w-4/5">{props.children}</div>
     </div>
   );
 }
+
+export const MoveListPanel = compose(
+  withIsOwner,
+  withMoveListPicker,
+  withMoveListPlayer,
+  withMoveListHeader,
+  withMoveListFilter,
+  withMoveContextMenu,
+  withMoveListWidget,
+  withMoveListPanelButtons
+)(MoveListPanel_);

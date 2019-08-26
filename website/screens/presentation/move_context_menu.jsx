@@ -7,6 +7,7 @@ import type { MoveListT } from "move_lists/types";
 
 type MoveContextMenuPropsT = {
   targetMoveLists: Array<MoveListT>,
+  targetMoveListsForMoving: Array<MoveListT>,
   shareMovesToList: MoveListT => boolean,
   moveMovesToList: MoveListT => boolean,
   copyNamesToClipboard: MoveListT => void,
@@ -38,13 +39,16 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
     props.copyLinksToClipboard(e.props);
   }
 
-  const moveToListMenuItems = props.targetMoveLists.map((moveList, idx) => {
-    return (
-      <Item onClick={_moveToList} key={moveList.id} data={moveList}>
-        {moveList.name}
-      </Item>
-    );
-  });
+  const moveToListMenuItems = props.targetMoveListsForMoving.map(
+    (moveList, idx) => {
+      const postfix = props.targetMoveLists.includes(moveList) ? "" : " *";
+      return (
+        <Item onClick={_moveToList} key={moveList.id} data={moveList}>
+          {moveList.name + postfix}
+        </Item>
+      );
+    }
+  );
 
   const exportMenuItems = [
     <Item onClick={props.copyNamesToClipboard} key={1}>
@@ -57,7 +61,6 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
 
   return (
     <Menu id="moveContextMenu">
-      <Item onClick={() => {}}>Trash</Item>
       <Submenu label="Export">{exportMenuItems}</Submenu>
       <Submenu label="Share to list">{shareToListMenuItems}</Submenu>
       <Submenu label="Move to list">{moveToListMenuItems}</Submenu>

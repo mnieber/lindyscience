@@ -3,6 +3,7 @@
 import * as React from "react";
 import Widgets from "screens/presentation/index";
 import { MoveList } from "move_lists/presentation/movelist";
+import { getId } from "app/utils";
 
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
@@ -86,9 +87,14 @@ export function MoveListPanel(props: MoveListPanelPropsT) {
     );
   };
 
+  const targetMoveListsForMoving = props.moveLists.filter(
+    x => getId(props.moveList) != getId(x)
+  );
+
   const moveContextMenu = (
     <Widgets.MoveContextMenu
       targetMoveLists={props.moveClipboardBvr.targetMoveLists}
+      targetMoveListsForMoving={targetMoveListsForMoving}
       shareMovesToList={props.moveClipboardBvr.shareToList}
       moveMovesToList={moveMovesToList}
       copyNamesToClipboard={props.copyNamesToClipboard}

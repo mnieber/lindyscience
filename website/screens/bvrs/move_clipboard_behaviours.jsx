@@ -52,9 +52,7 @@ export function useMoveClipboard(
   }
 
   function moveToList(sourceMoveList: MoveListT, targetMoveList: MoveListT) {
-    if (!shareToList(targetMoveList)) {
-      return false;
-    }
+    shareToList(targetMoveList);
 
     const selectedMoveIds: Array<UUID> = selectedMoves.map(x => x.id);
 

@@ -22,10 +22,11 @@ const userProfileReducer = function(
     case "SET_SIGNED_IN_EMAIL":
       return null;
     case "SET_USER_PROFILE":
-      return {
-        ...state,
-        ...action.profile,
-      };
+      return action.profile
+        ? {
+            ...action.profile,
+          }
+        : null;
     case "INSERT_MOVE_LISTS_INTO_PROFILE":
       const acc = insertIdsIntoList(
         action.moveListIds,

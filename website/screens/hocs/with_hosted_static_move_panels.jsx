@@ -30,6 +30,7 @@ export const withHostedStaticMovePanels = getMove =>
     withMovePrivateDataPanel(getMove),
     Ctr.connect(
       state => ({
+        userProfile: Ctr.fromStore.getUserProfile(state),
         voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
         tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
         videoLinksByMoveId: Ctr.fromStore.getVideoLinksByMoveId(state),
@@ -38,6 +39,7 @@ export const withHostedStaticMovePanels = getMove =>
     ),
     (WrappedComponent: any) => (props: any) => {
       const {
+        userProfile,
         tipsByMoveId,
         voteByObjectId,
         videoLinksByMoveId,
@@ -61,7 +63,7 @@ export const withHostedStaticMovePanels = getMove =>
 
       const hostedStaticMovePanels = (
         <React.Fragment>
-          {movePrivateDataPanel}
+          {userProfile && movePrivateDataPanel}
           {tipsPanel}
           {videoLinksPanel}
         </React.Fragment>

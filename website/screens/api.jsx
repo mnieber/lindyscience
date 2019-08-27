@@ -20,7 +20,7 @@ const moveList = new schema.Entity("moveLists", {
 
 export function findMoveLists(ownerUsername: string) {
   return doQuery(
-    `query queryMoveLists($ownerUsername: String) {
+    `query queryMoveLists($ownerUsername: String!) {
       findMoveLists(ownerUsername: $ownerUsername) {
         id
         name
@@ -50,7 +50,7 @@ export function findMoves(
   tags: Array<TagT>
 ) {
   return doQuery(
-    `query queryFindMoves($ownerUsername: String, $keywords: [String], $tags: [String]) {
+    `query queryFindMoves($ownerUsername: String!, $keywords: [String]!, $tags: [String]!) {
       findMoves(ownerUsername: $ownerUsername, keywords: $keywords, tags: $tags) {
         id
         name
@@ -71,10 +71,13 @@ export function findMoves(
   );
 }
 
-export function loadMoveList(moveListId: UUID) {
+export function loadMoveList(ownerUsername: string, slug: string) {
   return doQuery(
-    `query queryMoveList($moveListId: String!) {
-      moveList(id: $moveListId) {
+    `query queryMoveList(
+       $ownerUsername: String!,
+       $slug: String!,
+     ) {
+      moveList(ownerUsername: $ownerUsername, slug: $slug) {
         id
         name
         slug
@@ -114,7 +117,7 @@ export function loadMoveList(moveListId: UUID) {
         }
       }
     }`,
-    { moveListId }
+    { ownerUsername, slug }
   )
     .then(result =>
       flatten(result, [

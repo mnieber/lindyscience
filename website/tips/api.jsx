@@ -7,7 +7,7 @@ export function saveTip(moveId: UUID, values: TipT) {
   return doQuery(
     `mutation saveTip(
       $id: String!,
-      $moveId: String!
+      $moveId: String!,
       $text: String!,
     ) {
       saveTip(

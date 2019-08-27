@@ -90,17 +90,23 @@ class UpdateSourceMoveListId(graphene.Mutation):
 class MoveListQuery(object):
     find_move_lists = graphene.List(MoveListType,
                                     owner_username=graphene.String())
-    move_list = graphene.Field(MoveListType, id=graphene.String())
+    move_list = graphene.Field(MoveListType,
+                               owner_username=graphene.String(),
+                               slug=graphene.String())
 
     def resolve_find_move_lists(self, info, owner_username, **kwargs):
         return models.MoveList.objects.filter(
             Q(owner__username=owner_username) & (Q(is_private=False)
                                                  | Q(owner=info.context.user)))
 
-    def resolve_move_list(self, info, id):
-        return models.MoveList.objects.get(
-            Q(pk=id) & (Q(is_private=False)
-                        | Q(owner=info.context.user)))
+    def resolve_move_list(self, info, owner_username, slug):
+        head = Q(owner__username=owner_username) & Q(slug=slug)
+        tail = (
+            Q(is_private=False)
+            if info.context.user.is_anonymous else
+            Q(is_private=False) | Q(owner=info.context.user)
+        )
+        return models.MoveList.objects.get(head & tail)
 
 
 class MoveListMutations:

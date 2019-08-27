@@ -16,7 +16,6 @@ import type { MoveListT } from "move_lists/types";
 
 // AppFrame
 type AppFramePropsT = {
-  moveLists: Array<MoveListT>,
   selectedMoveListUrl: string,
   userProfile: ?UserProfileT,
   signedInEmail: string,
@@ -29,32 +28,37 @@ function AppFrame(props: AppFramePropsT) {
   const actions: any = props;
 
   const [loadedEmail, setLoadedEmail] = React.useState("");
+  const [loadingMoveListUrls, setLoadingMoveListUrls] = React.useState([]);
 
   async function _loadEmail() {
     const [email] = await Promise.all([Ctr.api.getEmail()]);
-    if (email) {
-      actions.actSetSignedInEmail(email);
-    }
+    actions.actSetSignedInEmail(email ? email : "anonymous");
   }
 
   async function _loadUserProfile() {
     if (!!props.signedInEmail && loadedEmail != props.signedInEmail) {
-      const [profile, votes, tags, movePrivateDatas] = await Promise.all([
-        Ctr.api.loadUserProfile(),
-        Ctr.api.loadUserVotes(),
-        Ctr.api.loadUserTags(),
-        Ctr.api.loadMovePrivateDatas(),
-      ]);
-      actions.actSetUserProfile(profile);
-      Ctr.actions.actSetVotes(votes);
-      actions.actSetMovePrivateDatas(
-        movePrivateDatas.entities.movePrivateDatas || {}
-      );
+      if (props.signedInEmail === "anonymous") {
+        actions.actSetUserProfile(undefined);
+        actions.actSetVotes({});
+        actions.actSetMovePrivateDatas({});
+      } else {
+        const [profile, votes, tags, movePrivateDatas] = await Promise.all([
+          Ctr.api.loadUserProfile(),
+          Ctr.api.loadUserVotes(),
+          Ctr.api.loadUserTags(),
+          Ctr.api.loadMovePrivateDatas(),
+        ]);
+        actions.actSetUserProfile(profile);
+        actions.actSetVotes(votes);
+        actions.actSetMovePrivateDatas(
+          movePrivateDatas.entities.movePrivateDatas || {}
+        );
 
-      const [moveLists] = await Promise.all([
-        Ctr.api.findMoveLists(profile.username),
-      ]);
-      actions.actAddMoveLists(moveLists.entities.moveLists || {});
+        const [moveLists] = await Promise.all([
+          Ctr.api.findMoveLists(profile.username),
+        ]);
+        actions.actAddMoveLists(moveLists.entities.moveLists || {});
+      }
 
       setLoadedEmail(props.signedInEmail);
     }
@@ -63,16 +67,19 @@ function AppFrame(props: AppFramePropsT) {
   async function _loadSelectedMoveList() {
     if (
       !!props.selectedMoveListUrl &&
-      !props.loadedMoveListUrls.includes(props.selectedMoveListUrl)
+      !props.loadedMoveListUrls.includes(props.selectedMoveListUrl) &&
+      !loadingMoveListUrls.includes(props.selectedMoveListUrl)
     ) {
-      const moveListInStore = findMoveListByUrl(
-        props.moveLists,
-        props.selectedMoveListUrl
-      );
+      setLoadingMoveListUrls([
+        ...loadingMoveListUrls,
+        props.selectedMoveListUrl,
+      ]);
 
-      if (moveListInStore && moveListInStore.slug != newMoveListSlug) {
+      const [ownerUsername, slug] = props.selectedMoveListUrl.split("/");
+
+      if (slug != newMoveListSlug) {
         const [moveList] = await Promise.all([
-          Ctr.api.loadMoveList(moveListInStore.id),
+          Ctr.api.loadMoveList(ownerUsername, slug),
         ]);
         actions.actAddMoves(getObjectValues(moveList.entities.moves || {}));
         actions.actAddMoveLists(moveList.entities.moveLists);
@@ -134,7 +141,6 @@ function AppFrame(props: AppFramePropsT) {
 // $FlowFixMe
 AppFrame = Ctr.connect(
   state => ({
-    moveLists: Ctr.fromStore.getFilteredMoveLists(state),
     userProfile: Ctr.fromStore.getUserProfile(state),
     signedInEmail: Ctr.fromStore.getSignedInEmail(state),
     selectedMoveListUrl: Ctr.fromStore.getSelectedMoveListUrl(state),

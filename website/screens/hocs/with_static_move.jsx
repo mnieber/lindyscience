@@ -24,14 +24,14 @@ type PropsT = {
   // receive any actions as well
 };
 
-function getMoveId() {
+function getMove() {
   const state = getStore().getState();
-  return getId(Ctr.fromStore.getHighlightedMove(state));
+  return Ctr.fromStore.getHighlightedMove(state);
 }
 
 // $FlowFixMe
 export const withStaticMove = compose(
-  withHostedStaticMovePanels(getMoveId),
+  withHostedStaticMovePanels(getMove),
   Ctr.connect(
     state => ({
       move: Ctr.fromStore.getHighlightedMove(state),

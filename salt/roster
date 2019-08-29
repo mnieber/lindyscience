@@ -1,4 +1,3 @@
-panstaging:
-    host: 163.172.138.137
-    priv: /root/.ssh/id_vegtech_rsa
-
+lindyscience:
+    host: 51.15.193.80
+    priv: /root/.ssh/id_hallomaarten_rsa

@@ -1,2 +1,2 @@
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_vegtech_rsa
+ssh-add ~/.ssh/id_hallomaarten_rsa

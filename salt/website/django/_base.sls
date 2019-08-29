@@ -13,7 +13,6 @@ Install django apt packages:
       - ipython3
       - python3-dev
       - virtualenv
-      - redis-server
       - libpq-dev
 
 Install django virtual env:

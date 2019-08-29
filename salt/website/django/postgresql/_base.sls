@@ -9,5 +9,5 @@ Install postgres apt packages:
 
 Prevent postgres warning "no such file or directory":
   file.directory:
-    - name: /var/run/postgresql/9.5-main.pg_stat_tmp
+    - name: /var/run/postgresql/10-main.pg_stat_tmp
     - user: postgres

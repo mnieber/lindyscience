@@ -31,7 +31,7 @@ class Command(BaseCommand):
         except:
             return False
 
-    def handle(self, list_dumps, dump_filename, force, *args, **options):
+    def handle(self, print_pw, list_dumps, dump_filename, force, *args, **options):
         if list_dumps:
             for x in glob.glob(os.path.join(settings.DUMP_DB_DIR, '*')):
                 print(x)
@@ -52,7 +52,7 @@ class Command(BaseCommand):
                     ("history of your current branch: %s." % git_sha)
                 )
 
-        if args.print_pw:
+        if print_pw:
             print(settings.DATABASES['default']['PASSWORD'])
         if not force and not query_yes_no(
             "About to drop the current database: %s. Continue?" % db

@@ -8,7 +8,7 @@ from ._utils import git_repo
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
-        parser.add_arguments('--print-pw', action='store_true')
+        parser.add_argument('--print-pw', action='store_true')
 
     def _branch_or_server_name(self):
         if not git_repo():
@@ -24,7 +24,7 @@ class Command(BaseCommand):
             raise CommandError("Repository is dirty")
         return repo.head.commit.hexsha
 
-    def handle(self, *args, **options):
+    def handle(self, print_pw, *args, **options):
         db = settings.DATABASES['default']['NAME']
 
         basename = '%s__%s__%s__%s.sql' % (
@@ -37,7 +37,7 @@ class Command(BaseCommand):
         if not os.path.exists(settings.DUMP_DB_DIR):
             os.makedirs(settings.DUMP_DB_DIR)
 
-        if args.print_pw:
+        if print_pw:
             print(settings.DATABASES['default']['PASSWORD'])
 
         dump_filename = os.path.join(settings.DUMP_DB_DIR, basename)

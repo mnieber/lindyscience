@@ -150,7 +150,9 @@ function AppFrame(props: AppFramePropsT) {
         <AccountMenu
           className=""
           userProfile={props.userProfile}
-          signIn={() => navigate("/app/sign-in/")}
+          signIn={() =>
+            navigate("/app/sign-in/?next=" + window.location.pathname)
+          }
           signOut={signOut}
         />
       </div>

@@ -5,6 +5,11 @@ from .base import *  # noqa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+FORCE_SERVE_STATIC = True
+
+ALLOWED_HOSTS = ['*']
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'yl(y9&y&3g)0a&9i7@ehmdg)f_)ny207lb*r12=9^w52z=d-x)'
 

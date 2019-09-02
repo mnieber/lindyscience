@@ -3,6 +3,7 @@
 import React from "react";
 import { AccountMenu } from "app/presentation/accountmenu";
 import { navigate } from "@reach/router";
+import Cookies from "js-cookie";
 
 import Ctr from "screens/containers/index";
 
@@ -26,6 +27,8 @@ type AppFramePropsT = {
 
 function AppFrame(props: AppFramePropsT) {
   const actions: any = props;
+
+  const [acceptsCookies, setAcceptsCookies] = React.useState(false);
 
   const [loadedEmail, setLoadedEmail] = React.useState("");
   const [loadingMoveListUrls, setLoadingMoveListUrls] = React.useState([]);
@@ -120,8 +123,26 @@ function AppFrame(props: AppFramePropsT) {
     </div>
   );
 
+  const _acceptCookies = () => {
+    Cookies.set("acceptCookies", 1);
+    setAcceptsCookies(true);
+  };
+
+  const cookieNotice = Cookies.get("acceptCookies") ? (
+    undefined
+  ) : (
+    <div className="cookieNotice">
+      This site uses cookies. By continuing to use this site you agree with
+      that.
+      <button className="button button--wide ml-2" onClick={_acceptCookies}>
+        Okay
+      </button>
+    </div>
+  );
+
   return (
     <div className="appFrame px-4 flex flex-col">
+      {cookieNotice}
       {createToastr()}
       <div className="appFrame__banner flex flex-row justify-between h-16">
         <h1 onClick={() => alert("TODO")}>Lindy Science</h1>

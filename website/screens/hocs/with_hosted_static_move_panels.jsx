@@ -15,8 +15,10 @@ import type { VideoLinksByIdT } from "videolinks/types";
 import type { TipsByIdT } from "tips/types";
 import type { MoveT } from "moves/types";
 import type { VoteByIdT } from "votes/types";
+import type { UserProfileT } from "profiles/types";
 
 type PropsT = {
+  userProfile: UserProfileT,
   tipsByMoveId: TipsByIdT,
   voteByObjectId: VoteByIdT,
   videoLinksByMoveId: VideoLinksByIdT,

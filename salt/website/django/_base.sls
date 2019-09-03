@@ -21,3 +21,7 @@ Install django virtual env:
     - python: python3
     - system_site_packages: False
     - pip_upgrade: True
+
+Create django log dir:
+  file.directory:
+    - name: {{ pillar['srv_dir'] }}/log

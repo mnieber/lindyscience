@@ -20,6 +20,7 @@ services :
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /srv/linsci/static:/srv/linsci/static
       - /srv/linsci/dumps:/srv/linsci/dumps
+      - /srv/linsci/log:/srv/linsci/log
       - /srv/linsci/.pytest_report:/srv/linsci/.pytest_report
       - /srv/linsci/.ipython:/srv/linsci/.ipython
       - /srv/linsci/.bashrc:/srv/linsci/.bashrc

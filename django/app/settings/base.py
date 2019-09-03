@@ -61,7 +61,8 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'app.middleware.TokenAuthenticationMiddleware'
+    'app.middleware.token_auth.TokenAuthenticationMiddleware',
+    'app.middleware.request_logging.request_logging_middleware'
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -187,7 +188,7 @@ LOGGING = {
             "level": "DEBUG",
             "class": "logging.FileHandler",
             'formatter': 'simple',
-            "filename": "/var/log/django-file.log",
+            "filename": "/srv/linsci/log/django-file.log",
         },
         "mail_admins": {
             "level": "ERROR",

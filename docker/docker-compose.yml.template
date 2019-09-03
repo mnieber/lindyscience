@@ -20,6 +20,7 @@ services :
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /srv/linsci/static:${/SERVER/install_dir}/static
       - /srv/linsci/dumps:${/SERVER/install_dir}/dumps
+      - /srv/linsci/log:${/SERVER/install_dir}/log
       - /srv/linsci/.pytest_report:${/SERVER/install_dir}/.pytest_report
       - /srv/linsci/.ipython:${/SERVER/install_dir}/.ipython
       - /srv/linsci/.bashrc:${/SERVER/install_dir}/.bashrc

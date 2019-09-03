@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-from dodo_commands.framework import Dodo
+from dodo_commands import Dodo
 import os
 
 
@@ -26,7 +26,7 @@ if Dodo.is_main(__name__, safe=True):
     base_dir = '/srv/linsci'
     _make_dir_0x777(base_dir)
 
-    dirnames = ['.config', '.pytest_report', '.ipython', 'static', 'dumps']
+    dirnames = ['.config', '.pytest_report', '.ipython', 'static', 'dumps', 'log']
     for dirname in [os.path.join(base_dir, x) for x in dirnames]:
         _make_dir_0x777(dirname)
 

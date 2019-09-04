@@ -210,7 +210,7 @@ LOGGING = {
     },
     'formatters': {
         'simple': {
-            'format': '%(asctime)s api b2bapp: %(message)s',
+            'format': '%(asctime)s api linsci: %(message)s',
             'datefmt': '%Y-%m-%dT%H:%M:%S',
         },
     }

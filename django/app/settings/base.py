@@ -237,4 +237,4 @@ DJOSER = {
     }
 }
 
-DOMAIN = 'www.lindyscience.org'
+DOMAIN = 'www.lindyscience.tk'

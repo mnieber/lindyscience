@@ -6,5 +6,5 @@ Install node packages:
 
 Run webpack:
   cmd.run:
-    - name: ./node_modules/.bin/webpack --config webpack-prod.config.js
+    - name: ./node_modules/.bin/webpack --config webpack.config.js
     - cwd: {{ pillar['srv_dir'] }}/src/website

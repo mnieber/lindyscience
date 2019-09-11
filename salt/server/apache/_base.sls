@@ -1,8 +1,11 @@
 Install apache packages:
   pkg.installed:
     - pkgs:
+      - libexpat1
       - apache2
       - apache2-utils
+      - ssl-cert
+      - libapache2-mod-wsgi
 
 Set ServerName:
   file.line:

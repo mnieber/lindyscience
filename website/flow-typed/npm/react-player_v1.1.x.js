@@ -1,5 +1,5 @@
-// flow-typed signature: e25a1b98f06c17e74cc273b33f93b28e
-// flow-typed version: 064c20def6/react-player_v1.1.x/flow_>=v0.54.x
+// flow-typed signature: 040a30b63909a8749fa9df44dd56ba34
+// flow-typed version: c6154227d1/react-player_v1.1.x/flow_>=v0.54.x <=v0.103.x
 
 declare module "react-player" {
   declare export type SourceProps = {

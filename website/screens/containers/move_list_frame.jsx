@@ -66,7 +66,10 @@ function _MoveListFrame(props: MoveListFramePropsT) {
   };
 
   const onKeyDown = (key, e) => {
-    const edit_e = 69;
+    debugger;
+    if (key == "ctrl+space") {
+      console.log("SPACE");
+    }
     if (key == "ctrl+e") {
       e.preventDefault();
       e.stopPropagation();

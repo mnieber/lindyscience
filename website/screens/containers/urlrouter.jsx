@@ -10,6 +10,7 @@ import SearchMovesPage from "screens/containers/search_moves_page";
 import SignInPage from "app/containers/signinpage";
 import RegisterPage from "app/containers/register_page";
 import PasswordResetPage from "app/containers/password_reset_page";
+import CutVideoPage from "screens/containers/cut_video_page";
 import ProfilePage from "screens/containers/profile_page";
 import Ctr, { browseToMove } from "screens/containers/index";
 import type { UserProfileT } from "profiles/types";
@@ -45,6 +46,7 @@ function UrlRouter(props: UrlRouterPropsT) {
         <ProfilePage path="/lists/:ownerUsernamePrm" />
         <MoveListFrame path="/lists/:ownerUsernamePrm/:moveListSlugPrm">
           <MoveListDetailsPage path="/" />
+          <CutVideoPage path="/cut-more-videos" />
           <MovePage path=":moveSlugPrm" />
           <MovePage path=":moveSlugPrm/:moveIdPrm" />
         </MoveListFrame>

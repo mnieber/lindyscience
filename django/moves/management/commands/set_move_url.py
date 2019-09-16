@@ -13,7 +13,7 @@ class Command(BaseCommand):
             for move in models.Move.objects.all():
                 video_links = [x for x in move.video_links.all()]
                 if video_links:
-                    move.url = video_links[0].url
+                    move.link = video_links[0].link
                 else:
-                    move.url = None
+                    move.link = None
                 move.save()

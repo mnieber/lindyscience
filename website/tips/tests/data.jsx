@@ -51,7 +51,7 @@ export const moves = {
     slug: "three-wall-swing-out",
     tags: ["swing out"],
     ownerId: profile1.userId,
-    url: "https://youtu.be/O-6iHUgDGj8?t=244",
+    link: "https://youtu.be/O-6iHUgDGj8?t=244",
   },
   "3ba5ed84-34d5-442c-921c-50da0dc022da": {
     id: "3ba5ed84-34d5-442c-921c-50da0dc022da",
@@ -59,7 +59,7 @@ export const moves = {
     slug: "basket-whip",
     tags: ["basket whip", "fun"],
     ownerId: profile1.userId,
-    url: "https://youtu.be/EZkJlstt1qw?t=108",
+    link: "https://youtu.be/EZkJlstt1qw?t=108",
   },
   "b95df10a-cbe2-4ec4-9a03-1b61c5452e9d": {
     id: "b95df10a-cbe2-4ec4-9a03-1b61c5452e9d",

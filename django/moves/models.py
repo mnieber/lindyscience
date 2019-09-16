@@ -18,7 +18,7 @@ class Tip(Entity):
 class Move(Entity):
     name = models.CharField(max_length=200, unique=False)
     slug = models.CharField(max_length=200, unique=False)
-    url = models.URLField(blank=True, null=True)
+    link = models.URLField(blank=True, null=True)
     variation_names = ArrayField(models.CharField(max_length=200),
                                  blank=True,
                                  default=list)
@@ -31,8 +31,8 @@ class Move(Entity):
 
     def clean_fields(self, exclude=None):
         super().clean_fields(exclude=exclude)
-        if self.url is not None:
-            validate_video_url(self.url)
+        if self.link is not None:
+            validate_video_url(self.link)
 
     def __str__(self):  # noqa
         return self.name

@@ -84,7 +84,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       classNames="w-full"
       label="Link"
       formProps={formProps}
-      fieldName="url"
+      fieldName="link"
       type="text"
       placeholder="Link"
     />
@@ -183,7 +183,7 @@ export function MoveForm(props: MoveFormPropsT) {
     mapPropsToValues: () => ({
       name: props.move.name,
       slug: props.move.slug,
-      link: props.move.url,
+      link: props.move.link,
       description: props.move.description,
       tags: props.move.tags,
     }),
@@ -202,10 +202,10 @@ export function MoveForm(props: MoveFormPropsT) {
       if (!values.tags) {
         errors.tags = "This field is required";
       }
-      if (values.url) {
-        const urlError = validateVideoLinkUrl(values.url);
-        if (urlError) {
-          errors["url"] = urlError;
+      if (values.link) {
+        const linkError = validateVideoLinkUrl(values.link);
+        if (linkError) {
+          errors["link"] = linkError;
         }
       }
       return errors;

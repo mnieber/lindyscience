@@ -32,11 +32,11 @@ class Example extends React.Component {
 }
 
 export function CutVideoPanel(props: CutVideoPanelPropsT) {
-  const urlPanel = <input />;
+  const linkPanel = <input />;
 
   return (
     <div className={"cutVideoPanel panel"}>
-      {urlPanel}
+      {linkPanel}
       <Example />
     </div>
   );

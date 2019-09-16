@@ -53,6 +53,7 @@ export function findMoves(
         id
         name
         slug
+        link
         sourceMoveList {
           id
           slug
@@ -92,6 +93,7 @@ export function loadMoveList(ownerUsername: string, slug: string) {
           owner { id }
           name
           slug
+          link
           description
           sourceMoveList { id }
           tags

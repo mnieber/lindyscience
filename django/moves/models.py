@@ -7,22 +7,6 @@ from app.models import Entity
 # Moves models
 
 
-class VideoLink(Entity):
-    move = models.ForeignKey('Move',
-                             on_delete=models.CASCADE,
-                             related_name='video_links')
-    url = models.URLField()
-    title = models.CharField(max_length=255, blank=True, null=True)
-    vote_count = models.IntegerField(default=0)
-
-    def default_title(self):
-        return self.title or self.url
-
-    def clean_fields(self, exclude=None):
-        super().clean_fields(exclude=exclude)
-        validate_video_url(self.url)
-
-
 class Tip(Entity):
     move = models.ForeignKey('Move',
                              on_delete=models.CASCADE,
@@ -34,6 +18,7 @@ class Tip(Entity):
 class Move(Entity):
     name = models.CharField(max_length=200, unique=False)
     slug = models.CharField(max_length=200, unique=False)
+    url = models.URLField(blank=True, null=True)
     variation_names = ArrayField(models.CharField(max_length=200),
                                  blank=True,
                                  default=list)
@@ -43,6 +28,11 @@ class Move(Entity):
                                          on_delete=models.CASCADE,
                                          related_name='sourced_moves')
     tags = TagField(force_lowercase=True, max_count=10, space_delimiter=False)
+
+    def clean_fields(self, exclude=None):
+        super().clean_fields(exclude=exclude)
+        if self.url is not None:
+            validate_video_url(self.url)
 
     def __str__(self):  # noqa
         return self.name

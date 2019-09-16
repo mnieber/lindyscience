@@ -197,7 +197,7 @@ const withMoveListWidget = (WrappedComponent: any) => (
 
   const createHostedPanels = moveId => {
     const move = props.moveById[moveId] || [];
-    return isNone(move.link) ? undefined : "(*)";
+    return isNone(move.link) ? undefined : " (*)";
   };
 
   const selectedMoveIds = props.selectMovesBvr.selectedItems.map(x => x.id);

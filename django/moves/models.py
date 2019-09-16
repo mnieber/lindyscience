@@ -19,10 +19,11 @@ class Move(Entity):
     name = models.CharField(max_length=200, unique=False)
     slug = models.CharField(max_length=200, unique=False)
     link = models.URLField(blank=True, null=True)
+    start_time_ms = models.IntegerField(blank=True, null=True)
+    end_time_ms = models.IntegerField(blank=True, null=True)
     variation_names = ArrayField(models.CharField(max_length=200),
                                  blank=True,
                                  default=list)
-
     description = models.TextField()
     source_move_list = models.ForeignKey('MoveList',
                                          on_delete=models.CASCADE,

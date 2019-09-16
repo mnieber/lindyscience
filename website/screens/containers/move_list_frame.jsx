@@ -65,7 +65,6 @@ function _MoveListFrame(props: MoveListFramePropsT) {
   };
 
   const onKeyDown = (key, e) => {
-    debugger;
     if (key == "ctrl+space") {
       console.log("SPACE");
     }

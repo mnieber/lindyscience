@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from .video_link import VideoLinkQuery, VideoLinkMutations
 from .tip import TipQuery, TipMutations
 from .move_private_data import MovePrivateDataQuery, MovePrivateDataMutations
 from .move_list import MoveListQuery, MoveListMutations
@@ -20,7 +19,7 @@ class UserTagsType(graphene.ObjectType):
 
 
 class Query(MovePrivateDataQuery, MoveListQuery, MoveQuery, TipQuery,
-            VideoLinkQuery, graphene.ObjectType):
+            graphene.ObjectType):
     user_tags = graphene.Field(UserTagsType)
 
     def resolve_user_tags(self, info, **kwargs):
@@ -29,5 +28,5 @@ class Query(MovePrivateDataQuery, MoveListQuery, MoveQuery, TipQuery,
 
 
 class Mutations(MovePrivateDataMutations, MoveListMutations, MoveMutations,
-                TipMutations, VideoLinkMutations):
+                TipMutations):
     pass

@@ -11,10 +11,8 @@ import { MoveListForm } from "move_lists/presentation/move_list_form";
 import { MoveListTable } from "screens/presentation/move_list_table";
 import { MoveTable } from "screens/presentation/move_table";
 import { MoveListDetails } from "move_lists/presentation/move_list_details";
-import { VideoLinksPanel } from "videolinks/presentation/videolinks_panel";
-import { CutVideoPanel } from "videolinks/presentation/cut_video_panel";
+import { CutVideoPanel } from "cut_video/presentation/cut_video_panel";
 import { MovePrivateDataPanel } from "moves/presentation/move_private_data_panel";
-import { StaticVideoLinksPanel } from "videolinks/presentation/static_videolinks_panel";
 import { StaticTipsPanel } from "tips/presentation/static_tips_panel";
 import { MoveListPanel } from "screens/presentation/move_list_panel";
 import { MoveListPlayer } from "screens/presentation/move_list_player";
@@ -38,10 +36,8 @@ const Widgets = {
   MoveListPanel,
   MoveListPlayer,
   MoveListDetails,
-  VideoLinksPanel,
   CutVideoPanel,
   MovePrivateDataPanel,
-  StaticVideoLinksPanel,
   StaticTipsPanel,
   SearchMovesDialog,
   SearchMovesForm,

@@ -54,6 +54,7 @@ export function createNewMove(
   return {
     id: uuidv4(),
     slug: newMoveSlug,
+    url: "",
     name: "New move",
     description: "",
     tags: [],

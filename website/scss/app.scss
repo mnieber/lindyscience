@@ -26,16 +26,8 @@ $panGrey: #bbbbbb;
   @apply flex flex-col;
 }
 
-.videoLink {
-  @apply flex h-8;
-}
-
 .tip {
   @apply flex h-8;
-}
-
-.videolink__url {
-  @apply mx-1;
 }
 
 .upVoteBtn {
@@ -142,18 +134,6 @@ $panGrey: #bbbbbb;
 
 .button--wide {
   @apply w-32;
-}
-
-.videoLinkForm__submitButton {
-  @apply cursor-pointer underline;
-}
-
-.videoLinkForm__cancelButton {
-  @apply cursor-pointer underline;
-}
-
-.videoLink__editButton {
-  @apply cursor-pointer underline;
 }
 
 .tip__editButton {

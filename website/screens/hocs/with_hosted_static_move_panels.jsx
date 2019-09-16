@@ -11,7 +11,6 @@ import { getId } from "app/utils";
 
 import { withMovePrivateDataPanel } from "screens/hocs/with_move_private_data_panel";
 
-import type { VideoLinksByIdT } from "videolinks/types";
 import type { TipsByIdT } from "tips/types";
 import type { MoveT } from "moves/types";
 import type { VoteByIdT } from "votes/types";
@@ -21,7 +20,6 @@ type PropsT = {
   userProfile: UserProfileT,
   tipsByMoveId: TipsByIdT,
   voteByObjectId: VoteByIdT,
-  videoLinksByMoveId: VideoLinksByIdT,
   movePrivateDataPanel: any,
   // receive any actions as well
 };
@@ -35,7 +33,6 @@ export const withHostedStaticMovePanels = getMove =>
         userProfile: Ctr.fromStore.getUserProfile(state),
         voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
         tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
-        videoLinksByMoveId: Ctr.fromStore.getVideoLinksByMoveId(state),
       }),
       Ctr.actions
     ),
@@ -44,7 +41,6 @@ export const withHostedStaticMovePanels = getMove =>
         userProfile,
         tipsByMoveId,
         voteByObjectId,
-        videoLinksByMoveId,
         movePrivateDataPanel,
         ...passThroughProps
       }: PropsT = props;
@@ -56,18 +52,10 @@ export const withHostedStaticMovePanels = getMove =>
         />
       );
 
-      const videoLinksPanel = (
-        <Widgets.StaticVideoLinksPanel
-          videoLinks={videoLinksByMoveId[getId(getMove())] || []}
-          voteByObjectId={voteByObjectId}
-        />
-      );
-
       const hostedStaticMovePanels = (
         <React.Fragment>
           {userProfile && movePrivateDataPanel}
           {tipsPanel}
-          {videoLinksPanel}
         </React.Fragment>
       );
 

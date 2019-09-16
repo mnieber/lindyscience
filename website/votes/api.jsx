@@ -54,5 +54,3 @@ function _castVote(
 
 export const voteTip = (objectId: UUID, value: VoteT) =>
   _castVote("moves", "Tip", objectId, value);
-export const voteVideoLink = (objectId: UUID, value: VoteT) =>
-  _castVote("moves", "VideoLink", objectId, value);

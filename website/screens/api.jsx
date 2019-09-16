@@ -8,10 +8,8 @@ import type { TagT } from "tags/types";
 
 // Api moves
 
-const videoLink = new schema.Entity("videoLinks");
 const tip = new schema.Entity("tips");
 const move = new schema.Entity("moves", {
-  videoLinks: [videoLink],
   tips: [tip],
 });
 const moveList = new schema.Entity("moveLists", {
@@ -97,15 +95,6 @@ export function loadMoveList(ownerUsername: string, slug: string) {
           description
           sourceMoveList { id }
           tags
-          videoLinks {
-            id
-            url
-            title
-            voteCount
-            initialVoteCount: voteCount
-            move { id }
-            owner { id }
-          }
           tips {
             id
             text
@@ -124,8 +113,6 @@ export function loadMoveList(ownerUsername: string, slug: string) {
         "/moveList/owner",
         "/moveList/moves/*/owner",
         "/moveList/moves/*/sourceMoveList",
-        "/moveList/moves/*/videoLinks/*/move",
-        "/moveList/moves/*/videoLinks/*/owner",
         "/moveList/moves/*/tips/*/move",
         "/moveList/moves/*/tips/*/owner",
       ])

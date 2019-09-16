@@ -12,6 +12,7 @@ export type MoveT = OwnedObjectT & {
   description: string,
   tags: Array<TagT>,
   name: string,
+  url: string,
   slug: string,
   sourceMoveListId: string,
   privateData: ?MovePrivateDataT,

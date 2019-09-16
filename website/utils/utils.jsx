@@ -81,7 +81,7 @@ export function addToSet(array: Array<any>, item: any) {
   }
 }
 
-// Given a path ('/moveList/moves/*/videoLinks/*/move') replaces
+// Given a path ('/moveList/moves/*/tips/*/move') replaces
 // the leaf (move) with move{Key} for each {Key} in the leaf.
 export function flatten(
   obj: any,

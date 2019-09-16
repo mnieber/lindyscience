@@ -18,6 +18,7 @@ import {
   RichTextEditor,
   getContentFromEditor,
 } from "rich_text/presentation/rich_text_editor";
+import { validateVideoLinkUrl } from "screens/utils";
 import {
   createReadOnlyEditorState,
   toEditorState,
@@ -61,7 +62,6 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       type="text"
       placeholder="Slug"
       disabled={true}
-      autoFocus={props.autoFocus}
     />
   );
 
@@ -77,6 +77,17 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     >
       Update
     </div>
+  );
+
+  const linkField = (
+    <FormField
+      classNames="w-full"
+      label="Link"
+      formProps={formProps}
+      fieldName="url"
+      type="text"
+      placeholder="Link"
+    />
   );
 
   const slugFieldDiv = (
@@ -127,6 +138,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       <div className={"moveForm flexcol"}>
         {nameField}
         {formProps.values.slug != newMoveSlug && slugFieldDiv}
+        {linkField}
         {description}
         {tags}
         <div className={"moveForm__buttonPanel flexrow mt-4"}>
@@ -171,6 +183,7 @@ export function MoveForm(props: MoveFormPropsT) {
     mapPropsToValues: () => ({
       name: props.move.name,
       slug: props.move.slug,
+      link: props.move.url,
       description: props.move.description,
       tags: props.move.tags,
     }),
@@ -188,6 +201,12 @@ export function MoveForm(props: MoveFormPropsT) {
       }
       if (!values.tags) {
         errors.tags = "This field is required";
+      }
+      if (values.url) {
+        const urlError = validateVideoLinkUrl(values.url);
+        if (urlError) {
+          errors["url"] = urlError;
+        }
       }
       return errors;
     },

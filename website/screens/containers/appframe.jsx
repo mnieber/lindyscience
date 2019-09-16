@@ -86,7 +86,6 @@ function AppFrame(props: AppFramePropsT) {
         ]);
         actions.actAddMoves(getObjectValues(moveList.entities.moves || {}));
         actions.actAddMoveLists(moveList.entities.moveLists);
-        actions.actAddVideoLinks(moveList.entities.videoLinks || {});
         actions.actAddTips(moveList.entities.tips || {});
         actions.actSetLoadedMoveListUrls([
           ...props.loadedMoveListUrls,

@@ -5,12 +5,13 @@ import { compose } from "redux";
 import Widgets from "screens/presentation/index";
 import { MoveList } from "move_lists/presentation/movelist";
 import { getId } from "app/utils";
+import { isNone } from "utils/utils";
 
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 import type { MoveT } from "moves/types";
-import type { VideoLinksByIdT } from "videolinks/types";
+import type { MoveByIdT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
 import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
@@ -180,7 +181,7 @@ const withMoveContextMenu = (WrappedComponent: any) => (
 ///////////////////////////////////////////////////////////////////////
 
 type MoveListWidgetHOCPropsT = {
-  videoLinksByMoveId: VideoLinksByIdT,
+  moveById: MoveByIdT,
   selectMovesBvr: SelectItemsBvrT<MoveT>,
   isOwner: boolean,
   moves: Array<MoveT>,
@@ -195,16 +196,8 @@ const withMoveListWidget = (WrappedComponent: any) => (
   const refs = {};
 
   const createHostedPanels = moveId => {
-    const videoLinks = props.videoLinksByMoveId[moveId] || [];
-    const videoLinkDiv =
-      videoLinks && videoLinks.length ? (
-        <a className="ml-2" href={videoLinks[0].url} target="blank">
-          VIDEO
-        </a>
-      ) : (
-        undefined
-      );
-    return videoLinkDiv;
+    const move = props.moveById[moveId] || [];
+    return isNone(move.url) ? undefined : "(*)";
   };
 
   const selectedMoveIds = props.selectMovesBvr.selectedItems.map(x => x.id);

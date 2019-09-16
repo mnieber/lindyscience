@@ -23,8 +23,7 @@ import { MoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
 import type { MoveListT } from "move_lists/types";
 import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
-import type { VideoLinksByIdT } from "videolinks/types";
-import type { MoveT } from "moves/types";
+import type { MoveT, MoveByIdT } from "moves/types";
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
@@ -36,7 +35,7 @@ import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 
 type MoveListFramePropsT = {
   userProfile: UserProfileT,
-  videoLinksByMoveId: VideoLinksByIdT,
+  moveById: MoveByIdT,
   moveCrudBvrs: MoveCrudBvrsT,
   moveListCrudBvrs: MoveListCrudBvrsT,
   selectMovesBvr: SelectMovesBvrT,
@@ -158,7 +157,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         selectMovesBvr={props.selectMovesBvr}
         draggingBvr={props.draggingBvr}
         moveTags={props.moveTags}
-        videoLinksByMoveId={props.videoLinksByMoveId}
+        moveById={props.moveById}
         highlightedMove={props.highlightedMove}
         filterMoves={filterMoves}
         isFilterEnabled={isFilterEnabled}
@@ -199,7 +198,7 @@ MoveListFrame = compose(
   Ctr.connect(
     state => ({
       userProfile: Ctr.fromStore.getUserProfile(state),
-      videoLinksByMoveId: Ctr.fromStore.getVideoLinksByMoveId(state),
+      moveById: Ctr.fromStore.getMoveById(state),
       moves: Ctr.fromStore.getFilteredMovesInList(state),
       moveTags: Ctr.fromStore.getMoveTags(state),
       moveLists: Ctr.fromStore.getFilteredMoveLists(state),

@@ -1,4 +1,3 @@
-from .utils import validate_video_url
 from django.db import models
 from tagulous.models import TagField
 from django.contrib.postgres.fields import ArrayField
@@ -29,11 +28,6 @@ class Move(Entity):
                                          on_delete=models.CASCADE,
                                          related_name='sourced_moves')
     tags = TagField(force_lowercase=True, max_count=10, space_delimiter=False)
-
-    def clean_fields(self, exclude=None):
-        super().clean_fields(exclude=exclude)
-        if self.link is not None:
-            validate_video_url(self.link)
 
     def __str__(self):  # noqa
         return self.name

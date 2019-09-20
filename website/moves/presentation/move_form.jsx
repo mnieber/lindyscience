@@ -18,7 +18,6 @@ import {
   RichTextEditor,
   getContentFromEditor,
 } from "rich_text/presentation/rich_text_editor";
-import { validateVideoLinkUrl } from "screens/utils";
 import {
   createReadOnlyEditorState,
   toEditorState,
@@ -201,12 +200,6 @@ export function MoveForm(props: MoveFormPropsT) {
       }
       if (!values.tags) {
         errors.tags = "This field is required";
-      }
-      if (values.link) {
-        const linkError = validateVideoLinkUrl(values.link);
-        if (linkError) {
-          errors["link"] = linkError;
-        }
       }
       return errors;
     },

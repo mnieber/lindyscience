@@ -101,18 +101,3 @@ export function createTagsAndKeywordsFilter(
   }
   return _filter;
 }
-
-export function validateVideoLinkUrl(url: string) {
-  const parsedUrl = parse(url);
-  var netloc = parsedUrl.hostname;
-  if (netloc.startsWith("www.")) {
-    netloc = netloc.substring(4);
-  }
-  if (netloc.startsWith("youtube") || netloc.startsWith("youtu.be")) {
-    const query = parse.qs.parse(parsedUrl.query);
-    if (isNone(query["t"])) {
-      return "Missing t=<timestamp> parameter in youtube url";
-    }
-  }
-  return undefined;
-}

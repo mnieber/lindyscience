@@ -14,7 +14,7 @@ import { useSelectItems } from "screens/bvrs/move_selection_behaviours";
 import { useMoveClipboard } from "screens/bvrs/move_clipboard_behaviours";
 import { createMoveCrudBvrs } from "screens/bvrs/move_crud_behaviours";
 import { createMoveListCrudBvrs } from "screens/bvrs/move_list_crud_behaviours";
-import { useNavigation } from "screens/containers/navigation_bvr";
+import { useNavigation } from "screens/bvrs/navigation_behaviour";
 import {
   useDragging,
   createDraggingBvr,

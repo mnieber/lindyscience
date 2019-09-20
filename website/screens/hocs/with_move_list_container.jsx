@@ -17,24 +17,26 @@ export const withMoveListContainer = compose(
   Ctr.connect(
     state => ({
       moveLists: Ctr.fromStore.getMoveLists(state),
+      moveListContainerPayload: Ctr.fromStore.getMoveListContainerPayload(
+        state
+      ),
     }),
     {
       actInsertMoveListIds: Ctr.actions.actInsertMoveListIds,
       actSetMoveListFilter: Ctr.actions.actSetMoveListFilter,
+      actSetMoveListContainerPayload:
+        Ctr.actions.actSetMoveListContainerPayload,
     }
   ),
   (WrappedComponent: any) => (props: any) => {
     const {
       moveLists,
+      moveListContainerPayload,
       actInsertMoveListIds,
       actSetMoveListFilter,
+      actSetMoveListContainerPayload,
       ...passThroughProps
     } = props;
-
-    const [targetItemId: UUID, setTargetItemId: Function] = React.useState("");
-    const [payload: Array<MoveListT>, setPayload: Function] = React.useState(
-      []
-    );
 
     function _insert(
       payloadIds: Array<UUID>,
@@ -57,15 +59,18 @@ export const withMoveListContainer = compose(
         return getPreview<MoveListT>(moveLists, payload, targetItemId);
       }
       actSetMoveListFilter("insertMoveListPreview", _filter);
-      setPayload(payload);
-      setTargetItemId(targetItemId);
+      actSetMoveListContainerPayload(payload, targetItemId);
     };
 
     const moveListContainer: DataContainerT<MoveListT> = {
       insert: _insert,
-      preview: getPreview<MoveListT>(moveLists, payload, targetItemId),
-      payloadIds: payload.map(x => x.id),
-      targetItemId,
+      preview: getPreview<MoveListT>(
+        moveLists,
+        moveListContainerPayload.payload,
+        moveListContainerPayload.targetItemId
+      ),
+      payloadIds: moveListContainerPayload.payload.map(x => x.id),
+      targetItemId: moveListContainerPayload.targetItemId,
       setPayload: _setPayload,
     };
 

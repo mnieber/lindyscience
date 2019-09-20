@@ -29,6 +29,11 @@ const _stateMoveFilters = (state: RootReducerStateT): MoveFiltersState =>
 const _stateMoveListFilters = (
   state: RootReducerStateT
 ): MoveListFiltersState => state.screens.moveListFilters;
+const _stateMoveContainerPayload = (state: RootReducerStateT): PayloadState =>
+  state.screens.moveContainerPayload;
+const _stateMoveListContainerPayload = (
+  state: RootReducerStateT
+): PayloadState => state.screens.moveListContainerPayload;
 
 ///////////////////////////////////////////////////////////////////////
 // Selection
@@ -91,10 +96,55 @@ export function moveListFiltersReducer(
   }
 }
 
+type PayloadState = {
+  targetItemId: ?UUID,
+  payload: Array<any>,
+};
+
+export function moveContainerPayloadReducer(
+  state: PayloadState = {
+    targetItemId: null,
+    payload: [],
+  },
+  action: any
+): PayloadState {
+  switch (action.type) {
+    case "SET_MOVE_CONTAINER_PAYLOAD":
+      return {
+        ...state,
+        targetItemId: action.targetItemId,
+        payload: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
+export function moveListContainerReducer(
+  state: PayloadState = {
+    targetItemId: null,
+    payload: [],
+  },
+  action: any
+): PayloadState {
+  switch (action.type) {
+    case "SET_MOVE_LIST_CONTAINER_PAYLOAD":
+      return {
+        ...state,
+        targetItemId: action.targetItemId,
+        payload: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
 export type ReducerStateT = {
   moveFilters: MoveFiltersState,
   moveListFilters: MoveListFiltersState,
   selection: SelectionState,
+  moveContainerPayload: PayloadState,
+  moveListContainerPayload: PayloadState,
 };
 
 // $FlowFixMe
@@ -148,3 +198,6 @@ export const getHighlightedMove: Selector<MoveT> = createSelector(
     return findMoveBySlugid(moves, stateSelection.highlightedMoveSlugid);
   }
 );
+
+export const getMoveContainerPayload = _stateMoveContainerPayload;
+export const getMoveListContainerPayload = _stateMoveListContainerPayload;

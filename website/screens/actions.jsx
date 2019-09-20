@@ -108,3 +108,25 @@ export function actSetSelectedMoveListUrl(
     moveListUrl: ownerUsername + "/" + moveListSlug,
   };
 }
+
+export function actSetMoveContainerPayload(
+  payload: Array<MoveT>,
+  targetItemId: UUID
+) {
+  return {
+    type: "SET_MOVE_CONTAINER_PAYLOAD",
+    payload,
+    targetItemId,
+  };
+}
+
+export function actSetMoveListContainerPayload(
+  payload: Array<MoveT>,
+  targetItemId: UUID
+) {
+  return {
+    type: "SET_MOVE_LIST_CONTAINER_PAYLOAD",
+    payload,
+    targetItemId,
+  };
+}

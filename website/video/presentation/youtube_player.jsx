@@ -14,6 +14,7 @@ type YoutubePlayerPropsT = {
 
 export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   const [cachedPlayer, setCachedPlayer] = React.useState(null);
+  const [pauseTimeout, setPauseTimeout] = React.useState(500);
   const params = props.videoUrlProps.params;
 
   const playerVars = {};
@@ -61,7 +62,8 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   if (cachedPlayer && !props.videoBvr.isPlaying) {
     setTimeout(() => {
       cachedPlayer.pauseVideo();
-    }, 500);
+      setPauseTimeout(100);
+    }, pauseTimeout);
   }
 
   if (cachedPlayer && props.videoBvr.isPlaying) {

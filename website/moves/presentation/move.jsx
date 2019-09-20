@@ -5,8 +5,6 @@ import classnames from "classnames";
 
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
 import { Tags } from "tags/presentation/tags";
-import { VideoPlayer } from "video/presentation/video_player";
-import { getVideoFromMove } from "moves/utils";
 import {
   createReadOnlyEditorState,
   toEditorState,
@@ -14,7 +12,6 @@ import {
 
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
-import type { VideoT } from "video/types";
 
 const styleMap = {
   TIMING: {
@@ -67,16 +64,6 @@ export function Move(props: MovePropsT) {
     variationNames,
   } = createReadOnlyEditorState(toEditorState(props.move.description));
 
-  const video: VideoT = getVideoFromMove(props.move);
-
-  const videoDiv = props.move.link ? (
-    <div className={"move__video panel"}>
-      <VideoPlayer video={video} />
-    </div>
-  ) : (
-    <React.Fragment />
-  );
-
   const descriptionDiv = (
     <div className={"move__description panel"}>
       <h2>Description</h2>
@@ -96,7 +83,6 @@ export function Move(props: MovePropsT) {
       {nameDiv}
       {tagsDiv}
       {descriptionDiv}
-      {videoDiv}
       {props.hostedPanels}
     </div>
   );

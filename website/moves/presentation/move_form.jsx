@@ -96,6 +96,28 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     </div>
   );
 
+  const startTimeField = (
+    <FormField
+      classStarts="w-full"
+      label="Start time"
+      formProps={formProps}
+      fieldStart="startTime"
+      type="text"
+      placeholder="Start time in seconds"
+    />
+  );
+
+  const endTimeField = (
+    <FormField
+      classEnds="w-full"
+      label="End time"
+      formProps={formProps}
+      fieldEnd="endTime"
+      type="text"
+      placeholder="End time in seconds"
+    />
+  );
+
   const placeholder =
     "You can add timing information (the move starts with a |rock step|1,2|) and move variations " +
     "(in the ^fancy variation^the follower swivels in place^).";
@@ -138,6 +160,8 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         {nameField}
         {formProps.values.slug != newMoveSlug && slugFieldDiv}
         {linkField}
+        {startTimeField}
+        {endTimeField}
         {description}
         {tags}
         <div className={"moveForm__buttonPanel flexrow mt-4"}>

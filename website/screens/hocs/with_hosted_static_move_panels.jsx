@@ -10,6 +10,7 @@ import Widgets from "screens/presentation/index";
 import { getId } from "app/utils";
 
 import { withMovePrivateDataPanel } from "screens/hocs/with_move_private_data_panel";
+import { withVideoPlayerPanel } from "screens/hocs/with_video_player_panel";
 
 import type { TipsByIdT } from "tips/types";
 import type { MoveT } from "moves/types";
@@ -21,6 +22,7 @@ type PropsT = {
   tipsByMoveId: TipsByIdT,
   voteByObjectId: VoteByIdT,
   movePrivateDataPanel: any,
+  videoPlayerPanel: any,
   // receive any actions as well
 };
 
@@ -28,6 +30,7 @@ type PropsT = {
 export const withHostedStaticMovePanels = getMove =>
   compose(
     withMovePrivateDataPanel(getMove),
+    withVideoPlayerPanel(getMove),
     Ctr.connect(
       state => ({
         userProfile: Ctr.fromStore.getUserProfile(state),
@@ -42,6 +45,7 @@ export const withHostedStaticMovePanels = getMove =>
         tipsByMoveId,
         voteByObjectId,
         movePrivateDataPanel,
+        videoPlayerPanel,
         ...passThroughProps
       }: PropsT = props;
 
@@ -54,6 +58,7 @@ export const withHostedStaticMovePanels = getMove =>
 
       const hostedStaticMovePanels = (
         <React.Fragment>
+          {videoPlayerPanel}
           {userProfile && movePrivateDataPanel}
           {tipsPanel}
         </React.Fragment>

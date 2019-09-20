@@ -57,6 +57,8 @@ export function createNewMove(
     link: "",
     name: "New move",
     description: "",
+    startTimeMs: null,
+    endTimeMs: null,
     tags: [],
     ownerId: userProfile.userId,
     sourceMoveListId: sourceMoveListId,

@@ -14,6 +14,8 @@ export type MoveT = OwnedObjectT & {
   name: string,
   link: string,
   slug: string,
+  startTimeMs: ?number,
+  endTimeMs: ?number,
   sourceMoveListId: string,
   privateData: ?MovePrivateDataT,
 };

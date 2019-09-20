@@ -23,6 +23,8 @@ class SaveMove(graphene.Mutation):
         name = graphene.String()
         slug = graphene.String()
         description = graphene.String()
+        start_time_ms = graphene.Int()
+        end_time_ms = graphene.Int()
         source_move_list_id = graphene.String()
         tags = graphene.List(of_type=graphene.String)
         variation_names = graphene.List(of_type=graphene.String)

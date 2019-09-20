@@ -1,35 +1,42 @@
 // @flow
 
-import * as React from "react";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
-import Ctr from "screens/containers/index";
+import * as React from "react";
 
-import Widgets from "screens/presentation/index";
-
+import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
+import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
 import {
-  makeMoveListUrl,
-  newMoveListSlug,
-  createTagsAndKeywordsFilter,
-} from "screens/utils";
+  MoveCrudBvrsContext,
+  withMoveCrudBvrsContext,
+} from "screens/bvrs/move_crud_behaviours";
+import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
+import {
+  MoveListCrudBvrsContext,
+  withMoveListCrudBvrsContext,
+} from "screens/bvrs/move_list_crud_behaviours";
+import type { MoveListT } from "move_lists/types";
+import type { MoveT, MoveByIdT } from "moves/types";
+import {
+  type SelectMovesBvrT,
+  withMoveListFrameBvrs,
+} from "screens/hocs/with_move_list_frame_bvrs";
+import type { TagT } from "tags/types";
+import type { UUID } from "kernel/types";
+import type { UserProfileT } from "profiles/types";
 import {
   createErrorHandler,
   pickNeighbour,
   scrollIntoView,
   getId,
 } from "app/utils";
-import { withMoveListFrameBvrs } from "screens/hocs/with_move_list_frame_bvrs";
-import { MoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
-import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
-import type { MoveListT } from "move_lists/types";
-import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
-import type { MoveT, MoveByIdT } from "moves/types";
-import type { UUID } from "kernel/types";
-import type { UserProfileT } from "profiles/types";
-import type { TagT } from "tags/types";
-import type { SelectMovesBvrT } from "screens/hocs/with_move_list_frame_bvrs";
-import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
-import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
+import {
+  makeMoveListUrl,
+  newMoveListSlug,
+  createTagsAndKeywordsFilter,
+} from "screens/utils";
+import Ctr from "screens/containers/index";
+import Widgets from "screens/presentation/index";
 
 // MoveListFrame
 
@@ -165,11 +172,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         copyNamesToClipboard={_copyNamesToClipboard}
         copyLinksToClipboard={_copyLinksToClipboard}
       >
-        <MoveListCrudBvrsContext.Provider value={props.moveListCrudBvrs}>
-          <MoveCrudBvrsContext.Provider value={props.moveCrudBvrs}>
-            {props.children}
-          </MoveCrudBvrsContext.Provider>
-        </MoveListCrudBvrsContext.Provider>
+        {props.children}
       </Widgets.MoveListPanel>
     </KeyboardEventHandler>
   );
@@ -194,6 +197,8 @@ function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
 // $FlowFixMe
 MoveListFrame = compose(
   withMoveListFrameBvrs,
+  withMoveCrudBvrsContext,
+  withMoveListCrudBvrsContext,
   Ctr.connect(
     state => ({
       userProfile: Ctr.fromStore.getUserProfile(state),

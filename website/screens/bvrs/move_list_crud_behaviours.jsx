@@ -32,6 +32,18 @@ import type {
 // $FlowFixMe
 export const MoveListCrudBvrsContext = React.createContext({});
 
+export const withMoveListCrudBvrsContext = (WrappedComponent: any) => (
+  props: any
+) => {
+  return (
+    <MoveListCrudBvrsContext.Consumer>
+      {moveListCrudBvrs => (
+        <WrappedComponent {...props} moveListCrudBvrs={moveListCrudBvrs} />
+      )}
+    </MoveListCrudBvrsContext.Consumer>
+  );
+};
+
 export function createNewMoveList(userId: number, username: string): MoveListT {
   return {
     id: uuidv4(),

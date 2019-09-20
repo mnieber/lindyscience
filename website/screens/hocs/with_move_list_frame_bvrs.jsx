@@ -7,6 +7,8 @@ import Ctr from "screens/containers/index";
 
 import { withMoveContainer } from "screens/hocs/with_move_container";
 import { withMoveListContainer } from "screens/hocs/with_move_list_container";
+import { MoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
+import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
 
 import { getId } from "app/utils";
 
@@ -114,15 +116,17 @@ export const withMoveListFrameBvrs = compose(
     );
 
     return (
-      <WrappedComponent
-        moveCrudBvrs={moveCrudBvrs}
-        moveListCrudBvrs={moveListCrudBvrs}
-        navigationBvr={navigationBvr}
-        selectMovesBvr={selectMovesBvr}
-        moveClipboardBvr={moveClipboardBvr}
-        draggingBvr={draggingBvr}
-        {...passThroughProps}
-      />
+      <MoveListCrudBvrsContext.Provider value={moveListCrudBvrs}>
+        <MoveCrudBvrsContext.Provider value={moveCrudBvrs}>
+          <WrappedComponent
+            navigationBvr={navigationBvr}
+            selectMovesBvr={selectMovesBvr}
+            moveClipboardBvr={moveClipboardBvr}
+            draggingBvr={draggingBvr}
+            {...passThroughProps}
+          />
+        </MoveCrudBvrsContext.Provider>
+      </MoveListCrudBvrsContext.Provider>
     );
   }
 );

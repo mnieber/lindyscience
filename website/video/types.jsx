@@ -4,8 +4,8 @@ import * as React from "react";
 
 export type VideoT = {
   link: string,
-  startTime: ?number,
-  endTime: ?number,
+  startTimeMs: ?number,
+  endTimeMs: ?number,
 };
 
 export type VideoUrlPropsT = {
@@ -20,4 +20,6 @@ export type VideoBvrT = {
   isPlaying: boolean,
   setIsPlaying: boolean => void,
   togglePlay: () => void,
+  proposedStartTime: ?number,
+  setProposedStartTime: number => void,
 };

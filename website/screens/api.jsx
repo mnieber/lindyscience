@@ -95,6 +95,8 @@ export function loadMoveList(ownerUsername: string, slug: string) {
           slug
           link
           description
+          startTimeMs
+          endTimeMs
           sourceMoveList { id }
           tags
           tips {

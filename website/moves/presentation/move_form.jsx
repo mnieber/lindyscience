@@ -18,12 +18,14 @@ import {
 } from "rich_text/presentation/rich_text_editor";
 import type { TagT } from "tags/types";
 import type { UUID } from "kernel/types";
+import type { VideoBvrT } from "video/types";
 import {
   createReadOnlyEditorState,
   toEditorState,
 } from "rich_text/utils/editor_state";
+import { isNone, slugify } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
-import { slugify } from "utils/utils";
+// $FlowFixMe
 import uuidv4 from "uuid/v4";
 
 type InnerFormPropsT = {
@@ -193,6 +195,7 @@ type MoveFormPropsT = {
   onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   move: MoveT,
+  videoBvr: VideoBvrT,
   autoFocus: boolean,
 };
 
@@ -201,6 +204,12 @@ export function MoveForm(props: MoveFormPropsT) {
   const setTagsPickerRef = x => (refs.tagsPickerRef = x);
   const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
 
+  const startTime = !isNone(props.videoBvr.proposedStartTime)
+    ? props.videoBvr.proposedStartTime
+    : props.move.startTimeMs
+    ? props.move.startTimeMs / 1000.0
+    : "";
+
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       name: props.move.name,
@@ -208,6 +217,8 @@ export function MoveForm(props: MoveFormPropsT) {
       link: props.move.link,
       description: props.move.description,
       tags: props.move.tags,
+      startTime: startTime,
+      endTime: props.move.endTimeMs ? props.move.endTimeMs / 1000.0 : "",
     }),
 
     validate: (values, formProps) => {
@@ -232,6 +243,12 @@ export function MoveForm(props: MoveFormPropsT) {
         state: readOnlyEditorState,
         variationNames,
       } = createReadOnlyEditorState(toEditorState(values.description));
+
+      values.startTimeMs = Math.trunc(values.startTime * 1000);
+      delete values.startTime;
+
+      values.endTimeMs = Math.trunc(values.endTime * 1000);
+      delete values.endTime;
 
       props.onSubmit(props.move.id, { ...values, variationNames });
     },

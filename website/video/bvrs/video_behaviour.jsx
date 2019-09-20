@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import type { VideoBvrT } from "video/types";
+import type { VideoT, VideoBvrT } from "video/types";
 
 function _updatePlayer(player, isPlaying, pauseTimeout, setPauseTimeout) {
   if (player) {
@@ -17,7 +17,18 @@ function _updatePlayer(player, isPlaying, pauseTimeout, setPauseTimeout) {
   }
 }
 
-export function useVideo(): VideoBvrT {
+// $FlowFixMe
+export const VideoBvrContext = React.createContext({});
+
+export const withVideoBvrContext = (WrappedComponent: any) => (props: any) => {
+  return (
+    <VideoBvrContext.Consumer>
+      {videoBvr => <WrappedComponent {...props} videoBvr={videoBvr} />}
+    </VideoBvrContext.Consumer>
+  );
+};
+
+export function useVideo(video: ?VideoT): VideoBvrT {
   const [_isPlaying, _setIsPlaying] = React.useState(false);
   const [_player, _setPlayer] = React.useState(null);
   const [pauseTimeout, setPauseTimeout] = React.useState(500);
@@ -53,5 +64,6 @@ export function useVideo(): VideoBvrT {
     togglePlay,
     proposedStartTime: _proposedStartTime,
     setProposedStartTime,
+    video,
   };
 }

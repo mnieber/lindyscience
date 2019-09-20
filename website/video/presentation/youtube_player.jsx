@@ -7,7 +7,6 @@ import { isNone } from "utils/utils";
 import type { VideoT, VideoUrlPropsT, VideoBvrT } from "video/types";
 
 type YoutubePlayerPropsT = {
-  video: VideoT,
   videoUrlProps: VideoUrlPropsT,
   videoBvr: VideoBvrT,
 };

@@ -29,11 +29,11 @@ const _stateMoveFilters = (state: RootReducerStateT): MoveFiltersState =>
 const _stateMoveListFilters = (
   state: RootReducerStateT
 ): MoveListFiltersState => state.screens.moveListFilters;
-const _stateMoveContainerPayload = (state: RootReducerStateT): PayloadState =>
-  state.screens.moveContainerPayload;
-const _stateMoveListContainerPayload = (
+const _stateMoveContainer = (state: RootReducerStateT): DataContainerState =>
+  state.screens.moveContainer;
+const _stateMoveListContainer = (
   state: RootReducerStateT
-): PayloadState => state.screens.moveListContainerPayload;
+): DataContainerState => state.screens.moveListContainer;
 
 ///////////////////////////////////////////////////////////////////////
 // Selection
@@ -96,18 +96,18 @@ export function moveListFiltersReducer(
   }
 }
 
-type PayloadState = {
+type DataContainerState = {
   targetItemId: ?UUID,
   payload: Array<any>,
 };
 
-export function moveContainerPayloadReducer(
-  state: PayloadState = {
+export function moveContainerReducer(
+  state: DataContainerState = {
     targetItemId: null,
     payload: [],
   },
   action: any
-): PayloadState {
+): DataContainerState {
   switch (action.type) {
     case "SET_MOVE_CONTAINER_PAYLOAD":
       return {
@@ -121,12 +121,12 @@ export function moveContainerPayloadReducer(
 }
 
 export function moveListContainerReducer(
-  state: PayloadState = {
+  state: DataContainerState = {
     targetItemId: null,
     payload: [],
   },
   action: any
-): PayloadState {
+): DataContainerState {
   switch (action.type) {
     case "SET_MOVE_LIST_CONTAINER_PAYLOAD":
       return {
@@ -143,8 +143,8 @@ export type ReducerStateT = {
   moveFilters: MoveFiltersState,
   moveListFilters: MoveListFiltersState,
   selection: SelectionState,
-  moveContainerPayload: PayloadState,
-  moveListContainerPayload: PayloadState,
+  moveContainer: DataContainerState,
+  moveListContainer: DataContainerState,
 };
 
 // $FlowFixMe
@@ -152,6 +152,8 @@ export const reducer = combineReducers({
   moveFilters: moveFiltersReducer,
   moveListFilters: moveListFiltersReducer,
   selection: selectionReducer,
+  moveContainer: moveContainerReducer,
+  moveListContainer: moveListContainerReducer,
 });
 
 export const getFilteredMoveLists: Selector<Array<MoveListT>> = createSelector(
@@ -199,5 +201,16 @@ export const getHighlightedMove: Selector<MoveT> = createSelector(
   }
 );
 
-export const getMoveContainerPayload = _stateMoveContainerPayload;
-export const getMoveListContainerPayload = _stateMoveListContainerPayload;
+export const getMoveContainerPayload: Selector<DataContainerState> = createSelector(
+  [_stateMoveContainer],
+  (stateMoveContainer): DataContainerState => {
+    return stateMoveContainer;
+  }
+);
+
+export const getMoveListContainerPayload: Selector<DataContainerState> = createSelector(
+  [_stateMoveListContainer],
+  (stateMoveListContainer): DataContainerState => {
+    return stateMoveListContainer;
+  }
+);

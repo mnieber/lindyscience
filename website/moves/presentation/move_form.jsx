@@ -1,9 +1,8 @@
 // @flow
 
-import React from "react";
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { withFormik } from "formik";
+import React from "react";
+
 import {
   FormField,
   ValuePicker,
@@ -12,20 +11,20 @@ import {
   FormFieldLabel,
   strToPickerValue,
 } from "utils/form_utils";
-import { slugify } from "utils/utils";
-import { newMoveSlug } from "moves/utils";
+import type { MoveT } from "moves/types";
 import {
   RichTextEditor,
   getContentFromEditor,
 } from "rich_text/presentation/rich_text_editor";
+import type { TagT } from "tags/types";
+import type { UUID } from "kernel/types";
 import {
   createReadOnlyEditorState,
   toEditorState,
 } from "rich_text/utils/editor_state";
-
-import type { MoveT } from "moves/types";
-import type { UUID } from "kernel/types";
-import type { TagT } from "tags/types";
+import { newMoveSlug } from "moves/utils";
+import { slugify } from "utils/utils";
+import uuidv4 from "uuid/v4";
 
 type InnerFormPropsT = {
   autoFocus: boolean,

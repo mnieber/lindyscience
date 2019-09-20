@@ -39,6 +39,7 @@ type MovePropsT = {
   buttons?: Array<React.Node>,
   className?: string,
   hostedPanels: any,
+  videoPlayerPanel: any,
 };
 
 export function Move(props: MovePropsT) {
@@ -83,6 +84,7 @@ export function Move(props: MovePropsT) {
       {nameDiv}
       {tagsDiv}
       {descriptionDiv}
+      {props.videoPlayerPanel}
       {props.hostedPanels}
     </div>
   );

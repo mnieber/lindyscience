@@ -96,7 +96,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     </div>
   );
 
-  const startTimeField = (
+  const startField = (
     <FormField
       classStarts="w-full"
       label="Start time"
@@ -107,7 +107,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
-  const endTimeField = (
+  const endField = (
     <FormField
       classEnds="w-full"
       label="End time"
@@ -160,8 +160,8 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         {nameField}
         {formProps.values.slug != newMoveSlug && slugFieldDiv}
         {linkField}
-        {startTimeField}
-        {endTimeField}
+        {startField}
+        {endField}
         {description}
         {tags}
         <div className={"moveForm__buttonPanel flexrow mt-4"}>

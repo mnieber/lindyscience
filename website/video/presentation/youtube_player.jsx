@@ -13,8 +13,6 @@ type YoutubePlayerPropsT = {
 };
 
 export default function YoutubePlayer(props: YoutubePlayerPropsT) {
-  const [cachedPlayer, setCachedPlayer] = React.useState(null);
-  const [pauseTimeout, setPauseTimeout] = React.useState(500);
   const params = props.videoUrlProps.params;
 
   const playerVars = {};
@@ -38,9 +36,7 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
 
   const _onReady = event => {
     const player = event.target;
-    if (!cachedPlayer) {
-      setCachedPlayer(player);
-    }
+    props.videoBvr.setPlayer(player);
     if (params && !isNone(params.start)) {
       player.seekTo(params.start);
     }
@@ -58,17 +54,6 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   const _onPause = () => {
     props.videoBvr.setIsPlaying(false);
   };
-
-  if (cachedPlayer && !props.videoBvr.isPlaying) {
-    setTimeout(() => {
-      cachedPlayer.pauseVideo();
-      setPauseTimeout(100);
-    }, pauseTimeout);
-  }
-
-  if (cachedPlayer && props.videoBvr.isPlaying) {
-    cachedPlayer.playVideo();
-  }
 
   return (
     <YouTube

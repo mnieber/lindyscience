@@ -15,7 +15,9 @@ export type VideoUrlPropsT = {
 };
 
 export type VideoBvrT = {
+  player: any,
+  setPlayer: any => void,
   isPlaying: boolean,
-  togglePlay: () => void,
   setIsPlaying: boolean => void,
+  togglePlay: () => void,
 };

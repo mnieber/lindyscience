@@ -11,6 +11,7 @@ import Widgets from "screens/presentation/index";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { withHostedOwnMovePanels } from "screens/hocs/with_hosted_own_move_panels";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
+import { withVideoPlayerPanel } from "screens/hocs/with_video_player_panel";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
@@ -24,6 +25,7 @@ type PropsT = {
   moveList: MoveListT,
   moveTags: Array<TagT>,
   hostedOwnMovePanels: any,
+  videoPlayerPanel: any,
   moveCrudBvrs: MoveCrudBvrsT,
   // receive any actions as well
 };
@@ -37,6 +39,7 @@ function getMove() {
 export const withOwnMove = compose(
   withMoveCrudBvrsContext,
   withHostedOwnMovePanels(getMove),
+  withVideoPlayerPanel(getMove),
   Ctr.connect(
     state => ({
       userProfile: Ctr.fromStore.getUserProfile(state),
@@ -53,6 +56,7 @@ export const withOwnMove = compose(
       moveCrudBvrs,
       userProfile,
       moveTags,
+      videoPlayerPanel,
       hostedOwnMovePanels,
       ...passThroughProps
     }: PropsT = props;
@@ -81,6 +85,7 @@ export const withOwnMove = compose(
           onCancel={moveCrudBvrs.saveMoveBvr.discardChanges}
           knownTags={moveTags}
         />
+        {videoPlayerPanel}
       </div>
     ) : (
       <Widgets.Move
@@ -90,6 +95,7 @@ export const withOwnMove = compose(
         moveTags={moveTags}
         buttons={[editMoveBtn]}
         hostedPanels={hostedOwnMovePanels}
+        videoPlayerPanel={videoPlayerPanel}
       />
     );
 

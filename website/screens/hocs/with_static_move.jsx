@@ -11,6 +11,7 @@ import { getStore } from "app/store";
 import Widgets from "screens/presentation/index";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { withHostedStaticMovePanels } from "screens/hocs/with_hosted_static_move_panels";
+import { withVideoPlayerPanel } from "screens/hocs/with_video_player_panel";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
@@ -21,6 +22,7 @@ type PropsT = {
   moveList: MoveListT,
   moveTags: Array<TagT>,
   hostedStaticMovePanels: any,
+  videoPlayerPanel: any,
   // receive any actions as well
 };
 
@@ -32,6 +34,7 @@ function getMove() {
 // $FlowFixMe
 export const withStaticMove = compose(
   withHostedStaticMovePanels(getMove),
+  withVideoPlayerPanel(getMove),
   Ctr.connect(
     state => ({
       move: Ctr.fromStore.getHighlightedMove(state),
@@ -45,6 +48,7 @@ export const withStaticMove = compose(
       move,
       moveList,
       moveTags,
+      videoPlayerPanel,
       hostedStaticMovePanels,
       ...passThroughProps
     }: PropsT = props;
@@ -59,6 +63,7 @@ export const withStaticMove = compose(
         moveListTitle={moveListTitle}
         key={getId(move)}
         moveTags={moveTags}
+        videoPlayerPanel={videoPlayerPanel}
         hostedPanels={hostedStaticMovePanels}
       />
     );

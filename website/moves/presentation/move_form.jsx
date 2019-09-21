@@ -23,9 +23,8 @@ import {
   createReadOnlyEditorState,
   toEditorState,
 } from "rich_text/utils/editor_state";
-import { isNone, slugify } from "utils/utils";
+import { isNone, slugify, truncDecimals } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
-// $FlowFixMe
 import uuidv4 from "uuid/v4";
 
 type InnerFormPropsT = {
@@ -35,6 +34,7 @@ type InnerFormPropsT = {
   onCancel: () => void,
   setTagsPickerRef: any => void,
   setDescriptionEditorRef: any => void,
+  videoPlayer: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -91,6 +91,20 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
+  const updateStartBtn = (
+    <div
+      className={"button ml-2 flex-none"}
+      onClick={() => {
+        formProps.setFieldValue(
+          "startTime",
+          truncDecimals(props.videoPlayer.getCurrentTime(), 2)
+        );
+      }}
+    >
+      Update
+    </div>
+  );
+
   const startField = (
     <FormField
       classStarts="w-full"
@@ -99,7 +113,22 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       fieldName="startTime"
       type="text"
       placeholder="Start time in seconds"
+      buttons={[updateStartBtn]}
     />
+  );
+
+  const updateEndBtn = (
+    <div
+      className={"button ml-2 flex-none"}
+      onClick={() => {
+        formProps.setFieldValue(
+          "endTime",
+          truncDecimals(props.videoPlayer.getCurrentTime(), 2)
+        );
+      }}
+    >
+      Update
+    </div>
   );
 
   const endField = (
@@ -110,6 +139,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       fieldName="endTime"
       type="text"
       placeholder="End time in seconds"
+      buttons={[updateEndBtn]}
     />
   );
 
@@ -251,6 +281,7 @@ export function MoveForm(props: MoveFormPropsT) {
       tagPickerOptions: props.knownTags.map(strToPickerValue),
       tagPickerDefaultValue: props.move.tags.map(strToPickerValue),
       onCancel: props.onCancel,
+      videoPlayer: props.videoBvr.player,
       setTagsPickerRef,
       setDescriptionEditorRef,
     })

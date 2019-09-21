@@ -142,10 +142,10 @@ export function createMoveCrudBvrs(
   setNextHighlightedMoveId: UUID => void,
   movesContainer: DataContainerT<MoveT>,
   browseToMove: MoveT => void,
-  actAddMoves: Function
+  actAddMoves: Function,
+  isEditingMove: boolean,
+  actSetIsEditingMove: Function
 ): MoveCrudBvrsT {
-  const [isEditing, setIsEditing] = React.useState(false);
-
   const insertMovesBvr = useInsertItems(movesContainer);
 
   const newMoveBvr: NewMoveBvrT = useNewMove(
@@ -154,7 +154,7 @@ export function createMoveCrudBvrs(
     setNextHighlightedMoveId,
     highlightedMoveId,
     insertMovesBvr,
-    setIsEditing
+    actSetIsEditingMove
   );
 
   function updateMove(oldMove: MoveT, newMove: MoveT) {
@@ -170,13 +170,13 @@ export function createMoveCrudBvrs(
   const saveMoveBvr: SaveMoveBvrT = useSaveMove(
     movesContainer.preview,
     newMoveBvr,
-    setIsEditing,
+    actSetIsEditingMove,
     updateMove
   );
 
   const bvrs: MoveCrudBvrsT = {
-    isEditing,
-    setIsEditing,
+    isEditing: isEditingMove,
+    setIsEditing: actSetIsEditingMove,
     insertMovesBvr,
     newMoveBvr,
     saveMoveBvr,

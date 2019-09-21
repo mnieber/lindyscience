@@ -130,3 +130,17 @@ export function actSetMoveListContainerPayload(
     targetItemId,
   };
 }
+
+export function actSetIsEditingMove(isEditing: boolean) {
+  return {
+    type: "SET_IS_EDITING_MOVE",
+    isEditing,
+  };
+}
+
+export function actSetIsEditingMoveList(isEditing: boolean) {
+  return {
+    type: "SET_IS_EDITING_MOVE_LIST",
+    isEditing,
+  };
+}

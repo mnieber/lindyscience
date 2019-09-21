@@ -99,12 +99,14 @@ export function moveListFiltersReducer(
 type DataContainerState = {
   targetItemId: ?UUID,
   payload: Array<any>,
+  isEditing: boolean,
 };
 
 export function moveContainerReducer(
   state: DataContainerState = {
     targetItemId: null,
     payload: [],
+    isEditing: false,
   },
   action: any
 ): DataContainerState {
@@ -115,6 +117,11 @@ export function moveContainerReducer(
         targetItemId: action.targetItemId,
         payload: action.payload,
       };
+    case "SET_IS_EDITING_MOVE":
+      return {
+        ...state,
+        isEditing: action.isEditing,
+      };
     default:
       return state;
   }
@@ -124,6 +131,7 @@ export function moveListContainerReducer(
   state: DataContainerState = {
     targetItemId: null,
     payload: [],
+    isEditing: false,
   },
   action: any
 ): DataContainerState {
@@ -133,6 +141,11 @@ export function moveListContainerReducer(
         ...state,
         targetItemId: action.targetItemId,
         payload: action.payload,
+      };
+    case "SET_IS_EDITING_MOVE_LIST":
+      return {
+        ...state,
+        isEditing: action.isEditing,
       };
     default:
       return state;
@@ -208,9 +221,15 @@ export const getMoveContainerPayload: Selector<DataContainerState> = createSelec
   }
 );
 
+export const getIsEditingMove = (state: RootReducerStateT): boolean =>
+  state.screens.moveContainer.isEditing;
+
 export const getMoveListContainerPayload: Selector<DataContainerState> = createSelector(
   [_stateMoveListContainer],
   (stateMoveListContainer): DataContainerState => {
     return stateMoveListContainer;
   }
 );
+
+export const getIsEditingMoveList = (state: RootReducerStateT): boolean =>
+  state.screens.moveListContainer.isEditing;

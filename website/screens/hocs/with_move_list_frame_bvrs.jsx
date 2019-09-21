@@ -38,6 +38,8 @@ type PropsT = {
   moveLists: Array<MoveListT>,
   highlightedMove: ?MoveT,
   moveList: ?MoveListT,
+  isEditingMove: boolean,
+  isEditingMoveList: boolean,
   // receive any actions as well
 };
 
@@ -53,6 +55,8 @@ export const withMoveListFrameBvrs = compose(
       moveLists: Ctr.fromStore.getFilteredMoveLists(state),
       highlightedMove: Ctr.fromStore.getHighlightedMove(state),
       moveList: Ctr.fromStore.getSelectedMoveList(state),
+      isEditingMove: Ctr.fromStore.getIsEditingMove(state),
+      isEditingMoveList: Ctr.fromStore.getIsEditingMoveList(state),
     }),
     Ctr.actions
   ),
@@ -64,6 +68,8 @@ export const withMoveListFrameBvrs = compose(
       moveContainer,
       moveListContainer,
       highlightedMove,
+      isEditingMove,
+      isEditingMoveList,
       ...passThroughProps
     }: PropsT = props;
 
@@ -82,7 +88,9 @@ export const withMoveListFrameBvrs = compose(
       navigationBvr.setNextHighlightedMoveId,
       moveContainer,
       navigationBvr.browseToMove,
-      actions.actAddMoves
+      actions.actAddMoves,
+      isEditingMove,
+      actions.actSetIsEditingMove
     );
 
     const selectMovesBvr = useSelectItems<MoveT>(
@@ -105,7 +113,9 @@ export const withMoveListFrameBvrs = compose(
       moveListContainer,
       getId(moveList),
       navigationBvr.setNextSelectedMoveListId,
-      actions.actAddMoveLists
+      actions.actAddMoveLists,
+      isEditingMoveList,
+      actions.actSetIsEditingMoveList
     );
 
     const draggingBvr: DraggingBvrT = createDraggingBvr(

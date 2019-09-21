@@ -133,10 +133,10 @@ export function createMoveListCrudBvrs(
   moveListsContainer: DataContainerT<MoveListT>,
   selectedMoveListId: UUID,
   setNextSelectedMoveListId: UUID => void,
-  actAddMoveLists: Function
+  actAddMoveLists: Function,
+  isEditingMoveList: boolean,
+  actSetIsEditingMoveList: Function
 ): MoveListCrudBvrsT {
-  const [isEditing, setIsEditing] = React.useState(false);
-
   const insertMoveListsBvr = useInsertItems(moveListsContainer);
 
   const newMoveListBvr: NewMoveListBvrT = useNewMoveList(
@@ -144,7 +144,7 @@ export function createMoveListCrudBvrs(
     setNextSelectedMoveListId,
     selectedMoveListId,
     insertMoveListsBvr,
-    setIsEditing
+    actSetIsEditingMoveList
   );
 
   async function _updateMoveList(
@@ -161,13 +161,13 @@ export function createMoveListCrudBvrs(
   const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(
     moveListsContainer.preview,
     newMoveListBvr,
-    setIsEditing,
+    actSetIsEditingMoveList,
     _updateMoveList
   );
 
   const bvrs: MoveListCrudBvrsT = {
-    isEditing,
-    setIsEditing,
+    isEditing: isEditingMoveList,
+    setIsEditing: actSetIsEditingMoveList,
     insertMoveListsBvr,
     newMoveListBvr,
     saveMoveListBvr,

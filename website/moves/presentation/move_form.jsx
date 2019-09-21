@@ -102,7 +102,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       classStarts="w-full"
       label="Start time"
       formProps={formProps}
-      fieldStart="startTime"
+      fieldName="startTime"
       type="text"
       placeholder="Start time in seconds"
     />
@@ -113,7 +113,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       classEnds="w-full"
       label="End time"
       formProps={formProps}
-      fieldEnd="endTime"
+      fieldName="endTime"
       type="text"
       placeholder="End time in seconds"
     />
@@ -197,6 +197,7 @@ type MoveFormPropsT = {
   move: MoveT,
   videoBvr: VideoBvrT,
   autoFocus: boolean,
+  proposedMoveData: any,
 };
 
 export function MoveForm(props: MoveFormPropsT) {
@@ -204,8 +205,8 @@ export function MoveForm(props: MoveFormPropsT) {
   const setTagsPickerRef = x => (refs.tagsPickerRef = x);
   const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
 
-  const startTime = !isNone(props.videoBvr.proposedStartTime)
-    ? props.videoBvr.proposedStartTime
+  const startTime = !isNone(props.proposedMoveData.startTime)
+    ? props.proposedMoveData.startTime
     : props.move.startTimeMs
     ? props.move.startTimeMs / 1000.0
     : "";

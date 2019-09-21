@@ -9,6 +9,7 @@ import type { VideoT, VideoBvrT } from "video/types";
 type VideoControlPanelPropsT = {
   videoBvr: VideoBvrT,
   setIsEditing: boolean => void,
+  setProposedStartTime: number => void,
 };
 
 export function VideoControlPanel(props: VideoControlPanelPropsT) {
@@ -16,9 +17,7 @@ export function VideoControlPanel(props: VideoControlPanelPropsT) {
 
   const _setStartTime = () => {
     if (props.videoBvr.player) {
-      props.videoBvr.setProposedStartTime(
-        props.videoBvr.player.getCurrentTime()
-      );
+      props.setProposedStartTime(props.videoBvr.player.getCurrentTime());
       props.setIsEditing(true);
     }
   };

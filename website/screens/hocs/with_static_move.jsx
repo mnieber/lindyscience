@@ -60,11 +60,17 @@ export const withStaticMove = compose(
 
     const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
     const videoBvr = useVideo(video);
+    const setIsEditing = () => {};
+    const setProposedStartTime = () => {};
 
     const videoPlayerPanel = videoBvr.video ? (
       <div className={"move__video panel flex flex-col"}>
         <VideoPlayer videoBvr={videoBvr} />
-        <VideoControlPanel videoBvr={videoBvr} setIsEditing={() => {}} />
+        <VideoControlPanel
+          videoBvr={videoBvr}
+          setIsEditing={setIsEditing}
+          setProposedStartTime={setProposedStartTime}
+        />
       </div>
     ) : (
       <React.Fragment />

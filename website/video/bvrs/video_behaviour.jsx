@@ -32,7 +32,6 @@ export function useVideo(video: ?VideoT): VideoBvrT {
   const [_isPlaying, _setIsPlaying] = React.useState(false);
   const [_player, _setPlayer] = React.useState(null);
   const [pauseTimeout, setPauseTimeout] = React.useState(500);
-  const [_proposedStartTime, _setProposedStartTime] = React.useState(null);
 
   function setPlayer(player) {
     if (player != _player) {
@@ -52,18 +51,12 @@ export function useVideo(video: ?VideoT): VideoBvrT {
     setIsPlaying(!_isPlaying);
   }
 
-  function setProposedStartTime(t) {
-    _setProposedStartTime(t);
-  }
-
   return {
     player: _player,
     setPlayer,
     isPlaying: _isPlaying,
     setIsPlaying,
     togglePlay,
-    proposedStartTime: _proposedStartTime,
-    setProposedStartTime,
     video,
   };
 }

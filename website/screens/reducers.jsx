@@ -100,6 +100,7 @@ type DataContainerState = {
   targetItemId: ?UUID,
   payload: Array<any>,
   isEditing: boolean,
+  proposedFormData: any,
 };
 
 export function moveContainerReducer(
@@ -107,6 +108,7 @@ export function moveContainerReducer(
     targetItemId: null,
     payload: [],
     isEditing: false,
+    proposedFormData: {},
   },
   action: any
 ): DataContainerState {
@@ -122,6 +124,11 @@ export function moveContainerReducer(
         ...state,
         isEditing: action.isEditing,
       };
+    case "SET_PROPOSED_MOVE_DATA":
+      return {
+        ...state,
+        proposedFormData: action.proposedMoveData,
+      };
     default:
       return state;
   }
@@ -132,6 +139,7 @@ export function moveListContainerReducer(
     targetItemId: null,
     payload: [],
     isEditing: false,
+    proposedFormData: {},
   },
   action: any
 ): DataContainerState {
@@ -146,6 +154,11 @@ export function moveListContainerReducer(
       return {
         ...state,
         isEditing: action.isEditing,
+      };
+    case "SET_PROPOSED_MOVE_LIST_DATA":
+      return {
+        ...state,
+        proposedFormData: action.proposedMoveListData,
       };
     default:
       return state;
@@ -233,3 +246,6 @@ export const getMoveListContainerPayload: Selector<DataContainerState> = createS
 
 export const getIsEditingMoveList = (state: RootReducerStateT): boolean =>
   state.screens.moveListContainer.isEditing;
+
+export const getProposedMoveData = (state: RootReducerStateT): any =>
+  state.screens.moveContainer.proposedFormData;

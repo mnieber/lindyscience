@@ -144,3 +144,17 @@ export function actSetIsEditingMoveList(isEditing: boolean) {
     isEditing,
   };
 }
+
+export function actSetProposedMoveData(proposedMoveData: any) {
+  return {
+    type: "SET_PROPOSED_MOVE_DATA",
+    proposedMoveData,
+  };
+}
+
+export function actSetProposedMoveListData(proposedMoveListData: any) {
+  return {
+    type: "SET_PROPOSED_MOVE_LIST_DATA",
+    proposedMoveListData,
+  };
+}

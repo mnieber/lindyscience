@@ -14,6 +14,7 @@ import { VideoPlayer } from "video/presentation/video_player";
 import { useVideo } from "video/bvrs/video_behaviour";
 import { getStore } from "app/store";
 import { getVideoFromMove } from "moves/utils";
+import { truncDecimals } from "utils/utils";
 import { withHostedOwnMovePanels } from "screens/hocs/with_hosted_own_move_panels";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
@@ -27,6 +28,7 @@ type PropsT = {
   moveTags: Array<TagT>,
   hostedOwnMovePanels: any,
   moveCrudBvrs: MoveCrudBvrsT,
+  proposedMoveData: any,
   // receive any actions as well
 };
 
@@ -45,6 +47,7 @@ export const withOwnMove = compose(
       move: Ctr.fromStore.getHighlightedMove(state),
       moveList: Ctr.fromStore.getSelectedMoveList(state),
       moveTags: Ctr.fromStore.getMoveTags(state),
+      proposedMoveData: Ctr.fromStore.getProposedMoveData(state),
     }),
     Ctr.actions
   ),
@@ -55,6 +58,7 @@ export const withOwnMove = compose(
       moveCrudBvrs,
       userProfile,
       moveTags,
+      proposedMoveData,
       hostedOwnMovePanels,
       ...passThroughProps
     }: PropsT = props;
@@ -75,6 +79,11 @@ export const withOwnMove = compose(
 
     const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
     const videoBvr = useVideo(video);
+    const setProposedStartTime = x =>
+      actions.actSetProposedMoveData({
+        ...proposedMoveData,
+        startTime: truncDecimals(x, 2),
+      });
 
     const videoPlayerPanel = videoBvr.video ? (
       <div className={"move__video panel flex flex-col"}>
@@ -82,6 +91,7 @@ export const withOwnMove = compose(
         <VideoControlPanel
           videoBvr={videoBvr}
           setIsEditing={moveCrudBvrs.setIsEditing}
+          setProposedStartTime={setProposedStartTime}
         />
       </div>
     ) : (
@@ -98,6 +108,7 @@ export const withOwnMove = compose(
           onCancel={moveCrudBvrs.saveMoveBvr.discardChanges}
           knownTags={moveTags}
           videoBvr={videoBvr}
+          proposedMoveData={proposedMoveData}
         />
         {videoPlayerPanel}
       </div>

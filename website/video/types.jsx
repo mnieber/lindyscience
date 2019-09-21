@@ -21,6 +21,4 @@ export type VideoBvrT = {
   isPlaying: boolean,
   setIsPlaying: boolean => void,
   togglePlay: () => void,
-  proposedStartTime: ?number,
-  setProposedStartTime: number => void,
 };

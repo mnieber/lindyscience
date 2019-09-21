@@ -172,3 +172,8 @@ export function range(start: number, stop: number) {
 export function isNonEmptyString(x: string) {
   return (x || "").trim() !== "";
 }
+
+export function truncDecimals(x: number, k: number) {
+  const factor = Math.pow(10, k);
+  return Math.trunc(x * factor) / factor;
+}

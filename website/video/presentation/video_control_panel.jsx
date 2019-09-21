@@ -9,18 +9,10 @@ import type { VideoT, VideoBvrT } from "video/types";
 type VideoControlPanelPropsT = {
   videoBvr: VideoBvrT,
   setIsEditing: boolean => void,
-  setProposedStartTime: number => void,
 };
 
 export function VideoControlPanel(props: VideoControlPanelPropsT) {
   const _state = x => (x ? "enabled" : "disabled");
-
-  const _setStartTime = () => {
-    if (props.videoBvr.player) {
-      props.setProposedStartTime(props.videoBvr.player.getCurrentTime());
-      props.setIsEditing(true);
-    }
-  };
 
   return (
     <div className="flex flex-col">
@@ -32,7 +24,6 @@ export function VideoControlPanel(props: VideoControlPanelPropsT) {
       >
         Play
       </button>
-      <button onClick={_setStartTime}>Set start time</button>
     </div>
   );
 }

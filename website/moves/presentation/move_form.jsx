@@ -191,7 +191,6 @@ type MoveFormPropsT = {
   move: MoveT,
   videoBvr: VideoBvrT,
   autoFocus: boolean,
-  proposedMoveData: any,
 };
 
 export function MoveForm(props: MoveFormPropsT) {
@@ -199,9 +198,7 @@ export function MoveForm(props: MoveFormPropsT) {
   const setTagsPickerRef = x => (refs.tagsPickerRef = x);
   const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
 
-  const startTime = !isNone(props.proposedMoveData.startTime)
-    ? props.proposedMoveData.startTime
-    : props.move.startTimeMs
+  const startTime = props.move.startTimeMs
     ? props.move.startTimeMs / 1000.0
     : "";
 

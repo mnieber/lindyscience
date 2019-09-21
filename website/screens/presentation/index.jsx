@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { Move } from "moves/presentation/move";
+import { MoveHeader } from "moves/presentation/move_header";
 import { TipsPanel } from "tips/presentation/tips_panel";
 import { MoveList } from "move_lists/presentation/movelist";
 import { MoveForm } from "moves/presentation/move_form";
@@ -26,6 +27,7 @@ import { MoveListHeader } from "move_lists/presentation/movelist_header";
 
 const Widgets = {
   Move,
+  MoveHeader,
   TipsPanel,
   MoveList,
   MoveForm,

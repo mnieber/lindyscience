@@ -86,7 +86,7 @@ export const withOwnMove = compose(
       });
 
     const videoPlayerPanel = videoBvr.video ? (
-      <div className={"move__video panel flex flex-col"}>
+      <div key="videoPlayerPanel" className={"move__video panel flex flex-col"}>
         <VideoPlayer videoBvr={videoBvr} />
         <VideoControlPanel
           videoBvr={videoBvr}
@@ -100,6 +100,7 @@ export const withOwnMove = compose(
 
     const ownMove = moveCrudBvrs.isEditing ? (
       <div>
+        {videoPlayerPanel}
         <Widgets.MoveForm
           userProfile={userProfile}
           autoFocus={true}
@@ -110,18 +111,19 @@ export const withOwnMove = compose(
           videoBvr={videoBvr}
           proposedMoveData={proposedMoveData}
         />
-        {videoPlayerPanel}
       </div>
     ) : (
-      <Widgets.Move
-        move={move}
-        userProfile={userProfile}
-        moveListTitle={moveListTitle}
-        moveTags={moveTags}
-        buttons={[editMoveBtn]}
-        hostedPanels={hostedOwnMovePanels}
-        videoPlayerPanel={videoPlayerPanel}
-      />
+      <div>
+        <Widgets.MoveHeader
+          move={move}
+          moveListTitle={moveListTitle}
+          moveTags={moveTags}
+          buttons={[editMoveBtn]}
+        />
+        {videoPlayerPanel}
+        <Widgets.Move move={move} />
+        {hostedOwnMovePanels}
+      </div>
     );
 
     return <WrappedComponent ownMove={ownMove} {...passThroughProps} />;

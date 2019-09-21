@@ -4,14 +4,12 @@ import * as React from "react";
 import classnames from "classnames";
 
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
-import { Tags } from "tags/presentation/tags";
 import {
   createReadOnlyEditorState,
   toEditorState,
 } from "rich_text/utils/editor_state";
 
 import type { MoveT } from "moves/types";
-import type { TagT } from "tags/types";
 
 const styleMap = {
   TIMING: {
@@ -34,32 +32,10 @@ const styleMap = {
 
 type MovePropsT = {
   move: MoveT,
-  moveListTitle: any,
-  moveTags: Array<TagT>,
-  buttons?: Array<React.Node>,
   className?: string,
-  hostedPanels: any,
-  videoPlayerPanel: any,
 };
 
 export function Move(props: MovePropsT) {
-  const nameDiv = (
-    <div className="flex flex-row items-center">
-      {props.moveListTitle}
-      <h2>:</h2>
-      <div className={"move__name flexrow flex-wrap ml-2"}>
-        <h1>{props.move.name}</h1>
-        {props.buttons}
-      </div>
-    </div>
-  );
-
-  const tagsDiv = props.move.tags.length ? (
-    <Tags tags={props.move.tags} />
-  ) : (
-    undefined
-  );
-
   const {
     state: readOnlyEditorState,
     variationNames,
@@ -81,11 +57,7 @@ export function Move(props: MovePropsT) {
 
   return (
     <div className={classnames("move", props.className || "")}>
-      {nameDiv}
-      {tagsDiv}
       {descriptionDiv}
-      {props.videoPlayerPanel}
-      {props.hostedPanels}
     </div>
   );
 }

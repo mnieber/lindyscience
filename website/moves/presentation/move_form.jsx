@@ -53,18 +53,6 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
-  const slugField = (
-    <FormField
-      classNames="flex-1"
-      label="Slug"
-      formProps={formProps}
-      fieldName="slug"
-      type="text"
-      placeholder="Slug"
-      disabled={true}
-    />
-  );
-
   const updateSlugBtn = (
     <div
       className={"button ml-2 flex-none"}
@@ -79,6 +67,19 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     </div>
   );
 
+  const slugField = (
+    <FormField
+      classNames="flex-1"
+      label="Slug"
+      formProps={formProps}
+      fieldName="slug"
+      type="text"
+      placeholder="Slug"
+      disabled={true}
+      buttons={[updateSlugBtn]}
+    />
+  );
+
   const linkField = (
     <FormField
       classNames="w-full"
@@ -88,13 +89,6 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       type="text"
       placeholder="Link"
     />
-  );
-
-  const slugFieldDiv = (
-    <div className="flexrow w-full">
-      {slugField}
-      {updateSlugBtn}
-    </div>
   );
 
   const startField = (
@@ -159,7 +153,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={"moveForm flexcol"}>
         {nameField}
-        {formProps.values.slug != newMoveSlug && slugFieldDiv}
+        {formProps.values.slug != newMoveSlug && slugField}
         {linkField}
         {startField}
         {endField}

@@ -25,14 +25,17 @@ export function formFieldProps(fieldType, formProps, fieldName, classNames) {
   };
 }
 
-export function FormFieldLabel({ fieldName, label, classNames }) {
+export function FormFieldLabel(props) {
   return (
-    <label
-      className={classnames("mt-2 font-bold", classNames)}
-      htmlFor={fieldName}
-    >
-      {label}
-    </label>
+    <div className="flex flex-row">
+      <label
+        className={classnames("mt-2 font-bold", props.classNames)}
+        htmlFor={props.fieldName}
+      >
+        {props.label}
+      </label>
+      {props.buttons}
+    </div>
   );
 }
 
@@ -51,65 +54,53 @@ export function formFieldError(formProps, fieldName, classNames, key) {
   return undefined;
 }
 
-export class FormField extends React.Component {
-  constructor(props) {
-    super(props);
-    this.htmlElement = React.createRef();
-  }
+export function FormField(props) {
+  const htmlElement = React.useRef(null);
 
-  render() {
-    const selectAllOnFocus = event => {
-      event.target.select();
-    };
-    const textField =
-      this.props.type.toLowerCase() == "textarea" ? (
-        <textarea
-          ref={this.htmlElement}
-          placeholder={this.props.placeholder}
-          disabled={this.props.disabled}
-          autoFocus={this.props.autoFocus}
-          {...formFieldProps(
-            this.props.type,
-            this.props.formProps,
-            this.props.fieldName,
-            ["formField__field"]
-          )}
-        />
-      ) : (
-        <input
-          ref={this.htmlElement}
-          type={this.props.type}
-          placeholder={this.props.placeholder}
-          disabled={this.props.disabled}
-          onFocus={selectAllOnFocus}
-          autoFocus={this.props.autoFocus}
-          {...formFieldProps(
-            this.props.type,
-            this.props.formProps,
-            this.props.fieldName,
-            ["formField__field"]
-          )}
-        />
-      );
-
-    const formFieldLabel = (
-      <FormFieldLabel
-        fieldName={this.props.fieldName}
-        label={this.props.label}
-        classNames={["formField__label"]}
+  const selectAllOnFocus = event => {
+    event.target.select();
+  };
+  const textField =
+    props.type.toLowerCase() == "textarea" ? (
+      <textarea
+        ref={htmlElement}
+        placeholder={props.placeholder}
+        disabled={props.disabled}
+        autoFocus={props.autoFocus}
+        {...formFieldProps(props.type, props.formProps, props.fieldName, [
+          "formField__field",
+        ])}
+      />
+    ) : (
+      <input
+        ref={htmlElement}
+        type={props.type}
+        placeholder={props.placeholder}
+        disabled={props.disabled}
+        onFocus={selectAllOnFocus}
+        autoFocus={props.autoFocus}
+        {...formFieldProps(props.type, props.formProps, props.fieldName, [
+          "formField__field",
+        ])}
       />
     );
 
-    return (
-      <div className={`my-2 ${this.props.classNames}`}>
-        {this.props.label && formFieldLabel}
-        {textField}
-        {formFieldError(this.props.formProps, this.props.fieldName, [
-          "formField__error",
-        ])}
-      </div>
-    );
-  }
+  const formFieldLabel = (
+    <FormFieldLabel
+      fieldName={props.fieldName}
+      label={props.label}
+      buttons={props.buttons}
+      classNames={["formField__label"]}
+    />
+  );
+
+  return (
+    <div className={`my-2 ${props.classNames}`}>
+      {props.label && formFieldLabel}
+      {textField}
+      {formFieldError(props.formProps, props.fieldName, ["formField__error"])}
+    </div>
+  );
 }
 
 export function Row2({ w1, w2, padding = 1 }) {

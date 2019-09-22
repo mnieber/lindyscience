@@ -1,6 +1,5 @@
 from django.db import models
 from tagulous.models import TagField
-from django.contrib.postgres.fields import ArrayField
 from app.models import Entity
 
 # Moves models
@@ -20,9 +19,6 @@ class Move(Entity):
     link = models.URLField(blank=True, null=True)
     start_time_ms = models.IntegerField(blank=True, null=True)
     end_time_ms = models.IntegerField(blank=True, null=True)
-    variation_names = ArrayField(models.CharField(max_length=200),
-                                 blank=True,
-                                 default=list)
     description = models.TextField()
     source_move_list = models.ForeignKey('MoveList',
                                          on_delete=models.CASCADE,

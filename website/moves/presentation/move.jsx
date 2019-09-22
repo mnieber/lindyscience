@@ -20,12 +20,6 @@ const styleMap = {
   TIMED: {
     textDecoration: "underline",
   },
-  VARIATION_NAME: {
-    backgroundColor: "#e8eff4",
-  },
-  VARIATION_DESCRIPTION: {
-    backgroundColor: "#d8eff4",
-  },
 };
 
 // Move
@@ -36,10 +30,9 @@ type MovePropsT = {
 };
 
 export function Move(props: MovePropsT) {
-  const {
-    state: readOnlyEditorState,
-    variationNames,
-  } = createReadOnlyEditorState(toEditorState(props.move.description));
+  const readOnlyEditorState = createReadOnlyEditorState(
+    toEditorState(props.move.description)
+  );
 
   const descriptionDiv = (
     <div className={"move__description panel"}>

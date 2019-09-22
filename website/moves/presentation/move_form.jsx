@@ -147,8 +147,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   );
 
   const placeholder =
-    "You can add timing information (the move starts with a |rock step|1,2|) and move variations " +
-    "(in the ^fancy variation^the follower swivels in place^).";
+    "You can add timing information like so: the move starts with a |rock step|1,2|.";
 
   const description = (
     <div className="moveForm__description mt-4">
@@ -264,10 +263,9 @@ export function MoveForm(props: MoveFormPropsT) {
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      const {
-        state: readOnlyEditorState,
-        variationNames,
-      } = createReadOnlyEditorState(toEditorState(values.description));
+      const readOnlyEditorState = createReadOnlyEditorState(
+        toEditorState(values.description)
+      );
 
       values.startTimeMs = Math.trunc(values.startTime * 1000);
       delete values.startTime;
@@ -275,7 +273,7 @@ export function MoveForm(props: MoveFormPropsT) {
       values.endTimeMs = Math.trunc(values.endTime * 1000);
       delete values.endTime;
 
-      props.onSubmit(props.move.id, { ...values, variationNames });
+      props.onSubmit(props.move.id, { ...values });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(

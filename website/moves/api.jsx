@@ -17,7 +17,6 @@ export function saveMove(values: MoveT) {
       $endTimeMs: Int!,
       $description: String!,
       $tags: [String]!,
-      $variationNames: [String]!,
       $sourceMoveListId: String!,
     ) {
       saveMove(
@@ -29,7 +28,6 @@ export function saveMove(values: MoveT) {
         endTimeMs: $endTimeMs,
         description: $description,
         tags: $tags,
-        variationNames: $variationNames,
         sourceMoveListId: $sourceMoveListId
       ) { ok }
     }`,

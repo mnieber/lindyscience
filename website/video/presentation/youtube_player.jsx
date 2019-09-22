@@ -30,8 +30,8 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       ? params.end
       : null;
 
-  playerVars.start = Math.trunc(startTime);
-  playerVars.end = Math.trunc(endTime) + 1;
+  playerVars.start = isNone(startTime) ? startTime : Math.trunc(startTime || 0);
+  playerVars.end = isNone(endTime) ? endTime : Math.trunc(endTime || 0) + 1;
 
   const opts = {
     height: "390",

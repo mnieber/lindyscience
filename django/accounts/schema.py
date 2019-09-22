@@ -49,6 +49,9 @@ class UpdateProfile(graphene.Mutation):
     ok = graphene.Boolean()
 
     def mutate(self, info, recent_move_url):
+        if info.context.user.is_anonymous:
+            return UpdateProfile(ok=False)
+
         profile = models.Profile.objects.get(owner_id=info.context.user.id)
         profile.recent_move_url = recent_move_url
         try:

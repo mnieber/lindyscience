@@ -18,13 +18,13 @@ import {
 } from "rich_text/presentation/rich_text_editor";
 import type { TagT } from "tags/types";
 import type { UUID } from "kernel/types";
-import type { VideoBvrT } from "video/types";
 import {
   createReadOnlyEditorState,
   toEditorState,
 } from "rich_text/utils/editor_state";
 import { isNone, slugify, truncDecimals } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
+// $FlowFixMe
 import uuidv4 from "uuid/v4";
 
 type InnerFormPropsT = {
@@ -55,6 +55,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 
   const updateSlugBtn = (
     <div
+      key="updateSlugBtn"
       className={"button ml-2 flex-none"}
       onClick={() => {
         const newSlug = slugify(formProps.values.name);
@@ -93,6 +94,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 
   const updateStartBtn = (
     <div
+      key="updateStartBtn"
       className={"button ml-2 flex-none"}
       onClick={() => {
         formProps.setFieldValue(
@@ -119,6 +121,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 
   const updateEndBtn = (
     <div
+      key="updateEndBtn"
       className={"button ml-2 flex-none"}
       onClick={() => {
         formProps.setFieldValue(
@@ -219,7 +222,7 @@ type MoveFormPropsT = {
   onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   move: MoveT,
-  videoBvr: VideoBvrT,
+  videoPlayer: any,
   autoFocus: boolean,
 };
 
@@ -281,7 +284,7 @@ export function MoveForm(props: MoveFormPropsT) {
       tagPickerOptions: props.knownTags.map(strToPickerValue),
       tagPickerDefaultValue: props.move.tags.map(strToPickerValue),
       onCancel: props.onCancel,
-      videoPlayer: props.videoBvr.player,
+      videoPlayer: props.videoPlayer,
       setTagsPickerRef,
       setDescriptionEditorRef,
     })

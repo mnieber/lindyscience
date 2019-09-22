@@ -15,12 +15,23 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   const params = props.videoUrlProps.params;
 
   const playerVars = {};
-  if (!isNone(params.start)) {
-    playerVars.start = Math.trunc(params.start);
-  }
-  if (!isNone(params.end)) {
-    playerVars.end = Math.trunc(params.end) + 1;
-  }
+  const video = props.videoBvr.video;
+  const startTime =
+    video && !isNone(video.startTimeMs)
+      ? (video.startTimeMs || 0) / 1000
+      : !isNone(params.start)
+      ? params.start
+      : null;
+
+  const endTime =
+    video && !isNone(video.endTimeMs)
+      ? (video.endTimeMs || 0) / 1000
+      : !isNone(params.end)
+      ? params.end
+      : null;
+
+  playerVars.start = Math.trunc(startTime);
+  playerVars.end = Math.trunc(endTime) + 1;
 
   const opts = {
     height: "390",
@@ -36,15 +47,15 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   const _onReady = event => {
     const player = event.target;
     props.videoBvr.setPlayer(player);
-    if (params && !isNone(params.start)) {
-      player.seekTo(params.start);
+    if (params && !isNone(startTime)) {
+      player.seekTo(startTime);
     }
   };
 
   const _onEnd = event => {
     const player = event.target;
     player.playVideo();
-    player.seekTo(params.start);
+    player.seekTo(startTime);
   };
 
   const _onPlay = () => {

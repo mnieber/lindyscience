@@ -72,14 +72,16 @@ export const withStaticMove = compose(
     );
 
     const staticMove = (
-      <Widgets.Move
-        move={move}
-        moveListTitle={moveListTitle}
-        key={getId(move)}
-        moveTags={moveTags}
-        videoPlayerPanel={videoPlayerPanel}
-        hostedPanels={hostedStaticMovePanels}
-      />
+      <div>
+        <Widgets.MoveHeader
+          move={move}
+          moveListTitle={moveListTitle}
+          moveTags={moveTags}
+        />
+        {videoPlayerPanel}
+        <Widgets.Move move={move} />
+        {hostedStaticMovePanels}
+      </div>
     );
 
     return <WrappedComponent staticMove={staticMove} {...passThroughProps} />;

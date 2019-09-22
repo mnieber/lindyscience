@@ -36,6 +36,10 @@ function getMove() {
   return Ctr.fromStore.getHighlightedMove(state);
 }
 
+// Use this form to prevent re-rendering when the user
+// interacts with the video
+const MemoMoveForm = React.memo(Widgets.MoveForm);
+
 // $FlowFixMe
 export const withOwnMove = compose(
   withMoveCrudBvrsContext,
@@ -92,14 +96,13 @@ export const withOwnMove = compose(
     const ownMove = moveCrudBvrs.isEditing ? (
       <div>
         {videoPlayerPanel}
-        <Widgets.MoveForm
-          userProfile={userProfile}
+        <MemoMoveForm
           autoFocus={true}
           move={move}
           onSubmit={moveCrudBvrs.saveMoveBvr.saveItem}
           onCancel={moveCrudBvrs.saveMoveBvr.discardChanges}
           knownTags={moveTags}
-          videoBvr={videoBvr}
+          videoPlayer={videoBvr.player}
         />
       </div>
     ) : (

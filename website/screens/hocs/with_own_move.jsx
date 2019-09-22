@@ -21,6 +21,10 @@ import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
+import {
+  handleVideoKey,
+  videoKeys,
+} from "screens/presentation/video_keyhandler";
 
 type PropsT = {
   move: MoveT,
@@ -123,21 +127,15 @@ export const withOwnMove = compose(
           buttons={[editMoveBtn]}
         />
         {videoPlayerPanel}
-        <Widgets.Move move={move} />
+        <Widgets.Move move={move} videoPlayer={videoBvr.player} />
         {hostedOwnMovePanels}
       </div>
     );
 
-    const onKeyDown = (key, e) => {
-      if (key == "ctrl+space") {
-        videoBvr.togglePlay();
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
+    const onKeyDown = (key, e) => handleVideoKey(key, e, videoBvr);
 
     const ownMoveWithKeyHandler = (
-      <KeyboardEventHandler handleKeys={["ctrl+space"]} onKeyEvent={onKeyDown}>
+      <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>
         {ownMove}
       </KeyboardEventHandler>
     );

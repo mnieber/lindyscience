@@ -177,3 +177,8 @@ export function truncDecimals(x: number, k: number) {
   const factor = Math.pow(10, k);
   return Math.trunc(x * factor) / factor;
 }
+
+export function roundDecimals(x: number, k: number) {
+  const factor = Math.pow(10, k);
+  return Math.round(x * factor) / factor;
+}

@@ -11,6 +11,7 @@ import {
   convertToRaw,
   // $FlowFixMe
 } from "draft-js";
+import { roundDecimals } from "utils/utils";
 
 function customKeyBindingFn(e: any): string {
   if (e.keyCode === 83 /* `S` key */ && KeyBindingUtil.hasCommandModifier(e)) {
@@ -26,6 +27,7 @@ type RichTextEditorPropsT = {
   setEditorRef: any => void,
   customStyleMap?: any,
   placeholder?: string,
+  getCurrentTime?: () => number,
 };
 
 // TODO: before editing, convert from "draft" to "markdown".
@@ -52,13 +54,15 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
   const handleKeyCommand = (command, editorState) => {
     let newState = null;
 
-    if ((command = "insert-timepoint")) {
+    if (command == "insert-timepoint" && props.getCurrentTime) {
       const contentState = editorState.getCurrentContent();
       const selectionState = editorState.getSelection();
+      // $FlowFixMe
+      const t = roundDecimals(props.getCurrentTime(), 1);
       const newContentState = Modifier.insertText(
         contentState,
         selectionState,
-        "<20>"
+        "<" + t + "> "
       );
       newState = EditorState.push(
         editorState,

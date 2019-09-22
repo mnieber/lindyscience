@@ -159,6 +159,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         setEditorRef={props.setDescriptionEditorRef}
         initialEditorState={toEditorState(formProps.values.description)}
         placeholder={placeholder}
+        getCurrentTime={() => props.videoPlayer.getCurrentTime()}
       />
       {formFieldError(formProps, "description", ["formField__error"])}
     </div>

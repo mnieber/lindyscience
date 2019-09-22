@@ -6,7 +6,6 @@ import {
   EditorState,
   CharacterMetadata,
   convertFromRaw,
-  CompositeDecorator,
   // $FlowFixMe
 } from "draft-js";
 
@@ -18,35 +17,6 @@ type MatchT = {
 type CursorT = {
   charMap: Array<any>,
   pos: number,
-};
-
-const TIMEPOINT_REGEX = /\<[\w]+\>/g;
-
-function timePointStrategy(contentState, contentBlock, callback) {
-  findWithRegex(TIMEPOINT_REGEX, contentBlock, callback);
-}
-
-function findWithRegex(regex, contentBlock, callback) {
-  const text = contentBlock.getText();
-  let matchArr, start;
-  while ((matchArr = regex.exec(text)) !== null) {
-    // $FlowFixMe
-    start = matchArr.index;
-    // $FlowFixMe
-    callback(start, start + matchArr[0].length);
-  }
-}
-
-const TimePointSpan = props => {
-  return (
-    <span
-      onClick={() => alert("HA")}
-      className="bg-yellow"
-      data-offset-key={props.offsetKey}
-    >
-      {props.children}
-    </span>
-  );
 };
 
 function createBlockWithTimings(block: any, cursor: CursorT): any {
@@ -169,21 +139,14 @@ export function toContentState(text: string) {
   return convertFromRaw(JSON.parse(text));
 }
 
-export function toEditorState(text: string) {
-  const decorator = new CompositeDecorator([
-    {
-      strategy: timePointStrategy,
-      component: TimePointSpan,
-    },
-  ]);
-
+export function toEditorState(text: string, decorator?: any) {
   return text
     ? EditorState.createWithContent(toContentState(text), decorator)
     : EditorState.createEmpty(decorator);
 }
 
-export function toReadOnlyEditorState(text: string) {
-  const editorState = toEditorState(text);
+export function toReadOnlyEditorState(text: string, decorator?: any) {
+  const editorState = toEditorState(text, decorator);
   const state = createReadOnlyEditorState(editorState);
   return state;
 }

@@ -8,7 +8,6 @@ import {
   convertFromRaw,
   // $FlowFixMe
 } from "draft-js";
-import { stateFromHTML } from "draft-js-import-html";
 
 type MatchT = {
   startPos: number,
@@ -137,9 +136,7 @@ export function createReadOnlyEditorState(editorState: any) {
 }
 
 export function toContentState(text: string) {
-  return text.startsWith("<")
-    ? stateFromHTML(text)
-    : convertFromRaw(JSON.parse(text));
+  return convertFromRaw(JSON.parse(text));
 }
 
 export function toEditorState(text: string) {

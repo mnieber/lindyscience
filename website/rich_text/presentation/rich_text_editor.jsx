@@ -8,12 +8,14 @@ import {
   RichUtils,
   getDefaultKeyBinding,
   KeyBindingUtil,
-  CompositeDecorator,
   convertToRaw,
   // $FlowFixMe
 } from "draft-js";
 
 function customKeyBindingFn(e: any): string {
+  if (e.keyCode === 83 /* `S` key */ && KeyBindingUtil.hasCommandModifier(e)) {
+    return "insert-timepoint";
+  }
   return getDefaultKeyBinding(e);
 }
 
@@ -48,7 +50,24 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
   }, [editorRef]);
 
   const handleKeyCommand = (command, editorState) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
+    let newState = null;
+
+    if ((command = "insert-timepoint")) {
+      const contentState = editorState.getCurrentContent();
+      const selectionState = editorState.getSelection();
+      const newContentState = Modifier.insertText(
+        contentState,
+        selectionState,
+        "<20>"
+      );
+      newState = EditorState.push(
+        editorState,
+        newContentState,
+        "insert-fragment"
+      );
+    } else {
+      newState = RichUtils.handleKeyCommand(editorState, command);
+    }
 
     if (newState) {
       _setEditorState(newState);

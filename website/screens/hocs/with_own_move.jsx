@@ -2,6 +2,7 @@
 
 import { compose } from "redux";
 import * as React from "react";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import type { MoveCrudBvrsT } from "screens/types";
 import type { MoveListT } from "move_lists/types";
@@ -93,6 +94,14 @@ export const withOwnMove = compose(
       <React.Fragment />
     );
 
+    const moveNotEditingRef = React.useRef(null);
+
+    React.useEffect(() => {
+      if (moveNotEditingRef.current) {
+        moveNotEditingRef.current.focus();
+      }
+    }, [moveNotEditingRef.current]);
+
     const ownMove = moveCrudBvrs.isEditing ? (
       <div>
         {videoPlayerPanel}
@@ -106,7 +115,7 @@ export const withOwnMove = compose(
         />
       </div>
     ) : (
-      <div>
+      <div id="moveNotEditing" tabIndex={123} ref={moveNotEditingRef}>
         <Widgets.MoveHeader
           move={move}
           moveListTitle={moveListTitle}
@@ -119,6 +128,22 @@ export const withOwnMove = compose(
       </div>
     );
 
-    return <WrappedComponent ownMove={ownMove} {...passThroughProps} />;
+    const onKeyDown = (key, e) => {
+      if (key == "ctrl+space") {
+        videoBvr.togglePlay();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    const ownMoveWithKeyHandler = (
+      <KeyboardEventHandler handleKeys={["ctrl+space"]} onKeyEvent={onKeyDown}>
+        {ownMove}
+      </KeyboardEventHandler>
+    );
+
+    return (
+      <WrappedComponent ownMove={ownMoveWithKeyHandler} {...passThroughProps} />
+    );
   }
 );

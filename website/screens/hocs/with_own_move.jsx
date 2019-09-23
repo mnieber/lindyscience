@@ -87,6 +87,7 @@ export const withOwnMove = compose(
 
     const videoPlayerPanel = (
       <VideoPlayerPanel
+        key="videoPlayerPanel"
         videoBvr={props.videoBvr}
         setIsEditing={moveCrudBvrs.setIsEditing}
       />

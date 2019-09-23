@@ -2,14 +2,11 @@
 
 import React from "react";
 import classnames from "classnames";
+import { timePointRegex } from "video/utils";
 import {
   CompositeDecorator,
   // $FlowFixMe
 } from "draft-js";
-
-function timePointRegex() {
-  return /\<([\w\.]+)\>/g;
-}
 
 function timePointStrategy(contentState, contentBlock, callback) {
   findWithRegex(timePointRegex(), contentBlock, callback);

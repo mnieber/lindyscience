@@ -7,6 +7,7 @@ import Ctr from "screens/containers/index";
 import { withStaticMove } from "screens/hocs/with_static_move";
 import { withOwnMove } from "screens/hocs/with_own_move";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
+import { withVideoBvr } from "screens/hocs/with_video_bvr";
 
 import { newMoveSlug } from "moves/utils";
 import { isOwner } from "app/utils";
@@ -61,6 +62,7 @@ function MovePage(props: MovePagePropsT) {
 
 // $FlowFixMe
 MovePage = compose(
+  withVideoBvr,
   withStaticMove,
   withOwnMove,
   withMoveCrudBvrsContext,

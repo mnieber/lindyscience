@@ -2,29 +2,22 @@
 
 import { compose } from "redux";
 import * as React from "react";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
-import { useVideo } from "video/bvrs/video_behaviour";
 import { getStore } from "app/store";
-import { getVideoFromMove } from "moves/utils";
 import { truncDecimals } from "utils/utils";
 import { withHostedOwnMovePanels } from "screens/hocs/with_hosted_own_move_panels";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
-import {
-  handleVideoKey,
-  videoKeys,
-} from "screens/presentation/video_keyhandler";
 
 import type { MoveCrudBvrsT } from "screens/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
-import type { VideoT } from "video/types";
+import type { VideoBvrT } from "video/types";
 
 type PropsT = {
   move: MoveT,
@@ -33,6 +26,7 @@ type PropsT = {
   moveTags: Array<TagT>,
   hostedOwnMovePanels: any,
   moveCrudBvrs: MoveCrudBvrsT,
+  videoBvr: VideoBvrT,
   // receive any actions as well
 };
 
@@ -83,9 +77,6 @@ export const withOwnMove = compose(
       </div>
     );
 
-    const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
-    const videoBvr = useVideo(video);
-
     const moveNotEditingRef = React.useRef(null);
 
     React.useEffect(() => {
@@ -96,7 +87,7 @@ export const withOwnMove = compose(
 
     const videoPlayerPanel = (
       <VideoPlayerPanel
-        videoBvr={videoBvr}
+        videoBvr={props.videoBvr}
         setIsEditing={moveCrudBvrs.setIsEditing}
       />
     );
@@ -110,7 +101,7 @@ export const withOwnMove = compose(
           onSubmit={moveCrudBvrs.saveMoveBvr.saveItem}
           onCancel={moveCrudBvrs.saveMoveBvr.discardChanges}
           knownTags={moveTags}
-          videoPlayer={videoBvr.player}
+          videoPlayer={props.videoBvr.player}
         />
       </div>
     ) : (
@@ -122,21 +113,11 @@ export const withOwnMove = compose(
           buttons={[editMoveBtn]}
         />
         {videoPlayerPanel}
-        <Widgets.Move move={move} videoPlayer={videoBvr.player} />
+        <Widgets.Move move={move} videoPlayer={props.videoBvr.player} />
         {hostedOwnMovePanels}
       </div>
     );
 
-    const onKeyDown = (key, e) => handleVideoKey(key, e, videoBvr);
-
-    const ownMoveWithKeyHandler = (
-      <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>
-        {ownMove}
-      </KeyboardEventHandler>
-    );
-
-    return (
-      <WrappedComponent ownMove={ownMoveWithKeyHandler} {...passThroughProps} />
-    );
+    return <WrappedComponent ownMove={ownMove} {...passThroughProps} />;
   }
 );

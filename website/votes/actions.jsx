@@ -18,7 +18,6 @@ export function actSetVotes(votes: VoteByIdT) {
 
 export function actCastVote(id: UUID, vote: VoteT) {
   return (dispatch: Function, getState: Function) => {
-    console.log("STATE: ", getState());
     const prevVote = fromStore.getVoteByObjectId(getState())[id] || 0;
 
     dispatch({

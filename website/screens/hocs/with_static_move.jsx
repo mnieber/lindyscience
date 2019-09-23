@@ -19,13 +19,14 @@ import { getVideoFromMove } from "moves/utils";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import type { TagT } from "tags/types";
-import type { VideoT } from "video/types";
+import type { VideoT, VideoBvrT } from "video/types";
 
 type PropsT = {
   move: MoveT,
   moveList: MoveListT,
   moveTags: Array<TagT>,
   hostedStaticMovePanels: any,
+  videoBvr: VideoBvrT,
   // receive any actions as well
 };
 
@@ -58,12 +59,9 @@ export const withStaticMove = compose(
 
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 
-    const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
-    const videoBvr = useVideo(video);
     const setIsEditing = () => {};
-
     const videoPlayerPanel = (
-      <VideoPlayerPanel videoBvr={videoBvr} setIsEditing={setIsEditing} />
+      <VideoPlayerPanel videoBvr={props.videoBvr} setIsEditing={setIsEditing} />
     );
 
     const staticMove = (
@@ -74,7 +72,7 @@ export const withStaticMove = compose(
           moveTags={moveTags}
         />
         {videoPlayerPanel}
-        <Widgets.Move move={move} videoPlayer={videoBvr.player} />
+        <Widgets.Move move={move} videoPlayer={props.videoBvr.player} />
         {hostedStaticMovePanels}
       </div>
     );

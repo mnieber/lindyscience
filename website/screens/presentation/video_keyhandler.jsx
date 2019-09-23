@@ -1,8 +1,15 @@
 // @flow
 
 import type { VideoBvrT } from "video/types";
+import { isNone } from "utils/utils";
 
-export const handleVideoKey = (key: string, e: any, videoBvr: VideoBvrT) => {
+export const handleVideoKey = (
+  key: string,
+  e: any,
+  videoBvr: VideoBvrT,
+  startTimeMs: ?number,
+  endTimeMs: ?number
+) => {
   if (key == "ctrl+space") {
     videoBvr.togglePlay();
     e.preventDefault();
@@ -60,6 +67,16 @@ export const handleVideoKey = (key: string, e: any, videoBvr: VideoBvrT) => {
     e.preventDefault();
     e.stopPropagation();
   }
+  if (key == "ctrl+shift+home" && !isNone(startTimeMs)) {
+    videoBvr.player.seekTo((startTimeMs || 0) / 1000);
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  if (key == "ctrl+shift+end" && !isNone(endTimeMs)) {
+    videoBvr.player.seekTo((endTimeMs || 0) / 1000);
+    e.preventDefault();
+    e.stopPropagation();
+  }
 };
 
 export const videoKeys = [
@@ -74,4 +91,6 @@ export const videoKeys = [
   "ctrl+shift+8",
   "ctrl+shift+up",
   "ctrl+shift+down",
+  "ctrl+shift+home",
+  "ctrl+shift+end",
 ];

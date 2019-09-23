@@ -1,11 +1,13 @@
 // @flow
 
 import * as React from "react";
+import type { UUID } from "kernel/types";
 
 export type VideoT = {
   link: string,
   startTimeMs: ?number,
   endTimeMs: ?number,
+  id: UUID,
 };
 
 export type VideoUrlPropsT = {

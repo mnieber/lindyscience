@@ -63,7 +63,7 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
     if (youtubeRef.current && !isNone(startTime)) {
       youtubeRef.current.internalPlayer.seekTo(startTime);
     }
-  }, [youtubeRef.current, startTime]);
+  }, [youtubeRef.current, props.videoBvr.video ? props.videoBvr.video.id : ""]);
 
   return (
     <YouTube

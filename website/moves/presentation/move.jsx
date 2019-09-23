@@ -33,6 +33,7 @@ export function Move(props: MovePropsT) {
     <div className={"move__description panel"}>
       <h2>Description</h2>
       <MoveDescriptionEditor
+        moveId={props.move.id}
         description={props.move.description}
         readOnly={true}
         autoFocus={false}

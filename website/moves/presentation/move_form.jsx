@@ -30,6 +30,7 @@ type InnerFormPropsT = {
   setTagsPickerRef: any => void,
   setDescriptionEditorRef: any => void,
   videoPlayer: any,
+  moveId: UUID,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -175,6 +176,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__description mt-4">
       <FormFieldLabel label="Description" />
       <MoveDescriptionEditor
+        moveId={props.moveId}
         autoFocus={false}
         readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}
@@ -302,6 +304,7 @@ export function MoveForm(props: MoveFormPropsT) {
       videoPlayer: props.videoPlayer,
       setTagsPickerRef,
       setDescriptionEditorRef,
+      moveId: props.move.id,
     })
   );
 

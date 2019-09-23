@@ -30,9 +30,6 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       ? params.end
       : null;
 
-  playerVars.start = isNone(startTime) ? startTime : Math.trunc(startTime || 0);
-  playerVars.end = isNone(endTime) ? endTime : Math.trunc(endTime || 0) + 1;
-
   const opts = {
     height: "390",
     width: "640",
@@ -40,16 +37,11 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
       rel: 0,
-      ...playerVars,
     },
   };
 
   const _onReady = event => {
-    const player = event.target;
-    props.videoBvr.setPlayer(player);
-    if (params && !isNone(startTime)) {
-      player.seekTo(startTime);
-    }
+    props.videoBvr.setPlayer(event.target);
   };
 
   const _onEnd = event => {
@@ -65,8 +57,17 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
     props.videoBvr.setIsPlaying(false);
   };
 
+  const youtubeRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (youtubeRef.current && !isNone(startTime)) {
+      youtubeRef.current.internalPlayer.seekTo(startTime);
+    }
+  }, [youtubeRef.current, startTime]);
+
   return (
     <YouTube
+      ref={youtubeRef}
       videoId={props.videoUrlProps.id}
       opts={opts}
       onReady={_onReady}

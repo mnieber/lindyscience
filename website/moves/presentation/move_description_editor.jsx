@@ -17,6 +17,7 @@ import {
 import { createTimePointDecorator } from "video/presentation/timepoint_decorator";
 
 import type { MoveT } from "moves/types";
+import type { UUID } from "kernel/types";
 
 const styleMap = {
   TIMING: {
@@ -32,6 +33,7 @@ const styleMap = {
 // Move
 
 type MoveDescriptionEditorPropsT = {
+  moveId: UUID,
   description: string,
   readOnly: boolean,
   autoFocus: boolean,
@@ -53,7 +55,7 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
     decorator
   );
 
-  const key_postfix = props.videoPlayer ? props.videoPlayer.getVideoUrl() : "";
+  const keyPostfix = props.videoPlayer ? props.videoPlayer.getVideoUrl() : "";
 
   const customHandleKeyCommand = (command, editorState) => {
     if (command == "insert-timepoint" && props.videoPlayer) {
@@ -85,7 +87,7 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
 
   return (
     <RichTextEditor
-      key={key_postfix}
+      key={props.moveId + keyPostfix}
       initialEditorState={readOnlyEditorState}
       customHandleKeyCommand={customHandleKeyCommand}
       customKeyBindingFn={customKeyBindingFn}

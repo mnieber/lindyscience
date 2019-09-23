@@ -7,6 +7,7 @@ import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
 import { getStore } from "app/store";
 import { truncDecimals } from "utils/utils";
+import { useFocus } from "utils/use_focus";
 import { withHostedOwnMovePanels } from "screens/hocs/with_hosted_own_move_panels";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import Ctr from "screens/containers/index";
@@ -73,13 +74,8 @@ export const withOwnMove = compose(
       </div>
     );
 
-    const moveNotEditingRef = React.useRef(null);
-
-    React.useEffect(() => {
-      if (moveNotEditingRef.current) {
-        moveNotEditingRef.current.focus();
-      }
-    }, [moveNotEditingRef.current]);
+    const moveDivRef = React.useRef(null);
+    useFocus(moveDivRef.current);
 
     const videoPlayerPanel = (
       <VideoPlayerPanel key="videoPlayerPanel" videoBvr={props.videoBvr} />
@@ -98,7 +94,7 @@ export const withOwnMove = compose(
         />
       </div>
     ) : (
-      <div id="moveNotEditing" tabIndex={123} ref={moveNotEditingRef}>
+      <div id="moveDiv" tabIndex={123} ref={moveDivRef}>
         <Widgets.MoveHeader
           move={move}
           moveListTitle={moveListTitle}

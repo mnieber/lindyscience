@@ -15,6 +15,7 @@ import { VideoControlPanel } from "video/presentation/video_control_panel";
 import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
 import { useVideo } from "video/bvrs/video_behaviour";
 import { getVideoFromMove } from "moves/utils";
+import { useFocus } from "utils/use_focus";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
@@ -59,13 +60,16 @@ export const withStaticMove = compose(
 
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 
+    const moveDivRef = React.useRef(null);
+    useFocus(moveDivRef.current);
+
     const setIsEditing = () => {};
     const videoPlayerPanel = (
       <VideoPlayerPanel videoBvr={props.videoBvr} setIsEditing={setIsEditing} />
     );
 
     const staticMove = (
-      <div>
+      <div id="moveDiv" tabIndex={123} ref={moveDivRef}>
         <Widgets.MoveHeader
           move={move}
           moveListTitle={moveListTitle}

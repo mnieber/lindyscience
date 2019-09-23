@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from moves import models
+from moves.utils import create_draft_js_content
 
 
 class Command(BaseCommand):
@@ -13,8 +14,7 @@ class Command(BaseCommand):
             slug='trash',
             role='trash',
             is_private=True,
-            description=
-            'This list contains moves which were moved to the trash',
+            description=create_draft_js_content('Trashed moves'),
             owner=user,
         )
 

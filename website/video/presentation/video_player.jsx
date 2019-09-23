@@ -3,6 +3,7 @@
 import * as React from "react";
 import YoutubePlayer from "video/presentation/youtube_player";
 import urlParser from "js-video-url-parser";
+import { VideoControlPanel } from "video/presentation/video_control_panel";
 
 import type { VideoT, VideoBvrT } from "video/types";
 
@@ -27,4 +28,23 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
     );
 
   return internalPlayer;
+}
+
+type VideoPlayerPanelPropsT = {
+  videoBvr: VideoBvrT,
+  setIsEditing: Function,
+};
+
+export function VideoPlayerPanel(props: VideoPlayerPanelPropsT) {
+  return props.videoBvr.video ? (
+    <div key="videoPlayerPanel" className={"move__video panel flex flex-col"}>
+      <VideoPlayer videoBvr={props.videoBvr} />
+      <VideoControlPanel
+        videoBvr={props.videoBvr}
+        setIsEditing={props.setIsEditing}
+      />
+    </div>
+  ) : (
+    <React.Fragment />
+  );
 }

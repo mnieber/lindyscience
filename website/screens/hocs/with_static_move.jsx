@@ -12,7 +12,7 @@ import Widgets from "screens/presentation/index";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { withHostedStaticMovePanels } from "screens/hocs/with_hosted_static_move_panels";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
-import { VideoPlayer } from "video/presentation/video_player";
+import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
 import { useVideo } from "video/bvrs/video_behaviour";
 import { getVideoFromMove } from "moves/utils";
 
@@ -62,13 +62,8 @@ export const withStaticMove = compose(
     const videoBvr = useVideo(video);
     const setIsEditing = () => {};
 
-    const videoPlayerPanel = videoBvr.video ? (
-      <div className={"move__video panel flex flex-col"}>
-        <VideoPlayer videoBvr={videoBvr} />
-        <VideoControlPanel videoBvr={videoBvr} setIsEditing={setIsEditing} />
-      </div>
-    ) : (
-      <React.Fragment />
+    const videoPlayerPanel = (
+      <VideoPlayerPanel videoBvr={videoBvr} setIsEditing={setIsEditing} />
     );
 
     const staticMove = (

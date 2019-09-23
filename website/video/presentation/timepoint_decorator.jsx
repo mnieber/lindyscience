@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import classnames from "classnames";
 import {
   CompositeDecorator,
   // $FlowFixMe
@@ -37,7 +38,7 @@ export const createTimePointDecorator = (videoPlayer: any) => {
     return (
       <span
         onClick={onClick}
-        className="bg-yellow"
+        className={classnames("text-blue", "tp-" + t)}
         data-offset-key={props.offsetKey}
       >
         {props.children}

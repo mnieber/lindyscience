@@ -3,6 +3,7 @@
 import * as React from "react";
 import classnames from "classnames";
 import urlParser from "js-video-url-parser";
+import jQuery from "jquery";
 
 import type { VideoT, VideoBvrT } from "video/types";
 

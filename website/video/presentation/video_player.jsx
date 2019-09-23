@@ -19,7 +19,7 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
   const internalPlayer =
     videoUrlProps.provider == "youtube" ? (
       <YoutubePlayer
-        key={link}
+        key={link} // yes, we need this
         videoUrlProps={videoUrlProps}
         videoBvr={props.videoBvr}
       />

@@ -87,7 +87,7 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
 
   return (
     <RichTextEditor
-      key={props.moveId + keyPostfix}
+      key={props.moveId + keyPostfix} // yes, we need this
       initialEditorState={readOnlyEditorState}
       customHandleKeyCommand={customHandleKeyCommand}
       customKeyBindingFn={customKeyBindingFn}

@@ -59,6 +59,8 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
 
   const youtubeRef = React.useRef(null);
 
+  // Seek to start time if there is a new video player or
+  // a new video id
   React.useEffect(() => {
     if (youtubeRef.current && !isNone(startTime)) {
       youtubeRef.current.internalPlayer.seekTo(startTime);

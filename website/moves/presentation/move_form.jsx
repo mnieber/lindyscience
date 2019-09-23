@@ -98,7 +98,24 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         );
       }}
     >
-      Update
+      Set
+    </div>
+  );
+
+  const goToTime = tAsString => {
+    try {
+      const t = parseFloat(tAsString);
+      props.videoPlayer.seekTo(t);
+    } catch {}
+  };
+
+  const gotoStartBtn = (
+    <div
+      key="gotoStartBtn"
+      className={"button ml-2 flex-none"}
+      onClick={() => goToTime(formProps.values.startTime)}
+    >
+      Go
     </div>
   );
 
@@ -110,7 +127,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       fieldName="startTime"
       type="text"
       placeholder="Start time in seconds"
-      buttons={[updateStartBtn]}
+      buttons={[updateStartBtn, gotoStartBtn]}
     />
   );
 
@@ -125,7 +142,17 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         );
       }}
     >
-      Update
+      Set
+    </div>
+  );
+
+  const gotoEndBtn = (
+    <div
+      key="gotoEndBtn"
+      className={"button ml-2 flex-none"}
+      onClick={() => goToTime(formProps.values.endTime)}
+    >
+      Go
     </div>
   );
 
@@ -137,7 +164,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       fieldName="endTime"
       type="text"
       placeholder="End time in seconds"
-      buttons={[updateEndBtn]}
+      buttons={[updateEndBtn, gotoEndBtn]}
     />
   );
 

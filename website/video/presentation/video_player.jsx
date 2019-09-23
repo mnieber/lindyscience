@@ -32,17 +32,13 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
 
 type VideoPlayerPanelPropsT = {
   videoBvr: VideoBvrT,
-  setIsEditing: Function,
 };
 
 export function VideoPlayerPanel(props: VideoPlayerPanelPropsT) {
   return props.videoBvr.video ? (
     <div className={"move__video panel flex flex-col"}>
       <VideoPlayer videoBvr={props.videoBvr} />
-      <VideoControlPanel
-        videoBvr={props.videoBvr}
-        setIsEditing={props.setIsEditing}
-      />
+      <VideoControlPanel videoBvr={props.videoBvr} />
     </div>
   ) : (
     <React.Fragment />

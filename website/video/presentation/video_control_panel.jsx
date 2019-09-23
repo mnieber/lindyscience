@@ -8,7 +8,6 @@ import type { VideoT, VideoBvrT } from "video/types";
 
 type VideoControlPanelPropsT = {
   videoBvr: VideoBvrT,
-  setIsEditing: boolean => void,
 };
 
 export function VideoControlPanel(props: VideoControlPanelPropsT) {

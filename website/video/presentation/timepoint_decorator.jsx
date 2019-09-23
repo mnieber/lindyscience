@@ -6,10 +6,12 @@ import {
   // $FlowFixMe
 } from "draft-js";
 
-const TIMEPOINT_REGEX = /\<([\w\.]+)\>/g;
+function timePointRegex() {
+  return /\<([\w\.]+)\>/g;
+}
 
 function timePointStrategy(contentState, contentBlock, callback) {
-  findWithRegex(TIMEPOINT_REGEX, contentBlock, callback);
+  findWithRegex(timePointRegex(), contentBlock, callback);
 }
 
 function findWithRegex(regex, contentBlock, callback) {
@@ -25,8 +27,8 @@ function findWithRegex(regex, contentBlock, callback) {
 
 export const createTimePointDecorator = (videoPlayer: any) => {
   const TimePointSpan = props => {
-    // TODO: not catching <12>
-    const matchArr = TIMEPOINT_REGEX.exec(props.decoratedText);
+    const r = timePointRegex();
+    const matchArr = r.exec(props.decoratedText);
     const t = matchArr && matchArr.length > 1 ? parseFloat(matchArr[1]) : 0;
     const onClick = () => {
       videoPlayer.seekTo(t);

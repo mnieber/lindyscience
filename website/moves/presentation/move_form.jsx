@@ -11,21 +11,16 @@ import {
   FormFieldLabel,
   strToPickerValue,
 } from "utils/form_utils";
-import type { MoveT } from "moves/types";
-import {
-  RichTextEditor,
-  getContentFromEditor,
-} from "rich_text/presentation/rich_text_editor";
-import type { TagT } from "tags/types";
-import type { UUID } from "kernel/types";
-import {
-  createReadOnlyEditorState,
-  toEditorState,
-} from "rich_text/utils/editor_state";
+import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
+import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 import { isNone, slugify, truncDecimals } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
+
+import type { MoveT } from "moves/types";
+import type { TagT } from "tags/types";
+import type { UUID } from "kernel/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
@@ -152,13 +147,12 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   const description = (
     <div className="moveForm__description mt-4">
       <FormFieldLabel label="Description" />
-      <RichTextEditor
+      <MoveDescriptionEditor
         autoFocus={false}
         readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}
-        initialEditorState={toEditorState(formProps.values.description)}
-        placeholder={placeholder}
-        getCurrentTime={() => props.videoPlayer.getCurrentTime()}
+        description={formProps.values.description}
+        videoPlayer={props.videoPlayer}
       />
       {formFieldError(formProps, "description", ["formField__error"])}
     </div>
@@ -263,10 +257,6 @@ export function MoveForm(props: MoveFormPropsT) {
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      const readOnlyEditorState = createReadOnlyEditorState(
-        toEditorState(values.description)
-      );
-
       values.startTimeMs = Math.trunc(values.startTime * 1000);
       delete values.startTime;
 

@@ -79,7 +79,7 @@ export const withStaticMove = compose(
           moveTags={moveTags}
         />
         {videoPlayerPanel}
-        <Widgets.Move move={move} />
+        <Widgets.Move move={move} videoPlayer={videoBvr.player} />
         {hostedStaticMovePanels}
       </div>
     );

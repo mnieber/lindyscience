@@ -147,6 +147,5 @@ export function toEditorState(text: string, decorator?: any) {
 
 export function toReadOnlyEditorState(text: string, decorator?: any) {
   const editorState = toEditorState(text, decorator);
-  const state = createReadOnlyEditorState(editorState);
-  return state;
+  return createReadOnlyEditorState(editorState);
 }

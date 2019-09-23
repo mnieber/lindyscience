@@ -4,21 +4,12 @@ import React from "react";
 import {
   Editor,
   EditorState,
-  Modifier,
   RichUtils,
   getDefaultKeyBinding,
-  KeyBindingUtil,
   convertToRaw,
   // $FlowFixMe
 } from "draft-js";
-import { roundDecimals } from "utils/utils";
-
-function customKeyBindingFn(e: any): string {
-  if (e.keyCode === 83 /* `S` key */ && KeyBindingUtil.hasCommandModifier(e)) {
-    return "insert-timepoint";
-  }
-  return getDefaultKeyBinding(e);
-}
+import { roundDecimals, isNone } from "utils/utils";
 
 type RichTextEditorPropsT = {
   initialEditorState: any,
@@ -27,11 +18,10 @@ type RichTextEditorPropsT = {
   setEditorRef: any => void,
   customStyleMap?: any,
   placeholder?: string,
-  getCurrentTime?: () => number,
+  customHandleKeyCommand?: Function,
+  customKeyBindingFn?: Function,
 };
 
-// TODO: before editing, convert from "draft" to "markdown".
-// After editing, convert back.
 // TODO: use Modifier.replaceText(selection, inlineStyle) to convert content to nicely styled readonly content
 export function RichTextEditor(props: RichTextEditorPropsT) {
   const editorRef = React.useRef(null);
@@ -54,22 +44,11 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
   const handleKeyCommand = (command, editorState) => {
     let newState = null;
 
-    if (command == "insert-timepoint" && props.getCurrentTime) {
-      const contentState = editorState.getCurrentContent();
-      const selectionState = editorState.getSelection();
-      // $FlowFixMe
-      const t = roundDecimals(props.getCurrentTime(), 1);
-      const newContentState = Modifier.insertText(
-        contentState,
-        selectionState,
-        "<" + t + "> "
-      );
-      newState = EditorState.push(
-        editorState,
-        newContentState,
-        "insert-fragment"
-      );
-    } else {
+    if (props.customHandleKeyCommand) {
+      newState = props.customHandleKeyCommand(command, editorState);
+    }
+
+    if (isNone(newState)) {
       newState = RichUtils.handleKeyCommand(editorState, command);
     }
 
@@ -79,6 +58,14 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
     }
     return "not-handled";
   };
+
+  function customKeyBindingFn(e: any): string {
+    const command = props.customKeyBindingFn
+      ? props.customKeyBindingFn(e)
+      : null;
+
+    return !isNone(command) ? command || "" : getDefaultKeyBinding(e);
+  }
 
   return (
     <Editor

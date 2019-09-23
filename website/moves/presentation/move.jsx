@@ -9,17 +9,6 @@ import { createTimePointDecorator } from "video/presentation/timepoint_decorator
 
 import type { MoveT } from "moves/types";
 
-const styleMap = {
-  TIMING: {
-    fontSize: "0.85em",
-    // fontWeight: "700",
-    verticalAlign: "super",
-  },
-  TIMED: {
-    textDecoration: "underline",
-  },
-};
-
 // Move
 
 type MovePropsT = {

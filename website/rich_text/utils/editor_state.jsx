@@ -137,7 +137,7 @@ export function createReadOnlyEditorState(editorState: any) {
 }
 
 export function toContentState(text: string) {
-  return text.startsWith("<")
+  return text.startsWith("<") && text.endsWith(">")
     ? stateFromHTML(text)
     : convertFromRaw(JSON.parse(text));
 }

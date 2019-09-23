@@ -153,7 +153,6 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__description mt-4">
       <FormFieldLabel label="Description" />
       <RichTextEditor
-        key={uuidv4()}
         autoFocus={false}
         readOnly={false}
         setEditorRef={props.setDescriptionEditorRef}

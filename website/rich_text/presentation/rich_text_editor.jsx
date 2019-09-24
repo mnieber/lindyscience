@@ -9,7 +9,7 @@ import {
   convertToRaw,
   // $FlowFixMe
 } from "draft-js";
-import { roundDecimals, isNone } from "utils/utils";
+import { isNone } from "utils/utils";
 
 type RichTextEditorPropsT = {
   initialEditorState: any,

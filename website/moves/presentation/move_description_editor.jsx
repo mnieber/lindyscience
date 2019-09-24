@@ -10,6 +10,7 @@ import {
 } from "draft-js";
 
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
+import { roundDecimals } from "utils/utils";
 import {
   toReadOnlyEditorState,
   toEditorState,

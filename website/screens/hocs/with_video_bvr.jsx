@@ -9,6 +9,8 @@ import { useVideo } from "video/bvrs/video_behaviour";
 import { timePointRegex } from "video/utils";
 import { getVideoFromMove } from "moves/utils";
 import { isNone } from "utils/utils";
+import { useFocus } from "utils/use_focus";
+import { setIdOfElementToGiveFocus } from "utils/iframe_mouseover";
 
 import {
   handleVideoKey,
@@ -20,30 +22,32 @@ import Ctr from "screens/containers/index";
 import type { VideoT, VideoBvrT } from "video/types";
 import type { MoveT } from "moves/types";
 
-function _styleTimePoints(videoPlayer: any, timePoints: Array<string>) {
+function _styleTimePoints(videoPlayer: any, timePoints: Array<number>) {
   const currentTime = videoPlayer ? videoPlayer.getCurrentTime() : -1;
 
   timePoints.forEach(tp => {
     const className = ".tp-" + tp;
     jQuery(className).removeClass("bg-yellow");
-    let t = null;
-    try {
-      t = parseFloat(tp);
-    } catch {}
-
-    if (t !== null && currentTime - 1 < t && t < currentTime + 1) {
+    if (currentTime - 1 < tp && tp < currentTime + 1) {
       jQuery(className).addClass("bg-yellow");
     }
   });
 }
 
-function _extractTimePoints(text: string): Array<string> {
+function _extractTimePoints(text: string): Array<number> {
   const result = [];
   const r = timePointRegex();
   let matchArr;
   while ((matchArr = r.exec(text)) !== null) {
-    // $FlowFixMe
-    result.push(matchArr[1]);
+    let t = null;
+    try {
+      // $FlowFixMe
+      t = parseFloat(matchArr[1]);
+    } catch {}
+
+    if (t !== null) {
+      result.push(t);
+    }
   }
   return result;
 }
@@ -80,12 +84,28 @@ export const withVideoBvr = compose(
     );
 
     const onKeyDown = (key, e) => {
-      handleVideoKey(key, e, videoBvr, move.startTimeMs, move.endTimeMs);
+      handleVideoKey(
+        key,
+        e,
+        videoBvr,
+        move.startTimeMs,
+        move.endTimeMs,
+        timePoints
+      );
     };
+
+    const moveDivRef = React.useRef(null);
+    useFocus(moveDivRef.current);
+
+    React.useEffect(() => {
+      setIdOfElementToGiveFocus("moveDiv");
+    }, [moveDivRef.current]);
 
     return (
       <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>
-        {wrappedComponent}
+        <div id="moveDiv" tabIndex={123} ref={moveDivRef}>
+          {wrappedComponent}
+        </div>
       </KeyboardEventHandler>
     );
   }

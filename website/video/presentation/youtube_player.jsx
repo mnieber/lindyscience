@@ -9,6 +9,7 @@ import type { VideoT, VideoUrlPropsT, VideoBvrT } from "video/types";
 type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,
   videoBvr: VideoBvrT,
+  onReady?: Function,
 };
 
 export default function YoutubePlayer(props: YoutubePlayerPropsT) {
@@ -41,7 +42,11 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   };
 
   const _onReady = event => {
-    props.videoBvr.setPlayer(event.target);
+    const player = event.target;
+    props.videoBvr.setPlayer(player);
+    if (props.onReady) {
+      props.onReady(player);
+    }
   };
 
   const _onEnd = event => {
@@ -67,6 +72,17 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
     }
   }, [youtubeRef.current, props.videoBvr.video ? props.videoBvr.video.id : ""]);
 
+  const containerId = youtubeRef.current
+    ? youtubeRef.current.container.id
+    : null;
+
+  React.useEffect(() => {
+    if (containerId) {
+      debugger;
+      console.log("YOUTUBE ID", containerId);
+    }
+  }, [containerId]);
+
   return (
     <YouTube
       ref={youtubeRef}
@@ -76,6 +92,7 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       onEnd={_onEnd}
       onPlay={_onPlay}
       onPause={_onPause}
+      onClick={() => console.log("FOCUS")}
     />
   );
 }

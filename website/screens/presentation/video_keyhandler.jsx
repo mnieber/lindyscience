@@ -8,7 +8,8 @@ export const handleVideoKey = (
   e: any,
   videoBvr: VideoBvrT,
   startTimeMs: ?number,
-  endTimeMs: ?number
+  endTimeMs: ?number,
+  timePoints: Array<number>
 ) => {
   if (key == "ctrl+space") {
     videoBvr.togglePlay();
@@ -77,6 +78,24 @@ export const handleVideoKey = (
     e.preventDefault();
     e.stopPropagation();
   }
+  if (key == "ctrl+shift+pageUp") {
+    const t = videoBvr.player.getCurrentTime();
+    const tp = Math.min.apply(Math, timePoints.filter(tp => tp > t));
+    if (!isNone(tp) && isFinite(tp)) {
+      videoBvr.player.seekTo(tp);
+    }
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  if (key == "ctrl+shift+pageDown") {
+    const t = videoBvr.player.getCurrentTime();
+    const tp = Math.max.apply(Math, timePoints.filter(tp => tp < t));
+    if (!isNone(tp) && isFinite(tp)) {
+      videoBvr.player.seekTo(tp);
+    }
+    e.preventDefault();
+    e.stopPropagation();
+  }
 };
 
 export const videoKeys = [
@@ -93,4 +112,6 @@ export const videoKeys = [
   "ctrl+shift+down",
   "ctrl+shift+home",
   "ctrl+shift+end",
+  "ctrl+shift+pageUp",
+  "ctrl+shift+pageDown",
 ];

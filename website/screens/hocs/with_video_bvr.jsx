@@ -8,7 +8,7 @@ import { useInterval } from "utils/use_interval";
 import { useVideo } from "video/bvrs/video_behaviour";
 import { timePointRegex } from "video/utils";
 import { getVideoFromMove } from "moves/utils";
-import { isNone } from "utils/utils";
+import { isNone, parseVideoTimePoint } from "utils/utils";
 import { useFocus } from "utils/use_focus";
 import { setIdOfElementToGiveFocus } from "utils/iframe_mouseover";
 
@@ -39,14 +39,11 @@ function _extractTimePoints(text: string): Array<number> {
   const r = timePointRegex();
   let matchArr;
   while ((matchArr = r.exec(text)) !== null) {
-    let t = null;
-    try {
-      // $FlowFixMe
-      t = parseFloat(matchArr[1]);
-    } catch {}
-
-    if (t !== null) {
-      result.push(t);
+    // $FlowFixMe
+    const tpString = matchArr[1];
+    const tp = parseVideoTimePoint(tpString);
+    if (tp !== null) {
+      result.push(tp);
     }
   }
   return result;

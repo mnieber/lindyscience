@@ -2,6 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
+import { parseVideoTimePoint } from "utils/utils";
 import { timePointRegex } from "video/utils";
 import {
   CompositeDecorator,
@@ -27,15 +28,19 @@ export const createTimePointDecorator = (videoPlayer: any) => {
   const TimePointSpan = props => {
     const r = timePointRegex();
     const matchArr = r.exec(props.decoratedText);
-    const t = matchArr && matchArr.length > 1 ? parseFloat(matchArr[1]) : 0;
+    // $FlowFixMe
+    const tpString = matchArr[1];
+    const tp = parseVideoTimePoint(tpString);
     const onClick = () => {
-      videoPlayer.seekTo(t);
+      if (tp != null && tp <= videoPlayer.getDuration()) {
+        videoPlayer.seekTo(tp);
+      }
     };
 
     return (
       <span
         onClick={onClick}
-        className={classnames("text-blue", "tp-" + t)}
+        className={classnames("text-blue", "tp-" + (tp || ""))}
         data-offset-key={props.offsetKey}
       >
         {props.children}

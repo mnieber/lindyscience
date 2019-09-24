@@ -182,3 +182,16 @@ export function roundDecimals(x: number, k: number) {
   const factor = Math.pow(10, k);
   return Math.round(x * factor) / factor;
 }
+
+export function parseVideoTimePoint(x: string) {
+  const parts = x.split(":");
+  const n = parts.length;
+  const secs = parts.pop() || "0";
+  const mins = parts.pop() || "0";
+  const hours = parts.pop() || "0";
+
+  try {
+    return parseFloat(secs) + 60 * parseFloat(mins) + 3600 * parseFloat(hours);
+  } catch {}
+  return null;
+}

@@ -4,7 +4,7 @@ import * as React from "react";
 import YoutubePlayer from "video/presentation/youtube_player";
 import urlParser from "js-video-url-parser";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
-import { listenToIFrame } from "utils/iframe_mouseover";
+import { listenToIFrame } from "utils/iframe_listener";
 
 import type { VideoT, VideoBvrT } from "video/types";
 

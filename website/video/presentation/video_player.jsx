@@ -4,13 +4,12 @@ import * as React from "react";
 import YoutubePlayer from "video/presentation/youtube_player";
 import urlParser from "js-video-url-parser";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
-import { watchIFrameMouseOver } from "utils/iframe_mouseover";
+import { listenToIFrame } from "utils/iframe_mouseover";
 
 import type { VideoT, VideoBvrT } from "video/types";
 
 type VideoPlayerPropsT = {
   videoBvr: VideoBvrT,
-  onReady: Function,
 };
 
 export function VideoPlayer(props: VideoPlayerPropsT) {
@@ -24,7 +23,9 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
         key={link} // yes, we need this
         videoUrlProps={videoUrlProps}
         videoBvr={props.videoBvr}
-        onReady={() => watchIFrameMouseOver(props.videoBvr.clientName)}
+        onReady={iframe => {
+          listenToIFrame(props.videoBvr.parentDivId, iframe);
+        }}
       />
     ) : (
       <React.Fragment />

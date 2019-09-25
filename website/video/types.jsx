@@ -8,7 +8,6 @@ export type VideoT = {
   startTimeMs: ?number,
   endTimeMs: ?number,
   id: UUID,
-  clientName: string,
 };
 
 export type VideoUrlPropsT = {
@@ -24,4 +23,5 @@ export type VideoBvrT = {
   isPlaying: boolean,
   setIsPlaying: boolean => void,
   togglePlay: () => void,
+  parentDivId: string,
 };

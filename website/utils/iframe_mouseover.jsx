@@ -1,58 +1,46 @@
 // @flow
 
 import * as React from "react";
+import jQuery from "jquery";
 
 type DataT = {
   iframeMouseOver: boolean,
-  idOfElementToGiveFocus: any,
 };
 
 var _dataStore = {};
 
-function setIFrameMouseOver(clientName: string, x: boolean) {
-  _dataStore[clientName].iframeMouseOver = x;
+function setIFrameMouseOver(parentDivId: string, x: boolean) {
+  _dataStore[parentDivId].iframeMouseOver = x;
 }
 
-function getIFrameMouseOver() {
-  return _dataStore[clientName].iframeMouseOver;
+function getIFrameMouseOver(parentDivId: string) {
+  return _dataStore[parentDivId].iframeMouseOver;
 }
 
-export function setIdOfElementToGiveFocus(clientName: string, id: string) {
-  // $FlowFixMe
-  _singleton.idOfElementToGiveFocus[clientName] = id;
-}
+export function listenToIFrame(parentDivId: string, iframe: any) {
+  if (!_dataStore[parentDivId]) {
+    _dataStore[parentDivId] = {
+      iframeMouseOver: false,
+    };
+    const focusParentDiv = () => {
+      const elm = document.getElementById(parentDivId);
+      if (elm) {
+        elm.focus();
+      }
+    };
+    focusParentDiv();
 
-export function getIdOfElementToGiveFocus(clientName: string) {
-  return _singleton.idOfElementToGiveFocus[clientName];
-}
-
-export function watchIFrameMouseOver(clientName: string) {
-  if (!_singleton.initialized) {
-    window.addEventListener("blur", function() {
-      if (getIFrameMouseOver()) {
-        setTimeout(() => {
-          const elmId = getIdOfElementToGiveFocus();
-          if (elmId != null) {
-            const elm = document.getElementById(elmId);
-            if (elm) {
-              elm.focus();
-            }
-          }
-        }, 100);
+    window.addEventListener("blur", function(e: any) {
+      if (document.activeElement == iframe && getIFrameMouseOver(parentDivId)) {
+        setTimeout(focusParentDiv, 100);
       }
     });
 
-    document
-      .getElementsByTagName("iframe")[0]
-      // $FlowFixMe
-      .addEventListener("mouseover", function() {
-        setIFrameMouseOver(true);
-      });
-    document
-      .getElementsByTagName("iframe")[0]
-      // $FlowFixMe
-      .addEventListener("mouseout", function() {
-        setIFrameMouseOver(false);
-      });
+    iframe.addEventListener("mouseover", function() {
+      setIFrameMouseOver(parentDivId, true);
+    });
+    iframe.addEventListener("mouseout", function() {
+      setIFrameMouseOver(parentDivId, false);
+    });
   }
 }

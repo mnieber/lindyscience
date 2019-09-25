@@ -110,7 +110,7 @@ MoveListDetailsPage = Ctr.connect(
     userProfile: Ctr.fromStore.getUserProfile(state),
     moveList: Ctr.fromStore.getSelectedMoveList(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),
-    cutVideoLink: Ctr.fromStore.getCurVideoLink(state),
+    cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
   }),
   Ctr.actions
 )(MoveListDetailsPage);

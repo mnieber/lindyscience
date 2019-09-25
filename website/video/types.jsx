@@ -8,6 +8,7 @@ export type VideoT = {
   startTimeMs: ?number,
   endTimeMs: ?number,
   id: UUID,
+  clientName: string,
 };
 
 export type VideoUrlPropsT = {

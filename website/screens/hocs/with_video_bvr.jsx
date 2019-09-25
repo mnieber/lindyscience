@@ -2,16 +2,13 @@
 
 import * as React from "react";
 import { compose } from "redux";
-import jQuery from "jquery";
 
 import { useInterval } from "utils/use_interval";
 import { useVideo } from "video/bvrs/video_behaviour";
-import { timePointRegex } from "video/utils";
 import { getVideoFromMove } from "moves/utils";
-import { isNone, parseVideoTimePoint } from "utils/utils";
 import { useFocus } from "utils/use_focus";
 import { setIdOfElementToGiveFocus } from "utils/iframe_mouseover";
-
+import { styleTimePoints, extractTimePoints } from "video/utils/time_points";
 import {
   handleVideoKey,
   videoKeys,
@@ -21,33 +18,6 @@ import Ctr from "screens/containers/index";
 
 import type { VideoT, VideoBvrT } from "video/types";
 import type { MoveT } from "moves/types";
-
-function _styleTimePoints(videoPlayer: any, timePoints: Array<number>) {
-  const currentTime = videoPlayer ? videoPlayer.getCurrentTime() : -1;
-
-  timePoints.forEach(tp => {
-    const className = ".tp-" + tp;
-    jQuery(className).removeClass("bg-yellow");
-    if (currentTime - 1 < tp && tp < currentTime + 1) {
-      jQuery(className).addClass("bg-yellow");
-    }
-  });
-}
-
-function _extractTimePoints(text: string): Array<number> {
-  const result = [];
-  const r = timePointRegex();
-  let matchArr;
-  while ((matchArr = r.exec(text)) !== null) {
-    // $FlowFixMe
-    const tpString = matchArr[1];
-    const tp = parseVideoTimePoint(tpString);
-    if (tp !== null) {
-      result.push(tp);
-    }
-  }
-  return result;
-}
 
 type PropsT = {
   move: MoveT,
@@ -64,16 +34,16 @@ export const withVideoBvr = compose(
   ),
   (WrappedComponent: any) => (props: any) => {
     const { move, ...passThroughProps }: PropsT = props;
-
+    const clientName = "moveVideo";
     const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
-    const videoBvr = useVideo(video);
+    const videoBvr = useVideo(clientName, video);
     const description = move ? move.description : "";
 
-    const timePoints = React.useMemo(() => _extractTimePoints(description), [
+    const timePoints = React.useMemo(() => extractTimePoints(description), [
       description,
     ]);
 
-    useInterval(() => _styleTimePoints(videoBvr.player, timePoints), 250);
+    useInterval(() => styleTimePoints(videoBvr.player, timePoints), 250);
     const actions: any = props;
 
     const wrappedComponent = (
@@ -95,7 +65,7 @@ export const withVideoBvr = compose(
     useFocus(moveDivRef.current);
 
     React.useEffect(() => {
-      setIdOfElementToGiveFocus("moveDiv");
+      setIdOfElementToGiveFocus(clientName, moveDiv);
     }, [moveDivRef.current]);
 
     return (

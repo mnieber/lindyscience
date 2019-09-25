@@ -17,6 +17,7 @@ type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
   moveListTags: Array<TagT>,
   moveList: MoveListT,
+  cutVideoLink: string,
   // receive any actions as well
 };
 
@@ -83,10 +84,21 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
+  const actions: any = props;
+
   return (
     <MoveListCrudBvrsContext.Consumer>
       {moveListCrudBvrs => (
-        <_MoveListDetailsPage {...props} moveListCrudBvrs={moveListCrudBvrs} />
+        <div>
+          <_MoveListDetailsPage
+            {...props}
+            moveListCrudBvrs={moveListCrudBvrs}
+          />
+          <Widgets.CutVideoPanel
+            actSetCutVideoLink={actions.actSetCutVideoLink}
+            cutVideoLink={props.cutVideoLink}
+          />
+        </div>
       )}
     </MoveListCrudBvrsContext.Consumer>
   );
@@ -98,6 +110,7 @@ MoveListDetailsPage = Ctr.connect(
     userProfile: Ctr.fromStore.getUserProfile(state),
     moveList: Ctr.fromStore.getSelectedMoveList(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),
+    cutVideoLink: Ctr.fromStore.getCurVideoLink(state),
   }),
   Ctr.actions
 )(MoveListDetailsPage);

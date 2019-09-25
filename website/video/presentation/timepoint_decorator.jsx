@@ -2,8 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import { parseVideoTimePoint } from "utils/utils";
-import { timePointRegex } from "video/utils";
+import { parseVideoTimePoint, timePointRegex } from "video/utils/time_points";
 import {
   CompositeDecorator,
   // $FlowFixMe

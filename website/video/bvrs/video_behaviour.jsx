@@ -28,7 +28,7 @@ export const withVideoBvrContext = (WrappedComponent: any) => (props: any) => {
   );
 };
 
-export function useVideo(video: ?VideoT): VideoBvrT {
+export function useVideo(clientName: string, video: ?VideoT): VideoBvrT {
   const [_isPlaying, _setIsPlaying] = React.useState(false);
   const [_player, _setPlayer] = React.useState(null);
   const [pauseTimeout, setPauseTimeout] = React.useState(500);
@@ -58,5 +58,6 @@ export function useVideo(video: ?VideoT): VideoBvrT {
     setIsPlaying,
     togglePlay,
     video,
+    clientName,
   };
 }

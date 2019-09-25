@@ -2,30 +2,31 @@
 
 import * as React from "react";
 
-var _singleton = {
-  iframeMouseOver: false,
-  initialized: false,
-  idOfElementToGiveFocus: null,
+type DataT = {
+  iframeMouseOver: boolean,
+  idOfElementToGiveFocus: any,
 };
 
-function setIFrameMouseOver(x: boolean) {
-  _singleton.iframeMouseOver = x;
+var _dataStore = {};
+
+function setIFrameMouseOver(clientName: string, x: boolean) {
+  _dataStore[clientName].iframeMouseOver = x;
 }
 
 function getIFrameMouseOver() {
-  return _singleton.iframeMouseOver;
+  return _dataStore[clientName].iframeMouseOver;
 }
 
-export function setIdOfElementToGiveFocus(id: string) {
+export function setIdOfElementToGiveFocus(clientName: string, id: string) {
   // $FlowFixMe
-  _singleton.idOfElementToGiveFocus = id;
+  _singleton.idOfElementToGiveFocus[clientName] = id;
 }
 
-export function getIdOfElementToGiveFocus() {
-  return _singleton.idOfElementToGiveFocus;
+export function getIdOfElementToGiveFocus(clientName: string) {
+  return _singleton.idOfElementToGiveFocus[clientName];
 }
 
-export function watchIFrameMouseOver() {
+export function watchIFrameMouseOver(clientName: string) {
   if (!_singleton.initialized) {
     window.addEventListener("blur", function() {
       if (getIFrameMouseOver()) {

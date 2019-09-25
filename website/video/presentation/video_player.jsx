@@ -10,6 +10,7 @@ import type { VideoT, VideoBvrT } from "video/types";
 
 type VideoPlayerPropsT = {
   videoBvr: VideoBvrT,
+  onReady: Function,
 };
 
 export function VideoPlayer(props: VideoPlayerPropsT) {
@@ -23,7 +24,7 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
         key={link} // yes, we need this
         videoUrlProps={videoUrlProps}
         videoBvr={props.videoBvr}
-        onReady={watchIFrameMouseOver}
+        onReady={() => watchIFrameMouseOver(props.videoBvr.clientName)}
       />
     ) : (
       <React.Fragment />

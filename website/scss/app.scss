@@ -177,5 +177,16 @@ $panGrey: #bbbbbb;
 }
 
 .videoControlPanel__button--enabled {
-  @apply bg-green;
+  animation-duration: 1s;
+  animation-name: playvideo;
+  background-color: green;
+}
+
+@keyframes playvideo {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: green;
+  }
 }

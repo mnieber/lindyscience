@@ -1,11 +1,12 @@
 // @flow
 
 import * as React from "react";
+import { isYoutubePlaying } from "video/utils/utils";
 
 import type { VideoT, VideoBvrT } from "video/types";
 
 function _updatePlayer(player, isPlaying, pauseTimeout, setPauseTimeout) {
-  if (player) {
+  if (player && isPlaying != isYoutubePlaying(player)) {
     if (isPlaying) {
       player.playVideo();
     } else {

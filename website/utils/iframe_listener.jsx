@@ -5,42 +5,59 @@ import jQuery from "jquery";
 
 type DataT = {
   iframeMouseOver: boolean,
+  iframe: any,
 };
 
+var _iframes = {};
 var _dataStore = {};
 
-function setIFrameMouseOver(parentDivId: string, x: boolean) {
-  _dataStore[parentDivId].iframeMouseOver = x;
+function createDataStore(parentDivId: string, iframe: any) {
+  _dataStore[parentDivId] = {
+    iframeMouseOver: false,
+    iframe: iframe,
+  };
+
+  const focusParentDiv = () => {
+    const elm = document.getElementById(parentDivId);
+    if (elm) {
+      elm.focus();
+    }
+  };
+
+  window.addEventListener("blur", function(e: any) {
+    const data = _dataStore[parentDivId];
+
+    if (document.activeElement == data.iframe && data.iframeMouseOver) {
+      setTimeout(focusParentDiv, 100);
+    }
+  });
+
+  return focusParentDiv;
 }
 
-function getIFrameMouseOver(parentDivId: string) {
-  return _dataStore[parentDivId].iframeMouseOver;
+function updateDataStore(parentDivId: string, iframe: any) {
+  _dataStore[parentDivId].iframe = iframe;
+}
+
+function registerIframe(parentDivId: string, iframe: any) {
+  if (!_iframes[iframe]) {
+    _iframes[iframe] = true;
+    iframe.addEventListener("mouseover", function() {
+      _dataStore[parentDivId].iframeMouseOver = true;
+    });
+    iframe.addEventListener("mouseout", function() {
+      _dataStore[parentDivId].iframeMouseOver = false;
+    });
+  }
 }
 
 export function listenToIFrame(parentDivId: string, iframe: any) {
   if (!_dataStore[parentDivId]) {
-    _dataStore[parentDivId] = {
-      iframeMouseOver: false,
-    };
-    const focusParentDiv = () => {
-      const elm = document.getElementById(parentDivId);
-      if (elm) {
-        elm.focus();
-      }
-    };
+    const focusParentDiv = createDataStore(parentDivId, iframe);
     focusParentDiv();
-
-    window.addEventListener("blur", function(e: any) {
-      if (document.activeElement == iframe && getIFrameMouseOver(parentDivId)) {
-        setTimeout(focusParentDiv, 100);
-      }
-    });
-
-    iframe.addEventListener("mouseover", function() {
-      setIFrameMouseOver(parentDivId, true);
-    });
-    iframe.addEventListener("mouseout", function() {
-      setIFrameMouseOver(parentDivId, false);
-    });
+  } else {
+    updateDataStore(parentDivId, iframe);
   }
+
+  registerIframe(parentDivId, iframe);
 }

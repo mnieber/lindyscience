@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import { useInterval } from "utils/use_interval";
 import YouTube from "react-youtube";
 import { isNone } from "utils/utils";
 
@@ -24,19 +25,12 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       ? params.start
       : null;
 
-  const endTime =
-    video && !isNone(video.endTimeMs)
-      ? (video.endTimeMs || 0) / 1000
-      : !isNone(params.end)
-      ? params.end
-      : null;
-
   const opts = {
     height: "390",
     width: "640",
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
+      autoplay: 1, // yes, we need this
       rel: 0,
     },
   };
@@ -48,12 +42,6 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       // $FlowFixMe
       props.onReady(player.getIframe());
     }
-  };
-
-  const _onEnd = event => {
-    const player = event.target;
-    player.playVideo();
-    player.seekTo(startTime);
   };
 
   const _onPlay = () => {
@@ -79,7 +67,6 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       videoId={props.videoUrlProps.id}
       opts={opts}
       onReady={_onReady}
-      onEnd={_onEnd}
       onPlay={_onPlay}
       onPause={_onPause}
     />

@@ -1,23 +1,27 @@
 // @flow
 
 import * as React from "react";
+import { compose } from "redux";
 import Ctr from "screens/containers/index";
 
 import Widgets from "screens/presentation/index";
 import { isOwner } from "app/utils";
 
+import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
 
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveListCrudBvrsT } from "screens/types";
+import type { VideoBvrT } from "video/types";
 
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
   moveListTags: Array<TagT>,
   moveList: MoveListT,
   cutVideoLink: string,
+  videoBvr: VideoBvrT,
   // receive any actions as well
 };
 
@@ -97,6 +101,7 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
           <Widgets.CutVideoPanel
             actSetCutVideoLink={actions.actSetCutVideoLink}
             cutVideoLink={props.cutVideoLink}
+            videoBvr={props.videoBvr}
           />
         </div>
       )}
@@ -105,14 +110,17 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
 }
 
 // $FlowFixMe
-MoveListDetailsPage = Ctr.connect(
-  state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
-    moveList: Ctr.fromStore.getSelectedMoveList(state),
-    moveListTags: Ctr.fromStore.getMoveListTags(state),
-    cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
-  }),
-  Ctr.actions
+MoveListDetailsPage = compose(
+  withCutVideoBvr,
+  Ctr.connect(
+    state => ({
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      moveList: Ctr.fromStore.getSelectedMoveList(state),
+      moveListTags: Ctr.fromStore.getMoveListTags(state),
+      cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
+    }),
+    Ctr.actions
+  )
 )(MoveListDetailsPage);
 
 export default MoveListDetailsPage;

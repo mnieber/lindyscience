@@ -7,8 +7,8 @@ export const handleVideoKey = (
   key: string,
   e: any,
   videoBvr: VideoBvrT,
-  startTimeMs: ?number,
-  endTimeMs: ?number,
+  startTime: ?number,
+  endTime: ?number,
   timePoints: Array<number>
 ) => {
   if (key == "ctrl+space") {
@@ -68,13 +68,13 @@ export const handleVideoKey = (
     e.preventDefault();
     e.stopPropagation();
   }
-  if (key == "ctrl+shift+home" && !isNone(startTimeMs)) {
-    videoBvr.player.seekTo((startTimeMs || 0) / 1000);
+  if (key == "ctrl+shift+home" && !isNone(startTime)) {
+    videoBvr.player.seekTo(startTime);
     e.preventDefault();
     e.stopPropagation();
   }
-  if (key == "ctrl+shift+end" && !isNone(endTimeMs)) {
-    videoBvr.player.seekTo((endTimeMs || 0) / 1000);
+  if (key == "ctrl+shift+end" && !isNone(endTime)) {
+    videoBvr.player.seekTo(endTime);
     e.preventDefault();
     e.stopPropagation();
   }

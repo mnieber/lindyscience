@@ -19,7 +19,7 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
   const videoUrlProps = urlParser.parse(link);
 
   const internalPlayer =
-    videoUrlProps.provider == "youtube" ? (
+    videoUrlProps && videoUrlProps.provider == "youtube" ? (
       <YoutubePlayer
         key={link} // yes, we need this
         videoUrlProps={videoUrlProps}

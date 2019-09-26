@@ -60,7 +60,7 @@ export const withMoveVideoBvr = compose(
 
     return (
       <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>
-        <div id="moveDiv" tabIndex={123}>
+        <div id={parentDivId} tabIndex={123}>
           {wrappedComponent}
         </div>
       </KeyboardEventHandler>

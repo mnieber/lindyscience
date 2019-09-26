@@ -27,7 +27,7 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   const startTime =
     video && !isNone(video.startTimeMs)
       ? (video.startTimeMs || 0) / 1000
-      : !isNone(params.start)
+      : params && !isNone(params.start)
       ? params.start
       : null;
 

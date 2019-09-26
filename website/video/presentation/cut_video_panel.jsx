@@ -5,10 +5,14 @@ import YouTube from "react-youtube";
 
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
+import { VideoPlayerPanel } from "video/presentation/video_player";
+
+import type { VideoBvrT } from "video/types";
 
 type CutVideoPanelPropsT = {
   cutVideoLink: string,
   actSetCutVideoLink: Function,
+  videoBvr: VideoBvrT,
 };
 
 export function CutVideoPanel(props: CutVideoPanelPropsT) {
@@ -17,7 +21,23 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
       props.actSetCutVideoLink(e.target.value);
     }
   };
-  const linkPanel = <input onKeyDown={onKeyDown} />;
 
-  return <div className={"cutVideoPanel panel"}>{linkPanel}</div>;
+  const linkPanel = <input className="w-full" onKeyDown={onKeyDown} />;
+
+  const videoPlayerPanel = (
+    <VideoPlayerPanel
+      key="videoPlayerPanel"
+      videoBvr={props.videoBvr}
+      restartId={""}
+    />
+  );
+
+  return (
+    <div>
+      <div className={"cutVideoPanel panel"}>
+        {linkPanel}
+        {videoPlayerPanel}
+      </div>
+    </div>
+  );
 }

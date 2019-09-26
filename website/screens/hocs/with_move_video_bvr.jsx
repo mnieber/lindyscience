@@ -23,7 +23,7 @@ type PropsT = {
 };
 
 // $FlowFixMe
-export const withVideoBvr = compose(
+export const withMoveVideoBvr = compose(
   Ctr.connect(
     state => ({
       move: Ctr.fromStore.getHighlightedMove(state),

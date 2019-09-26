@@ -18,17 +18,6 @@ function _updatePlayer(player, isPlaying, pauseTimeout, setPauseTimeout) {
   }
 }
 
-// $FlowFixMe
-export const VideoBvrContext = React.createContext({});
-
-export const withVideoBvrContext = (WrappedComponent: any) => (props: any) => {
-  return (
-    <VideoBvrContext.Consumer>
-      {videoBvr => <WrappedComponent {...props} videoBvr={videoBvr} />}
-    </VideoBvrContext.Consumer>
-  );
-};
-
 export function useVideo(parentDivId: string, video: ?VideoT): VideoBvrT {
   const [_isPlaying, _setIsPlaying] = React.useState(false);
   const [_player, _setPlayer] = React.useState(null);

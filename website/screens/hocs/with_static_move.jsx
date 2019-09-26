@@ -13,7 +13,7 @@ import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { withHostedStaticMovePanels } from "screens/hocs/with_hosted_static_move_panels";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
 import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
-import { useVideo } from "video/bvrs/video_behaviour";
+import { useVideo } from "video/bvrs/use_video";
 import { getVideoFromMove } from "moves/utils";
 
 import type { MoveT } from "moves/types";

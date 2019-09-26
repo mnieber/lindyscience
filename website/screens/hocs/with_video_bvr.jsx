@@ -4,7 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 
 import { useInterval } from "utils/use_interval";
-import { useVideo } from "video/bvrs/video_behaviour";
+import { useVideo } from "video/bvrs/use_video";
 import { getVideoFromMove } from "moves/utils";
 import { styleTimePoints, extractTimePoints } from "video/utils/time_points";
 import {
@@ -42,7 +42,6 @@ export const withVideoBvr = compose(
     ]);
 
     useInterval(() => styleTimePoints(videoBvr.player, timePoints), 250);
-    const actions: any = props;
 
     const wrappedComponent = (
       <WrappedComponent videoBvr={videoBvr} {...passThroughProps} />

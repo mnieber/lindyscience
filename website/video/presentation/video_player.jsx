@@ -6,10 +6,11 @@ import urlParser from "js-video-url-parser";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
 import { listenToIFrame } from "utils/iframe_listener";
 
-import type { VideoT, VideoBvrT } from "video/types";
+import type { RestartIdT, VideoBvrT, VideoT } from "video/types";
 
 type VideoPlayerPropsT = {
   videoBvr: VideoBvrT,
+  restartId: RestartIdT,
 };
 
 export function VideoPlayer(props: VideoPlayerPropsT) {
@@ -23,6 +24,7 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
         key={link} // yes, we need this
         videoUrlProps={videoUrlProps}
         videoBvr={props.videoBvr}
+        restartId={props.restartId}
         onReady={iframe => {
           listenToIFrame(props.videoBvr.parentDivId, iframe);
         }}
@@ -36,12 +38,13 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
 
 type VideoPlayerPanelPropsT = {
   videoBvr: VideoBvrT,
+  restartId: RestartIdT,
 };
 
 export function VideoPlayerPanel(props: VideoPlayerPanelPropsT) {
   return props.videoBvr.video ? (
     <div className={"move__video panel flex flex-col"}>
-      <VideoPlayer videoBvr={props.videoBvr} />
+      <VideoPlayer videoBvr={props.videoBvr} restartId={props.restartId} />
       <VideoControlPanel videoBvr={props.videoBvr} />
     </div>
   ) : (

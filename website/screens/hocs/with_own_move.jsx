@@ -74,7 +74,11 @@ export const withOwnMove = compose(
     );
 
     const videoPlayerPanel = (
-      <VideoPlayerPanel key="videoPlayerPanel" videoBvr={props.videoBvr} />
+      <VideoPlayerPanel
+        key="videoPlayerPanel"
+        videoBvr={props.videoBvr}
+        restartId={move ? move.id : ""}
+      />
     );
 
     const ownMove = moveCrudBvrs.isEditing ? (

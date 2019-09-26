@@ -7,7 +7,6 @@ export type VideoT = {
   link: string,
   startTimeMs: ?number,
   endTimeMs: ?number,
-  id: UUID,
 };
 
 export type VideoUrlPropsT = {
@@ -25,3 +24,6 @@ export type VideoBvrT = {
   togglePlay: () => void,
   parentDivId: string,
 };
+
+// When this id changes, the video must be reset to the start time
+export type RestartIdT = string;

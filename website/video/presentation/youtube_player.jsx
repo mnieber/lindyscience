@@ -5,11 +5,17 @@ import { useInterval } from "utils/use_interval";
 import YouTube from "react-youtube";
 import { isNone } from "utils/utils";
 
-import type { VideoT, VideoUrlPropsT, VideoBvrT } from "video/types";
+import type {
+  VideoT,
+  VideoUrlPropsT,
+  VideoBvrT,
+  RestartIdT,
+} from "video/types";
 
 type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,
   videoBvr: VideoBvrT,
+  restartId: RestartIdT,
   onReady?: Function,
 };
 
@@ -59,7 +65,7 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
     if (youtubeRef.current && !isNone(startTime)) {
       youtubeRef.current.internalPlayer.seekTo(startTime);
     }
-  }, [youtubeRef.current, props.videoBvr.video ? props.videoBvr.video.id : ""]);
+  }, [youtubeRef.current, props.restartId]);
 
   return (
     <YouTube

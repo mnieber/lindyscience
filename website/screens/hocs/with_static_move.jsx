@@ -61,7 +61,11 @@ export const withStaticMove = compose(
 
     const setIsEditing = () => {};
     const videoPlayerPanel = (
-      <VideoPlayerPanel videoBvr={props.videoBvr} setIsEditing={setIsEditing} />
+      <VideoPlayerPanel
+        videoBvr={props.videoBvr}
+        setIsEditing={setIsEditing}
+        restartId={move ? move.id : ""}
+      />
     );
 
     const staticMove = (

@@ -12,8 +12,6 @@ import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
 import { newMoveSlug } from "moves/utils";
 import { isOwner } from "app/utils";
 
-import { MoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
-
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { MoveCrudBvrsT } from "screens/types";

@@ -5,7 +5,7 @@ import { compose } from "redux";
 
 import { useInterval } from "utils/use_interval";
 import { useVideo } from "video/bvrs/use_video";
-import { styleTimePoints, extractTimePoints } from "video/utils/time_points";
+import { styleTimePoints, extractTimePoints } from "video/utils/cut_points";
 import {
   handleVideoKey,
   videoKeys,

@@ -21,22 +21,12 @@ export const withMoveListContainer = compose(
         state
       ),
     }),
-    {
-      actInsertMoveListIds: Ctr.actions.actInsertMoveListIds,
-      actSetMoveListFilter: Ctr.actions.actSetMoveListFilter,
-      actSetMoveListContainerPayload:
-        Ctr.actions.actSetMoveListContainerPayload,
-    }
+    Ctr.actions
   ),
   (WrappedComponent: any) => (props: any) => {
-    const {
-      moveLists,
-      moveListContainerPayload,
-      actInsertMoveListIds,
-      actSetMoveListFilter,
-      actSetMoveListContainerPayload,
-      ...passThroughProps
-    } = props;
+    const { moveLists, moveListContainerPayload, ...passThroughProps } = props;
+
+    const actions: any = props;
 
     function _insert(
       payloadIds: Array<UUID>,
@@ -48,7 +38,10 @@ export const withMoveListContainer = compose(
         targetMoveListId,
         isBefore
       );
-      const allMoveListIds = actInsertMoveListIds(payloadIds, predecessorId);
+      const allMoveListIds = actions.actInsertMoveListIds(
+        payloadIds,
+        predecessorId
+      );
       Ctr.api
         .saveMoveListOrdering(allMoveListIds)
         .catch(createErrorHandler("We could not update the move list"));
@@ -58,8 +51,8 @@ export const withMoveListContainer = compose(
       function _filter(moveLists: Array<MoveListT>) {
         return getPreview<MoveListT>(moveLists, payload, targetItemId);
       }
-      actSetMoveListFilter("insertMoveListPreview", _filter);
-      actSetMoveListContainerPayload(payload, targetItemId);
+      actions.actSetMoveListFilter("insertMoveListPreview", _filter);
+      actions.actSetMoveListContainerPayload(payload, targetItemId);
     };
 
     const moveListContainer: DataContainerT<MoveListT> = {

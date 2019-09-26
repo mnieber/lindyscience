@@ -6,13 +6,15 @@ import YouTube from "react-youtube";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 import { VideoPlayerPanel } from "video/presentation/video_player";
+import { CutPointList } from "video/presentation/cut_point_list";
 
-import type { VideoBvrT } from "video/types";
+import type { CutPointT, VideoBvrT } from "video/types";
 
 type CutVideoPanelPropsT = {
   cutVideoLink: string,
   actSetCutVideoLink: Function,
   videoBvr: VideoBvrT,
+  cutPoints: Array<CutPointT>,
 };
 
 export function CutVideoPanel(props: CutVideoPanelPropsT) {
@@ -32,11 +34,14 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
     />
   );
 
+  const cutPointList = <CutPointList cutPoints={props.cutPoints} />;
+
   return (
     <div>
       <div className={"cutVideoPanel panel"}>
         {linkPanel}
         {videoPlayerPanel}
+        {cutPointList}
       </div>
     </div>
   );

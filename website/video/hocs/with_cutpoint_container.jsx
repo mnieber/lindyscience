@@ -13,58 +13,42 @@ import type { UUID } from "kernel/types";
 import type { MoveT } from "moves/types";
 
 // $FlowFixMe
-export const withMoveContainer = compose(
+export const withCutPointsContainer = compose(
   Ctr.connect(
     state => ({
-      moveList: Ctr.fromStore.getSelectedMoveList(state),
-      filteredMoves: Ctr.fromStore.getFilteredMovesInList(state),
-      moveContainerPayload: Ctr.fromStore.getMoveContainerPayload(state),
+      cutPoints: Ctr.fromStore.getCutPoints(state),
+      cutPointContainerPayload: Ctr.fromStore.getCutPointContainerPayload(
+        state
+      ),
     }),
     Ctr.actions
   ),
   (WrappedComponent: any) => (props: any) => {
-    const {
-      moveList,
-      filteredMoves,
-      moveContainerPayload,
-      ...passThroughProps
-    } = props;
+    const { cutPoints, cutPointContainerPayload, ...passThroughProps } = props;
 
     const actions: any = props;
-    const moveListId = getId(moveList);
 
     function _insert(
       payloadIds: Array<UUID>,
-      targetMoveId: UUID,
+      targetId: UUID,
       isBefore: boolean
     ) {
       const predecessorId = findTargetId(
-        filteredMoves.map(x => x.id),
-        targetMoveId,
+        cutPoints.map(x => x.id),
+        targetId,
         isBefore
       );
-      const allMoveIds = actions.actInsertMoves(
-        payloadIds,
-        moveListId,
-        predecessorId
-      );
-      Ctr.api
-        .saveMoveOrdering(moveListId, allMoveIds)
-        .catch(createErrorHandler("We could not update the move list"));
+      actions.actInsertCutPoints(payloadIds, moveListId, predecessorId);
     }
 
     const _setPayload = (payload: Array<MoveT>, targetItemId: UUID) => {
-      function _filter(moves: Array<MoveT>) {
-        return getPreview<MoveT>(moves, payload, targetItemId);
-      }
-      actions.actSetMoveFilter("insertMovePreview", _filter);
       actions.actSetMoveContainerPayload(payload, targetItemId);
     };
 
     const moveContainer: DataContainerT<MoveT> = {
       insert: _insert,
       preview: getPreview<MoveT>(
-        filteredMoves,
+        cutPoints,
         moveContainerPayload.payload,
         moveContainerPayload.targetItemId
       ),

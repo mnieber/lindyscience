@@ -27,3 +27,10 @@ export type VideoBvrT = {
 
 // When this id changes, the video must be reset to the start time
 export type RestartIdT = string;
+
+export type CutPointT = {
+  id: UUID,
+  t: number,
+  type: "start" | "end",
+  title?: string,
+};

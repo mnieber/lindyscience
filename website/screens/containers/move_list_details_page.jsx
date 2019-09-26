@@ -10,11 +10,11 @@ import { isOwner } from "app/utils";
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
 
+import type { CutPointT, VideoBvrT } from "video/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveListCrudBvrsT } from "screens/types";
-import type { VideoBvrT } from "video/types";
 
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
@@ -22,6 +22,7 @@ type MoveListDetailsPagePropsT = {
   moveList: MoveListT,
   cutVideoLink: string,
   videoBvr: VideoBvrT,
+  cutPoints: Array<CutPointT>,
   // receive any actions as well
 };
 
@@ -102,6 +103,7 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
             actSetCutVideoLink={actions.actSetCutVideoLink}
             cutVideoLink={props.cutVideoLink}
             videoBvr={props.videoBvr}
+            cutPoints={props.cutPoints}
           />
         </div>
       )}
@@ -118,6 +120,7 @@ MoveListDetailsPage = compose(
       moveList: Ctr.fromStore.getSelectedMoveList(state),
       moveListTags: Ctr.fromStore.getMoveListTags(state),
       cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
+      cutPoints: Ctr.fromStore.getCutPoints(state),
     }),
     Ctr.actions
   )

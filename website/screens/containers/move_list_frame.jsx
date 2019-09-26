@@ -6,10 +6,7 @@ import * as React from "react";
 
 import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
-import {
-  MoveCrudBvrsContext,
-  withMoveCrudBvrsContext,
-} from "screens/bvrs/move_crud_behaviours";
+import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
 import {
   MoveListCrudBvrsContext,

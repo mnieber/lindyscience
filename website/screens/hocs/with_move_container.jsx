@@ -36,14 +36,18 @@ export const withMoveContainer = compose(
       props.dispatch(actSetMoveContainerPayload(payload));
     }
 
-    function _insertPayload(cancel: boolean) {
-      if (!cancel && moveContainerPayload != null) {
+    function _insertPayload(
+      cancel: boolean,
+      overridePayload: ?PayloadT<MoveT>
+    ) {
+      const pl = overridePayload || moveContainerPayload;
+      if (!cancel && pl != null) {
         const allMoveIds = props.dispatch(
           actInsertMoveIds(
-            moveContainerPayload.payload.map(x => x.id),
+            pl.payload.map(x => x.id),
             moveListId,
-            moveContainerPayload.targetItemId,
-            moveContainerPayload.isBefore
+            pl.targetItemId,
+            pl.isBefore
           )
         );
         Ctr.api

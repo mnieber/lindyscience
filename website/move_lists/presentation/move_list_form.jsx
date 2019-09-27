@@ -159,7 +159,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      props.onSubmit(props.moveList.id, values);
+      props.onSubmit({ ...values, id: props.moveList.id });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(

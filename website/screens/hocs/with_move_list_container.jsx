@@ -28,15 +28,15 @@ export const withMoveListContainer = compose(
       props.dispatch(actSetMoveListContainerPayload(payload));
     }
 
-    function _insertPayload(cancel: boolean) {
+    function _insertPayload(
+      cancel: boolean,
+      overridePayload: ?PayloadT<MoveListT>
+    ) {
+      const pl = overridePayload || moveListContainerPayload;
       if (!cancel) {
-        const payLoadIds = moveListContainerPayload.payload.map(x => x.id);
+        const payLoadIds = pl.payload.map(x => x.id);
         const allMoveListIds = props.dispatch(
-          actInsertMoveListIds(
-            payLoadIds,
-            moveListContainerPayload.targetItemId,
-            moveListContainerPayload.isBefore
-          )
+          actInsertMoveListIds(payLoadIds, pl.targetItemId, pl.isBefore)
         );
         Ctr.api
           .saveMoveListOrdering(allMoveListIds)

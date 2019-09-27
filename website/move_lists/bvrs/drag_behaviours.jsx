@@ -53,8 +53,7 @@ export const createDraggingBvr = (
       !editMoveBvr.newItem ||
       !(payload.length === 1 && payload[0].id === editMoveBvr.newItem.id)
     ) {
-      moveContainer.setPayload({ payload, targetItemId, isBefore });
-      moveContainer.insertPayload(false);
+      moveContainer.insertPayload(false, { payload, targetItemId, isBefore });
     }
   };
   return useDragging(onDrop);

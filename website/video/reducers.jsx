@@ -99,7 +99,7 @@ export function getCutVideoLink(state: RootReducerStateT) {
   return state.video.cutVideo.link;
 }
 
-export function getCutVideoCutPoints(state: RootReducerStateT) {
+export function getCutPoints(state: RootReducerStateT) {
   return state.video.cutPoints;
 }
 

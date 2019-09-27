@@ -18,7 +18,7 @@ export type PayloadT<ItemT> = {
 // DataContainer
 
 export type DataContainerT<ItemT> = {|
-  insertPayload: boolean => void,
+  insertPayload: (boolean, ?PayloadT<ItemT>) => void,
   preview: Array<ItemT>,
   payload: ?PayloadT<ItemT>,
   setPayload: (?PayloadT<ItemT>) => void,
@@ -34,14 +34,11 @@ export function createDataContainerWithLocalState<ItemT: ObjectT>(
     null
   );
 
-  function _insertPayload(cancel: boolean) {
-    if (!cancel && payload != null) {
-      const idx = items.map(x => x.id).indexOf(payload.targetItemId);
-      setItems([
-        ...items.slice(0, idx),
-        ...payload.payload,
-        ...items.slice(idx),
-      ]);
+  function _insertPayload(cancel: boolean, overridePayload: ?PayloadT<ItemT>) {
+    const pl = overridePayload || overridePayload;
+    if (!cancel && pl != null) {
+      const idx = items.map(x => x.id).indexOf(pl.targetItemId);
+      setItems([...items.slice(0, idx), ...pl.payload, ...items.slice(idx)]);
     }
     setPayload(null);
   }

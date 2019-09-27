@@ -12,7 +12,7 @@ export function saveMove(values: MoveT) {
       $id: String!,
       $name: String!,
       $slug: String!,
-      $link: String!,
+      $link: String,
       $startTimeMs: Int!,
       $endTimeMs: Int!,
       $description: String!,

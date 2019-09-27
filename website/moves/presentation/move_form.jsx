@@ -259,7 +259,7 @@ export function MoveForm(props: MoveFormPropsT) {
     mapPropsToValues: () => ({
       name: props.move.name,
       slug: props.move.slug,
-      link: props.move.link,
+      link: props.move.link || "",
       description: props.move.description,
       tags: props.move.tags,
       startTime: startTime,
@@ -290,7 +290,7 @@ export function MoveForm(props: MoveFormPropsT) {
       values.endTimeMs = Math.trunc(values.endTime * 1000);
       delete values.endTime;
 
-      props.onSubmit(props.move.id, { ...values });
+      props.onSubmit({ ...values, id: props.move.id });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(

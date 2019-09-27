@@ -31,7 +31,8 @@ const userProfileReducer = function(
       const acc = insertIdsIntoList(
         action.moveListIds,
         state ? state.moveListIds : [],
-        action.targetMoveListId
+        action.targetMoveListId,
+        action.isBefore
       );
       return {
         ...state,

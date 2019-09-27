@@ -99,6 +99,7 @@ export function moveListFiltersReducer(
 type DataContainerState = {
   targetItemId: ?UUID,
   payload: Array<any>,
+  isBefore: boolean,
   isEditing: boolean,
 };
 
@@ -106,6 +107,7 @@ export function moveContainerReducer(
   state: DataContainerState = {
     targetItemId: null,
     payload: [],
+    isBefore: false,
     isEditing: false,
   },
   action: any
@@ -116,6 +118,7 @@ export function moveContainerReducer(
         ...state,
         targetItemId: action.targetItemId,
         payload: action.payload,
+        isBefore: action.isBefore,
       };
     case "SET_IS_EDITING_MOVE":
       return {
@@ -131,6 +134,7 @@ export function moveListContainerReducer(
   state: DataContainerState = {
     targetItemId: null,
     payload: [],
+    isBefore: false,
     isEditing: false,
   },
   action: any
@@ -141,6 +145,7 @@ export function moveListContainerReducer(
         ...state,
         targetItemId: action.targetItemId,
         payload: action.payload,
+        isBefore: action.isBefore,
       };
     case "SET_IS_EDITING_MOVE_LIST":
       return {

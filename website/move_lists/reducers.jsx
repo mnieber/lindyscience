@@ -31,7 +31,8 @@ export function moveListsReducer(
       const acc = insertIdsIntoList(
         action.moveIds,
         state[action.moveListId].moves,
-        action.targetMoveId
+        action.targetMoveId,
+        action.isBefore
       );
       return {
         ...state,

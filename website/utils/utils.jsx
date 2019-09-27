@@ -136,13 +136,17 @@ export function urlParam(name: string) {
 export function insertIdsIntoList(
   ids: Array<any>,
   idList: Array<any>,
-  targetId: any
+  targetId: any,
+  isBefore: boolean
 ) {
   return idList.reduce(
     (acc: Array<any>, id: any) => {
       if (!ids.includes(id)) {
+        if (id == targetId && isBefore) {
+          acc.push(...ids);
+        }
         acc.push(id);
-        if (id == targetId) {
+        if (id == targetId && !isBefore) {
           acc.push(...ids);
         }
       }

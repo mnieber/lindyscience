@@ -54,7 +54,8 @@ export const createDraggingBvr = (
       !newMoveBvr.newItem ||
       !(payload.length === 1 && payload[0].id === newMoveBvr.newItem.id)
     ) {
-      insertMovesBvr.insertDirectly(payload, targetId, isBefore);
+      insertMovesBvr.prepare(payload, targetId, isBefore);
+      insertMovesBvr.finalize(false);
     }
   };
   return useDragging(onDrop);

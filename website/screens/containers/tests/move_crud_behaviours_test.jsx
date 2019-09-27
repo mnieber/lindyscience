@@ -30,7 +30,7 @@ function TestComponent({
   sandbox.movesContainer = createDataContainerWithLocalState(moves);
 
   if (insertMoves != undefined) {
-    sandbox.movesContainer.insert = insertMoves;
+    sandbox.movesContainer.insertPayload = insertMoves;
   }
 
   sandbox.insertMovesBvr = useInsertItems(sandbox.movesContainer);
@@ -85,7 +85,7 @@ test("test useInsertMoves", function(t) {
       "Initially, the preview is just the list of moves"
     );
 
-    sandbox.insertMovesBvr.prepare([newMove], moves[1].id);
+    sandbox.insertMovesBvr.prepare([newMove], moves[1].id, false);
     t.deepEqual(
       sandbox.movesContainer.preview,
       expectedNewMoves,
@@ -98,15 +98,15 @@ test("test useInsertMoves", function(t) {
       moves,
       "After finalize with cancel, the preview shouldn't contain the new move"
     );
-    t.assert(!sandbox.movesContainer.insert.called);
+    t.assert(!sandbox.movesContainer.insertPayload.called);
     t.assert(!saveMoveOrdering.called);
 
-    sandbox.insertMovesBvr.prepare([newMove], moves[1].id);
+    sandbox.insertMovesBvr.prepare([newMove], moves[1].id, false);
     sandbox.insertMovesBvr.finalize(/* cancel */ false);
 
     t.calledOnceWith(
       insertMoves,
-      [[newMove], moves[1].id, false],
+      [],
       "After finalize, insertMoves should have been called"
     );
   }
@@ -154,7 +154,7 @@ test("test useNewMove", function(t) {
 
   t.calledOnceWith(
     prepare,
-    [[sandbox.newMoveBvr.newItem], highlightedMove.id],
+    [[sandbox.newMoveBvr.newItem], highlightedMove.id, false],
     "After addNewItem(), the preview contains the newMove"
   );
 

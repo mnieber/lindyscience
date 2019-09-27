@@ -8,13 +8,8 @@ import type { DataContainerT } from "screens/containers/data_container";
 // InsertItem Behaviour
 
 export type InsertItemsBvrT<ItemT> = {|
-  prepare: (items: Array<ItemT>, targetItemId: UUID) => void,
+  prepare: (items: Array<ItemT>, targetItemId: UUID, isBefore: boolean) => void,
   finalize: (isCancel: boolean) => UUID,
-  insertDirectly: (
-    payload: Array<ItemT>,
-    targetItemId: UUID,
-    isBefore: boolean
-  ) => void,
 |};
 
 export function useInsertItems<ItemT: ObjectT>(
@@ -23,20 +18,15 @@ export function useInsertItems<ItemT: ObjectT>(
   function finalize(isCancel: boolean) {
     const result = dataContainer.targetItemId;
     if (dataContainer.payload.length && !isCancel) {
-      dataContainer.insert(
-        dataContainer.payload,
-        dataContainer.targetItemId,
-        false
-      );
+      dataContainer.insertPayload();
     }
-    dataContainer.setPayload([], "");
+    dataContainer.setPayload([], "", false);
     return result;
   }
 
   return {
     prepare: dataContainer.setPayload,
     finalize,
-    insertDirectly: dataContainer.insert,
   };
 }
 
@@ -64,7 +54,7 @@ export function useNewItem<ItemT: ObjectT>(
       const newItem = createNewItem();
       if (newItem) {
         setNewItem(newItem);
-        insertItemsBvr.prepare([newItem], highlightedItemId);
+        insertItemsBvr.prepare([newItem], highlightedItemId, false);
         setHighlightedItemId(newItem.id);
         setIsEditing(true);
       }

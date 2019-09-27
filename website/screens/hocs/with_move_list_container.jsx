@@ -5,7 +5,7 @@ import * as React from "react";
 import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
-import { findTargetId, getPreview } from "screens/utils";
+import { getPreview } from "screens/utils";
 import { createErrorHandler, getId } from "app/utils";
 
 import type { DataContainerT } from "screens/containers/data_container";
@@ -28,44 +28,29 @@ export const withMoveListContainer = compose(
 
     const actions: any = props;
 
-    function _insert(
-      payload: Array<MoveListT>,
-      targetMoveListId: UUID,
-      isBefore: boolean
-    ) {
-      const payLoadIds = payload.map(x => x.id);
-      const predecessorId = findTargetId(
-        payLoadIds,
-        targetMoveListId,
-        isBefore
-      );
+    function _insertPayload() {
+      const payLoadIds = moveListContainerPayload.payload.map(x => x.id);
       const allMoveListIds = actions.actInsertMoveListIds(
         payLoadIds,
-        predecessorId
+        moveListContainerPayload.targetItemId,
+        moveListContainerPayload.isBefore
       );
       Ctr.api
         .saveMoveListOrdering(allMoveListIds)
         .catch(createErrorHandler("We could not update the move list"));
     }
 
-    const _setPayload = (payload: Array<MoveListT>, targetItemId: UUID) => {
-      function _filter(moveLists: Array<MoveListT>) {
-        return getPreview<MoveListT>(moveLists, payload, targetItemId);
-      }
-      actions.actSetMoveListFilter("insertMoveListPreview", _filter);
-      actions.actSetMoveListContainerPayload(payload, targetItemId);
-    };
-
     const moveListContainer: DataContainerT<MoveListT> = {
-      insert: _insert,
+      insertPayload: _insertPayload,
       preview: getPreview<MoveListT>(
         moveLists,
         moveListContainerPayload.payload,
-        moveListContainerPayload.targetItemId
+        moveListContainerPayload.targetItemId,
+        moveListContainerPayload.isBefore
       ),
       payload: moveListContainerPayload.payload,
       targetItemId: moveListContainerPayload.targetItemId,
-      setPayload: _setPayload,
+      setPayload: actions.actSetMoveListContainerPayload,
     };
 
     return (

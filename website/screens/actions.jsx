@@ -4,6 +4,8 @@ import React from "react";
 import * as fromStore from "screens/reducers";
 import * as fromMoveListsStore from "move_lists/reducers";
 import { makeSlugid, findNeighbourIdx } from "screens/utils";
+import { getPreview } from "screens/utils";
+
 import type { MoveListByIdT, MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { UUID, SlugidT } from "kernel/types";
@@ -111,23 +113,43 @@ export function actSetSelectedMoveListUrl(
 
 export function actSetMoveContainerPayload(
   payload: Array<MoveT>,
-  targetItemId: UUID
+  targetItemId: UUID,
+  isBefore: boolean
 ) {
-  return {
+  const createAction = () => ({
     type: "SET_MOVE_CONTAINER_PAYLOAD",
     payload,
     targetItemId,
+    isBefore,
+  });
+
+  return (dispatch: Function, getState: Function) => {
+    function _filter(moves: Array<MoveT>) {
+      return getPreview<MoveT>(moves, payload, targetItemId, isBefore);
+    }
+    dispatch(actSetMoveFilter("insertMovePreview", _filter));
+    dispatch(createAction());
   };
 }
 
 export function actSetMoveListContainerPayload(
   payload: Array<MoveT>,
-  targetItemId: UUID
+  targetItemId: UUID,
+  isBefore: boolean
 ) {
-  return {
+  const createAction = () => ({
     type: "SET_MOVE_LIST_CONTAINER_PAYLOAD",
     payload,
     targetItemId,
+    isBefore,
+  });
+
+  return (dispatch: Function, getState: Function) => {
+    function _filter(moveLists: Array<MoveListT>) {
+      return getPreview<MoveListT>(moveLists, payload, targetItemId, isBefore);
+    }
+    dispatch(actSetMoveListFilter("insertMoveListPreview", _filter));
+    dispatch(createAction());
   };
 }
 

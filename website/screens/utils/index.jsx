@@ -71,18 +71,6 @@ export function getPreview<ItemT: ObjectT>(
       );
 }
 
-export function findTargetId(
-  itemIds: Array<UUID>,
-  targetItemId: UUID,
-  isBefore: boolean
-) {
-  if (isBefore) {
-    const idx = itemIds.findIndex(x => x == targetItemId) - 1;
-    targetItemId = idx < 0 ? "" : itemIds[idx];
-  }
-  return targetItemId;
-}
-
 export function createTagsAndKeywordsFilter(
   tags: Array<TagT>,
   keywords: Array<string>

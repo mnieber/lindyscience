@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import type { DataContainerT } from "screens/containers/data_container";
 import type { UUID } from "kernel/types";
 import type { MoveT } from "moves/types";
 import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
@@ -41,21 +42,22 @@ export function useDragging(
 }
 
 export const createDraggingBvr = (
-  moves: Array<MoveT>,
+  moveContainer: DataContainerT<MoveT>,
   selectMovesBvr: SelectItemsBvrT<MoveT>,
-  newMoveBvr: NewItemBvrT<MoveT>,
-  insertMovesBvr: InsertItemsBvrT<MoveT>
+  newMoveBvr: NewItemBvrT<MoveT>
 ): DraggingBvrT => {
   const selectedMoveIds = selectMovesBvr.selectedItems.map(x => x.id);
   const onDrop = (targetId: UUID, isBefore: boolean) => {
-    const payload = moves.filter(move => selectedMoveIds.includes(move.id));
+    const payload = moveContainer.preview.filter(move =>
+      selectedMoveIds.includes(move.id)
+    );
 
     if (
       !newMoveBvr.newItem ||
       !(payload.length === 1 && payload[0].id === newMoveBvr.newItem.id)
     ) {
-      insertMovesBvr.prepare(payload, targetId, isBefore);
-      insertMovesBvr.finalize(false);
+      moveContainer.setPayload(payload, targetId, isBefore);
+      moveContainer.insertPayload(false);
     }
   };
   return useDragging(onDrop);

@@ -12,11 +12,7 @@ import { makeMoveListUrl } from "screens/utils";
 import { querySetListToDict } from "utils/utils";
 import { browseToMove } from "screens/containers/index";
 
-import {
-  useInsertItems,
-  useNewItem,
-  useSaveItem,
-} from "screens/bvrs/crud_behaviours";
+import { useNewItem, useSaveItem } from "screens/bvrs/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT } from "move_lists/types";
@@ -87,7 +83,7 @@ export function useNewMoveList(
   userProfile: ?UserProfileT,
   setHighlightedMoveListId: UUID => void,
   highlightedMoveListId: UUID,
-  insertMoveListsBvr: InsertMoveListsBvrT,
+  moveListContainer: DataContainerT<MoveListT>,
   setIsEditing: boolean => void
 ): NewMoveListBvrT {
   function _createNewMoveList() {
@@ -99,13 +95,11 @@ export function useNewMoveList(
   return useNewItem<MoveListT>(
     highlightedMoveListId,
     setHighlightedMoveListId,
-    insertMoveListsBvr,
+    moveListContainer,
     setIsEditing,
     _createNewMoveList
   );
 }
-
-export type InsertMoveListsBvrT = InsertItemsBvrT<MoveListT>;
 
 // SaveMoveList Behaviour
 
@@ -130,20 +124,18 @@ export function useSaveMoveList(
 
 export function createMoveListCrudBvrs(
   userProfile: ?UserProfileT,
-  moveListsContainer: DataContainerT<MoveListT>,
+  moveListContainer: DataContainerT<MoveListT>,
   selectedMoveListId: UUID,
   setNextSelectedMoveListId: UUID => void,
   actAddMoveLists: Function,
   isEditingMoveList: boolean,
   actSetIsEditingMoveList: Function
 ): MoveListCrudBvrsT {
-  const insertMoveListsBvr = useInsertItems(moveListsContainer);
-
   const newMoveListBvr: NewMoveListBvrT = useNewMoveList(
     userProfile,
     setNextSelectedMoveListId,
     selectedMoveListId,
-    insertMoveListsBvr,
+    moveListContainer,
     actSetIsEditingMoveList
   );
 
@@ -159,7 +151,7 @@ export function createMoveListCrudBvrs(
   }
 
   const saveMoveListBvr: SaveMoveListBvrT = useSaveMoveList(
-    moveListsContainer.preview,
+    moveListContainer.preview,
     newMoveListBvr,
     actSetIsEditingMoveList,
     _updateMoveList
@@ -168,7 +160,6 @@ export function createMoveListCrudBvrs(
   const bvrs: MoveListCrudBvrsT = {
     isEditing: isEditingMoveList,
     setIsEditing: actSetIsEditingMoveList,
-    insertMoveListsBvr,
     newMoveListBvr,
     saveMoveListBvr,
     setHighlightedMoveListId: newMoveListBvr.setHighlightedItemId,

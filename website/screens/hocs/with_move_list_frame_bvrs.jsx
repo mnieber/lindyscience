@@ -127,10 +127,9 @@ export const withMoveListFrameBvrs = compose(
     );
 
     const draggingBvr: DraggingBvrT = createDraggingBvr(
-      moveContainer.preview,
+      moveContainer,
       selectMovesBvr,
-      moveCrudBvrs.newMoveBvr,
-      moveCrudBvrs.insertMovesBvr
+      moveCrudBvrs.newMoveBvr
     );
 
     return (

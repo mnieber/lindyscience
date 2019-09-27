@@ -10,7 +10,6 @@ import {
   useSaveMove,
   createNewMove,
 } from "screens/bvrs/move_crud_behaviours";
-import { useInsertItems } from "screens/bvrs/crud_behaviours";
 import { createDataContainerWithLocalState } from "screens/containers/data_container";
 import { getObjectValues } from "utils/utils";
 // $FlowFixMe
@@ -21,32 +20,24 @@ const sandbox = {};
 
 function TestComponent({
   moves,
-  insertMoves,
   setHighlightedMoveId,
   setIsEditing,
   highlightedMoveId,
   updateMove,
 }) {
-  sandbox.movesContainer = createDataContainerWithLocalState(moves);
-
-  if (insertMoves != undefined) {
-    sandbox.movesContainer.insertPayload = insertMoves;
-  }
-
-  sandbox.insertMovesBvr = useInsertItems(sandbox.movesContainer);
-  sandbox.insertMovesBvr.prepare = sinon.spy(sandbox.insertMovesBvr.prepare);
+  sandbox.moveContainer = createDataContainerWithLocalState(moves);
 
   sandbox.newMoveBvr = useNewMove(
     data.profile1,
     data.moveList1.id,
     setHighlightedMoveId,
     highlightedMoveId,
-    sandbox.insertMovesBvr,
+    sandbox.moveContainer,
     setIsEditing
   );
 
   sandbox.saveMoveBvr = useSaveMove(
-    sandbox.movesContainer.preview,
+    sandbox.moveContainer.preview,
     sandbox.newMoveBvr,
     setIsEditing,
     updateMove
@@ -67,11 +58,9 @@ test("test useInsertMoves", function(t) {
       saveMoveOrdering,
     });
 
-    const insertMoves = sinon.fake.returns(["new", "move", "ids"]);
     const testComponent = TestRenderer.create(
       <TestComponent
         moves={moves}
-        insertMoves={insertMoves}
         setHighlightedMoveId={() => {}}
         setIsEditing={() => {}}
         highlightedMoveId={""}
@@ -80,41 +69,34 @@ test("test useInsertMoves", function(t) {
     );
 
     t.deepEqual(
-      sandbox.movesContainer.preview,
+      sandbox.moveContainer.preview,
       moves,
       "Initially, the preview is just the list of moves"
     );
 
-    sandbox.insertMovesBvr.prepare([newMove], moves[1].id, false);
+    sandbox.moveContainer.setPayload([newMove], moves[1].id, false);
     t.deepEqual(
-      sandbox.movesContainer.preview,
+      sandbox.moveContainer.preview,
       expectedNewMoves,
       "After prepare, the preview should contain the new move"
     );
 
-    sandbox.insertMovesBvr.finalize(/* cancel */ true);
+    sandbox.moveContainer.insertPayload(/* cancel */ true);
     t.deepEqual(
-      sandbox.movesContainer.preview,
+      sandbox.moveContainer.preview,
       moves,
       "After finalize with cancel, the preview shouldn't contain the new move"
     );
-    t.assert(!sandbox.movesContainer.insertPayload.called);
     t.assert(!saveMoveOrdering.called);
 
-    sandbox.insertMovesBvr.prepare([newMove], moves[1].id, false);
-    sandbox.insertMovesBvr.finalize(/* cancel */ false);
-
-    t.calledOnceWith(
-      insertMoves,
-      [],
-      "After finalize, insertMoves should have been called"
-    );
+    sandbox.moveContainer.setPayload([newMove], moves[1].id, false);
+    sandbox.moveContainer.insertPayload(false);
   }
 
   t.end();
 });
 
-test("test useNewMove", function(t) {
+test.only("test useNewMove", function(t) {
   const moves = getObjectValues(data.moves);
   const highlightedMove = moves[1];
 
@@ -134,7 +116,6 @@ test("test useNewMove", function(t) {
   const testComponent = TestRenderer.create(
     <TestComponent
       moves={moves}
-      insertMoves={undefined}
       setHighlightedMoveId={setHighlightedMoveId}
       setIsEditing={setIsEditing}
       highlightedMoveId={highlightedMove.id}
@@ -142,9 +123,10 @@ test("test useNewMove", function(t) {
     />
   );
 
+  const setPayload = sinon.spy(sandbox.moveContainer, "setPayload");
+
   t.equal(sandbox.newMoveBvr.newItem, null, "Initially, there is no newMove");
 
-  const prepare = sandbox.insertMovesBvr.prepare;
   sandbox.newMoveBvr.addNewItem();
   t.notEqual(
     sandbox.newMoveBvr.newItem,
@@ -153,7 +135,7 @@ test("test useNewMove", function(t) {
   );
 
   t.calledOnceWith(
-    prepare,
+    setPayload,
     [[sandbox.newMoveBvr.newItem], highlightedMove.id, false],
     "After addNewItem(), the preview contains the newMove"
   );
@@ -222,7 +204,6 @@ test("test useSaveMove", function(t) {
   const testComponent = TestRenderer.create(
     <TestComponent
       moves={moves}
-      insertMoves={undefined}
       setHighlightedMoveId={() => {}}
       setIsEditing={setIsEditing}
       highlightedMoveId={moves[1].id}

@@ -10,11 +10,7 @@ import { createErrorHandler } from "app/utils";
 import { newMoveSlug } from "moves/utils";
 import { slugify } from "utils/utils";
 
-import {
-  useInsertItems,
-  useNewItem,
-  useSaveItem,
-} from "screens/bvrs/crud_behaviours";
+import { useNewItem, useSaveItem } from "screens/bvrs/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT } from "move_lists/types";
@@ -85,10 +81,6 @@ function _completeMove(
   };
 }
 
-// InsertMoves Behaviour
-
-export type InsertMovesBvrT = InsertItemsBvrT<MoveT>;
-
 // NewMove Behaviour
 
 export type NewMoveBvrT = NewItemBvrT<MoveT>;
@@ -98,7 +90,7 @@ export function useNewMove(
   sourceMoveListId: UUID,
   setNextHighlightedMoveId: UUID => void,
   highlightedMoveId: UUID,
-  insertMovesBvr: InsertMovesBvrT,
+  moveContainer: DataContainerT<MoveT>,
   setIsEditing: boolean => void
 ): NewMoveBvrT {
   function _createNewMove() {
@@ -108,7 +100,7 @@ export function useNewMove(
   return useNewItem<MoveT>(
     highlightedMoveId,
     setNextHighlightedMoveId,
-    insertMovesBvr,
+    moveContainer,
     setIsEditing,
     _createNewMove
   );
@@ -140,20 +132,18 @@ export function createMoveCrudBvrs(
   userProfile: UserProfileT,
   highlightedMoveId: UUID,
   setNextHighlightedMoveId: UUID => void,
-  movesContainer: DataContainerT<MoveT>,
+  moveContainer: DataContainerT<MoveT>,
   browseToMove: MoveT => void,
   actAddMoves: Function,
   isEditingMove: boolean,
   actSetIsEditingMove: Function
 ): MoveCrudBvrsT {
-  const insertMovesBvr = useInsertItems(movesContainer);
-
   const newMoveBvr: NewMoveBvrT = useNewMove(
     userProfile,
     moveList ? moveList.id : "",
     setNextHighlightedMoveId,
     highlightedMoveId,
-    insertMovesBvr,
+    moveContainer,
     actSetIsEditingMove
   );
 
@@ -168,7 +158,7 @@ export function createMoveCrudBvrs(
   }
 
   const saveMoveBvr: SaveMoveBvrT = useSaveMove(
-    movesContainer.preview,
+    moveContainer.preview,
     newMoveBvr,
     actSetIsEditingMove,
     updateMove
@@ -177,7 +167,6 @@ export function createMoveCrudBvrs(
   const bvrs: MoveCrudBvrsT = {
     isEditing: isEditingMove,
     setIsEditing: actSetIsEditingMove,
-    insertMovesBvr,
     newMoveBvr,
     saveMoveBvr,
     setHighlightedMoveId: newMoveBvr.setHighlightedItemId,

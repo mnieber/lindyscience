@@ -21,18 +21,27 @@ export const withMoveListContainer = compose(
   (WrappedComponent: any) => (props: any) => {
     const { moveLists, moveListContainerPayload, ...passThroughProps } = props;
 
-    function _insertPayload() {
-      const payLoadIds = moveListContainerPayload.payload.map(x => x.id);
-      const allMoveListIds = props.dispatch(
-        actInsertMoveListIds(
-          payLoadIds,
-          moveListContainerPayload.targetItemId,
-          moveListContainerPayload.isBefore
-        )
+    function _setPayload(payload, targetItemId, isBefore) {
+      props.dispatch(
+        actSetMoveListContainerPayload(payload, targetItemId, isBefore)
       );
-      Ctr.api
-        .saveMoveListOrdering(allMoveListIds)
-        .catch(createErrorHandler("We could not update the move list"));
+    }
+
+    function _insertPayload(cancel: boolean) {
+      if (!cancel) {
+        const payLoadIds = moveListContainerPayload.payload.map(x => x.id);
+        const allMoveListIds = props.dispatch(
+          actInsertMoveListIds(
+            payLoadIds,
+            moveListContainerPayload.targetItemId,
+            moveListContainerPayload.isBefore
+          )
+        );
+        Ctr.api
+          .saveMoveListOrdering(allMoveListIds)
+          .catch(createErrorHandler("We could not update the move list"));
+      }
+      _setPayload([], "", false);
     }
 
     const moveListContainer: DataContainerT<MoveListT> = {
@@ -45,10 +54,7 @@ export const withMoveListContainer = compose(
       ),
       payload: moveListContainerPayload.payload,
       targetItemId: moveListContainerPayload.targetItemId,
-      setPayload: (payload, targetItemId, isBefore) =>
-        props.dispatch(
-          actSetMoveListContainerPayload(payload, targetItemId, isBefore)
-        ),
+      setPayload: _setPayload,
     };
 
     return (

@@ -2,8 +2,11 @@
 
 import * as React from "react";
 
+import type {
+  DataContainerT,
+  SimpleDataContainerT,
+} from "screens/containers/data_container";
 import type { UUID, ObjectT } from "kernel/types";
-import type { DataContainerT } from "screens/containers/data_container";
 
 // InsertItem Behaviour
 
@@ -11,24 +14,6 @@ export type InsertItemsBvrT<ItemT> = {|
   prepare: (items: Array<ItemT>, targetItemId: UUID, isBefore: boolean) => void,
   finalize: (isCancel: boolean) => UUID,
 |};
-
-export function useInsertItems<ItemT: ObjectT>(
-  dataContainer: DataContainerT<ItemT>
-): InsertItemsBvrT<ItemT> {
-  function finalize(isCancel: boolean) {
-    const result = dataContainer.targetItemId;
-    if (dataContainer.payload.length && !isCancel) {
-      dataContainer.insertPayload();
-    }
-    dataContainer.setPayload([], "", false);
-    return result;
-  }
-
-  return {
-    prepare: dataContainer.setPayload,
-    finalize,
-  };
-}
 
 // NewItem Behaviour
 
@@ -42,7 +27,7 @@ export type NewItemBvrT<ItemT> = {|
 export function useNewItem<ItemT: ObjectT>(
   highlightedItemId: UUID,
   setHighlightedItemId: (itemId: UUID) => void,
-  insertItemsBvr: InsertItemsBvrT<ItemT>,
+  dataContainer: DataContainerT<ItemT>,
   setIsEditing: boolean => void,
   createNewItem: () => ?ItemT
 ): NewItemBvrT<ItemT> {
@@ -54,7 +39,7 @@ export function useNewItem<ItemT: ObjectT>(
       const newItem = createNewItem();
       if (newItem) {
         setNewItem(newItem);
-        insertItemsBvr.prepare([newItem], highlightedItemId, false);
+        dataContainer.setPayload([newItem], highlightedItemId, false);
         setHighlightedItemId(newItem.id);
         setIsEditing(true);
       }
@@ -64,7 +49,8 @@ export function useNewItem<ItemT: ObjectT>(
   // Remove new item from the function's state
   function finalize(isCancel: boolean) {
     setIsEditing(false);
-    const targetItemId = insertItemsBvr.finalize(isCancel);
+    const targetItemId = dataContainer.targetItemId;
+    dataContainer.insertPayload(isCancel);
     if (newItem && isCancel) {
       setHighlightedItemId(targetItemId);
     }

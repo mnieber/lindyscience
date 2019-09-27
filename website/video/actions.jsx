@@ -1,4 +1,5 @@
 // @flow
+
 import * as fromStore from "video/reducers";
 
 import type { CutPointT } from "video/types";

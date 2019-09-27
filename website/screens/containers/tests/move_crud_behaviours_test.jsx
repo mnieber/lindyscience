@@ -211,10 +211,11 @@ test("test useSaveMove", function(t) {
     />
   );
 
-  sandbox.newMoveBvr.finalize = sinon.fake();
+  const finalize = sinon.spy(sandbox.newMoveBvr, "finalize");
+
   sandbox.saveMoveBvr.discardChanges();
   t.calledOnceWith(
-    sandbox.newMoveBvr.finalize,
+    finalize,
     [true],
     "Discarding the move should cancel the new move"
   );
@@ -226,7 +227,8 @@ test("test useSaveMove", function(t) {
 
   sinon.reset();
 
-  sandbox.newMoveBvr.finalize = sinon.fake();
+  finalize.resetHistory();
+
   sandbox.saveMoveBvr.saveItem(moves[1].id, {});
   t.calledOnceWith(
     updateMove,
@@ -234,7 +236,7 @@ test("test useSaveMove", function(t) {
     "Saving a move should call updateMove"
   );
   t.calledOnceWith(
-    sandbox.newMoveBvr.finalize,
+    finalize,
     [false],
     "Saving a move should call newMoveBvr.finalize"
   );

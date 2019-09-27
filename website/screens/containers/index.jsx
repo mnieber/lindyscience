@@ -30,7 +30,7 @@ export type ContainerT = {
   fromStore: any,
 };
 
-export function browseToMove(
+export function browseToMoveUrl(
   moveUrlParts: Array<string>,
   mustUpdateProfile: boolean = true
 ) {
@@ -64,7 +64,7 @@ const Container: ContainerT = {
     ...fromMoveListsStore,
     ...fromVideoStore,
   },
-  browseToMove,
+  browseToMoveUrl,
 };
 
 export default Container;

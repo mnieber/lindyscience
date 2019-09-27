@@ -11,7 +11,7 @@ import SignInPage from "app/containers/signinpage";
 import RegisterPage from "app/containers/register_page";
 import PasswordResetPage from "app/containers/password_reset_page";
 import ProfilePage from "screens/containers/profile_page";
-import Ctr, { browseToMove } from "screens/containers/index";
+import Ctr, { browseToMoveUrl } from "screens/containers/index";
 import type { UserProfileT } from "profiles/types";
 
 export type IndexPagePropsT = {
@@ -21,7 +21,7 @@ export type IndexPagePropsT = {
 function IndexPage(props: IndexPagePropsT) {
   function _loadRecentMove() {
     if (props.userProfile && props.userProfile.recentMoveUrl) {
-      browseToMove([props.userProfile.recentMoveUrl], false);
+      browseToMoveUrl([props.userProfile.recentMoveUrl], false);
     }
   }
   React.useEffect(() => {

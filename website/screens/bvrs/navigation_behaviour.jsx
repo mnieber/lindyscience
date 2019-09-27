@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { makeSlugidMatcher } from "screens/utils";
-import { browseToMove } from "screens/containers/index";
+import { browseToMoveUrl } from "screens/containers/index";
 import { newMoveSlug } from "moves/utils";
 import { newMoveListSlug, makeMoveListUrl } from "screens/utils";
 
@@ -15,7 +15,7 @@ function _browseToMove(moves: Array<MoveT>, move: MoveT, moveListUrl: string) {
   const isSlugUnique = moves.filter(matcher).length <= 1;
   const updateProfile = move.slug != newMoveSlug;
   const maybeMoveId = isSlugUnique ? "" : move ? move.id : "";
-  browseToMove([moveListUrl, move.slug, maybeMoveId], updateProfile);
+  browseToMoveUrl([moveListUrl, move.slug, maybeMoveId], updateProfile);
 }
 
 function _setSelectedMoveListById(moveLists: Array<MoveListT>, id: UUID) {
@@ -23,7 +23,7 @@ function _setSelectedMoveListById(moveLists: Array<MoveListT>, id: UUID) {
 
   if (moveList) {
     const updateProfile = moveList.slug != newMoveListSlug;
-    browseToMove([makeMoveListUrl(moveList)], updateProfile);
+    browseToMoveUrl([makeMoveListUrl(moveList)], updateProfile);
   }
 }
 
@@ -61,13 +61,10 @@ export function useNavigation(
     }
   }, [nextHighlightedMoveId]);
 
-  function browseToMove(move: MoveT) {
-    _browseToMove(moves, move, makeMoveListUrl(moveList));
-  }
-
   return {
     setNextSelectedMoveListId,
     setNextHighlightedMoveId,
-    browseToMove,
+    browseToMove: (move: MoveT) =>
+      _browseToMove(moves, move, makeMoveListUrl(moveList)),
   };
 }

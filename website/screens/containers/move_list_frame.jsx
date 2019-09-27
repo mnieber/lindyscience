@@ -1,26 +1,17 @@
 // @flow
 
-import { compose } from "redux";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 import * as React from "react";
+import { compose } from "redux";
 
-import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
-import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
+import { actSetMoveFilter, actSetSelectedMoveListUrl } from "screens/actions";
+import { actInsertMoveListIds, actRemoveMoveListIds } from "profiles/actions";
+import { withMoveListFrameBvrs } from "screens/hocs/with_move_list_frame_bvrs";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
-import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
 import {
   MoveListCrudBvrsContext,
   withMoveListCrudBvrsContext,
 } from "screens/bvrs/move_list_crud_behaviours";
-import type { MoveListT } from "move_lists/types";
-import type { MoveT, MoveByIdT } from "moves/types";
-import {
-  type SelectMovesBvrT,
-  withMoveListFrameBvrs,
-} from "screens/hocs/with_move_list_frame_bvrs";
-import type { TagT } from "tags/types";
-import type { UUID } from "kernel/types";
-import type { UserProfileT } from "profiles/types";
 import {
   createErrorHandler,
   pickNeighbour,
@@ -35,6 +26,16 @@ import {
 import Ctr from "screens/containers/index";
 
 import Widgets from "screens/presentation/index";
+
+import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
+import type { MoveClipboardBvrT } from "screens/bvrs/move_clipboard_behaviours";
+import type { MoveCrudBvrsT, MoveListCrudBvrsT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
+import type { MoveT, MoveByIdT } from "moves/types";
+import type { TagT } from "tags/types";
+import type { UUID } from "kernel/types";
+import type { UserProfileT } from "profiles/types";
+import type { SelectMovesBvrT } from "screens/hocs/with_move_list_frame_bvrs";
 
 // MoveListFrame
 
@@ -55,15 +56,15 @@ type MoveListFramePropsT = {
   // receive any actions as well
   ownerUsernamePrm: string,
   moveListSlugPrm: string,
+  dispatch: Function,
 };
 
 function _MoveListFrame(props: MoveListFramePropsT) {
-  const actions: any = props;
   const [isFilterEnabled, setIsFilterEnabled] = React.useState(false);
 
   const filterMoves = (tags, keywords) => {
     const _filter = createTagsAndKeywordsFilter(tags, keywords);
-    const moveId = actions.actSetMoveFilter("tagsAndKeywords", _filter);
+    const moveId = props.dispatch(actSetMoveFilter("tagsAndKeywords", _filter));
     if (moveId != getId(props.highlightedMove)) {
       props.moveCrudBvrs.setHighlightedMoveId(moveId);
     }
@@ -131,8 +132,8 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     if (!!props.userProfile && !!props.moveList) {
       const moveListId = props.moveList.id;
       const newMoveListIds = isFollowing
-        ? actions.actInsertMoveListIds([moveListId], "")
-        : actions.actRemoveMoveListIds([moveListId]);
+        ? props.dispatch(actInsertMoveListIds([moveListId], "", false))
+        : props.dispatch(actRemoveMoveListIds([moveListId]));
       const term = isFollowing ? "follow" : "unfollow";
       Ctr.api
         .saveMoveListOrdering(newMoveListIds)
@@ -174,7 +175,6 @@ function _MoveListFrame(props: MoveListFramePropsT) {
 }
 
 function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
-  const actions: any = props;
   React.useEffect(() => {
     if (
       props.userProfile &&
@@ -183,7 +183,9 @@ function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
     ) {
       props.moveListCrudBvrs.newMoveListBvr.addNewItem();
     }
-    actions.actSetSelectedMoveListUrl(ownerUsernamePrm, moveListSlugPrm);
+    props.dispatch(
+      actSetSelectedMoveListUrl(ownerUsernamePrm, moveListSlugPrm)
+    );
   }, [!!props.userProfile, ownerUsernamePrm, moveListSlugPrm]);
 
   return <_MoveListFrame {...props} />;
@@ -194,18 +196,15 @@ MoveListFrame = compose(
   withMoveListFrameBvrs,
   withMoveCrudBvrsContext,
   withMoveListCrudBvrsContext,
-  Ctr.connect(
-    state => ({
-      userProfile: Ctr.fromStore.getUserProfile(state),
-      moveById: Ctr.fromStore.getMoveById(state),
-      moves: Ctr.fromStore.getFilteredMovesInList(state),
-      moveTags: Ctr.fromStore.getMoveTags(state),
-      moveLists: Ctr.fromStore.getFilteredMoveLists(state),
-      highlightedMove: Ctr.fromStore.getHighlightedMove(state),
-      moveList: Ctr.fromStore.getSelectedMoveList(state),
-    }),
-    Ctr.actions
-  )
+  Ctr.connect(state => ({
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    moveById: Ctr.fromStore.getMoveById(state),
+    moves: Ctr.fromStore.getFilteredMovesInList(state),
+    moveTags: Ctr.fromStore.getMoveTags(state),
+    moveLists: Ctr.fromStore.getFilteredMoveLists(state),
+    highlightedMove: Ctr.fromStore.getHighlightedMove(state),
+    moveList: Ctr.fromStore.getSelectedMoveList(state),
+  }))
 )(MoveListFrame);
 
 export default MoveListFrame;

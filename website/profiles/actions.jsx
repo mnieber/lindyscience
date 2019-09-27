@@ -9,7 +9,7 @@ import * as fromStore from "profiles/reducers";
 // Actions
 ///////////////////////////////////////////////////////////////////////
 
-export function actSetUserProfile(profile: UserProfileT) {
+export function actSetUserProfile(profile: ?UserProfileT) {
   return {
     type: "SET_USER_PROFILE",
     profile,
@@ -18,12 +18,14 @@ export function actSetUserProfile(profile: UserProfileT) {
 
 export function actInsertMoveListIds(
   moveListIds: Array<UUID>,
-  targetMoveListId: UUID
+  targetMoveListId: UUID,
+  isBefore: boolean
 ) {
   const createAction = () => ({
     type: "INSERT_MOVE_LISTS_INTO_PROFILE",
     moveListIds,
     targetMoveListId,
+    isBefore,
   });
 
   return (dispatch: Function, getState: Function) => {

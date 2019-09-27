@@ -3,31 +3,40 @@
 import * as React from "react";
 import { compose } from "redux";
 
+import { actSetIsEditingMove, actSetIsEditingMoveList } from "screens/actions";
+import {
+  actAddMoveLists,
+  actInsertMoveIds,
+  actRemoveMoveIds,
+} from "move_lists/actions";
+import {
+  type SelectItemsBvrT,
+  useSelectItems,
+} from "screens/bvrs/move_selection_behaviours";
+import {
+  type DraggingBvrT,
+  createDraggingBvr,
+  useDragging,
+} from "move_lists/bvrs/drag_behaviours";
+import {
+  MoveCrudBvrsContext,
+  createMoveCrudBvrs,
+} from "screens/bvrs/move_crud_behaviours";
+import {
+  MoveListCrudBvrsContext,
+  createMoveListCrudBvrs,
+} from "screens/bvrs/move_list_crud_behaviours";
+import { actAddMoves } from "moves/actions";
 import Ctr from "screens/containers/index";
-
 import { withMoveContainer } from "screens/hocs/with_move_container";
 import { withMoveListContainer } from "screens/hocs/with_move_list_container";
-import { MoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
-import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
-
 import { getId } from "app/utils";
-
-import { useSelectItems } from "screens/bvrs/move_selection_behaviours";
 import { useMoveClipboard } from "screens/bvrs/move_clipboard_behaviours";
-import { createMoveCrudBvrs } from "screens/bvrs/move_crud_behaviours";
-import { createMoveListCrudBvrs } from "screens/bvrs/move_list_crud_behaviours";
 import { useNavigation } from "screens/bvrs/navigation_behaviour";
-import {
-  useDragging,
-  createDraggingBvr,
-} from "move_lists/bvrs/drag_behaviours";
-
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import type { UserProfileT } from "profiles/types";
 import type { DataContainerT } from "screens/containers/data_container";
-import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
-import type { DraggingBvrT } from "move_lists/bvrs/drag_behaviours";
 
 // MoveListFrame
 
@@ -49,17 +58,14 @@ export type SelectMovesBvrT = SelectItemsBvrT<MoveT>;
 export const withMoveListFrameBvrs = compose(
   withMoveContainer,
   withMoveListContainer,
-  Ctr.connect(
-    state => ({
-      userProfile: Ctr.fromStore.getUserProfile(state),
-      moveLists: Ctr.fromStore.getFilteredMoveLists(state),
-      highlightedMove: Ctr.fromStore.getHighlightedMove(state),
-      moveList: Ctr.fromStore.getSelectedMoveList(state),
-      isEditingMove: Ctr.fromStore.getIsEditingMove(state),
-      isEditingMoveList: Ctr.fromStore.getIsEditingMoveList(state),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    moveLists: Ctr.fromStore.getFilteredMoveLists(state),
+    highlightedMove: Ctr.fromStore.getHighlightedMove(state),
+    moveList: Ctr.fromStore.getSelectedMoveList(state),
+    isEditingMove: Ctr.fromStore.getIsEditingMove(state),
+    isEditingMoveList: Ctr.fromStore.getIsEditingMoveList(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const {
       userProfile,
@@ -72,8 +78,6 @@ export const withMoveListFrameBvrs = compose(
       isEditingMoveList,
       ...passThroughProps
     }: PropsT = props;
-
-    const actions: any = props;
 
     const navigationBvr = useNavigation(
       moveList,
@@ -88,9 +92,9 @@ export const withMoveListFrameBvrs = compose(
       navigationBvr.setNextHighlightedMoveId,
       moveContainer,
       navigationBvr.browseToMove,
-      actions.actAddMoves,
+      moves => props.dispatch(actAddMoves(moves)),
       isEditingMove,
-      actions.actSetIsEditingMove
+      isEditing => props.dispatch(actSetIsEditingMove(isEditing))
     );
 
     const selectMovesBvr = useSelectItems<MoveT>(
@@ -104,8 +108,12 @@ export const withMoveListFrameBvrs = compose(
       selectMovesBvr.selectedItems,
       getId(highlightedMove),
       moveCrudBvrs.setHighlightedMoveId,
-      actions.actInsertMoveIds,
-      actions.actRemoveMoveIds
+      (moveIds, moveListId, targetMoveId, isBefore) =>
+        props.dispatch(
+          actInsertMoveIds(moveIds, moveListId, targetMoveId, isBefore)
+        ),
+      (moveIds, moveListId) =>
+        props.dispatch(actRemoveMoveIds(moveIds, moveListId))
     );
 
     const moveListCrudBvrs = createMoveListCrudBvrs(
@@ -113,9 +121,9 @@ export const withMoveListFrameBvrs = compose(
       moveListContainer,
       getId(moveList),
       navigationBvr.setNextSelectedMoveListId,
-      actions.actAddMoveLists,
+      moveLists => props.dispatch(actAddMoveLists(moveLists)),
       isEditingMoveList,
-      actions.actSetIsEditingMoveList
+      isEditing => props.dispatch(actSetIsEditingMoveList(isEditing))
     );
 
     const draggingBvr: DraggingBvrT = createDraggingBvr(

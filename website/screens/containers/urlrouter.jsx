@@ -59,11 +59,8 @@ function UrlRouter(props: UrlRouterPropsT) {
 }
 
 // $FlowFixMe
-UrlRouter = Ctr.connect(
-  state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
-  }),
-  Ctr.actions
-)(UrlRouter);
+UrlRouter = Ctr.connect(state => ({
+  userProfile: Ctr.fromStore.getUserProfile(state),
+}))(UrlRouter);
 
 export default UrlRouter;

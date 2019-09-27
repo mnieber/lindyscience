@@ -1,10 +1,11 @@
 // @flow
 
 import * as React from "react";
-
 import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
+import { actSetMoveContainerPayload } from "screens/actions";
+import { actInsertMoveIds } from "move_lists/actions";
 import { getPreview } from "screens/utils";
 import { createErrorHandler, getId } from "app/utils";
 
@@ -14,14 +15,11 @@ import type { MoveT } from "moves/types";
 
 // $FlowFixMe
 export const withMoveContainer = compose(
-  Ctr.connect(
-    state => ({
-      moveList: Ctr.fromStore.getSelectedMoveList(state),
-      filteredMoves: Ctr.fromStore.getFilteredMovesInList(state),
-      moveContainerPayload: Ctr.fromStore.getMoveContainerPayload(state),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    moveList: Ctr.fromStore.getSelectedMoveList(state),
+    filteredMoves: Ctr.fromStore.getFilteredMovesInList(state),
+    moveContainerPayload: Ctr.fromStore.getMoveContainerPayload(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const {
       moveList,
@@ -30,15 +28,16 @@ export const withMoveContainer = compose(
       ...passThroughProps
     } = props;
 
-    const actions: any = props;
     const moveListId = getId(moveList);
 
     function _insertPayload() {
-      const allMoveIds = actions.actInsertMoveIds(
-        moveContainerPayload.payload.map(x => x.id),
-        moveListId,
-        moveContainerPayload.targetItemId,
-        moveContainerPayload.isBefore
+      const allMoveIds = props.dispatch(
+        actInsertMoveIds(
+          moveContainerPayload.payload.map(x => x.id),
+          moveListId,
+          moveContainerPayload.targetItemId,
+          moveContainerPayload.isBefore
+        )
       );
       Ctr.api
         .saveMoveOrdering(moveListId, allMoveIds)
@@ -55,7 +54,10 @@ export const withMoveContainer = compose(
       ),
       payload: moveContainerPayload.payload,
       targetItemId: moveContainerPayload.targetItemId,
-      setPayload: actions.actSetMoveContainerPayload,
+      setPayload: (payload, targetItemId, isBefore) =>
+        props.dispatch(
+          actSetMoveContainerPayload(payload, targetItemId, isBefore)
+        ),
     };
 
     return (

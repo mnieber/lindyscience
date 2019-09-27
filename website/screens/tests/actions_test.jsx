@@ -76,7 +76,12 @@ test("test actInsertMoveIds", function(t) {
 
     store.dispatch(movesActions.actAddMoves(newMoves));
     const moveIdsInList = store.dispatch(
-      moveListsActions.actInsertMoveIds(newMoveIds, data.moveList1.id, "")
+      moveListsActions.actInsertMoveIds(
+        newMoveIds,
+        data.moveList1.id,
+        "",
+        false
+      )
     );
 
     t.deepEqual(

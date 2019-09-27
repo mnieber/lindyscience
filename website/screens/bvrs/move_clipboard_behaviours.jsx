@@ -25,7 +25,8 @@ export function useMoveClipboard(
   actInsertMoveIds: (
     moveIds: Array<UUID>,
     moveList: UUID,
-    targetMoveId: UUID
+    targetMoveId: UUID,
+    isBefore: boolean
   ) => Array<UUID>,
   actRemoveMoveIds: (moveIds: Array<UUID>, moveList: UUID) => Array<UUID>
 ): MoveClipboardBvrT {
@@ -41,7 +42,8 @@ export function useMoveClipboard(
       const moveIdsInTargetMoveList = actInsertMoveIds(
         selectedMoves.map(x => x.id),
         targetMoveList.id,
-        ""
+        "",
+        false
       );
       moveListsApi
         .saveMoveOrdering(targetMoveList.id, moveIdsInTargetMoveList)

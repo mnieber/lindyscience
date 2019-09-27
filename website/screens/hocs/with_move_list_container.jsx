@@ -1,39 +1,34 @@
 // @flow
 
 import * as React from "react";
-
 import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
+import { actSetMoveListContainerPayload } from "screens/actions";
+import { actInsertMoveListIds } from "profiles/actions";
 import { getPreview } from "screens/utils";
 import { createErrorHandler, getId } from "app/utils";
-
 import type { DataContainerT } from "screens/containers/data_container";
 import type { UUID } from "kernel/types";
 import type { MoveListT } from "move_lists/types";
 
 // $FlowFixMe
 export const withMoveListContainer = compose(
-  Ctr.connect(
-    state => ({
-      moveLists: Ctr.fromStore.getMoveLists(state),
-      moveListContainerPayload: Ctr.fromStore.getMoveListContainerPayload(
-        state
-      ),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    moveLists: Ctr.fromStore.getMoveLists(state),
+    moveListContainerPayload: Ctr.fromStore.getMoveListContainerPayload(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const { moveLists, moveListContainerPayload, ...passThroughProps } = props;
 
-    const actions: any = props;
-
     function _insertPayload() {
       const payLoadIds = moveListContainerPayload.payload.map(x => x.id);
-      const allMoveListIds = actions.actInsertMoveListIds(
-        payLoadIds,
-        moveListContainerPayload.targetItemId,
-        moveListContainerPayload.isBefore
+      const allMoveListIds = props.dispatch(
+        actInsertMoveListIds(
+          payLoadIds,
+          moveListContainerPayload.targetItemId,
+          moveListContainerPayload.isBefore
+        )
       );
       Ctr.api
         .saveMoveListOrdering(allMoveListIds)
@@ -50,7 +45,10 @@ export const withMoveListContainer = compose(
       ),
       payload: moveListContainerPayload.payload,
       targetItemId: moveListContainerPayload.targetItemId,
-      setPayload: actions.actSetMoveListContainerPayload,
+      setPayload: (payload, targetItemId, isBefore) =>
+        props.dispatch(
+          actSetMoveListContainerPayload(payload, targetItemId, isBefore)
+        ),
     };
 
     return (

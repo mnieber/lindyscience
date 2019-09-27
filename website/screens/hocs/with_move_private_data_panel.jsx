@@ -4,12 +4,11 @@ import * as React from "react";
 import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
+import { actAddMovePrivateDatas } from "moves/actions";
 import Widgets from "screens/presentation/index";
-
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
-
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
@@ -23,18 +22,13 @@ type PropsT = {
 // $FlowFixMe
 export const withMovePrivateDataPanel = getMove =>
   compose(
-    Ctr.connect(
-      state => ({
-        userProfile: Ctr.fromStore.getUserProfile(state),
-        moveTags: Ctr.fromStore.getMoveTags(state),
-      }),
-      Ctr.actions
-    ),
+    Ctr.connect(state => ({
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      moveTags: Ctr.fromStore.getMoveTags(state),
+    })),
     (WrappedComponent: any) => (props: any) => {
       const { userProfile, moveTags, ...passThroughProps }: PropsT = props;
       const move: MoveT = getMove();
-
-      const actions: any = props;
 
       const _onSave = values => {
         const movePrivateData = {
@@ -44,7 +38,9 @@ export const withMovePrivateDataPanel = getMove =>
           ...values,
         };
 
-        actions.actAddMovePrivateDatas([movePrivateData]);
+        props.dispatch(
+          actAddMovePrivateDatas({ [movePrivateData.id]: movePrivateData })
+        );
         Ctr.api
           .saveMovePrivateData(movePrivateData)
           .catch(

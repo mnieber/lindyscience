@@ -33,6 +33,6 @@ function PasswordResetPage(props: PasswordResetPagePropsT) {
 }
 
 // $FlowFixMe
-PasswordResetPage = Ctr.connect(state => ({}), Ctr.actions)(PasswordResetPage);
+PasswordResetPage = Ctr.connect(state => ({}))(PasswordResetPage);
 
 export default PasswordResetPage;

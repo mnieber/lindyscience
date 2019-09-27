@@ -42,12 +42,9 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
 }
 
 // $FlowFixMe
-SearchMovesPage = Ctr.connect(
-  state => ({
-    moveTags: Ctr.fromStore.getMoveTags(state),
-    userProfile: Ctr.fromStore.getUserProfile(state),
-  }),
-  Ctr.actions
-)(SearchMovesPage);
+SearchMovesPage = Ctr.connect(state => ({
+  moveTags: Ctr.fromStore.getMoveTags(state),
+  userProfile: Ctr.fromStore.getUserProfile(state),
+}))(SearchMovesPage);
 
 export default SearchMovesPage;

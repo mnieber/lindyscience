@@ -133,7 +133,7 @@ export function actSetMoveContainerPayload(
 }
 
 export function actSetMoveListContainerPayload(
-  payload: Array<MoveT>,
+  payload: Array<MoveListT>,
   targetItemId: UUID,
   isBefore: boolean
 ) {

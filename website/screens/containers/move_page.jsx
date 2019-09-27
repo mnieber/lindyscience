@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import { compose } from "redux";
-import Ctr from "screens/containers/index";
 
+import Ctr from "screens/containers/index";
+import { actSetHighlightedMoveBySlug } from "screens/actions";
 import { withStaticMove } from "screens/hocs/with_static_move";
 import { withOwnMove } from "screens/hocs/with_own_move";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
-
 import { newMoveSlug } from "moves/utils";
 import { isOwner } from "app/utils";
 
@@ -25,15 +25,13 @@ type MovePagePropsT = {
   userProfile: UserProfileT,
   highlightedMove: MoveT,
   hasLoadedSelectedMoveList: boolean,
-  actions: any,
+  dispatch: Function,
   // the follower are inserted by the router
   moveSlugPrm: string,
   moveIdPrm: ?UUID,
 };
 
 function MovePage(props: MovePagePropsT) {
-  const actions: any = props;
-
   React.useEffect(() => {
     if (
       props.userProfile &&
@@ -42,7 +40,9 @@ function MovePage(props: MovePagePropsT) {
     ) {
       props.moveCrudBvrs.newMoveBvr.addNewItem();
     }
-    actions.actSetHighlightedMoveBySlug(props.moveSlugPrm, props.moveIdPrm);
+    props.dispatch(
+      actSetHighlightedMoveBySlug(props.moveSlugPrm, props.moveIdPrm)
+    );
   }, [props.moveSlugPrm, props.moveIdPrm, props.userProfile]);
 
   if (!props.highlightedMove) {
@@ -64,14 +64,11 @@ MovePage = compose(
   withStaticMove,
   withOwnMove,
   withMoveCrudBvrsContext,
-  Ctr.connect(
-    state => ({
-      userProfile: Ctr.fromStore.getUserProfile(state),
-      highlightedMove: Ctr.fromStore.getHighlightedMove(state),
-      hasLoadedSelectedMoveList: Ctr.fromStore.hasLoadedSelectedMoveList(state),
-    }),
-    Ctr.actions
-  )
+  Ctr.connect(state => ({
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    highlightedMove: Ctr.fromStore.getHighlightedMove(state),
+    hasLoadedSelectedMoveList: Ctr.fromStore.hasLoadedSelectedMoveList(state),
+  }))
 )(MovePage);
 
 export default MovePage;

@@ -9,7 +9,6 @@ import * as api from "votes/api";
 
 export type ContainerT = {
   connect: Function,
-  actions: any,
   api: any,
   fromStore: any,
 };

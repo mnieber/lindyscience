@@ -4,12 +4,11 @@ import * as React from "react";
 import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
-
+import { actCastVote } from "votes/actions";
+import { actAddTips, actRemoveTips } from "tips/actions";
 import Widgets from "screens/presentation/index";
-
 import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
-
 import type { MoveT } from "moves/types";
 import type { TipT } from "tips/types";
 import type { UUID } from "kernel/types";
@@ -24,14 +23,11 @@ type PropsT = {
 // $FlowFixMe
 export const withTipsPanel = getMove =>
   compose(
-    Ctr.connect(
-      state => ({
-        userProfile: Ctr.fromStore.getUserProfile(state),
-        tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
-        voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
-      }),
-      Ctr.actions
-    ),
+    Ctr.connect(state => ({
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
+      voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
+    })),
     (WrappedComponent: any) => (props: any) => {
       const {
         userProfile,
@@ -40,24 +36,23 @@ export const withTipsPanel = getMove =>
         ...passThroughProps
       }: PropsT = props;
       const move: MoveT = getMove();
-      const actions: any = props;
 
       const saveTip = (tip: TipT) => {
-        actions.actAddTips(querySetListToDict([tip]));
+        props.dispatch(actAddTips(querySetListToDict([tip])));
         Ctr.api
           .saveTip(move.id, tip)
           .catch(createErrorHandler("We could not save the tip"));
       };
 
       const deleteTip = (tip: TipT) => {
-        actions.actRemoveTips([tip.id]);
+        props.dispatch(actRemoveTips([tip.id]));
         Ctr.api
           .deleteTip(tip.id)
           .catch(createErrorHandler("We could not delete the tip"));
       };
 
       const voteTip = (id: UUID, vote: VoteT) => {
-        actions.actCastVote(id, vote);
+        props.dispatch(actCastVote(id, vote));
         Ctr.api
           .voteTip(id, vote)
           .catch(createErrorHandler("We could not save your vote"));

@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from "react";
 
 import { compose } from "redux";
@@ -14,30 +12,24 @@ import type { CutPointT } from "video/types";
 
 // $FlowFixMe
 export const withCutPointsContainer = compose(
-  Ctr.connect(
-    state => ({
-      cutPoints: Ctr.fromStore.getCutPoints(state),
-      cutPointContainerPayload: Ctr.fromStore.getCutPointContainerPayload(
-        state
-      ),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    cutPoints: Ctr.fromStore.getCutPoints(state),
+    cutPointContainerPayload: Ctr.fromStore.getCutPointContainerPayload(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const { cutPoints, cutPointContainerPayload, ...passThroughProps } = props;
 
-    const actions: any = props;
-
     const cutPointContainer: DataContainerT<CutPointT> = {
       insertPayload: actions.actInsertCutPoints,
-      preview: getPreview<CutPointT>(
-        cutPoints,
+      preview:
+        getPreview <
+        CutPointT >
+        (cutPoints,
         cutPointContainerPayload.payload,
-        cutPointContainerPayload.targetItemId
-      ),
+        cutPointContainerPayload.targetItemId),
       payload: cutPointContainerPayload.payload,
       targetItemId: cutPointContainerPayload.targetItemId,
-      setPayload: actions.actSetcutPointContainerPayload,
+      setPayload: actions.actSetCutPointContainerPayload,
     };
 
     return (

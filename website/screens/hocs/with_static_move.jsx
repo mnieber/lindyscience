@@ -38,14 +38,11 @@ function getMove() {
 // $FlowFixMe
 export const withStaticMove = compose(
   withHostedStaticMovePanels(getMove),
-  Ctr.connect(
-    state => ({
-      move: Ctr.fromStore.getHighlightedMove(state),
-      moveList: Ctr.fromStore.getSelectedMoveList(state),
-      moveTags: Ctr.fromStore.getMoveTags(state),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    move: Ctr.fromStore.getHighlightedMove(state),
+    moveList: Ctr.fromStore.getSelectedMoveList(state),
+    moveTags: Ctr.fromStore.getMoveTags(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const {
       move,
@@ -54,8 +51,6 @@ export const withStaticMove = compose(
       hostedStaticMovePanels,
       ...passThroughProps
     }: PropsT = props;
-
-    const actions: any = props;
 
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 

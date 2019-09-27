@@ -1,20 +1,20 @@
 // @flow
 
-import * as React from "react";
 import { compose } from "redux";
-import Ctr from "screens/containers/index";
+import * as React from "react";
 
-import Widgets from "screens/presentation/index";
-import { isOwner } from "app/utils";
-
-import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
+import { actClearCutPoints, actSetCutVideoLink } from "video/actions";
+import { isOwner } from "app/utils";
+import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
+import Ctr from "screens/containers/index";
+import Widgets from "screens/presentation/index";
 
 import type { CutPointT, VideoBvrT } from "video/types";
-import type { UserProfileT } from "profiles/types";
-import type { TagT } from "tags/types";
-import type { MoveListT } from "move_lists/types";
 import type { MoveListCrudBvrsT } from "screens/types";
+import type { MoveListT } from "move_lists/types";
+import type { TagT } from "tags/types";
+import type { UserProfileT } from "profiles/types";
 
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
@@ -23,7 +23,7 @@ type MoveListDetailsPagePropsT = {
   cutVideoLink: string,
   videoBvr: VideoBvrT,
   cutPoints: Array<CutPointT>,
-  // receive any actions as well
+  dispatch: Function,
 };
 
 type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT & {
@@ -77,8 +77,6 @@ function _createOwnMoveListDetails(
 }
 
 export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
-  const actions: any = props;
-
   if (!props.moveList) {
     return <React.Fragment />;
   }
@@ -89,8 +87,6 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
-  const actions: any = props;
-
   return (
     <MoveListCrudBvrsContext.Consumer>
       {moveListCrudBvrs => (
@@ -100,7 +96,7 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
             moveListCrudBvrs={moveListCrudBvrs}
           />
           <Widgets.CutVideoPanel
-            actSetCutVideoLink={actions.actSetCutVideoLink}
+            actSetCutVideoLink={x => props.dispatch(actSetCutVideoLink(x))}
             cutVideoLink={props.cutVideoLink}
             videoBvr={props.videoBvr}
             cutPoints={props.cutPoints}
@@ -114,16 +110,13 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
 // $FlowFixMe
 MoveListDetailsPage = compose(
   withCutVideoBvr,
-  Ctr.connect(
-    state => ({
-      userProfile: Ctr.fromStore.getUserProfile(state),
-      moveList: Ctr.fromStore.getSelectedMoveList(state),
-      moveListTags: Ctr.fromStore.getMoveListTags(state),
-      cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
-      cutPoints: Ctr.fromStore.getCutPoints(state),
-    }),
-    Ctr.actions
-  )
+  Ctr.connect(state => ({
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    moveList: Ctr.fromStore.getSelectedMoveList(state),
+    moveListTags: Ctr.fromStore.getMoveListTags(state),
+    cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
+    cutPoints: Ctr.fromStore.getCutPoints(state),
+  }))
 )(MoveListDetailsPage);
 
 export default MoveListDetailsPage;

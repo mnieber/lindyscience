@@ -4,15 +4,7 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 import { navigate } from "@reach/router";
-
-import * as appActions from "app/actions";
-import * as screensActions from "screens/actions";
-import * as votesActions from "votes/actions";
-import * as profilesActions from "profiles/actions";
-import * as tipsActions from "tips/actions";
-import * as movesActions from "moves/actions";
-import * as moveListsActions from "move_lists/actions";
-import * as videoActions from "video/actions";
+import { bindActionCreators } from "redux";
 
 import * as fromAppStore from "app/reducers";
 import * as fromScreensStore from "screens/reducers";
@@ -34,7 +26,6 @@ import * as moveListsApi from "move_lists/api";
 
 export type ContainerT = {
   connect: Function,
-  actions: any,
   api: any,
   fromStore: any,
 };
@@ -52,16 +43,7 @@ export function browseToMove(
 
 const Container: ContainerT = {
   connect: connect,
-  actions: {
-    ...appActions,
-    ...screensActions,
-    ...votesActions,
-    ...profilesActions,
-    ...tipsActions,
-    ...movesActions,
-    ...moveListsActions,
-    ...videoActions,
-  },
+  actions: {},
   api: {
     ...appApi,
     ...screensApi,

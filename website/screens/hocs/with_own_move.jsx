@@ -39,15 +39,12 @@ function getMove() {
 export const withOwnMove = compose(
   withMoveCrudBvrsContext,
   withHostedOwnMovePanels(getMove),
-  Ctr.connect(
-    state => ({
-      userProfile: Ctr.fromStore.getUserProfile(state),
-      move: Ctr.fromStore.getHighlightedMove(state),
-      moveList: Ctr.fromStore.getSelectedMoveList(state),
-      moveTags: Ctr.fromStore.getMoveTags(state),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    move: Ctr.fromStore.getHighlightedMove(state),
+    moveList: Ctr.fromStore.getSelectedMoveList(state),
+    moveTags: Ctr.fromStore.getMoveTags(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const {
       move,
@@ -58,8 +55,6 @@ export const withOwnMove = compose(
       hostedOwnMovePanels,
       ...passThroughProps
     }: PropsT = props;
-
-    const actions: any = props;
 
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 

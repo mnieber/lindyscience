@@ -19,7 +19,7 @@ export const withHostedOwnMovePanels = getMove =>
   compose(
     withMovePrivateDataPanel(getMove),
     withTipsPanel(getMove),
-    Ctr.connect(state => ({}), Ctr.actions),
+    Ctr.connect(state => ({})),
     (WrappedComponent: any) => (props: any) => {
       const {
         tipsPanel,

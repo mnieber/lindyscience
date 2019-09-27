@@ -28,14 +28,11 @@ type PropsT = {
 export const withHostedStaticMovePanels = getMove =>
   compose(
     withMovePrivateDataPanel(getMove),
-    Ctr.connect(
-      state => ({
-        userProfile: Ctr.fromStore.getUserProfile(state),
-        voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
-        tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
-      }),
-      Ctr.actions
-    ),
+    Ctr.connect(state => ({
+      userProfile: Ctr.fromStore.getUserProfile(state),
+      voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
+      tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
+    })),
     (WrappedComponent: any) => (props: any) => {
       const {
         userProfile,

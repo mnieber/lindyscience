@@ -24,12 +24,9 @@ type PropsT = {
 
 // $FlowFixMe
 export const withMoveVideoBvr = compose(
-  Ctr.connect(
-    state => ({
-      move: Ctr.fromStore.getHighlightedMove(state),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    move: Ctr.fromStore.getHighlightedMove(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const { move, ...passThroughProps }: PropsT = props;
     const parentDivId = "moveDiv";

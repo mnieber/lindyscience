@@ -44,6 +44,6 @@ function RegisterPage(props: RegisterPagePropsT) {
 }
 
 // $FlowFixMe
-RegisterPage = Ctr.connect(state => ({}), Ctr.actions)(RegisterPage);
+RegisterPage = Ctr.connect(state => ({}))(RegisterPage);
 
 export default RegisterPage;

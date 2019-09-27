@@ -48,12 +48,9 @@ export function ProfilePage(props: ProfilePagePropsT) {
 }
 
 // $FlowFixMe
-ProfilePage = Ctr.connect(
-  state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
-    moveLists: Ctr.fromStore.getMoveLists(state),
-  }),
-  Ctr.actions
-)(ProfilePage);
+ProfilePage = Ctr.connect(state => ({
+  userProfile: Ctr.fromStore.getUserProfile(state),
+  moveLists: Ctr.fromStore.getMoveLists(state),
+}))(ProfilePage);
 
 export default ProfilePage;

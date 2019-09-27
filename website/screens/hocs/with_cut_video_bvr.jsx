@@ -22,12 +22,9 @@ type PropsT = {
 
 // $FlowFixMe
 export const withCutVideoBvr = compose(
-  Ctr.connect(
-    state => ({
-      cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
-    }),
-    Ctr.actions
-  ),
+  Ctr.connect(state => ({
+    cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const { cutVideoLink, ...passThroughProps }: PropsT = props;
     const parentDivId = "cutVideoDiv";

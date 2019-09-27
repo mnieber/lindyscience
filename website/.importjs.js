@@ -1,5 +1,5 @@
 module.exports = {
   useRelativePaths: false,
-  groupImports: false,
+  groupImports: true,
   sortImports: false,
 };

@@ -17,13 +17,15 @@ export function actAddMoveLists(moveLists: MoveListByIdT) {
 export function actInsertMoveIds(
   moveIds: Array<UUID>,
   moveListId: UUID,
-  targetMoveId: UUID
+  targetMoveId: UUID,
+  isBefore: boolean
 ) {
   const createAction = () => ({
     type: "INSERT_MOVE_IDS_INTO_LIST",
     moveIds,
     moveListId,
     targetMoveId,
+    isBefore,
   });
 
   return (dispatch: Function, getState: Function) => {

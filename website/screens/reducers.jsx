@@ -10,7 +10,7 @@ import {
   querySetListToDict,
   insertIdsIntoList,
 } from "utils/utils";
-import { findMove, findMoveBySlugid } from "screens/utils";
+import { findMoveBySlugid } from "screens/utils";
 import { getMoveById } from "moves/reducers";
 import { getMoveLists } from "move_lists/reducers";
 import type { MoveT, MoveByIdT } from "moves/types";
@@ -208,9 +208,9 @@ export const getFilteredMovesInList: Selector<Array<MoveT>> = createSelector(
   }
 );
 
-export const getHighlightedMove: Selector<MoveT> = createSelector(
+export const getHighlightedMove: Selector<?MoveT> = createSelector(
   [_stateSelection, getFilteredMovesInList],
-  (stateSelection, moves): MoveT => {
+  (stateSelection, moves): ?MoveT => {
     return findMoveBySlugid(moves, stateSelection.highlightedMoveSlugid);
   }
 );

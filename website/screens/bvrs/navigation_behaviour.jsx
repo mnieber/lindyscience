@@ -65,8 +65,11 @@ export function useNavigation(
   return {
     setNextSelectedMoveListId,
     setNextHighlightedMoveId,
-    browseToMove: (move: MoveT) =>
-      _browseToMove(moves, move, makeMoveListUrl(moveList)),
+    browseToMove: (move: MoveT) => {
+      if (moveList) {
+        _browseToMove(moves, move, makeMoveListUrl(moveList));
+      }
+    },
     browseToMoveList: (ml: MoveListT) =>
       browseToMoveUrl([makeMoveListUrl(ml)], false),
   };

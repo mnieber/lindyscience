@@ -115,17 +115,20 @@ function _MoveListFrame(props: MoveListFramePropsT) {
   };
 
   const _copyLinksToClipboard = () => {
-    const text = props.selectMovesBvr.selectedItems
-      .map(move => {
-        return (
-          "http://www.lindyscience.org/app/lists/" +
-          makeMoveListUrl(props.moveList) +
-          "/" +
-          move.slug
-        );
-      })
-      .join("\n");
-    navigator.clipboard.writeText(text);
+    const moveList = props.moveList;
+    if (moveList) {
+      const text = props.selectMovesBvr.selectedItems
+        .map(move => {
+          return (
+            "http://www.lindyscience.org/app/lists/" +
+            makeMoveListUrl(moveList) +
+            "/" +
+            move.slug
+          );
+        })
+        .join("\n");
+      navigator.clipboard.writeText(text);
+    }
   };
 
   const setIsFollowing = isFollowing => {

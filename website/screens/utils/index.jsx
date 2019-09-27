@@ -1,13 +1,15 @@
-// @Flow
+// @flow
 
 import { splitIntoKeywords, isNone } from "utils/utils";
+// $FlowFixMe
 import parse from "url-parse";
-
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
-import type { UUID, SlugidT } from "kernel/types";
+import type { PayloadT } from "screens/containers/data_container";
+import type { TagT } from "tags/types";
+import type { ObjectT, SlugidT, UUID } from "kernel/types";
 
-export function makeSlugid(slug: string, id: UUID) {
+export function makeSlugid(slug: string, id: ?UUID) {
   return slug + (id ? "/" + id : "");
 }
 
@@ -17,12 +19,12 @@ export function makeMoveListUrl(moveList: MoveListT) {
 
 export function makeSlugidMatcher(slugid: SlugidT) {
   const parts = slugid.split("/");
-  return move =>
+  return (move: MoveT) =>
     parts.length == 2 ? move.id == parts[1] : move.slug == parts[0];
 }
 
 export function makeIdMatcher(id: UUID) {
-  return obj => obj.id == id;
+  return (obj: ObjectT) => obj.id == id;
 }
 
 export function findMoveBySlugid(moves: Array<MoveT>, slugid: string) {
@@ -36,11 +38,11 @@ export function findMoveListByUrl(moveLists: Array<MoveListT>, url: string) {
 export const newMoveListSlug = "new-move-list";
 
 export function findNeighbourIdx(
-  filteredIds,
-  allIds,
-  beginIndex,
-  endIndex,
-  step
+  filteredIds: Array<UUID>,
+  allIds: Array<UUID>,
+  beginIndex: number,
+  endIndex: number,
+  step: number
 ) {
   for (var idx = beginIndex; idx != endIndex; idx += step) {
     if (filteredIds.includes(allIds[idx])) {
@@ -54,22 +56,25 @@ export function getPreview<ItemT: ObjectT>(
   items: Array<ItemT>,
   payload: ?PayloadT<ItemT>
 ): Array<ItemT> {
+  // $FlowFixMe
+  const pl: PayloadT<ItemT> = payload;
+
   return !payload || !payload.payload.length
     ? items
     : items.reduce(
         (acc, item) => {
-          if (item.id == payload.targetMoveId && payload.isBefore) {
-            acc.push(...payload.payload);
+          if (item.id == pl.targetItemId && pl.isBefore) {
+            acc.push(...pl.payload);
           }
-          if (!payload.payload.find(makeIdMatcher(item.id))) {
+          if (!pl.payload.find(makeIdMatcher(item.id))) {
             acc.push(item);
           }
-          if (item.id == payload.targetMoveId && !payload.isBefore) {
-            acc.push(...payload.payload);
+          if (item.id == pl.targetItemId && !pl.isBefore) {
+            acc.push(...pl.payload);
           }
           return acc;
         },
-        targetMoveId ? [] : [...payload.payload]
+        pl.targetItemId ? [] : [...pl.payload]
       );
 }
 
@@ -87,6 +92,7 @@ export function createTagsAndKeywordsFilter(
       );
     }
 
+    // $FlowFixMe
     return tags.length || keywords.length ? moves.filter(match) : moves;
   }
   return _filter;

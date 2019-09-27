@@ -60,7 +60,7 @@ export function useMoveClipboard(
 
     const anchorIdx = selectedMoveIds.includes(highlightedMoveId)
       ? selectedMoveIds.indexOf(highlightedMoveId)
-      : selectedMoveIds[0];
+      : 0;
 
     const idsOfMovesWithNewSourceMoveList = selectedMoves
       .filter(x => x.sourceMoveListId == sourceMoveList.id)

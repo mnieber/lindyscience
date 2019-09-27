@@ -121,6 +121,7 @@ export const withMoveListFrameBvrs = compose(
       getId(moveList),
       navigationBvr.setNextSelectedMoveListId,
       moveListContainer,
+      navigationBvr.browseToMoveList,
       moveLists => props.dispatch(actAddMoveLists(moveLists)),
       isEditingMoveList,
       isEditing => props.dispatch(actSetIsEditingMoveList(isEditing))

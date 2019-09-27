@@ -53,6 +53,7 @@ export function createMoveListCrudBvrs(
   selectedMoveListId: UUID,
   setNextSelectedMoveListId: UUID => void,
   moveListContainer: DataContainerT<MoveListT>,
+  browseToMoveList: MoveListT => void,
   actAddMoveLists: Function,
   isEditingMoveList: boolean,
   actSetIsEditingMoveList: Function
@@ -74,6 +75,8 @@ export function createMoveListCrudBvrs(
     };
 
     actAddMoveLists(querySetListToDict([newMoveList]));
+    browseToMoveList(newMoveList);
+
     moveListsApi
       .saveMoveList(newMoveList)
       .catch(createErrorHandler("We could not save the movelist"));

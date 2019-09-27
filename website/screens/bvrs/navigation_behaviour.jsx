@@ -31,6 +31,7 @@ export type NavigationBvrT = {
   setNextSelectedMoveListId: UUID => void,
   setNextHighlightedMoveId: UUID => void,
   browseToMove: MoveT => void,
+  browseToMoveList: MoveListT => void,
 };
 
 export function useNavigation(
@@ -66,5 +67,7 @@ export function useNavigation(
     setNextHighlightedMoveId,
     browseToMove: (move: MoveT) =>
       _browseToMove(moves, move, makeMoveListUrl(moveList)),
+    browseToMoveList: (ml: MoveListT) =>
+      browseToMoveUrl([makeMoveListUrl(ml)], false),
   };
 }

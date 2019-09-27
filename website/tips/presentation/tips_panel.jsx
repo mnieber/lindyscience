@@ -2,11 +2,8 @@
 
 import * as React from "react";
 
+import { create_uuid } from "utils/utils";
 import { TipList } from "tips/presentation/tip";
-
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
-
 import type { UUID, OwnedObjectT } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
@@ -51,7 +48,7 @@ export function useNewTip(
 
   function _createNewTip(): TipT {
     return {
-      id: uuidv4(),
+      id: create_uuid(),
       ownerId: userId,
       moveId: moveId,
       text: "",

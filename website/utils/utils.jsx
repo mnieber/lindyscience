@@ -2,6 +2,8 @@
 
 import React from "react";
 import recase from "recase";
+// $FlowFixMe
+import uuidv4 from "uuid/v4";
 
 export function toCamelCase(obj: {}) {
   const r = recase.create({});
@@ -185,4 +187,8 @@ export function truncDecimals(x: number, k: number) {
 export function roundDecimals(x: number, k: number) {
   const factor = Math.pow(10, k);
   return Math.round(x * factor) / factor;
+}
+
+export function create_uuid() {
+  return uuidv4();
 }

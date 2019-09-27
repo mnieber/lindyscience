@@ -15,8 +15,6 @@ import { MoveDescriptionEditor } from "moves/presentation/move_description_edito
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 import { isNone, slugify, truncDecimals } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";

@@ -1,9 +1,9 @@
 // @flow
 
 import React from "react";
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { withFormik } from "formik";
+
+import { create_uuid } from "utils/utils";
 import {
   FormField,
   ValuePicker,
@@ -16,7 +16,6 @@ import {
   getContentFromEditor,
 } from "rich_text/presentation/rich_text_editor";
 import { toEditorState } from "rich_text/utils/editor_state";
-
 import type { MovePrivateDataT } from "moves/types";
 import type { TagT } from "tags/types";
 
@@ -38,7 +37,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   const notesDiv = (
     <div className="movePrivateDataForm__notes mt-4">
       <RichTextEditor
-        key={uuidv4()}
+        key={create_uuid()}
         autoFocus={true}
         readOnly={false}
         setEditorRef={props.setNotesEditorRef}

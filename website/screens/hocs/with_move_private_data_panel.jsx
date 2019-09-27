@@ -3,11 +3,10 @@
 import * as React from "react";
 import { compose } from "redux";
 
+import { create_uuid } from "utils/utils";
 import Ctr from "screens/containers/index";
 import { actAddMovePrivateDatas } from "moves/actions";
 import Widgets from "screens/presentation/index";
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { getId, createErrorHandler } from "app/utils";
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
@@ -32,7 +31,7 @@ export const withMovePrivateDataPanel = getMove =>
 
       const _onSave = values => {
         const movePrivateData = {
-          id: uuidv4(),
+          id: create_uuid(),
           moveId: getId(move),
           ...move.privateData,
           ...values,

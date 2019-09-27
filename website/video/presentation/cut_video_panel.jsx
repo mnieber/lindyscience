@@ -3,8 +3,6 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { VideoPlayerPanel } from "video/presentation/video_player";
 import { CutPointList } from "video/presentation/cut_point_list";
 

@@ -5,9 +5,8 @@ import * as React from "react";
 import { makeMoveListUrl, newMoveListSlug } from "screens/utils";
 import { querySetListToDict, slugify } from "utils/utils";
 import * as moveListsApi from "move_lists/api";
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
 import { createErrorHandler } from "app/utils";
+import { create_uuid } from "utils/utils";
 import { type EditItemBvrT, useEditItem } from "screens/bvrs/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
@@ -33,7 +32,7 @@ export const withMoveListCrudBvrsContext = (WrappedComponent: any) => (
 
 export function createNewMoveList(userId: number, username: string): MoveListT {
   return {
-    id: uuidv4(),
+    id: create_uuid(),
     slug: newMoveListSlug,
     name: "New move list",
     description: "",

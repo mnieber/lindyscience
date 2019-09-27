@@ -10,7 +10,7 @@ import { createErrorHandler, getId } from "app/utils";
 
 import type { DataContainerT } from "screens/containers/data_container";
 import type { UUID } from "kernel/types";
-import type { MoveT } from "moves/types";
+import type { CutPointT } from "video/types";
 
 // $FlowFixMe
 export const withCutPointsContainer = compose(
@@ -29,7 +29,7 @@ export const withCutPointsContainer = compose(
     const actions: any = props;
 
     function _insert(
-      payloadIds: Array<UUID>,
+      payload: Array<CutPointT>,
       targetId: UUID,
       isBefore: boolean
     ) {
@@ -38,27 +38,30 @@ export const withCutPointsContainer = compose(
         targetId,
         isBefore
       );
-      actions.actInsertCutPoints(payloadIds, moveListId, predecessorId);
+      actions.actInsertCutPoints(payload, predecessorId);
     }
 
-    const _setPayload = (payload: Array<MoveT>, targetItemId: UUID) => {
-      actions.actSetMoveContainerPayload(payload, targetItemId);
+    const _setPayload = (payload: Array<CutPointT>, targetItemId: UUID) => {
+      actions.actSetcutPointContainerPayload(payload, targetItemId);
     };
 
-    const moveContainer: DataContainerT<MoveT> = {
+    const cutPointContainer: DataContainerT<CutPointT> = {
       insert: _insert,
-      preview: getPreview<MoveT>(
+      preview: getPreview<CutPointT>(
         cutPoints,
-        moveContainerPayload.payload,
-        moveContainerPayload.targetItemId
+        cutPointContainerPayload.payload,
+        cutPointContainerPayload.targetItemId
       ),
-      payloadIds: moveContainerPayload.payload.map(x => x.id),
-      targetItemId: moveContainerPayload.targetItemId,
+      payload: cutPointContainerPayload.payload,
+      targetItemId: cutPointContainerPayload.targetItemId,
       setPayload: _setPayload,
     };
 
     return (
-      <WrappedComponent moveContainer={moveContainer} {...passThroughProps} />
+      <WrappedComponent
+        cutPointContainer={cutPointContainer}
+        {...passThroughProps}
+      />
     );
   }
 );

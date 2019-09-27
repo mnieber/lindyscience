@@ -73,12 +73,9 @@ type CutPointListPropsT = {|
   highlightedCutPoint: ?CutPointT,
   selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   className?: string,
-  refs: any,
 |};
 
 export function CutPointList(props: CutPointListPropsT) {
-  props.refs.cutPointListRef = React.useRef(null);
-
   const selectCutPointById = (
     cutPointId: UUID,
     isShift: boolean,
@@ -117,7 +114,6 @@ export function CutPointList(props: CutPointListPropsT) {
     >
       <div
         className={classnames(props.className, "cutPointList")}
-        ref={props.refs.cutPointListRef}
         tabIndex={123}
         id="cutPointList"
       >

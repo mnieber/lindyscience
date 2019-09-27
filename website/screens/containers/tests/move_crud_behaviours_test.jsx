@@ -106,7 +106,7 @@ test("test useInsertMoves", function(t) {
 
     t.calledOnceWith(
       insertMoves,
-      [[newMove.id], moves[1].id, false],
+      [[newMove], moves[1].id, false],
       "After finalize, insertMoves should have been called"
     );
   }

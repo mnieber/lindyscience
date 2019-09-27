@@ -34,7 +34,7 @@ export const withMoveContainer = compose(
     const moveListId = getId(moveList);
 
     function _insert(
-      payloadIds: Array<UUID>,
+      payload: Array<MoveT>,
       targetMoveId: UUID,
       isBefore: boolean
     ) {
@@ -43,8 +43,8 @@ export const withMoveContainer = compose(
         targetMoveId,
         isBefore
       );
-      const allMoveIds = actions.actInsertMoves(
-        payloadIds,
+      const allMoveIds = actions.actInsertMoveIds(
+        payload.map(x => x.id),
         moveListId,
         predecessorId
       );
@@ -68,7 +68,7 @@ export const withMoveContainer = compose(
         moveContainerPayload.payload,
         moveContainerPayload.targetItemId
       ),
-      payloadIds: moveContainerPayload.payload.map(x => x.id),
+      payload: moveContainerPayload.payload,
       targetItemId: moveContainerPayload.targetItemId,
       setPayload: _setPayload,
     };

@@ -48,15 +48,13 @@ export const createDraggingBvr = (
 ): DraggingBvrT => {
   const selectedMoveIds = selectMovesBvr.selectedItems.map(x => x.id);
   const onDrop = (targetId: UUID, isBefore: boolean) => {
-    const payloadIds = moves
-      .map(x => x.id)
-      .filter(x => selectedMoveIds.includes(x));
+    const payload = moves.filter(move => selectedMoveIds.includes(move.id));
 
     if (
       !newMoveBvr.newItem ||
-      !(payloadIds.length === 1 && payloadIds[0] === newMoveBvr.newItem.id)
+      !(payload.length === 1 && payload[0].id === newMoveBvr.newItem.id)
     ) {
-      insertMovesBvr.insertDirectly(payloadIds, targetId, isBefore);
+      insertMovesBvr.insertDirectly(payload, targetId, isBefore);
     }
   };
   return useDragging(onDrop);

@@ -29,17 +29,18 @@ export const withMoveListContainer = compose(
     const actions: any = props;
 
     function _insert(
-      payloadIds: Array<UUID>,
+      payload: Array<MoveListT>,
       targetMoveListId: UUID,
       isBefore: boolean
     ) {
+      const payLoadIds = payload.map(x => x.id);
       const predecessorId = findTargetId(
-        payloadIds,
+        payLoadIds,
         targetMoveListId,
         isBefore
       );
       const allMoveListIds = actions.actInsertMoveListIds(
-        payloadIds,
+        payLoadIds,
         predecessorId
       );
       Ctr.api
@@ -62,7 +63,7 @@ export const withMoveListContainer = compose(
         moveListContainerPayload.payload,
         moveListContainerPayload.targetItemId
       ),
-      payloadIds: moveListContainerPayload.payload.map(x => x.id),
+      payload: moveListContainerPayload.payload,
       targetItemId: moveListContainerPayload.targetItemId,
       setPayload: _setPayload,
     };

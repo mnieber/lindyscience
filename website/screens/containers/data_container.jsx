@@ -13,12 +13,12 @@ type ItemById<ItemT> = { [UUID]: ItemT };
 
 export type DataContainerT<ItemT> = {|
   insert: (
-    payloadIds: Array<UUID>,
+    payload: Array<ItemT>,
     targetItemId: UUID,
     isBefore: boolean
   ) => void,
   preview: Array<ItemT>,
-  payloadIds: Array<UUID>,
+  payload: Array<ItemT>,
   targetItemId: UUID,
   setPayload: (payload: Array<ItemT>, targetId: UUID) => void,
 |};
@@ -32,16 +32,16 @@ export function createDataContainerWithLocalState<ItemT: ObjectT>(
   const [itemIds: Array<UUID>, setItemIds: Function] = React.useState(
     initialItems.map(x => x.id)
   );
-  const [payloadIds: Array<UUID>, setPayloadIds: Function] = React.useState([]);
+  const [payload: Array<ItemT>, setPayload: Function] = React.useState([]);
   const [targetItemId: UUID, setTargetItemId: Function] = React.useState("");
 
   function _insert(
-    payloadIds: Array<UUID>,
+    payload: Array<ItemT>,
     targetItemId: UUID,
     isBefore: boolean
   ) {
     const predecessorId = findTargetId(itemIds, targetItemId, isBefore);
-    setItemIds(insertIdsIntoList(payloadIds, itemIds, predecessorId));
+    setItemIds(insertIdsIntoList(payload, itemIds, predecessorId));
   }
 
   function _getItems() {
@@ -51,17 +51,13 @@ export function createDataContainerWithLocalState<ItemT: ObjectT>(
   const _setPayload = (payload: Array<ItemT>, targetItemId: UUID) => {
     setItemById({ ...itemById, ...querySetListToDict(payload) });
     setTargetItemId(targetItemId);
-    setPayloadIds(payload.map(x => x.id));
+    setPayload(payload);
   };
 
   return {
     insert: _insert,
-    preview: getPreview<ItemT>(
-      _getItems(),
-      payloadIds.map(x => itemById[x]),
-      targetItemId
-    ),
-    payloadIds,
+    preview: getPreview<ItemT>(_getItems(), payload, targetItemId),
+    payload,
     targetItemId,
     setPayload: _setPayload,
   };

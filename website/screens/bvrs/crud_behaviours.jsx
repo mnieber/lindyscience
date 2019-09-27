@@ -11,7 +11,7 @@ export type InsertItemsBvrT<ItemT> = {|
   prepare: (items: Array<ItemT>, targetItemId: UUID) => void,
   finalize: (isCancel: boolean) => UUID,
   insertDirectly: (
-    payloadIds: Array<UUID>,
+    payload: Array<ItemT>,
     targetItemId: UUID,
     isBefore: boolean
   ) => void,
@@ -22,9 +22,9 @@ export function useInsertItems<ItemT: ObjectT>(
 ): InsertItemsBvrT<ItemT> {
   function finalize(isCancel: boolean) {
     const result = dataContainer.targetItemId;
-    if (dataContainer.payloadIds.length && !isCancel) {
+    if (dataContainer.payload.length && !isCancel) {
       dataContainer.insert(
-        dataContainer.payloadIds,
+        dataContainer.payload,
         dataContainer.targetItemId,
         false
       );

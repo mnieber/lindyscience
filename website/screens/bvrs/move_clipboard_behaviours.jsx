@@ -22,12 +22,12 @@ export function useMoveClipboard(
   selectedMoves: Array<MoveT>,
   highlightedMoveId: UUID,
   setHighlightedMoveId: UUID => void,
-  actInsertMoves: (
+  actInsertMoveIds: (
     moveIds: Array<UUID>,
     moveList: UUID,
     targetMoveId: UUID
   ) => Array<UUID>,
-  actRemoveMoves: (moveIds: Array<UUID>, moveList: UUID) => Array<UUID>
+  actRemoveMoveIds: (moveIds: Array<UUID>, moveList: UUID) => Array<UUID>
 ): MoveClipboardBvrT {
   function isTarget(moveList: MoveListT): boolean {
     return selectedMoves
@@ -38,7 +38,7 @@ export function useMoveClipboard(
   const targetMoveLists: Array<MoveListT> = moveLists.filter(isTarget);
   function shareToList(targetMoveList: MoveListT) {
     if (isTarget(targetMoveList)) {
-      const moveIdsInTargetMoveList = actInsertMoves(
+      const moveIdsInTargetMoveList = actInsertMoveIds(
         selectedMoves.map(x => x.id),
         targetMoveList.id,
         ""
@@ -71,7 +71,7 @@ export function useMoveClipboard(
       )
       .catch(createErrorHandler("Could not update move"));
 
-    const newMoveIds = actRemoveMoves(selectedMoveIds, sourceMoveList.id);
+    const newMoveIds = actRemoveMoveIds(selectedMoveIds, sourceMoveList.id);
     moveListsApi
       .saveMoveOrdering(sourceMoveList.id, newMoveIds)
       .catch(createErrorHandler("Could not update the move list"));

@@ -27,7 +27,7 @@ export function moveListsReducer(
         ...state,
         ...action.moveLists,
       };
-    case "INSERT_MOVES_INTO_LIST":
+    case "INSERT_MOVE_IDS_INTO_LIST":
       const acc = insertIdsIntoList(
         action.moveIds,
         state[action.moveListId].moves,
@@ -40,7 +40,7 @@ export function moveListsReducer(
           moves: acc,
         },
       };
-    case "REMOVE_MOVES_FROM_LIST":
+    case "REMOVE_MOVE_IDS_FROM_LIST":
       const moves = state[action.moveListId].moves.filter(
         x => !action.moveIds.includes(x)
       );

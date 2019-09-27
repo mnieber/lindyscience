@@ -38,7 +38,7 @@ test("insert moves into list", function(t) {
   const moveListId = data.moveList1.id;
 
   sMoveList = moveListsReducers.moveListsReducer(sMoveList, {
-    type: "INSERT_MOVES_INTO_LIST",
+    type: "INSERT_MOVE_IDS_INTO_LIST",
     moveIds,
     moveListId,
     undefined,

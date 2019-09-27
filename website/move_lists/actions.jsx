@@ -14,13 +14,13 @@ export function actAddMoveLists(moveLists: MoveListByIdT) {
   };
 }
 
-export function actInsertMoves(
+export function actInsertMoveIds(
   moveIds: Array<UUID>,
   moveListId: UUID,
   targetMoveId: UUID
 ) {
   const createAction = () => ({
-    type: "INSERT_MOVES_INTO_LIST",
+    type: "INSERT_MOVE_IDS_INTO_LIST",
     moveIds,
     moveListId,
     targetMoveId,
@@ -34,9 +34,9 @@ export function actInsertMoves(
   };
 }
 
-export function actRemoveMoves(moveIds: Array<UUID>, moveListId: UUID) {
+export function actRemoveMoveIds(moveIds: Array<UUID>, moveListId: UUID) {
   const createAction = () => ({
-    type: "REMOVE_MOVES_FROM_LIST",
+    type: "REMOVE_MOVE_IDS_FROM_LIST",
     moveIds,
     moveListId,
   });

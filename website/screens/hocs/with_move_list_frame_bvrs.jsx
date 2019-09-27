@@ -104,8 +104,8 @@ export const withMoveListFrameBvrs = compose(
       selectMovesBvr.selectedItems,
       getId(highlightedMove),
       moveCrudBvrs.setHighlightedMoveId,
-      actions.actInsertMoves,
-      actions.actRemoveMoves
+      actions.actInsertMoveIds,
+      actions.actRemoveMoveIds
     );
 
     const moveListCrudBvrs = createMoveListCrudBvrs(

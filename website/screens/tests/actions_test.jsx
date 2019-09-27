@@ -66,7 +66,7 @@ test("test actSetMoveListFilter", function(t) {
   t.end();
 });
 
-test("test actInsertMoves", function(t) {
+test("test actInsertMoveIds", function(t) {
   const { store } = _setUp();
   const move1 = createNewMove(data.profile1, data.moveList1.id);
   const move2 = createNewMove(data.profile1, data.moveList1.id);
@@ -76,7 +76,7 @@ test("test actInsertMoves", function(t) {
 
     store.dispatch(movesActions.actAddMoves(newMoves));
     const moveIdsInList = store.dispatch(
-      moveListsActions.actInsertMoves(newMoveIds, data.moveList1.id, "")
+      moveListsActions.actInsertMoveIds(newMoveIds, data.moveList1.id, "")
     );
 
     t.deepEqual(

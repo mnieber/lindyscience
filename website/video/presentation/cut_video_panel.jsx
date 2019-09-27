@@ -34,6 +34,7 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
     />
   );
 
+  // $FlowFixMe
   const cutPointList = <CutPointList cutPoints={props.cutPoints} />;
 
   return (

@@ -2,14 +2,11 @@
 
 import * as React from "react";
 
+import type { EditMoveBvrT } from "screens/bvrs/move_crud_behaviours";
 import type { DataContainerT } from "screens/containers/data_container";
 import type { UUID } from "kernel/types";
 import type { MoveT } from "moves/types";
 import type { SelectItemsBvrT } from "screens/bvrs/move_selection_behaviours";
-import type {
-  InsertItemsBvrT,
-  NewItemBvrT,
-} from "screens/bvrs/crud_behaviours";
 
 export type DraggingBvrT = {|
   draggingOverId: UUID,
@@ -44,19 +41,19 @@ export function useDragging(
 export const createDraggingBvr = (
   moveContainer: DataContainerT<MoveT>,
   selectMovesBvr: SelectItemsBvrT<MoveT>,
-  newMoveBvr: NewItemBvrT<MoveT>
+  editMoveBvr: EditMoveBvrT
 ): DraggingBvrT => {
   const selectedMoveIds = selectMovesBvr.selectedItems.map(x => x.id);
-  const onDrop = (targetId: UUID, isBefore: boolean) => {
+  const onDrop = (targetItemId: UUID, isBefore: boolean) => {
     const payload = moveContainer.preview.filter(move =>
       selectedMoveIds.includes(move.id)
     );
 
     if (
-      !newMoveBvr.newItem ||
-      !(payload.length === 1 && payload[0].id === newMoveBvr.newItem.id)
+      !editMoveBvr.newItem ||
+      !(payload.length === 1 && payload[0].id === editMoveBvr.newItem.id)
     ) {
-      moveContainer.setPayload(payload, targetId, isBefore);
+      moveContainer.setPayload({ payload, targetItemId, isBefore });
       moveContainer.insertPayload(false);
     }
   };

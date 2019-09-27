@@ -9,22 +9,19 @@ import { querySetListToDict } from "utils/utils";
 import type { UUID, ObjectT } from "kernel/types";
 type ItemById<ItemT> = { [UUID]: ItemT };
 
+export type PayloadT<ItemT> = {
+  payload: Array<ItemT>,
+  targetItemId: UUID,
+  isBefore: boolean,
+};
+
 // DataContainer
 
 export type DataContainerT<ItemT> = {|
   insertPayload: boolean => void,
   preview: Array<ItemT>,
-  payload: Array<ItemT>,
-  targetItemId: UUID,
-  setPayload: (
-    payload: Array<ItemT>,
-    targetId: UUID,
-    isBefore: boolean
-  ) => void,
-|};
-
-export type SimpleDataContainerT<ItemT> = {|
-  insert: (payload: Array<ItemT>, targetId: UUID, isBefore: boolean) => void,
+  payload: ?PayloadT<ItemT>,
+  setPayload: (?PayloadT<ItemT>) => void,
 |};
 
 export function createDataContainerWithLocalState<ItemT: ObjectT>(
@@ -33,33 +30,26 @@ export function createDataContainerWithLocalState<ItemT: ObjectT>(
   const [items: Array<ItemT>, setItems: Function] = React.useState([
     ...initialItems,
   ]);
-  const [payload: Array<ItemT>, setPayload: Function] = React.useState([]);
-  const [targetItemId: UUID, setTargetItemId: Function] = React.useState("");
-  const [isBefore: UUID, setIsBefore: Function] = React.useState(false);
-
-  function _setPayload(
-    payload: Array<ItemT>,
-    targetItemId: UUID,
-    isBefore: boolean
-  ) {
-    setTargetItemId(targetItemId);
-    setPayload(payload);
-    setIsBefore(isBefore);
-  }
+  const [payload: ?PayloadT<ItemT>, setPayload: Function] = React.useState(
+    null
+  );
 
   function _insertPayload(cancel: boolean) {
-    if (!cancel) {
-      const idx = items.map(x => x.id).indexOf(targetItemId);
-      setItems([...items.slice(0, idx), ...payload, ...items.slice(idx)]);
+    if (!cancel && payload != null) {
+      const idx = items.map(x => x.id).indexOf(payload.targetItemId);
+      setItems([
+        ...items.slice(0, idx),
+        ...payload.payload,
+        ...items.slice(idx),
+      ]);
     }
-    _setPayload([], "", false);
+    setPayload(null);
   }
 
   return {
     insertPayload: _insertPayload,
-    preview: getPreview<ItemT>(items, payload, targetItemId, isBefore),
+    preview: getPreview<ItemT>(items, payload),
     payload,
-    targetItemId,
-    setPayload: _setPayload,
+    setPayload,
   };
 }

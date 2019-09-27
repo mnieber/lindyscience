@@ -9,6 +9,7 @@ import { getPreview } from "screens/utils";
 import type { MoveListByIdT, MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { UUID, SlugidT } from "kernel/types";
+import type { PayloadT } from "screens/containers/data_container";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
@@ -111,42 +112,30 @@ export function actSetSelectedMoveListUrl(
   };
 }
 
-export function actSetMoveContainerPayload(
-  payload: Array<MoveT>,
-  targetItemId: UUID,
-  isBefore: boolean
-) {
+export function actSetMoveContainerPayload(payload: ?PayloadT<MoveT>) {
   const createAction = () => ({
     type: "SET_MOVE_CONTAINER_PAYLOAD",
     payload,
-    targetItemId,
-    isBefore,
   });
 
   return (dispatch: Function, getState: Function) => {
     function _filter(moves: Array<MoveT>) {
-      return getPreview<MoveT>(moves, payload, targetItemId, isBefore);
+      return getPreview<MoveT>(moves, payload);
     }
     dispatch(actSetMoveFilter("insertMovePreview", _filter));
     dispatch(createAction());
   };
 }
 
-export function actSetMoveListContainerPayload(
-  payload: Array<MoveListT>,
-  targetItemId: UUID,
-  isBefore: boolean
-) {
+export function actSetMoveListContainerPayload(payload: ?PayloadT<MoveListT>) {
   const createAction = () => ({
     type: "SET_MOVE_LIST_CONTAINER_PAYLOAD",
     payload,
-    targetItemId,
-    isBefore,
   });
 
   return (dispatch: Function, getState: Function) => {
     function _filter(moveLists: Array<MoveListT>) {
-      return getPreview<MoveListT>(moveLists, payload, targetItemId, isBefore);
+      return getPreview<MoveListT>(moveLists, payload);
     }
     dispatch(actSetMoveListFilter("insertMoveListPreview", _filter));
     dispatch(createAction());

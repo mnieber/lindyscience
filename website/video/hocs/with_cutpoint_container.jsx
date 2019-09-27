@@ -1,14 +1,10 @@
-// @flow
-
 import * as React from "react";
 import { compose } from "redux";
 
+import type { PayloadT } from "screens/containers/data_container";
 import Ctr from "screens/containers/index";
-import { getPreview } from "screens/utils";
 import { createErrorHandler, getId } from "app/utils";
 import { actInsertCutPoints } from "video/actions";
-
-import type { SimpleDataContainerT } from "screens/containers/data_container";
 import type { UUID } from "kernel/types";
 import type { CutPointT } from "video/types";
 
@@ -20,11 +16,6 @@ export const withCutPointsContainer = compose(
   })),
   (WrappedComponent: any) => (props: any) => {
     const { cutPoints, cutPointContainerPayload, ...passThroughProps } = props;
-
-    const cutPointContainer: SimpleDataContainerT<CutPointT> = {
-      insert: (cutPoints, targetItemId, isBefore) =>
-        props.dispatch(actInsertCutPoints(cutPoints)),
-    };
 
     return (
       <WrappedComponent

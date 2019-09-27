@@ -118,9 +118,9 @@ export const withMoveListFrameBvrs = compose(
 
     const moveListCrudBvrs = createMoveListCrudBvrs(
       userProfile,
-      moveListContainer,
       getId(moveList),
       navigationBvr.setNextSelectedMoveListId,
+      moveListContainer,
       moveLists => props.dispatch(actAddMoveLists(moveLists)),
       isEditingMoveList,
       isEditing => props.dispatch(actSetIsEditingMoveList(isEditing))
@@ -129,7 +129,7 @@ export const withMoveListFrameBvrs = compose(
     const draggingBvr: DraggingBvrT = createDraggingBvr(
       moveContainer,
       selectMovesBvr,
-      moveCrudBvrs.newMoveBvr
+      moveCrudBvrs.editMoveBvr
     );
 
     return (

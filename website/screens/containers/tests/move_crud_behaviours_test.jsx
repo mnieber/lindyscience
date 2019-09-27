@@ -5,11 +5,8 @@ import * as data from "screens/tests/data";
 import sinon from "sinon";
 // $FlowFixMe
 import TestRenderer from "react-test-renderer";
-import {
-  useNewMove,
-  useSaveMove,
-  createNewMove,
-} from "screens/bvrs/move_crud_behaviours";
+import { createMoveCrudBvrs } from "screens/bvrs/move_crud_behaviours";
+import { createNewMove } from "screens/bvrs/move_crud_behaviours";
 import { createDataContainerWithLocalState } from "screens/containers/data_container";
 import { getObjectValues } from "utils/utils";
 // $FlowFixMe
@@ -27,22 +24,23 @@ function TestComponent({
 }) {
   sandbox.moveContainer = createDataContainerWithLocalState(moves);
 
-  sandbox.newMoveBvr = useNewMove(
+  const browseToMove = sinon.fake();
+  const actAddMoves = sinon.fake();
+  const isEditing = false;
+
+  const moveCrudBvrs = createMoveCrudBvrs(
+    data.moveList1,
     data.profile1,
-    data.moveList1.id,
-    setHighlightedMoveId,
     highlightedMoveId,
+    setHighlightedMoveId,
     sandbox.moveContainer,
+    browseToMove,
+    actAddMoves,
+    isEditing,
     setIsEditing
   );
 
-  sandbox.saveMoveBvr = useSaveMove(
-    sandbox.moveContainer.preview,
-    sandbox.newMoveBvr,
-    setIsEditing,
-    updateMove
-  );
-
+  sandbox.editMoveBvr = moveCrudBvrs.editMoveBvr;
   return [];
 }
 
@@ -74,7 +72,11 @@ test("test useInsertMoves", function(t) {
       "Initially, the preview is just the list of moves"
     );
 
-    sandbox.moveContainer.setPayload([newMove], moves[1].id, false);
+    sandbox.moveContainer.setPayload({
+      payload: [newMove],
+      targetItemId: moves[1].id,
+      isBefore: false,
+    });
     t.deepEqual(
       sandbox.moveContainer.preview,
       expectedNewMoves,
@@ -89,7 +91,11 @@ test("test useInsertMoves", function(t) {
     );
     t.assert(!saveMoveOrdering.called);
 
-    sandbox.moveContainer.setPayload([newMove], moves[1].id, false);
+    sandbox.moveContainer.setPayload({
+      payload: [newMove],
+      targetItemId: moves[1].id,
+      isBefore: false,
+    });
     sandbox.moveContainer.insertPayload(false);
   }
 
@@ -125,18 +131,24 @@ test.only("test useNewMove", function(t) {
 
   const setPayload = sinon.spy(sandbox.moveContainer, "setPayload");
 
-  t.equal(sandbox.newMoveBvr.newItem, null, "Initially, there is no newMove");
+  t.equal(sandbox.editMoveBvr.newItem, null, "Initially, there is no newMove");
 
-  sandbox.newMoveBvr.addNewItem();
+  sandbox.editMoveBvr.addNewItem();
   t.notEqual(
-    sandbox.newMoveBvr.newItem,
+    sandbox.editMoveBvr.newItem,
     null,
     "After addNewItem(), there is a newMove"
   );
 
   t.calledOnceWith(
     setPayload,
-    [[sandbox.newMoveBvr.newItem], highlightedMove.id, false],
+    [
+      {
+        payload: [sandbox.editMoveBvr.newItem],
+        targetItemId: highlightedMove.id,
+        isBefore: false,
+      },
+    ],
     "After addNewItem(), the preview contains the newMove"
   );
 
@@ -148,12 +160,12 @@ test.only("test useNewMove", function(t) {
 
   t.calledOnceWith(
     setHighlightedMoveId,
-    [!!sandbox.newMoveBvr.newItem && sandbox.newMoveBvr.newItem.id],
+    [!!sandbox.editMoveBvr.newItem && sandbox.editMoveBvr.newItem.id],
     "After addNewItem(), the new move should have the highlight"
   );
 
   sinon.reset();
-  sandbox.newMoveBvr.finalize(/* cancel */ true);
+  sandbox.editMoveBvr.finalize(/* cancel */ true, null);
 
   t.calledOnceWith(
     setIsEditing,
@@ -166,21 +178,21 @@ test.only("test useNewMove", function(t) {
     "After finalize with cancel, the previous highlight should be restored"
   );
 
-  sandbox.newMoveBvr.addNewItem();
-  sandbox.newMoveBvr.setHighlightedItemId(
+  sandbox.editMoveBvr.addNewItem();
+  sandbox.editMoveBvr.setHighlightedItemId(
     "18561d09-0727-441d-bdd9-d3d8c33ebde3"
   );
   t.assert(
-    !sandbox.newMoveBvr.newItem,
+    !sandbox.editMoveBvr.newItem,
     "Changing the highlight should cancel the new move"
   );
 
-  sandbox.newMoveBvr.addNewItem();
-  sandbox.newMoveBvr.setHighlightedItemId(
-    sandbox.newMoveBvr.newItem ? sandbox.newMoveBvr.newItem.id : ""
+  sandbox.editMoveBvr.addNewItem();
+  sandbox.editMoveBvr.setHighlightedItemId(
+    sandbox.editMoveBvr.newItem ? sandbox.editMoveBvr.newItem.id : ""
   );
   t.assert(
-    !!sandbox.newMoveBvr.newItem,
+    !!sandbox.editMoveBvr.newItem,
     "Changing the highlight to the new move shouldn't cancel the new move"
   );
 
@@ -211,7 +223,7 @@ test("test useSaveMove", function(t) {
     />
   );
 
-  const finalize = sinon.spy(sandbox.newMoveBvr, "finalize");
+  const finalize = sinon.spy(sandbox.editMoveBvr, "finalize");
 
   sandbox.saveMoveBvr.discardChanges();
   t.calledOnceWith(
@@ -238,7 +250,7 @@ test("test useSaveMove", function(t) {
   t.calledOnceWith(
     finalize,
     [false],
-    "Saving a move should call newMoveBvr.finalize"
+    "Saving a move should call editMoveBvr.finalize"
   );
 
   sinon.reset();

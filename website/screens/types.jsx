@@ -6,14 +6,8 @@
 
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
-import type {
-  SaveMoveBvrT,
-  NewMoveBvrT,
-} from "screens/bvrs/move_crud_behaviours";
-import type {
-  SaveMoveListBvrT,
-  NewMoveListBvrT,
-} from "screens/bvrs/move_list_crud_behaviours";
+import type { EditMoveBvrT } from "screens/bvrs/move_crud_behaviours";
+import type { EditMoveListBvrT } from "screens/bvrs/move_list_crud_behaviours";
 
 export type MoveSearchResultT = {
   id: UUID,
@@ -29,16 +23,14 @@ export type FunctionByIdT = {
 export type VotableT = {};
 
 export type MoveCrudBvrsT = {
-  newMoveBvr: NewMoveBvrT,
-  saveMoveBvr: SaveMoveBvrT,
+  editMoveBvr: EditMoveBvrT,
   isEditing: boolean,
   setIsEditing: boolean => void,
   setHighlightedMoveId: UUID => void,
 };
 
 export type MoveListCrudBvrsT = {
-  newMoveListBvr: NewMoveListBvrT,
-  saveMoveListBvr: SaveMoveListBvrT,
+  editMoveListBvr: EditMoveListBvrT,
   isEditing: boolean,
   setIsEditing: boolean => void,
   setHighlightedMoveListId: UUID => void,

@@ -75,7 +75,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
       e.preventDefault();
       e.stopPropagation();
       if (props.moveCrudBvrs.isEditing) {
-        props.moveCrudBvrs.saveMoveBvr.discardChanges();
+        props.moveCrudBvrs.editMoveBvr.finalize(true, null);
       } else {
         props.moveCrudBvrs.setIsEditing(true);
       }
@@ -179,9 +179,9 @@ function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
     if (
       props.userProfile &&
       moveListSlugPrm == newMoveListSlug &&
-      !props.moveListCrudBvrs.newMoveListBvr.newItem
+      !props.moveListCrudBvrs.editMoveListBvr.newItem
     ) {
-      props.moveListCrudBvrs.newMoveListBvr.addNewItem();
+      props.moveListCrudBvrs.editMoveListBvr.addNewItem();
     }
     props.dispatch(
       actSetSelectedMoveListUrl(ownerUsernamePrm, moveListSlugPrm)

@@ -10,7 +10,7 @@ import { createErrorHandler } from "app/utils";
 import { newMoveSlug } from "moves/utils";
 import { slugify } from "utils/utils";
 
-import { useNewItem, useSaveItem } from "screens/bvrs/crud_behaviours";
+import { useEditItem } from "screens/bvrs/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT } from "move_lists/types";
@@ -18,11 +18,7 @@ import type { MoveCrudBvrsT } from "screens/types";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
-import type {
-  InsertItemsBvrT,
-  NewItemBvrT,
-  SaveItemBvrT,
-} from "screens/bvrs/crud_behaviours";
+import type { EditItemBvrT } from "screens/bvrs/crud_behaviours";
 
 // $FlowFixMe
 export const MoveCrudBvrsContext = React.createContext({});
@@ -66,66 +62,9 @@ type IncompleteValuesT = {
   name: string,
 };
 
-function _completeMove(
-  oldMove: MoveT,
-  incompleteValues: IncompleteValuesT
-): MoveT {
-  const newSlug = incompleteValues.name
-    ? slugify(incompleteValues.name)
-    : undefined;
-
-  return {
-    ...oldMove,
-    ...incompleteValues,
-    slug: newSlug || oldMove.slug,
-  };
-}
-
 // NewMove Behaviour
 
-export type NewMoveBvrT = NewItemBvrT<MoveT>;
-
-export function useNewMove(
-  userProfile: ?UserProfileT,
-  sourceMoveListId: UUID,
-  setNextHighlightedMoveId: UUID => void,
-  highlightedMoveId: UUID,
-  moveContainer: DataContainerT<MoveT>,
-  setIsEditing: boolean => void
-): NewMoveBvrT {
-  function _createNewMove() {
-    return createNewMove(userProfile, sourceMoveListId);
-  }
-
-  return useNewItem<MoveT>(
-    highlightedMoveId,
-    setNextHighlightedMoveId,
-    moveContainer,
-    setIsEditing,
-    _createNewMove
-  );
-}
-
-// SaveMove Behaviour
-
-export type SaveMoveBvrT = SaveItemBvrT<MoveT>;
-
-export function useSaveMove(
-  moves: Array<MoveT>,
-  newMoveBvr: NewMoveBvrT,
-  setIsEditing: boolean => void,
-  updateMove: (oldMove: MoveT, newMove: MoveT) => void
-): SaveMoveBvrT {
-  function _saveMove(id: UUID, incompleteValues: IncompleteValuesT) {
-    const oldMove = moves.find(x => x.id == id);
-    if (oldMove) {
-      const newMove = _completeMove(oldMove, incompleteValues);
-      return updateMove(oldMove, newMove);
-    }
-  }
-
-  return useSaveItem<MoveT>(newMoveBvr, setIsEditing, _saveMove);
-}
+export type EditMoveBvrT = EditItemBvrT<MoveT>;
 
 export function createMoveCrudBvrs(
   moveList: ?MoveListT,
@@ -138,38 +77,41 @@ export function createMoveCrudBvrs(
   isEditingMove: boolean,
   actSetIsEditingMove: Function
 ): MoveCrudBvrsT {
-  const newMoveBvr: NewMoveBvrT = useNewMove(
-    userProfile,
-    moveList ? moveList.id : "",
-    setNextHighlightedMoveId,
-    highlightedMoveId,
-    moveContainer,
-    actSetIsEditingMove
-  );
+  function _createNewMove() {
+    return createNewMove(userProfile, moveList ? moveList.id : "");
+  }
 
-  function updateMove(oldMove: MoveT, newMove: MoveT) {
+  function saveMove(move: MoveT, values: any) {
+    const newSlug = values.name ? slugify(values.name) : undefined;
+
+    const newMove = {
+      ...move,
+      ...values,
+      slug: newSlug || move.slug,
+    };
+
     actAddMoves([newMove]);
-    if (highlightedMoveId == oldMove.id) {
-      browseToMove(newMove);
-    }
+    browseToMove(newMove);
+
     return movesApi
       .saveMove(newMove)
       .catch(createErrorHandler("We could not save the move"));
   }
 
-  const saveMoveBvr: SaveMoveBvrT = useSaveMove(
-    moveContainer.preview,
-    newMoveBvr,
+  const editMoveBvr = useEditItem<MoveT>(
+    highlightedMoveId,
+    setNextHighlightedMoveId,
+    moveContainer,
     actSetIsEditingMove,
-    updateMove
+    _createNewMove,
+    saveMove
   );
 
   const bvrs: MoveCrudBvrsT = {
     isEditing: isEditingMove,
     setIsEditing: actSetIsEditingMove,
-    newMoveBvr,
-    saveMoveBvr,
-    setHighlightedMoveId: newMoveBvr.setHighlightedItemId,
+    editMoveBvr,
+    setHighlightedMoveId: editMoveBvr.setHighlightedItemId,
   };
 
   return bvrs;

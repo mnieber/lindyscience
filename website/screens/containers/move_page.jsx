@@ -36,9 +36,9 @@ function MovePage(props: MovePagePropsT) {
     if (
       props.userProfile &&
       props.moveSlugPrm == newMoveSlug &&
-      !props.moveCrudBvrs.newMoveBvr.newItem
+      !props.moveCrudBvrs.editMoveBvr.newItem
     ) {
-      props.moveCrudBvrs.newMoveBvr.addNewItem();
+      props.moveCrudBvrs.editMoveBvr.addNewItem();
     }
     props.dispatch(
       actSetHighlightedMoveBySlug(props.moveSlugPrm, props.moveIdPrm)

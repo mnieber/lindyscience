@@ -2,6 +2,8 @@
 
 import { combineReducers, compose } from "redux";
 import { createSelector } from "reselect";
+
+import type { PayloadT } from "screens/containers/data_container";
 import {
   reduceMapToMap,
   getObjectValues,
@@ -11,7 +13,6 @@ import {
 import { findMove, findMoveBySlugid } from "screens/utils";
 import { getMoveById } from "moves/reducers";
 import { getMoveLists } from "move_lists/reducers";
-
 import type { MoveT, MoveByIdT } from "moves/types";
 import type { MoveListT, MoveListByIdT } from "move_lists/types";
 import type { FunctionByIdT } from "screens/types";
@@ -29,11 +30,11 @@ const _stateMoveFilters = (state: RootReducerStateT): MoveFiltersState =>
 const _stateMoveListFilters = (
   state: RootReducerStateT
 ): MoveListFiltersState => state.screens.moveListFilters;
-const _stateMoveContainer = (state: RootReducerStateT): DataContainerState =>
+const _stateMoveContainer = (state: RootReducerStateT): MoveContainerState =>
   state.screens.moveContainer;
 const _stateMoveListContainer = (
   state: RootReducerStateT
-): DataContainerState => state.screens.moveListContainer;
+): MoveListContainerState => state.screens.moveListContainer;
 
 ///////////////////////////////////////////////////////////////////////
 // Selection
@@ -96,29 +97,23 @@ export function moveListFiltersReducer(
   }
 }
 
-type DataContainerState = {
-  targetItemId: ?UUID,
-  payload: Array<any>,
-  isBefore: boolean,
+type MoveContainerState = {
+  payload: ?PayloadT<MoveT>,
   isEditing: boolean,
 };
 
 export function moveContainerReducer(
-  state: DataContainerState = {
-    targetItemId: null,
-    payload: [],
-    isBefore: false,
+  state: MoveContainerState = {
     isEditing: false,
+    payload: null,
   },
   action: any
-): DataContainerState {
+): MoveContainerState {
   switch (action.type) {
     case "SET_MOVE_CONTAINER_PAYLOAD":
       return {
         ...state,
-        targetItemId: action.targetItemId,
         payload: action.payload,
-        isBefore: action.isBefore,
       };
     case "SET_IS_EDITING_MOVE":
       return {
@@ -130,22 +125,23 @@ export function moveContainerReducer(
   }
 }
 
+type MoveListContainerState = {
+  payload: ?PayloadT<MoveListT>,
+  isEditing: boolean,
+};
+
 export function moveListContainerReducer(
-  state: DataContainerState = {
-    targetItemId: null,
-    payload: [],
-    isBefore: false,
+  state: MoveListContainerState = {
     isEditing: false,
+    payload: null,
   },
   action: any
-): DataContainerState {
+): MoveListContainerState {
   switch (action.type) {
     case "SET_MOVE_LIST_CONTAINER_PAYLOAD":
       return {
         ...state,
-        targetItemId: action.targetItemId,
         payload: action.payload,
-        isBefore: action.isBefore,
       };
     case "SET_IS_EDITING_MOVE_LIST":
       return {
@@ -161,8 +157,8 @@ export type ReducerStateT = {
   moveFilters: MoveFiltersState,
   moveListFilters: MoveListFiltersState,
   selection: SelectionState,
-  moveContainer: DataContainerState,
-  moveListContainer: DataContainerState,
+  moveContainer: MoveContainerState,
+  moveListContainer: MoveListContainerState,
 };
 
 // $FlowFixMe
@@ -219,20 +215,20 @@ export const getHighlightedMove: Selector<MoveT> = createSelector(
   }
 );
 
-export const getMoveContainerPayload: Selector<DataContainerState> = createSelector(
+export const getMoveContainerPayload: Selector<?PayloadT<MoveT>> = createSelector(
   [_stateMoveContainer],
-  (stateMoveContainer): DataContainerState => {
-    return stateMoveContainer;
+  (stateMoveContainer: MoveContainerState) => {
+    return stateMoveContainer.payload;
   }
 );
 
 export const getIsEditingMove = (state: RootReducerStateT): boolean =>
   state.screens.moveContainer.isEditing;
 
-export const getMoveListContainerPayload: Selector<DataContainerState> = createSelector(
+export const getMoveListContainerPayload: Selector<?PayloadT<MoveListT>> = createSelector(
   [_stateMoveListContainer],
-  (stateMoveListContainer): DataContainerState => {
-    return stateMoveListContainer;
+  (stateMoveListContainer: MoveListContainerState) => {
+    return stateMoveListContainer.payload;
   }
 );
 

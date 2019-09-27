@@ -61,8 +61,12 @@ function _createOwnMoveListDetails(
       autoFocus={true}
       knownTags={props.moveListTags}
       moveList={moveList}
-      onSubmit={props.moveListCrudBvrs.saveMoveListBvr.saveItem}
-      onCancel={props.moveListCrudBvrs.saveMoveListBvr.discardChanges}
+      onSubmit={values =>
+        props.moveListCrudBvrs.editMoveListBvr.finalize(false, values)
+      }
+      onCancel={() =>
+        props.moveListCrudBvrs.editMoveListBvr.finalize(true, null)
+      }
     />
   ) : (
     _createStaticMoveListDetails(moveList, props)

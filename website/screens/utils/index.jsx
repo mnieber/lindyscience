@@ -52,22 +52,24 @@ export function findNeighbourIdx(
 
 export function getPreview<ItemT: ObjectT>(
   items: Array<ItemT>,
-  payload: Array<ItemT>,
-  targetMoveId: UUID
+  payload: ?PayloadT<ItemT>
 ): Array<ItemT> {
-  return !payload.length
+  return !payload || !payload.payload.length
     ? items
     : items.reduce(
         (acc, item) => {
-          if (!payload.find(makeIdMatcher(item.id))) {
+          if (item.id == payload.targetMoveId && payload.isBefore) {
+            acc.push(...payload.payload);
+          }
+          if (!payload.payload.find(makeIdMatcher(item.id))) {
             acc.push(item);
           }
-          if (item.id == targetMoveId) {
-            acc.push(...payload);
+          if (item.id == payload.targetMoveId && !payload.isBefore) {
+            acc.push(...payload.payload);
           }
           return acc;
         },
-        targetMoveId ? [] : [...payload]
+        targetMoveId ? [] : [...payload.payload]
       );
 }
 

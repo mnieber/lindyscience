@@ -3,12 +3,15 @@
 import * as React from "react";
 import { compose } from "redux";
 
+import type {
+  DataContainerT,
+  PayloadT,
+} from "screens/containers/data_container";
 import Ctr from "screens/containers/index";
 import { actSetMoveListContainerPayload } from "screens/actions";
 import { actInsertMoveListIds } from "profiles/actions";
 import { getPreview } from "screens/utils";
 import { createErrorHandler, getId } from "app/utils";
-import type { DataContainerT } from "screens/containers/data_container";
 import type { UUID } from "kernel/types";
 import type { MoveListT } from "move_lists/types";
 
@@ -21,10 +24,8 @@ export const withMoveListContainer = compose(
   (WrappedComponent: any) => (props: any) => {
     const { moveLists, moveListContainerPayload, ...passThroughProps } = props;
 
-    function _setPayload(payload, targetItemId, isBefore) {
-      props.dispatch(
-        actSetMoveListContainerPayload(payload, targetItemId, isBefore)
-      );
+    function _setPayload(payload: ?PayloadT<MoveListT>) {
+      props.dispatch(actSetMoveListContainerPayload(payload));
     }
 
     function _insertPayload(cancel: boolean) {
@@ -41,19 +42,13 @@ export const withMoveListContainer = compose(
           .saveMoveListOrdering(allMoveListIds)
           .catch(createErrorHandler("We could not update the move list"));
       }
-      _setPayload([], "", false);
+      _setPayload(null);
     }
 
     const moveListContainer: DataContainerT<MoveListT> = {
       insertPayload: _insertPayload,
-      preview: getPreview<MoveListT>(
-        moveLists,
-        moveListContainerPayload.payload,
-        moveListContainerPayload.targetItemId,
-        moveListContainerPayload.isBefore
-      ),
-      payload: moveListContainerPayload.payload,
-      targetItemId: moveListContainerPayload.targetItemId,
+      preview: getPreview<MoveListT>(moveLists, moveListContainerPayload),
+      payload: moveListContainerPayload,
       setPayload: _setPayload,
     };
 

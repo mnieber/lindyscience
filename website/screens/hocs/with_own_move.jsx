@@ -82,8 +82,8 @@ export const withOwnMove = compose(
         <Widgets.MoveForm
           autoFocus={true}
           move={move}
-          onSubmit={moveCrudBvrs.saveMoveBvr.saveItem}
-          onCancel={moveCrudBvrs.saveMoveBvr.discardChanges}
+          onSubmit={values => moveCrudBvrs.editMoveBvr.finalize(false, values)}
+          onCancel={() => moveCrudBvrs.editMoveBvr.finalize(true, null)}
           knownTags={moveTags}
           videoPlayer={props.videoBvr.player}
         />

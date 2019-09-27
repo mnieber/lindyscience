@@ -100,7 +100,7 @@ const withMoveListHeader = (WrappedComponent: any) => (
     <Widgets.MoveListHeader
       addNewMove={() => {
         props.setIsFilterEnabled(false);
-        props.moveCrudBvrs.newMoveBvr.addNewItem();
+        props.moveCrudBvrs.editMoveBvr.addNewItem();
       }}
       className=""
     />
@@ -237,7 +237,7 @@ const withMoveListPanelButtons = (WrappedComponent: any) => (
   const newMoveListBtn = (
     <div
       className={"button button--wide"}
-      onClick={props.moveListCrudBvrs.newMoveListBvr.addNewItem}
+      onClick={props.moveListCrudBvrs.editMoveListBvr.addNewItem}
       key={1}
     >
       New move list

@@ -2,9 +2,10 @@
 
 import { combineReducers } from "redux";
 import { createSelector } from "reselect";
+
+import type { PayloadT } from "screens/containers/data_container";
 import { isNone, reduceMapToMap } from "utils/utils";
 import { getInsertionIndex } from "utils/get_insertion_index";
-
 import type { UUID } from "kernel/types";
 import type { CutPointT } from "video/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
@@ -16,15 +17,13 @@ const _stateCutPointContainer = (
 ): DataContainerState => state.video.cutPointContainer;
 
 type DataContainerState = {
-  targetItemId: ?UUID,
-  payload: Array<any>,
+  payload: PayloadT<CutPointT>,
   isEditing: boolean,
 };
 
 export function cutPointContainerReducer(
   state: DataContainerState = {
-    targetItemId: null,
-    payload: [],
+    payload: { payload: [], targetItemId: "", isBefore: false },
     isEditing: false,
   },
   action: any
@@ -33,7 +32,6 @@ export function cutPointContainerReducer(
     case "SET_CUTPOINT_CONTAINER_PAYLOAD":
       return {
         ...state,
-        targetItemId: action.targetItemId,
         payload: action.payload,
       };
     case "SET_IS_EDITING_CUTPOINT":

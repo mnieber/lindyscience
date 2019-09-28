@@ -2,8 +2,8 @@
 
 import React from "react";
 import { withFormik } from "formik";
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
+
+import { slugify } from "utils/utils";
 import {
   FormField,
   ValuePicker,
@@ -17,7 +17,7 @@ import {
   getContentFromEditor,
 } from "rich_text/presentation/rich_text_editor";
 import { toEditorState } from "rich_text/utils/editor_state";
-
+import { newMoveListSlug } from "screens/utils";
 import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
@@ -46,6 +46,34 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       type="text"
       placeholder="Name"
       autoFocus={props.autoFocus}
+    />
+  );
+
+  const updateSlugBtn = (
+    <div
+      key="updateSlugBtn"
+      className={"button ml-2 flex-none"}
+      onClick={() => {
+        const newSlug = slugify(formProps.values.name);
+        if (newSlug) {
+          formProps.setFieldValue("slug", newSlug);
+        }
+      }}
+    >
+      Update
+    </div>
+  );
+
+  const slugField = (
+    <FormField
+      classNames="flex-1"
+      label="Slug"
+      formProps={formProps}
+      fieldName="slug"
+      type="text"
+      placeholder="Slug"
+      disabled={true}
+      buttons={[updateSlugBtn]}
     />
   );
 
@@ -93,6 +121,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <form className="moveListForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={"moveListForm flexcol"}>
         {nameField}
+        {formProps.values.slug != newMoveListSlug && slugField}
         {description}
         {!formProps.values.role == "trash" && isPrivateField}
         {tags}
@@ -135,6 +164,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       name: props.moveList.name,
+      slug: props.moveList.slug,
       isPrivate: props.moveList.isPrivate,
       role: props.moveList.role,
       description: props.moveList.description,

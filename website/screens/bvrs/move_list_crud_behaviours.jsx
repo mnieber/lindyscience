@@ -64,13 +64,13 @@ export function createMoveListCrudBvrs(
   }
 
   function saveMoveList(moveList: MoveListT, values: any): MoveListT {
-    // $FlowFixMe
-    const newSlug = values.name ? slugify(values.name) : undefined;
+    const slug =
+      values.slug == newMoveListSlug ? slugify(values.name) : values.slug;
 
     const newMoveList = {
       ...moveList,
       ...values,
-      slug: newSlug || moveList.slug,
+      slug,
     };
 
     actAddMoveLists(querySetListToDict([newMoveList]));

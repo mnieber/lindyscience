@@ -77,12 +77,13 @@ export function createMoveCrudBvrs(
   }
 
   function saveMove(move: MoveT, values: any) {
-    const newSlug = values.name ? slugify(values.name) : undefined;
+    const slug =
+      values.slug == newMoveSlug ? slugify(values.name) : values.slug;
 
     const newMove = {
       ...move,
       ...values,
-      slug: newSlug || move.slug,
+      slug,
     };
 
     actAddMoves([newMove]);

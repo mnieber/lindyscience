@@ -2,18 +2,19 @@
 
 import * as React from "react";
 import { compose } from "redux";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import {
+  createKeyDownHandler,
+  createVideoKeyHandlers,
+  createVideoStartEndKeyHandlers,
+  createVideoTimePointKeyHandlers,
+} from "screens/presentation/video_keyhandler";
 import { useInterval } from "utils/use_interval";
 import { useVideo } from "video/bvrs/use_video";
 import { getVideoFromMove } from "moves/utils";
 import { styleTimePoints, extractTimePoints } from "video/utils/cut_points";
-import {
-  handleVideoKey,
-  videoKeys,
-} from "screens/presentation/video_keyhandler";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 import Ctr from "screens/containers/index";
-
 import type { VideoT, VideoBvrT } from "video/types";
 import type { MoveT } from "moves/types";
 
@@ -44,16 +45,17 @@ export const withMoveVideoBvr = compose(
       <WrappedComponent videoBvr={videoBvr} {...passThroughProps} />
     );
 
-    const onKeyDown = (key, e) => {
-      handleVideoKey(
-        key,
-        e,
+    const videoKeyHandlers = {
+      ...createVideoKeyHandlers(videoBvr),
+      ...createVideoTimePointKeyHandlers(videoBvr, timePoints),
+      ...createVideoStartEndKeyHandlers(
         videoBvr,
         move.startTimeMs,
-        move.endTimeMs,
-        timePoints
-      );
+        move.endTimeMs
+      ),
     };
+    const videoKeys = Object.keys(videoKeyHandlers);
+    const onKeyDown = createKeyDownHandler(videoKeyHandlers);
 
     return (
       <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>

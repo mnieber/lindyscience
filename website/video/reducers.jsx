@@ -12,37 +12,11 @@ import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 const _stateCutVideo = (state: RootReducerStateT): CutVideoStateT =>
   state.video.cutVideo;
-const _stateCutPointContainer = (
-  state: RootReducerStateT
-): DataContainerState => state.video.cutPointContainer;
 
 type DataContainerState = {
   payload: PayloadT<CutPointT>,
   isEditing: boolean,
 };
-
-export function cutPointContainerReducer(
-  state: DataContainerState = {
-    payload: { payload: [], targetItemId: "", isBefore: false },
-    isEditing: false,
-  },
-  action: any
-): DataContainerState {
-  switch (action.type) {
-    case "SET_CUTPOINT_CONTAINER_PAYLOAD":
-      return {
-        ...state,
-        payload: action.payload,
-      };
-    case "SET_IS_EDITING_CUTPOINT":
-      return {
-        ...state,
-        isEditing: action.isEditing,
-      };
-    default:
-      return state;
-  }
-}
 
 type CutVideoStateT = {
   link: string,
@@ -72,11 +46,11 @@ export function cutPointsReducer(
   switch (action.type) {
     case "CLEAR_CUT_POINTS":
       return [];
-    case "INSERT_CUT_POINTS":
+    case "ADD_CUT_POINTS":
       const cmp = (lhs, rhs) => rhs.t - lhs.t;
       return action.cutPoints.reduce((acc, cutPoint) => {
-        const idx = getInsertionIndex(acc, action.cutPoint, cmp);
-        return [...acc.slice(0, idx), action.cutPoint, ...acc.slice(idx)];
+        const idx = getInsertionIndex(acc, cutPoint, cmp);
+        return [...acc.slice(0, idx), cutPoint, ...acc.slice(idx)];
       }, state);
     default:
       return state;
@@ -86,13 +60,11 @@ export function cutPointsReducer(
 export type ReducerStateT = {
   cutVideo: CutVideoStateT,
   cutPoints: CutPointsStateT,
-  cutPointContainer: DataContainerState,
 };
 
 export const reducer = combineReducers({
   cutVideo: cutVideoReducer,
   cutPoints: cutPointsReducer,
-  cutPointContainer: cutPointContainerReducer,
 });
 
 export function getCutVideoLink(state: RootReducerStateT) {
@@ -102,10 +74,3 @@ export function getCutVideoLink(state: RootReducerStateT) {
 export function getCutPoints(state: RootReducerStateT) {
   return state.video.cutPoints;
 }
-
-export const getCutPointContainerPayload: Selector<DataContainerState> = createSelector(
-  [_stateCutPointContainer],
-  (stateCutPointContainer): DataContainerState => {
-    return stateCutPointContainer;
-  }
-);

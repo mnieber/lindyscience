@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import * as React from "react";
 import recase from "recase";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";

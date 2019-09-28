@@ -22,7 +22,12 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
     }
   };
 
-  const linkPanel = <input className="w-full" onKeyDown={onKeyDown} />;
+  const linkPanel = (
+    <div className="flex flex-row h-8">
+      <label className="w-24 self-center">Video link</label>
+      <input className="w-full" onKeyDown={onKeyDown} />
+    </div>
+  );
 
   const videoPlayerPanel = (
     <VideoPlayerPanel
@@ -32,8 +37,15 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
     />
   );
 
-  // $FlowFixMe
-  const cutPointList = <CutPointList cutPoints={props.cutPoints} />;
+  const selectCutPointById = (id, isShift, isCtrl) => undefined;
+
+  const cutPointList = (
+    <CutPointList
+      cutPoints={props.cutPoints}
+      highlightedCutPoint={null}
+      selectCutPointById={selectCutPointById}
+    />
+  );
 
   return (
     <div>

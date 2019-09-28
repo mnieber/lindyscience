@@ -1,9 +1,10 @@
 // @flow
 
 import * as React from "react";
-import { useInterval } from "utils/use_interval";
 import YouTube from "react-youtube";
-import { isNone } from "utils/utils";
+
+import { isNone } from "utils/utils2";
+import { useInterval } from "utils/use_interval";
 
 import type {
   VideoT,

@@ -15,6 +15,7 @@ import type { MoveListCrudBvrsT } from "screens/types";
 import type { MoveListT } from "move_lists/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
+import type { EditCutPointBvrT } from "video/bvrs/cut_point_crud_behaviours";
 
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
@@ -22,6 +23,7 @@ type MoveListDetailsPagePropsT = {
   moveList: MoveListT,
   cutVideoLink: string,
   videoBvr: VideoBvrT,
+  editCutPointBvr: EditCutPointBvrT,
   cutPoints: Array<CutPointT>,
   dispatch: Function,
 };
@@ -91,15 +93,6 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
-  const cutVideoPanel = (
-    <Widgets.CutVideoPanel
-      actSetCutVideoLink={x => props.dispatch(actSetCutVideoLink(x))}
-      cutVideoLink={props.cutVideoLink}
-      videoBvr={props.videoBvr}
-      cutPoints={props.cutPoints}
-    />
-  );
-
   return (
     <MoveListCrudBvrsContext.Consumer>
       {moveListCrudBvrs => (
@@ -107,6 +100,12 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
           <_MoveListDetailsPage
             {...props}
             moveListCrudBvrs={moveListCrudBvrs}
+          />
+          <Widgets.CutVideoPanel
+            actSetCutVideoLink={x => props.dispatch(actSetCutVideoLink(x))}
+            cutVideoLink={props.cutVideoLink}
+            videoBvr={props.videoBvr}
+            cutPoints={props.cutPoints}
           />
         </div>
       )}

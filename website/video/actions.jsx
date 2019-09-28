@@ -25,9 +25,9 @@ export function actClearCutPoints() {
   };
 }
 
-export function actInsertCutPoints(cutPoints: Array<CutPointT>) {
+export function actAddCutPoints(cutPoints: Array<CutPointT>) {
   return {
-    type: "INSERT_CUT_POINT",
+    type: "ADD_CUT_POINTS",
     cutPoints,
   };
 }

@@ -7,8 +7,10 @@ import { VideoPlayerPanel } from "video/presentation/video_player";
 import { CutPointList } from "video/presentation/cut_point_list";
 
 import type { CutPointT, VideoBvrT } from "video/types";
+import type { TagT } from "tags/types";
 
 type CutVideoPanelPropsT = {
+  moveTags: Array<TagT>,
   cutVideoLink: string,
   actSetCutVideoLink: Function,
   videoBvr: VideoBvrT,
@@ -24,8 +26,11 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
 
   const linkPanel = (
     <div className="flex flex-row h-8">
-      <label className="w-24 self-center">Video link</label>
-      <input className="w-full" onKeyDown={onKeyDown} />
+      <input
+        className="w-full"
+        onKeyDown={onKeyDown}
+        placeholder="Video link"
+      />
     </div>
   );
 
@@ -41,15 +46,24 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
 
   const cutPointList = (
     <CutPointList
+      moveTags={props.moveTags}
       cutPoints={props.cutPoints}
       highlightedCutPoint={null}
       selectCutPointById={selectCutPointById}
+      videoPlayer={props.videoBvr.player}
     />
   );
 
   return (
     <div>
       <div className={"cutVideoPanel panel"}>
+        <button
+          onClick={() => {
+            console.log("CLICK");
+          }}
+        >
+          Click me
+        </button>
         {linkPanel}
         {videoPlayerPanel}
         {cutPointList}

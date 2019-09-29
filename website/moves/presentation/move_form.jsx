@@ -167,9 +167,6 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
-  const placeholder =
-    "You can add timing information like so: the move starts with a |rock step|1,2|.";
-
   const description = (
     <div className="moveForm__description mt-4">
       <FormFieldLabel label="Description" />

@@ -20,9 +20,11 @@ export function useEditCutPoint(
   function _createNewCutPoint(cutPointType: "start" | "end"): CutPointT {
     return {
       id: create_uuid(),
-      t: videoBvr.player.getCurrentTime(),
+      t: videoBvr.player ? videoBvr.player.getCurrentTime() : 0,
       type: cutPointType,
-      ...(cutPointType == "start" ? { title: "New move" } : {}),
+      name: cutPointType == "start" ? "New move" : "",
+      description: "",
+      tags: [],
     };
   }
 

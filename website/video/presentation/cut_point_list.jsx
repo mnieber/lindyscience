@@ -3,9 +3,12 @@
 import * as React from "react";
 import classnames from "classnames";
 import { Menu, MenuProvider } from "react-contexify";
-import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import { CutPointForm } from "video/presentation/cut_point_form";
+import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
+
+import type { TagT } from "tags/types";
 import type { CutPointT } from "video/types";
 import type { UUID } from "kernel/types";
 
@@ -48,19 +51,11 @@ function createClickHandlers(
   selectCutPointById: (UUID, boolean, boolean) => void,
   props: CutPointListPropsT
 ): ClickHandlersT {
-  const [swallowMouseUp: boolean, setSwallowMouseUp] = React.useState(false);
-
   function handleMouseDown(e, cutPointId) {
     selectCutPointById(cutPointId, e.shiftKey, e.ctrlKey);
-    setSwallowMouseUp(true);
   }
 
-  function handleMouseUp(e, cutPointId) {
-    if (!swallowMouseUp) {
-      selectCutPointById(cutPointId, e.shiftKey, e.ctrlKey);
-    }
-    setSwallowMouseUp(false);
-  }
+  function handleMouseUp(e, cutPointId) {}
 
   return {
     handleMouseUp,
@@ -70,8 +65,10 @@ function createClickHandlers(
 
 type CutPointListPropsT = {|
   cutPoints: Array<CutPointT>,
+  moveTags: Array<TagT>,
   highlightedCutPoint: ?CutPointT,
   selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
+  videoPlayer: any,
   className?: string,
 |};
 
@@ -90,6 +87,7 @@ export function CutPointList(props: CutPointListPropsT) {
   const highlightedCutPointId = getId(props.highlightedCutPoint);
 
   const cutPointNodes = props.cutPoints.map((cutPoint, idx) => {
+    const foo = { tags: [] };
     return (
       <div
         className={classnames({
@@ -102,7 +100,12 @@ export function CutPointList(props: CutPointListPropsT) {
         onMouseDown={e => clickHandlers.handleMouseDown(e, cutPoint.id)}
         onMouseUp={e => clickHandlers.handleMouseUp(e, cutPoint.id)}
       >
-        {cutPoint.title}
+        <CutPointForm
+          cutPoint={cutPoint}
+          onSubmit={() => {}}
+          knownTags={props.moveTags}
+          videoPlayer={props.videoPlayer}
+        />
       </div>
     );
   });

@@ -37,9 +37,10 @@ type MoveDescriptionEditorPropsT = {
   moveId: UUID,
   description: string,
   readOnly: boolean,
-  autoFocus: boolean,
+  autoFocus?: boolean,
   videoPlayer?: any,
   setEditorRef?: Function,
+  placeholder?: string,
 };
 
 export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
@@ -93,9 +94,10 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
       customHandleKeyCommand={customHandleKeyCommand}
       customKeyBindingFn={customKeyBindingFn}
       readOnly={props.readOnly}
-      autoFocus={props.autoFocus}
+      autoFocus={!!props.autoFocus}
       setEditorRef={props.setEditorRef || dummySetEditorRef}
       customStyleMap={styleMap}
+      placeholder={props.placeholder}
     />
   );
 }

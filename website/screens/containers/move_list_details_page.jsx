@@ -20,6 +20,7 @@ import type { EditCutPointBvrT } from "video/bvrs/cut_point_crud_behaviours";
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
   moveListTags: Array<TagT>,
+  moveTags: Array<TagT>,
   moveList: MoveListT,
   cutVideoLink: string,
   videoBvr: VideoBvrT,
@@ -102,6 +103,7 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
             moveListCrudBvrs={moveListCrudBvrs}
           />
           <Widgets.CutVideoPanel
+            moveTags={props.moveTags}
             actSetCutVideoLink={x => props.dispatch(actSetCutVideoLink(x))}
             cutVideoLink={props.cutVideoLink}
             videoBvr={props.videoBvr}
@@ -120,6 +122,7 @@ MoveListDetailsPage = compose(
     userProfile: Ctr.fromStore.getUserProfile(state),
     moveList: Ctr.fromStore.getSelectedMoveList(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),
+    moveTags: Ctr.fromStore.getMoveTags(state),
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
     cutPoints: Ctr.fromStore.getCutPoints(state),
   }))

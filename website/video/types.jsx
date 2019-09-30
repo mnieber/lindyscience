@@ -38,3 +38,8 @@ export type CutPointT = {
   description: string,
   tags: Array<TagT>,
 };
+
+export type CutPointBvrsT = {
+  removeCutPoint: UUID => void,
+  saveCutPoint: any => void,
+};

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { compose } from "redux";
 
-import { create_uuid } from "utils/utils";
+import { createUUID } from "utils/utils";
 import Ctr from "screens/containers/index";
 import { actAddMovePrivateDatas } from "moves/actions";
 import Widgets from "screens/presentation/index";
@@ -31,7 +31,7 @@ export const withMovePrivateDataPanel = getMove =>
 
       const _onSave = values => {
         const movePrivateData = {
-          id: create_uuid(),
+          id: createUUID(),
           moveId: getId(move),
           ...move.privateData,
           ...values,

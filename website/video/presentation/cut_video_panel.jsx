@@ -6,7 +6,7 @@ import YouTube from "react-youtube";
 import { VideoPlayerPanel } from "video/presentation/video_player";
 import { CutPointList } from "video/presentation/cut_point_list";
 
-import type { CutPointT, VideoBvrT } from "video/types";
+import type { CutPointT, VideoBvrT, CutPointBvrsT } from "video/types";
 import type { TagT } from "tags/types";
 
 type CutVideoPanelPropsT = {
@@ -15,6 +15,7 @@ type CutVideoPanelPropsT = {
   actSetCutVideoLink: Function,
   videoBvr: VideoBvrT,
   cutPoints: Array<CutPointT>,
+  cutPointBvrs: CutPointBvrsT,
 };
 
 export function CutVideoPanel(props: CutVideoPanelPropsT) {
@@ -51,6 +52,7 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
       highlightedCutPoint={null}
       selectCutPointById={selectCutPointById}
       videoPlayer={props.videoBvr.player}
+      cutPointBvrs={props.cutPointBvrs}
     />
   );
 

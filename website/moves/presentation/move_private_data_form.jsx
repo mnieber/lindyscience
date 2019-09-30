@@ -3,7 +3,7 @@
 import React from "react";
 import { withFormik } from "formik";
 
-import { create_uuid } from "utils/utils";
+import { createUUID } from "utils/utils";
 import {
   FormField,
   ValuePicker,
@@ -37,7 +37,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   const notesDiv = (
     <div className="movePrivateDataForm__notes mt-4">
       <RichTextEditor
-        key={create_uuid()}
+        key={createUUID()}
         autoFocus={true}
         readOnly={false}
         setEditorRef={props.setNotesEditorRef}

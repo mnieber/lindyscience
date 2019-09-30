@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { create_uuid } from "utils/utils2";
+import { createUUID } from "utils/utils2";
 
 import type { CutPointT, VideoBvrT } from "video/types";
 import type { UUID } from "kernel/types";
@@ -19,7 +19,7 @@ export function useEditCutPoint(
 ): EditCutPointBvrT {
   function _createNewCutPoint(cutPointType: "start" | "end"): CutPointT {
     return {
-      id: create_uuid(),
+      id: createUUID(),
       t: videoBvr.player ? videoBvr.player.getCurrentTime() : 0,
       type: cutPointType,
       name: cutPointType == "start" ? "New move" : "",

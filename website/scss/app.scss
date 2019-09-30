@@ -190,3 +190,19 @@ $panGrey: #bbbbbb;
     background-color: green;
   }
 }
+
+.cutPointHeader {
+  @apply flex flex-row w-full h-8 justify-between;
+}
+
+.cutPointHeader--start {
+  @apply bg-green;
+}
+
+.cutPointHeader--end {
+  @apply bg-blue;
+}
+
+.cutPointHeader__button {
+  @apply self-center bg-grey px-2 mr-2 cursor-pointer;
+}

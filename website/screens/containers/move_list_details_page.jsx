@@ -3,19 +3,25 @@
 import { compose } from "redux";
 import * as React from "react";
 
+import * as fromVideoStore from "video/reducers";
+import {
+  actAddCutPoints,
+  actClearCutPoints,
+  actRemoveCutPoint,
+  actSetCutVideoLink,
+} from "video/actions";
 import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
-import { actClearCutPoints, actSetCutVideoLink } from "video/actions";
 import { isOwner } from "app/utils";
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
-
 import type { CutPointT, VideoBvrT } from "video/types";
 import type { MoveListCrudBvrsT } from "screens/types";
 import type { MoveListT } from "move_lists/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
 import type { EditCutPointBvrT } from "video/bvrs/cut_point_crud_behaviours";
+import type { UUID } from "kernel/types";
 
 type MoveListDetailsPagePropsT = {
   userProfile: UserProfileT,
@@ -94,6 +100,16 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
+  const cutPointBvrs = {
+    removeCutPoint: cutPointId => props.dispatch(actRemoveCutPoint(cutPointId)),
+    saveCutPoint: (values: any) => {
+      const cutPoint = props.cutPoints.find(x => x.id == values.id);
+      if (!!cutPoint) {
+        props.dispatch(actAddCutPoints([{ ...cutPoint, ...values }]));
+      }
+    },
+  };
+
   return (
     <MoveListCrudBvrsContext.Consumer>
       {moveListCrudBvrs => (
@@ -104,10 +120,13 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
           />
           <Widgets.CutVideoPanel
             moveTags={props.moveTags}
-            actSetCutVideoLink={x => props.dispatch(actSetCutVideoLink(x))}
+            actSetCutVideoLink={link =>
+              props.dispatch(actSetCutVideoLink(link))
+            }
             cutVideoLink={props.cutVideoLink}
             videoBvr={props.videoBvr}
             cutPoints={props.cutPoints}
+            cutPointBvrs={cutPointBvrs}
           />
         </div>
       )}

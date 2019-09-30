@@ -6,7 +6,7 @@ import { makeMoveListUrl, newMoveListSlug } from "screens/utils";
 import { querySetListToDict, slugify } from "utils/utils";
 import * as moveListsApi from "move_lists/api";
 import { createErrorHandler } from "app/utils";
-import { create_uuid } from "utils/utils";
+import { createUUID } from "utils/utils";
 import { type EditItemBvrT, useEditItem } from "screens/bvrs/crud_behaviours";
 
 import type { DataContainerT } from "screens/containers/data_container";
@@ -32,7 +32,7 @@ export const withMoveListCrudBvrsContext = (WrappedComponent: any) => (
 
 export function createNewMoveList(userId: number, username: string): MoveListT {
   return {
-    id: create_uuid(),
+    id: createUUID(),
     slug: newMoveListSlug,
     name: "New move list",
     description: "",

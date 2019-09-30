@@ -1,6 +1,6 @@
 // @flow
 
-import { withFormik } from "formik";
+import { Formik } from "formik";
 import React from "react";
 
 import {
@@ -13,6 +13,7 @@ import {
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 import { isNone, truncDecimals } from "utils/utils";
+import { createUUID } from "utils/utils2";
 
 import type { CutPointT } from "video/types";
 import type { TagT } from "tags/types";
@@ -21,16 +22,14 @@ import type { UUID } from "kernel/types";
 type InnerFormPropsT = {
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
-  setTagsPickerRef: any => void,
   setDescriptionEditorRef: any => void,
   videoPlayer: any,
   cutPointId: UUID,
+  autoFocus: boolean,
+  tagsPickerRef: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const tagsPickerRef = React.useRef(null);
-  props.setTagsPickerRef(tagsPickerRef);
-
   const nameField = (
     <FormField
       classNames="w-full"
@@ -38,6 +37,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       fieldName="name"
       type="text"
       placeholder="Name"
+      autoFocus={props.autoFocus}
     />
   );
 
@@ -59,7 +59,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="cutPointForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={tagsPickerRef}
+        ref={props.tagsPickerRef}
         isCreatable={true}
         defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
@@ -73,7 +73,9 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 
   return (
     <form
-      onBlur={() => console.log("BLUR")}
+      onBlur={() => {
+        formProps.submitForm();
+      }}
       className="cutPointForm w-full"
       onSubmit={formProps.handleSubmit}
     >
@@ -89,56 +91,54 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 // CutPointForm
 
 type CutPointFormPropsT = {
-  onSubmit: (id: UUID, values: any) => void,
+  onSubmit: (values: any) => void,
   knownTags: Array<TagT>,
   cutPoint: CutPointT,
   videoPlayer: any,
+  autoFocus: boolean,
 };
 
 export function CutPointForm(props: CutPointFormPropsT) {
-  console.log("RENDERING");
   const refs = {};
-  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
   const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
+  const tagsPickerRef = React.useRef(null);
 
-  const EnhancedForm = withFormik({
-    mapPropsToValues: () => ({
-      name: props.cutPoint.name,
-      description: props.cutPoint.description,
-      tags: props.cutPoint.tags,
-    }),
+  return (
+    <Formik
+      initialValues={{
+        name: props.cutPoint.name,
+        description: props.cutPoint.description,
+        tags: props.cutPoint.tags,
+      }}
+      validate={(values, formProps) => {
+        values.description = getContentFromEditor(
+          refs.descriptionEditorRef.current,
+          ""
+        );
+        values.tags = getValueFromPicker(tagsPickerRef.current, []);
 
-    validate: (values, formProps) => {
-      values.description = getContentFromEditor(
-        refs.descriptionEditorRef.current,
-        ""
-      );
-      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
-
-      let errors = {};
-      if (!values.name) {
-        errors.name = "This field is required";
-      }
-      if (!values.tags) {
-        errors.tags = "This field is required";
-      }
-      return errors;
-    },
-
-    handleSubmit: (values, { setSubmitting }) => {
-      props.onSubmit({ ...values, id: props.cutPoint.id });
-    },
-    displayName: "BasicForm", // helps with React DevTools
-  })(
-    InnerForm({
-      tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagPickerDefaultValue: props.cutPoint.tags.map(strToPickerValue),
-      videoPlayer: props.videoPlayer,
-      setTagsPickerRef,
-      setDescriptionEditorRef,
-      cutPointId: props.cutPoint.id,
-    })
+        let errors = {};
+        if (!values.name) {
+          errors.name = "This field is required";
+        }
+        if (!values.tags) {
+          errors.tags = "This field is required";
+        }
+        return errors;
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        props.onSubmit({ ...values, id: props.cutPoint.id });
+      }}
+      displayName={"BasicForm"}
+      render={InnerForm({
+        tagPickerOptions: props.knownTags.map(strToPickerValue),
+        tagPickerDefaultValue: props.cutPoint.tags.map(strToPickerValue),
+        videoPlayer: props.videoPlayer,
+        setDescriptionEditorRef,
+        cutPointId: props.cutPoint.id,
+        autoFocus: props.autoFocus,
+        tagsPickerRef,
+      })}
+    />
   );
-
-  return <EnhancedForm />;
 }

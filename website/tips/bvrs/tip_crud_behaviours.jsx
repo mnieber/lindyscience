@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { create_uuid } from "utils/utils";
+import { createUUID } from "utils/utils";
 
 import type { UUID } from "kernel/types";
 import type { TipT } from "tips/types";
@@ -46,7 +46,7 @@ export function useNewTip(
 
   function _createNewTip(): TipT {
     return {
-      id: create_uuid(),
+      id: createUUID(),
       ownerId: userId,
       moveId: moveId,
       text: "",

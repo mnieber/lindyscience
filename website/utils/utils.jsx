@@ -189,6 +189,6 @@ export function roundDecimals(x: number, k: number) {
   return Math.round(x * factor) / factor;
 }
 
-export function create_uuid() {
+export function createUUID() {
   return uuidv4();
 }

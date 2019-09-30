@@ -53,6 +53,7 @@ export const withCutVideoBvr = compose(
     const videoKeyHandlers = {
       ...createVideoKeyHandlers(videoBvr),
       "ctrl+shift+insert": () => editCutPointBvr.add("start"),
+      "ctrl+shift+alt+insert": () => editCutPointBvr.add("end"),
     };
     const videoKeys = Object.keys(videoKeyHandlers);
     const onKeyDown = createKeyDownHandler(videoKeyHandlers);

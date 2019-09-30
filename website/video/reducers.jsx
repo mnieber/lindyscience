@@ -47,11 +47,28 @@ export function cutPointsReducer(
     case "CLEAR_CUT_POINTS":
       return [];
     case "ADD_CUT_POINTS":
-      const cmp = (lhs, rhs) => rhs.t - lhs.t;
+      const cmp = (lhs, rhs) => lhs.t - rhs.t;
       return action.cutPoints.reduce((acc, cutPoint) => {
-        const idx = getInsertionIndex(acc, cutPoint, cmp);
-        return [...acc.slice(0, idx), cutPoint, ...acc.slice(idx)];
+        const existingCutPoint = acc.find(
+          x => x.type == cutPoint.type && x.t == cutPoint.t
+        );
+
+        if (existingCutPoint && existingCutPoint.id != cutPoint.id) {
+          return acc;
+        } else if (existingCutPoint) {
+          const idx = acc.indexOf(existingCutPoint);
+          return [
+            ...acc.slice(0, idx),
+            { ...existingCutPoint, ...cutPoint },
+            ...acc.slice(idx + 1),
+          ];
+        } else {
+          const idx = getInsertionIndex(acc, cutPoint, cmp);
+          return [...acc.slice(0, idx), cutPoint, ...acc.slice(idx)];
+        }
       }, state);
+    case "REMOVE_CUT_POINT":
+      return state.filter(x => x.id != action.cutPointId);
     default:
       return state;
   }

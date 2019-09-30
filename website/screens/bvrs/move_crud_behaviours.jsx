@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { create_uuid, slugify } from "utils/utils";
+import { createUUID, slugify } from "utils/utils";
 import { type EditItemBvrT, useEditItem } from "screens/bvrs/crud_behaviours";
 import * as api from "screens/api";
 import * as movesApi from "moves/api";
@@ -39,7 +39,7 @@ export function createNewMove(
   }
 
   return {
-    id: create_uuid(),
+    id: createUUID(),
     slug: newMoveSlug,
     link: "",
     name: "New move",

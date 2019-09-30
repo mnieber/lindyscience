@@ -5,11 +5,12 @@ import classnames from "classnames";
 import { Menu, MenuProvider } from "react-contexify";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import { CutPointHeader } from "video/presentation/cut_point_header";
 import { CutPointForm } from "video/presentation/cut_point_form";
 import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
 
+import type { CutPointBvrsT, CutPointT } from "video/types";
 import type { TagT } from "tags/types";
-import type { CutPointT } from "video/types";
 import type { UUID } from "kernel/types";
 
 // CutPointList
@@ -68,6 +69,7 @@ type CutPointListPropsT = {|
   moveTags: Array<TagT>,
   highlightedCutPoint: ?CutPointT,
   selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
+  cutPointBvrs: CutPointBvrsT,
   videoPlayer: any,
   className?: string,
 |};
@@ -87,7 +89,15 @@ export function CutPointList(props: CutPointListPropsT) {
   const highlightedCutPointId = getId(props.highlightedCutPoint);
 
   const cutPointNodes = props.cutPoints.map((cutPoint, idx) => {
-    const foo = { tags: [] };
+    const form = (
+      <CutPointForm
+        cutPoint={cutPoint}
+        onSubmit={props.cutPointBvrs.saveCutPoint}
+        knownTags={props.moveTags}
+        videoPlayer={props.videoPlayer}
+        autoFocus={true}
+      />
+    );
     return (
       <div
         className={classnames({
@@ -100,12 +110,12 @@ export function CutPointList(props: CutPointListPropsT) {
         onMouseDown={e => clickHandlers.handleMouseDown(e, cutPoint.id)}
         onMouseUp={e => clickHandlers.handleMouseUp(e, cutPoint.id)}
       >
-        <CutPointForm
+        <CutPointHeader
           cutPoint={cutPoint}
-          onSubmit={() => {}}
-          knownTags={props.moveTags}
           videoPlayer={props.videoPlayer}
+          removeCutPoint={props.cutPointBvrs.removeCutPoint}
         />
+        {cutPoint.type == "start" && form}
       </div>
     );
   });

@@ -29,14 +29,11 @@ type InnerFormPropsT = {
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
   onCancel: () => void,
-  setDescriptionEditorRef: any => void,
-  setTagsPickerRef: any => void,
+  tagsPickerRef: any,
+  descriptionEditorRef: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const tagsPickerRef = React.useRef(null);
-  props.setTagsPickerRef(tagsPickerRef);
-
   const nameField = (
     <FormField
       classNames="w-full"
@@ -83,7 +80,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       <RichTextEditor
         autoFocus={false}
         readOnly={false}
-        setEditorRef={props.setDescriptionEditorRef}
+        ref={props.descriptionEditorRef}
         initialEditorState={toEditorState(formProps.values.description)}
       />
       {formFieldError(formProps, "description", ["formField__error"])}
@@ -104,7 +101,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveListForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={tagsPickerRef}
+        ref={props.tagsPickerRef}
         isCreatable={true}
         label="Tags"
         defaultValue={props.tagPickerDefaultValue}
@@ -157,9 +154,8 @@ type MoveListFormPropsT = {
 };
 
 export function MoveListForm(props: MoveListFormPropsT) {
-  const refs = {};
-  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
-  const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
+  const tagsPickerRef = React.useRef(null);
+  const descriptionEditorRef = React.useRef(null);
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
@@ -173,10 +169,10 @@ export function MoveListForm(props: MoveListFormPropsT) {
 
     validate: (values, formProps) => {
       values.description = getContentFromEditor(
-        refs.descriptionEditorRef.current,
+        descriptionEditorRef.current,
         ""
       );
-      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
+      values.tags = getValueFromPicker(tagsPickerRef.current, []);
 
       let errors = {};
       if (!values.name) {
@@ -198,8 +194,8 @@ export function MoveListForm(props: MoveListFormPropsT) {
       tagPickerOptions: props.knownTags.map(strToPickerValue),
       tagPickerDefaultValue: props.moveList.tags.map(strToPickerValue),
       onCancel: props.onCancel,
-      setDescriptionEditorRef,
-      setTagsPickerRef,
+      tagsPickerRef,
+      descriptionEditorRef,
     })
   );
 

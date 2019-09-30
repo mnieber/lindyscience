@@ -15,7 +15,7 @@ type RichTextEditorPropsT = {
   initialEditorState: any,
   autoFocus: boolean,
   readOnly: boolean,
-  setEditorRef: any => void,
+  forwardedRef?: any,
   customStyleMap?: any,
   placeholder?: string,
   customHandleKeyCommand?: Function,
@@ -23,10 +23,7 @@ type RichTextEditorPropsT = {
 };
 
 // TODO: use Modifier.replaceText(selection, inlineStyle) to convert content to nicely styled readonly content
-export function RichTextEditor(props: RichTextEditorPropsT) {
-  const editorRef = React.useRef(null);
-  props.setEditorRef(editorRef);
-
+function RichTextEditor_(props: RichTextEditorPropsT) {
   const [editorState, setEditorState] = React.useState(
     props.initialEditorState
   );
@@ -36,10 +33,10 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
   };
 
   React.useEffect(() => {
-    if (props.autoFocus && editorRef && editorRef.current) {
-      editorRef.current.focus();
+    if (props.autoFocus && props.forwardedRef && props.forwardedRef.current) {
+      props.forwardedRef.current.focus();
     }
-  }, [editorRef]);
+  }, [props.forwardedRef]);
 
   const handleKeyCommand = (command, editorState) => {
     let newState = null;
@@ -69,7 +66,7 @@ export function RichTextEditor(props: RichTextEditorPropsT) {
 
   return (
     <Editor
-      ref={editorRef}
+      ref={props.forwardedRef}
       editorState={editorState}
       handleKeyCommand={handleKeyCommand}
       keyBindingFn={customKeyBindingFn}
@@ -89,3 +86,8 @@ export function getContentFromEditor(editor: any, defaultValue: string) {
     convertToRaw(editor.props.editorState.getCurrentContent())
   );
 }
+
+// $FlowFixMe
+export const RichTextEditor = React.forwardRef((props, ref) => {
+  return <RichTextEditor_ {...props} forwardedRef={ref} />;
+});

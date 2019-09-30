@@ -46,7 +46,6 @@ export function MoveListDetails(props: MoveListDetailsPropsT) {
         initialEditorState={toReadOnlyEditorState(props.moveList.description)}
         readOnly={true}
         autoFocus={false}
-        setEditorRef={() => {}}
       />
     </div>
   );

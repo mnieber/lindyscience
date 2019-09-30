@@ -22,11 +22,11 @@ import type { UUID } from "kernel/types";
 type InnerFormPropsT = {
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
-  setDescriptionEditorRef: any => void,
   videoPlayer: any,
   cutPointId: UUID,
   autoFocus: boolean,
   tagsPickerRef: any,
+  editorRef: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -47,7 +47,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         placeholder="Description"
         moveId={props.cutPointId}
         readOnly={false}
-        setEditorRef={props.setDescriptionEditorRef}
+        editorRef={props.editorRef}
         description={formProps.values.description}
         videoPlayer={props.videoPlayer}
       />
@@ -99,9 +99,8 @@ type CutPointFormPropsT = {
 };
 
 export function CutPointForm(props: CutPointFormPropsT) {
-  const refs = {};
-  const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
   const tagsPickerRef = React.useRef(null);
+  const editorRef = React.useRef(null);
 
   return (
     <Formik
@@ -111,10 +110,7 @@ export function CutPointForm(props: CutPointFormPropsT) {
         tags: props.cutPoint.tags,
       }}
       validate={(values, formProps) => {
-        values.description = getContentFromEditor(
-          refs.descriptionEditorRef.current,
-          ""
-        );
+        values.description = getContentFromEditor(editorRef.current, "");
         values.tags = getValueFromPicker(tagsPickerRef.current, []);
 
         let errors = {};
@@ -134,9 +130,9 @@ export function CutPointForm(props: CutPointFormPropsT) {
         tagPickerOptions: props.knownTags.map(strToPickerValue),
         tagPickerDefaultValue: props.cutPoint.tags.map(strToPickerValue),
         videoPlayer: props.videoPlayer,
-        setDescriptionEditorRef,
         cutPointId: props.cutPoint.id,
         autoFocus: props.autoFocus,
+        editorRef,
         tagsPickerRef,
       })}
     />

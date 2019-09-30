@@ -39,7 +39,7 @@ type MoveDescriptionEditorPropsT = {
   readOnly: boolean,
   autoFocus?: boolean,
   videoPlayer?: any,
-  setEditorRef?: Function,
+  editorRef?: any,
   placeholder?: string,
 };
 
@@ -95,7 +95,7 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
       customKeyBindingFn={customKeyBindingFn}
       readOnly={props.readOnly}
       autoFocus={!!props.autoFocus}
-      setEditorRef={props.setEditorRef || dummySetEditorRef}
+      ref={props.editorRef}
       customStyleMap={styleMap}
       placeholder={props.placeholder}
     />

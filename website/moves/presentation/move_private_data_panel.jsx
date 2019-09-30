@@ -42,7 +42,6 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
         )}
         readOnly={true}
         autoFocus={false}
-        setEditorRef={() => {}}
       />
       {tags.length ? <Tags tags={tags} /> : undefined}
     </div>

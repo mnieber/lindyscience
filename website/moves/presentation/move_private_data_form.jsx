@@ -25,22 +25,19 @@ type InnerFormPropsT = {
   autoFocus: boolean,
   tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
-  setNotesEditorRef: any => void,
   onCancel: () => void,
-  setTagsPickerRef: any => void,
+  tagsPickerRef: any,
+  notesEditorRef: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const tagsPickerRef = React.useRef(null);
-  props.setTagsPickerRef(tagsPickerRef);
-
   const notesDiv = (
     <div className="movePrivateDataForm__notes mt-4">
       <RichTextEditor
         key={createUUID()}
         autoFocus={true}
         readOnly={false}
-        setEditorRef={props.setNotesEditorRef}
+        ref={props.notesEditorRef}
         initialEditorState={toEditorState(formProps.values.notes)}
       />
       {formFieldError(formProps, "notes", ["formField__error"])}
@@ -51,7 +48,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="movePrivateDataForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={tagsPickerRef}
+        ref={props.tagsPickerRef}
         isCreatable={true}
         label="Tags"
         defaultValue={props.tagPickerDefaultValue}
@@ -98,9 +95,8 @@ type MovePrivateDataFormPropsT = {
 };
 
 export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
-  const refs = {};
-  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
-  const setNotesEditorRef = x => (refs.notesEditorRef = x);
+  const tagsPickerRef = React.useRef(null);
+  const notesEditorRef = React.useRef(null);
 
   const notes = props.movePrivateData ? props.movePrivateData.notes || "" : "";
   const tags = props.movePrivateData ? props.movePrivateData.tags || [] : [];
@@ -113,8 +109,8 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
 
     validate: (values, formProps) => {
       // HACK: add values from non-input fields
-      values.notes = getContentFromEditor(refs.notesEditorRef.current, "");
-      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
+      values.notes = getContentFromEditor(notesEditorRef.current, "");
+      values.tags = getValueFromPicker(tagsPickerRef.current, []);
       let errors = {};
       return errors;
     },
@@ -128,9 +124,9 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
       tagPickerDefaultValue: tags.map(strToPickerValue),
-      setNotesEditorRef: setNotesEditorRef,
       onCancel: props.onCancel,
-      setTagsPickerRef,
+      notesEditorRef,
+      tagsPickerRef,
     })
   );
 

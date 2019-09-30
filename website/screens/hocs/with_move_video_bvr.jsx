@@ -48,11 +48,13 @@ export const withMoveVideoBvr = compose(
     const videoKeyHandlers = {
       ...createVideoKeyHandlers(videoBvr),
       ...createVideoTimePointKeyHandlers(videoBvr, timePoints),
-      ...createVideoStartEndKeyHandlers(
-        videoBvr,
-        move.startTimeMs,
-        move.endTimeMs
-      ),
+      ...(move
+        ? createVideoStartEndKeyHandlers(
+            videoBvr,
+            move.startTimeMs,
+            move.endTimeMs
+          )
+        : {}),
     };
     const videoKeys = Object.keys(videoKeyHandlers);
     const onKeyDown = createKeyDownHandler(videoKeyHandlers);

@@ -57,76 +57,8 @@ function _createStaticMoveListDetails(
   );
 }
 
-function _createOwnMoveListDetails(
-  moveList: MoveListT,
-  props: _MoveListDetailsPagePropsT
-) {
-  const editBtn = (
-    <div
-      className={"button button--wide ml-2"}
-      onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
-      key={1}
-    >
-      Edit
-    </div>
-  );
-
-  const div = props.moveListCrudBvrs.isEditing ? (
-    <Widgets.MoveListForm
-      autoFocus={true}
-      knownTags={props.moveListTags}
-      moveList={moveList}
-      onSubmit={values =>
-        props.moveListCrudBvrs.editMoveListBvr.finalize(false, values)
-      }
-      onCancel={() =>
-        props.moveListCrudBvrs.editMoveListBvr.finalize(true, null)
-      }
-    />
-  ) : (
-    _createStaticMoveListDetails(moveList, props)
-  );
-
-  return (
-    <div>
-      {!props.moveListCrudBvrs.isEditing && editBtn}
-      {div}
-    </div>
-  );
-}
-
-function createMoveFromCutPoint(
-  cutPoint: CutPointT,
-  userProfile: UserProfileT,
-  cutVideoLink: string,
-  moveList: MoveListT
-) {
+function _createCutPointBvrs(props: _MoveListDetailsPagePropsT) {
   return {
-    id: cutPoint.id,
-    ownerId: userProfile.userId,
-    name: cutPoint.name,
-    slug: slugify(cutPoint.name),
-    description: cutPoint.description,
-    tags: cutPoint.tags,
-    startTimeMs: cutPoint.t * 1000,
-    endTimeMs: undefined,
-    privateData: undefined,
-    link: cutVideoLink,
-    sourceMoveListId: moveList.id,
-  };
-}
-export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
-  if (!props.moveList) {
-    return <React.Fragment />;
-  }
-
-  return isOwner(props.userProfile, props.moveList.ownerId)
-    ? _createOwnMoveListDetails(props.moveList, props)
-    : _createStaticMoveListDetails(props.moveList, props);
-}
-
-export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
-  const cutPointBvrs = {
     removeCutPoints: cutPointIds =>
       props.dispatch(actRemoveCutPoints(cutPointIds)),
     saveCutPoint: (values: any) => {
@@ -181,7 +113,87 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
       });
     },
   };
+}
 
+function _createOwnMoveListDetails(
+  moveList: MoveListT,
+  props: _MoveListDetailsPagePropsT
+) {
+  const editBtn = (
+    <div
+      className={"button button--wide ml-2"}
+      onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
+      key={1}
+    >
+      Edit
+    </div>
+  );
+
+  const div = props.moveListCrudBvrs.isEditing ? (
+    <Widgets.MoveListForm
+      autoFocus={true}
+      knownTags={props.moveListTags}
+      moveList={moveList}
+      onSubmit={values =>
+        props.moveListCrudBvrs.editMoveListBvr.finalize(false, values)
+      }
+      onCancel={() =>
+        props.moveListCrudBvrs.editMoveListBvr.finalize(true, null)
+      }
+    />
+  ) : (
+    _createStaticMoveListDetails(moveList, props)
+  );
+
+  const cutPointBvrs = _createCutPointBvrs(props);
+
+  return (
+    <div>
+      {!props.moveListCrudBvrs.isEditing && editBtn}
+      {div}
+      <Widgets.CutVideoPanel
+        moveTags={props.moveTags}
+        actSetCutVideoLink={link => props.dispatch(actSetCutVideoLink(link))}
+        cutVideoLink={props.cutVideoLink}
+        videoBvr={props.videoBvr}
+        cutPoints={props.cutPoints}
+        cutPointBvrs={cutPointBvrs}
+      />
+    </div>
+  );
+}
+
+function createMoveFromCutPoint(
+  cutPoint: CutPointT,
+  userProfile: UserProfileT,
+  cutVideoLink: string,
+  moveList: MoveListT
+) {
+  return {
+    id: cutPoint.id,
+    ownerId: userProfile.userId,
+    name: cutPoint.name,
+    slug: slugify(cutPoint.name),
+    description: cutPoint.description,
+    tags: cutPoint.tags,
+    startTimeMs: cutPoint.t * 1000,
+    endTimeMs: undefined,
+    privateData: undefined,
+    link: cutVideoLink,
+    sourceMoveListId: moveList.id,
+  };
+}
+export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
+  if (!props.moveList) {
+    return <React.Fragment />;
+  }
+
+  return isOwner(props.userProfile, props.moveList.ownerId)
+    ? _createOwnMoveListDetails(props.moveList, props)
+    : _createStaticMoveListDetails(props.moveList, props);
+}
+
+export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
   return (
     <MoveListCrudBvrsContext.Consumer>
       {moveListCrudBvrs => (
@@ -189,16 +201,6 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
           <_MoveListDetailsPage
             {...props}
             moveListCrudBvrs={moveListCrudBvrs}
-          />
-          <Widgets.CutVideoPanel
-            moveTags={props.moveTags}
-            actSetCutVideoLink={link =>
-              props.dispatch(actSetCutVideoLink(link))
-            }
-            cutVideoLink={props.cutVideoLink}
-            videoBvr={props.videoBvr}
-            cutPoints={props.cutPoints}
-            cutPointBvrs={cutPointBvrs}
           />
         </div>
       )}

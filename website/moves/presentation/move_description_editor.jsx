@@ -34,7 +34,7 @@ const styleMap = {
 // Move
 
 type MoveDescriptionEditorPropsT = {
-  moveId: UUID,
+  editorId: UUID,
   description: string,
   readOnly: boolean,
   autoFocus?: boolean,
@@ -89,7 +89,7 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
 
   return (
     <RichTextEditor
-      key={props.moveId + keyPostfix} // yes, we need this
+      key={props.editorId + keyPostfix} // yes, we need this
       initialEditorState={readOnlyEditorState}
       customHandleKeyCommand={customHandleKeyCommand}
       customKeyBindingFn={customKeyBindingFn}

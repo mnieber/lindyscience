@@ -33,11 +33,15 @@ export const withMoveVideoBvr = compose(
     const parentDivId = "moveDiv";
     const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
     const videoBvr = useVideo(parentDivId, video);
-    const description = move ? move.description : "";
 
-    const timePoints = React.useMemo(() => extractTimePoints(description), [
-      description,
-    ]);
+    const description = move ? move.description : "";
+    const privateNotes = move && move.privateData ? move.privateData.notes : "";
+    const textWithTimePoints = description + privateNotes;
+
+    const timePoints = React.useMemo(
+      () => extractTimePoints(textWithTimePoints),
+      [textWithTimePoints]
+    );
 
     useInterval(() => styleTimePoints(videoBvr.player, timePoints), 250);
 

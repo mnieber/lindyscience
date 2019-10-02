@@ -44,7 +44,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   const description = (
     <div className="cutPointForm__description mt-4">
       <MoveDescriptionEditor
-        editorId={props.cutPointId}
+        editorId={"cutPoint_" + props.cutPointId}
         placeholder="Description"
         readOnly={false}
         editorRef={props.editorRef}

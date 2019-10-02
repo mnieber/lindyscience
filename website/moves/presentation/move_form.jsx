@@ -168,7 +168,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__description mt-4">
       <FormFieldLabel label="Description" />
       <MoveDescriptionEditor
-        editorId={props.moveId}
+        editorId={"move_" + props.moveId}
         autoFocus={false}
         readOnly={false}
         editorRef={props.editorRef}

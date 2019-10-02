@@ -3,6 +3,7 @@
 import React from "react";
 import { withFormik } from "formik";
 
+import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { createUUID } from "utils/utils";
 import {
   FormField,
@@ -11,11 +12,9 @@ import {
   getValueFromPicker,
   strToPickerValue,
 } from "utils/form_utils";
-import {
-  RichTextEditor,
-  getContentFromEditor,
-} from "rich_text/presentation/rich_text_editor";
-import { toEditorState } from "rich_text/utils/editor_state";
+import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
+
+import type { UUID } from "kernel/types";
 import type { MovePrivateDataT } from "moves/types";
 import type { TagT } from "tags/types";
 
@@ -28,17 +27,20 @@ type InnerFormPropsT = {
   onCancel: () => void,
   tagsPickerRef: any,
   notesEditorRef: any,
+  moveId: UUID,
+  videoPlayer?: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
   const notesDiv = (
     <div className="movePrivateDataForm__notes mt-4">
-      <RichTextEditor
-        key={createUUID()}
+      <MoveDescriptionEditor
+        editorId={"privateData_" + props.moveId}
         autoFocus={true}
         readOnly={false}
-        ref={props.notesEditorRef}
-        initialEditorState={toEditorState(formProps.values.notes)}
+        editorRef={props.notesEditorRef}
+        description={formProps.values.notes}
+        videoPlayer={props.videoPlayer}
       />
       {formFieldError(formProps, "notes", ["formField__error"])}
     </div>
@@ -90,8 +92,10 @@ type MovePrivateDataFormPropsT = {
   onCancel: () => void,
   onSubmit: (values: any) => void,
   knownTags: Array<TagT>,
+  moveId: UUID,
   movePrivateData: ?MovePrivateDataT,
   autoFocus: boolean,
+  videoPlayer?: any,
 };
 
 export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
@@ -127,6 +131,8 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
       onCancel: props.onCancel,
       notesEditorRef,
       tagsPickerRef,
+      moveId: props.moveId,
+      videoPlayer: props.videoPlayer,
     })
   );
 

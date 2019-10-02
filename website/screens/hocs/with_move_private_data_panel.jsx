@@ -15,6 +15,7 @@ import type { UserProfileT } from "profiles/types";
 type PropsT = {
   userProfile: UserProfileT,
   moveTags: Array<TagT>,
+  videoBvr?: any,
   // receive any actions as well
 };
 
@@ -28,6 +29,7 @@ export const withMovePrivateDataPanel = getMove =>
     (WrappedComponent: any) => (props: any) => {
       const { userProfile, moveTags, ...passThroughProps }: PropsT = props;
       const move: MoveT = getMove();
+      const videoPlayer = props.videoBvr ? props.videoBvr.player : undefined;
 
       const _onSave = values => {
         const movePrivateData = {
@@ -55,6 +57,8 @@ export const withMovePrivateDataPanel = getMove =>
           movePrivateData={move ? move.privateData : undefined}
           onSave={_onSave}
           moveTags={moveTags}
+          moveId={getId(move)}
+          videoPlayer={videoPlayer}
         />
       );
 

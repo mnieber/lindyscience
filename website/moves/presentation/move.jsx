@@ -4,8 +4,6 @@ import * as React from "react";
 import classnames from "classnames";
 
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
-import { toReadOnlyEditorState } from "rich_text/utils/editor_state";
-import { createTimePointDecorator } from "video/presentation/timepoint_decorator";
 
 import type { MoveT } from "moves/types";
 
@@ -22,7 +20,7 @@ export function Move(props: MovePropsT) {
     <div className={"move__description panel"}>
       <h2>Description</h2>
       <MoveDescriptionEditor
-        editorId={props.move.id}
+        editorId={"move_" + props.move.id}
         description={props.move.description}
         readOnly={true}
         autoFocus={false}

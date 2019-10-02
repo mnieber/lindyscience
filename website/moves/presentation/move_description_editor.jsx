@@ -60,6 +60,7 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
   const keyPostfix = props.videoPlayer ? props.videoPlayer.getVideoUrl() : "";
 
   const customHandleKeyCommand = (command, editorState) => {
+    console.log("HA", props.videoPlayer);
     if (command == "insert-timepoint" && props.videoPlayer) {
       const contentState = editorState.getCurrentContent();
       const selectionState = editorState.getSelection();
@@ -84,8 +85,6 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
     }
     return null;
   };
-
-  const dummySetEditorRef = () => {};
 
   return (
     <RichTextEditor

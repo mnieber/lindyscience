@@ -67,8 +67,8 @@ export function cutPointsReducer(
           return [...acc.slice(0, idx), cutPoint, ...acc.slice(idx)];
         }
       }, state);
-    case "REMOVE_CUT_POINT":
-      return state.filter(x => x.id != action.cutPointId);
+    case "REMOVE_CUT_POINTS":
+      return state.filter(x => !action.cutPointIds.includes(x.id));
     default:
       return state;
   }

@@ -33,9 +33,9 @@ export function actAddCutPoints(cutPoints: Array<CutPointT>) {
   };
 }
 
-export function actRemoveCutPoint(cutPointId: UUID) {
+export function actRemoveCutPoints(cutPointIds: Array<UUID>) {
   return {
-    type: "REMOVE_CUT_POINT",
-    cutPointId,
+    type: "REMOVE_CUT_POINTS",
+    cutPointIds,
   };
 }

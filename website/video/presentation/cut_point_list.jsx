@@ -113,7 +113,7 @@ export function CutPointList(props: CutPointListPropsT) {
         <CutPointHeader
           cutPoint={cutPoint}
           videoPlayer={props.videoPlayer}
-          removeCutPoint={props.cutPointBvrs.removeCutPoint}
+          removeCutPoints={props.cutPointBvrs.removeCutPoints}
         />
         {cutPoint.type == "start" && form}
       </div>

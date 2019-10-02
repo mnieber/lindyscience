@@ -10,13 +10,13 @@ import type { UUID } from "kernel/types";
 
 type CutPointHeaderPropsT = {
   cutPoint: CutPointT,
-  removeCutPoint: UUID => void,
+  removeCutPoints: (Array<UUID>) => void,
   videoPlayer: any,
 };
 
 export function CutPointHeader(props: CutPointHeaderPropsT) {
   const onClickRemoveButton = e => {
-    props.removeCutPoint(cutPoint.id);
+    props.removeCutPoints([cutPoint.id]);
     e.preventDefault();
     e.stopPropagation();
   };

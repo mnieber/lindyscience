@@ -56,18 +56,22 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
     />
   );
 
+  const buttonCreateMoves = (
+    <button
+      onClick={() => {
+        props.cutPointBvrs.createMovesFromCutPoints();
+        props.cutPointBvrs.removeCutPoints(props.cutPoints.map(x => x.id));
+      }}
+    >
+      Create moves
+    </button>
+  );
   return (
     <div>
       <div className={"cutVideoPanel panel"}>
-        <button
-          onClick={() => {
-            console.log("CLICK");
-          }}
-        >
-          Click me
-        </button>
         {linkPanel}
         {videoPlayerPanel}
+        {buttonCreateMoves}
         {cutPointList}
       </div>
     </div>

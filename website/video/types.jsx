@@ -40,6 +40,7 @@ export type CutPointT = {
 };
 
 export type CutPointBvrsT = {
-  removeCutPoint: UUID => void,
+  removeCutPoints: (Array<UUID>) => void,
   saveCutPoint: any => void,
+  createMovesFromCutPoints: () => void,
 };

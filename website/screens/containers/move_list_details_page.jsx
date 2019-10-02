@@ -1,17 +1,23 @@
 // @flow
 
-import { compose } from "redux";
 import * as React from "react";
+import { compose } from "redux";
 
-import * as fromVideoStore from "video/reducers";
+import * as movesApi from "moves/api";
+import * as moveListsApi from "move_lists/api";
+
+import { createErrorHandler, isOwner } from "app/utils";
+import { isNone } from "utils/utils2";
+import { actInsertMoveIds } from "move_lists/actions";
+import { actAddMoves } from "moves/actions";
+import { slugify } from "utils/utils";
 import {
   actAddCutPoints,
   actClearCutPoints,
-  actRemoveCutPoint,
+  actRemoveCutPoints,
   actSetCutVideoLink,
 } from "video/actions";
 import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
-import { isOwner } from "app/utils";
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
@@ -89,6 +95,26 @@ function _createOwnMoveListDetails(
   );
 }
 
+function createMoveFromCutPoint(
+  cutPoint: CutPointT,
+  userProfile: UserProfileT,
+  cutVideoLink: string,
+  moveList: MoveListT
+) {
+  return {
+    id: cutPoint.id,
+    ownerId: userProfile.userId,
+    name: cutPoint.name,
+    slug: slugify(cutPoint.name),
+    description: cutPoint.description,
+    tags: cutPoint.tags,
+    startTimeMs: cutPoint.t * 1000,
+    endTimeMs: undefined,
+    privateData: undefined,
+    link: cutVideoLink,
+    sourceMoveListId: moveList.id,
+  };
+}
 export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   if (!props.moveList) {
     return <React.Fragment />;
@@ -101,12 +127,58 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
   const cutPointBvrs = {
-    removeCutPoint: cutPointId => props.dispatch(actRemoveCutPoint(cutPointId)),
+    removeCutPoints: cutPointIds =>
+      props.dispatch(actRemoveCutPoints(cutPointIds)),
     saveCutPoint: (values: any) => {
       const cutPoint = props.cutPoints.find(x => x.id == values.id);
       if (!!cutPoint) {
         props.dispatch(actAddCutPoints([{ ...cutPoint, ...values }]));
       }
+    },
+    createMovesFromCutPoints: () => {
+      const newMoves = props.cutPoints.reduce((acc, cutPoint) => {
+        if (cutPoint.type == "end") {
+          const lastMoveIdx = acc.length - 1;
+          const lastMove = acc.length ? acc[lastMoveIdx] : undefined;
+          return lastMove && isNone(lastMove.endTimeMs)
+            ? [
+                ...acc.slice(0, lastMoveIdx),
+                { ...lastMove, endTimeMs: cutPoint.t * 1000 },
+              ]
+            : acc;
+        } else {
+          const newMove = createMoveFromCutPoint(
+            cutPoint,
+            props.userProfile,
+            props.cutVideoLink,
+            props.moveList
+          );
+          return [...acc, newMove];
+        }
+      }, []);
+
+      const lastMoveIdx = props.moveList.moves.length - 1;
+      const lastMoveId =
+        lastMoveIdx >= 0 ? props.moveList.moves[lastMoveIdx] : "";
+
+      props.dispatch(actAddMoves(newMoves));
+      const moveIdsInMoveList = props.dispatch(
+        actInsertMoveIds(
+          newMoves.map(x => x.id),
+          props.moveList.id,
+          lastMoveId,
+          false
+        )
+      );
+
+      newMoves.forEach(newMove => {
+        movesApi
+          .saveMove(newMove)
+          .catch(createErrorHandler("We could not save the move"));
+        moveListsApi
+          .saveMoveOrdering(props.moveList.id, moveIdsInMoveList)
+          .catch(createErrorHandler("We could not update the movelist"));
+      });
     },
   };
 

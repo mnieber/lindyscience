@@ -28,6 +28,7 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
   const linkPanel = (
     <div className="flex flex-row h-8">
       <input
+        id="linkPanelInput"
         className="w-full"
         onKeyDown={onKeyDown}
         placeholder="Video link"

@@ -1,6 +1,8 @@
 // @flow
 
 import * as React from "react";
+
+import jQuery from "jquery";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
@@ -54,6 +56,9 @@ export const withCutVideoBvr = compose(
       ...createVideoKeyHandlers(videoBvr),
       "ctrl+shift+insert": () => editCutPointBvr.add("start"),
       "ctrl+shift+alt+insert": () => editCutPointBvr.add("end"),
+      "ctrl+shift+l": () => {
+        jQuery("#linkPanelInput").focus();
+      },
     };
     const videoKeys = Object.keys(videoKeyHandlers);
     const onKeyDown = createKeyDownHandler(videoKeyHandlers);

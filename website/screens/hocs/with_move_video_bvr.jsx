@@ -55,8 +55,8 @@ export const withMoveVideoBvr = compose(
       ...(move
         ? createVideoStartEndKeyHandlers(
             videoBvr,
-            move.startTimeMs,
-            move.endTimeMs
+            move.startTimeMs ? move.startTimeMs / 1000 : undefined,
+            move.endTimeMs ? move.endTimeMs / 1000 : undefined
           )
         : {}),
     };

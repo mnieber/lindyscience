@@ -1,31 +1,23 @@
+// @flow
+
 import React from "react";
 import classnames from "classnames";
 import { isNone, stripQuotes } from "utils/utils";
+// $FlowFixMe
 import Select from "react-select";
+// $FlowFixMe
 import jquery from "jquery";
+// $FlowFixMe
 import Creatable from "react-select/lib/Creatable";
 
-export function validateField(formApi, field, validator, errorMsg) {
-  return !validator(field) ? errorMsg : null;
-}
+type FormFieldLabelPropsT = {
+  classNames?: any,
+  fieldName: string,
+  label: string,
+  buttons?: any,
+};
 
-export function formFieldProps(fieldType, formProps, fieldName, classNames) {
-  const valueField = fieldType == "checkbox" ? "checked" : "value";
-  return {
-    id: fieldName,
-    [valueField]: formProps.values[fieldName],
-    onChange: formProps.handleChange,
-    onBlur: formProps.handleBlur,
-    className: classnames(classNames, {
-      error:
-        formProps.errors &&
-        formProps.errors[fieldName] &&
-        formProps.touched[fieldName],
-    }),
-  };
-}
-
-export function FormFieldLabel(props) {
+export function FormFieldLabel(props: FormFieldLabelPropsT) {
   return (
     <div className="flex flex-row">
       <label
@@ -39,75 +31,103 @@ export function FormFieldLabel(props) {
   );
 }
 
-export function formFieldError(formProps, fieldName, classNames, key) {
+export type FormFieldErrorPropsT = {
+  formProps: any,
+  fieldName: string,
+  classNames?: any,
+  key?: any,
+};
+
+export function FormFieldError(props: FormFieldErrorPropsT) {
   if (
-    formProps.errors &&
-    formProps.errors[fieldName] &&
-    formProps.touched[fieldName]
+    props.formProps.errors &&
+    props.formProps.errors[props.fieldName] &&
+    props.formProps.touched[props.fieldName]
   ) {
     return (
-      <div key={key} className={classnames(classNames)}>
-        {formProps.errors[fieldName]}
+      <div key={props.key} className={classnames(props.classNames || "")}>
+        {props.formProps.errors[props.fieldName]}
       </div>
     );
   }
-  return undefined;
+  return <React.Fragment />;
 }
 
-export function FormField(props) {
+type FormFieldPropsT = {
+  type?: string,
+  fieldType?: string,
+  fieldName: string,
+  formProps: any,
+  buttons?: any,
+  classNames?: any,
+  label?: string,
+  placeholder?: string,
+  autoFocus?: boolean,
+  disabled?: boolean,
+};
+
+export function FormField(props: FormFieldPropsT) {
   const htmlElement = React.useRef(null);
 
   const selectAllOnFocus = event => {
     event.target.select();
   };
+
+  const valueField = props.fieldType == "checkbox" ? "checked" : "value";
+
+  const formFieldProps = {
+    id: props.fieldName,
+    [valueField]: props.formProps.values[props.fieldName],
+    onChange: props.formProps.handleChange,
+    onBlur: props.formProps.handleBlur,
+    className: classnames("formField__field", {
+      error:
+        props.formProps.errors &&
+        props.formProps.errors[props.fieldName] &&
+        props.formProps.touched[props.fieldName],
+    }),
+  };
+
   const textField =
-    props.type.toLowerCase() == "textarea" ? (
+    (props.type || "").toLowerCase() == "textarea" ? (
       <textarea
         ref={htmlElement}
         placeholder={props.placeholder}
         disabled={props.disabled}
         autoFocus={props.autoFocus}
-        {...formFieldProps(props.type, props.formProps, props.fieldName, [
-          "formField__field",
-        ])}
+        {...formFieldProps}
       />
     ) : (
       <input
+        // $FlowFixMe
         ref={htmlElement}
         type={props.type}
         placeholder={props.placeholder}
         disabled={props.disabled}
         onFocus={selectAllOnFocus}
         autoFocus={props.autoFocus}
-        {...formFieldProps(props.type, props.formProps, props.fieldName, [
-          "formField__field",
-        ])}
+        {...formFieldProps}
       />
     );
 
   const formFieldLabel = (
     <FormFieldLabel
       fieldName={props.fieldName}
-      label={props.label}
+      label={props.label || ""}
       buttons={props.buttons}
       classNames={["formField__label"]}
     />
   );
 
   return (
-    <div className={`my-2 ${props.classNames}`}>
+    <div className={classnames("my-2", props.classNames)}>
       {props.label && formFieldLabel}
       {textField}
-      {formFieldError(props.formProps, props.fieldName, ["formField__error"])}
-    </div>
-  );
-}
-
-export function Row2({ w1, w2, padding = 1 }) {
-  return (
-    <div className="w-full flex flex-wrap">
-      <div className={`w-full md:w-1/2 md:pr-${padding}`}>{w1}</div>
-      <div className={`w-full md:w-1/2 md:pl-${padding}`}>{w2}</div>
+      <FormFieldError
+        formProps={props.formProps}
+        fieldName={props.fieldName}
+        classNames={["formField__error"]}
+      />
     </div>
   );
 }
@@ -123,64 +143,67 @@ export function handleEnterAsTabToNext(event: any, isPreventDefault: boolean) {
   }
 }
 
-export class ValuePicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: this.props.defaultValue,
-      isFocused: false,
-    };
-  }
+type ValuePickerPropsT = {
+  isMulti: boolean,
+  isCreatable: boolean,
+  zIndex?: number,
+  defaultValue: ?any,
+  onChange?: Function,
+  fieldName: string,
+  options?: any,
+  placeholder?: string,
+  label?: string,
+  forwardedRef?: any,
+};
 
-  handleFocus = () => {
-    this.setState({ isFocused: true });
-  };
-  handleBlur = () => {
-    this.setState({ isFocused: false });
-  };
+export function ValuePicker_(props: ValuePickerPropsT) {
+  const [value, setValue] = React.useState(props.defaultValue);
 
-  saveChanges = value => {
-    if (!this.props.isMulti && jquery.isArray(value)) {
-      this.setState({ value: null, label: "" });
+  const saveChanges = (value: any) => {
+    if (!props.isMulti && jquery.isArray(value)) {
+      setValue({ value: null, label: "" });
     } else {
-      this.setState({ value });
+      setValue(value);
     }
-    if (this.props.onChange) {
-      this.props.onChange(value);
+    if (props.onChange) {
+      props.onChange(value);
     }
   };
 
-  render() {
-    const props = {
-      isMulti: this.props.isMulti,
-      name: this.props.fieldName,
-      options: this.props.options,
-      placeholder: this.props.placeholder,
-      value: this.state.value,
-      onChange: this.saveChanges,
-      onKeyDown: e => {
-        handleEnterAsTabToNext(e, false);
-      },
-      defaultValue: this.props.defaultValue,
-    };
+  const pickerProps = {
+    isMulti: props.isMulti,
+    name: props.fieldName,
+    options: props.options,
+    placeholder: props.placeholder,
+    value: value,
+    onChange: saveChanges,
+    onKeyDown: e => {
+      handleEnterAsTabToNext(e, false);
+    },
+    defaultValue: props.defaultValue,
+    ref: props.forwardedRef,
+  };
 
-    const picker = this.props.isCreatable ? (
-      <Creatable {...props} />
-    ) : (
-      <Select {...props} />
-    );
+  const picker = props.isCreatable ? (
+    <Creatable {...pickerProps} />
+  ) : (
+    <Select {...pickerProps} />
+  );
 
-    return (
-      <div style={{ zIndex: this.props.zIndex }}>
-        <FormFieldLabel
-          fieldName={this.props.fieldName}
-          label={this.props.label}
-        />
-        {picker}
-      </div>
-    );
-  }
+  return (
+    <div style={{ zIndex: props.zIndex }}>
+      {props.label && (
+        <FormFieldLabel fieldName={props.fieldName} label={props.label} />
+      )}
+      {picker}
+    </div>
+  );
 }
+
+// $FlowFixMe
+export const ValuePicker = React.forwardRef((props, ref) => {
+  return <ValuePicker_ {...props} forwardedRef={ref} />;
+});
 
 export function getValueFromPicker(picker: any, defaultValue: any) {
   const value = picker.state.value;

@@ -6,7 +6,7 @@ import React from "react";
 import {
   FormField,
   ValuePicker,
-  formFieldError,
+  FormFieldError,
   getValueFromPicker,
   strToPickerValue,
 } from "utils/form_utils";
@@ -51,7 +51,11 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         description={formProps.values.description}
         videoPlayer={props.videoPlayer}
       />
-      {formFieldError(formProps, "description", ["formField__error"])}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="description"
+        classNames={["formField__error"]}
+      />
     </div>
   );
 
@@ -59,7 +63,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="cutPointForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={props.tagsPickerRef}
+        forwardedRef={props.tagsPickerRef}
         isCreatable={true}
         defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
@@ -67,7 +71,12 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         options={props.tagPickerOptions}
         placeholder="Tags"
       />
-      {formFieldError(formProps, "tags", ["formField__error"], "error")}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="tags"
+        classNames={["formField__error"]}
+        key="error"
+      />
     </div>
   );
 

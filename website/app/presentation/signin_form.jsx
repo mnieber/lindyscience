@@ -3,7 +3,7 @@
 import React from "react";
 import { withFormik } from "formik";
 import * as yup from "yup";
-import { FormField, formFieldError } from "utils/form_utils";
+import { FormField } from "utils/form_utils";
 
 export function emailField(formProps: any) {
   return (

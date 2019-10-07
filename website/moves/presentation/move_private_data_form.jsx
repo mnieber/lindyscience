@@ -8,7 +8,7 @@ import { createUUID } from "utils/utils";
 import {
   FormField,
   ValuePicker,
-  formFieldError,
+  FormFieldError,
   getValueFromPicker,
   strToPickerValue,
 } from "utils/form_utils";
@@ -42,7 +42,11 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         description={formProps.values.notes}
         videoPlayer={props.videoPlayer}
       />
-      {formFieldError(formProps, "notes", ["formField__error"])}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="notes"
+        classNames={["formField__error"]}
+      />
     </div>
   );
 
@@ -50,7 +54,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="movePrivateDataForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={props.tagsPickerRef}
+        forwardedRef={props.tagsPickerRef}
         isCreatable={true}
         label="Tags"
         defaultValue={props.tagPickerDefaultValue}
@@ -59,7 +63,12 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         options={props.tagPickerOptions}
         placeholder="Tags"
       />
-      {formFieldError(formProps, "tags", ["formField__error"], "error")}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="tags"
+        classNames={["formField__error"]}
+        key="error"
+      />
     </div>
   );
 

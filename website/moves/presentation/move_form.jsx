@@ -6,7 +6,7 @@ import React from "react";
 import {
   FormField,
   ValuePicker,
-  formFieldError,
+  FormFieldError,
   getValueFromPicker,
   FormFieldLabel,
   strToPickerValue,
@@ -166,7 +166,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 
   const description = (
     <div className="moveForm__description mt-4">
-      <FormFieldLabel label="Description" />
+      <FormFieldLabel label="Description" fieldName="description" />
       <MoveDescriptionEditor
         editorId={"move_" + props.moveId}
         autoFocus={false}
@@ -175,7 +175,11 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         description={formProps.values.description}
         videoPlayer={props.videoPlayer}
       />
-      {formFieldError(formProps, "description", ["formField__error"])}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="description"
+        classNames={["formField__error"]}
+      />
     </div>
   );
 
@@ -183,7 +187,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={props.tagsPickerRef}
+        forwardedRef={props.tagsPickerRef}
         isCreatable={true}
         label="Tags"
         defaultValue={props.tagPickerDefaultValue}
@@ -192,7 +196,12 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         options={props.tagPickerOptions}
         placeholder="Tags"
       />
-      {formFieldError(formProps, "tags", ["formField__error"], "error")}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="tags"
+        classNames={["formField__error"]}
+        key="error"
+      />
     </div>
   );
 

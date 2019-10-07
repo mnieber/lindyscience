@@ -2,8 +2,11 @@
 
 import * as React from "react";
 import classnames from "classnames";
-import { ValuePicker, strToPickerValue } from "utils/form_utils";
+
+import { TagsAndKeywordsPicker } from "search/utils/tags_and_keywords_picker";
+import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { splitIntoKeywords } from "utils/utils";
+
 import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
@@ -71,16 +74,10 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
     );
   }, [props.isFilterEnabled, tags, keywords]);
 
-  function _onKeywordsChange(e) {
+  function _onPickerChange(tags, keywords) {
     props.setIsFilterEnabled(true);
-    if (inputRef.current) {
-      setKeywords(splitIntoKeywords(inputRef.current.value));
-    }
-  }
-
-  function _onTagsChange(pickedTags) {
-    props.setIsFilterEnabled(true);
-    setTags(pickedTags.map(x => x.value));
+    setTags(tags);
+    setKeywords(keywords);
   }
 
   const onFlagChanged = () => {
@@ -99,22 +96,11 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
     </div>
   );
 
-  const valuePicker = (
-    <ValuePicker
-      isMulti={true}
+  const tagsAndKeywordsPicker = (
+    <TagsAndKeywordsPicker
       options={props.moveTags.map(strToPickerValue)}
-      placeholder="Enter search tags here"
-      onChange={_onTagsChange}
-    />
-  );
-
-  const inputElm = (
-    // $FlowFixMe
-    <input
-      ref={inputRef}
-      className="my-2 border rounded p-2 w-full"
-      placeholder="Enter search keywords here"
-      onChange={_onKeywordsChange}
+      placeholder="Enter tags and keywords here"
+      onChange={_onPickerChange}
     />
   );
 
@@ -123,8 +109,7 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
       className={classnames("bg-grey p-2 moveListFilter mt-4", props.className)}
     >
       {flag}
-      {valuePicker}
-      {inputElm}
+      {tagsAndKeywordsPicker}
     </div>
   );
 }

@@ -5,13 +5,12 @@ import { withFormik } from "formik";
 
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { createUUID } from "utils/utils";
+import { FormField, FormFieldError } from "utils/form_utils";
 import {
-  FormField,
   ValuePicker,
-  FormFieldError,
   getValueFromPicker,
   strToPickerValue,
-} from "utils/form_utils";
+} from "utils/value_picker";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 
 import type { UUID } from "kernel/types";

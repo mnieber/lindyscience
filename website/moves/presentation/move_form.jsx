@@ -3,14 +3,13 @@
 import { withFormik } from "formik";
 import React from "react";
 
+import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
 import {
-  FormField,
   ValuePicker,
-  FormFieldError,
   getValueFromPicker,
-  FormFieldLabel,
   strToPickerValue,
-} from "utils/form_utils";
+} from "utils/value_picker";
+
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 import { isNone, slugify, truncDecimals } from "utils/utils";

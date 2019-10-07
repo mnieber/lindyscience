@@ -88,7 +88,9 @@ export function createTagsAndKeywordsFilter(
       return (
         (!tags.length || tags.every(tag => move.tags.includes(tag))) &&
         (!keywords.length ||
-          keywords.every(keyword => move.name.toLowerCase().includes(keyword)))
+          keywords.every(keyword =>
+            move.name.toLowerCase().includes(keyword.toLowerCase())
+          ))
       );
     }
 

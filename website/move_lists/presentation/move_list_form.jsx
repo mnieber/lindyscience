@@ -4,14 +4,12 @@ import React from "react";
 import { withFormik } from "formik";
 
 import { slugify } from "utils/utils";
+import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
 import {
-  FormField,
   ValuePicker,
-  FormFieldError,
   getValueFromPicker,
-  FormFieldLabel,
   strToPickerValue,
-} from "utils/form_utils";
+} from "utils/value_picker";
 import {
   RichTextEditor,
   getContentFromEditor,

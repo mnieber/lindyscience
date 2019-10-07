@@ -2,14 +2,12 @@
 
 import React from "react";
 import { withFormik } from "formik";
+import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
 import {
-  FormField,
   ValuePicker,
-  FormFieldError,
   getValueFromPicker,
-  FormFieldLabel,
   strToPickerValue,
-} from "utils/form_utils";
+} from "utils/value_picker";
 import { slugify } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
 import type { MoveT } from "moves/types";

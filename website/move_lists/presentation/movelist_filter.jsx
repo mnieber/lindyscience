@@ -21,6 +21,14 @@ type MoveListPickerPropsT = {|
 |};
 
 export function MoveListPicker(props: MoveListPickerPropsT) {
+  const defaultMoveList = props.moveLists.find(
+    x => x.id == props.defaultMoveListId
+  );
+
+  const [moveListPickerValue, setMoveListPickerValue] = React.useState(
+    defaultMoveList ? toPickerValue(defaultMoveList) : undefined
+  );
+
   function _onChange(pickedItem) {
     props.selectMoveListById(pickedItem.value);
   }
@@ -32,10 +40,6 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
     };
   }
 
-  const defaultMoveList = props.moveLists.find(
-    x => x.id == props.defaultMoveListId
-  );
-
   return (
     <div className={classnames("moveListPicker mt-4", props.className)}>
       <ValuePicker
@@ -44,9 +48,8 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
         options={props.moveLists.map(toPickerValue)}
         placeholder="Select a move list"
         onChange={_onChange}
-        defaultValue={
-          defaultMoveList ? toPickerValue(defaultMoveList) : undefined
-        }
+        value={moveListPickerValue}
+        setValue={setMoveListPickerValue}
       />
     </div>
   );

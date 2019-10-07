@@ -6,11 +6,7 @@ import { withFormik } from "formik";
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { createUUID } from "utils/utils";
 import { FormField, FormFieldError } from "utils/form_utils";
-import {
-  ValuePicker,
-  getValueFromPicker,
-  strToPickerValue,
-} from "utils/value_picker";
+import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 
 import type { UUID } from "kernel/types";
@@ -21,13 +17,13 @@ import type { TagT } from "tags/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
   onCancel: () => void,
-  tagsPickerRef: any,
   notesEditorRef: any,
   moveId: UUID,
   videoPlayer?: any,
+  tagsPickerValue: any,
+  setTagsPickerValue: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -53,14 +49,14 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="movePrivateDataForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        forwardedRef={props.tagsPickerRef}
         isCreatable={true}
         label="Tags"
-        defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
         isMulti={true}
         options={props.tagPickerOptions}
         placeholder="Tags"
+        value={props.tagsPickerValue}
+        setValue={props.setTagsPickerValue}
       />
       <FormFieldError
         formProps={formProps}
@@ -107,11 +103,12 @@ type MovePrivateDataFormPropsT = {
 };
 
 export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
-  const tagsPickerRef = React.useRef(null);
   const notesEditorRef = React.useRef(null);
-
   const notes = props.movePrivateData ? props.movePrivateData.notes || "" : "";
   const tags = props.movePrivateData ? props.movePrivateData.tags || [] : [];
+  const [tagsPickerValue, setTagsPickerValue] = React.useState(
+    tags.map(strToPickerValue)
+  );
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
@@ -122,7 +119,7 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
     validate: (values, formProps) => {
       // HACK: add values from non-input fields
       values.notes = getContentFromEditor(notesEditorRef.current, "");
-      values.tags = getValueFromPicker(tagsPickerRef.current, []);
+      values.tags = (tagsPickerValue || []).map(x => x.value);
       let errors = {};
       return errors;
     },
@@ -135,12 +132,12 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagPickerDefaultValue: tags.map(strToPickerValue),
       onCancel: props.onCancel,
       notesEditorRef,
-      tagsPickerRef,
       moveId: props.moveId,
       videoPlayer: props.videoPlayer,
+      tagsPickerValue,
+      setTagsPickerValue,
     })
   );
 

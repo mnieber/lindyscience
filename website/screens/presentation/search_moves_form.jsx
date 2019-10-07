@@ -3,11 +3,7 @@
 import React from "react";
 import { withFormik } from "formik";
 import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
-import {
-  ValuePicker,
-  getValueFromPicker,
-  strToPickerValue,
-} from "utils/value_picker";
+import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { slugify } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
 import type { MoveT } from "moves/types";
@@ -16,15 +12,12 @@ import type { TagT } from "tags/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
-  setTagsPickerRef: any => void,
+  tagsPickerValue: any,
+  setTagsPickerValue: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const tagsPickerRef = React.useRef(null);
-  props.setTagsPickerRef(tagsPickerRef);
-
   const myMoveLists = (
     <FormField
       classNames="w-full"
@@ -51,14 +44,14 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        forwardedRef={tagsPickerRef}
         isCreatable={true}
         label="Tags"
-        defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
         isMulti={true}
         options={props.tagPickerOptions}
         placeholder="Tags"
+        value={props.tagsPickerValue}
+        setValue={props.setTagsPickerValue}
       />
       <FormFieldError
         formProps={formProps}
@@ -99,8 +92,9 @@ type SearchMovesFormPropsT = {
 };
 
 export function SearchMovesForm(props: SearchMovesFormPropsT) {
-  const refs = {};
-  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
+  const [tagsPickerValue, setTagsPickerValue] = React.useState(
+    (props.latestOptions.tags || []).map(strToPickerValue)
+  );
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
@@ -111,7 +105,7 @@ export function SearchMovesForm(props: SearchMovesFormPropsT) {
     }),
 
     validate: (values, formProps) => {
-      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
+      values.tags = tagsPickerValue || [];
 
       let errors = {};
       return errors;
@@ -125,10 +119,8 @@ export function SearchMovesForm(props: SearchMovesFormPropsT) {
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagPickerDefaultValue: (props.latestOptions.tags || []).map(
-        strToPickerValue
-      ),
-      setTagsPickerRef,
+      tagsPickerValue,
+      setTagsPickerValue,
     })
   );
 

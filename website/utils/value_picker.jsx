@@ -15,23 +15,22 @@ type ValuePickerPropsT = {
   isMulti: boolean,
   isCreatable: boolean,
   zIndex?: number,
-  defaultValue: ?any,
   onChange?: Function,
   fieldName: string,
   options?: any,
   placeholder?: string,
   label?: string,
   forwardedRef?: any,
+  value: any,
+  setValue: Function,
 };
 
 export function ValuePicker_(props: ValuePickerPropsT) {
-  const [value, setValue] = React.useState(props.defaultValue);
-
   const saveChanges = (value: any) => {
     if (!props.isMulti && jQuery.isArray(value)) {
-      setValue({ value: null, label: "" });
+      props.setValue({ value: null, label: "" });
     } else {
-      setValue(value);
+      props.setValue(value);
     }
     if (props.onChange) {
       props.onChange(value);
@@ -43,12 +42,11 @@ export function ValuePicker_(props: ValuePickerPropsT) {
     name: props.fieldName,
     options: props.options,
     placeholder: props.placeholder,
-    value: value,
+    value: props.value,
     onChange: saveChanges,
     onKeyDown: e => {
       handleEnterAsTabToNext(e, false);
     },
-    defaultValue: props.defaultValue,
     ref: props.forwardedRef,
   };
 
@@ -72,15 +70,6 @@ export function ValuePicker_(props: ValuePickerPropsT) {
 export const ValuePicker = React.forwardRef((props, ref) => {
   return <ValuePicker_ {...props} forwardedRef={ref} />;
 });
-
-export function getValueFromPicker(picker: any, defaultValue: any) {
-  const value = picker.state.value;
-  return value
-    ? jQuery.isArray(value)
-      ? value.map(x => x.value)
-      : value.value
-    : defaultValue;
-}
 
 export function strToPickerValue(value: string) {
   return {

@@ -4,11 +4,7 @@ import { withFormik } from "formik";
 import React from "react";
 
 import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
-import {
-  ValuePicker,
-  getValueFromPicker,
-  strToPickerValue,
-} from "utils/value_picker";
+import { ValuePicker, strToPickerValue } from "utils/value_picker";
 
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
@@ -21,11 +17,11 @@ import type { UUID } from "kernel/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
+  tagsPickerValue: any,
+  setTagsPickerValue: Function,
   onCancel: () => void,
   editorRef: any,
-  tagsPickerRef: any,
   videoPlayer: any,
   moveId: UUID,
 };
@@ -186,14 +182,14 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        forwardedRef={props.tagsPickerRef}
         isCreatable={true}
         label="Tags"
-        defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
         isMulti={true}
         options={props.tagPickerOptions}
         placeholder="Tags"
+        value={props.tagsPickerValue}
+        setValue={props.setTagsPickerValue}
       />
       <FormFieldError
         formProps={formProps}
@@ -249,7 +245,9 @@ type MoveFormPropsT = {
 };
 
 export function MoveForm(props: MoveFormPropsT) {
-  const tagsPickerRef = React.useRef(null);
+  const [tagsPickerValue, setTagsPickerValue] = React.useState(
+    props.move.tags.map(strToPickerValue)
+  );
   const editorRef = React.useRef(null);
 
   const startTime = props.move.startTimeMs
@@ -269,7 +267,7 @@ export function MoveForm(props: MoveFormPropsT) {
 
     validate: (values, formProps) => {
       values.description = getContentFromEditor(editorRef.current, "");
-      values.tags = getValueFromPicker(tagsPickerRef.current, []);
+      values.tags = (tagsPickerValue || []).map(x => x.value);
 
       let errors = {};
       if (!values.name) {
@@ -295,12 +293,12 @@ export function MoveForm(props: MoveFormPropsT) {
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagPickerDefaultValue: props.move.tags.map(strToPickerValue),
       onCancel: props.onCancel,
       videoPlayer: props.videoPlayer,
       moveId: props.move.id,
-      tagsPickerRef,
       editorRef,
+      tagsPickerValue,
+      setTagsPickerValue,
     })
   );
 

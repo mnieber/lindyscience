@@ -4,11 +4,7 @@ import { Formik } from "formik";
 import React from "react";
 
 import { FormField, FormFieldError } from "utils/form_utils";
-import {
-  ValuePicker,
-  getValueFromPicker,
-  strToPickerValue,
-} from "utils/value_picker";
+import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 import { isNone, truncDecimals } from "utils/utils";
@@ -19,13 +15,13 @@ import type { TagT } from "tags/types";
 import type { UUID } from "kernel/types";
 
 type InnerFormPropsT = {
-  tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
   videoPlayer: any,
   cutPointId: UUID,
   autoFocus: boolean,
-  tagsPickerRef: any,
   editorRef: any,
+  tagsPickerValue: any,
+  setTagsPickerValue: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -62,13 +58,13 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="cutPointForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        forwardedRef={props.tagsPickerRef}
         isCreatable={true}
-        defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
         isMulti={true}
         options={props.tagPickerOptions}
         placeholder="Tags"
+        value={props.tagsPickerValue}
+        setValue={props.setTagsPickerValue}
       />
       <FormFieldError
         formProps={formProps}
@@ -107,8 +103,10 @@ type CutPointFormPropsT = {
 };
 
 export function CutPointForm(props: CutPointFormPropsT) {
-  const tagsPickerRef = React.useRef(null);
   const editorRef = React.useRef(null);
+  const [tagsPickerValue, setTagsPickerValue] = React.useState(
+    props.cutPoint.tags.map(strToPickerValue)
+  );
 
   return (
     <Formik
@@ -119,7 +117,7 @@ export function CutPointForm(props: CutPointFormPropsT) {
       }}
       validate={(values, formProps) => {
         values.description = getContentFromEditor(editorRef.current, "");
-        values.tags = getValueFromPicker(tagsPickerRef.current, []);
+        values.tags = (tagsPickerValue || []).map(x => x.value);
 
         let errors = {};
         if (!values.name) {
@@ -136,12 +134,12 @@ export function CutPointForm(props: CutPointFormPropsT) {
       displayName={"BasicForm"}
       render={InnerForm({
         tagPickerOptions: props.knownTags.map(strToPickerValue),
-        tagPickerDefaultValue: props.cutPoint.tags.map(strToPickerValue),
         videoPlayer: props.videoPlayer,
         cutPointId: props.cutPoint.id,
         autoFocus: props.autoFocus,
         editorRef,
-        tagsPickerRef,
+        tagsPickerValue,
+        setTagsPickerValue,
       })}
     />
   );

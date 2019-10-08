@@ -15,8 +15,12 @@ export const createVideoKeyHandlers = (videoBvr: VideoBvrT) => {
     "ctrl+shift+7": () => videoBvr.player.setPlaybackRate(1.75),
     "ctrl+shift+8": () => videoBvr.player.setPlaybackRate(2),
     "ctrl+shift+down": () =>
-      videoBvr.player.seekTo(videoBvr.player.getCurrentTime() - 0.1),
+      videoBvr.player.seekTo(videoBvr.player.getCurrentTime() - 0.6),
+    "alt+shift+down": () =>
+      videoBvr.player.seekTo(videoBvr.player.getCurrentTime() - 0.15),
     "ctrl+shift+up": () =>
+      videoBvr.player.seekTo(videoBvr.player.getCurrentTime() + 0.5),
+    "alt+shift+up": () =>
       videoBvr.player.seekTo(videoBvr.player.getCurrentTime() + 0.1),
   };
 };

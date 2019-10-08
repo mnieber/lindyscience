@@ -2,8 +2,13 @@
 
 import React from "react";
 import { withFormik } from "formik";
+
+import {
+  TagsAndKeywordsPicker,
+  splitTextIntoTagsAndKeywords,
+} from "search/utils/tags_and_keywords_picker";
 import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
-import { ValuePicker, strToPickerValue } from "utils/value_picker";
+import { strToPickerValue } from "utils/value_picker";
 import { slugify } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
 import type { MoveT } from "moves/types";
@@ -13,8 +18,7 @@ import type { TagT } from "tags/types";
 type InnerFormPropsT = {
   autoFocus: boolean,
   tagPickerOptions: Array<any>,
-  tagsPickerValue: any,
-  setTagsPickerValue: Function,
+  defaults: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -28,30 +32,20 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
-  const keywordsField = (
-    <FormField
-      classNames="w-full"
-      label="Keywords"
-      formProps={formProps}
-      fieldName="keywords"
-      type="text"
-      placeholder="Keywords"
-      autoFocus={props.autoFocus}
-    />
-  );
+  const _onPickerTextChange = text => {
+    formProps.setFieldValue("tagsAndKeywords", text);
+  };
 
-  const tags = (
+  const tagsAndKeywordsField = (
     <div className="moveForm__tags mt-4">
-      <ValuePicker
+      <TagsAndKeywordsPicker
+        options={props.tagPickerOptions}
+        placeholder="Enter tags and keywords here"
+        onTextChange={_onPickerTextChange}
         zIndex={10}
-        isCreatable={true}
         label="Tags"
         fieldName="tags"
-        isMulti={true}
-        options={props.tagPickerOptions}
-        placeholder="Tags"
-        value={props.tagsPickerValue}
-        setValue={props.setTagsPickerValue}
+        defaults={props.defaults}
       />
       <FormFieldError
         formProps={formProps}
@@ -66,8 +60,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={"moveForm flexcol"}>
         {myMoveLists}
-        {keywordsField}
-        {tags}
+        {tagsAndKeywordsField}
         <div className={"moveForm__buttonPanel flexrow mt-4"}>
           <button
             className="button button--wide ml-2"
@@ -92,35 +85,32 @@ type SearchMovesFormPropsT = {
 };
 
 export function SearchMovesForm(props: SearchMovesFormPropsT) {
-  const [tagsPickerValue, setTagsPickerValue] = React.useState(
-    (props.latestOptions.tags || []).map(strToPickerValue)
-  );
+  const [defaults, setDefaults] = React.useState({});
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
-      tags: [],
-      keywords: [],
+      tagsAndKeywords: "",
       myMoveLists: false,
       ...props.latestOptions,
     }),
 
     validate: (values, formProps) => {
-      values.tags = tagsPickerValue || [];
-
       let errors = {};
       return errors;
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      props.onSubmit(values);
+      const { keywords, tags } = splitTextIntoTagsAndKeywords(
+        values.tagsAndKeywords
+      );
+      props.onSubmit({ ...values, keywords, tags });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagsPickerValue,
-      setTagsPickerValue,
+      defaults,
     })
   );
 

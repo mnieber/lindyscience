@@ -20,8 +20,8 @@ function _getSearchInput(input) {
   const words = input.split(" ");
   if (words.length) {
     const lastWord = words[words.length - 1];
-    if (lastWord.startsWith("t:")) {
-      result = lastWord.slice(2);
+    if (lastWord.startsWith(":")) {
+      result = lastWord.slice(1);
     }
   }
 
@@ -29,37 +29,46 @@ function _getSearchInput(input) {
   return result;
 }
 
+function makeUnique(x: Array<any>) {
+  // $FlowFixMe
+  return Array.from(new Set(x));
+}
+
+export function splitTextIntoTagsAndKeywords(inputValue: string) {
+  const words = inputValue.split(" ");
+  const chop = x => (x.endsWith(":") ? x.slice(0, x.length - 1) : x);
+  return {
+    keywords: makeUnique(words.filter(x => !!x && !x.startsWith(":"))),
+    tags: makeUnique(
+      words
+        .filter(x => x.startsWith(":"))
+        .map(x => x.slice(1))
+        .map(chop)
+    ),
+  };
+}
+
 type TagsAndKeywordsPickerPropsT = {
   zIndex?: number,
   onChange?: Function,
+  onTextChange?: Function,
   options?: any,
   placeholder?: string,
   forwardedRef?: any,
+  defaults: any,
 };
 
 export function TagsAndKeywordsPicker(props: TagsAndKeywordsPickerPropsT) {
-  const [inputValue, setInputValue] = React.useState("");
+  const [value, setValue] = React.useState(props.defaults.value || []);
+  const [inputValue, setInputValue] = React.useState(
+    props.defaults.inputValue || ""
+  );
 
   const _complete = (inputValue, label) => {
     const words = inputValue.split(" ");
-    words[words.length - 1] = "t:" + label + ":";
-    return words.join(" ") + " ";
-  };
-
-  const makeUnique = x => Array.from(new Set(x));
-
-  const _split = inputValue => {
-    const words = inputValue.split(" ");
-    const chop = x => (x.endsWith(":") ? x.slice(0, x.length - 1) : x);
-    return {
-      keywords: makeUnique(words.filter(x => !!x && !x.startsWith("t:"))),
-      tags: makeUnique(
-        words
-          .filter(x => x.startsWith("t:"))
-          .map(x => x.slice(2))
-          .map(chop)
-      ),
-    };
+    const delta =
+      words.length && words[words.length - 1].startsWith(":") ? 1 : 0;
+    return words.slice(0, words.length - delta).join(" ");
   };
 
   const saveChanges = (value: any) => {
@@ -67,13 +76,20 @@ export function TagsAndKeywordsPicker(props: TagsAndKeywordsPickerPropsT) {
       const label = value[0].label;
       const newInputValue = _complete(inputValue, label);
       setInputValue(newInputValue);
+      props.defaults.inputValue = newInputValue;
     }
+    setValue(value);
+    props.defaults.value = value;
   };
 
   const onInputChange = (inputValue, { action }) => {
+    if (props.onTextChange) {
+      props.onTextChange(inputValue);
+    }
     switch (action) {
       case "input-change":
         setInputValue(inputValue);
+        props.defaults.inputValue = inputValue;
         return;
       default:
         return;
@@ -90,7 +106,7 @@ export function TagsAndKeywordsPicker(props: TagsAndKeywordsPickerPropsT) {
 
   const onKeyDown = event => {
     if (event.keyCode == 13) {
-      const splitResults = _split(inputValue);
+      const splitResults = splitTextIntoTagsAndKeywords(inputValue);
       if (props.onChange) {
         props.onChange(splitResults.tags, splitResults.keywords);
       }
@@ -100,8 +116,8 @@ export function TagsAndKeywordsPicker(props: TagsAndKeywordsPickerPropsT) {
   const pickerProps = {
     isMulti: true, // yes, we need this
     options: props.options,
+    value: value,
     placeholder: props.placeholder,
-    value: [],
     onChange: saveChanges,
     noOptionsMessage: () => null,
     onKeyDown,

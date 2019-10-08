@@ -69,6 +69,7 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
   const inputRef = React.useRef(null);
   const [tags, setTags] = React.useState([]);
   const [keywords, setKeywords] = React.useState([]);
+  const [defaults, setDefaults] = React.useState({});
 
   React.useEffect(() => {
     props.filterMoves(
@@ -104,6 +105,7 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
       options={props.moveTags.map(strToPickerValue)}
       placeholder="Enter tags and keywords here"
       onChange={_onPickerChange}
+      defaults={defaults}
     />
   );
 

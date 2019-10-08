@@ -192,3 +192,9 @@ export function roundDecimals(x: number, k: number) {
 export function createUUID() {
   return uuidv4();
 }
+
+export function makeUnique(x: Array<any>) {
+  // $FlowFixMe
+  return Array.from(new Set(x));
+}
+

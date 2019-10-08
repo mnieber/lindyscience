@@ -3,13 +3,13 @@
 import React from "react";
 import { withFormik } from "formik";
 
+import { makeUnique, slugify } from "utils/utils";
 import {
   TagsAndKeywordsPicker,
   splitTextIntoTagsAndKeywords,
 } from "search/utils/tags_and_keywords_picker";
 import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
 import { strToPickerValue } from "utils/value_picker";
-import { slugify } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
@@ -32,8 +32,10 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
-  const _onPickerTextChange = text => {
-    formProps.setFieldValue("tagsAndKeywords", text);
+  const _onPickerTextChange = (tags, searchText) => {
+    debugger;
+    formProps.setFieldValue("tags", tags);
+    formProps.setFieldValue("searchText", searchText);
   };
 
   const tagsAndKeywordsField = (
@@ -89,7 +91,8 @@ export function SearchMovesForm(props: SearchMovesFormPropsT) {
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
-      tagsAndKeywords: "",
+      tags: [],
+      searchText: "",
       myMoveLists: false,
       ...props.latestOptions,
     }),
@@ -100,10 +103,13 @@ export function SearchMovesForm(props: SearchMovesFormPropsT) {
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      const { keywords, tags } = splitTextIntoTagsAndKeywords(
-        values.tagsAndKeywords
-      );
-      props.onSubmit({ ...values, keywords, tags });
+      const splitResult = splitTextIntoTagsAndKeywords(values.searchText);
+      const allTags = makeUnique([...splitResult.tags, ...values.tags]);
+      props.onSubmit({
+        ...values,
+        keywords: splitResult.keywords,
+        tags: allTags,
+      });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(

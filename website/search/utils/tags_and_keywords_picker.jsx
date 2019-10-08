@@ -7,7 +7,7 @@ import Select from "react-select";
 import jQuery from "jquery";
 
 import { handleEnterAsTabToNext } from "utils/form_utils";
-import { isNone } from "utils/utils";
+import { isNone, makeUnique } from "utils/utils";
 
 const _cache = {};
 
@@ -18,20 +18,14 @@ function _getSearchInput(input) {
   }
 
   const words = input.split(" ");
-  if (words.length) {
-    const lastWord = words[words.length - 1];
-    if (lastWord.startsWith(":")) {
-      result = lastWord.slice(1);
+  words.forEach(word => {
+    if (word.startsWith(":")) {
+      result = word.slice(1);
     }
-  }
+  });
 
   _cache[input] = result;
   return result;
-}
-
-function makeUnique(x: Array<any>) {
-  // $FlowFixMe
-  return Array.from(new Set(x));
 }
 
 export function splitTextIntoTagsAndKeywords(inputValue: string) {
@@ -59,33 +53,43 @@ type TagsAndKeywordsPickerPropsT = {
 };
 
 export function TagsAndKeywordsPicker(props: TagsAndKeywordsPickerPropsT) {
+  const [hasEnter, setHasEnter] = React.useState(false);
+  const [textChanged, setTextChanged] = React.useState(false);
   const [value, setValue] = React.useState(props.defaults.value || []);
   const [inputValue, setInputValue] = React.useState(
     props.defaults.inputValue || ""
   );
 
-  const _complete = (inputValue, label) => {
-    const words = inputValue.split(" ");
-    const delta =
-      words.length && words[words.length - 1].startsWith(":") ? 1 : 0;
-    return words.slice(0, words.length - delta).join(" ");
-  };
+  if (hasEnter) {
+    setHasEnter(false);
+    if (props.onChange) {
+      const tags = value.map(x => x.value);
+      if (props.onChange) props.onChange(tags, inputValue);
+    }
+  }
+
+  if (textChanged) {
+    setTextChanged(false);
+    if (props.onTextChange) {
+      const tags = value.map(x => x.value);
+      if (props.onTextChange) props.onTextChange(tags, inputValue);
+    }
+  }
 
   const saveChanges = (value: any) => {
-    if (value.length) {
-      const label = value[0].label;
-      const newInputValue = _complete(inputValue, label);
-      setInputValue(newInputValue);
-      props.defaults.inputValue = newInputValue;
-    }
+    const newInputValue = inputValue
+      .split(" ")
+      .filter(x => !x.startsWith(":"))
+      .join(" ");
+    setInputValue(newInputValue);
+    props.defaults.inputValue = newInputValue;
+
     setValue(value);
     props.defaults.value = value;
   };
 
   const onInputChange = (inputValue, { action }) => {
-    if (props.onTextChange) {
-      props.onTextChange(inputValue);
-    }
+    setTextChanged(true);
     switch (action) {
       case "input-change":
         setInputValue(inputValue);
@@ -106,10 +110,7 @@ export function TagsAndKeywordsPicker(props: TagsAndKeywordsPickerPropsT) {
 
   const onKeyDown = event => {
     if (event.keyCode == 13) {
-      const splitResults = splitTextIntoTagsAndKeywords(inputValue);
-      if (props.onChange) {
-        props.onChange(splitResults.tags, splitResults.keywords);
-      }
+      setHasEnter(true);
     }
   };
 

@@ -3,10 +3,12 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import { TagsAndKeywordsPicker } from "search/utils/tags_and_keywords_picker";
+import {
+  TagsAndKeywordsPicker,
+  splitTextIntoTagsAndKeywords,
+} from "search/utils/tags_and_keywords_picker";
+import { makeUnique, splitIntoKeywords } from "utils/utils";
 import { ValuePicker, strToPickerValue } from "utils/value_picker";
-import { splitIntoKeywords } from "utils/utils";
-
 import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
@@ -78,10 +80,13 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
     );
   }, [props.isFilterEnabled, tags, keywords]);
 
-  function _onPickerChange(tags, keywords) {
+  function _onPickerChange(tags, text) {
+    const splitResult = splitTextIntoTagsAndKeywords(text);
+
+    const allTags = makeUnique([...splitResult.tags, ...tags]);
     props.setIsFilterEnabled(true);
-    setTags(tags);
-    setKeywords(keywords);
+    setTags(allTags);
+    setKeywords(splitResult.keywords);
   }
 
   const onFlagChanged = () => {

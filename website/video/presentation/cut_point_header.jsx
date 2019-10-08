@@ -3,7 +3,7 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import { roundDecimals } from "utils/utils2";
+import { secondsToTimeString } from "utils/utils2";
 
 import type { CutPointT } from "video/types";
 import type { UUID } from "kernel/types";
@@ -33,7 +33,7 @@ export function CutPointHeader(props: CutPointHeaderPropsT) {
     >
       <div />
       <div className="self-center">
-        {label + " " + roundDecimals(cutPoint.t, 1)}
+        {label + " " + secondsToTimeString(cutPoint.t)}
       </div>
       <div className="cutPointHeader__button" onClick={onClickRemoveButton}>
         X

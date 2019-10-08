@@ -198,3 +198,20 @@ export function makeUnique(x: Array<any>) {
   return Array.from(new Set(x));
 }
 
+export function secondsToTimeString(x: number) {
+  const _format = x => (x + "").padStart(2, "0");
+
+  const hours = Math.trunc(x / 3600);
+  x = x - hours * 3600;
+
+  const minutes = Math.trunc(x / 60);
+  x = x - minutes * 60;
+
+  const seconds = roundDecimals(x, 1);
+
+  return [
+    ...(hours ? [_format(hours)] : []),
+    ...(hours || minutes ? [_format(minutes)] : []),
+    _format(seconds),
+  ].join(":");
+}

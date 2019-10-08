@@ -1,6 +1,8 @@
 // @flow
 
 import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 
 import {
   useInsertTip,
@@ -8,6 +10,7 @@ import {
   useSaveTip,
 } from "tips/bvrs/tip_crud_behaviours";
 import { TipList } from "tips/presentation/tip";
+
 import type { UUID, OwnedObjectT } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
@@ -38,17 +41,17 @@ export function TipsPanel(props: TipsPanelPropsT) {
   );
 
   const addTipBtn = (
-    <div
-      className={"tipsPanel__addButton button button--wide ml-2"}
+    <FontAwesomeIcon
+      key={"edit"}
+      className="ml-2"
+      icon={faPlusSquare}
       onClick={newTipBvr.add}
-    >
-      Add
-    </div>
+    />
   );
 
   return (
     <div className={"tipsPanel panel"}>
-      <div className={"flex flex-wrap mb-4"}>
+      <div className={"flexrow items-center flex-wrap mb-4"}>
         <h2>Tips</h2>
         {addTipBtn}
       </div>

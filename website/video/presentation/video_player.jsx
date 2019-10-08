@@ -43,7 +43,7 @@ type VideoPlayerPanelPropsT = {
 
 export function VideoPlayerPanel(props: VideoPlayerPanelPropsT) {
   return props.videoBvr.video ? (
-    <div className={"move__video panel flex flex-col"}>
+    <div className={"move__video panel flexcol"}>
       <VideoPlayer videoBvr={props.videoBvr} restartId={props.restartId} />
       <VideoControlPanel videoBvr={props.videoBvr} />
     </div>

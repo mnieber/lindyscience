@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import { compose } from "redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
 import * as movesApi from "moves/api";
 import * as moveListsApi from "move_lists/api";
@@ -21,6 +23,7 @@ import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours"
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
+
 import type { CutPointT, VideoBvrT } from "video/types";
 import type { MoveListCrudBvrsT } from "screens/types";
 import type { MoveListT } from "move_lists/types";
@@ -47,12 +50,14 @@ type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT & {
 
 function _createStaticMoveListDetails(
   moveList: MoveListT,
-  props: _MoveListDetailsPagePropsT
+  props: _MoveListDetailsPagePropsT,
+  buttons: Array<any>
 ) {
   return (
     <Widgets.MoveListDetails
       userProfile={props.userProfile}
       moveList={moveList}
+      buttons={buttons}
     />
   );
 }
@@ -120,13 +125,12 @@ function _createOwnMoveListDetails(
   props: _MoveListDetailsPagePropsT
 ) {
   const editBtn = (
-    <div
-      className={"button button--wide ml-2"}
-      onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
+    <FontAwesomeIcon
       key={1}
-    >
-      Edit
-    </div>
+      className="ml-2"
+      icon={faEdit}
+      onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
+    />
   );
 
   const div = props.moveListCrudBvrs.isEditing ? (
@@ -142,14 +146,13 @@ function _createOwnMoveListDetails(
       }
     />
   ) : (
-    _createStaticMoveListDetails(moveList, props)
+    _createStaticMoveListDetails(moveList, props, [editBtn])
   );
 
   const cutPointBvrs = _createCutPointBvrs(props);
 
   return (
     <div>
-      {!props.moveListCrudBvrs.isEditing && editBtn}
       {div}
       <Widgets.CutVideoPanel
         moveTags={props.moveTags}
@@ -190,7 +193,7 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
 
   return isOwner(props.userProfile, props.moveList.ownerId)
     ? _createOwnMoveListDetails(props.moveList, props)
-    : _createStaticMoveListDetails(props.moveList, props);
+    : _createStaticMoveListDetails(props.moveList, props, []);
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {

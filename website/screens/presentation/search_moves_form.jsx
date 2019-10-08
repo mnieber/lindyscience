@@ -2,6 +2,8 @@
 
 import React from "react";
 import { withFormik } from "formik";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-regular-svg-icons";
 
 import { makeUnique, slugify } from "utils/utils";
 import {
@@ -33,16 +35,15 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   );
 
   const _onPickerTextChange = (tags, searchText) => {
-    debugger;
     formProps.setFieldValue("tags", tags);
     formProps.setFieldValue("searchText", searchText);
   };
 
   const tagsAndKeywordsField = (
-    <div className="moveForm__tags mt-4">
+    <div className="moveForm__tags mt-4 w-full">
       <TagsAndKeywordsPicker
         options={props.tagPickerOptions}
-        placeholder="Enter tags and keywords here"
+        placeholder="Search moves by :tags and keywords"
         onTextChange={_onPickerTextChange}
         zIndex={10}
         label="Tags"

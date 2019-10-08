@@ -12,7 +12,7 @@ type FormFieldLabelPropsT = {
 
 export function FormFieldLabel(props: FormFieldLabelPropsT) {
   return (
-    <div className="flex flex-row">
+    <div className="flexrow">
       <label
         className={classnames("mt-2 font-bold", props.classNames)}
         htmlFor={props.fieldName}

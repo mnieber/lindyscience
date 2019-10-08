@@ -5,6 +5,8 @@ import * as React from "react";
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
 import { Tags } from "tags/presentation/tags";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
 import type { UUID } from "kernel/types";
 import type { MovePrivateDataT } from "moves/types";
@@ -24,13 +26,12 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
   const [isEditing, setIsEditing] = React.useState(false);
 
   const editBtn = (
-    <div
+    <FontAwesomeIcon
       key={"edit"}
-      className={"button button--wide ml-2"}
+      className="ml-2"
+      icon={faEdit}
       onClick={() => setIsEditing(true)}
-    >
-      Edit
-    </div>
+    />
   );
 
   const tags = (props.movePrivateData && props.movePrivateData.tags) || [];
@@ -70,7 +71,7 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
 
   return (
     <div className={"move__privateNotes panel flexcol"}>
-      <div className={"flexrow"}>
+      <div className={"flexrow items-center"}>
         <h2>Private notes</h2>
         {buttons}
       </div>

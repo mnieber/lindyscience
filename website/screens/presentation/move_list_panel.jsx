@@ -298,11 +298,11 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
   return (
     <div className="moveListPanel flexrow">
       <div className="moveListPanel__inner w-1/5 flexcol">
-        {props.moveListPanelButtons}
         {props.moveListPicker}
-        {props.moveListPlayer}
-        {props.isOwner && props.moveListHeader}
+        {props.moveListPanelButtons}
         {props.moveListFilter}
+        {props.moveListPlayer}
+        {true && props.isOwner && props.moveListHeader}
         {props.moveListWidget}
       </div>
       <div className="movePanel pl-4 w-4/5">{props.children}</div>

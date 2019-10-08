@@ -3,6 +3,9 @@
 import { compose } from "redux";
 import * as React from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-regular-svg-icons";
+
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
 import { getStore } from "app/store";
@@ -59,13 +62,13 @@ export const withOwnMove = compose(
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 
     const editMoveBtn = (
-      <div
-        className={"move__editBtn button button--wide ml-2"}
-        onClick={() => moveCrudBvrs.setIsEditing(true)}
+      <FontAwesomeIcon
         key={1}
-      >
-        Edit move
-      </div>
+        className="ml-2 text-lg"
+        size="lg"
+        icon={faEdit}
+        onClick={() => moveCrudBvrs.setIsEditing(true)}
+      />
     );
 
     const videoPlayerPanel = (

@@ -150,10 +150,10 @@ function AppFrame(props: AppFramePropsT) {
   );
 
   return (
-    <div className="appFrame px-4 flex flex-col">
+    <div className="appFrame px-4 flexcol">
       {cookieNotice}
       {createToastr()}
-      <div className="appFrame__banner flex flex-row justify-between h-16">
+      <div className="appFrame__banner flexrow justify-between h-16">
         <h1 onClick={() => alert("TODO")}>Lindy Science</h1>
         {searchMovesBtn}
         <AccountMenu

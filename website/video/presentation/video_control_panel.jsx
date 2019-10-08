@@ -14,7 +14,7 @@ export function VideoControlPanel(props: VideoControlPanelPropsT) {
   const _state = x => (x ? "enabled" : "disabled");
 
   return (
-    <div className="flex flex-col">
+    <div className="flexcol">
       <button
         className={classnames(
           "videoControlPanel__button--" + _state(props.videoBvr.isPlaying)

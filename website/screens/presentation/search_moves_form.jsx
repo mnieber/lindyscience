@@ -33,7 +33,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__tags mt-2 w-full">
       <TagsAndKeywordsPicker
         options={props.tagPickerOptions}
-        placeholder="Search moves by :tags and keywords"
+        placeholder="Search moves by :tags, keywords and user:me"
         onTextChange={_onPickerTextChange}
         zIndex={10}
         label="Tags"

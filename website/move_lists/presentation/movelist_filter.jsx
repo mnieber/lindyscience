@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import classnames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 import {
   TagsAndKeywordsPicker,
@@ -93,29 +95,34 @@ export function MoveListFilter(props: MoveListFilterPropsT) {
   };
 
   const flag = (
-    <div>
-      <input
-        type="checkbox"
-        className="mr-2"
-        checked={props.isFilterEnabled}
-        onChange={onFlagChanged}
-      />
-      Filter
-    </div>
+    <FontAwesomeIcon
+      key={"filter"}
+      className={classnames("mr-2", {
+        "opacity-25": !props.isFilterEnabled,
+      })}
+      icon={faFilter}
+      size="lg"
+      onClick={onFlagChanged}
+    />
   );
 
   const tagsAndKeywordsPicker = (
-    <TagsAndKeywordsPicker
-      options={props.moveTags.map(strToPickerValue)}
-      placeholder="Enter tags and keywords here"
-      onChange={_onPickerChange}
-      defaults={defaults}
-    />
+    <div className="w-full">
+      <TagsAndKeywordsPicker
+        options={props.moveTags.map(strToPickerValue)}
+        placeholder="Filter by :tags and keywords"
+        onChange={_onPickerChange}
+        defaults={defaults}
+      />
+    </div>
   );
 
   return (
     <div
-      className={classnames("bg-grey p-2 moveListFilter mt-4", props.className)}
+      className={classnames(
+        "bg-grey p-2 moveListFilter mt-4 flexrow items-center",
+        props.className
+      )}
     >
       {flag}
       {tagsAndKeywordsPicker}

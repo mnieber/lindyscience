@@ -127,7 +127,7 @@ const withMoveListFilter = (WrappedComponent: any) => (
 ) => {
   const moveListFilter = (
     <Widgets.MoveListFilter
-      className="mb-4"
+      className=""
       filterMoves={props.filterMoves}
       moveTags={props.moveTags}
       isFilterEnabled={props.isFilterEnabled}
@@ -207,7 +207,7 @@ const withMoveListWidget = (WrappedComponent: any) => (
   const moveListWidget = (
     <Widgets.MoveList
       refs={refs}
-      className=""
+      className="mt-2"
       isOwner={props.isOwner}
       createHostedPanels={createHostedPanels}
       selectMoveById={props.selectMovesBvr.select}
@@ -307,7 +307,7 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
         {true && props.isOwner && props.moveListHeader}
         {props.moveListWidget}
       </div>
-      <div className="movePanel pl-4 w-4/5">{props.children}</div>
+      <div className="movePanel pl-4 w-full">{props.children}</div>
     </div>
   );
 }

@@ -43,7 +43,7 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
   }
 
   return (
-    <div className={classnames("moveListPicker mt-4", props.className)}>
+    <div className={classnames("moveListPicker mt-2", props.className)}>
       <ValuePicker
         key={props.defaultMoveListId}
         isMulti={false}

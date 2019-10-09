@@ -297,7 +297,7 @@ export type MoveListPanelPropsT = MoveListPickerHOCPropsT &
 function MoveListPanel_(props: MoveListPanelPropsT) {
   return (
     <div className="moveListPanel flexrow">
-      <div className="moveListPanel__inner w-1/5 flexcol">
+      <div className="moveListPanel__inner flexcol">
         {props.moveListPicker}
         {props.moveListPanelButtons}
         {props.moveListFilter}

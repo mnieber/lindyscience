@@ -13,7 +13,7 @@ import type { MoveSearchResultT } from "screens/types";
 import type { UUID } from "kernel/types";
 
 type MoveTablePropsT = {
-  moves: Array<MoveSearchResultT>,
+  moveSearchResults: Array<MoveSearchResultT>,
 };
 
 function _moveListUrl(moveSearchResult: MoveSearchResultT) {
@@ -87,7 +87,7 @@ export function MoveTable(props: MoveTablePropsT) {
   return (
     <div className="moveTable">
       <ReactTable
-        data={props.moves}
+        data={props.moveSearchResults}
         columns={_columns()}
         getTrProps={_getTrProps}
         noDataText=""

@@ -3,7 +3,6 @@
 import { combineReducers, compose } from "redux";
 import { createSelector } from "reselect";
 
-import type { PayloadT } from "screens/containers/data_container";
 import {
   reduceMapToMap,
   getObjectValues,
@@ -13,11 +12,13 @@ import {
 import { findMoveBySlugid } from "screens/utils";
 import { getMoveById } from "moves/reducers";
 import { getMoveLists } from "move_lists/reducers";
+
 import type { MoveT, MoveByIdT } from "moves/types";
 import type { MoveListT, MoveListByIdT } from "move_lists/types";
-import type { FunctionByIdT } from "screens/types";
 import type { UUID } from "kernel/types";
 import type { RootReducerStateT, Selector } from "app/root_reducer";
+import type { FunctionByIdT, MoveSearchResultT } from "screens/types";
+import type { PayloadT } from "screens/containers/data_container";
 
 ///////////////////////////////////////////////////////////////////////
 // Private state helpers
@@ -153,12 +154,34 @@ export function moveListContainerReducer(
   }
 }
 
+type SearchState = {
+  moveSearchResults: Array<MoveSearchResultT>,
+};
+
+export function searchReducer(
+  state: SearchState = {
+    moveSearchResults: [],
+  },
+  action: any
+): SearchState {
+  switch (action.type) {
+    case "SET_MOVE_SEARCH_RESULTS":
+      return {
+        ...state,
+        moveSearchResults: action.moveSearchResults,
+      };
+    default:
+      return state;
+  }
+}
+
 export type ReducerStateT = {
   moveFilters: MoveFiltersState,
   moveListFilters: MoveListFiltersState,
   selection: SelectionState,
   moveContainer: MoveContainerState,
   moveListContainer: MoveListContainerState,
+  search: SearchState,
 };
 
 // $FlowFixMe
@@ -168,6 +191,7 @@ export const reducer = combineReducers({
   selection: selectionReducer,
   moveContainer: moveContainerReducer,
   moveListContainer: moveListContainerReducer,
+  search: searchReducer,
 });
 
 export const getFilteredMoveLists: Selector<Array<MoveListT>> = createSelector(
@@ -234,3 +258,7 @@ export const getMoveListContainerPayload: Selector<?PayloadT<MoveListT>> = creat
 
 export const getIsEditingMoveList = (state: RootReducerStateT): boolean =>
   state.screens.moveListContainer.isEditing;
+
+export const getMoveSearchResults = (
+  state: RootReducerStateT
+): Array<MoveSearchResultT> => state.screens.search.moveSearchResults;

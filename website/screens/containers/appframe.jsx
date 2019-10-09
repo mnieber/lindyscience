@@ -1,23 +1,22 @@
 // @flow
 
 import React from "react";
+import { navigate } from "@reach/router";
+import Cookies from "js-cookie";
 
+import SearchMovesPage from "screens/containers/search_moves_page";
 import { actAddMoves, actSetMovePrivateDatas } from "moves/actions";
 import { actSetVotes } from "votes/actions";
 import { actSetUserProfile } from "profiles/actions";
 import { actSetLoadedMoveListUrls, actSetSignedInEmail } from "app/actions";
 import { actAddTips } from "tips/actions";
 import { actAddMoveLists } from "move_lists/actions";
-
 import { createErrorHandler, createToastr } from "app/utils";
 import { AccountMenu } from "app/presentation/accountmenu";
-import { navigate } from "@reach/router";
-import Cookies from "js-cookie";
-
+import Widgets from "screens/presentation/index";
 import Ctr from "screens/containers/index";
 import { getObjectValues } from "utils/utils";
 import { findMoveListByUrl, newMoveListSlug } from "screens/utils";
-
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";
 
@@ -123,15 +122,6 @@ function AppFrame(props: AppFramePropsT) {
     navigate("/app/sign-in/");
   };
 
-  const searchMovesBtn = (
-    <div
-      className={"button button--wide ml-2"}
-      onClick={() => navigate("/app/search")}
-    >
-      Search
-    </div>
-  );
-
   const _acceptCookies = () => {
     Cookies.set("acceptCookies", 1);
     setAcceptsCookies(true);
@@ -140,12 +130,14 @@ function AppFrame(props: AppFramePropsT) {
   const cookieNotice = Cookies.get("acceptCookies") ? (
     undefined
   ) : (
-    <div className="cookieNotice">
-      This site uses cookies. By continuing to use this site you agree with
-      that.
-      <button className="button button--wide ml-2" onClick={_acceptCookies}>
-        Okay
-      </button>
+    <div className="cookieNotice flexrow justify-around items-center">
+      <div>
+        This site uses cookies to store the settings for the logged in user. By
+        continuing to use this site you agree with that.
+        <button className="button button--wide ml-2" onClick={_acceptCookies}>
+          Okay
+        </button>
+      </div>
     </div>
   );
 
@@ -153,11 +145,15 @@ function AppFrame(props: AppFramePropsT) {
     <div className="appFrame px-4 flexcol">
       {cookieNotice}
       {createToastr()}
-      <div className="appFrame__banner flexrow justify-between h-16">
-        <h1 onClick={() => alert("TODO")}>Lindy Science</h1>
-        {searchMovesBtn}
+      <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-8">
+        <div className="flexrow w-full">
+          <h1 className="appFrame__home" onClick={() => alert("TODO")}>
+            Lindy Science
+          </h1>
+          <SearchMovesPage />
+        </div>
         <AccountMenu
-          className=""
+          className="self-start"
           userProfile={props.userProfile}
           signIn={() =>
             navigate("/app/sign-in/?next=" + window.location.pathname)

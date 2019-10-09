@@ -48,7 +48,7 @@ export function FormFieldError(props: FormFieldErrorPropsT) {
 
 type FormFieldPropsT = {
   type?: string,
-  fieldType?: string,
+  postfix?: string,
   fieldName: string,
   formProps: any,
   buttons?: any,
@@ -66,14 +66,13 @@ export function FormField(props: FormFieldPropsT) {
     event.target.select();
   };
 
-  const valueField = props.fieldType == "checkbox" ? "checked" : "value";
-
   const formFieldProps = {
     id: props.fieldName,
-    [valueField]: props.formProps.values[props.fieldName],
+    value: props.formProps.values[props.fieldName],
     onChange: props.formProps.handleChange,
     onBlur: props.formProps.handleBlur,
-    className: classnames("formField__field", {
+    className: classnames({
+      formField__field: props.type != "checkbox",
       error:
         props.formProps.errors &&
         props.formProps.errors[props.fieldName] &&
@@ -103,6 +102,17 @@ export function FormField(props: FormFieldPropsT) {
       />
     );
 
+  const postfix = x => {
+    return props.postfix ? (
+      <div className="flexrow items-center">
+        {x}
+        <div className="ml-2">{props.postfix}</div>
+      </div>
+    ) : (
+      x
+    );
+  };
+
   const formFieldLabel = (
     <FormFieldLabel
       fieldName={props.fieldName}
@@ -115,7 +125,7 @@ export function FormField(props: FormFieldPropsT) {
   return (
     <div className={classnames("my-2", props.classNames)}>
       {props.label && formFieldLabel}
-      {textField}
+      {postfix(textField)}
       <FormFieldError
         formProps={props.formProps}
         fieldName={props.fieldName}

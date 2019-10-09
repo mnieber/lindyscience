@@ -10,6 +10,7 @@ import type { MoveListByIdT, MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { UUID, SlugidT } from "kernel/types";
 import type { PayloadT } from "screens/containers/data_container";
+import type { MoveSearchResultT } from "screens/types";
 
 ///////////////////////////////////////////////////////////////////////
 // Actions
@@ -153,5 +154,14 @@ export function actSetIsEditingMoveList(isEditing: boolean) {
   return {
     type: "SET_IS_EDITING_MOVE_LIST",
     isEditing,
+  };
+}
+
+export function actSetMoveSearchResults(
+  moveSearchResults: Array<MoveSearchResultT>
+) {
+  return {
+    type: "SET_MOVE_SEARCH_RESULTS",
+    moveSearchResults,
   };
 }

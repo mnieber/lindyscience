@@ -3,7 +3,7 @@
 import React from "react";
 import { withFormik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-regular-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import { makeUnique, slugify } from "utils/utils";
 import {
@@ -26,8 +26,8 @@ type InnerFormPropsT = {
 const InnerForm = (props: InnerFormPropsT) => formProps => {
   const myMoveLists = (
     <FormField
-      classNames="w-full"
-      label="Search only my move lists"
+      classNames=""
+      postfix="Search only my move lists"
       formProps={formProps}
       fieldName="myMoveLists"
       type="checkbox"
@@ -40,7 +40,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   };
 
   const tagsAndKeywordsField = (
-    <div className="moveForm__tags mt-4 w-full">
+    <div className="moveForm__tags mt-2 w-full">
       <TagsAndKeywordsPicker
         options={props.tagPickerOptions}
         placeholder="Search moves by :tags and keywords"
@@ -59,20 +59,47 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     </div>
   );
 
+  const hiddenSearchBtnRef = React.createRef();
+
+  const hiddenSearchBtn = (
+    <button
+      ref={hiddenSearchBtnRef}
+      className="hidden"
+      type="submit"
+      disabled={formProps.isSubmitting}
+    >
+      search
+    </button>
+  );
+
+  const searchBtn = (
+    <FontAwesomeIcon
+      key={1}
+      className="ml-4"
+      icon={faSearch}
+      size="lg"
+      onClick={() => {
+        if (hiddenSearchBtnRef.current) {
+          hiddenSearchBtnRef.current.click();
+        }
+      }}
+    />
+  );
+
   return (
-    <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
-      <div className={"moveForm flexcol"}>
-        {myMoveLists}
-        {tagsAndKeywordsField}
-        <div className={"moveForm__buttonPanel flexrow mt-4"}>
-          <button
-            className="button button--wide ml-2"
-            type="submit"
-            disabled={formProps.isSubmitting}
-          >
-            search
-          </button>
+    <form
+      className="moveForm w-full max-w-lg"
+      onSubmit={formProps.handleSubmit}
+    >
+      <div className={"flexcol"}>
+        <div className={"flexrow items-center"}>
+          {tagsAndKeywordsField}
+          <div className={"moveForm__buttonPanel flexrow mt-4"}>
+            {searchBtn}
+            {hiddenSearchBtn}
+          </div>
         </div>
+        {myMoveLists}
       </div>
     </form>
   );

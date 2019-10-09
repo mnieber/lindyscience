@@ -144,6 +144,8 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     }
   };
 
+  const notFoundDiv = <div>Oops, I cannot find this move list</div>;
+
   return (
     <KeyboardEventHandler
       handleKeys={["ctrl+e", "ctrl+down", "ctrl+up"]}
@@ -171,7 +173,8 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         copyNamesToClipboard={_copyNamesToClipboard}
         copyLinksToClipboard={_copyLinksToClipboard}
       >
-        {props.children}
+        {props.moveList && props.children}
+        {!props.moveList && notFoundDiv}
       </Widgets.MoveListPanel>
     </KeyboardEventHandler>
   );

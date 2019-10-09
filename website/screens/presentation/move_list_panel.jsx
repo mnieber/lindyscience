@@ -49,11 +49,13 @@ type MoveListPickerHOCPropsT = {
 const withMoveListPicker = (WrappedComponent: any) => (
   props: MoveListPickerHOCPropsT
 ) => {
+  const defaultMoveListId = props.moveList ? props.moveList.id : "";
   const moveListPicker = (
     <Widgets.MoveListPicker
+      key={defaultMoveListId}
       className="mb-4"
       moveLists={props.moveLists}
-      defaultMoveListId={props.moveList ? props.moveList.id : ""}
+      defaultMoveListId={defaultMoveListId}
       selectMoveListById={props.selectMoveListById}
     />
   );

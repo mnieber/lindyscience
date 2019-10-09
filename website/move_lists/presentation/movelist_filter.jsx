@@ -45,7 +45,6 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
   return (
     <div className={classnames("moveListPicker mt-2", props.className)}>
       <ValuePicker
-        key={props.defaultMoveListId}
         isMulti={false}
         options={props.moveLists.map(toPickerValue)}
         placeholder="Select a move list"

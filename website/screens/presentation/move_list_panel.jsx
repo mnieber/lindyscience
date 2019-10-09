@@ -72,10 +72,10 @@ type MoveListPlayerHOCPropsT = {
   playMove: MoveT => void,
 };
 
-const withMoveListPlayer = (WrappedComponent: any) => (
+const withMoveListPlayerBtns = (WrappedComponent: any) => (
   props: MoveListPlayerHOCPropsT
 ) => {
-  const moveListPlayer = (
+  const moveListPlayerBtns = (
     <Widgets.MoveListPlayer
       moves={props.selectMovesBvr.selectedItems}
       playMove={props.playMove}
@@ -83,7 +83,9 @@ const withMoveListPlayer = (WrappedComponent: any) => (
     />
   );
 
-  return <WrappedComponent moveListPlayer={moveListPlayer} {...props} />;
+  return (
+    <WrappedComponent moveListPlayerBtns={moveListPlayerBtns} {...props} />
+  );
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -95,20 +97,22 @@ type MoveListHeaderHOCPropsT = {
   moveCrudBvrs: MoveCrudBvrsT,
 };
 
-const withMoveListHeader = (WrappedComponent: any) => (
+const withMoveListHeaderBtns = (WrappedComponent: any) => (
   props: MoveListHeaderHOCPropsT
 ) => {
-  const moveListHeader = (
+  const moveListHeaderBtns = (
     <Widgets.MoveListHeader
       addNewMove={() => {
         props.setIsFilterEnabled(false);
         props.moveCrudBvrs.editMoveBvr.addNewItem();
       }}
-      className=""
+      className="ml-2"
     />
   );
 
-  return <WrappedComponent moveListHeader={moveListHeader} {...props} />;
+  return (
+    <WrappedComponent moveListHeaderBtns={moveListHeaderBtns} {...props} />
+  );
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -207,7 +211,7 @@ const withMoveListWidget = (WrappedComponent: any) => (
   const moveListWidget = (
     <Widgets.MoveList
       refs={refs}
-      className="mt-2"
+      className=""
       isOwner={props.isOwner}
       createHostedPanels={createHostedPanels}
       selectMoveById={props.selectMovesBvr.select}
@@ -288,8 +292,8 @@ export type MoveListPanelPropsT = MoveListPickerHOCPropsT &
   MoveListPanelButtonsHOCPropsT & {
     isOwner: boolean,
     moveListPicker: any,
-    moveListPlayer: any,
-    moveListHeader: any,
+    moveListPlayerBtns: any,
+    moveListHeaderBtns: any,
     moveListFilter: any,
     moveListWidget: any,
     moveListPanelButtons: any,
@@ -303,8 +307,10 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
         {props.moveListPicker}
         {props.moveListPanelButtons}
         {props.moveListFilter}
-        {props.moveListPlayer}
-        {true && props.isOwner && props.moveListHeader}
+        <div className="flexrow w-full my-4">
+          {props.moveListPlayerBtns}
+          {props.isOwner && props.moveListHeaderBtns}
+        </div>
         {props.moveListWidget}
       </div>
       <div className="movePanel pl-4 w-full">{props.children}</div>
@@ -315,8 +321,8 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
 export const MoveListPanel = compose(
   withIsOwner,
   withMoveListPicker,
-  withMoveListPlayer,
-  withMoveListHeader,
+  withMoveListPlayerBtns,
+  withMoveListHeaderBtns,
   withMoveListFilter,
   withMoveContextMenu,
   withMoveListWidget,

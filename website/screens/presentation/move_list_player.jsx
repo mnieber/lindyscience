@@ -51,11 +51,5 @@ export function MoveListPlayer(props: MoveListPlayerPropsT) {
     </div>
   );
 
-  return (
-    <div
-      className={classnames("moveListPlayer flex flex-wrap", props.className)}
-    >
-      {isPlaying ? stopBtn : playBtn}
-    </div>
-  );
+  return [isPlaying ? stopBtn : playBtn];
 }

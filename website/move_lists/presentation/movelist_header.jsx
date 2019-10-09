@@ -13,18 +13,15 @@ type MoveListHeaderPropsT = {|
 export function MoveListHeader(props: MoveListHeaderPropsT) {
   const newMoveBtn = (
     <div
-      className={"moveListHeader__addButton button button--wide"}
+      className={classnames(
+        props.className,
+        "moveListHeader__addButton button button--wide"
+      )}
       onClick={props.addNewMove}
     >
       New move
     </div>
   );
 
-  return (
-    <div
-      className={classnames("moveListHeader flex flex-wrap", props.className)}
-    >
-      {newMoveBtn}
-    </div>
-  );
+  return [newMoveBtn];
 }

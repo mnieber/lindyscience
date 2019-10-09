@@ -23,9 +23,23 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
   const [latestOptions, setLatestOptions] = React.useState([]);
 
   const _findMoves = async (values: any) => {
+    const getUser = x => {
+      const parts = x.split(":");
+      if (parts.length == 2 && parts[0] == "user") {
+        return parts[1] == "me"
+          ? props.userProfile
+            ? props.userProfile.username
+            : undefined
+          : parts[1];
+      }
+      return undefined;
+    };
+
+    const users = values.keywords.map(getUser);
+
     const moveSearchResults = await Ctr.api.findMoves(
-      values.myMoveLists && props.userProfile ? props.userProfile.username : "",
-      values.keywords,
+      users.length ? users[users.length - 1] : "",
+      values.keywords.filter(x => getUser(x) == undefined),
       values.tags
     );
     props.dispatch(actSetMoveSearchResults(moveSearchResults));

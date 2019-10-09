@@ -24,16 +24,6 @@ type InnerFormPropsT = {
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const myMoveLists = (
-    <FormField
-      classNames=""
-      postfix="Search only my move lists"
-      formProps={formProps}
-      fieldName="myMoveLists"
-      type="checkbox"
-    />
-  );
-
   const _onPickerTextChange = (tags, searchText) => {
     formProps.setFieldValue("tags", tags);
     formProps.setFieldValue("searchText", searchText);
@@ -99,7 +89,6 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
             {hiddenSearchBtn}
           </div>
         </div>
-        {myMoveLists}
       </div>
     </form>
   );
@@ -121,7 +110,6 @@ export function SearchMovesForm(props: SearchMovesFormPropsT) {
     mapPropsToValues: () => ({
       tags: [],
       searchText: "",
-      myMoveLists: false,
       ...props.latestOptions,
     }),
 

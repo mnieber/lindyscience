@@ -54,7 +54,7 @@ const withMoveListPicker = (WrappedComponent: any) => (
   const moveListPicker = (
     <Widgets.MoveListPicker
       key={defaultMoveListId}
-      className="mb-4"
+      className=""
       moveLists={props.moveLists}
       defaultMoveListId={defaultMoveListId}
       selectMoveListById={props.selectMoveListById}
@@ -232,62 +232,19 @@ const withMoveListWidget = (WrappedComponent: any) => (
 //
 ///////////////////////////////////////////////////////////////////////
 
-type MoveListPanelButtonsHOCPropsT = {
-  moveListCrudBvrs: MoveListCrudBvrsT,
-  userProfile: UserProfileT,
-  moveList: ?MoveListT,
-  setIsFollowing: boolean => void,
-};
-
-const withMoveListPanelButtons = (WrappedComponent: any) => (
-  props: MoveListPanelButtonsHOCPropsT
-) => {
-  const isFollowing =
-    !!props.moveList &&
-    !!props.userProfile &&
-    props.userProfile.moveListIds.includes(props.moveList.id);
-
-  const followMoveListBtn = (
-    <div
-      className={"button button--wide ml-2"}
-      onClick={() => props.setIsFollowing(!isFollowing)}
-      key={2}
-    >
-      {isFollowing ? "Stop following" : "Follow"}
-    </div>
-  );
-
-  const moveListPanelButtons = (
-    <div className={"move__name flexrow flex-wrap"}>
-      {props.userProfile && followMoveListBtn}
-    </div>
-  );
-
-  return (
-    <WrappedComponent moveListPanelButtons={moveListPanelButtons} {...props} />
-  );
-};
-
-///////////////////////////////////////////////////////////////////////
-//
-///////////////////////////////////////////////////////////////////////
-
 export type MoveListPanelPropsT = MoveListPickerHOCPropsT &
   IsOwnerHOCPropsT &
   MoveListPlayerHOCPropsT &
   MoveListHeaderHOCPropsT &
   MoveListFilterHOCPropsT &
   MoveContextMenuHOCPropsT &
-  MoveListWidgetHOCPropsT &
-  MoveListPanelButtonsHOCPropsT &
-  MoveListPanelButtonsHOCPropsT & {
+  MoveListWidgetHOCPropsT & {
     isOwner: boolean,
     moveListPicker: any,
     moveListPlayerBtns: any,
     moveListHeaderBtns: any,
     moveListFilter: any,
     moveListWidget: any,
-    moveListPanelButtons: any,
     children: any,
   };
 
@@ -296,7 +253,6 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
     <div className="moveListPanel flexrow">
       <div className="moveListPanel__inner flexcol">
         {props.moveListPicker}
-        {props.moveListPanelButtons}
         {props.moveListFilter}
         <div className="flexrow w-full my-4">
           {props.moveListPlayerBtns}
@@ -316,6 +272,5 @@ export const MoveListPanel = compose(
   withMoveListHeaderBtns,
   withMoveListFilter,
   withMoveContextMenu,
-  withMoveListWidget,
-  withMoveListPanelButtons
+  withMoveListWidget
 )(MoveListPanel_);

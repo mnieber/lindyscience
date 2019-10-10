@@ -8,6 +8,7 @@ import Ctr from "screens/containers/index";
 import { getId } from "app/utils";
 import { getStore } from "app/store";
 
+import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
 import Widgets from "screens/presentation/index";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { withHostedStaticMovePanels } from "screens/hocs/with_hosted_static_move_panels";
@@ -27,6 +28,7 @@ type PropsT = {
   moveTags: Array<TagT>,
   hostedStaticMovePanels: any,
   videoBvr: VideoBvrT,
+  followMoveListBtn: any,
   // receive any actions as well
 };
 
@@ -38,10 +40,12 @@ function getMove() {
 // $FlowFixMe
 export const withStaticMove = compose(
   withHostedStaticMovePanels(getMove),
+  withFollowMoveListBtn,
   Ctr.connect(state => ({
     move: Ctr.fromStore.getHighlightedMove(state),
     moveList: Ctr.fromStore.getSelectedMoveList(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
+    userProfile: Ctr.fromStore.getUserProfile(state),
   })),
   (WrappedComponent: any) => (props: any) => {
     const {
@@ -49,12 +53,14 @@ export const withStaticMove = compose(
       moveList,
       moveTags,
       hostedStaticMovePanels,
+      followMoveListBtn,
       ...passThroughProps
     }: PropsT = props;
 
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 
     const setIsEditing = () => {};
+
     const videoPlayerPanel = (
       <VideoPlayerPanel
         videoBvr={props.videoBvr}
@@ -63,12 +69,17 @@ export const withStaticMove = compose(
       />
     );
 
+    const space = <div key="space" className="flex flex-grow" />;
+
+    const buttons = !!props.userProfile ? [space, followMoveListBtn] : [];
+
     const staticMove = (
       <div>
         <Widgets.MoveHeader
           move={move}
           moveListTitle={moveListTitle}
           moveTags={moveTags}
+          buttons={buttons}
         />
         {videoPlayerPanel}
         <Widgets.Move move={move} videoPlayer={props.videoBvr.player} />

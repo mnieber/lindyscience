@@ -4,7 +4,6 @@ import * as React from "react";
 import { compose } from "redux";
 
 import { actSetMoveFilter, actSetSelectedMoveListUrl } from "screens/actions";
-import { actInsertMoveListIds, actRemoveMoveListIds } from "profiles/actions";
 import { withMoveListFrameBvrs } from "screens/hocs/with_move_list_frame_bvrs";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
@@ -52,6 +51,8 @@ type MoveListFramePropsT = {
   moves: Array<MoveT>,
   highlightedMove: ?MoveT,
   moveList: ?MoveListT,
+  moveListUrl: string,
+  moveListNotFound: any,
   children: any,
   // receive any actions as well
   ownerUsernamePrm: string,
@@ -131,20 +132,8 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     }
   };
 
-  const setIsFollowing = isFollowing => {
-    if (!!props.userProfile && !!props.moveList) {
-      const moveListId = props.moveList.id;
-      const newMoveListIds = isFollowing
-        ? props.dispatch(actInsertMoveListIds([moveListId], "", false))
-        : props.dispatch(actRemoveMoveListIds([moveListId]));
-      const term = isFollowing ? "follow" : "unfollow";
-      Ctr.api
-        .saveMoveListOrdering(newMoveListIds)
-        .catch(createErrorHandler(`Could not ${term} the move list`));
-    }
-  };
-
   const notFoundDiv = <div>Oops, I cannot find this move list</div>;
+  const loadingDiv = <div>Loading move list, please wait...</div>;
 
   return (
     <KeyboardEventHandler
@@ -153,7 +142,6 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     >
       <Widgets.MoveListPanel
         userProfile={props.userProfile}
-        setIsFollowing={setIsFollowing}
         moveList={props.moveList}
         moves={props.moves}
         playMove={playMove}
@@ -174,7 +162,12 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         copyLinksToClipboard={_copyLinksToClipboard}
       >
         {props.moveList && props.children}
-        {!props.moveList && notFoundDiv}
+        {!props.moveList &&
+          props.moveListNotFound[props.moveListUrl] &&
+          notFoundDiv}
+        {!props.moveList &&
+          !props.moveListNotFound[props.moveListUrl] &&
+          loadingDiv}
       </Widgets.MoveListPanel>
     </KeyboardEventHandler>
   );
@@ -210,6 +203,8 @@ MoveListFrame = compose(
     moveLists: Ctr.fromStore.getFilteredMoveLists(state),
     highlightedMove: Ctr.fromStore.getHighlightedMove(state),
     moveList: Ctr.fromStore.getSelectedMoveList(state),
+    moveListUrl: Ctr.fromStore.getSelectedMoveListUrl(state),
+    moveListNotFound: Ctr.fromStore.getMoveListNotFound(state),
   }))
 )(MoveListFrame);
 

@@ -20,13 +20,11 @@ type MoveHeaderPropsT = {
 
 export function MoveHeader(props: MoveHeaderPropsT) {
   const nameDiv = (
-    <div className="flexrow items-center">
+    <div className="flexrow items-center w-full">
       {props.moveListTitle}
       <h2>:</h2>
-      <div className={"move__name flexrow items-center flex-wrap ml-2"}>
-        <h1>{props.move.name}</h1>
-        {props.buttons}
-      </div>
+      <h1 className="flex-none ml-2">{props.move.name}</h1>
+      {props.buttons}
     </div>
   );
 

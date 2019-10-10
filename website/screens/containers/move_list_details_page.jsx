@@ -7,18 +7,18 @@ import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
 import * as movesApi from "moves/api";
 import * as moveListsApi from "move_lists/api";
-
 import { createErrorHandler, isOwner } from "app/utils";
 import { isNone } from "utils/utils2";
 import { actInsertMoveIds } from "move_lists/actions";
 import { actAddMoves } from "moves/actions";
-import { slugify } from "utils/utils";
+import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
 import {
   actAddCutPoints,
   actClearCutPoints,
   actRemoveCutPoints,
   actSetCutVideoLink,
 } from "video/actions";
+import { createMoveFromCutPoint } from "screens/utils";
 import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import Ctr from "screens/containers/index";
@@ -40,6 +40,7 @@ type MoveListDetailsPagePropsT = {
   cutVideoLink: string,
   videoBvr: VideoBvrT,
   editCutPointBvr: EditCutPointBvrT,
+  followMoveListBtn: any,
   cutPoints: Array<CutPointT>,
   dispatch: Function,
 };
@@ -133,6 +134,8 @@ function _createOwnMoveListDetails(
     />
   );
 
+  const space = <div key="space" className="flex flex-grow" />;
+
   const div = props.moveListCrudBvrs.isEditing ? (
     <Widgets.MoveListForm
       autoFocus={true}
@@ -146,7 +149,11 @@ function _createOwnMoveListDetails(
       }
     />
   ) : (
-    _createStaticMoveListDetails(moveList, props, [editBtn])
+    _createStaticMoveListDetails(moveList, props, [
+      editBtn,
+      space,
+      props.followMoveListBtn,
+    ])
   );
 
   const cutPointBvrs = _createCutPointBvrs(props);
@@ -166,26 +173,6 @@ function _createOwnMoveListDetails(
   );
 }
 
-function createMoveFromCutPoint(
-  cutPoint: CutPointT,
-  userProfile: UserProfileT,
-  cutVideoLink: string,
-  moveList: MoveListT
-) {
-  return {
-    id: cutPoint.id,
-    ownerId: userProfile.userId,
-    name: cutPoint.name,
-    slug: slugify(cutPoint.name),
-    description: cutPoint.description,
-    tags: cutPoint.tags,
-    startTimeMs: cutPoint.t * 1000,
-    endTimeMs: undefined,
-    privateData: undefined,
-    link: cutVideoLink,
-    sourceMoveListId: moveList.id,
-  };
-}
 export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   if (!props.moveList) {
     return <React.Fragment />;
@@ -214,6 +201,7 @@ export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
 // $FlowFixMe
 MoveListDetailsPage = compose(
   withCutVideoBvr,
+  withFollowMoveListBtn,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
     moveList: Ctr.fromStore.getSelectedMoveList(state),

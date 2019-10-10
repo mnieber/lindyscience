@@ -3,11 +3,15 @@
 import { splitIntoKeywords, isNone } from "utils/utils";
 // $FlowFixMe
 import parse from "url-parse";
+import { slugify } from "utils/utils";
+
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import type { PayloadT } from "screens/containers/data_container";
 import type { TagT } from "tags/types";
 import type { ObjectT, SlugidT, UUID } from "kernel/types";
+import type { UserProfileT } from "profiles/types";
+import type { CutPointT } from "video/types";
 
 export function makeSlugid(slug: string, id: ?UUID) {
   return slug + (id ? "/" + id : "");
@@ -98,4 +102,25 @@ export function createTagsAndKeywordsFilter(
     return tags.length || keywords.length ? moves.filter(match) : moves;
   }
   return _filter;
+}
+
+export function createMoveFromCutPoint(
+  cutPoint: CutPointT,
+  userProfile: UserProfileT,
+  cutVideoLink: string,
+  moveList: MoveListT
+) {
+  return {
+    id: cutPoint.id,
+    ownerId: userProfile.userId,
+    name: cutPoint.name,
+    slug: slugify(cutPoint.name),
+    description: cutPoint.description,
+    tags: cutPoint.tags,
+    startTimeMs: cutPoint.t * 1000,
+    endTimeMs: undefined,
+    privateData: undefined,
+    link: cutVideoLink,
+    sourceMoveListId: moveList.id,
+  };
 }

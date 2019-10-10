@@ -2,10 +2,10 @@
 
 import { compose } from "redux";
 import * as React from "react";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
 import { getStore } from "app/store";
@@ -14,7 +14,6 @@ import { withHostedOwnMovePanels } from "screens/hocs/with_hosted_own_move_panel
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
-
 import type { MoveCrudBvrsT } from "screens/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
@@ -30,6 +29,7 @@ type PropsT = {
   hostedOwnMovePanels: any,
   moveCrudBvrs: MoveCrudBvrsT,
   videoBvr: VideoBvrT,
+  followMoveListBtn: any,
   // receive any actions as well
 };
 
@@ -41,6 +41,7 @@ function getMove() {
 // $FlowFixMe
 export const withOwnMove = compose(
   withMoveCrudBvrsContext,
+  withFollowMoveListBtn,
   withHostedOwnMovePanels(getMove),
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
@@ -56,6 +57,7 @@ export const withOwnMove = compose(
       userProfile,
       moveTags,
       hostedOwnMovePanels,
+      followMoveListBtn,
       ...passThroughProps
     }: PropsT = props;
 
@@ -63,7 +65,7 @@ export const withOwnMove = compose(
 
     const editMoveBtn = (
       <FontAwesomeIcon
-        key={1}
+        key={"editMoveBtn"}
         className="ml-2 text-lg"
         size="lg"
         icon={faEdit}
@@ -78,6 +80,8 @@ export const withOwnMove = compose(
         restartId={move ? move.id : ""}
       />
     );
+
+    const space = <div key="space" className="flex flex-grow" />;
 
     const ownMove = moveCrudBvrs.isEditing ? (
       <div>
@@ -99,7 +103,7 @@ export const withOwnMove = compose(
           move={move}
           moveListTitle={moveListTitle}
           moveTags={moveTags}
-          buttons={[editMoveBtn]}
+          buttons={[editMoveBtn, space, followMoveListBtn]}
         />
         {videoPlayerPanel}
         <Widgets.Move move={move} videoPlayer={props.videoBvr.player} />

@@ -78,6 +78,7 @@ export function tagsReducer(state: TagMapT = {}, action: any): TagsStateT {
       return state;
   }
 }
+
 export const getMoveListTags: Selector<Array<TagT>> = createSelector(
   [_stateTags],
 
@@ -95,13 +96,34 @@ export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
 );
 export const getMoveListById = _stateMoveLists;
 
+type MoveListNotFoundStateT = { [string]: boolean };
+
+export function moveListNotFoundReducer(
+  state: MoveListNotFoundStateT = {},
+  action: any
+): TagsStateT {
+  switch (action.type) {
+    case "MARK_MOVE_LIST_NOT_FOUND":
+      return {
+        ...state,
+        [action.moveListUrl]: true,
+      };
+    default:
+      return state;
+  }
+}
+
+export const getMoveListNotFound = state => state.moveLists.moveListNotFound;
+
 export type ReducerStateT = {
   moveLists: MoveListsStateT,
   tags: TagsStateT,
+  moveListNotFound: MoveListNotFoundStateT,
 };
 
 // $FlowFixMe
 export const reducer = combineReducers({
   tags: tagsReducer,
   moveLists: moveListsReducer,
+  moveListNotFound: moveListNotFoundReducer,
 });

@@ -4,13 +4,13 @@ import React from "react";
 import { navigate } from "@reach/router";
 import Cookies from "js-cookie";
 
+import { actAddMoveLists, actMarkMoveListNotFound } from "move_lists/actions";
 import SearchMovesPage from "screens/containers/search_moves_page";
 import { actAddMoves, actSetMovePrivateDatas } from "moves/actions";
 import { actSetVotes } from "votes/actions";
 import { actSetUserProfile } from "profiles/actions";
 import { actSetLoadedMoveListUrls, actSetSignedInEmail } from "app/actions";
 import { actAddTips } from "tips/actions";
-import { actAddMoveLists } from "move_lists/actions";
 import { createErrorHandler, createToastr } from "app/utils";
 import { AccountMenu } from "app/presentation/accountmenu";
 import Widgets from "screens/presentation/index";
@@ -86,9 +86,15 @@ function AppFrame(props: AppFramePropsT) {
       const [ownerUsername, slug] = props.selectedMoveListUrl.split("/");
 
       if (slug != newMoveListSlug) {
-        const [moveList] = await Promise.all([
-          Ctr.api.loadMoveList(ownerUsername, slug),
-        ]);
+        var moveList;
+        try {
+          [moveList] = await Promise.all([
+            Ctr.api.loadMoveList(ownerUsername, slug),
+          ]);
+        } catch {
+          props.dispatch(actMarkMoveListNotFound(props.selectedMoveListUrl));
+          return;
+        }
         props.dispatch(
           actAddMoves(getObjectValues(moveList.entities.moves || {}))
         );

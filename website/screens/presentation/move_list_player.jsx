@@ -29,6 +29,7 @@ export function MoveListPlayer(props: MoveListPlayerPropsT) {
 
   const playBtn = (
     <div
+      key="playBtn"
       className={"moveListPlayer__playButton button button--wide"}
       onClick={() => {
         setMoveIdx(0);
@@ -42,6 +43,7 @@ export function MoveListPlayer(props: MoveListPlayerPropsT) {
 
   const stopBtn = (
     <div
+      key="stopBtn"
       className={"moveListPlayer__stopButton button button--wide"}
       onClick={() => {
         setIsPlaying(false);

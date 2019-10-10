@@ -1,10 +1,13 @@
 // @flow
 
+// $FlowFixMe
+import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
+
 import React from "react";
 import scrollIntoViewIfNeeded from "scroll-into-view-if-needed";
 import ReduxToastr, { toastr } from "react-redux-toastr";
-// $FlowFixMe
-import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
+
+import { makeIdMatcher } from "screens/utils";
 import { stripQuotes } from "utils/utils";
 
 import type { UserProfileT } from "profiles/types";
@@ -34,7 +37,7 @@ export function pickNeighbour(
   isForward: boolean,
   pickItemById: (id: UUID) => void
 ) {
-  const idx = allItems.findIndex(c => c.id === pickedItemId);
+  const idx = allItems.findIndex(makeIdMatcher(pickedItemId));
 
   if (isForward && idx + 1 < allItems.length) {
     pickItemById(allItems[idx + 1].id);

@@ -2,6 +2,8 @@
 
 import * as React from "react";
 
+import { makeIdMatcher } from "screens/utils";
+
 import type { DataContainerT } from "screens/containers/data_container";
 import type { UUID, ObjectT } from "kernel/types";
 
@@ -9,7 +11,7 @@ import type { UUID, ObjectT } from "kernel/types";
 
 export type EditItemBvrT<ItemT> = {|
   newItem: ?ItemT,
-  addNewItem: () => void,
+  addNewItem: any => void,
   setHighlightedItemId: (itemId: UUID) => void,
   finalize: (isCancel: boolean, values: any) => void,
 |};
@@ -19,15 +21,15 @@ export function useEditItem<ItemT: ObjectT>(
   setHighlightedItemId: (itemId: UUID) => void,
   dataContainer: DataContainerT<ItemT>,
   setIsEditing: boolean => void,
-  createNewItem: () => ?ItemT,
+  createNewItem: any => ?ItemT,
   saveItem: (item: ItemT, values: any) => ItemT
 ): EditItemBvrT<ItemT> {
   const [newItem, setNewItem] = React.useState(null);
 
   // Store a new item in the function's state
-  function addNewItem() {
+  function addNewItem(props: any) {
     if (!newItem) {
-      const newItem = createNewItem();
+      const newItem = createNewItem(props);
       if (newItem) {
         setNewItem(newItem);
         dataContainer.setPayload({
@@ -49,7 +51,7 @@ export function useEditItem<ItemT: ObjectT>(
       }
       dataContainer.setPayload(null);
     } else {
-      const oldItem = dataContainer.preview.find(x => x.id == values.id);
+      const oldItem = dataContainer.preview.find(makeIdMatcher(values.id));
       if (oldItem) {
         saveItem(oldItem, values);
       }

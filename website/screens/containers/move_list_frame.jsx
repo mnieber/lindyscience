@@ -187,7 +187,7 @@ function MoveListFrame({ ownerUsernamePrm, moveListSlugPrm, ...props }) {
       moveListSlugPrm == newMoveListSlug &&
       !props.moveListCrudBvrs.editMoveListBvr.newItem
     ) {
-      props.moveListCrudBvrs.editMoveListBvr.addNewItem();
+      props.moveListCrudBvrs.editMoveListBvr.addNewItem({});
     }
     props.dispatch(
       actSetSelectedMoveListUrl(ownerUsernamePrm, moveListSlugPrm)

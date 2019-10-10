@@ -44,6 +44,7 @@ type MoveListPickerHOCPropsT = {
   moveList: ?MoveListT,
   moveLists: Array<MoveListT>,
   selectMoveListById: (id: UUID) => void,
+  moveListCrudBvrs: MoveListCrudBvrsT,
 };
 
 const withMoveListPicker = (WrappedComponent: any) => (
@@ -57,6 +58,7 @@ const withMoveListPicker = (WrappedComponent: any) => (
       moveLists={props.moveLists}
       defaultMoveListId={defaultMoveListId}
       selectMoveListById={props.selectMoveListById}
+      createMoveList={props.moveListCrudBvrs.editMoveListBvr.addNewItem}
     />
   );
 
@@ -104,7 +106,7 @@ const withMoveListHeaderBtns = (WrappedComponent: any) => (
     <Widgets.MoveListHeader
       addNewMove={() => {
         props.setIsFilterEnabled(false);
-        props.moveCrudBvrs.editMoveBvr.addNewItem();
+        props.moveCrudBvrs.editMoveBvr.addNewItem({});
       }}
       className="ml-2"
     />
@@ -240,16 +242,6 @@ type MoveListPanelButtonsHOCPropsT = {
 const withMoveListPanelButtons = (WrappedComponent: any) => (
   props: MoveListPanelButtonsHOCPropsT
 ) => {
-  const newMoveListBtn = (
-    <div
-      className={"button button--wide"}
-      onClick={props.moveListCrudBvrs.editMoveListBvr.addNewItem}
-      key={1}
-    >
-      New move list
-    </div>
-  );
-
   const isFollowing =
     !!props.moveList &&
     !!props.userProfile &&
@@ -267,7 +259,6 @@ const withMoveListPanelButtons = (WrappedComponent: any) => (
 
   const moveListPanelButtons = (
     <div className={"move__name flexrow flex-wrap"}>
-      {props.userProfile && newMoveListBtn}
       {props.userProfile && followMoveListBtn}
     </div>
   );

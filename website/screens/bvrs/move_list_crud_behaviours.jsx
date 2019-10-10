@@ -30,18 +30,17 @@ export const withMoveListCrudBvrsContext = (WrappedComponent: any) => (
   );
 };
 
-export function createNewMoveList(userId: number, username: string): MoveListT {
+export function createNewMoveList(props: any): MoveListT {
   return {
     id: createUUID(),
-    slug: newMoveListSlug,
+    slug: props.name ? slugify(props.name) : newMoveListSlug,
     name: "New move list",
     description: "",
     isPrivate: false,
     role: "",
     tags: [],
     moves: [],
-    ownerId: userId,
-    ownerUsername: username,
+    ...props,
   };
 }
 
@@ -57,9 +56,13 @@ export function createMoveListCrudBvrs(
   isEditingMoveList: boolean,
   actSetIsEditingMoveList: Function
 ): MoveListCrudBvrsT {
-  function _createNewMoveList() {
+  function _createNewMoveList(props: any) {
     return userProfile
-      ? createNewMoveList(userProfile.userId, userProfile.username)
+      ? createNewMoveList({
+          ...props,
+          ownerId: userProfile.userId,
+          ownerUsername: userProfile.username,
+        })
       : undefined;
   }
 

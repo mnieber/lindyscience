@@ -133,7 +133,7 @@ test.only("test useNewMove", function(t) {
 
   t.equal(sandbox.editMoveBvr.newItem, null, "Initially, there is no newMove");
 
-  sandbox.editMoveBvr.addNewItem();
+  sandbox.editMoveBvr.addNewItem({});
   t.notEqual(
     sandbox.editMoveBvr.newItem,
     null,
@@ -178,7 +178,7 @@ test.only("test useNewMove", function(t) {
     "After finalize with cancel, the previous highlight should be restored"
   );
 
-  sandbox.editMoveBvr.addNewItem();
+  sandbox.editMoveBvr.addNewItem({});
   sandbox.editMoveBvr.setHighlightedItemId(
     "18561d09-0727-441d-bdd9-d3d8c33ebde3"
   );
@@ -187,7 +187,7 @@ test.only("test useNewMove", function(t) {
     "Changing the highlight should cancel the new move"
   );
 
-  sandbox.editMoveBvr.addNewItem();
+  sandbox.editMoveBvr.addNewItem({});
   sandbox.editMoveBvr.setHighlightedItemId(
     sandbox.editMoveBvr.newItem ? sandbox.editMoveBvr.newItem.id : ""
   );

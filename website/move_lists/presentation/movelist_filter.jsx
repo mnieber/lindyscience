@@ -11,6 +11,8 @@ import {
 } from "search/utils/tags_and_keywords_picker";
 import { makeUnique, splitIntoKeywords } from "utils/utils";
 import { ValuePicker, strToPickerValue } from "utils/value_picker";
+import { makeIdMatcher } from "screens/utils";
+
 import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
@@ -21,12 +23,13 @@ type MoveListPickerPropsT = {|
   moveLists: Array<MoveListT>,
   defaultMoveListId: UUID,
   className?: string,
+  createMoveList: any => ?MoveListT,
   selectMoveListById: UUID => void,
 |};
 
 export function MoveListPicker(props: MoveListPickerPropsT) {
   const defaultMoveList = props.moveLists.find(
-    x => x.id == props.defaultMoveListId
+    makeIdMatcher(props.defaultMoveListId)
   );
 
   const [moveListPickerValue, setMoveListPickerValue] = React.useState(
@@ -34,7 +37,12 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
   );
 
   function _onChange(pickedItem) {
-    props.selectMoveListById(pickedItem.value);
+    const moveListId = pickedItem.value;
+    if (props.moveLists.some(makeIdMatcher(moveListId))) {
+      props.selectMoveListById(moveListId);
+    } else {
+      props.createMoveList({ name: pickedItem.label });
+    }
   }
 
   function toPickerValue(moveList: MoveListT) {
@@ -48,6 +56,7 @@ export function MoveListPicker(props: MoveListPickerPropsT) {
     <div className={classnames("moveListPicker mt-2", props.className)}>
       <ValuePicker
         isMulti={false}
+        isCreatable={true}
         options={props.moveLists.map(toPickerValue)}
         placeholder="Select a move list"
         onChange={_onChange}

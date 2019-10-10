@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { makeIdMatcher } from "screens/utils";
 import { range } from "utils/utils";
 
 import type { UUID, ObjectT } from "kernel/types";
@@ -21,13 +22,13 @@ export function useSelectItems<ItemT: ObjectT>(
   const [selectedItems, setSelectedItems] = React.useState([]);
 
   function select(id: UUID, isShift: boolean, isCtrl: boolean) {
-    const hasItem = selectedItems.find(x => x.id == id);
+    const hasItem = selectedItems.find(makeIdMatcher(id));
     const hasAnchor = !!anchorItemId;
 
     if (isShift) {
       const startId = anchorItemId || id;
-      const startIdx = items.findIndex(x => x.id == startId);
-      const stopIdx = items.findIndex(x => x.id == id);
+      const startIdx = items.findIndex(makeIdMatcher(startId));
+      const stopIdx = items.findIndex(makeIdMatcher(id));
       const idxRange = range(
         Math.min(startIdx, stopIdx),
         1 + Math.max(startIdx, stopIdx)
@@ -36,11 +37,11 @@ export function useSelectItems<ItemT: ObjectT>(
     } else if (isCtrl) {
       setSelectedItems(
         hasItem
-          ? selectedItems.filter(x => x.id != id)
-          : [...selectedItems, ...items.filter(x => x.id == id)]
+          ? selectedItems.filter(makeIdMatcher(id))
+          : [...selectedItems, ...items.filter(makeIdMatcher(id))]
       );
     } else {
-      setSelectedItems(items.filter(x => x.id == id));
+      setSelectedItems(items.filter(makeIdMatcher(id)));
     }
 
     // Move the anchor

@@ -7,6 +7,7 @@ import { actSetSignedInEmail } from "app/actions";
 import { navigate } from "@reach/router";
 import { urlParam } from "utils/utils";
 import { SignInDialog } from "app/presentation/signin_dialog";
+import { apiSignIn } from "app/api";
 
 // SignInPage
 
@@ -16,7 +17,7 @@ type SignInPagePropsT = {
 
 function SignInPage(props: SignInPagePropsT) {
   async function _signIn(email: string, password: string) {
-    const errorState = await Ctr.api.signIn(email, password);
+    const errorState = await apiSignIn(email, password);
     if (!errorState) {
       props.dispatch(actSetSignedInEmail(email));
       const next = urlParam("next");

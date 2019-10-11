@@ -7,6 +7,8 @@ import { actSetMoveSearchResults } from "screens/actions";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 
+import { apiFindMoves } from "screens/api";
+
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 
@@ -37,7 +39,7 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
 
     const users = values.keywords.map(getUser);
 
-    const moveSearchResults = await Ctr.api.findMoves(
+    const moveSearchResults = await apiFindMoves(
       users.length ? users[users.length - 1] : "",
       values.keywords.filter(x => getUser(x) == undefined),
       values.tags

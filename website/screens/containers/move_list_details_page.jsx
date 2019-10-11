@@ -5,8 +5,9 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
-import * as movesApi from "moves/api";
-import * as moveListsApi from "move_lists/api";
+import { apiSaveMove } from "moves/api";
+import { apiSaveMoveOrdering } from "move_lists/api";
+
 import { createErrorHandler, isOwner } from "app/utils";
 import { isNone } from "utils/utils2";
 import { actInsertMoveIds } from "move_lists/actions";
@@ -110,12 +111,12 @@ function _createCutPointBvrs(props: _MoveListDetailsPagePropsT) {
       );
 
       newMoves.forEach(newMove => {
-        movesApi
-          .saveMove(newMove)
-          .catch(createErrorHandler("We could not save the move"));
-        moveListsApi
-          .saveMoveOrdering(props.moveList.id, moveIdsInMoveList)
-          .catch(createErrorHandler("We could not update the movelist"));
+        apiSaveMove(newMove).catch(
+          createErrorHandler("We could not save the move")
+        );
+        apiSaveMoveOrdering(props.moveList.id, moveIdsInMoveList).catch(
+          createErrorHandler("We could not update the movelist")
+        );
       });
     },
   };

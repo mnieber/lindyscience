@@ -3,7 +3,7 @@ import { doQuery } from "app/client";
 import type { TipT } from "tips/types";
 import type { UUID } from "kernel/types";
 
-export function saveTip(moveId: UUID, values: TipT) {
+export function apiSaveTip(moveId: UUID, values: TipT) {
   return doQuery(
     `mutation saveTip(
       $id: String!,
@@ -23,7 +23,7 @@ export function saveTip(moveId: UUID, values: TipT) {
   );
 }
 
-export function deleteTip(id: UUID) {
+export function apiDeleteTip(id: UUID) {
   return doQuery(
     `mutation deleteTip(
       $id: String!,

@@ -17,6 +17,14 @@ import Widgets from "screens/presentation/index";
 import Ctr from "screens/containers/index";
 import { getObjectValues } from "utils/utils";
 import { findMoveListByUrl, newMoveListSlug } from "screens/utils";
+
+import { apiGetEmail, apiSignOut } from "app/api";
+import { apiLoadUserProfile } from "profiles/api";
+import { apiFindMoveLists, apiLoadMoveList } from "screens/api";
+import { apiLoadMovePrivateDatas } from "moves/api";
+import { apiLoadUserTags } from "tags/api";
+import { apiLoadUserVotes } from "votes/api";
+
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";
 
@@ -37,7 +45,7 @@ function AppFrame(props: AppFramePropsT) {
   const [loadingMoveListUrls, setLoadingMoveListUrls] = React.useState([]);
 
   async function _loadEmail() {
-    const [email] = await Promise.all([Ctr.api.getEmail()]);
+    const [email] = await Promise.all([apiGetEmail()]);
     props.dispatch(actSetSignedInEmail(email ? email : "anonymous"));
   }
 
@@ -49,10 +57,10 @@ function AppFrame(props: AppFramePropsT) {
         props.dispatch(actSetMovePrivateDatas({}));
       } else {
         const [profile, votes, tags, movePrivateDatas] = await Promise.all([
-          Ctr.api.loadUserProfile(),
-          Ctr.api.loadUserVotes(),
-          Ctr.api.loadUserTags(),
-          Ctr.api.loadMovePrivateDatas(),
+          apiLoadUserProfile(),
+          apiLoadUserVotes(),
+          apiLoadUserTags(),
+          apiLoadMovePrivateDatas(),
         ]);
         props.dispatch(actSetUserProfile(profile));
         props.dispatch(actSetVotes(votes));
@@ -63,7 +71,7 @@ function AppFrame(props: AppFramePropsT) {
         );
 
         const [moveLists] = await Promise.all([
-          Ctr.api.findMoveLists(profile.username),
+          apiFindMoveLists(profile.username),
         ]);
         props.dispatch(actAddMoveLists(moveLists.entities.moveLists || {}));
       }
@@ -89,7 +97,7 @@ function AppFrame(props: AppFramePropsT) {
         var moveList;
         try {
           [moveList] = await Promise.all([
-            Ctr.api.loadMoveList(ownerUsername, slug),
+            apiLoadMoveList(ownerUsername, slug),
           ]);
         } catch {
           props.dispatch(actMarkMoveListNotFound(props.selectedMoveListUrl));
@@ -121,9 +129,7 @@ function AppFrame(props: AppFramePropsT) {
   });
 
   const signOut = () => {
-    Ctr.api
-      .signOut()
-      .catch(createErrorHandler("Could not update the move list"));
+    apiSignOut().catch(createErrorHandler("Could not update the move list"));
     props.dispatch(actSetSignedInEmail(""));
     navigate("/app/sign-in/");
   };

@@ -6,6 +6,8 @@ import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 import { getObjectValues } from "utils/utils";
 
+import { apiFindMoveLists } from "screens/api";
+
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
@@ -27,7 +29,7 @@ export function ProfilePage(props: ProfilePagePropsT) {
   const username = props.userProfile ? props.userProfile.username : "";
 
   async function _loadOwnMoveLists() {
-    const moveLists = await Ctr.api.findMoveLists(username);
+    const moveLists = await apiFindMoveLists(username);
     setOwnMoveLists(getObjectValues(moveLists.entities.moveLists));
   }
 

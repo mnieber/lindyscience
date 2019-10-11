@@ -6,7 +6,7 @@ import { doQuery } from "app/client";
 
 import type { MoveT, MovePrivateDataT } from "moves/types";
 
-export function saveMove(values: MoveT) {
+export function apiSaveMove(values: MoveT) {
   return doQuery(
     `mutation saveMove(
       $id: String!,
@@ -37,7 +37,7 @@ export function saveMove(values: MoveT) {
   );
 }
 
-export function saveMovePrivateData(values: MovePrivateDataT) {
+export function apiSaveMovePrivateData(values: MovePrivateDataT) {
   return doQuery(
     `mutation saveMovePrivateData(
       $id: String!,
@@ -60,7 +60,7 @@ export function saveMovePrivateData(values: MovePrivateDataT) {
 
 const movePrivateData = new schema.Entity("movePrivateDatas");
 
-export function loadMovePrivateDatas() {
+export function apiLoadMovePrivateDatas() {
   return doQuery(
     `query queryMovePrivateDatas {
       movePrivateDatas {

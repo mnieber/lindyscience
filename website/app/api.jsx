@@ -12,7 +12,7 @@ function _hasError(e, fieldName, errorMsg) {
 
 // Api app
 
-export async function signIn(email: string, password: string) {
+export async function apiSignIn(email: string, password: string) {
   try {
     const response = toCamelCase(
       await post("/auth/token/login", { email, password })
@@ -32,7 +32,7 @@ export async function signIn(email: string, password: string) {
   }
 }
 
-export async function signOut() {
+export async function apiSignOut() {
   try {
     await post("/auth/token/logout", {});
     setToken("");
@@ -43,7 +43,7 @@ export async function signOut() {
   return false;
 }
 
-export async function getEmail() {
+export async function apiGetEmail() {
   try {
     const response = toCamelCase(await get("/auth/users/me"));
     return response.email;
@@ -52,7 +52,7 @@ export async function getEmail() {
   }
 }
 
-export async function resetPassword(email: string) {
+export async function apiResetPassword(email: string) {
   try {
     const response = toCamelCase(
       await post("/auth/password/reset/", {
@@ -67,7 +67,7 @@ export async function resetPassword(email: string) {
   }
 }
 
-export async function changePassword(
+export async function apiChangePassword(
   newPassword: string,
   uid: string,
   token: string
@@ -88,7 +88,7 @@ export async function changePassword(
   }
 }
 
-export async function activateAccount(uid: string, token: string) {
+export async function apiActivateAccount(uid: string, token: string) {
   try {
     const response = toCamelCase(
       await post("/auth/users/confirm/", {
@@ -101,5 +101,20 @@ export async function activateAccount(uid: string, token: string) {
     return _hasError(e, "non_field_errors", "Invalid token for given user.")
       ? "invalid_token"
       : "cannot_sign_in";
+  }
+}
+
+export async function apiRegister(email: string, password: string) {
+  try {
+    const response = toCamelCase(
+      await post("/auth/users/create/", {
+        email,
+        password,
+        accepts_terms: true,
+      })
+    );
+    return "";
+  } catch (e) {
+    return "error_registering_user";
   }
 }

@@ -7,6 +7,8 @@ import Ctr from "screens/containers/index";
 import { actInsertMoveListIds, actRemoveMoveListIds } from "profiles/actions";
 import { createErrorHandler } from "app/utils";
 
+import { apiSaveMoveListOrdering } from "move_lists/api";
+
 import type { MoveListT } from "move_lists/types";
 import type { UserProfileT } from "profiles/types";
 
@@ -32,9 +34,9 @@ export const withFollowMoveListBtn = compose(
           ? props.dispatch(actInsertMoveListIds([moveListId], "", false))
           : props.dispatch(actRemoveMoveListIds([moveListId]));
         const term = isFollowing ? "follow" : "unfollow";
-        Ctr.api
-          .saveMoveListOrdering(newMoveListIds)
-          .catch(createErrorHandler(`Could not ${term} the move list`));
+        apiSaveMoveListOrdering(newMoveListIds).catch(
+          createErrorHandler(`Could not ${term} the move list`)
+        );
       }
     };
 

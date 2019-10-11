@@ -8,6 +8,9 @@ import Ctr from "screens/containers/index";
 import { actAddMovePrivateDatas } from "moves/actions";
 import Widgets from "screens/presentation/index";
 import { getId, createErrorHandler } from "app/utils";
+
+import { apiSaveMovePrivateData } from "moves/api";
+
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
@@ -42,13 +45,11 @@ export const withMovePrivateDataPanel = getMove =>
         props.dispatch(
           actAddMovePrivateDatas({ [movePrivateData.id]: movePrivateData })
         );
-        Ctr.api
-          .saveMovePrivateData(movePrivateData)
-          .catch(
-            createErrorHandler(
-              "We could not update your private data for this move"
-            )
-          );
+        apiSaveMovePrivateData(movePrivateData).catch(
+          createErrorHandler(
+            "We could not update your private data for this move"
+          )
+        );
       };
 
       const movePrivateDataPanel = (

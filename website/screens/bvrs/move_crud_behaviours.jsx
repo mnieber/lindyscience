@@ -4,10 +4,11 @@ import * as React from "react";
 
 import { createUUID, slugify } from "utils/utils";
 import { type EditItemBvrT, useEditItem } from "screens/bvrs/crud_behaviours";
-import * as api from "screens/api";
-import * as movesApi from "moves/api";
 import { createErrorHandler } from "app/utils";
 import { newMoveSlug } from "moves/utils";
+
+import { apiSaveMove } from "moves/api";
+
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT } from "move_lists/types";
 import type { MoveCrudBvrsT } from "screens/types";
@@ -89,9 +90,9 @@ export function createMoveCrudBvrs(
     actAddMoves([newMove]);
     browseToMove(newMove);
 
-    return movesApi
-      .saveMove(newMove)
-      .catch(createErrorHandler("We could not save the move"));
+    return apiSaveMove(newMove).catch(
+      createErrorHandler("We could not save the move")
+    );
   }
 
   const editMoveBvr = useEditItem<MoveT>(

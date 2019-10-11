@@ -5,6 +5,8 @@ import Ctr from "app/containers/index";
 import { PasswordResetDialog } from "app/presentation/password_reset_dialog";
 import { PasswordChangeDialog } from "app/presentation/password_change_dialog";
 
+import { apiResetPassword, apiChangePassword } from "app/api";
+
 // PasswordResetPage
 
 type PasswordResetPagePropsT = {
@@ -14,11 +16,15 @@ type PasswordResetPagePropsT = {
 
 function PasswordResetPage(props: PasswordResetPagePropsT) {
   async function _resetPassword(email: string) {
-    return await Ctr.api.resetPassword(email);
+    return await apiResetPassword(email);
   }
 
   async function _changePassword(password: string) {
-    return await Ctr.api.changePassword(password, props.uidPrm, props.tokenPrm);
+    return await apiChangePassword(
+      password,
+      props.uidPrm || "",
+      props.tokenPrm || ""
+    );
   }
 
   return props.uidPrm && props.tokenPrm ? (

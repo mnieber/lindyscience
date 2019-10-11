@@ -6,6 +6,8 @@ import { navigate } from "@reach/router";
 import { RegisterDialog } from "app/presentation/register_dialog";
 import { ActivateAccountDialog } from "app/presentation/activate_account_dialog";
 
+import { apiActivateAccount, apiRegister } from "app/api";
+
 // RegisterPage
 
 type RegisterPagePropsT = {
@@ -15,7 +17,7 @@ type RegisterPagePropsT = {
 
 function RegisterPage(props: RegisterPagePropsT) {
   async function _register(email: string, password: string) {
-    const errorState = await Ctr.api.register(email, password);
+    const errorState = await apiRegister(email, password);
     if (!errorState) {
       navigate("/app/lists");
     }
@@ -23,7 +25,7 @@ function RegisterPage(props: RegisterPagePropsT) {
   }
 
   async function _activateAccount(uid: string, token: string) {
-    const errorState = await Ctr.api.activateAccount(uid, token);
+    const errorState = await apiActivateAccount(uid, token);
     if (!errorState) {
       navigate("/app/sign-in/");
     }

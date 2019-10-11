@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import * as moveListsApi from "move_lists/api";
+import { apiSaveMoveOrdering, apiUpdateSourceMoveListId } from "move_lists/api";
 
 import { findNeighbourIdx } from "screens/utils";
 import { createErrorHandler } from "app/utils";
@@ -45,9 +45,9 @@ export function useMoveClipboard(
         "",
         false
       );
-      moveListsApi
-        .saveMoveOrdering(targetMoveList.id, moveIdsInTargetMoveList)
-        .catch(createErrorHandler("Could not update the move list"));
+      apiSaveMoveOrdering(targetMoveList.id, moveIdsInTargetMoveList).catch(
+        createErrorHandler("Could not update the move list")
+      );
       return true;
     }
     return false;
@@ -66,17 +66,15 @@ export function useMoveClipboard(
       .filter(x => x.sourceMoveListId == sourceMoveList.id)
       .map(x => x.id);
 
-    moveListsApi
-      .updateSourceMoveListId(
-        idsOfMovesWithNewSourceMoveList,
-        targetMoveList.id
-      )
-      .catch(createErrorHandler("Could not update move"));
+    apiUpdateSourceMoveListId(
+      idsOfMovesWithNewSourceMoveList,
+      targetMoveList.id
+    ).catch(createErrorHandler("Could not update move"));
 
     const newMoveIds = actRemoveMoveIds(selectedMoveIds, sourceMoveList.id);
-    moveListsApi
-      .saveMoveOrdering(sourceMoveList.id, newMoveIds)
-      .catch(createErrorHandler("Could not update the move list"));
+    apiSaveMoveOrdering(sourceMoveList.id, newMoveIds).catch(
+      createErrorHandler("Could not update the move list")
+    );
 
     const newIdx =
       findNeighbourIdx(

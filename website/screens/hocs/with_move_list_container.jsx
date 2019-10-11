@@ -12,6 +12,9 @@ import { actSetMoveListContainerPayload } from "screens/actions";
 import { actInsertMoveListIds } from "profiles/actions";
 import { getPreview } from "screens/utils";
 import { createErrorHandler, getId } from "app/utils";
+
+import { apiSaveMoveListOrdering } from "move_lists/api";
+
 import type { UUID } from "kernel/types";
 import type { MoveListT } from "move_lists/types";
 
@@ -38,9 +41,9 @@ export const withMoveListContainer = compose(
         const allMoveListIds = props.dispatch(
           actInsertMoveListIds(payLoadIds, pl.targetItemId, pl.isBefore)
         );
-        Ctr.api
-          .saveMoveListOrdering(allMoveListIds)
-          .catch(createErrorHandler("We could not update the move list"));
+        apiSaveMoveListOrdering(allMoveListIds).catch(
+          createErrorHandler("We could not update the move list")
+        );
       }
       _setPayload(null);
     }

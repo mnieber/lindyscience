@@ -4,11 +4,12 @@ import * as React from "react";
 
 import { makeMoveListUrl, newMoveListSlug } from "screens/utils";
 import { querySetListToDict, slugify } from "utils/utils";
-import * as moveListsApi from "move_lists/api";
 import { createErrorHandler } from "app/utils";
 import { createUUID } from "utils/utils";
-import { type EditItemBvrT, useEditItem } from "screens/bvrs/crud_behaviours";
 
+import { apiSaveMoveList } from "move_lists/api";
+
+import { type EditItemBvrT, useEditItem } from "screens/bvrs/crud_behaviours";
 import type { DataContainerT } from "screens/containers/data_container";
 import type { MoveListT } from "move_lists/types";
 import type { MoveListCrudBvrsT } from "screens/types";
@@ -79,9 +80,9 @@ export function createMoveListCrudBvrs(
     actAddMoveLists(querySetListToDict([newMoveList]));
     browseToMoveList(newMoveList);
 
-    moveListsApi
-      .saveMoveList(newMoveList)
-      .catch(createErrorHandler("We could not save the movelist"));
+    apiSaveMoveList(newMoveList).catch(
+      createErrorHandler("We could not save the movelist")
+    );
 
     return newMoveList;
   }

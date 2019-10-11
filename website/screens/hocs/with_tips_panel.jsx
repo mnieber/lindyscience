@@ -9,6 +9,10 @@ import { actAddTips, actRemoveTips } from "tips/actions";
 import Widgets from "screens/presentation/index";
 import { getId, createErrorHandler } from "app/utils";
 import { querySetListToDict } from "utils/utils";
+
+import { apiSaveTip, apiDeleteTip } from "tips/api";
+import { apiVoteTip } from "votes/api";
+
 import type { MoveT } from "moves/types";
 import type { TipT } from "tips/types";
 import type { UUID } from "kernel/types";
@@ -39,23 +43,23 @@ export const withTipsPanel = getMove =>
 
       const saveTip = (tip: TipT) => {
         props.dispatch(actAddTips(querySetListToDict([tip])));
-        Ctr.api
-          .saveTip(move.id, tip)
-          .catch(createErrorHandler("We could not save the tip"));
+        apiSaveTip(move.id, tip).catch(
+          createErrorHandler("We could not save the tip")
+        );
       };
 
       const deleteTip = (tip: TipT) => {
         props.dispatch(actRemoveTips([tip.id]));
-        Ctr.api
-          .deleteTip(tip.id)
-          .catch(createErrorHandler("We could not delete the tip"));
+        apiDeleteTip(tip.id).catch(
+          createErrorHandler("We could not delete the tip")
+        );
       };
 
       const voteTip = (id: UUID, vote: VoteT) => {
         props.dispatch(actCastVote(id, vote));
-        Ctr.api
-          .voteTip(id, vote)
-          .catch(createErrorHandler("We could not save your vote"));
+        apiVoteTip(id, vote).catch(
+          createErrorHandler("We could not save your vote")
+        );
       };
 
       const tipsPanel = (

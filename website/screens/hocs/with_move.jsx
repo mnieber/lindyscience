@@ -12,7 +12,7 @@ import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
 import { getStore } from "app/store";
 import { truncDecimals } from "utils/utils";
 import { isOwner } from "app/utils";
-import { withHostedMovePanels } from "screens/hocs/with_hosted_own_move_panels";
+import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";

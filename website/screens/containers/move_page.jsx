@@ -5,7 +5,7 @@ import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
 import { actSetHighlightedMoveBySlug } from "screens/actions";
-import { withMove } from "screens/hocs/with_own_move";
+import { withMove } from "screens/hocs/with_move";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
 import { newMoveSlug } from "moves/utils";

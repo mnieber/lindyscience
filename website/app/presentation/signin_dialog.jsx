@@ -12,8 +12,18 @@ type SignInDialogPropsT = {
 export function SignInDialog(props: SignInDialogPropsT) {
   const [isModal, setIsModel] = React.useState(true);
 
+  const goToRegisterDiv = (
+    <div className="mt-4">
+      If you don't have an account yet then you can
+      <Link className="ml-2" to={"/app/register/"}>
+        register
+      </Link>
+      .
+    </div>
+  );
+
   const goToResetDiv = (
-    <div>
+    <div className="mt-4">
       Did you
       <Link className="ml-2" to={"/app/sign-in/reset-password/"}>
         forget your password
@@ -31,6 +41,7 @@ export function SignInDialog(props: SignInDialogPropsT) {
         <div>
           <SignInForm signIn={props.signIn} />
           {goToResetDiv}
+          {goToRegisterDiv}
         </div>
       </div>
     </React.Fragment>

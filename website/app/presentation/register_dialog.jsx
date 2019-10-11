@@ -13,12 +13,11 @@ export function RegisterDialog(props: RegisterDialogPropsT) {
   const [isModal, setIsModal] = React.useState(true);
 
   const goToSignInDiv = (
-    <div>
+    <div className="mt-4">
       If you are registered then you can
       <Link className="ml-2" to={"/app/sign-in/"}>
         sign in
       </Link>
-      ?
     </div>
   );
 

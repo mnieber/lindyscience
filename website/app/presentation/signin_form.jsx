@@ -31,11 +31,7 @@ export function passwordField(formProps: any) {
 
 export function submitButton(label: string) {
   return (
-    <button
-      className="signInForm__submitButton ml-2"
-      type="submit"
-      disabled={false}
-    >
+    <button className="button ml-2" type="submit" disabled={false}>
       {label}
     </button>
   );

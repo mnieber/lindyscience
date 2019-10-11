@@ -36,8 +36,11 @@ class SaveMoveList(graphene.Mutation):
         assert_authorized(models.MoveList, pk, info.context.user.id)
         inputs['owner_id'] = info.context.user.id
 
-        moveList, created = models.MoveList.objects.update_or_create(inputs,
-                                                                     pk=pk)
+        if models.MoveList.objects.filter(
+                Q(owner_id=inputs['owner_id']) & Q(slug=inputs['slug'])
+                & ~Q(pk=pk)).exists():
+            raise Exception("Move List with this slug already exists")
+        moveList, created = models.MoveList.objects.update_or_create(inputs, pk=pk)
         return SaveMoveList(move_list=moveList, ok=True)
 
 

@@ -18,7 +18,7 @@ import type { TipT } from "tips/types";
 
 type TipsPanelPropsT = {
   parentObject: OwnedObjectT,
-  userProfile: UserProfileT,
+  userProfile: ?UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
   saveTip: TipT => void,
@@ -29,7 +29,7 @@ type TipsPanelPropsT = {
 export function TipsPanel(props: TipsPanelPropsT) {
   const insertTipBvr = useInsertTip(props.tips);
   const newTipBvr = useNewTip(
-    props.userProfile.userId,
+    props.userProfile ? props.userProfile.userId : -1,
     insertTipBvr,
     props.parentObject.id
   );

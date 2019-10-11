@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import classnames from "classnames";
+import { Link } from "@reach/router";
 
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 
@@ -17,15 +18,26 @@ type MovePropsT = {
 
 export function Move(props: MovePropsT) {
   const descriptionDiv = (
-    <div className={"move__description panel"}>
-      <h2>Description</h2>
-      <MoveDescriptionEditor
-        editorId={"move_" + props.move.id}
-        description={props.move.description}
-        readOnly={true}
-        autoFocus={false}
-        videoPlayer={props.videoPlayer}
-      />
+    <div>
+      <div className="flexrow">
+        Created by:
+        <Link
+          className="ml-2 mb-2"
+          to={"/app/lists/" + props.move.ownerUsername}
+        >
+          {props.move.ownerUsername}
+        </Link>
+      </div>
+      <div className={"move__description panel"}>
+        <h2>Description</h2>
+        <MoveDescriptionEditor
+          editorId={"move_" + props.move.id}
+          description={props.move.description}
+          readOnly={true}
+          autoFocus={false}
+          videoPlayer={props.videoPlayer}
+        />
+      </div>
     </div>
   );
 

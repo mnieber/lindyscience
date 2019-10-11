@@ -14,6 +14,7 @@ export type ObjectT = {
 
 export type OwnedT = {
   ownerId: number,
+  ownerUsername: string,
 };
 
 export type OwnedObjectT = ObjectT & OwnedT;

@@ -51,6 +51,7 @@ export const moves = {
     slug: "three-wall-swing-out",
     tags: ["swing out"],
     ownerId: profile1.userId,
+    ownerUsername: "profile1",
   },
   "3ba5ed84-34d5-442c-921c-50da0dc022da": {
     id: "3ba5ed84-34d5-442c-921c-50da0dc022da",
@@ -58,6 +59,7 @@ export const moves = {
     slug: "basket-whip",
     tags: ["basket whip", "fun"],
     ownerId: profile1.userId,
+    ownerUsername: "profile1",
   },
   "b95df10a-cbe2-4ec4-9a03-1b61c5452e9d": {
     id: "b95df10a-cbe2-4ec4-9a03-1b61c5452e9d",
@@ -65,6 +67,7 @@ export const moves = {
     slug: "heel-pops",
     tags: [],
     ownerId: profile2.userId,
+    ownerUsername: "profile2",
   },
   "95f5fb91-81ce-4895-a945-59dada5b8b7e": {
     id: "95f5fb91-81ce-4895-a945-59dada5b8b7e",
@@ -72,6 +75,7 @@ export const moves = {
     slug: "slides",
     tags: [],
     ownerId: profile2.userId,
+    ownerUsername: "profile2",
   },
 };
 

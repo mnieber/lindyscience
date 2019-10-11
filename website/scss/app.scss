@@ -15,7 +15,7 @@ $panGrey: #bbbbbb;
 }
 
 .move__header {
-  @apply mb-4;
+  @apply flexcol;
 }
 
 .flexrow {
@@ -98,10 +98,6 @@ $panGrey: #bbbbbb;
 
 .moveList__item--drag_after {
   border-bottom: solid;
-}
-
-.move__header {
-  @apply flexcol;
 }
 
 .move__description {

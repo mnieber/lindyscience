@@ -90,7 +90,10 @@ export function apiLoadMoveList(ownerUsername: string, slug: string) {
         }
         moves {
           id
-          owner { id }
+          owner {
+            id
+            username
+          }
           name
           slug
           link

@@ -49,6 +49,7 @@ export function createNewMove(
     endTimeMs: null,
     tags: [],
     ownerId: userProfile.userId,
+    ownerUsername: userProfile.username,
     sourceMoveListId: sourceMoveListId,
     privateData: null,
   };

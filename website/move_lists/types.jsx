@@ -1,10 +1,9 @@
 // @flow
 
-import type { UUID } from "kernel/types";
+import type { UUID, OwnedObjectT } from "kernel/types";
 import type { TagT } from "tags/types";
 
-export type MoveListT = {
-  id: UUID,
+export type MoveListT = OwnedObjectT & {
   name: string,
   slug: string,
   description: string,
@@ -12,8 +11,6 @@ export type MoveListT = {
   role: string,
   tags: Array<TagT>,
   moves: Array<UUID>,
-  ownerId: number,
-  ownerUsername: string,
 };
 
 export type MoveListByIdT = {

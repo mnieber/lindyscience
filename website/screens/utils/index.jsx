@@ -113,6 +113,7 @@ export function createMoveFromCutPoint(
   return {
     id: cutPoint.id,
     ownerId: userProfile.userId,
+    ownerUsername: userProfile.username,
     name: cutPoint.name,
     slug: slugify(cutPoint.name),
     description: cutPoint.description,

@@ -113,7 +113,7 @@ export function Tip(props: TipPropsT) {
 // TipList
 
 type TipListPropsT = {
-  userProfile: UserProfileT,
+  userProfile: ?UserProfileT,
   parentObject: OwnedObjectT,
   items: Array<TipT>,
   voteByObjectId: VoteByIdT,
@@ -125,9 +125,12 @@ type TipListPropsT = {
 
 export function TipList(props: TipListPropsT) {
   const itemNodes: Array<React.Node> = props.items.map((item, idx) => {
-    const allowEdit = item.ownerId == props.userProfile.userId;
+    const allowEdit =
+      !!props.userProfile && item.ownerId == props.userProfile.userId;
     const allowDelete =
-      allowEdit || props.parentObject.ownerId == props.userProfile.userId;
+      allowEdit ||
+      (!!props.userProfile &&
+        props.parentObject.ownerId == props.userProfile.userId);
 
     return (
       <Tip

@@ -153,6 +153,7 @@ type MoveListFormPropsT = {
   onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   moveList: MoveListT,
+  moveListSlugs: Array<string>,
   autoFocus: boolean,
 };
 
@@ -187,6 +188,9 @@ export function MoveListForm(props: MoveListFormPropsT) {
       }
       if (!values.tags) {
         errors.tags = "This field is required";
+      }
+      if (props.moveListSlugs.some(x => x == values.slug)) {
+        errors.slug = "A move list with this slug already exists";
       }
       return errors;
     },

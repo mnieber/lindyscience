@@ -48,7 +48,7 @@ export function apiFindMoves(
   tags: Array<TagT>
 ) {
   return doQuery(
-    `query queryFindMoves($ownerUsername: String!, $keywords: [String]!, $tags: [String]!) {
+    `query queryFindMoves($ownerUsername: String, $keywords: [String]!, $tags: [String]!) {
       findMoves(ownerUsername: $ownerUsername, keywords: $keywords, tags: $tags) {
         id
         name

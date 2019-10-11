@@ -9,7 +9,6 @@ import { withMove } from "screens/hocs/with_move";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
 import { newMoveSlug } from "moves/utils";
-import { isOwner } from "app/utils";
 
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";

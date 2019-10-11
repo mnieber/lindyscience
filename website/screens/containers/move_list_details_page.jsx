@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import classnames from "classnames";
 import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
@@ -38,6 +39,7 @@ type MoveListDetailsPagePropsT = {
   moveListTags: Array<TagT>,
   moveTags: Array<TagT>,
   moveList: MoveListT,
+  allMoveLists: Array<MoveListT>,
   cutVideoLink: string,
   videoBvr: VideoBvrT,
   editCutPointBvr: EditCutPointBvrT,
@@ -49,20 +51,6 @@ type MoveListDetailsPagePropsT = {
 type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT & {
   moveListCrudBvrs: MoveListCrudBvrsT,
 };
-
-function _createStaticMoveListDetails(
-  moveList: MoveListT,
-  props: _MoveListDetailsPagePropsT,
-  buttons: Array<any>
-) {
-  return (
-    <Widgets.MoveListDetails
-      userProfile={props.userProfile}
-      moveList={moveList}
-      buttons={buttons}
-    />
-  );
-}
 
 function _createCutPointBvrs(props: _MoveListDetailsPagePropsT) {
   return {
@@ -122,14 +110,21 @@ function _createCutPointBvrs(props: _MoveListDetailsPagePropsT) {
   };
 }
 
-function _createOwnMoveListDetails(
-  moveList: MoveListT,
-  props: _MoveListDetailsPagePropsT
-) {
+export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
+  if (!props.moveList) {
+    return <React.Fragment />;
+  }
+
+  const moveListSlugs = props.allMoveLists
+    .filter(x => isOwner(props.userProfile, x.ownerId))
+    .map(x => x.slug);
+
+  const isOwned = isOwner(props.userProfile, props.moveList.ownerId);
+
   const editBtn = (
     <FontAwesomeIcon
       key={1}
-      className="ml-2"
+      className={classnames("ml-2", { hidden: !isOwned })}
       icon={faEdit}
       onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
     />
@@ -141,7 +136,8 @@ function _createOwnMoveListDetails(
     <Widgets.MoveListForm
       autoFocus={true}
       knownTags={props.moveListTags}
-      moveList={moveList}
+      moveList={props.moveList}
+      moveListSlugs={moveListSlugs}
       onSubmit={values =>
         props.moveListCrudBvrs.editMoveListBvr.finalize(false, values)
       }
@@ -150,11 +146,11 @@ function _createOwnMoveListDetails(
       }
     />
   ) : (
-    _createStaticMoveListDetails(moveList, props, [
-      editBtn,
-      space,
-      props.followMoveListBtn,
-    ])
+    <Widgets.MoveListDetails
+      userProfile={props.userProfile}
+      moveList={props.moveList}
+      buttons={[editBtn, space, props.followMoveListBtn]}
+    />
   );
 
   const cutPointBvrs = _createCutPointBvrs(props);
@@ -172,16 +168,6 @@ function _createOwnMoveListDetails(
       />
     </div>
   );
-}
-
-export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
-  if (!props.moveList) {
-    return <React.Fragment />;
-  }
-
-  return isOwner(props.userProfile, props.moveList.ownerId)
-    ? _createOwnMoveListDetails(props.moveList, props)
-    : _createStaticMoveListDetails(props.moveList, props, []);
 }
 
 export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
@@ -206,6 +192,7 @@ MoveListDetailsPage = compose(
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
     moveList: Ctr.fromStore.getSelectedMoveList(state),
+    allMoveLists: Ctr.fromStore.getMoveLists(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),

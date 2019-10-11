@@ -221,7 +221,7 @@ DUMP_DB_GIT_SHA = file_contents(os.path.join(SRV_DIR, 'deployed_version.txt'))
 DUMP_DB_DIR = os.path.join(SRV_DIR, 'dumps')
 
 DJOSER = {
-    'ACTIVATION_URL': 'register/activate/{uid}/{token}',
+    'ACTIVATION_URL': 'app/register/activate/{uid}/{token}',
     'EMAIL': {
         'activation': 'accounts.email.ActivationEmail',
         'password_reset': 'accounts.email.PasswordResetEmail',

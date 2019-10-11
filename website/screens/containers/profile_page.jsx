@@ -18,7 +18,7 @@ type ProfilePagePropsT = {
   userProfile: UserProfileT,
   moveListTags: Array<TagT>,
   moveLists: Array<MoveListT>,
-  // receive any actions as well
+  ownerUsernamePrm: string,
 };
 
 export function ProfilePage(props: ProfilePagePropsT) {
@@ -26,22 +26,20 @@ export function ProfilePage(props: ProfilePagePropsT) {
     ownMoveLists: Array<MoveListT>,
     setOwnMoveLists: Function,
   ] = React.useState([]);
-  const username = props.userProfile ? props.userProfile.username : "";
-
   async function _loadOwnMoveLists() {
-    const moveLists = await apiFindMoveLists(username);
+    const moveLists = await apiFindMoveLists(props.ownerUsernamePrm);
     setOwnMoveLists(getObjectValues(moveLists.entities.moveLists));
   }
 
   React.useEffect(() => {
-    if (username) {
+    if (props.ownerUsernamePrm) {
       _loadOwnMoveLists();
     }
-  }, [username]);
+  }, [props.ownerUsernamePrm]);
 
   return (
     <div>
-      <h1>{username}</h1>
+      <h1>{props.ownerUsernamePrm}</h1>
       <h2>Move lists</h2>
       <Widgets.MoveListTable moveLists={ownMoveLists} />
     </div>

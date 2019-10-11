@@ -25,7 +25,7 @@ export async function apiSignIn(email: string, password: string) {
     return _hasError(
       e,
       "non_field_errors",
-      "Unable to login with provided credentials."
+      "Unable to log in with provided credentials."
     )
       ? "bad_credentials"
       : "cannot_sign_in";

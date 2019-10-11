@@ -54,7 +54,6 @@ type MoveListFramePropsT = {
   moveListUrl: string,
   moveListNotFound: any,
   children: any,
-  // receive any actions as well
   ownerUsernamePrm: string,
   moveListSlugPrm: string,
   dispatch: Function,

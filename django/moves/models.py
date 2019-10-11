@@ -39,8 +39,8 @@ class MoveList2Move(models.Model):
 
 
 class MoveList(Entity):
-    name = models.CharField(max_length=200, unique=True)
-    slug = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=200)
+    slug = models.CharField(max_length=200)
     role = models.CharField(max_length=200, blank=True,
                             choices=[('', 'default'), ('drafts', 'drafts'),
                                      ('trash', 'trash')],

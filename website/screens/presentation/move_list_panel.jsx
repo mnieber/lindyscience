@@ -41,6 +41,7 @@ const withIsOwner = (WrappedComponent: any) => (props: IsOwnerHOCPropsT) => {
 ///////////////////////////////////////////////////////////////////////
 
 type MoveListPickerHOCPropsT = {
+  userProfile: ?UserProfileT,
   moveList: ?MoveListT,
   moveLists: Array<MoveListT>,
   selectMoveListById: (id: UUID) => void,
@@ -51,11 +52,13 @@ const withMoveListPicker = (WrappedComponent: any) => (
   props: MoveListPickerHOCPropsT
 ) => {
   const defaultMoveListId = props.moveList ? props.moveList.id : "";
+  const isFollowing = moveList =>
+    !!props.userProfile && props.userProfile.moveListIds.includes(moveList.id);
   const moveListPicker = (
     <Widgets.MoveListPicker
       key={defaultMoveListId}
       className=""
-      moveLists={props.moveLists}
+      moveLists={props.moveLists.filter(isFollowing)}
       defaultMoveListId={defaultMoveListId}
       selectMoveListById={props.selectMoveListById}
       createMoveList={props.moveListCrudBvrs.editMoveListBvr.addNewItem}

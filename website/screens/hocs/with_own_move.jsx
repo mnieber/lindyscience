@@ -1,7 +1,8 @@
 // @flow
 
-import { compose } from "redux";
 import * as React from "react";
+import classnames from "classnames";
+import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
@@ -10,10 +11,12 @@ import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
 import { getStore } from "app/store";
 import { truncDecimals } from "utils/utils";
-import { withHostedOwnMovePanels } from "screens/hocs/with_hosted_own_move_panels";
+import { isOwner } from "app/utils";
+import { withHostedMovePanels } from "screens/hocs/with_hosted_own_move_panels";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
+
 import type { MoveCrudBvrsT } from "screens/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
@@ -26,7 +29,7 @@ type PropsT = {
   userProfile: UserProfileT,
   moveList: MoveListT,
   moveTags: Array<TagT>,
-  hostedOwnMovePanels: any,
+  hostedMovePanels: any,
   moveCrudBvrs: MoveCrudBvrsT,
   videoBvr: VideoBvrT,
   followMoveListBtn: any,
@@ -39,10 +42,10 @@ function getMove() {
 }
 
 // $FlowFixMe
-export const withOwnMove = compose(
+export const withMove = compose(
   withMoveCrudBvrsContext,
   withFollowMoveListBtn,
-  withHostedOwnMovePanels(getMove),
+  withHostedMovePanels(getMove),
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
     move: Ctr.fromStore.getHighlightedMove(state),
@@ -56,17 +59,19 @@ export const withOwnMove = compose(
       moveCrudBvrs,
       userProfile,
       moveTags,
-      hostedOwnMovePanels,
+      hostedMovePanels,
       followMoveListBtn,
       ...passThroughProps
     }: PropsT = props;
 
+    const isOwnMove =
+      !!props.move && isOwner(props.userProfile, props.move.ownerId);
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 
     const editMoveBtn = (
       <FontAwesomeIcon
-        key={"editMoveBtn"}
-        className="ml-2 text-lg"
+        key={"editMoveBtn" + (isOwnMove ? "_own" : "")}
+        className={classnames("ml-2 text-lg", { hidden: !isOwnMove })}
         size="lg"
         icon={faEdit}
         onClick={() => moveCrudBvrs.setIsEditing(true)}
@@ -81,9 +86,9 @@ export const withOwnMove = compose(
       />
     );
 
-    const space = <div key="space" className="flex flex-grow" />;
+    const space = <div key="space" className={classnames("flex flex-grow")} />;
 
-    const ownMove = moveCrudBvrs.isEditing ? (
+    const moveDiv = moveCrudBvrs.isEditing ? (
       <div>
         {videoPlayerPanel}
         <Widgets.MoveForm
@@ -107,10 +112,10 @@ export const withOwnMove = compose(
         />
         {videoPlayerPanel}
         <Widgets.Move move={move} videoPlayer={props.videoBvr.player} />
-        {hostedOwnMovePanels}
+        {hostedMovePanels}
       </div>
     );
 
-    return <WrappedComponent ownMove={ownMove} {...passThroughProps} />;
+    return <WrappedComponent moveDiv={moveDiv} {...passThroughProps} />;
   }
 );

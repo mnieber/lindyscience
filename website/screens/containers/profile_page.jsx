@@ -4,7 +4,6 @@ import * as React from "react";
 import Ctr from "screens/containers/index";
 
 import Widgets from "screens/presentation/index";
-import { isOwner } from "app/utils";
 import { getObjectValues } from "utils/utils";
 
 import type { UUID } from "kernel/types";

@@ -125,7 +125,6 @@ type TipListPropsT = {
 
 export function TipList(props: TipListPropsT) {
   const itemNodes: Array<React.Node> = props.items.map((item, idx) => {
-    debugger;
     const allowEdit = item.ownerId == props.userProfile.userId;
     const allowDelete =
       allowEdit || props.parentObject.ownerId == props.userProfile.userId;

@@ -5,8 +5,7 @@ import { compose } from "redux";
 
 import Ctr from "screens/containers/index";
 import { actSetHighlightedMoveBySlug } from "screens/actions";
-import { withStaticMove } from "screens/hocs/with_static_move";
-import { withOwnMove } from "screens/hocs/with_own_move";
+import { withMove } from "screens/hocs/with_own_move";
 import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
 import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
 import { newMoveSlug } from "moves/utils";
@@ -19,8 +18,7 @@ import type { MoveT } from "moves/types";
 
 type MovePagePropsT = {
   movePrivateDataPanel: any,
-  staticMove: any,
-  ownMove: any,
+  moveDiv: any,
   moveCrudBvrs: MoveCrudBvrsT,
   userProfile: UserProfileT,
   highlightedMove: MoveT,
@@ -53,16 +51,13 @@ function MovePage(props: MovePagePropsT) {
     return <div className="noMoveHighlighted">{msg}</div>;
   }
 
-  return isOwner(props.userProfile, props.highlightedMove.ownerId)
-    ? props.ownMove
-    : props.staticMove;
+  return props.moveDiv;
 }
 
 // $FlowFixMe
 MovePage = compose(
   withMoveVideoBvr,
-  withStaticMove,
-  withOwnMove,
+  withMove,
   withMoveCrudBvrsContext,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),

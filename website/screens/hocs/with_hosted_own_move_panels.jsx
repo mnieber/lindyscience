@@ -15,7 +15,7 @@ type PropsT = {
 };
 
 // $FlowFixMe
-export const withHostedOwnMovePanels = getMove =>
+export const withHostedMovePanels = getMove =>
   compose(
     withMovePrivateDataPanel(getMove),
     withTipsPanel(getMove),
@@ -27,7 +27,7 @@ export const withHostedOwnMovePanels = getMove =>
         ...passThroughProps
       }: PropsT = props;
 
-      const hostedOwnMovePanels = (
+      const hostedMovePanels = (
         <React.Fragment>
           {movePrivateDataPanel}
           {tipsPanel}
@@ -36,7 +36,7 @@ export const withHostedOwnMovePanels = getMove =>
 
       return (
         <WrappedComponent
-          hostedOwnMovePanels={hostedOwnMovePanels}
+          hostedMovePanels={hostedMovePanels}
           {...passThroughProps}
         />
       );

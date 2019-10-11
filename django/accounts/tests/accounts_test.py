@@ -38,7 +38,7 @@ class AccountTest(APITestCase):
         html = Soup(html_content, 'html.parser')
         urls = set([
             url for url in [a['href'] for a in html.find_all('a')]
-            if url.startswith(self.server_url + 'register/activate')
+            if url.startswith(self.server_url + 'app/register/activate')
         ])
         assert len(urls) == 1
         activate_url = list(urls)[0]
@@ -71,7 +71,7 @@ class AccountTest(APITestCase):
         })
         assert res.status_code == status.HTTP_400_BAD_REQUEST
         assert res.data['non_field_errors'][
-            0].lower() == 'unable to login with provided credentials.'
+            0].lower() == 'unable to log in with provided credentials.'
 
         # Log in the newly created user
         res = self.client.post('/auth/token/login/', {

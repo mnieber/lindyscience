@@ -21,6 +21,7 @@ class AccountTest(APITestCase):
         res = self.client.post(
             '/auth/users/create/', {
                 'email': test_email,
+                'username': 'user1',
                 'password': test_password,
                 'accepts_terms': 'true'
             })
@@ -60,6 +61,18 @@ class AccountTest(APITestCase):
         # Ensure the user is not automatically logged in
         res = self.client.get('/auth/users/me/', {})
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
+
+        # Create another user
+        res = self.client.post(
+            '/auth/users/create/', {
+                'email': 'test_' + test_email,
+                'username': 'user2',
+                'password': 'test_' + test_password,
+                'accepts_terms': 'true'
+            })
+
+        # Ensure registration went through
+        assert res.status_code == status.HTTP_201_CREATED
 
     def test_log_in_new_user(self):
         create_user(self.client)

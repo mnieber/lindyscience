@@ -52,7 +52,6 @@ class MoveQuery(object):
 
     def resolve_find_moves(self, info, keywords, tags, owner_username="",
                            **kwargs):
-        __import__('pudb').set_trace()
         result = models.Move.objects.select_related('source_move_list',
                                                     'source_move_list__owner')
         result = result.filter(

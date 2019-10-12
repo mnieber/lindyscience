@@ -4,19 +4,21 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, accepts_terms=False):
+    def create_user(self, email, username, password=None, accepts_terms=False):
         if not email:
             raise ValueError("Users must have an email address.")
+        if not username:
+            raise ValueError("Users must have a username.")
         if not accepts_terms:
             raise ValueError("Users must accept the terms.")
-        user = self.model(email=self.normalize_email(email))
+        user = self.model(email=self.normalize_email(email), username=username)
         user.accepts_terms = accepts_terms
         user.set_password(password)
         user.save()  # using=self._db
         return user
 
-    def create_superuser(self, email, password=None):
-        user = self.create_user(email, password=password, accepts_terms=True)
+    def create_superuser(self, email, username, password=None):
+        user = self.create_user(email, username, password=password, accepts_terms=True)
         user.is_superuser = True
         user.is_staff = True
         user.save()  # using=self._db

@@ -6,7 +6,7 @@ import classnames from "classnames";
 import { RegisterForm } from "app/presentation/register_form";
 
 type RegisterDialogPropsT = {
-  register: (email: string, password: string) => any,
+  register: (email: string, username: string, password: string) => any,
 };
 
 export function RegisterDialog(props: RegisterDialogPropsT) {

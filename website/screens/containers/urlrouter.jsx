@@ -40,7 +40,7 @@ function UrlRouter(props: UrlRouterPropsT) {
     // $FlowFixMe
     <Router primary={false} id="reachRouter">
       <AppFrame path="/app">
-        <IndexPage path="/lists" userProfile={props.userProfile} />
+        <IndexPage path="/" userProfile={props.userProfile} />
         <ProfilePage path="/lists/:ownerUsernamePrm" />
         <MoveListFrame path="/lists/:ownerUsernamePrm/:moveListSlugPrm">
           <SearchResultsPage path="/search" />
@@ -48,7 +48,6 @@ function UrlRouter(props: UrlRouterPropsT) {
           <MovePage path=":moveSlugPrm" />
           <MovePage path=":moveSlugPrm/:moveIdPrm" />
         </MoveListFrame>
-        <SearchResultsPage path="/search" />
         <SignInPage path="/sign-in/" />
         <RegisterPage path="/register/" />
         <RegisterPage path="/register/activate/:uidPrm/:tokenPrm" />

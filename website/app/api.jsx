@@ -104,11 +104,16 @@ export async function apiActivateAccount(uid: string, token: string) {
   }
 }
 
-export async function apiRegister(email: string, password: string) {
+export async function apiRegister(
+  email: string,
+  username: string,
+  password: string
+) {
   try {
     const response = toCamelCase(
       await post("/auth/users/create/", {
         email,
+        username,
         password,
         accepts_terms: true,
       })

@@ -8,7 +8,6 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        __import__('pudb').set_trace()
         with transaction.atomic():
             for move in models.Move.objects.all():
                 video_links = [x for x in move.video_links.all()]

@@ -15,6 +15,7 @@ class UserCreateSerializer(djoser.serializers.UserCreateSerializer):
         fields = (
             'password',
             'email',
+            'username',
             'accepts_terms',
         )
 

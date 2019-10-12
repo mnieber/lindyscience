@@ -16,8 +16,8 @@ type RegisterPagePropsT = {
 };
 
 function RegisterPage(props: RegisterPagePropsT) {
-  async function _register(email: string, password: string) {
-    const errorState = await apiRegister(email, password);
+  async function _register(email: string, username: string, password: string) {
+    const errorState = await apiRegister(email, username, password);
     if (!errorState) {
       navigate("/app/lists");
     }

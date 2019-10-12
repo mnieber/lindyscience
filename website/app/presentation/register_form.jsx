@@ -3,6 +3,8 @@
 import React from "react";
 import { withFormik } from "formik";
 import * as yup from "yup";
+
+import { FormField } from "utils/form_utils";
 import {
   emailField,
   passwordField,
@@ -12,8 +14,20 @@ import {
 } from "app/presentation/signin_form";
 
 type RegisterFormPropsT = {
-  register: (email: string, password: string) => any,
+  register: (email: string, username: string, password: string) => any,
 };
+
+function usernameField(formProps: any) {
+  return (
+    <FormField
+      classNames="registerForm__username w-64"
+      formProps={formProps}
+      fieldName="username"
+      type="username"
+      placeholder="Username (publicly visible)"
+    />
+  );
+}
 
 export function RegisterForm(props: RegisterFormPropsT) {
   const [globalError, setGlobalError] = React.useState("");
@@ -24,6 +38,7 @@ export function RegisterForm(props: RegisterFormPropsT) {
         {globalErrorDiv(globalError)}
         <div className={"flex flex-wrap"}>
           {emailField(formProps)}
+          {usernameField(formProps)}
           {passwordField(formProps)}
           {submitButton("Register")}
         </div>
@@ -34,14 +49,16 @@ export function RegisterForm(props: RegisterFormPropsT) {
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       email: "",
+      username: "",
       password: "",
     }),
     validationSchema: yup.object().shape({
       email: yup.string().required("This field is required"),
+      username: yup.string().required("This field is required"),
       password: yup.string().required("This field is required"),
     }),
-    handleSubmit: ({ email, password }, { setSubmitting }) => {
-      const errorState = props.register(email, password);
+    handleSubmit: ({ email, username, password }, { setSubmitting }) => {
+      const errorState = props.register(email, username, password);
       if (errorState == "") {
       } else if (errorState) {
         setGlobalError(technicalProblemMsg);

@@ -3,7 +3,10 @@
 import * as React from "react";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
+import { observer } from "mobx-react";
 
+import type { VideoT } from "video/types";
+import { MovesContainer } from "screens/data_containers/moves_container";
 import {
   createKeyDownHandler,
   createVideoKeyHandlers,
@@ -15,21 +18,20 @@ import { useVideo } from "video/bvrs/use_video";
 import { getVideoFromMove } from "moves/utils";
 import { styleTimePoints, extractTimePoints } from "video/utils/cut_points";
 import Ctr from "screens/containers/index";
-import type { VideoT, VideoBvrT } from "video/types";
-import type { MoveT } from "moves/types";
 
 type PropsT = {
-  move: MoveT,
-  // receive any actions as well
+  movesCtr: MovesContainer,
 };
 
 // $FlowFixMe
 export const withMoveVideoBvr = compose(
-  Ctr.connect(state => ({
-    move: Ctr.fromStore.getHighlightedMove(state),
-  })),
+  Ctr.connect(state => ({})),
+  observer,
   (WrappedComponent: any) => (props: any) => {
-    const { move, ...passThroughProps }: PropsT = props;
+    const { ...passThroughProps }: PropsT = props;
+
+    const move = props.movesCtr.highlight.item;
+
     const parentDivId = "moveDiv";
     const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
     const videoBvr = useVideo(parentDivId, video);

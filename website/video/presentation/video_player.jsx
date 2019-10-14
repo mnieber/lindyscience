@@ -15,7 +15,7 @@ type VideoPlayerPropsT = {
 
 export function VideoPlayer(props: VideoPlayerPropsT) {
   const video = props.videoBvr.video;
-  const link = video ? video.link || "" : "";
+  const link = (video ? video.link : "") || "";
   const videoUrlProps = urlParser.parse(link);
 
   const internalPlayer =

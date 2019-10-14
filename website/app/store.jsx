@@ -30,7 +30,7 @@ const configureStore = () => {
 
   let middleware = [thunk];
   if (process.env.NODE_ENV !== "production") {
-    middleware = [...middleware, createLogger()];
+    middleware = [...middleware, ...(true ? [createLogger()] : [])];
   }
 
   const store = createStore(reducer, applyMiddleware(...middleware));

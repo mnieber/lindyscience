@@ -10,7 +10,6 @@ import {
   useSaveTip,
 } from "tips/bvrs/tip_crud_behaviours";
 import { TipList } from "tips/presentation/tip";
-
 import type { UUID, OwnedObjectT } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";

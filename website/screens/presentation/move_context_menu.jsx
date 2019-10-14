@@ -2,21 +2,24 @@
 
 import * as React from "react";
 import { Menu, Item, Submenu } from "react-contexify";
+import { observer } from "mobx-react";
 
+import { MovesContainer } from "screens/data_containers/moves_container";
 import type { MoveListT } from "move_lists/types";
 
 type MoveContextMenuPropsT = {
   targetMoveLists: Array<MoveListT>,
   targetMoveListsForMoving: Array<MoveListT>,
-  shareMovesToList: MoveListT => boolean,
-  moveMovesToList: MoveListT => boolean,
-  copyNamesToClipboard: MoveListT => void,
-  copyLinksToClipboard: MoveListT => void,
+  movesCtr: MovesContainer,
 };
 
-export function MoveContextMenu(props: MoveContextMenuPropsT) {
+export const MoveContextMenu = observer((props: MoveContextMenuPropsT) => {
   function _shareToList(e) {
-    props.shareMovesToList(e.props);
+    props.movesCtr.clipboard.shareToList(e.props);
+  }
+
+  function _moveToList(e) {
+    props.movesCtr.clipboard.moveToList(e.props);
   }
 
   const shareToListMenuItems = props.targetMoveLists.map((moveList, idx) => {
@@ -26,18 +29,6 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
       </Item>
     );
   });
-
-  function _moveToList(e) {
-    props.moveMovesToList(e.props);
-  }
-
-  function _copyNamesToClipboard(e) {
-    props.copyNamesToClipboard(e.props);
-  }
-
-  function _copyLinksToClipboard(e) {
-    props.copyLinksToClipboard(e.props);
-  }
 
   const moveToListMenuItems = props.targetMoveListsForMoving.map(
     (moveList, idx) => {
@@ -51,10 +42,10 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
   );
 
   const exportMenuItems = [
-    <Item onClick={props.copyNamesToClipboard} key={1}>
+    <Item onClick={() => props.movesCtr.clipboard.copyNames()} key={1}>
       Copy names
     </Item>,
-    <Item onClick={props.copyLinksToClipboard} key={2}>
+    <Item onClick={() => props.movesCtr.clipboard.copyLinks()} key={2}>
       Copy links
     </Item>,
   ];
@@ -66,4 +57,5 @@ export function MoveContextMenu(props: MoveContextMenuPropsT) {
       <Submenu label="Move to list">{moveToListMenuItems}</Submenu>
     </Menu>
   );
-}
+});
+

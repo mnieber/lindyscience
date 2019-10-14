@@ -54,6 +54,15 @@ export function moveListsReducer(
         },
       };
 
+    case "SET_MOVE_IDS_FOR_LIST":
+      return {
+        ...state,
+        [action.moveListId]: {
+          ...state[action.moveListId],
+          moves: action.moveIds,
+        },
+      };
+
     default:
       return state;
   }

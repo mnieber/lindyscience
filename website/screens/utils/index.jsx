@@ -7,7 +7,6 @@ import { slugify } from "utils/utils";
 
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
-import type { PayloadT } from "screens/containers/data_container";
 import type { TagT } from "tags/types";
 import type { ObjectT, SlugidT, UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
@@ -56,29 +55,43 @@ export function findNeighbourIdx(
   return undefined;
 }
 
-export function getPreview<ItemT: ObjectT>(
-  items: Array<ItemT>,
-  payload: ?PayloadT<ItemT>
-): Array<ItemT> {
-  // $FlowFixMe
-  const pl: PayloadT<ItemT> = payload;
+export function findNeighbourIdx2(
+  filteredItems: Array<any>,
+  allItems: Array<any>,
+  beginIndex: number,
+  endIndex: number,
+  step: number
+) {
+  for (var idx = beginIndex; idx != endIndex; idx += step) {
+    if (filteredItems.includes(allItems[idx])) {
+      return { result: idx };
+    }
+  }
+  return undefined;
+}
 
-  return !payload || !payload.payload.length
+export function getPreview2(
+  items: Array<any>,
+  targetItemId: UUID,
+  isBefore: boolean,
+  payload: Array<any>
+): Array<any> {
+  return !payload.length
     ? items
     : items.reduce(
         (acc, item) => {
-          if (item.id == pl.targetItemId && pl.isBefore) {
-            acc.push(...pl.payload);
+          if (item.id == targetItemId && isBefore) {
+            acc.push(...payload);
           }
-          if (!pl.payload.find(makeIdMatcher(item.id))) {
+          if (!payload.find(x => x.id === item.id)) {
             acc.push(item);
           }
-          if (item.id == pl.targetItemId && !pl.isBefore) {
-            acc.push(...pl.payload);
+          if (item.id == targetItemId && !isBefore) {
+            acc.push(...payload);
           }
           return acc;
         },
-        pl.targetItemId ? [] : [...pl.payload]
+        targetItemId ? [] : [...payload]
       );
 }
 

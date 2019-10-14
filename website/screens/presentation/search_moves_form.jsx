@@ -5,16 +5,13 @@ import { withFormik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import { makeUnique, slugify } from "utils/utils";
+import { makeUnique } from "utils/utils";
+import { FormFieldError } from "utils/form_utils";
 import {
   TagsAndKeywordsPicker,
   splitTextIntoTagsAndKeywords,
 } from "search/utils/tags_and_keywords_picker";
-import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
 import { strToPickerValue } from "utils/value_picker";
-import { newMoveSlug } from "moves/utils";
-import type { MoveT } from "moves/types";
-import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
 
 type InnerFormPropsT = {

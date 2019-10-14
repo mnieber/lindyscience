@@ -1,9 +1,6 @@
 // @flow
 
-import * as React from "react";
-
 import { createUUID } from "utils/utils2";
-
 import type { CutPointT, VideoBvrT } from "video/types";
 import type { UUID } from "kernel/types";
 

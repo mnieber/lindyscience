@@ -33,7 +33,7 @@ export function MoveListTitle(props: MoveListTitlePropsT) {
 }
 
 type MoveListDetailsPropsT = {|
-  userProfile: UserProfileT,
+  userProfile: ?UserProfileT,
   moveList: MoveListT,
   buttons: Array<any>,
 |};

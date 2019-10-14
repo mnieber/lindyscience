@@ -6,54 +6,91 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
-import { apiSaveMove } from "moves/api";
-import { apiSaveMoveOrdering } from "move_lists/api";
-
-import { createErrorHandler, isOwner } from "app/utils";
-import { isNone } from "utils/utils2";
-import { actInsertMoveIds } from "move_lists/actions";
-import { actAddMoves } from "moves/actions";
-import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
+import { Highlight } from "screens/data_containers/bvrs/highlight";
+import { Editing } from "screens/data_containers/bvrs/editing";
 import {
   actAddCutPoints,
-  actClearCutPoints,
   actRemoveCutPoints,
   actSetCutVideoLink,
 } from "video/actions";
+import { withMoveListsCtr } from "screens/data_containers/movelists_container_context";
+import { MoveListsContainer } from "screens/data_containers/movelists_container";
+import { apiSaveMove } from "moves/api";
+import { apiSaveMoveOrdering } from "move_lists/api";
+import { createErrorHandler, isOwner } from "app/utils";
+import { isNone } from "utils/utils";
+import { actInsertMoveIds } from "move_lists/actions";
+import { actAddMoves } from "moves/actions";
+import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
 import { createMoveFromCutPoint } from "screens/utils";
-import { MoveListCrudBvrsContext } from "screens/bvrs/move_list_crud_behaviours";
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
-
 import type { CutPointT, VideoBvrT } from "video/types";
-import type { MoveListCrudBvrsT } from "screens/types";
-import type { MoveListT } from "move_lists/types";
 import type { TagT } from "tags/types";
-import type { UserProfileT } from "profiles/types";
 import type { EditCutPointBvrT } from "video/bvrs/cut_point_crud_behaviours";
-import type { UUID } from "kernel/types";
 
 type MoveListDetailsPagePropsT = {
-  userProfile: UserProfileT,
   moveListTags: Array<TagT>,
   moveTags: Array<TagT>,
-  moveList: MoveListT,
-  allMoveLists: Array<MoveListT>,
   cutVideoLink: string,
   videoBvr: VideoBvrT,
   editCutPointBvr: EditCutPointBvrT,
   followMoveListBtn: any,
   cutPoints: Array<CutPointT>,
   dispatch: Function,
+  moveListsCtr: MoveListsContainer,
 };
 
-type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT & {
-  moveListCrudBvrs: MoveListCrudBvrsT,
-};
+type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT;
 
-function _createCutPointBvrs(props: _MoveListDetailsPagePropsT) {
-  return {
+export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
+  const ctr = props.moveListsCtr;
+  const moveList = Highlight.get(ctr).item;
+  const moveLists = ctr.data.preview;
+  const userProfile = ctr.data.userProfile;
+  const isEditing = Editing.get(ctr).isEditing;
+
+  if (!moveList) {
+    return <React.Fragment />;
+  }
+
+  const bannedMoveListSlugs = moveLists
+    .filter(x => userProfile && isOwner(userProfile, x.ownerId))
+    .filter(x => x !== moveList)
+    .map(x => x.slug);
+
+  const isOwned = userProfile && isOwner(userProfile, moveList.ownerId);
+
+  const editBtn = (
+    <FontAwesomeIcon
+      key={1}
+      className={classnames("ml-2", { hidden: !isOwned })}
+      icon={faEdit}
+      onClick={() => Editing.get(ctr).setIsEditing(true)}
+    />
+  );
+
+  const space = <div key="space" className="flex flex-grow" />;
+
+  const div = isEditing ? (
+    <Widgets.MoveListForm
+      autoFocus={true}
+      knownTags={props.moveListTags}
+      moveList={moveList}
+      moveListSlugs={bannedMoveListSlugs}
+      onSubmit={values => Editing.get(ctr).save(values)}
+      onCancel={() => Editing.get(ctr).cancel()}
+    />
+  ) : (
+    <Widgets.MoveListDetails
+      userProfile={userProfile}
+      moveList={moveList}
+      buttons={[editBtn, space, props.followMoveListBtn]}
+    />
+  );
+
+  const cutPointBvrs = {
     removeCutPoints: cutPointIds =>
       props.dispatch(actRemoveCutPoints(cutPointIds)),
     saveCutPoint: (values: any) => {
@@ -73,26 +110,27 @@ function _createCutPointBvrs(props: _MoveListDetailsPagePropsT) {
                 { ...lastMove, endTimeMs: cutPoint.t * 1000 },
               ]
             : acc;
-        } else {
+        } else if (userProfile) {
           const newMove = createMoveFromCutPoint(
             cutPoint,
-            props.userProfile,
+            userProfile,
             props.cutVideoLink,
-            props.moveList
+            moveList
           );
           return [...acc, newMove];
+        } else {
+          return acc;
         }
       }, []);
 
-      const lastMoveIdx = props.moveList.moves.length - 1;
-      const lastMoveId =
-        lastMoveIdx >= 0 ? props.moveList.moves[lastMoveIdx] : "";
+      const lastMoveIdx = moveList.moves.length - 1;
+      const lastMoveId = lastMoveIdx >= 0 ? moveList.moves[lastMoveIdx] : "";
 
       props.dispatch(actAddMoves(newMoves));
       const moveIdsInMoveList = props.dispatch(
         actInsertMoveIds(
           newMoves.map(x => x.id),
-          props.moveList.id,
+          moveList.id,
           lastMoveId,
           false
         )
@@ -102,58 +140,12 @@ function _createCutPointBvrs(props: _MoveListDetailsPagePropsT) {
         apiSaveMove(newMove).catch(
           createErrorHandler("We could not save the move")
         );
-        apiSaveMoveOrdering(props.moveList.id, moveIdsInMoveList).catch(
+        apiSaveMoveOrdering(moveList.id, moveIdsInMoveList).catch(
           createErrorHandler("We could not update the movelist")
         );
       });
     },
   };
-}
-
-export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
-  if (!props.moveList) {
-    return <React.Fragment />;
-  }
-
-  const moveListSlugs = props.allMoveLists
-    .filter(x => isOwner(props.userProfile, x.ownerId))
-    .map(x => x.slug);
-
-  const isOwned = isOwner(props.userProfile, props.moveList.ownerId);
-
-  const editBtn = (
-    <FontAwesomeIcon
-      key={1}
-      className={classnames("ml-2", { hidden: !isOwned })}
-      icon={faEdit}
-      onClick={() => props.moveListCrudBvrs.setIsEditing(true)}
-    />
-  );
-
-  const space = <div key="space" className="flex flex-grow" />;
-
-  const div = props.moveListCrudBvrs.isEditing ? (
-    <Widgets.MoveListForm
-      autoFocus={true}
-      knownTags={props.moveListTags}
-      moveList={props.moveList}
-      moveListSlugs={moveListSlugs}
-      onSubmit={values =>
-        props.moveListCrudBvrs.editMoveListBvr.finalize(false, values)
-      }
-      onCancel={() =>
-        props.moveListCrudBvrs.editMoveListBvr.finalize(true, null)
-      }
-    />
-  ) : (
-    <Widgets.MoveListDetails
-      userProfile={props.userProfile}
-      moveList={props.moveList}
-      buttons={[editBtn, space, props.followMoveListBtn]}
-    />
-  );
-
-  const cutPointBvrs = _createCutPointBvrs(props);
 
   return (
     <div>
@@ -170,29 +162,12 @@ export function _MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   );
 }
 
-export function MoveListDetailsPage(props: MoveListDetailsPagePropsT) {
-  return (
-    <MoveListCrudBvrsContext.Consumer>
-      {moveListCrudBvrs => (
-        <div>
-          <_MoveListDetailsPage
-            {...props}
-            moveListCrudBvrs={moveListCrudBvrs}
-          />
-        </div>
-      )}
-    </MoveListCrudBvrsContext.Consumer>
-  );
-}
-
 // $FlowFixMe
 MoveListDetailsPage = compose(
+  withMoveListsCtr,
   withCutVideoBvr,
   withFollowMoveListBtn,
   Ctr.connect(state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
-    moveList: Ctr.fromStore.getSelectedMoveList(state),
-    allMoveLists: Ctr.fromStore.getMoveLists(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),

@@ -4,6 +4,7 @@ import React from "react";
 import { navigate } from "@reach/router";
 import Cookies from "js-cookie";
 
+import { newMoveListSlug } from "screens/utils";
 import { actAddMoveLists, actMarkMoveListNotFound } from "move_lists/actions";
 import SearchMovesPage from "screens/containers/search_moves_page";
 import { actAddMoves, actSetMovePrivateDatas } from "moves/actions";
@@ -13,20 +14,15 @@ import { actSetLoadedMoveListUrls, actSetSignedInEmail } from "app/actions";
 import { actAddTips } from "tips/actions";
 import { createErrorHandler, createToastr } from "app/utils";
 import { AccountMenu } from "app/presentation/accountmenu";
-import Widgets from "screens/presentation/index";
 import Ctr from "screens/containers/index";
 import { getObjectValues } from "utils/utils";
-import { findMoveListByUrl, newMoveListSlug } from "screens/utils";
-
 import { apiGetEmail, apiSignOut } from "app/api";
 import { apiLoadUserProfile } from "profiles/api";
 import { apiFindMoveLists, apiLoadMoveList } from "screens/api";
 import { apiLoadMovePrivateDatas } from "moves/api";
 import { apiLoadUserTags } from "tags/api";
 import { apiLoadUserVotes } from "votes/api";
-
 import type { UserProfileT } from "profiles/types";
-import type { MoveListT } from "move_lists/types";
 
 // AppFrame
 type AppFramePropsT = {
@@ -70,6 +66,7 @@ function AppFrame(props: AppFramePropsT) {
           )
         );
 
+        // TODO: instead, load move lists linked to this profile
         const [moveLists] = await Promise.all([
           apiFindMoveLists(profile.username),
         ]);

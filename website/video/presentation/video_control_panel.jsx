@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import classnames from "classnames";
-import urlParser from "js-video-url-parser";
 
-import type { VideoT, VideoBvrT } from "video/types";
+import type { VideoBvrT } from "video/types";
 
 type VideoControlPanelPropsT = {
   videoBvr: VideoBvrT,

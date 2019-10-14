@@ -15,7 +15,6 @@ import { MoveListDetails } from "move_lists/presentation/move_list_details";
 import { CutVideoPanel } from "video/presentation/cut_video_panel";
 import { MovePrivateDataPanel } from "moves/presentation/move_private_data_panel";
 import { StaticTipsPanel } from "tips/presentation/static_tips_panel";
-import { MoveListPanel } from "screens/presentation/move_list_panel";
 import { MoveListPlayer } from "screens/presentation/move_list_player";
 import { SearchMovesForm } from "screens/presentation/search_moves_form";
 import {
@@ -34,7 +33,6 @@ const Widgets = {
   MoveListForm,
   MoveListTable,
   MoveTable,
-  MoveListPanel,
   MoveListPlayer,
   MoveListDetails,
   CutVideoPanel,

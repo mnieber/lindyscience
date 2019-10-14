@@ -2,34 +2,32 @@
 
 import * as React from "react";
 import { compose } from "redux";
+import { observer } from "mobx-react";
 
+import { withMoveListsCtr } from "screens/data_containers/movelists_container_context";
+import { MoveListsContainer } from "screens/data_containers/movelists_container";
 import Ctr from "screens/containers/index";
 import { actInsertMoveListIds, actRemoveMoveListIds } from "profiles/actions";
 import { createErrorHandler } from "app/utils";
-
 import { apiSaveMoveListOrdering } from "move_lists/api";
 
-import type { MoveListT } from "move_lists/types";
-import type { UserProfileT } from "profiles/types";
-
 type PropsT = {
-  moveList: MoveListT,
-  userProfile: UserProfileT,
-  // receive any actions as well
+  moveListsCtr: MoveListsContainer,
 };
 
 // $FlowFixMe
 export const withFollowMoveListBtn = compose(
-  Ctr.connect(state => ({
-    moveList: Ctr.fromStore.getSelectedMoveList(state),
-    userProfile: Ctr.fromStore.getUserProfile(state),
-  })),
+  withMoveListsCtr,
+  observer,
+  Ctr.connect(state => ({})),
   (WrappedComponent: any) => (props: any) => {
+    const moveList = props.moveListsCtr.highlight.item;
+    const userProfile = props.moveListsCtr.userProfile;
     const { ...passThroughProps }: PropsT = props;
 
     const _setIsFollowing = isFollowing => {
-      if (!!props.userProfile && !!props.moveList) {
-        const moveListId = props.moveList.id;
+      if (!!userProfile && !!moveList) {
+        const moveListId = moveList.id;
         const newMoveListIds = isFollowing
           ? props.dispatch(actInsertMoveListIds([moveListId], "", false))
           : props.dispatch(actRemoveMoveListIds([moveListId]));
@@ -41,9 +39,9 @@ export const withFollowMoveListBtn = compose(
     };
 
     const isFollowing =
-      !!props.moveList &&
-      !!props.userProfile &&
-      props.userProfile.moveListIds.includes(props.moveList.id);
+      !!moveList &&
+      !!userProfile &&
+      userProfile.moveListIds.includes(moveList.id);
 
     const followMoveListBtn = (
       <div

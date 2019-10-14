@@ -11,34 +11,32 @@ import { withTipsPanel } from "screens/hocs/with_tips_panel";
 type PropsT = {
   movePrivateDataPanel: any,
   tipsPanel: any,
-  // receive any actions as well
 };
 
 // $FlowFixMe
-export const withHostedMovePanels = getMove =>
-  compose(
-    withMovePrivateDataPanel(getMove),
-    withTipsPanel(getMove),
-    Ctr.connect(state => ({})),
-    (WrappedComponent: any) => (props: any) => {
-      const {
-        tipsPanel,
-        movePrivateDataPanel,
-        ...passThroughProps
-      }: PropsT = props;
+export const withHostedMovePanels = compose(
+  withMovePrivateDataPanel,
+  withTipsPanel,
+  Ctr.connect(state => ({})),
+  (WrappedComponent: any) => (props: any) => {
+    const {
+      tipsPanel,
+      movePrivateDataPanel,
+      ...passThroughProps
+    }: PropsT = props;
 
-      const hostedMovePanels = (
-        <React.Fragment>
-          {movePrivateDataPanel}
-          {tipsPanel}
-        </React.Fragment>
-      );
+    const hostedMovePanels = (
+      <React.Fragment>
+        {movePrivateDataPanel}
+        {tipsPanel}
+      </React.Fragment>
+    );
 
-      return (
-        <WrappedComponent
-          hostedMovePanels={hostedMovePanels}
-          {...passThroughProps}
-        />
-      );
-    }
-  );
+    return (
+      <WrappedComponent
+        hostedMovePanels={hostedMovePanels}
+        {...passThroughProps}
+      />
+    );
+  }
+);

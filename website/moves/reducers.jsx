@@ -2,11 +2,7 @@
 
 import { combineReducers } from "redux";
 import { createSelector } from "reselect";
-import {
-  reduceMapToMap,
-  getObjectValues,
-  querySetListToDict,
-} from "utils/utils";
+import { reduceMapToMap, getObjectValues, listToItemById } from "utils/utils";
 import { addTags } from "tags/utils";
 
 import type { UUID } from "kernel/types";
@@ -72,7 +68,7 @@ export function movesReducer(
     case "ADD_MOVES":
       return {
         ...state,
-        ...querySetListToDict(action.moves),
+        ...listToItemById(action.moves),
       };
     default:
       return state;

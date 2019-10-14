@@ -3,60 +3,45 @@
 import * as React from "react";
 import classnames from "classnames";
 import { compose } from "redux";
+import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import type { UserProfileT } from "profiles/types";
+import type { TagT } from "tags/types";
+import type { VideoBvrT } from "video/types";
+import { MovesContainer } from "screens/data_containers/moves_container";
+import { withMovesCtr } from "screens/data_containers/moves_container_context";
 import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
-import { MoveListTitle } from "move_lists/presentation/move_list_details";
-import { VideoPlayer, VideoPlayerPanel } from "video/presentation/video_player";
-import { getStore } from "app/store";
-import { truncDecimals } from "utils/utils";
-import { isOwner } from "app/utils";
 import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
-import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
+import { isOwner } from "app/utils";
+import { MoveListTitle } from "move_lists/presentation/move_list_details";
+import { VideoPlayerPanel } from "video/presentation/video_player";
+import { Editing } from "screens/data_containers/bvrs/editing";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 
-import type { MoveCrudBvrsT } from "screens/types";
-import type { MoveListT } from "move_lists/types";
-import type { MoveT } from "moves/types";
-import type { TagT } from "tags/types";
-import type { UserProfileT } from "profiles/types";
-import type { VideoBvrT } from "video/types";
-
 type PropsT = {
-  move: MoveT,
   userProfile: UserProfileT,
-  moveList: MoveListT,
   moveTags: Array<TagT>,
   hostedMovePanels: any,
-  moveCrudBvrs: MoveCrudBvrsT,
   videoBvr: VideoBvrT,
   followMoveListBtn: any,
-  // receive any actions as well
+  movesCtr: MovesContainer,
 };
-
-function getMove() {
-  const state = getStore().getState();
-  return Ctr.fromStore.getHighlightedMove(state);
-}
 
 // $FlowFixMe
 export const withMove = compose(
-  withMoveCrudBvrsContext,
+  withMovesCtr,
   withFollowMoveListBtn,
-  withHostedMovePanels(getMove),
+  withHostedMovePanels,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
-    move: Ctr.fromStore.getHighlightedMove(state),
-    moveList: Ctr.fromStore.getSelectedMoveList(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
   })),
+  observer,
   (WrappedComponent: any) => (props: any) => {
     const {
-      move,
-      moveList,
-      moveCrudBvrs,
       userProfile,
       moveTags,
       hostedMovePanels,
@@ -64,8 +49,11 @@ export const withMove = compose(
       ...passThroughProps
     }: PropsT = props;
 
-    const isOwnMove =
-      !!props.move && isOwner(props.userProfile, props.move.ownerId);
+    const isEditing = props.movesCtr.editing.isEditing;
+    const moveList = props.movesCtr.data.moveList;
+    const move = props.movesCtr.highlight.item;
+
+    const isOwnMove = !!move && isOwner(props.userProfile, move.ownerId);
     const moveListTitle = <MoveListTitle moveList={moveList} />;
 
     const editMoveBtn = (
@@ -74,7 +62,7 @@ export const withMove = compose(
         className={classnames("ml-2 text-lg", { hidden: !isOwnMove })}
         size="lg"
         icon={faEdit}
-        onClick={() => moveCrudBvrs.setIsEditing(true)}
+        onClick={() => Editing.get(props.movesCtr).setIsEditing(true)}
       />
     );
 
@@ -88,16 +76,14 @@ export const withMove = compose(
 
     const space = <div key="space" className={classnames("flex flex-grow")} />;
 
-    const moveDiv = moveCrudBvrs.isEditing ? (
+    const moveDiv = isEditing ? (
       <div>
         {videoPlayerPanel}
         <Widgets.MoveForm
           autoFocus={true}
           move={move}
-          onSubmit={values => {
-            moveCrudBvrs.editMoveBvr.finalize(false, values);
-          }}
-          onCancel={() => moveCrudBvrs.editMoveBvr.finalize(true, null)}
+          onSubmit={values => Editing.get(props.movesCtr).save(values)}
+          onCancel={() => Editing.get(props.movesCtr).cancel()}
           knownTags={moveTags}
           videoPlayer={props.videoBvr.player}
         />

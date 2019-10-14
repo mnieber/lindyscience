@@ -1,5 +1,10 @@
 // @flow
 
+import { Thunk, FlushThunks } from "redux-testkit";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+
+import { createNewMove } from "screens/data_containers/moves_container_props";
 import { test } from "tape";
 import * as actions from "screens/actions";
 import * as movesActions from "moves/actions";
@@ -9,10 +14,6 @@ import * as fromStore from "screens/reducers";
 import { getObjectValues } from "utils/utils";
 import { createTagsAndKeywordsFilter } from "screens/utils";
 import { reducer } from "app/root_reducer";
-import { Thunk, FlushThunks } from "redux-testkit";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import { createNewMove } from "screens/bvrs/move_crud_behaviours";
 
 function _setUp() {
   const flushThunks = FlushThunks.createMiddleware();
@@ -23,48 +24,6 @@ function _setUp() {
   );
   return { store };
 }
-
-test("test actSetMoveListFilter", function(t) {
-  const { store } = _setUp();
-  store.dispatch(actions.actSetSelectedMoveListUrl("mnieber", "moves"));
-  store.dispatch(actions.actSetHighlightedMoveBySlug("three-wall-swing-out"));
-
-  t.equal(
-    store.dispatch(
-      actions.actSetMoveFilter(
-        "tagsAndKeywords",
-        createTagsAndKeywordsFilter(["fun"], [])
-      )
-    ),
-    "3ba5ed84-34d5-442c-921c-50da0dc022da"
-  );
-  store.dispatch(actions.actSetHighlightedMoveBySlug("basket-whip"));
-
-  // change filter, update highlighted move
-  t.equal(
-    store.dispatch(
-      actions.actSetMoveFilter(
-        "tagsAndKeywords",
-        createTagsAndKeywordsFilter(["swing out"], [])
-      )
-    ),
-    "18561d09-0727-441d-bdd9-d3d8c33ebde3"
-  );
-  store.dispatch(actions.actSetHighlightedMoveBySlug("three-wall-swing-out"));
-
-  // change filter, do not update highlighted move
-  t.equal(
-    store.dispatch(
-      actions.actSetMoveFilter(
-        "tagsAndKeywords",
-        createTagsAndKeywordsFilter(["foo"], [])
-      )
-    ),
-    ""
-  );
-
-  t.end();
-});
 
 test("test actInsertMoveIds", function(t) {
   const { store } = _setUp();

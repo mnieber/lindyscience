@@ -30,7 +30,10 @@ export function browseToMoveUrl(
   if (mustUpdateProfile) {
     apiUpdateProfile(moveUrl);
   }
-  return navigate(`/app/lists/${moveUrl}`);
+  const fullUrl = `/app/lists/${moveUrl}`;
+  if (window.location.pathname != fullUrl) {
+    navigate(fullUrl);
+  }
 }
 
 const Container: ContainerT = {

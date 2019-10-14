@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-
+import { observer } from "mobx-react";
 import jQuery from "jquery";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
@@ -21,7 +21,6 @@ import Ctr from "screens/containers/index";
 type PropsT = {
   cutVideoLink: string,
   cutPoints: Array<CutPointT>,
-  // receive any actions as well
 };
 
 // $FlowFixMe
@@ -30,6 +29,7 @@ export const withCutVideoBvr = compose(
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
     cutPoints: Ctr.fromStore.getCutPoints(state),
   })),
+  observer,
   (WrappedComponent: any) => (props: any) => {
     const { cutVideoLink, cutPoints, ...passThroughProps }: PropsT = props;
     const parentDivId = "cutVideoDiv";

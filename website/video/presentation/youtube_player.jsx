@@ -3,15 +3,8 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 
+import type { VideoUrlPropsT, VideoBvrT, RestartIdT } from "video/types";
 import { isNone } from "utils/utils2";
-import { useInterval } from "utils/use_interval";
-
-import type {
-  VideoT,
-  VideoUrlPropsT,
-  VideoBvrT,
-  RestartIdT,
-} from "video/types";
 
 type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,

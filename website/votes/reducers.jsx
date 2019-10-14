@@ -17,8 +17,6 @@ export function votesReducer(
   action: any
 ): VotesStateT {
   switch (action.type) {
-    case "SET_SIGNED_IN_EMAIL": // TODO: remove?
-      return {};
     case "SET_VOTES":
       return {
         ...state,

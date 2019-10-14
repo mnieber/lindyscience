@@ -1,9 +1,8 @@
 // @flow
 
 import * as React from "react";
-import classnames from "classnames";
-import { deepCopy } from "utils/utils";
 
+import { deepCopy } from "utils/utils";
 import type { MoveT } from "moves/types";
 
 // MoveListPlayer

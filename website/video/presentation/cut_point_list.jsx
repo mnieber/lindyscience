@@ -2,13 +2,11 @@
 
 import * as React from "react";
 import classnames from "classnames";
-import { Menu, MenuProvider } from "react-contexify";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import { CutPointHeader } from "video/presentation/cut_point_header";
 import { CutPointForm } from "video/presentation/cut_point_form";
-import { handleSelectionKeys, scrollIntoView, getId } from "app/utils";
-
+import { handleSelectionKeys2, scrollIntoView, getId } from "app/utils";
 import type { CutPointBvrsT, CutPointT } from "video/types";
 import type { TagT } from "tags/types";
 import type { UUID } from "kernel/types";
@@ -25,12 +23,13 @@ function createKeyHandlers(
 ): KeyHandlersT {
   function handleKeyDown(key, e) {
     if (props.highlightedCutPoint) {
+      const highlightedCutPointId = props.highlightedCutPoint.id;
       e.target.id == "cutPointList" &&
-        handleSelectionKeys(
+        handleSelectionKeys2(
           key,
           e,
-          props.cutPoints,
-          props.highlightedCutPoint.id,
+          props.cutPoints.map(x => x.id),
+          highlightedCutPointId,
           // TODO support shift selection with keyboard (e.shiftKey)
           // Note: in that case, anchor != highlight
           id => selectCutPointById(id, false, false)

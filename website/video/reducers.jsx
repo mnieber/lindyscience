@@ -3,7 +3,6 @@
 import { combineReducers } from "redux";
 import { createSelector } from "reselect";
 
-import type { PayloadT } from "screens/containers/data_container";
 import { isNone, reduceMapToMap } from "utils/utils";
 import { getInsertionIndex } from "utils/get_insertion_index";
 import type { UUID } from "kernel/types";
@@ -12,11 +11,6 @@ import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 const _stateCutVideo = (state: RootReducerStateT): CutVideoStateT =>
   state.video.cutVideo;
-
-type DataContainerState = {
-  payload: PayloadT<CutPointT>,
-  isEditing: boolean,
-};
 
 type CutVideoStateT = {
   link: string,

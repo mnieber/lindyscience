@@ -7,12 +7,11 @@ import React from "react";
 import scrollIntoViewIfNeeded from "scroll-into-view-if-needed";
 import ReduxToastr, { toastr } from "react-redux-toastr";
 
+import type { ObjectT, OwnedObjectT, UUID } from "kernel/types";
 import { makeIdMatcher } from "screens/utils";
 import { stripQuotes } from "utils/utils";
-
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
-import type { UUID, ObjectT } from "kernel/types";
 
 export function createToastr() {
   return (
@@ -31,37 +30,35 @@ export function isOwner(userProfile: UserProfileT, ownerId: number) {
   return userProfile && userProfile.userId == ownerId;
 }
 
-export function pickNeighbour(
+export function pickNeighbour2(
   allItems: Array<any>,
-  pickedItemId: UUID,
+  pickedItem: any,
   isForward: boolean,
-  pickItemById: (id: UUID) => void
+  pickItem: (x: any) => void
 ) {
-  const idx = allItems.findIndex(makeIdMatcher(pickedItemId));
+  const idx = allItems.findIndex(x => x === pickedItem);
 
   if (isForward && idx + 1 < allItems.length) {
-    pickItemById(allItems[idx + 1].id);
+    pickItem(allItems[idx + 1]);
     return true;
   }
   if (!isForward && idx - 1 >= 0) {
-    pickItemById(allItems[idx - 1].id);
+    pickItem(allItems[idx - 1]);
     return true;
   }
   return false;
 }
 
-export function handleSelectionKeys(
+export function handleSelectionKeys2(
   key: string,
   e: any,
   allItems: Array<any>,
-  selectedItemId: UUID,
-  selectItemById: (id: UUID) => void
+  selectedItem: any,
+  selectItem: (x: any) => void
 ) {
   if (["up", "down"].includes(key)) {
     e.stopPropagation();
-    if (
-      pickNeighbour(allItems, selectedItemId, key == "down", selectItemById)
-    ) {
+    if (pickNeighbour2(allItems, selectedItem, key == "down", selectItem)) {
       e.preventDefault();
     }
     return true;
@@ -103,4 +100,20 @@ export function createErrorHandler(msg: string) {
 
 export function getId(x: ?ObjectT) {
   return x ? x.id : "";
+}
+
+export function getIds(x: Array<ObjectT>): Array<UUID> {
+  return x.map(x => x.id);
+}
+
+export function idTable(items: Array<any>): Function {
+  return id => items.find(x => x.id == id);
+}
+
+export function getOwnerId(x: ?OwnedObjectT): number {
+  return x ? x.ownerId : -1;
+}
+
+export function last(x: Array<any>): any {
+  return x[x.length - 1];
 }

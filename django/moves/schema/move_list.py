@@ -2,6 +2,7 @@ from django.db import transaction
 from django.db.models import Q
 import graphene
 from graphene_django.types import DjangoObjectType
+from accounts.models import Profile, ProfileToMoveList
 
 from app.utils import assert_authorized, try_n_times
 from moves import models
@@ -40,7 +41,8 @@ class SaveMoveList(graphene.Mutation):
                 Q(owner_id=inputs['owner_id']) & Q(slug=inputs['slug'])
                 & ~Q(pk=pk)).exists():
             raise Exception("Move List with this slug already exists")
-        moveList, created = models.MoveList.objects.update_or_create(inputs, pk=pk)
+        moveList, created = models.MoveList.objects.update_or_create(inputs,
+                                                                     pk=pk)
         return SaveMoveList(move_list=moveList, ok=True)
 
 
@@ -92,23 +94,37 @@ class UpdateSourceMoveListId(graphene.Mutation):
 
 class MoveListQuery(object):
     find_move_lists = graphene.List(MoveListType,
-                                    owner_username=graphene.String())
+                                    owner_username=graphene.String(),
+                                    followed_by_username=graphene.String())
     move_list = graphene.Field(MoveListType,
                                owner_username=graphene.String(),
                                slug=graphene.String())
 
-    def resolve_find_move_lists(self, info, owner_username, **kwargs):
-        return models.MoveList.objects.filter(
-            Q(owner__username=owner_username) & (Q(is_private=False)
-                                                 | Q(owner=info.context.user)))
+    def resolve_find_move_lists(self,
+                                info,
+                                owner_username="",
+                                followed_by_username="",
+                                **kwargs):
+        result = models.MoveList.objects.filter(
+            Q(is_private=False)
+            | Q(owner=info.context.user))
+
+        if (owner_username):
+            result = result.filter(Q(owner__username=owner_username))
+
+        if (followed_by_username):
+            profiles = Profile.objects.filter(
+                owner__username=followed_by_username)
+            if profiles.exists():
+                hits = ProfileToMoveList.objects.filter(profile=profiles[0])
+                result = result.filter(id__in=[x.move_list_id for x in hits])
+
+        return result
 
     def resolve_move_list(self, info, owner_username, slug):
         head = Q(owner__username=owner_username) & Q(slug=slug)
-        tail = (
-            Q(is_private=False)
-            if info.context.user.is_anonymous else
-            Q(is_private=False) | Q(owner=info.context.user)
-        )
+        tail = (Q(is_private=False) if info.context.user.is_anonymous else
+                Q(is_private=False) | Q(owner=info.context.user))
         return models.MoveList.objects.get(head & tail)
 
 

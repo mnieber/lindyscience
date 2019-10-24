@@ -19,10 +19,12 @@ type PropsT = {
 export const withFollowMoveListBtn = compose(
   withMoveListsCtr,
   observer,
-  Ctr.connect(state => ({})),
+  Ctr.connect(state => ({
+    userProfile: Ctr.fromStore.getUserProfile(state),
+  })),
   (WrappedComponent: any) => (props: any) => {
     const moveList = props.moveListsCtr.highlight.item;
-    const userProfile = props.moveListsCtr.userProfile;
+    const userProfile = props.userProfile;
     const { ...passThroughProps }: PropsT = props;
 
     const _setIsFollowing = isFollowing => {

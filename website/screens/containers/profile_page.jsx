@@ -26,7 +26,9 @@ export function ProfilePage(props: ProfilePagePropsT) {
     setOwnMoveLists: Function,
   ] = React.useState([]);
   async function _loadOwnMoveLists() {
-    const moveLists = await apiFindMoveLists(props.ownerUsernamePrm);
+    const moveLists = await apiFindMoveLists({
+      ownerUsername: props.ownerUsernamePrm,
+    });
     setOwnMoveLists(getObjectValues(moveLists.entities.moveLists));
   }
 

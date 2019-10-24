@@ -67,7 +67,7 @@ function AppFrame(props: AppFramePropsT) {
         );
 
         const [moveLists] = await Promise.all([
-          apiFindMoveLists(profile.username),
+          apiFindMoveLists({ followedByUsername: profile.username }),
         ]);
         props.dispatch(actAddMoveLists(moveLists.entities.moveLists || {}));
       }

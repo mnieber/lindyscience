@@ -1,13 +1,12 @@
 // @flow
 
+import { getIds } from "app/utils";
+import { behaviour, mapData } from "screens/data_containers/utils";
 import {
   MoveListsData,
   createMoveListsData,
-  displayedItemsCanBeSelected,
-  previewedItemsAreDisplayed,
 } from "screens/data_containers/bvrs/movelists_data";
 import type { MoveListT } from "move_lists/types";
-import { behaviour } from "screens/data_containers/utils";
 import {
   Addition,
   createAddition,
@@ -101,8 +100,8 @@ export class MoveListsContainer {
       Policies.newItems.areConfirmedWhenSaved,
       Policies.newItems.areCanceledOnHighlightChange,
 
-      previewedItemsAreDisplayed,
-      displayedItemsCanBeSelected,
+      mapData([MoveListsData, "preview"], [MoveListsData, "display"]),
+      mapData([MoveListsData, "display"], [Selection, "selectableIds"], getIds),
     ].forEach(policy => policy(this));
   }
 

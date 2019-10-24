@@ -3,14 +3,8 @@
 import {
   type GetBvrT,
   behaviour_impl,
-  createPatch,
   data,
 } from "screens/data_containers/utils";
-import {
-  Filtering,
-  type FilteringT,
-} from "screens/data_containers/bvrs/filtering";
-import { Selection } from "screens/data_containers/bvrs/selection";
 import { computed, observable } from "utils/mobx_wrapper";
 import type { UserProfileT } from "profiles/types";
 import type { MoveT } from "moves/types";
@@ -43,23 +37,3 @@ export class MovesData {
 export function createMovesData() {
   return new MovesData();
 }
-
-export const filteredItemsAreDisplayed = createPatch(
-  MovesData,
-  [Filtering],
-  (filtering: FilteringT) => ({
-    get display() {
-      return filtering.filteredItems;
-    },
-  })
-);
-
-export const displayedItemsCanBeSelected = createPatch(
-  Selection,
-  [MovesData],
-  (data: MovesData) => ({
-    get selectableIds() {
-      return data.display.map(x => x.id);
-    },
-  })
-);

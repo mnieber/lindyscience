@@ -150,3 +150,16 @@ export function data(target: any, name: string, descriptor: any) {
   target.constructor[datas][name] = true;
   return descriptor;
 }
+
+export const mapData = (
+  [fromPolicy, fromMember]: [any, string],
+  [toPolicy, toMember]: [any, string],
+  transform: ?Function
+) =>
+  createPatch(toPolicy, [fromPolicy], (fromInstance: any) => ({
+    // $FlowFixMe
+    get [toMember]() {
+      const data = fromInstance[fromMember];
+      return transform ? transform(data) : data;
+    },
+  }));

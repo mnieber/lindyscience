@@ -36,23 +36,3 @@ export class MoveListsData {
 export function createMoveListsData() {
   return new MoveListsData();
 }
-
-export const previewedItemsAreDisplayed = createPatch(
-  MoveListsData,
-  [],
-  () => ({
-    get display() {
-      return this.preview;
-    },
-  })
-);
-
-export const displayedItemsCanBeSelected = createPatch(
-  Selection,
-  [MoveListsData],
-  (data: MoveListsData) => ({
-    get selectableIds() {
-      return data.display.map(x => x.id);
-    },
-  })
-);

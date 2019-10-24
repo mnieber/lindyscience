@@ -1,14 +1,13 @@
 // @flow
 
+import { getIds } from "app/utils";
 import {
   MovesData,
   createMovesData,
-  displayedItemsCanBeSelected,
-  filteredItemsAreDisplayed,
 } from "screens/data_containers/bvrs/moves_data";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
-import { behaviour } from "screens/data_containers/utils";
+import { behaviour, mapData } from "screens/data_containers/utils";
 import {
   Addition,
   createAddition,
@@ -131,8 +130,8 @@ export class MovesContainer {
       Policies.filtering.actsOnItems({ items: preview }),
       Policies.filtering.isDisabledOnNewItem,
 
-      filteredItemsAreDisplayed,
-      displayedItemsCanBeSelected,
+      mapData([Filtering, "filteredItems"], [MovesData, "display"]),
+      mapData([MovesData, "display"], [Selection, "selectableIds"], getIds),
     ].forEach(policy => policy(this));
   }
 

@@ -4,10 +4,10 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { findMoveBySlugid, makeSlugid } from "screens/utils";
 import { Highlight } from "screens/data_containers/bvrs/highlight";
 import { Selection } from "screens/data_containers/bvrs/selection";
 import { withMovesCtr } from "screens/data_containers/moves_container_context";
-import { makeSlugid, makeSlugidMatcher } from "screens/utils";
 import { MovesContainer } from "screens/data_containers/moves_container";
 import Ctr from "screens/containers/index";
 import { withMove } from "screens/hocs/with_move";
@@ -28,23 +28,23 @@ type MovePagePropsT = {
 };
 
 function MovePage(props: MovePagePropsT) {
-  const move = props.movesCtr.highlight.item;
-  const moves = props.movesCtr.data.display;
+  const moveMatchingUrl = findMoveBySlugid(
+    props.movesCtr.data.preview,
+    makeSlugid(props.moveSlugPrm, props.moveIdPrm)
+  );
 
   React.useEffect(() => {
-    const move = moves.find(
-      makeSlugidMatcher(makeSlugid(props.moveSlugPrm, props.moveIdPrm))
-    );
-    if (move) {
-      Highlight.get(props.movesCtr).id = move.id;
+    if (moveMatchingUrl) {
+      Highlight.get(props.movesCtr).id = moveMatchingUrl.id;
       Selection.get(props.movesCtr).selectItem({
-        itemId: move.id,
+        itemId: moveMatchingUrl.id,
         isShift: false,
         isCtrl: false,
       });
     }
-  }, [props.moveSlugPrm, props.moveIdPrm, props.userProfile]);
+  }, [moveMatchingUrl]);
 
+  const move = props.movesCtr.highlight.item;
   if (!move) {
     const msg = props.hasLoadedSelectedMoveList
       ? "Oops, I cannot find this move"

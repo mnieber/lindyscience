@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import { observer } from "mobx-react";
 import classnames from "classnames";
 import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -172,7 +173,8 @@ MoveListDetailsPage = compose(
     moveTags: Ctr.fromStore.getMoveTags(state),
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
     cutPoints: Ctr.fromStore.getCutPoints(state),
-  }))
+  })),
+  observer
 )(MoveListDetailsPage);
 
 export default MoveListDetailsPage;

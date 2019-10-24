@@ -27,8 +27,8 @@ export class MoveListsData {
   @computed get moveListById(): { [UUID]: MoveListT } {
     return listToItemById(this.preview);
   }
-
   @observable preview: Array<MoveListT> = [];
+
   @data display: Array<MoveListT> = [];
 
   static get: GetBvrT<MoveListsData>;

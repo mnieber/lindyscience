@@ -39,8 +39,7 @@ export class Insertion {
   @data position: ?InsertPositionT;
   @data inputs: Array<any>;
   @data preview: Array<any>;
-
-  insertItems: (items: Array<any>) => any;
+  @data insertItems: (items: Array<any>) => any;
 
   // $FlowFixMe
   @operation insertPayload() {}

@@ -30,7 +30,6 @@ export function actInsertMoveIds(
 
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
-    // $FlowFixMe
     const moveList = fromStore.getMoveListById(getState())[moveListId];
     return moveList.moves;
   };
@@ -45,7 +44,6 @@ export function actRemoveMoveIds(moveIds: Array<UUID>, moveListId: UUID) {
 
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
-    // $FlowFixMe
     const moveList = fromStore.getMoveListById(getState())[moveListId];
     return moveList.moves;
   };
@@ -63,12 +61,5 @@ export function actSetMoveListTags(tags: Array<TagT>) {
   return {
     type: "SET_MOVE_LIST_TAGS",
     tags,
-  };
-}
-
-export function actMarkMoveListNotFound(moveListUrl: string) {
-  return {
-    type: "MARK_MOVE_LIST_NOT_FOUND",
-    moveListUrl,
   };
 }

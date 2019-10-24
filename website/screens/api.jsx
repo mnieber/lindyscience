@@ -16,10 +16,22 @@ const moveList = new schema.Entity("moveLists", {
   moves: [move],
 });
 
-export function apiFindMoveLists(ownerUsername: string) {
+export function apiFindMoveLists({
+  ownerUsername,
+  followedByUsername,
+}: {
+  ownerUsername?: string,
+  followedByUsername?: string,
+}) {
   return doQuery(
-    `query queryMoveLists($ownerUsername: String!) {
-      findMoveLists(ownerUsername: $ownerUsername) {
+    `query queryMoveLists(
+      $ownerUsername: String,
+      $followedByUsername: String
+    ) {
+      findMoveLists(
+        ownerUsername: $ownerUsername,
+        followedByUsername: $followedByUsername
+      ) {
         id
         name
         slug
@@ -36,7 +48,7 @@ export function apiFindMoveLists(ownerUsername: string) {
         }
       }
     }`,
-    { ownerUsername }
+    { ownerUsername, followedByUsername }
   )
     .then(result => flatten(result, ["/findMoveLists/*/owner"]))
     .then(result => normalize(result.findMoveLists, [moveList]));

@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
 // $FlowFixMe
 import ReactTable from "react-table";

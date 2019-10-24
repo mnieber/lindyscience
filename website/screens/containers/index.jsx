@@ -3,7 +3,6 @@
 import * as React from "react";
 
 import { connect } from "react-redux";
-import { navigate } from "@reach/router";
 import { bindActionCreators } from "redux";
 
 import * as fromAppStore from "app/reducers";
@@ -23,6 +22,7 @@ export type ContainerT = {
 };
 
 export function browseToMoveUrl(
+  setUrl: Function,
   moveUrlParts: Array<string>,
   mustUpdateProfile: boolean = true
 ) {
@@ -32,7 +32,7 @@ export function browseToMoveUrl(
   }
   const fullUrl = `/app/lists/${moveUrl}`;
   if (window.location.pathname != fullUrl) {
-    navigate(fullUrl);
+    setUrl(fullUrl);
   }
 }
 

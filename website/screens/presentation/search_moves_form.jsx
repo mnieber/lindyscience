@@ -75,7 +75,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
 
   return (
     <form
-      className="moveForm w-full max-w-lg"
+      className="searchMovesForm w-full max-w-lg"
       onSubmit={formProps.handleSubmit}
     >
       <div className={"flexcol"}>

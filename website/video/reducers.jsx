@@ -73,6 +73,7 @@ export type ReducerStateT = {
   cutPoints: CutPointsStateT,
 };
 
+// $FlowFixMe
 export const reducer = combineReducers({
   cutVideo: cutVideoReducer,
   cutPoints: cutPointsReducer,

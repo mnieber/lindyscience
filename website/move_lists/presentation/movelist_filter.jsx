@@ -6,13 +6,14 @@ import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
+import { Highlight } from "facet/facets/highlight";
 import { createTagsAndKeywordsFilter } from "screens/utils";
-import { Filtering } from "screens/data_containers/bvrs/filtering";
-import { Selection } from "screens/data_containers/bvrs/selection";
-import { Addition } from "screens/data_containers/bvrs/addition";
-import { MovesContainer } from "screens/data_containers/moves_container";
+import { Filtering } from "facet/facets/filtering";
+import { Selection } from "facet/facets/selection";
+import { Addition } from "facet/facets/addition";
+import { MovesContainer } from "screens/moves_container/moves_container";
 import { makeUnique } from "utils/utils";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import {
   TagsAndKeywordsPicker,
   splitTextIntoTagsAndKeywords,
@@ -27,22 +28,18 @@ type MoveListPickerPropsT = {|
   moveListsCtr: MoveListsContainer,
   filter: MoveListT => boolean,
   className?: string,
+  navigateTo: MoveListT => any,
 |};
 
 export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
   const ctr = props.moveListsCtr;
   const moveListId = ctr.highlight.id;
-  const moveLists = ctr.data.display;
+  const moveLists = ctr.outputs.display;
 
   function _onChange(pickedItem) {
-    if (moveLists.some(x => x.id === pickedItem.value)) {
-      Selection.get(ctr).selectItem({
-        itemId: pickedItem.value,
-        isShift: false,
-        isCtrl: false,
-      });
-    } else {
+    if (!moveLists.some(x => x.id === pickedItem.value)) {
       Addition.get(ctr).add({ name: pickedItem.label });
+      props.navigateTo(Addition.get(ctr).item);
     }
   }
 
@@ -72,6 +69,7 @@ export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
               isShift: false,
               isCtrl: false,
             });
+            props.navigateTo(Highlight.get(ctr).item);
           }
         }}
       />

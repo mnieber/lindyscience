@@ -1,160 +1,135 @@
 // @flow
 
 import * as React from "react";
+import { observer } from "mobx-react";
 import { compose } from "redux";
-import KeyboardEventHandler from "react-keyboard-event-handler";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVideo } from "@fortawesome/free-solid-svg-icons";
 
-import { sayMove } from "screens/data_containers/handlers/say_move";
-import { Selection } from "screens/data_containers/bvrs/selection";
-import { movesContainerProps } from "screens/data_containers/moves_container_props";
-import { MoveListsContainerContext } from "screens/data_containers/movelists_container_context";
-import { listen } from "screens/data_containers/utils";
-import { actSetSelectedMoveListUrl } from "screens/actions";
-import { MovesContainerContext } from "screens/data_containers/moves_container_context";
-import { MovesContainer } from "screens/data_containers/moves_container";
-import {
-  browseToMove,
-  browseToMoveList,
-} from "screens/data_containers/update_url";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
-import { MoveListPanel } from "screens/presentation/move_list_panel";
-import { moveListsContainerProps } from "screens/data_containers/movelists_container_props";
+import { withSessionCtr } from "screens/session_container/session_container_context";
+import { sayMove } from "screens/moves_container/handlers/say_move";
+import { isNone } from "utils/utils";
+import { getOwnerId, isOwner } from "app/utils";
+import { MoveListFilter } from "move_lists/presentation/movelist_filter";
+import { Addition } from "facet/facets/addition";
+import { MovesContainer } from "screens/moves_container/moves_container";
+import { withMovesCtr } from "screens/moves_container/moves_container_context";
+import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
+import { SessionContainer } from "screens/session_container/session_container";
+import { withMoveContextMenu } from "screens/hocs/with_move_context_menu";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import Ctr from "screens/containers/index";
+import Widgets from "screens/presentation/index";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
 
-function useMovesCtr(dispatch: Function) {
-  const [movesCtr, setMovesCtr] = React.useState(() => {
-    return new MovesContainer(movesContainerProps(dispatch));
-  });
-  return movesCtr;
-}
-
-function useMoveListsCtr(dispatch: Function) {
-  const [moveListsCtr, setMoveListsCtr] = React.useState(() => {
-    return new MoveListsContainer(moveListsContainerProps(dispatch));
-  });
-  return moveListsCtr;
-}
-
 // MoveListFrame
 
 type MoveListFramePropsT = {
+  moveListsCtr: MoveListsContainer,
+  movesCtr: MovesContainer,
+  sessionCtr: SessionContainer,
+  moveContextMenu: any,
+  moveTags: Array<TagT>,
   userProfile: UserProfileT,
-  inputMoveTags: Array<TagT>,
-  inputMoveLists: Array<MoveListT>,
-  inputMoves: Array<MoveT>,
-  moveListUrl: string,
-  moveListNotFound: any,
   children: any,
-  ownerUsernamePrm: string,
-  moveListSlugPrm: string,
   dispatch: Function,
 };
 
 export function MoveListFrame(props: MoveListFramePropsT) {
-  const [moveList, setMoveList] = React.useState(undefined);
-  const [blackboard, setBlackboard] = React.useState({
-    ignoreHighlightChanges: false,
-  });
+  const selection = props.movesCtr.selection.items;
+  const moveList = props.moveListsCtr.highlight.item;
 
-  const moveListsCtr = useMoveListsCtr(props.dispatch);
-  moveListsCtr.setInputs(props.inputMoveLists, props.userProfile);
+  const isMoveListOwner =
+    props.userProfile && isOwner(props.userProfile, getOwnerId(moveList));
 
-  const moveListMatchingUrl = props.inputMoveLists.find(
-    moveList =>
-      moveList.ownerUsername == props.ownerUsernamePrm &&
-      moveList.slug == props.moveListSlugPrm
+  const moveListPlayerBtns = (
+    <Widgets.MoveListPlayer moves={selection} sayMove={sayMove} className="" />
   );
 
-  React.useEffect(() => {
-    if (moveListMatchingUrl) {
-      blackboard.ignoreHighlightChanges = true;
-      Selection.get(moveListsCtr).selectItem({
-        itemId: moveListMatchingUrl.id,
-        isShift: false,
-        isCtrl: false,
-      });
-      blackboard.ignoreHighlightChanges = false;
-      setMoveList(moveListsCtr.highlight.item);
-    }
-  }, [moveListMatchingUrl]);
+  const isFollowing = ml =>
+    !!props.userProfile && props.userProfile.moveListIds.includes(ml.id);
 
-  React.useEffect(() => {
-    props.dispatch(
-      actSetSelectedMoveListUrl(props.ownerUsernamePrm, props.moveListSlugPrm)
+  const moveListPicker = (
+    <Widgets.MoveListPicker
+      key={moveList ? moveList.id : ""}
+      className=""
+      filter={isFollowing}
+      moveListsCtr={props.moveListsCtr}
+      navigateTo={x => props.sessionCtr.navigation.navigateToMoveList(x)}
+    />
+  );
+
+  const moveListHeaderBtns = (
+    <Widgets.MoveListHeader
+      addNewMove={() => {
+        Addition.get(props.movesCtr).add({});
+      }}
+      className="ml-2"
+    />
+  );
+
+  const moveListFilter = (
+    <MoveListFilter
+      className=""
+      moveTags={props.moveTags}
+      movesCtr={props.movesCtr}
+    />
+  );
+
+  const createHostedPanels = move => {
+    const icon = (
+      <FontAwesomeIcon
+        className={"ml-2 opacity-50"}
+        style={{ marginBottom: "1px" }}
+        icon={faVideo}
+        size="xs"
+      />
     );
-  }, [props.ownerUsernamePrm, props.moveListSlugPrm]);
+    return isNone(move.link) || move.link == "" ? undefined : icon;
+  };
 
-  const movesCtr = useMovesCtr(props.dispatch);
-
-  movesCtr.setInputs(
-    props.inputMoves,
-    moveList,
-    props.inputMoveLists,
-    props.userProfile
+  const moveListWidget = (
+    <Widgets.MoveList
+      className=""
+      createHostedPanels={createHostedPanels}
+      movesCtr={props.movesCtr}
+      moveListsCtr={props.moveListsCtr}
+      moveContextMenu={props.moveContextMenu}
+      userProfile={props.userProfile}
+      navigateTo={x => props.sessionCtr.navigation.navigateToMove(x)}
+    />
   );
-
-  React.useEffect(() => {
-    listen(moveListsCtr.highlight, "highlightItem", id => {
-      if (moveListsCtr.highlight.item && !blackboard.ignoreHighlightChanges) {
-        browseToMoveList(moveListsCtr.highlight.item);
-      }
-    });
-    listen(movesCtr.highlight, "highlightItem", id => {
-      if (movesCtr.highlight.item) {
-        browseToMove(
-          moveListsCtr.highlight.item,
-          movesCtr.data.preview,
-          movesCtr.highlight.item
-        );
-      }
-    });
-  }, []);
-
-  const notFoundDiv = <div>Oops, I cannot find this move list</div>;
-  const loadingDiv = <div>Loading move list, please wait...</div>;
 
   return (
-    <MoveListsContainerContext.Provider value={moveListsCtr}>
-      <MovesContainerContext.Provider value={movesCtr}>
-        <KeyboardEventHandler
-          handleKeys={["ctrl+e", "ctrl+down", "ctrl+up"]}
-          onKeyEvent={movesCtr.handlerKeys.handle().onKeyDown}
-        >
-          <MoveListPanel
-            userProfile={props.userProfile}
-            sayMove={sayMove}
-            moveTags={props.inputMoveTags}
-            movesCtr={movesCtr}
-            moveListsCtr={moveListsCtr}
-          >
-            {moveList && props.children}
-            {!moveList &&
-              props.moveListNotFound[props.moveListUrl] &&
-              notFoundDiv}
-            {!moveList &&
-              !props.moveListNotFound[props.moveListUrl] &&
-              loadingDiv}
-          </MoveListPanel>
-        </KeyboardEventHandler>
-      </MovesContainerContext.Provider>
-    </MoveListsContainerContext.Provider>
+    <div className="moveListPanel flexrow">
+      <div className="moveListPanel__inner flexcol">
+        {moveListPicker}
+        {moveListFilter}
+        <div className="flexrow w-full my-4">
+          {moveListPlayerBtns}
+          {isMoveListOwner && moveListHeaderBtns}
+        </div>
+        {moveListWidget}
+      </div>
+      <div className="movePanel pl-4 w-full">{props.children}</div>
+    </div>
   );
 }
 
 // $FlowFixMe
 MoveListFrame = compose(
+  withSessionCtr,
+  withMovesCtr,
+  withMoveListsCtr,
+  withMoveContextMenu,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
-    inputMoves: Ctr.fromStore.getMovesInList(state),
-    inputMoveTags: Ctr.fromStore.getMoveTags(state),
-    inputMoveLists: Ctr.fromStore.getMoveLists(state),
-    moveListUrl: Ctr.fromStore.getSelectedMoveListUrl(state),
-    moveListNotFound: Ctr.fromStore.getMoveListNotFound(state),
-  }))
+    moveTags: Ctr.fromStore.getMoveTags(state),
+  })),
+  observer
 )(MoveListFrame);
 
 export default MoveListFrame;

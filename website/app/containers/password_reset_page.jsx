@@ -1,20 +1,20 @@
 // @flow
 
 import * as React from "react";
+
+import { useParams } from "utils/react_router_dom_wrapper";
 import Ctr from "app/containers/index";
 import { PasswordResetDialog } from "app/presentation/password_reset_dialog";
 import { PasswordChangeDialog } from "app/presentation/password_change_dialog";
-
 import { apiResetPassword, apiChangePassword } from "app/api";
 
 // PasswordResetPage
 
-type PasswordResetPagePropsT = {
-  uidPrm: ?string,
-  tokenPrm: ?string,
-};
+type PasswordResetPagePropsT = {};
 
 function PasswordResetPage(props: PasswordResetPagePropsT) {
+  const params = useParams();
+
   async function _resetPassword(email: string) {
     return await apiResetPassword(email);
   }
@@ -22,12 +22,12 @@ function PasswordResetPage(props: PasswordResetPagePropsT) {
   async function _changePassword(password: string) {
     return await apiChangePassword(
       password,
-      props.uidPrm || "",
-      props.tokenPrm || ""
+      params.uid || "",
+      params.token || ""
     );
   }
 
-  return props.uidPrm && props.tokenPrm ? (
+  return params.uid && params.token ? (
     <div className="passwordResetPage flexrow">
       <PasswordChangeDialog changePassword={_changePassword} />
     </div>

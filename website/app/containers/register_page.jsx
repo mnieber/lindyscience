@@ -1,25 +1,25 @@
 // @flow
 
 import * as React from "react";
+
+import { useHistory, useParams } from "utils/react_router_dom_wrapper";
 import Ctr from "app/containers/index";
-import { navigate } from "@reach/router";
 import { RegisterDialog } from "app/presentation/register_dialog";
 import { ActivateAccountDialog } from "app/presentation/activate_account_dialog";
-
 import { apiActivateAccount, apiRegister } from "app/api";
 
 // RegisterPage
 
-type RegisterPagePropsT = {
-  uidPrm: ?string,
-  tokenPrm: ?string,
-};
+type RegisterPagePropsT = {};
 
 function RegisterPage(props: RegisterPagePropsT) {
+  const params = useParams();
+  const history = useHistory();
+
   async function _register(email: string, username: string, password: string) {
     const errorState = await apiRegister(email, username, password);
     if (!errorState) {
-      navigate("/app/lists");
+      history.push("/app/lists");
     }
     return errorState;
   }
@@ -27,16 +27,16 @@ function RegisterPage(props: RegisterPagePropsT) {
   async function _activateAccount(uid: string, token: string) {
     const errorState = await apiActivateAccount(uid, token);
     if (!errorState) {
-      navigate("/app/sign-in/");
+      history.push("/app/sign-in/");
     }
     return errorState;
   }
 
-  return props.uidPrm && props.tokenPrm ? (
+  return params.uid && params.token ? (
     <ActivateAccountDialog
       activateAccount={_activateAccount}
-      uid={props.uidPrm}
-      token={props.tokenPrm}
+      uid={params.uid}
+      token={params.token}
     />
   ) : (
     <div className="registerPage flexrow">

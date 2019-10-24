@@ -93,7 +93,7 @@ export function tagStringToTags(tagString: string): Array<TagT> {
 
 export function createErrorHandler(msg: string) {
   return function(e: any) {
-    console.log(msg, e);
+    (console: any).log(msg, e);
     toastr.error("Oops!", msg);
   };
 }

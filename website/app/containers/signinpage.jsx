@@ -4,7 +4,7 @@ import * as React from "react";
 
 import Ctr from "app/containers/index";
 import { actSetSignedInEmail } from "app/actions";
-import { navigate } from "@reach/router";
+import { useHistory } from "utils/react_router_dom_wrapper";
 import { urlParam } from "utils/utils";
 import { SignInDialog } from "app/presentation/signin_dialog";
 import { apiSignIn } from "app/api";
@@ -16,12 +16,14 @@ type SignInPagePropsT = {
 };
 
 function SignInPage(props: SignInPagePropsT) {
+  const history = useHistory();
+
   async function _signIn(email: string, password: string) {
     const errorState = await apiSignIn(email, password);
     if (!errorState) {
       props.dispatch(actSetSignedInEmail(email));
       const next = urlParam("next");
-      navigate(next ? next : "/app/lists");
+      history.push(next ? next : "/app/lists");
     }
     return errorState;
   }

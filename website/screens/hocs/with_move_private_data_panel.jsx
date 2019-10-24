@@ -4,7 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
-import { MovesContainer } from "screens/data_containers/moves_container";
+import { MovesContainer } from "screens/moves_container/moves_container";
 import { createUUID } from "utils/utils";
 import Ctr from "screens/containers/index";
 import { actAddMovePrivateDatas } from "moves/actions";

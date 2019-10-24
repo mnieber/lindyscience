@@ -67,14 +67,10 @@ export function deepEqual(lhs: any, rhs: any) {
 }
 
 export function reduceMapToMap<T>(obj: {}, f: Function): T {
-  return Object.entries(obj).reduce(
-    (acc, [k, v]) => {
-      f(acc, k, v);
-      return acc;
-    },
-    // $FlowFixMe
-    ({}: T)
-  );
+  return Object.entries(obj).reduce((acc, [k, v]) => {
+    f(acc, k, v);
+    return acc;
+  }, (({}: any): T));
 }
 
 export function getObjectValues(obj: {}): any {

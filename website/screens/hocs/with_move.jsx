@@ -7,19 +7,19 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 import type { VideoBvrT } from "video/types";
-import { MovesContainer } from "screens/data_containers/moves_container";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
-import { withMovesCtr } from "screens/data_containers/moves_container_context";
-import { withMoveListsCtr } from "screens/data_containers/movelists_container_context";
-import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
+import { MovesContainer } from "screens/moves_container/moves_container";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
+import { withMovesCtr } from "screens/moves_container/moves_container_context";
+import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
 import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
 import { isOwner } from "app/utils";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayerPanel } from "video/presentation/video_player";
-import { Editing } from "screens/data_containers/bvrs/editing";
+import { Editing } from "facet/facets/editing";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 
@@ -28,7 +28,6 @@ type PropsT = {
   moveTags: Array<TagT>,
   hostedMovePanels: any,
   videoBvr: VideoBvrT,
-  followMoveListBtn: any,
   movesCtr: MovesContainer,
   moveListsCtr: MoveListsContainer,
 };
@@ -37,7 +36,6 @@ type PropsT = {
 export const withMove = compose(
   withMovesCtr,
   withMoveListsCtr,
-  withFollowMoveListBtn,
   withHostedMovePanels,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
@@ -49,7 +47,6 @@ export const withMove = compose(
       userProfile,
       moveTags,
       hostedMovePanels,
-      followMoveListBtn,
       ...passThroughProps
     }: PropsT = props;
 
@@ -79,6 +76,8 @@ export const withMove = compose(
     );
 
     const space = <div key="space" className={classnames("flex flex-grow")} />;
+
+    const followMoveListBtn = <FollowMoveListBtn key="followMoveListBtn" />;
 
     const moveDiv = isEditing ? (
       <div>

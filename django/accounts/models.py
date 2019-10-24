@@ -45,6 +45,9 @@ class ProfileToMoveList(models.Model):
     move_list = models.ForeignKey('moves.MoveList', on_delete=models.CASCADE)
     order = models.FloatField()
 
+    def __str__(self):  # noqa
+        return "%s follows move list %s" % (self.profile.owner.username, self.move_list.name)
+
     class Meta:
         ordering = ['order']
 

@@ -18,7 +18,6 @@ export function MoveListPlayer(props: MoveListPlayerPropsT) {
   const [moveIdx, setMoveIdx] = React.useState(0);
   const [moves, setMoves] = React.useState([]);
 
-  // $FlowFixMe
   React.useEffect(() => {
     if (isPlaying && moves.length) {
       props.sayMove(moves[moveIdx % moves.length]);

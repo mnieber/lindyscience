@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import classnames from "classnames";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 
@@ -23,7 +23,7 @@ export function Move(props: MovePropsT) {
         Created by:
         <Link
           className="ml-2 mb-2"
-          to={"/app/lists/" + props.move.ownerUsername}
+          to={"/app/people/" + props.move.ownerUsername}
         >
           {props.move.ownerUsername}
         </Link>

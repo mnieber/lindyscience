@@ -22,20 +22,16 @@ const _stateSelection = (state: RootReducerStateT): SelectionState =>
 ///////////////////////////////////////////////////////////////////////
 
 type SelectionState = {
-  moveListUrl: string,
   locationMemo: string,
 };
 
 export function selectionReducer(
   state: SelectionState = {
-    moveListUrl: "",
     locationMemo: "",
   },
   action: any
 ): SelectionState {
   switch (action.type) {
-    case "SET_SELECTED_MOVE_LIST_URL":
-      return { ...state, moveListUrl: action.moveListUrl };
     case "SET_LOCATION_MEMO":
       return { ...state, locationMemo: action.pathname };
     default:
@@ -43,12 +39,8 @@ export function selectionReducer(
   }
 }
 
-export const getSelectedMoveListUrl = (state: RootReducerStateT) =>
-  state.screens.selection.moveListUrl;
 export const getLocationMemo = (state: RootReducerStateT) =>
   state.screens.selection.locationMemo;
-export const hasLoadedSelectedMoveList = (state: RootReducerStateT) =>
-  state.app.loadedMoveListUrls.includes(state.screens.selection.moveListUrl);
 
 type SearchState = {
   moveSearchResults: Array<MoveSearchResultT>,
@@ -81,26 +73,6 @@ export const reducer = combineReducers({
   selection: selectionReducer,
   search: searchReducer,
 });
-
-export const getSelectedMoveList: Selector<?MoveListT> = createSelector(
-  [_stateSelection, getMoveLists],
-
-  (stateSelection, moveLists): ?MoveListT => {
-    const [ownerUsername, slug] = stateSelection.moveListUrl.split("/");
-    const isMatch = x => x.ownerUsername == ownerUsername && x.slug == slug;
-    return moveLists.find(isMatch);
-  }
-);
-
-export const getMovesInList: Selector<Array<MoveT>> = createSelector(
-  [getMoveById, getSelectedMoveList],
-
-  (moveById, moveList): Array<MoveT> => {
-    return moveList
-      ? (moveList.moves || []).map(moveId => moveById[moveId]).filter(x => !!x)
-      : [];
-  }
-);
 
 export const getMoveSearchResults = (
   state: RootReducerStateT

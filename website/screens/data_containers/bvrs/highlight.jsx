@@ -13,6 +13,7 @@ import { action, observable } from "utils/mobx_wrapper";
 @behaviour_impl
 export class Highlight {
   @observable id: any;
+
   @data item: any;
 
   // $FlowFixMe

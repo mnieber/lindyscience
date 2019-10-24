@@ -5,6 +5,7 @@ import {
   behaviour_impl,
   listen,
   operation,
+  data,
 } from "screens/data_containers/utils";
 import { action, observable } from "utils/mobx_wrapper";
 
@@ -13,7 +14,8 @@ import { action, observable } from "utils/mobx_wrapper";
 export class Addition {
   @observable item: any;
   @observable parentId: any;
-  createItem: (values: any) => any;
+
+  @data createItem: (values: any) => any;
 
   // $FlowFixMe
   @operation add(values: any) {}

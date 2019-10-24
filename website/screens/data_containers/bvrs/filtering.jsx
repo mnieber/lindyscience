@@ -14,9 +14,10 @@ import { action, observable } from "utils/mobx_wrapper";
 export class Filtering {
   @observable isEnabled: boolean;
   @observable filter: any => boolean;
+
   @data inputItems: Array<any>;
   @data filteredItems: Array<any>;
-  createFilter: (filterOptions: any) => any;
+  @data createFilter: (filterOptions: any) => any;
 
   // $FlowFixMe
   @operation apply(filterOptions: any) {}

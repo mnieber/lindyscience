@@ -5,6 +5,7 @@ import {
   behaviour_impl,
   listen,
   operation,
+  data,
 } from "screens/data_containers/utils";
 import { action, observable } from "utils/mobx_wrapper";
 
@@ -12,7 +13,8 @@ import { action, observable } from "utils/mobx_wrapper";
 @behaviour_impl
 export class Editing {
   @observable isEditing: boolean;
-  saveItem: (values: any) => any;
+
+  @data saveItem: (values: any) => any;
 
   // $FlowFixMe
   @operation save(values: any) {}

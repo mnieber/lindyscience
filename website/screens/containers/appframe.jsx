@@ -66,7 +66,6 @@ function AppFrame(props: AppFramePropsT) {
           )
         );
 
-        // TODO: instead, load move lists linked to this profile
         const [moveLists] = await Promise.all([
           apiFindMoveLists(profile.username),
         ]);

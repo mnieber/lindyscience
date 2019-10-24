@@ -55,6 +55,7 @@ type MoveListFramePropsT = {
 };
 
 export function MoveListFrame(props: MoveListFramePropsT) {
+  const [moveList, setMoveList] = React.useState(undefined);
   const [blackboard, setBlackboard] = React.useState({
     ignoreHighlightChanges: false,
   });
@@ -77,6 +78,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
         isCtrl: false,
       });
       blackboard.ignoreHighlightChanges = false;
+      setMoveList(moveListsCtr.highlight.item);
     }
   }, [moveListMatchingUrl]);
 
@@ -86,7 +88,6 @@ export function MoveListFrame(props: MoveListFramePropsT) {
     );
   }, [props.ownerUsernamePrm, props.moveListSlugPrm]);
 
-  const moveList = moveListsCtr.highlight.item;
   const movesCtr = useMovesCtr(props.dispatch);
 
   movesCtr.setInputs(

@@ -103,15 +103,15 @@ export class MovesContainer {
     const preview = [MovesData, "preview"];
 
     [
-      Policies.selection.actsOnItems({ itemById }),
+      Policies.selection.actsOnItems(itemById),
 
-      Policies.highlight.actsOnItems({ itemById }),
+      Policies.highlight.actsOnItems(itemById),
       Policies.highlight.followsSelection,
       Policies.highlight.isStoredOnNewItem(props.storeHighlight),
       Policies.highlight.isRestoredOnCancelNewItem(props.restoreHighlight),
       Policies.highlight.isCorrectedOnFilterChange,
 
-      Policies.insertion.actsOnItems({ items: inputItems }),
+      Policies.insertion.actsOnItems(inputItems),
       Policies.insertion.createsThePreview({ preview }),
       Policies.insertion.happensOnDrop,
       Policies.insertion.picksAPayloadsSource({
@@ -127,7 +127,7 @@ export class MovesContainer {
       Policies.newItems.areConfirmedWhenSaved,
       Policies.newItems.areCanceledOnHighlightChange,
 
-      Policies.filtering.actsOnItems({ items: preview }),
+      Policies.filtering.actsOnItems(preview),
       Policies.filtering.isDisabledOnNewItem,
 
       mapData([Filtering, "filteredItems"], [MovesData, "display"]),

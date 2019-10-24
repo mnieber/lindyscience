@@ -6,6 +6,7 @@ import {
   data,
   listen,
   operation,
+  extendInterface,
 } from "screens/data_containers/utils";
 import { action, observable } from "utils/mobx_wrapper";
 
@@ -49,9 +50,22 @@ const _handleFilteringApply = (self: Filtering) => {
   );
 };
 
+const _handleFiltering = (self: Filtering) => {
+  extendInterface(self, {
+    get filteredItems() {
+      const isEnabled = this.isEnabled;
+      const filter = this.filter;
+      return filter && isEnabled
+        ? this.filter(this.inputItems)
+        : this.inputItems;
+    },
+  });
+};
+
 export const createFiltering = (): Filtering => {
   const self = new Filtering();
   _handleFilteringSetEnabled(self);
   _handleFilteringApply(self);
+  _handleFiltering(self);
   return self;
 };

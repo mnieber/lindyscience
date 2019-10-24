@@ -3,10 +3,8 @@
 import {
   type GetBvrT,
   behaviour_impl,
-  createPatch,
   data,
 } from "screens/data_containers/utils";
-import { Selection } from "screens/data_containers/bvrs/selection";
 import { computed, observable } from "utils/mobx_wrapper";
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";

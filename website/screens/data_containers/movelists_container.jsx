@@ -81,14 +81,14 @@ export class MoveListsContainer {
     const preview = [MoveListsData, "preview"];
 
     [
-      Policies.selection.actsOnItems({ itemById }),
+      Policies.selection.actsOnItems(itemById),
 
-      Policies.highlight.actsOnItems({ itemById }),
+      Policies.highlight.actsOnItems(itemById),
       Policies.highlight.followsSelection,
       Policies.highlight.isStoredOnNewItem(props.storeHighlight),
       Policies.highlight.isRestoredOnCancelNewItem(props.restoreHighlight),
 
-      Policies.insertion.actsOnItems({ items: inputItems }),
+      Policies.insertion.actsOnItems(inputItems),
       Policies.insertion.createsThePreview({ preview }),
       Policies.insertion.picksAPayloadsSource({
         payloadSources: [insertByCreatingAnItem({ showPreview: true })],

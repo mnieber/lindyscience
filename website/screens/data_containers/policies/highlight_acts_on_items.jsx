@@ -1,13 +1,11 @@
 // @flow
 
-import { type AdapterT, createPatch } from "screens/data_containers/utils";
+import { type ClassMemberT, mapDatas } from "screens/data_containers/utils";
 import { Highlight } from "screens/data_containers/bvrs/highlight";
 
-export const highlightActsOnItems = ({
-  itemById: [Collection, itemById],
-}: AdapterT) =>
-  createPatch(Highlight, [Collection], collection => ({
-    get item() {
-      return collection[itemById][this.id];
-    },
-  }));
+export const highlightActsOnItems = ([Collection, itemById]: ClassMemberT) =>
+  mapDatas(
+    [[Collection, itemById], [Highlight, "id"]],
+    [Highlight, "item"],
+    (itemById, id) => itemById[id]
+  );

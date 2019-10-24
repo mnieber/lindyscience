@@ -56,7 +56,7 @@ export function behaviourInstanceName(inf: any) {
   return _symbolName(inf.constructor[symbol]);
 }
 
-function extendInterface(intrface: any, members: any) {
+export function extendInterface(intrface: any, members: any) {
   const behaviourName = behaviourInstanceName(intrface);
   const behaviourDatas = intrface.constructor[datas];
 
@@ -152,14 +152,35 @@ export function data(target: any, name: string, descriptor: any) {
 }
 
 export const mapData = (
-  [fromPolicy, fromMember]: [any, string],
-  [toPolicy, toMember]: [any, string],
+  [fromPolicy, fromMember]: ClassMemberT,
+  [toPolicy, toMember]: ClassMemberT,
   transform: ?Function
 ) =>
   createPatch(toPolicy, [fromPolicy], (fromInstance: any) => ({
     // $FlowFixMe
     get [toMember]() {
+      // TODO: check that fromMember is found
       const data = fromInstance[fromMember];
       return transform ? transform(data) : data;
     },
   }));
+
+export const mapDatas = (
+  fromPolicies: Array<ClassMemberT>,
+  [toPolicy, toMember]: ClassMemberT,
+  transform: Function
+) => {
+  const policies = fromPolicies.map(x => x[0]);
+  const members = fromPolicies.map(x => x[1]);
+
+  return createPatch(toPolicy, policies, (...fromInstances: Array<any>) => ({
+    // $FlowFixMe
+    get [toMember]() {
+      const datas = zip(fromInstances, members).map(([instance, member]) => {
+        // TODO: check that fromMember is found
+        return instance[member];
+      });
+      return transform(...datas);
+    },
+  }));
+};

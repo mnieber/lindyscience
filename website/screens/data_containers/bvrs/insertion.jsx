@@ -1,16 +1,17 @@
 // @flow
 
+import {
+  type GetBvrT,
+  behaviour_impl,
+  data,
+  extendInterface,
+  listen,
+  operation,
+} from "screens/data_containers/utils";
 import type {
   InsertPositionT,
   PayloadT,
 } from "screens/data_containers/bvrs/dragging";
-import {
-  behaviour_impl,
-  type GetBvrT,
-  listen,
-  operation,
-  data,
-} from "screens/data_containers/utils";
 import { action } from "utils/mobx_wrapper";
 import { getPreview2 } from "screens/utils";
 
@@ -62,6 +63,19 @@ const _handleInsertPayload = (self: Insertion) => {
   );
 };
 
+const _handleInsert = (self: InsertionT) => {
+  extendInterface(self, {
+    get preview() {
+      const payload = this.payload;
+      const position = this.position;
+
+      return payload && payload.showPreview
+        ? getPreview(this.inputs, position, payload)
+        : this.inputs;
+    },
+  });
+};
+
 export const createInsertion = ({
   insertItems,
 }: {
@@ -70,5 +84,6 @@ export const createInsertion = ({
   const self = new Insertion();
   self.insertItems = insertItems;
   _handleInsertPayload(self);
+  _handleInsert(self);
   return self;
 };

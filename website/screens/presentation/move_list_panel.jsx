@@ -52,7 +52,7 @@ const withMoveContextMenu = (WrappedComponent: any) =>
 ///////////////////////////////////////////////////////////////////////
 
 export type MoveListPanelPropsT = {
-  playMove: MoveT => void,
+  sayMove: MoveT => void,
   moveTags: Array<TagT>,
   moveContextMenu: any,
   children: any,
@@ -69,7 +69,7 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
   const moveListPlayerBtns = (
     <Widgets.MoveListPlayer
       moves={selection}
-      playMove={props.playMove}
+      sayMove={props.sayMove}
       className=""
     />
   );

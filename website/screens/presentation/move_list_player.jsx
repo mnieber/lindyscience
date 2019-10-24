@@ -9,7 +9,7 @@ import type { MoveT } from "moves/types";
 
 type MoveListPlayerPropsT = {|
   moves: Array<MoveT>,
-  playMove: MoveT => void,
+  sayMove: MoveT => void,
   className: string,
 |};
 
@@ -21,7 +21,7 @@ export function MoveListPlayer(props: MoveListPlayerPropsT) {
   // $FlowFixMe
   React.useEffect(() => {
     if (isPlaying && moves.length) {
-      props.playMove(moves[moveIdx % moves.length]);
+      props.sayMove(moves[moveIdx % moves.length]);
       setTimeout(() => setMoveIdx((moveIdx + 1) % moves.length), 12000);
     }
   }, [isPlaying, moveIdx]);

@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import { sayMove } from "screens/data_containers/handlers/say_move";
 import { Selection } from "screens/data_containers/bvrs/selection";
 import { movesContainerProps } from "screens/data_containers/moves_container_props";
 import { MoveListsContainerContext } from "screens/data_containers/movelists_container_context";
@@ -23,15 +24,6 @@ import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
-
-function playMove(move: MoveT) {
-  const maxLength = 200;
-  // $FlowFixMe
-  const utterance = new SpeechSynthesisUtterance(
-    move.name.substr(0, maxLength)
-  );
-  return window.speechSynthesis.speak(utterance);
-}
 
 function useMovesCtr(dispatch: Function) {
   const [movesCtr, setMovesCtr] = React.useState(() => {
@@ -132,7 +124,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
           onKeyEvent={movesCtr.handlerKeys.handle().onKeyDown}
         >
           <MoveListPanel
-            playMove={playMove}
+            sayMove={sayMove}
             moveTags={props.inputMoveTags}
             movesCtr={movesCtr}
             moveListsCtr={moveListsCtr}

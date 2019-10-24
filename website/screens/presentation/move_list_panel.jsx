@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import type { UserProfileT } from "profiles/types";
 import { isNone } from "utils/utils";
 import { MovesContainer } from "screens/data_containers/moves_container";
 import { MoveListsContainer } from "screens/data_containers/movelists_container";
@@ -52,6 +53,7 @@ const withMoveContextMenu = (WrappedComponent: any) =>
 ///////////////////////////////////////////////////////////////////////
 
 export type MoveListPanelPropsT = {
+  userProfile: ?UserProfileT,
   sayMove: MoveT => void,
   moveTags: Array<TagT>,
   moveContextMenu: any,
@@ -60,8 +62,8 @@ export type MoveListPanelPropsT = {
 
 function MoveListPanel_(props: MoveListPanelPropsT) {
   const selection = props.movesCtr.selection.items;
-  const moveList = props.movesCtr.data.moveList;
-  const userProfile = props.movesCtr.data.userProfile;
+  const moveList = props.moveListsCtr.highlight.item;
+  const userProfile = props.userProfile;
 
   const isMoveListOwner =
     userProfile && isOwner(userProfile, getOwnerId(moveList));
@@ -112,7 +114,9 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
       className=""
       createHostedPanels={createHostedPanels}
       movesCtr={props.movesCtr}
+      moveListsCtr={props.moveListsCtr}
       moveContextMenu={props.moveContextMenu}
+      userProfile={props.userProfile}
     />
   );
 

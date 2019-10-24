@@ -124,6 +124,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
           onKeyEvent={movesCtr.handlerKeys.handle().onKeyDown}
         >
           <MoveListPanel
+            userProfile={props.userProfile}
             sayMove={sayMove}
             moveTags={props.inputMoveTags}
             movesCtr={movesCtr}

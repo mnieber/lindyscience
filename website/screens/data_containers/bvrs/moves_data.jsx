@@ -21,8 +21,6 @@ import { listToItemById } from "utils/utils";
 // $FlowFixMe
 @behaviour_impl
 export class MovesData {
-  // TODO: for internal purposes. Rename to _userProfile
-  @observable userProfile: ?UserProfileT;
   @observable moves: Array<MoveT> = [];
   // $FlowFixMe
   @computed get moveIds(): Array<UUID> {
@@ -32,10 +30,9 @@ export class MovesData {
   @computed get moveById(): { [UUID]: MoveT } {
     return listToItemById(this.preview);
   }
-  // TODO: for internal purposes. Rename to _moveList
-  @observable moveList: ?MoveListT;
-  // TODO: for internal purposes. Rename to _moveLists
-  @observable moveLists: Array<MoveListT> = [];
+  @observable _userProfile: ?UserProfileT;
+  @observable _moveList: ?MoveListT;
+  @observable _moveLists: Array<MoveListT> = [];
 
   @observable preview: Array<MoveT> = [];
   @data display: Array<MoveT> = [];

@@ -72,8 +72,8 @@ export class MovesContainer {
   _createBehaviours(props: MovesContainerPropsT) {
     this.addition = createAddition({
       createItem: (values: any) => {
-        return this.data.moveList && this.data.userProfile
-          ? createNewMove(this.data.userProfile, this.data.moveList.id)
+        return this.data._moveList && this.data._userProfile
+          ? createNewMove(this.data._userProfile, this.data._moveList.id)
           : undefined;
       },
     });
@@ -92,8 +92,8 @@ export class MovesContainer {
     this.highlight = createHighlight();
     this.insertion = createInsertion({
       insertItems: preview => {
-        if (this.data.moveList) {
-          props.setMoves(this.data.moveList, preview);
+        if (this.data._moveList) {
+          props.setMoves(this.data._moveList, preview);
         }
       },
     });
@@ -156,9 +156,9 @@ export class MovesContainer {
   ) {
     runInAction(() => {
       this.data.moves = moves;
-      this.data.userProfile = userProfile;
-      this.data.moveList = moveList;
-      this.data.moveLists = moveLists;
+      this.data._userProfile = userProfile;
+      this.data._moveList = moveList;
+      this.data._moveLists = moveLists;
     });
   }
 }

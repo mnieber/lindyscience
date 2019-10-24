@@ -51,9 +51,24 @@ export function actRemoveMoveIds(moveIds: Array<UUID>, moveListId: UUID) {
   };
 }
 
+export function actSetMoveIds(moveIds: Array<UUID>, moveListId: UUID) {
+  return {
+    type: "SET_MOVE_IDS_FOR_LIST",
+    moveIds,
+    moveListId,
+  };
+}
+
 export function actSetMoveListTags(tags: Array<TagT>) {
   return {
     type: "SET_MOVE_LIST_TAGS",
     tags,
+  };
+}
+
+export function actMarkMoveListNotFound(moveListUrl: string) {
+  return {
+    type: "MARK_MOVE_LIST_NOT_FOUND",
+    moveListUrl,
   };
 }

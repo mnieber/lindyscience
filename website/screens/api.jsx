@@ -16,7 +16,7 @@ const moveList = new schema.Entity("moveLists", {
   moves: [move],
 });
 
-export function findMoveLists(ownerUsername: string) {
+export function apiFindMoveLists(ownerUsername: string) {
   return doQuery(
     `query queryMoveLists($ownerUsername: String!) {
       findMoveLists(ownerUsername: $ownerUsername) {
@@ -42,13 +42,13 @@ export function findMoveLists(ownerUsername: string) {
     .then(result => normalize(result.findMoveLists, [moveList]));
 }
 
-export function findMoves(
+export function apiFindMoves(
   ownerUsername: string,
   keywords: Array<string>,
   tags: Array<TagT>
 ) {
   return doQuery(
-    `query queryFindMoves($ownerUsername: String!, $keywords: [String]!, $tags: [String]!) {
+    `query queryFindMoves($ownerUsername: String, $keywords: [String]!, $tags: [String]!) {
       findMoves(ownerUsername: $ownerUsername, keywords: $keywords, tags: $tags) {
         id
         name
@@ -70,7 +70,7 @@ export function findMoves(
   );
 }
 
-export function loadMoveList(ownerUsername: string, slug: string) {
+export function apiLoadMoveList(ownerUsername: string, slug: string) {
   return doQuery(
     `query queryMoveList(
        $ownerUsername: String!,
@@ -90,7 +90,10 @@ export function loadMoveList(ownerUsername: string, slug: string) {
         }
         moves {
           id
-          owner { id }
+          owner {
+            id
+            username
+          }
           name
           slug
           link

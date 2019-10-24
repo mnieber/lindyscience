@@ -11,19 +11,6 @@ import * as movesActions from "moves/actions";
 import * as moveListsActions from "move_lists/actions";
 import { getObjectValues } from "utils/utils";
 
-test("select highlighted move", function(t) {
-  let s = reducers.selectionReducer(undefined, {});
-  t.equal(s.highlightedMoveSlugid, "");
-
-  s = reducers.selectionReducer(s, {
-    type: "SET_HIGHLIGHTED_MOVE_SLUGID",
-    moveSlugid: "abc/efg",
-  });
-  t.equal(s.highlightedMoveSlugid, "abc/efg");
-
-  t.end();
-});
-
 test("insert moves into list", function(t) {
   let sMoveList = moveListsReducers.moveListsReducer(
     undefined,

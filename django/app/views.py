@@ -1,6 +1,6 @@
 from django.middleware.csrf import get_token
 from django.views import View
-from django.utils.text import mark_safe
+from django.utils.html import mark_safe
 from django.shortcuts import render
 from app.schema import schema
 import json

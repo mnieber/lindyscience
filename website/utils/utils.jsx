@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import * as React from "react";
 import recase from "recase";
 // $FlowFixMe
 import uuidv4 from "uuid/v4";
@@ -15,7 +15,7 @@ export function toSnakeCase(obj: {}) {
   return r.snakeCopy(obj);
 }
 
-export function querySetListToDict(qsList: Array<any>, key: string = "id") {
+export function listToItemById(qsList: Array<any>, key: string = "id") {
   const result = {};
   qsList.forEach(item => {
     result[item[key]] = item;
@@ -60,6 +60,10 @@ export function stripQuotes(value: string) {
 
 export function deepCopy(obj: {} | Array<any>) {
   return JSON.parse(JSON.stringify(obj));
+}
+
+export function deepEqual(lhs: any, rhs: any) {
+  return JSON.stringify(lhs) === JSON.stringify(rhs);
 }
 
 export function reduceMapToMap<T>(obj: {}, f: Function): T {
@@ -189,6 +193,42 @@ export function roundDecimals(x: number, k: number) {
   return Math.round(x * factor) / factor;
 }
 
-export function create_uuid() {
+export function createUUID() {
   return uuidv4();
 }
+
+export function makeUnique(x: Array<any>) {
+  // $FlowFixMe
+  return Array.from(new Set(x));
+}
+
+export function secondsToTimeString(x: number) {
+  const _format = x => (x + "").padStart(2, "0");
+
+  const hours = Math.trunc(x / 3600);
+  x = x - hours * 3600;
+
+  const minutes = Math.trunc(x / 60);
+  x = x - minutes * 60;
+
+  const seconds = roundDecimals(x, 1);
+
+  return [
+    ...(hours ? [_format(hours)] : []),
+    ...(hours || minutes ? [_format(minutes)] : []),
+    _format(seconds),
+  ].join(":");
+}
+
+export function notImplemented() {
+  return Error("Not implemented");
+}
+
+// $FlowFixMe
+export const zip = (arr, ...arrs) => {
+  return arr.map((val, i) => arrs.reduce((a, arr) => [...a, arr[i]], [val]));
+};
+
+export const lookUp = (keys: Array<any>, obj: any): Array<any> => {
+  return keys.map(x => obj[x]);
+};

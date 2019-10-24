@@ -10,7 +10,8 @@ import type { TipT } from "tips/types";
 
 // Tip
 type TipPropsT = {
-  isOwner: boolean,
+  allowEdit: boolean,
+  allowDelete: boolean,
   item: TipT,
   vote: VoteT,
   setVote: (UUID, VoteT) => void,
@@ -101,9 +102,9 @@ export function Tip(props: TipPropsT) {
       <div className="tip">
         {voteCount}
         {text}
-        {props.isOwner && editBtn}
-        {!armDelete && props.isOwner && deleteBtn}
-        {armDelete && props.isOwner && cancelConfirmDiv}
+        {props.allowEdit && editBtn}
+        {!armDelete && props.allowDelete && deleteBtn}
+        {armDelete && props.allowDelete && cancelConfirmDiv}
       </div>
     );
   }
@@ -112,7 +113,7 @@ export function Tip(props: TipPropsT) {
 // TipList
 
 type TipListPropsT = {
-  userProfile: UserProfileT,
+  userProfile: ?UserProfileT,
   parentObject: OwnedObjectT,
   items: Array<TipT>,
   voteByObjectId: VoteByIdT,
@@ -124,15 +125,19 @@ type TipListPropsT = {
 
 export function TipList(props: TipListPropsT) {
   const itemNodes: Array<React.Node> = props.items.map((item, idx) => {
-    const isOwner =
-      item.ownerId == props.userProfile.userId ||
-      props.parentObject.ownerId == props.userProfile.userId;
+    const allowEdit =
+      !!props.userProfile && item.ownerId == props.userProfile.userId;
+    const allowDelete =
+      allowEdit ||
+      (!!props.userProfile &&
+        props.parentObject.ownerId == props.userProfile.userId);
 
     return (
       <Tip
         key={item.id}
         item={item}
-        isOwner={isOwner}
+        allowEdit={allowEdit}
+        allowDelete={allowDelete}
         vote={props.voteByObjectId[item.id] || 0}
         setVote={props.setVote}
         saveTip={props.saveTip}

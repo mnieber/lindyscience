@@ -6,13 +6,16 @@ import YouTube from "react-youtube";
 import { VideoPlayerPanel } from "video/presentation/video_player";
 import { CutPointList } from "video/presentation/cut_point_list";
 
-import type { CutPointT, VideoBvrT } from "video/types";
+import type { CutPointT, VideoBvrT, CutPointBvrsT } from "video/types";
+import type { TagT } from "tags/types";
 
 type CutVideoPanelPropsT = {
+  moveTags: Array<TagT>,
   cutVideoLink: string,
   actSetCutVideoLink: Function,
   videoBvr: VideoBvrT,
   cutPoints: Array<CutPointT>,
+  cutPointBvrs: CutPointBvrsT,
 };
 
 export function CutVideoPanel(props: CutVideoPanelPropsT) {
@@ -22,7 +25,16 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
     }
   };
 
-  const linkPanel = <input className="w-full" onKeyDown={onKeyDown} />;
+  const linkPanel = (
+    <div className="flexrow h-8">
+      <input
+        id="linkPanelInput"
+        className="w-full"
+        onKeyDown={onKeyDown}
+        placeholder="Video link"
+      />
+    </div>
+  );
 
   const videoPlayerPanel = (
     <VideoPlayerPanel
@@ -32,14 +44,35 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
     />
   );
 
-  // $FlowFixMe
-  const cutPointList = <CutPointList cutPoints={props.cutPoints} />;
+  const selectCutPointById = (id, isShift, isCtrl) => undefined;
 
+  const cutPointList = (
+    <CutPointList
+      moveTags={props.moveTags}
+      cutPoints={props.cutPoints}
+      highlightedCutPoint={null}
+      selectCutPointById={selectCutPointById}
+      videoPlayer={props.videoBvr.player}
+      cutPointBvrs={props.cutPointBvrs}
+    />
+  );
+
+  const buttonCreateMoves = (
+    <button
+      onClick={() => {
+        props.cutPointBvrs.createMovesFromCutPoints();
+        props.cutPointBvrs.removeCutPoints(props.cutPoints.map(x => x.id));
+      }}
+    >
+      Create moves
+    </button>
+  );
   return (
     <div>
       <div className={"cutVideoPanel panel"}>
         {linkPanel}
         {videoPlayerPanel}
+        {buttonCreateMoves}
         {cutPointList}
       </div>
     </div>

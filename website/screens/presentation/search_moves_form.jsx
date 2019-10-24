@@ -2,84 +2,89 @@
 
 import React from "react";
 import { withFormik } from "formik";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
+import { makeUnique } from "utils/utils";
+import { FormFieldError } from "utils/form_utils";
 import {
-  FormField,
-  ValuePicker,
-  formFieldError,
-  getValueFromPicker,
-  FormFieldLabel,
-  strToPickerValue,
-} from "utils/form_utils";
-import { slugify } from "utils/utils";
-import { newMoveSlug } from "moves/utils";
-import type { MoveT } from "moves/types";
-import type { UUID } from "kernel/types";
+  TagsAndKeywordsPicker,
+  splitTextIntoTagsAndKeywords,
+} from "search/utils/tags_and_keywords_picker";
+import { strToPickerValue } from "utils/value_picker";
 import type { TagT } from "tags/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
-  setTagsPickerRef: any => void,
+  defaults: any,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const tagsPickerRef = React.useRef(null);
-  props.setTagsPickerRef(tagsPickerRef);
+  const _onPickerTextChange = (tags, searchText) => {
+    formProps.setFieldValue("tags", tags);
+    formProps.setFieldValue("searchText", searchText);
+  };
 
-  const myMoveLists = (
-    <FormField
-      classNames="w-full"
-      label="Search only my move lists"
-      formProps={formProps}
-      fieldName="myMoveLists"
-      type="checkbox"
-    />
-  );
-
-  const keywordsField = (
-    <FormField
-      classNames="w-full"
-      label="Keywords"
-      formProps={formProps}
-      fieldName="keywords"
-      type="text"
-      placeholder="Keywords"
-      autoFocus={props.autoFocus}
-    />
-  );
-
-  const tags = (
-    <div className="moveForm__tags mt-4">
-      <ValuePicker
-        zIndex={10}
-        ref={tagsPickerRef}
-        isCreatable={true}
-        label="Tags"
-        defaultValue={props.tagPickerDefaultValue}
-        fieldName="tags"
-        isMulti={true}
+  const tagsAndKeywordsField = (
+    <div className="moveForm__tags mt-2 w-full">
+      <TagsAndKeywordsPicker
         options={props.tagPickerOptions}
-        placeholder="Tags"
+        placeholder="Search moves by :tags, keywords and user:me"
+        onTextChange={_onPickerTextChange}
+        zIndex={10}
+        label="Tags"
+        fieldName="tags"
+        defaults={props.defaults}
       />
-      {formFieldError(formProps, "tags", ["formField__error"], "error")}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="tags"
+        classNames={["formField__error"]}
+        key="error"
+      />
     </div>
   );
 
+  const hiddenSearchBtnRef = React.createRef();
+
+  const hiddenSearchBtn = (
+    <button
+      ref={hiddenSearchBtnRef}
+      className="hidden"
+      type="submit"
+      disabled={formProps.isSubmitting}
+    >
+      search
+    </button>
+  );
+
+  const searchBtn = (
+    <FontAwesomeIcon
+      key={1}
+      className="ml-4"
+      icon={faSearch}
+      size="lg"
+      onClick={() => {
+        if (hiddenSearchBtnRef.current) {
+          hiddenSearchBtnRef.current.click();
+        }
+      }}
+    />
+  );
+
   return (
-    <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
-      <div className={"moveForm flexcol"}>
-        {myMoveLists}
-        {keywordsField}
-        {tags}
-        <div className={"moveForm__buttonPanel flexrow mt-4"}>
-          <button
-            className="button button--wide ml-2"
-            type="submit"
-            disabled={formProps.isSubmitting}
-          >
-            search
-          </button>
+    <form
+      className="moveForm w-full max-w-lg"
+      onSubmit={formProps.handleSubmit}
+    >
+      <div className={"flexcol"}>
+        <div className={"flexrow items-center"}>
+          {tagsAndKeywordsField}
+          <div className={"moveForm__buttonPanel flexrow mt-4"}>
+            {searchBtn}
+            {hiddenSearchBtn}
+          </div>
         </div>
       </div>
     </form>
@@ -96,36 +101,35 @@ type SearchMovesFormPropsT = {
 };
 
 export function SearchMovesForm(props: SearchMovesFormPropsT) {
-  const refs = {};
-  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
+  const [defaults, setDefaults] = React.useState({});
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       tags: [],
-      keywords: [],
-      myMoveLists: false,
+      searchText: "",
       ...props.latestOptions,
     }),
 
     validate: (values, formProps) => {
-      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
-
       let errors = {};
       return errors;
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      props.onSubmit(values);
+      const splitResult = splitTextIntoTagsAndKeywords(values.searchText);
+      const allTags = makeUnique([...splitResult.tags, ...values.tags]);
+      props.onSubmit({
+        ...values,
+        keywords: splitResult.keywords,
+        tags: allTags,
+      });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagPickerDefaultValue: (props.latestOptions.tags || []).map(
-        strToPickerValue
-      ),
-      setTagsPickerRef,
+      defaults,
     })
   );
 

@@ -34,12 +34,13 @@ const styleMap = {
 // Move
 
 type MoveDescriptionEditorPropsT = {
-  moveId: UUID,
+  editorId: UUID,
   description: string,
   readOnly: boolean,
-  autoFocus: boolean,
+  autoFocus?: boolean,
   videoPlayer?: any,
-  setEditorRef?: Function,
+  editorRef?: any,
+  placeholder?: string,
 };
 
 export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
@@ -84,18 +85,17 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
     return null;
   };
 
-  const dummySetEditorRef = () => {};
-
   return (
     <RichTextEditor
-      key={props.moveId + keyPostfix} // yes, we need this
+      key={props.editorId + keyPostfix} // yes, we need this
       initialEditorState={readOnlyEditorState}
       customHandleKeyCommand={customHandleKeyCommand}
       customKeyBindingFn={customKeyBindingFn}
       readOnly={props.readOnly}
-      autoFocus={props.autoFocus}
-      setEditorRef={props.setEditorRef || dummySetEditorRef}
+      autoFocus={!!props.autoFocus}
+      ref={props.editorRef}
       customStyleMap={styleMap}
+      placeholder={props.placeholder}
     />
   );
 }

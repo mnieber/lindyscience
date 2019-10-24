@@ -1,113 +1,23 @@
 // @flow
 
 import * as React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 
-import { create_uuid } from "utils/utils";
+import {
+  useInsertTip,
+  useNewTip,
+  useSaveTip,
+} from "tips/bvrs/tip_crud_behaviours";
 import { TipList } from "tips/presentation/tip";
 import type { UUID, OwnedObjectT } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { VoteT, VoteByIdT } from "votes/types";
 import type { TipT } from "tips/types";
 
-// Behaviours
-
-type InsertTipBvrT = {
-  preview: Array<TipT>,
-  prepare: Function,
-  finalize: Function,
-};
-
-export function useInsertTip(tips: Array<TipT>): InsertTipBvrT {
-  const [sourceTip, setSourceTip] = React.useState(null);
-
-  function prepare(tip: TipT) {
-    setSourceTip(tip);
-  }
-
-  function finalize(isCancel: boolean) {
-    setSourceTip(null);
-  }
-
-  const preview = !sourceTip ? tips : [...tips, sourceTip];
-
-  return { preview, prepare, finalize };
-}
-
-type NewTipBvrT = {
-  newTip: ?TipT,
-  add: Function,
-  finalize: Function,
-};
-
-export function useNewTip(
-  userId: number,
-  insertTipBvr: InsertTipBvrT,
-  moveId: UUID
-) {
-  const [newTip, setNewTip] = React.useState(null);
-
-  function _createNewTip(): TipT {
-    return {
-      id: create_uuid(),
-      ownerId: userId,
-      moveId: moveId,
-      text: "",
-      voteCount: 0,
-      initialVoteCount: 0,
-    };
-  }
-
-  // Store a new move in the function's state
-  function add() {
-    const newTip = _createNewTip();
-    setNewTip(newTip);
-    insertTipBvr.prepare(newTip);
-  }
-
-  // Remove new move from the function's state
-  function finalize(isCancel: boolean) {
-    insertTipBvr.finalize(isCancel);
-    setNewTip(null);
-  }
-
-  return { newTip, add, finalize };
-}
-
-type IncompleteValuesT = {
-  text: string,
-};
-
-type SaveTipBvr = {
-  save: Function,
-  discardChanges: Function,
-};
-
-export function useSaveTip(
-  newTipBvr: NewTipBvrT,
-  moveId: UUID,
-  tips: Array<TipT>,
-  saveTip: TipT => void
-) {
-  function save(id: UUID, incompleteValues: IncompleteValuesT) {
-    const tip: TipT = {
-      ...tips.find(x => x.id == id),
-      ...incompleteValues,
-    };
-
-    saveTip(tip);
-    newTipBvr.finalize(false);
-  }
-
-  function discardChanges() {
-    newTipBvr.finalize(true);
-  }
-
-  return { save, discardChanges };
-}
-
 type TipsPanelPropsT = {
   parentObject: OwnedObjectT,
-  userProfile: UserProfileT,
+  userProfile: ?UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
   saveTip: TipT => void,
@@ -118,7 +28,7 @@ type TipsPanelPropsT = {
 export function TipsPanel(props: TipsPanelPropsT) {
   const insertTipBvr = useInsertTip(props.tips);
   const newTipBvr = useNewTip(
-    props.userProfile.userId,
+    props.userProfile ? props.userProfile.userId : -1,
     insertTipBvr,
     props.parentObject.id
   );
@@ -130,17 +40,17 @@ export function TipsPanel(props: TipsPanelPropsT) {
   );
 
   const addTipBtn = (
-    <div
-      className={"tipsPanel__addButton button button--wide ml-2"}
+    <FontAwesomeIcon
+      key={"edit"}
+      className="ml-2"
+      icon={faPlusSquare}
       onClick={newTipBvr.add}
-    >
-      Add
-    </div>
+    />
   );
 
   return (
     <div className={"tipsPanel panel"}>
-      <div className={"flex flex-wrap mb-4"}>
+      <div className={"flexrow items-center flex-wrap mb-4"}>
         <h2>Tips</h2>
         {addTipBtn}
       </div>

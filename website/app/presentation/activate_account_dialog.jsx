@@ -14,8 +14,7 @@ export function ActivateAccountDialog(props: ActivateAccountDialogPropsT) {
   const [isModal, setIsModal] = React.useState(true);
   const [globalErrorMsg, setGlobalErrorMsg] = React.useState("");
 
-  // $FlowFixMe
-  React.useEffect(async () => {
+  async function activateAccount() {
     if (props.uid && props.token) {
       const errorState = props.activateAccount(props.uid, props.token);
       if (errorState) {
@@ -27,6 +26,11 @@ export function ActivateAccountDialog(props: ActivateAccountDialogPropsT) {
         );
       }
     }
+  }
+
+  React.useEffect(() => {
+    // Don't inline, we need to swallow the return value of async
+    activateAccount();
   }, [props.uid, props.token]);
 
   return (

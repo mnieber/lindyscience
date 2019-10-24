@@ -2,6 +2,7 @@
 
 import * as fromStore from "video/reducers";
 
+import type { UUID } from "kernel/types";
 import type { CutPointT } from "video/types";
 
 export function actSetCutVideoLink(link: string) {
@@ -25,9 +26,16 @@ export function actClearCutPoints() {
   };
 }
 
-export function actInsertCutPoints(cutPoints: Array<CutPointT>) {
+export function actAddCutPoints(cutPoints: Array<CutPointT>) {
   return {
-    type: "INSERT_CUT_POINT",
+    type: "ADD_CUT_POINTS",
     cutPoints,
+  };
+}
+
+export function actRemoveCutPoints(cutPointIds: Array<UUID>) {
+  return {
+    type: "REMOVE_CUT_POINTS",
+    cutPointIds,
   };
 }

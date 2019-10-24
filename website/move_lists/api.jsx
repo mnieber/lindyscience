@@ -5,7 +5,7 @@ import { doQuery } from "app/client";
 import type { UUID } from "kernel/types";
 import type { MoveListT } from "move_lists/types";
 
-export function saveMoveList(values: MoveListT) {
+export function apiSaveMoveList(values: MoveListT) {
   return doQuery(
     `mutation saveMoveList(
       $id: String!,
@@ -30,7 +30,7 @@ export function saveMoveList(values: MoveListT) {
   );
 }
 
-export function updateSourceMoveListId(
+export function apiUpdateSourceMoveListId(
   moveIds: Array<UUID>,
   sourceMoveListId: UUID
 ) {
@@ -51,7 +51,7 @@ export function updateSourceMoveListId(
   );
 }
 
-export function saveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
+export function apiSaveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
   return doQuery(
     `mutation saveMoveOrdering(
       $moveListId: String!,
@@ -69,7 +69,7 @@ export function saveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
   );
 }
 
-export function saveMoveListOrdering(moveListIds: Array<UUID>) {
+export function apiSaveMoveListOrdering(moveListIds: Array<UUID>) {
   return doQuery(
     `mutation saveMoveListOrdering(
       $moveListIds: [String]!,

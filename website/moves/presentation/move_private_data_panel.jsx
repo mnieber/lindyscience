@@ -1,11 +1,14 @@
 // @flow
 
 import * as React from "react";
+
+import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
 import { Tags } from "tags/presentation/tags";
-import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
-import { toReadOnlyEditorState } from "rich_text/utils/editor_state";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import type { UUID } from "kernel/types";
 import type { MovePrivateDataT } from "moves/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
@@ -15,19 +18,20 @@ type MovePrivateDatasPanelPropsT = {
   movePrivateData: ?MovePrivateDataT,
   onSave: (values: any) => void,
   moveTags: Array<TagT>,
+  moveId: UUID,
+  videoPlayer?: any,
 };
 
 export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
   const [isEditing, setIsEditing] = React.useState(false);
 
   const editBtn = (
-    <div
+    <FontAwesomeIcon
       key={"edit"}
-      className={"button button--wide ml-2"}
+      className="ml-2"
+      icon={faEdit}
       onClick={() => setIsEditing(true)}
-    >
-      Edit
-    </div>
+    />
   );
 
   const tags = (props.movePrivateData && props.movePrivateData.tags) || [];
@@ -35,14 +39,12 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
 
   const staticDiv = (
     <div>
-      <RichTextEditor
-        key={id}
-        initialEditorState={toReadOnlyEditorState(
-          props.movePrivateData ? props.movePrivateData.notes : ""
-        )}
+      <MoveDescriptionEditor
+        editorId={"privateData_" + props.moveId}
+        description={props.movePrivateData ? props.movePrivateData.notes : ""}
         readOnly={true}
         autoFocus={false}
-        setEditorRef={() => {}}
+        videoPlayer={props.videoPlayer}
       />
       {tags.length ? <Tags tags={tags} /> : undefined}
     </div>
@@ -60,6 +62,8 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
         props.onSave(values);
         setIsEditing(false);
       }}
+      moveId={props.moveId}
+      videoPlayer={props.videoPlayer}
       movePrivateData={props.movePrivateData}
       knownTags={props.moveTags}
     />
@@ -67,7 +71,7 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
 
   return (
     <div className={"move__privateNotes panel flexcol"}>
-      <div className={"flexrow"}>
+      <div className={"flexrow items-center"}>
         <h2>Private notes</h2>
         {buttons}
       </div>

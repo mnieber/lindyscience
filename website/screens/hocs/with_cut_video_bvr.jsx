@@ -1,32 +1,37 @@
 // @flow
 
 import * as React from "react";
+import { observer } from "mobx-react";
+import jQuery from "jquery";
 import { compose } from "redux";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import {
+  createKeyDownHandler,
+  createVideoKeyHandlers,
+} from "screens/presentation/video_keyhandler";
+import type { CutPointT, VideoBvrT, VideoT } from "video/types";
+import { actAddCutPoints } from "video/actions";
+import { useEditCutPoint } from "video/bvrs/cut_point_crud_behaviours";
 import { useInterval } from "utils/use_interval";
 import { useVideo } from "video/bvrs/use_video";
 import { styleTimePoints, extractTimePoints } from "video/utils/cut_points";
-import {
-  handleVideoKey,
-  videoKeys,
-} from "screens/presentation/video_keyhandler";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 import Ctr from "screens/containers/index";
-
-import type { VideoT, VideoBvrT } from "video/types";
 
 type PropsT = {
   cutVideoLink: string,
-  // receive any actions as well
+  cutPoints: Array<CutPointT>,
 };
 
 // $FlowFixMe
 export const withCutVideoBvr = compose(
   Ctr.connect(state => ({
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
+    cutPoints: Ctr.fromStore.getCutPoints(state),
   })),
+  observer,
   (WrappedComponent: any) => (props: any) => {
-    const { cutVideoLink, ...passThroughProps }: PropsT = props;
+    const { cutVideoLink, cutPoints, ...passThroughProps }: PropsT = props;
     const parentDivId = "cutVideoDiv";
     const video: VideoT = {
       link: cutVideoLink,
@@ -35,13 +40,28 @@ export const withCutVideoBvr = compose(
     };
     const videoBvr = useVideo(parentDivId, video);
 
+    const editCutPointBvr = useEditCutPoint(cutPoints, videoBvr, cutPoint => {
+      props.dispatch(actAddCutPoints([cutPoint]));
+    });
+
     const wrappedComponent = (
-      <WrappedComponent videoBvr={videoBvr} {...passThroughProps} />
+      <WrappedComponent
+        videoBvr={videoBvr}
+        editCutPointBvr={editCutPointBvr}
+        {...passThroughProps}
+      />
     );
 
-    const onKeyDown = (key, e) => {
-      handleVideoKey(key, e, videoBvr, 0, 0, []);
+    const videoKeyHandlers = {
+      ...createVideoKeyHandlers(videoBvr),
+      "ctrl+shift+insert": () => editCutPointBvr.add("start"),
+      "ctrl+shift+alt+insert": () => editCutPointBvr.add("end"),
+      "ctrl+shift+l": () => {
+        jQuery("#linkPanelInput").focus();
+      },
     };
+    const videoKeys = Object.keys(videoKeyHandlers);
+    const onKeyDown = createKeyDownHandler(videoKeyHandlers);
 
     return (
       <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>

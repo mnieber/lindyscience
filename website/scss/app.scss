@@ -15,7 +15,7 @@ $panGrey: #bbbbbb;
 }
 
 .move__header {
-  @apply mb-4;
+  @apply flexcol;
 }
 
 .flexrow {
@@ -100,10 +100,6 @@ $panGrey: #bbbbbb;
   border-bottom: solid;
 }
 
-.move__header {
-  @apply flexcol;
-}
-
 .move__description {
   @apply text-lg;
 }
@@ -173,7 +169,7 @@ $panGrey: #bbbbbb;
 }
 
 .cookieNotice {
-  @apply p-2 bg-blue text-white;
+  @apply p-4 bg-blue h-16 text-white;
 }
 
 .videoControlPanel__button--enabled {
@@ -189,4 +185,30 @@ $panGrey: #bbbbbb;
   to {
     background-color: green;
   }
+}
+
+.cutPointHeader {
+  @apply flex flex-row w-full h-8 justify-between;
+}
+
+.cutPointHeader--start {
+  @apply bg-green;
+}
+
+.cutPointHeader--end {
+  @apply bg-blue;
+}
+
+.cutPointHeader__button {
+  @apply self-center bg-grey px-2 mr-2 cursor-pointer;
+}
+
+.appFrame__home {
+  margin-top: 8px;
+  max-width: 10rem;
+}
+
+.moveListPanel__inner {
+  min-width: 20rem;
+  max-width: 20rem;
 }

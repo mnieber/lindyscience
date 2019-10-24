@@ -3,7 +3,6 @@
 import { combineReducers } from "redux";
 import { createSelector } from "reselect";
 
-import type { PayloadT } from "screens/containers/data_container";
 import { isNone, reduceMapToMap } from "utils/utils";
 import { getInsertionIndex } from "utils/get_insertion_index";
 import type { UUID } from "kernel/types";
@@ -12,37 +11,6 @@ import type { RootReducerStateT, Selector } from "app/root_reducer";
 
 const _stateCutVideo = (state: RootReducerStateT): CutVideoStateT =>
   state.video.cutVideo;
-const _stateCutPointContainer = (
-  state: RootReducerStateT
-): DataContainerState => state.video.cutPointContainer;
-
-type DataContainerState = {
-  payload: PayloadT<CutPointT>,
-  isEditing: boolean,
-};
-
-export function cutPointContainerReducer(
-  state: DataContainerState = {
-    payload: { payload: [], targetItemId: "", isBefore: false },
-    isEditing: false,
-  },
-  action: any
-): DataContainerState {
-  switch (action.type) {
-    case "SET_CUTPOINT_CONTAINER_PAYLOAD":
-      return {
-        ...state,
-        payload: action.payload,
-      };
-    case "SET_IS_EDITING_CUTPOINT":
-      return {
-        ...state,
-        isEditing: action.isEditing,
-      };
-    default:
-      return state;
-  }
-}
 
 type CutVideoStateT = {
   link: string,
@@ -72,12 +40,29 @@ export function cutPointsReducer(
   switch (action.type) {
     case "CLEAR_CUT_POINTS":
       return [];
-    case "INSERT_CUT_POINTS":
-      const cmp = (lhs, rhs) => rhs.t - lhs.t;
+    case "ADD_CUT_POINTS":
+      const cmp = (lhs, rhs) => lhs.t - rhs.t;
       return action.cutPoints.reduce((acc, cutPoint) => {
-        const idx = getInsertionIndex(acc, action.cutPoint, cmp);
-        return [...acc.slice(0, idx), action.cutPoint, ...acc.slice(idx)];
+        const existingCutPoint = acc.find(
+          x => x.type == cutPoint.type && x.t == cutPoint.t
+        );
+
+        if (existingCutPoint && existingCutPoint.id != cutPoint.id) {
+          return acc;
+        } else if (existingCutPoint) {
+          const idx = acc.indexOf(existingCutPoint);
+          return [
+            ...acc.slice(0, idx),
+            { ...existingCutPoint, ...cutPoint },
+            ...acc.slice(idx + 1),
+          ];
+        } else {
+          const idx = getInsertionIndex(acc, cutPoint, cmp);
+          return [...acc.slice(0, idx), cutPoint, ...acc.slice(idx)];
+        }
       }, state);
+    case "REMOVE_CUT_POINTS":
+      return state.filter(x => !action.cutPointIds.includes(x.id));
     default:
       return state;
   }
@@ -86,26 +71,17 @@ export function cutPointsReducer(
 export type ReducerStateT = {
   cutVideo: CutVideoStateT,
   cutPoints: CutPointsStateT,
-  cutPointContainer: DataContainerState,
 };
 
 export const reducer = combineReducers({
   cutVideo: cutVideoReducer,
   cutPoints: cutPointsReducer,
-  cutPointContainer: cutPointContainerReducer,
 });
 
 export function getCutVideoLink(state: RootReducerStateT) {
   return state.video.cutVideo.link;
 }
 
-export function getCutVideoCutPoints(state: RootReducerStateT) {
+export function getCutPoints(state: RootReducerStateT) {
   return state.video.cutPoints;
 }
-
-export const getCutPointContainerPayload: Selector<DataContainerState> = createSelector(
-  [_stateCutPointContainer],
-  (stateCutPointContainer): DataContainerState => {
-    return stateCutPointContainer;
-  }
-);

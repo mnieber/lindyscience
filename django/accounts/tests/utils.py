@@ -11,6 +11,7 @@ def create_user(client):
     from accounts.models import User
     client.post('/auth/users/create/', {
         'email': test_email,
+        'username': test_email,
         'password': test_password,
         'accepts_terms': 'true'
     })

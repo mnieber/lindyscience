@@ -3,11 +3,14 @@
 import { splitIntoKeywords, isNone } from "utils/utils";
 // $FlowFixMe
 import parse from "url-parse";
+import { slugify } from "utils/utils";
+
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
-import type { PayloadT } from "screens/containers/data_container";
 import type { TagT } from "tags/types";
 import type { ObjectT, SlugidT, UUID } from "kernel/types";
+import type { UserProfileT } from "profiles/types";
+import type { CutPointT } from "video/types";
 
 export function makeSlugid(slug: string, id: ?UUID) {
   return slug + (id ? "/" + id : "");
@@ -52,29 +55,43 @@ export function findNeighbourIdx(
   return undefined;
 }
 
-export function getPreview<ItemT: ObjectT>(
-  items: Array<ItemT>,
-  payload: ?PayloadT<ItemT>
-): Array<ItemT> {
-  // $FlowFixMe
-  const pl: PayloadT<ItemT> = payload;
+export function findNeighbourIdx2(
+  filteredItems: Array<any>,
+  allItems: Array<any>,
+  beginIndex: number,
+  endIndex: number,
+  step: number
+) {
+  for (var idx = beginIndex; idx != endIndex; idx += step) {
+    if (filteredItems.includes(allItems[idx])) {
+      return { result: idx };
+    }
+  }
+  return undefined;
+}
 
-  return !payload || !payload.payload.length
+export function getPreview2(
+  items: Array<any>,
+  targetItemId: UUID,
+  isBefore: boolean,
+  payload: Array<any>
+): Array<any> {
+  return !payload.length
     ? items
     : items.reduce(
         (acc, item) => {
-          if (item.id == pl.targetItemId && pl.isBefore) {
-            acc.push(...pl.payload);
+          if (item.id == targetItemId && isBefore) {
+            acc.push(...payload);
           }
-          if (!pl.payload.find(makeIdMatcher(item.id))) {
+          if (!payload.find(x => x.id === item.id)) {
             acc.push(item);
           }
-          if (item.id == pl.targetItemId && !pl.isBefore) {
-            acc.push(...pl.payload);
+          if (item.id == targetItemId && !isBefore) {
+            acc.push(...payload);
           }
           return acc;
         },
-        pl.targetItemId ? [] : [...pl.payload]
+        targetItemId ? [] : [...payload]
       );
 }
 
@@ -88,7 +105,9 @@ export function createTagsAndKeywordsFilter(
       return (
         (!tags.length || tags.every(tag => move.tags.includes(tag))) &&
         (!keywords.length ||
-          keywords.every(keyword => move.name.toLowerCase().includes(keyword)))
+          keywords.every(keyword =>
+            move.name.toLowerCase().includes(keyword.toLowerCase())
+          ))
       );
     }
 
@@ -96,4 +115,26 @@ export function createTagsAndKeywordsFilter(
     return tags.length || keywords.length ? moves.filter(match) : moves;
   }
   return _filter;
+}
+
+export function createMoveFromCutPoint(
+  cutPoint: CutPointT,
+  userProfile: UserProfileT,
+  cutVideoLink: string,
+  moveList: MoveListT
+) {
+  return {
+    id: cutPoint.id,
+    ownerId: userProfile.userId,
+    ownerUsername: userProfile.username,
+    name: cutPoint.name,
+    slug: slugify(cutPoint.name),
+    description: cutPoint.description,
+    tags: cutPoint.tags,
+    startTimeMs: cutPoint.t * 1000,
+    endTimeMs: undefined,
+    privateData: undefined,
+    link: cutVideoLink,
+    sourceMoveListId: moveList.id,
+  };
 }

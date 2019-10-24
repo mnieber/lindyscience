@@ -15,7 +15,7 @@ type VideoPlayerPropsT = {
 
 export function VideoPlayer(props: VideoPlayerPropsT) {
   const video = props.videoBvr.video;
-  const link = video ? video.link || "" : "";
+  const link = (video ? video.link : "") || "";
   const videoUrlProps = urlParser.parse(link);
 
   const internalPlayer =
@@ -43,7 +43,7 @@ type VideoPlayerPanelPropsT = {
 
 export function VideoPlayerPanel(props: VideoPlayerPanelPropsT) {
   return props.videoBvr.video ? (
-    <div className={"move__video panel flex flex-col"}>
+    <div className={"move__video panel flexcol"}>
       <VideoPlayer videoBvr={props.videoBvr} restartId={props.restartId} />
       <VideoControlPanel videoBvr={props.videoBvr} />
     </div>

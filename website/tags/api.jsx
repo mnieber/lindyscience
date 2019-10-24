@@ -2,7 +2,7 @@
 
 import { doQuery } from "app/client";
 
-export function loadUserTags() {
+export function apiLoadUserTags() {
   return doQuery(
     `query queryUserTags {
       userTags {

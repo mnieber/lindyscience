@@ -2,50 +2,50 @@
 
 import * as React from "react";
 import { compose } from "redux";
+import { observer } from "mobx-react";
 
+import { Highlight } from "screens/data_containers/bvrs/highlight";
+import { Selection } from "screens/data_containers/bvrs/selection";
+import { withMovesCtr } from "screens/data_containers/moves_container_context";
+import { makeSlugid, makeSlugidMatcher } from "screens/utils";
+import { MovesContainer } from "screens/data_containers/moves_container";
 import Ctr from "screens/containers/index";
-import { actSetHighlightedMoveBySlug } from "screens/actions";
-import { withStaticMove } from "screens/hocs/with_static_move";
-import { withOwnMove } from "screens/hocs/with_own_move";
-import { withMoveCrudBvrsContext } from "screens/bvrs/move_crud_behaviours";
+import { withMove } from "screens/hocs/with_move";
 import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
-import { newMoveSlug } from "moves/utils";
-import { isOwner } from "app/utils";
-
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
-import type { MoveCrudBvrsT } from "screens/types";
-import type { MoveT } from "moves/types";
 
 type MovePagePropsT = {
   movePrivateDataPanel: any,
-  staticMove: any,
-  ownMove: any,
-  moveCrudBvrs: MoveCrudBvrsT,
+  moveDiv: any,
   userProfile: UserProfileT,
-  highlightedMove: MoveT,
   hasLoadedSelectedMoveList: boolean,
   dispatch: Function,
+  movesCtr: MovesContainer,
   // the follower are inserted by the router
   moveSlugPrm: string,
   moveIdPrm: ?UUID,
 };
 
 function MovePage(props: MovePagePropsT) {
+  const move = props.movesCtr.highlight.item;
+  const moves = props.movesCtr.data.display;
+
   React.useEffect(() => {
-    if (
-      props.userProfile &&
-      props.moveSlugPrm == newMoveSlug &&
-      !props.moveCrudBvrs.editMoveBvr.newItem
-    ) {
-      props.moveCrudBvrs.editMoveBvr.addNewItem();
-    }
-    props.dispatch(
-      actSetHighlightedMoveBySlug(props.moveSlugPrm, props.moveIdPrm)
+    const move = moves.find(
+      makeSlugidMatcher(makeSlugid(props.moveSlugPrm, props.moveIdPrm))
     );
+    if (move) {
+      Highlight.get(props.movesCtr).id = move.id;
+      Selection.get(props.movesCtr).selectItem({
+        itemId: move.id,
+        isShift: false,
+        isCtrl: false,
+      });
+    }
   }, [props.moveSlugPrm, props.moveIdPrm, props.userProfile]);
 
-  if (!props.highlightedMove) {
+  if (!move) {
     const msg = props.hasLoadedSelectedMoveList
       ? "Oops, I cannot find this move"
       : "Loading, please wait...";
@@ -53,22 +53,19 @@ function MovePage(props: MovePagePropsT) {
     return <div className="noMoveHighlighted">{msg}</div>;
   }
 
-  return isOwner(props.userProfile, props.highlightedMove.ownerId)
-    ? props.ownMove
-    : props.staticMove;
+  return props.moveDiv;
 }
 
 // $FlowFixMe
 MovePage = compose(
+  withMovesCtr,
   withMoveVideoBvr,
-  withStaticMove,
-  withOwnMove,
-  withMoveCrudBvrsContext,
+  withMove,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
-    highlightedMove: Ctr.fromStore.getHighlightedMove(state),
     hasLoadedSelectedMoveList: Ctr.fromStore.hasLoadedSelectedMoveList(state),
-  }))
+  })),
+  observer
 )(MovePage);
 
 export default MovePage;

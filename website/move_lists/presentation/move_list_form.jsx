@@ -2,22 +2,16 @@
 
 import React from "react";
 import { withFormik } from "formik";
-// $FlowFixMe
-import uuidv4 from "uuid/v4";
-import {
-  FormField,
-  ValuePicker,
-  formFieldError,
-  getValueFromPicker,
-  FormFieldLabel,
-  strToPickerValue,
-} from "utils/form_utils";
+
+import { slugify } from "utils/utils";
+import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
+import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import {
   RichTextEditor,
   getContentFromEditor,
 } from "rich_text/presentation/rich_text_editor";
 import { toEditorState } from "rich_text/utils/editor_state";
-
+import { newMoveListSlug } from "screens/utils";
 import type { MoveListT } from "move_lists/types";
 import type { UUID } from "kernel/types";
 import type { TagT } from "tags/types";
@@ -26,17 +20,14 @@ import type { TagT } from "tags/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
   onCancel: () => void,
-  setDescriptionEditorRef: any => void,
-  setTagsPickerRef: any => void,
+  descriptionEditorRef: any,
+  tagsPickerValue: any,
+  setTagsPickerValue: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const tagsPickerRef = React.useRef(null);
-  props.setTagsPickerRef(tagsPickerRef);
-
   const nameField = (
     <FormField
       classNames="w-full"
@@ -49,16 +40,48 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
+  const updateSlugBtn = (
+    <div
+      key="updateSlugBtn"
+      className={"button ml-2 flex-none"}
+      onClick={() => {
+        const newSlug = slugify(formProps.values.name);
+        if (newSlug) {
+          formProps.setFieldValue("slug", newSlug);
+        }
+      }}
+    >
+      Update
+    </div>
+  );
+
+  const slugField = (
+    <FormField
+      classNames="flex-1"
+      label="Slug"
+      formProps={formProps}
+      fieldName="slug"
+      type="text"
+      placeholder="Slug"
+      disabled={true}
+      buttons={[updateSlugBtn]}
+    />
+  );
+
   const description = (
     <div className="moveListForm__description mt-4">
-      <FormFieldLabel label="Description" />
+      <FormFieldLabel label="Description" fieldName="description" />
       <RichTextEditor
         autoFocus={false}
         readOnly={false}
-        setEditorRef={props.setDescriptionEditorRef}
+        ref={props.descriptionEditorRef}
         initialEditorState={toEditorState(formProps.values.description)}
       />
-      {formFieldError(formProps, "description", ["formField__error"])}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="description"
+        classNames={["formField__error"]}
+      />
     </div>
   );
 
@@ -76,16 +99,21 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveListForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={tagsPickerRef}
         isCreatable={true}
         label="Tags"
-        defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
         isMulti={true}
         options={props.tagPickerOptions}
         placeholder="Tags"
+        value={props.tagsPickerValue}
+        setValue={props.setTagsPickerValue}
       />
-      {formFieldError(formProps, "tags", ["formField__error"], "error")}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="tags"
+        classNames={["formField__error"]}
+        key={"error"}
+      />
     </div>
   );
 
@@ -93,6 +121,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <form className="moveListForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={"moveListForm flexcol"}>
         {nameField}
+        {formProps.values.slug != newMoveListSlug && slugField}
         {description}
         {!formProps.values.role == "trash" && isPrivateField}
         {tags}
@@ -124,29 +153,34 @@ type MoveListFormPropsT = {
   onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   moveList: MoveListT,
+  moveListSlugs: Array<string>,
   autoFocus: boolean,
 };
 
 export function MoveListForm(props: MoveListFormPropsT) {
-  const refs = {};
-  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
-  const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
+  const descriptionEditorRef = React.useRef(null);
+  const [tagsPickerValue, setTagsPickerValue] = React.useState(
+    props.moveList.tags.map(strToPickerValue)
+  );
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
       name: props.moveList.name,
+      slug: props.moveList.slug,
       isPrivate: props.moveList.isPrivate,
       role: props.moveList.role,
       description: props.moveList.description,
       tags: props.moveList.tags,
+      tagsPickerValue,
+      setTagsPickerValue,
     }),
 
     validate: (values, formProps) => {
       values.description = getContentFromEditor(
-        refs.descriptionEditorRef.current,
+        descriptionEditorRef.current,
         ""
       );
-      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
+      values.tags = (tagsPickerValue || []).map(x => x.value);
 
       let errors = {};
       if (!values.name) {
@@ -155,21 +189,24 @@ export function MoveListForm(props: MoveListFormPropsT) {
       if (!values.tags) {
         errors.tags = "This field is required";
       }
+      if (props.moveListSlugs.some(x => x == values.slug)) {
+        errors.slug = "A move list with this slug already exists";
+      }
       return errors;
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      props.onSubmit(props.moveList.id, values);
+      props.onSubmit({ ...values, id: props.moveList.id });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagPickerDefaultValue: props.moveList.tags.map(strToPickerValue),
       onCancel: props.onCancel,
-      setDescriptionEditorRef,
-      setTagsPickerRef,
+      descriptionEditorRef,
+      tagsPickerValue,
+      setTagsPickerValue,
     })
   );
 

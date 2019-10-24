@@ -17,7 +17,7 @@ type MoveListTitlePropsT = {|
 
 export function MoveListTitle(props: MoveListTitlePropsT) {
   return (
-    <div className="flex flex-row items-center">
+    <div className="flexrow items-center">
       <Link className="" to={`/app/lists/${props.moveList.ownerUsername}`}>
         <h2>{props.moveList.ownerUsername}</h2>
       </Link>
@@ -33,20 +33,23 @@ export function MoveListTitle(props: MoveListTitlePropsT) {
 }
 
 type MoveListDetailsPropsT = {|
-  userProfile: UserProfileT,
+  userProfile: ?UserProfileT,
   moveList: MoveListT,
+  buttons: Array<any>,
 |};
 
 export function MoveListDetails(props: MoveListDetailsPropsT) {
   return (
-    <div className={classnames("moveListDetails flex flex-col")}>
-      <MoveListTitle moveList={props.moveList} />
+    <div className={classnames("moveListDetails flexcol")}>
+      <div className="flexrow items-center">
+        <MoveListTitle moveList={props.moveList} />
+        {props.buttons}
+      </div>
       <RichTextEditor
         key={props.moveList.id}
         initialEditorState={toReadOnlyEditorState(props.moveList.description)}
         readOnly={true}
         autoFocus={false}
-        setEditorRef={() => {}}
       />
     </div>
   );

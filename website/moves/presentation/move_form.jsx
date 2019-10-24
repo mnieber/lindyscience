@@ -3,14 +3,9 @@
 import { withFormik } from "formik";
 import React from "react";
 
-import {
-  FormField,
-  ValuePicker,
-  formFieldError,
-  getValueFromPicker,
-  FormFieldLabel,
-  strToPickerValue,
-} from "utils/form_utils";
+import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
+import { ValuePicker, strToPickerValue } from "utils/value_picker";
+
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 import { isNone, slugify, truncDecimals } from "utils/utils";
@@ -22,19 +17,16 @@ import type { UUID } from "kernel/types";
 
 type InnerFormPropsT = {
   autoFocus: boolean,
-  tagPickerDefaultValue: Array<any>,
   tagPickerOptions: Array<any>,
+  tagsPickerValue: any,
+  setTagsPickerValue: Function,
   onCancel: () => void,
-  setTagsPickerRef: any => void,
-  setDescriptionEditorRef: any => void,
+  editorRef: any,
   videoPlayer: any,
   moveId: UUID,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
-  const tagsPickerRef = React.useRef(null);
-  props.setTagsPickerRef(tagsPickerRef);
-
   const nameField = (
     <FormField
       classNames="w-full"
@@ -167,21 +159,22 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     />
   );
 
-  const placeholder =
-    "You can add timing information like so: the move starts with a |rock step|1,2|.";
-
   const description = (
     <div className="moveForm__description mt-4">
-      <FormFieldLabel label="Description" />
+      <FormFieldLabel label="Description" fieldName="description" />
       <MoveDescriptionEditor
-        moveId={props.moveId}
+        editorId={"move_" + props.moveId}
         autoFocus={false}
         readOnly={false}
-        setEditorRef={props.setDescriptionEditorRef}
+        editorRef={props.editorRef}
         description={formProps.values.description}
         videoPlayer={props.videoPlayer}
       />
-      {formFieldError(formProps, "description", ["formField__error"])}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="description"
+        classNames={["formField__error"]}
+      />
     </div>
   );
 
@@ -189,16 +182,21 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
     <div className="moveForm__tags mt-4">
       <ValuePicker
         zIndex={10}
-        ref={tagsPickerRef}
         isCreatable={true}
         label="Tags"
-        defaultValue={props.tagPickerDefaultValue}
         fieldName="tags"
         isMulti={true}
         options={props.tagPickerOptions}
         placeholder="Tags"
+        value={props.tagsPickerValue}
+        setValue={props.setTagsPickerValue}
       />
-      {formFieldError(formProps, "tags", ["formField__error"], "error")}
+      <FormFieldError
+        formProps={formProps}
+        fieldName="tags"
+        classNames={["formField__error"]}
+        key="error"
+      />
     </div>
   );
 
@@ -247,9 +245,10 @@ type MoveFormPropsT = {
 };
 
 export function MoveForm(props: MoveFormPropsT) {
-  const refs = {};
-  const setTagsPickerRef = x => (refs.tagsPickerRef = x);
-  const setDescriptionEditorRef = x => (refs.descriptionEditorRef = x);
+  const [tagsPickerValue, setTagsPickerValue] = React.useState(
+    props.move.tags.map(strToPickerValue)
+  );
+  const editorRef = React.useRef(null);
 
   const startTime = props.move.startTimeMs
     ? props.move.startTimeMs / 1000.0
@@ -259,7 +258,7 @@ export function MoveForm(props: MoveFormPropsT) {
     mapPropsToValues: () => ({
       name: props.move.name,
       slug: props.move.slug,
-      link: props.move.link,
+      link: props.move.link || "",
       description: props.move.description,
       tags: props.move.tags,
       startTime: startTime,
@@ -267,11 +266,8 @@ export function MoveForm(props: MoveFormPropsT) {
     }),
 
     validate: (values, formProps) => {
-      values.description = getContentFromEditor(
-        refs.descriptionEditorRef.current,
-        ""
-      );
-      values.tags = getValueFromPicker(refs.tagsPickerRef.current, []);
+      values.description = getContentFromEditor(editorRef.current, "");
+      values.tags = (tagsPickerValue || []).map(x => x.value);
 
       let errors = {};
       if (!values.name) {
@@ -290,19 +286,19 @@ export function MoveForm(props: MoveFormPropsT) {
       values.endTimeMs = Math.trunc(values.endTime * 1000);
       delete values.endTime;
 
-      props.onSubmit(props.move.id, { ...values });
+      props.onSubmit({ ...values, id: props.move.id });
     },
     displayName: "BasicForm", // helps with React DevTools
   })(
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
-      tagPickerDefaultValue: props.move.tags.map(strToPickerValue),
       onCancel: props.onCancel,
       videoPlayer: props.videoPlayer,
-      setTagsPickerRef,
-      setDescriptionEditorRef,
       moveId: props.move.id,
+      editorRef,
+      tagsPickerValue,
+      setTagsPickerValue,
     })
   );
 

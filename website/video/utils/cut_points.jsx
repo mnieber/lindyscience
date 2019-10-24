@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import jQuery from "jquery";
 
 export function timePointRegex() {
   return /\<([\d\.\:]+)\>/g;

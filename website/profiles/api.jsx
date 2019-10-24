@@ -5,7 +5,7 @@ import { doQuery } from "app/client";
 
 // Api profile
 
-export function loadUserProfile() {
+export function apiLoadUserProfile() {
   const response = doQuery(
     `query queryUserProfile {
       userProfile {
@@ -32,7 +32,7 @@ export function loadUserProfile() {
   });
 }
 
-export function updateProfile(moveUrl: string) {
+export function apiUpdateProfile(moveUrl: string) {
   return doQuery(
     `mutation updateProfile(
       $moveUrl: String!,

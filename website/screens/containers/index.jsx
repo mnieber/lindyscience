@@ -15,18 +15,10 @@ import * as fromMovesStore from "moves/reducers";
 import * as fromMoveListsStore from "move_lists/reducers";
 import * as fromVideoStore from "video/reducers";
 
-import * as appApi from "app/api";
-import * as screensApi from "screens/api";
-import * as votesApi from "votes/api";
-import * as profilesApi from "profiles/api";
-import * as tipsApi from "tips/api";
-import * as movesApi from "moves/api";
-import * as tagsApi from "tags/api";
-import * as moveListsApi from "move_lists/api";
+import { apiUpdateProfile } from "profiles/api";
 
 export type ContainerT = {
   connect: Function,
-  api: any,
   fromStore: any,
 };
 
@@ -36,24 +28,16 @@ export function browseToMoveUrl(
 ) {
   const moveUrl = moveUrlParts.filter(x => !!x).join("/");
   if (mustUpdateProfile) {
-    profilesApi.updateProfile(moveUrl);
+    apiUpdateProfile(moveUrl);
   }
-  return navigate(`/app/lists/${moveUrl}`);
+  const fullUrl = `/app/lists/${moveUrl}`;
+  if (window.location.pathname != fullUrl) {
+    navigate(fullUrl);
+  }
 }
 
 const Container: ContainerT = {
   connect: connect,
-  actions: {},
-  api: {
-    ...appApi,
-    ...screensApi,
-    ...votesApi,
-    ...profilesApi,
-    ...tipsApi,
-    ...movesApi,
-    ...tagsApi,
-    ...moveListsApi,
-  },
   fromStore: {
     ...fromAppStore,
     ...fromScreensStore,

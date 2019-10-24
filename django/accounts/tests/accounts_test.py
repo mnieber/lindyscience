@@ -21,6 +21,7 @@ class AccountTest(APITestCase):
         res = self.client.post(
             '/auth/users/create/', {
                 'email': test_email,
+                'username': 'user1',
                 'password': test_password,
                 'accepts_terms': 'true'
             })
@@ -38,7 +39,7 @@ class AccountTest(APITestCase):
         html = Soup(html_content, 'html.parser')
         urls = set([
             url for url in [a['href'] for a in html.find_all('a')]
-            if url.startswith(self.server_url + 'register/activate')
+            if url.startswith(self.server_url + 'app/register/activate')
         ])
         assert len(urls) == 1
         activate_url = list(urls)[0]
@@ -61,6 +62,18 @@ class AccountTest(APITestCase):
         res = self.client.get('/auth/users/me/', {})
         assert res.status_code == status.HTTP_401_UNAUTHORIZED
 
+        # Create another user
+        res = self.client.post(
+            '/auth/users/create/', {
+                'email': 'test_' + test_email,
+                'username': 'user2',
+                'password': 'test_' + test_password,
+                'accepts_terms': 'true'
+            })
+
+        # Ensure registration went through
+        assert res.status_code == status.HTTP_201_CREATED
+
     def test_log_in_new_user(self):
         create_user(self.client)
 
@@ -71,7 +84,7 @@ class AccountTest(APITestCase):
         })
         assert res.status_code == status.HTTP_400_BAD_REQUEST
         assert res.data['non_field_errors'][
-            0].lower() == 'unable to login with provided credentials.'
+            0].lower() == 'unable to log in with provided credentials.'
 
         # Log in the newly created user
         res = self.client.post('/auth/token/login/', {

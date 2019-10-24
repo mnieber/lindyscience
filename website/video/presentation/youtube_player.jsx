@@ -1,16 +1,10 @@
 // @flow
 
 import * as React from "react";
-import { useInterval } from "utils/use_interval";
 import YouTube from "react-youtube";
-import { isNone } from "utils/utils";
 
-import type {
-  VideoT,
-  VideoUrlPropsT,
-  VideoBvrT,
-  RestartIdT,
-} from "video/types";
+import type { VideoUrlPropsT, VideoBvrT, RestartIdT } from "video/types";
+import { isNone } from "utils/utils2";
 
 type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,

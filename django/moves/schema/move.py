@@ -50,12 +50,12 @@ class MoveQuery(object):
         tags=graphene.List(graphene.String),
     )
 
-    def resolve_find_moves(self, info, owner_username, keywords, tags,
+    def resolve_find_moves(self, info, keywords, tags, owner_username="",
                            **kwargs):
         result = models.Move.objects.select_related('source_move_list',
                                                     'source_move_list__owner')
         result = result.filter(
-            Q(source_move_list__is_private=False) | Q(owner=info.context.user))
+            Q(source_move_list__is_private=False) | Q(owner_id=info.context.user.id))
         if owner_username:
             result = result.filter(
                 source_move_list__owner__username=owner_username)

@@ -7,7 +7,7 @@ import type { VoteT } from "votes/types";
 
 // Api votes
 
-export function loadUserVotes() {
+export function apiLoadUserVotes() {
   return doQuery(
     `query queryUserVotes {
       userVotes {
@@ -52,5 +52,5 @@ function _castVote(
   );
 }
 
-export const voteTip = (objectId: UUID, value: VoteT) =>
+export const apiVoteTip = (objectId: UUID, value: VoteT) =>
   _castVote("moves", "Tip", objectId, value);

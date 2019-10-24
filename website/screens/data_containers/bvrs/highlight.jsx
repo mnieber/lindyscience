@@ -1,10 +1,12 @@
 // @flow
 
 import {
+  type ClassMemberT,
   type GetBvrT,
   behaviour_impl,
   data,
   listen,
+  mapDatas,
   operation,
 } from "screens/data_containers/utils";
 import { action, observable } from "utils/mobx_wrapper";
@@ -37,3 +39,10 @@ export const createHighlight = (): Highlight => {
   _handleHighlight(self);
   return self;
 };
+
+export const highlightActsOnItems = ([Collection, itemById]: ClassMemberT) =>
+  mapDatas(
+    [[Collection, itemById], [Highlight, "id"]],
+    [Highlight, "item"],
+    (itemById, id) => itemById[id]
+  );

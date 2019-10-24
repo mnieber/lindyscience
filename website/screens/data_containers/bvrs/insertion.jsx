@@ -1,11 +1,13 @@
 // @flow
 
 import {
+  type ClassMemberT,
   type GetBvrT,
   behaviour_impl,
   data,
   extendInterface,
   listen,
+  mapData,
   operation,
 } from "screens/data_containers/utils";
 import type {
@@ -91,3 +93,6 @@ export const createInsertion = ({
   _handleInsert(self);
   return self;
 };
+
+export const insertionActsOnItems = ([Collection, items]: ClassMemberT) =>
+  mapData([Collection, items], [Insertion, "inputItems"]);

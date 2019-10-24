@@ -1,12 +1,14 @@
 // @flow
 
 import {
+  type ClassMemberT,
   type GetBvrT,
   behaviour_impl,
   data,
-  listen,
-  operation,
   extendInterface,
+  listen,
+  mapData,
+  operation,
 } from "screens/data_containers/utils";
 import { action, observable } from "utils/mobx_wrapper";
 
@@ -69,3 +71,6 @@ export const createFiltering = (): Filtering => {
   _handleFiltering(self);
   return self;
 };
+
+export const filteringActsOnItems = ([Collection, items]: ClassMemberT) =>
+  mapData([Collection, items], [Filtering, "inputItems"]);

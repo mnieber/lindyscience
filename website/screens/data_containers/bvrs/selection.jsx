@@ -1,13 +1,15 @@
 // @flow
 
 import {
-  behaviour_impl,
+  type ClassMemberT,
   type GetBvrT,
-  listen,
-  operation,
+  behaviour_impl,
   data,
+  listen,
+  mapDatas,
+  operation,
 } from "screens/data_containers/utils";
-import { range } from "utils/utils";
+import { lookUp, range } from "utils/utils";
 import type { UUID } from "kernel/types";
 import { action, observable } from "utils/mobx_wrapper";
 
@@ -68,3 +70,10 @@ export function createSelection(): Selection {
   _handleSelection(self);
   return self;
 }
+
+export const selectionActsOnItems = ([Collection, itemById]: ClassMemberT) =>
+  mapDatas(
+    [[Collection, itemById], [Selection, "ids"]],
+    [Selection, "items"],
+    (itemById, ids) => lookUp(ids, itemById)
+  );

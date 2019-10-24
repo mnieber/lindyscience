@@ -7,6 +7,7 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import type { UserProfileT } from "profiles/types";
 import { Highlight } from "screens/data_containers/bvrs/highlight";
 import { Editing } from "screens/data_containers/bvrs/editing";
 import {
@@ -32,6 +33,7 @@ import type { TagT } from "tags/types";
 import type { EditCutPointBvrT } from "video/bvrs/cut_point_crud_behaviours";
 
 type MoveListDetailsPagePropsT = {
+  userProfile: ?UserProfileT,
   moveListTags: Array<TagT>,
   moveTags: Array<TagT>,
   cutVideoLink: string,
@@ -49,7 +51,7 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   const ctr = props.moveListsCtr;
   const moveList = Highlight.get(ctr).item;
   const moveLists = ctr.data.preview;
-  const userProfile = ctr.data.userProfile;
+  const userProfile = props.userProfile;
   const isEditing = Editing.get(ctr).isEditing;
 
   if (!moveList) {
@@ -169,6 +171,7 @@ MoveListDetailsPage = compose(
   withCutVideoBvr,
   withFollowMoveListBtn,
   Ctr.connect(state => ({
+    userProfile: Ctr.fromStore.getUserProfile(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),

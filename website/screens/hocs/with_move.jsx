@@ -11,7 +11,9 @@ import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 import type { VideoBvrT } from "video/types";
 import { MovesContainer } from "screens/data_containers/moves_container";
+import { MoveListsContainer } from "screens/data_containers/movelists_container";
 import { withMovesCtr } from "screens/data_containers/moves_container_context";
+import { withMoveListsCtr } from "screens/data_containers/movelists_container_context";
 import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
 import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
 import { isOwner } from "app/utils";
@@ -28,11 +30,13 @@ type PropsT = {
   videoBvr: VideoBvrT,
   followMoveListBtn: any,
   movesCtr: MovesContainer,
+  moveListsCtr: MoveListsContainer,
 };
 
 // $FlowFixMe
 export const withMove = compose(
   withMovesCtr,
+  withMoveListsCtr,
   withFollowMoveListBtn,
   withHostedMovePanels,
   Ctr.connect(state => ({
@@ -50,7 +54,7 @@ export const withMove = compose(
     }: PropsT = props;
 
     const isEditing = props.movesCtr.editing.isEditing;
-    const moveList = props.movesCtr.data.moveList;
+    const moveList = props.moveListsCtr.highlight.item;
     const move = props.movesCtr.highlight.item;
 
     const isOwnMove = !!move && isOwner(props.userProfile, move.ownerId);

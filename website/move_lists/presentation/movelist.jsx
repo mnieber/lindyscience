@@ -14,8 +14,10 @@ import {
   scrollIntoView,
 } from "app/utils";
 import { MovesContainer } from "screens/data_containers/moves_container";
+import { MoveListsContainer } from "screens/data_containers/movelists_container";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
+import type { UserProfileT } from "profiles/types";
 
 // MoveList
 
@@ -50,9 +52,11 @@ function createKeyHandlers(
 }
 
 type MoveListPropsT = {|
+  userProfile: ?UserProfileT,
   createHostedPanels: MoveT => any,
   moveContextMenu: any,
   movesCtr: MovesContainer,
+  moveListsCtr: MoveListsContainer,
   className?: string,
 |};
 
@@ -70,8 +74,8 @@ export const MoveList = observer((props: MoveListPropsT) => {
   const selectionIds = props.movesCtr.selection.ids;
   const highlightId = props.movesCtr.highlight.id;
   const moves = props.movesCtr.data.display;
-  const moveList = props.movesCtr.data.moveList;
-  const userProfile = props.movesCtr.data.userProfile;
+  const moveList = props.moveListsCtr.highlight.item;
+  const userProfile = props.userProfile;
 
   const isMoveListOwner =
     userProfile && isOwner(userProfile, getOwnerId(moveList));

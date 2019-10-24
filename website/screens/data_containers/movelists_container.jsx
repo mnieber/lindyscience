@@ -49,7 +49,7 @@ export class MoveListsContainer {
   _createBehaviours(props: MoveListsContainerPropsT) {
     this.addition = createAddition({
       createItem: (values: any) => {
-        const userProfile = this.data.userProfile;
+        const userProfile = this.data._userProfile;
         return userProfile
           ? props.createNewMoveList({
               ...values,
@@ -114,7 +114,7 @@ export class MoveListsContainer {
   setInputs(moveLists: Array<MoveListT>, userProfile: ?UserProfileT) {
     runInAction(() => {
       this.data.moveLists = moveLists;
-      this.data.userProfile = userProfile;
+      this.data._userProfile = userProfile;
     });
   }
 }

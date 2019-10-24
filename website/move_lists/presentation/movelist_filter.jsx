@@ -6,6 +6,7 @@ import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
+import { createTagsAndKeywordsFilter } from "screens/utils";
 import { Filtering } from "screens/data_containers/bvrs/filtering";
 import { Selection } from "screens/data_containers/bvrs/selection";
 import { Addition } from "screens/data_containers/bvrs/addition";
@@ -94,10 +95,9 @@ export const MoveListFilter = observer((props: MoveListFilterPropsT) => {
   function _onPickerChange(tags, text) {
     const splitResult = splitTextIntoTagsAndKeywords(text);
     const allTags = makeUnique([...splitResult.tags, ...tags]);
-    Filtering.get(ctr).apply({
-      tags: allTags,
-      keywords: splitResult.keywords,
-    });
+    Filtering.get(ctr).apply(
+      createTagsAndKeywordsFilter(allTags, splitResult.keywords)
+    );
   }
 
   const onFlagChanged = () => {

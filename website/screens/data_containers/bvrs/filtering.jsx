@@ -17,10 +17,9 @@ export class Filtering {
 
   @data inputItems: Array<any>;
   @data filteredItems: Array<any>;
-  @data createFilter: (filterOptions: any) => any;
 
   // $FlowFixMe
-  @operation apply(filterOptions: any) {}
+  @operation apply(filter: any => boolean) {}
   // $FlowFixMe
   @operation setEnabled(flag: boolean) {}
 
@@ -43,20 +42,15 @@ const _handleFilteringApply = (self: Filtering) => {
   listen(
     self,
     "apply",
-    action(function(filterOptions: any) {
-      self.filter = self.createFilter(filterOptions);
+    action(function(filter: any) {
+      self.filter = filter;
       self.isEnabled = true;
     })
   );
 };
 
-export const createFiltering = ({
-  createFilter,
-}: {
-  createFilter: (filterOptions: any) => any,
-}): Filtering => {
+export const createFiltering = (): Filtering => {
   const self = new Filtering();
-  self.createFilter = createFilter;
   _handleFilteringSetEnabled(self);
   _handleFilteringApply(self);
   return self;

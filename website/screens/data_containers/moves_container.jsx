@@ -85,10 +85,7 @@ export class MovesContainer {
         }
       },
     });
-    this.filtering = createFiltering({
-      createFilter: options =>
-        createTagsAndKeywordsFilter(options.tags, options.keywords),
-    });
+    this.filtering = createFiltering();
     this.highlight = createHighlight();
     this.insertion = createInsertion({
       insertItems: preview => {

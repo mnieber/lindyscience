@@ -19,18 +19,18 @@ export type InsertT = { payload: PayloadT, position: InsertPositionT };
 export type PayloadSourceT = (container: any) => ?InsertT;
 
 export function getPreview(
-  inputs: Array<any>,
+  inputItems: Array<any>,
   insertPosition: ?InsertPositionT,
   payload: ?PayloadT
 ) {
-  return inputs && payload && insertPosition
+  return inputItems && payload && insertPosition
     ? getPreview2(
-        inputs,
+        inputItems,
         insertPosition.targetItemId,
         insertPosition.isBefore,
         payload.data
       )
-    : inputs;
+    : inputItems;
 }
 
 // $FlowFixMe
@@ -38,7 +38,7 @@ export function getPreview(
 export class Insertion {
   @data payload: ?PayloadT;
   @data position: ?InsertPositionT;
-  @data inputs: Array<any>;
+  @data inputItems: Array<any>;
   @data preview: Array<any>;
   @data insertItems: (items: Array<any>) => any;
 
@@ -56,7 +56,11 @@ const _handleInsertPayload = (self: Insertion) => {
     "insertPayload",
     action(function() {
       if (self.position && self.payload) {
-        const preview = getPreview(self.inputs, self.position, self.payload);
+        const preview = getPreview(
+          self.inputItems,
+          self.position,
+          self.payload
+        );
         self.insertItems(preview);
       }
     })
@@ -70,8 +74,8 @@ const _handleInsert = (self: InsertionT) => {
       const position = this.position;
 
       return payload && payload.showPreview
-        ? getPreview(this.inputs, position, payload)
-        : this.inputs;
+        ? getPreview(this.inputItems, position, payload)
+        : this.inputItems;
     },
   });
 };

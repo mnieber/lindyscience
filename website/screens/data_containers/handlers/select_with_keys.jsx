@@ -27,6 +27,8 @@ export class SelectWithKeys {
           Editing.get(ctr).setIsEditing(!Editing.get(ctr).isEditing);
         }
         if (["ctrl+down", "ctrl+up"].includes(key)) {
+          e.preventDefault();
+          e.stopPropagation();
           const moveId = Highlight.get(ctr).id;
           if (moveId) {
             const selectMoveById = (moveId: UUID) => {

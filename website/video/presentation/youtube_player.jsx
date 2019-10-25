@@ -39,8 +39,7 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
     const player = event.target;
     props.videoBvr.setPlayer(player);
     if (props.onReady) {
-      // $FlowFixMe
-      props.onReady(player.getIframe());
+      (props.onReady: any)(player.getIframe());
     }
   };
 

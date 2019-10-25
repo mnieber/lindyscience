@@ -17,7 +17,7 @@ export const highlightIsCorrectedOnFilterChange = (ctr: any) => {
       inputIds.includes(highlight) &&
       !filteredItemIds.includes(highlight)
     ) {
-      console.log("Correcting bad highlight", highlight);
+      (console: any).log("Correcting bad highlight", highlight);
       const highlightedItemIdx = inputIds.indexOf(highlight);
       const newIdx =
         findNeighbourIdx2(

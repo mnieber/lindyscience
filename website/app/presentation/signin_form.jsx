@@ -37,7 +37,7 @@ export function submitButton(label: string) {
   );
 }
 
-export function globalErrorDiv(globalError: string) {
+export function globalErrorDiv(globalError: any) {
   return globalError ? (
     <div className="formField__error">{globalError}</div>
   ) : (

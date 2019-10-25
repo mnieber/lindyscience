@@ -150,6 +150,8 @@ function AppFrame(props: AppFramePropsT) {
     </div>
   );
 
+  const childrenPlaceholder = <div className="h-full" />;
+
   return (
     <div className="appFrame px-4 flexcol">
       {cookieNotice}
@@ -170,7 +172,7 @@ function AppFrame(props: AppFramePropsT) {
           signOut={signOut}
         />
       </div>
-      <span id="SPAN1">{props.children}</span>
+      {props.children}
     </div>
   );
 }

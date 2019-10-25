@@ -63,8 +63,7 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
     if (command == "insert-timepoint" && props.videoPlayer) {
       const contentState = editorState.getCurrentContent();
       const selectionState = editorState.getSelection();
-      // $FlowFixMe
-      const t = roundDecimals(props.videoPlayer.getCurrentTime(), 1);
+      const t = roundDecimals((props.videoPlayer: any).getCurrentTime(), 1);
       const newContentState = Modifier.insertText(
         contentState,
         selectionState,

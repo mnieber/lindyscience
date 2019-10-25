@@ -30,8 +30,7 @@ export function actInsertMoveListIds(
 
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
-    // $FlowFixMe
-    const profile: UserProfileT = fromStore.getUserProfile(getState());
+    const profile: UserProfileT = (fromStore.getUserProfile(getState()): any);
     return profile.moveListIds;
   };
 }
@@ -44,8 +43,7 @@ export function actRemoveMoveListIds(moveListIds: Array<UUID>) {
 
   return (dispatch: Function, getState: Function) => {
     dispatch(createAction());
-    // $FlowFixMe
-    const profile: UserProfileT = fromStore.getUserProfile(getState());
+    const profile: UserProfileT = (fromStore.getUserProfile(getState()): any);
     return profile.moveListIds;
   };
 }

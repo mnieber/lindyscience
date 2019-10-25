@@ -31,7 +31,7 @@ function IndexPage(props: IndexPagePropsT) {
     _loadRecentMove();
   }, [props.userProfile]);
 
-  return <React.Fragment />;
+  return <div className="h-full" />;
 }
 
 type UrlRouterPropsT = {
@@ -40,25 +40,59 @@ type UrlRouterPropsT = {
 
 function UrlRouter(props: UrlRouterPropsT) {
   return (
-    // $FlowFixMe
-    <Router primary={false} id="reachRouter">
-      <Switch>
-        <AppFrame path="/app">
-          <IndexPage path="/" userProfile={props.userProfile} />
-          <ProfilePage path="/lists/:ownerUsernamePrm" />
-          <MoveListFrame path="/lists/:ownerUsernamePrm/:moveListSlugPrm">
-            <SearchResultsPage path="/search" />
-            <MoveListDetailsPage path="/" />
-            <MovePage path=":moveSlugPrm" />
-            <MovePage path=":moveSlugPrm/:moveIdPrm" />
-          </MoveListFrame>
-          <SignInPage path="/sign-in/" />
-          <RegisterPage path="/register/" />
-          <RegisterPage path="/register/activate/:uidPrm/:tokenPrm" />
-          <PasswordResetPage path="/sign-in/reset-password" />
-          <PasswordResetPage path="/sign-in/reset-password/:uidPrm/:tokenPrm" />
-        </AppFrame>
-      </Switch>
+    <Router>
+      <AppFrame>
+        <Switch>
+          <Route exact path="/app/">
+            <IndexPage userProfile={props.userProfile} />
+          </Route>
+          <Route exact path="/app/people/:username">
+            <ProfilePage />
+          </Route>
+          <Route path="/app/lists/:ownerUsername/:moveListSlug">
+            <MoveListFrame>
+              <Switch>
+                <Route
+                  exact
+                  path="/app/lists/:ownerUsername/:moveListSlug/search"
+                >
+                  <SearchResultsPage />
+                </Route>
+                <Route exact path="/app/lists/:ownerUsername/:moveListSlug">
+                  <MoveListDetailsPage />
+                </Route>
+                <Route
+                  exact
+                  path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug"
+                >
+                  <MovePage />
+                </Route>
+                <Route
+                  exact
+                  path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId"
+                >
+                  <MovePage />
+                </Route>
+              </Switch>
+            </MoveListFrame>
+          </Route>
+          <Route exact path="/app/sign-in">
+            <SignInPage />
+          </Route>
+          <Route exact path="/app/register">
+            <RegisterPage />
+          </Route>
+          <Route exact path="/app/register/activate/:uid/:token">
+            <RegisterPage />
+          </Route>
+          <Route exact path="/app/sign-in/reset-password">
+            <PasswordResetPage />
+          </Route>
+          <Route exact path="/app/sign-in/reset-password/:uid/:token">
+            <PasswordResetPage />
+          </Route>
+        </Switch>
+      </AppFrame>
     </Router>
   );
 }

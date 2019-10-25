@@ -37,8 +37,7 @@ export function extractTimePoints(text: string): Array<number> {
   const r = timePointRegex();
   let matchArr;
   while ((matchArr = r.exec(text)) !== null) {
-    // $FlowFixMe
-    const tpString = matchArr[1];
+    const tpString = (matchArr: any)[1];
     const tp = parseVideoTimePoint(tpString);
     if (tp !== null) {
       result.push(tp);

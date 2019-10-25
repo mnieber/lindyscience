@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { compose } from "redux";
-import { useHistory } from "utils/react_router_dom_wrapper";
+import { useHistory, useParams } from "utils/react_router_dom_wrapper";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import { sayMove } from "screens/data_containers/handlers/say_move";
@@ -50,13 +50,12 @@ type MoveListFramePropsT = {
   moveListUrl: string,
   moveListNotFound: any,
   children: any,
-  ownerUsernamePrm: string,
-  moveListSlugPrm: string,
   dispatch: Function,
 };
 
 export function MoveListFrame(props: MoveListFramePropsT) {
   const history = useHistory();
+  const params = useParams();
   const [moveList, setMoveList] = React.useState(undefined);
   const [blackboard, setBlackboard] = React.useState({
     ignoreHighlightChanges: false,
@@ -67,8 +66,8 @@ export function MoveListFrame(props: MoveListFramePropsT) {
 
   const moveListMatchingUrl = props.inputMoveLists.find(
     moveList =>
-      moveList.ownerUsername == props.ownerUsernamePrm &&
-      moveList.slug == props.moveListSlugPrm
+      moveList.ownerUsername == params.ownerUsername &&
+      moveList.slug == params.moveListSlug
   );
 
   React.useEffect(() => {
@@ -86,9 +85,9 @@ export function MoveListFrame(props: MoveListFramePropsT) {
 
   React.useEffect(() => {
     props.dispatch(
-      actSetSelectedMoveListUrl(props.ownerUsernamePrm, props.moveListSlugPrm)
+      actSetSelectedMoveListUrl(params.ownerUsername, params.moveListSlug)
     );
-  }, [props.ownerUsernamePrm, props.moveListSlugPrm]);
+  }, [params.ownerUsername, params.moveListSlug]);
 
   const movesCtr = useMovesCtr(props.dispatch, history);
 
@@ -121,27 +120,25 @@ export function MoveListFrame(props: MoveListFramePropsT) {
   const loadingDiv = <div>Loading move list, please wait...</div>;
 
   return (
-    <span id="SPAN4">
-      <MoveListsContainerContext.Provider value={moveListsCtr}>
-        <MovesContainerContext.Provider value={movesCtr}>
-          <MoveListPanel
-            userProfile={props.userProfile}
-            sayMove={sayMove}
-            moveTags={props.inputMoveTags}
-            movesCtr={movesCtr}
-            moveListsCtr={moveListsCtr}
-          >
-            {moveList && <span id="SPAN2">{props.children}</span>}
-            {!moveList &&
-              props.moveListNotFound[props.moveListUrl] &&
-              notFoundDiv}
-            {!moveList &&
-              !props.moveListNotFound[props.moveListUrl] &&
-              loadingDiv}
-          </MoveListPanel>
-        </MovesContainerContext.Provider>
-      </MoveListsContainerContext.Provider>
-    </span>
+    <MoveListsContainerContext.Provider value={moveListsCtr}>
+      <MovesContainerContext.Provider value={movesCtr}>
+        <MoveListPanel
+          userProfile={props.userProfile}
+          sayMove={sayMove}
+          moveTags={props.inputMoveTags}
+          movesCtr={movesCtr}
+          moveListsCtr={moveListsCtr}
+        >
+          {moveList && props.children}
+          {!moveList &&
+            props.moveListNotFound[props.moveListUrl] &&
+            notFoundDiv}
+          {!moveList &&
+            !props.moveListNotFound[props.moveListUrl] &&
+            loadingDiv}
+        </MoveListPanel>
+      </MovesContainerContext.Provider>
+    </MoveListsContainerContext.Provider>
   );
 }
 

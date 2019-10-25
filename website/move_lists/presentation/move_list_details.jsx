@@ -18,7 +18,7 @@ type MoveListTitlePropsT = {|
 export function MoveListTitle(props: MoveListTitlePropsT) {
   return (
     <div className="flexrow items-center">
-      <Link className="" to={`/app/lists/${props.moveList.ownerUsername}`}>
+      <Link className="" to={`/app/people/${props.moveList.ownerUsername}`}>
         <h2>{props.moveList.ownerUsername}</h2>
       </Link>
       <h2>/</h2>

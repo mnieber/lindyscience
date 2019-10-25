@@ -16,10 +16,8 @@ function findWithRegex(regex, contentBlock, callback) {
   const text = contentBlock.getText();
   let matchArr, start;
   while ((matchArr = regex.exec(text)) !== null) {
-    // $FlowFixMe
-    start = matchArr.index;
-    // $FlowFixMe
-    callback(start, start + matchArr[0].length);
+    start = (matchArr: any).index;
+    callback(start, start + (matchArr: any)[0].length);
   }
 }
 
@@ -27,8 +25,7 @@ export const createTimePointDecorator = (videoPlayer: any) => {
   const TimePointSpan = props => {
     const r = timePointRegex();
     const matchArr = r.exec(props.decoratedText);
-    // $FlowFixMe
-    const tpString = matchArr[1];
+    const tpString = (matchArr: any)[1];
     const tp = parseVideoTimePoint(tpString);
     const onClick = () => {
       if (tp != null && tp <= videoPlayer.getDuration()) {

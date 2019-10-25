@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { useParams } from "utils/react_router_dom_wrapper";
 import { findMoveBySlugid, makeSlugid } from "screens/utils";
 import { Highlight } from "screens/data_containers/bvrs/highlight";
 import { Selection } from "screens/data_containers/bvrs/selection";
@@ -12,7 +13,6 @@ import { MovesContainer } from "screens/data_containers/moves_container";
 import Ctr from "screens/containers/index";
 import { withMove } from "screens/hocs/with_move";
 import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
-import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 
 type MovePagePropsT = {
@@ -22,15 +22,14 @@ type MovePagePropsT = {
   hasLoadedSelectedMoveList: boolean,
   dispatch: Function,
   movesCtr: MovesContainer,
-  // the follower are inserted by the router
-  moveSlugPrm: string,
-  moveIdPrm: ?UUID,
 };
 
 function MovePage(props: MovePagePropsT) {
+  const params = useParams();
+
   const moveMatchingUrl = findMoveBySlugid(
     props.movesCtr.data.preview,
-    makeSlugid(props.moveSlugPrm, props.moveIdPrm)
+    makeSlugid(params.moveSlug, params.moveId)
   );
 
   React.useEffect(() => {

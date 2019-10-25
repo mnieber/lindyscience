@@ -49,7 +49,6 @@ export function PasswordChangeForm(props: PasswordChangeFormPropsT) {
             to <Link to="/app/sign-in/reset-password/">reset</Link> it again.
           </div>
         );
-        // $FlowFixMe
         setGlobalError(msgDiv);
       } else if (errorState) {
         setGlobalError(technicalProblemMsg);

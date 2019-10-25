@@ -23,7 +23,7 @@ export function Move(props: MovePropsT) {
         Created by:
         <Link
           className="ml-2 mb-2"
-          to={"/app/lists/" + props.move.ownerUsername}
+          to={"/app/people/" + props.move.ownerUsername}
         >
           {props.move.ownerUsername}
         </Link>

@@ -3,6 +3,8 @@
 import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVideo } from "@fortawesome/free-solid-svg-icons";
 
 import type { UserProfileT } from "profiles/types";
 import { isNone } from "utils/utils";
@@ -106,7 +108,15 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
   );
 
   const createHostedPanels = move => {
-    return isNone(move.link) || move.link == "" ? undefined : " (*)";
+    const icon = (
+      <FontAwesomeIcon
+        className={"ml-2 opacity-50"}
+        style={{ marginBottom: "1px" }}
+        icon={faVideo}
+        size="xs"
+      />
+    );
+    return isNone(move.link) || move.link == "" ? undefined : icon;
   };
 
   const moveListWidget = (

@@ -3,35 +3,29 @@
 import { getIds } from "app/utils";
 import {
   MovesData,
-  createMovesData,
+  initMovesData,
 } from "screens/data_containers/bvrs/moves_data";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import { behaviour, mapData } from "screens/data_containers/utils";
-import {
-  Addition,
-  createAddition,
-} from "screens/data_containers/bvrs/addition";
-import {
-  Dragging,
-  createDragging,
-} from "screens/data_containers/bvrs/dragging";
-import { Editing, createEditing } from "screens/data_containers/bvrs/editing";
+import { Addition, initAddition } from "screens/data_containers/bvrs/addition";
+import { Dragging, initDragging } from "screens/data_containers/bvrs/dragging";
+import { Editing, initEditing } from "screens/data_containers/bvrs/editing";
 import {
   Filtering,
-  createFiltering,
+  initFiltering,
 } from "screens/data_containers/bvrs/filtering";
 import {
   Highlight,
-  createHighlight,
+  initHighlight,
 } from "screens/data_containers/bvrs/highlight";
 import {
   Insertion,
-  createInsertion,
+  initInsertion,
 } from "screens/data_containers/bvrs/insertion";
 import {
   Selection,
-  createSelection,
+  initSelection,
 } from "screens/data_containers/bvrs/selection";
 import { Clipboard } from "screens/data_containers/bvrs/clipboard";
 import { SelectWithKeys } from "screens/data_containers/handlers/select_with_keys";
@@ -69,32 +63,32 @@ export class MovesContainer {
   handlerDrag = new DragItems({ container: this });
 
   _createBehaviours(props: MovesContainerPropsT) {
-    this.addition = createAddition({
+    this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
         return this.data._moveList && this.data._userProfile
           ? createNewMove(this.data._userProfile, this.data._moveList.id)
           : undefined;
       },
     });
-    this.dragging = createDragging();
-    this.editing = createEditing({
+    this.dragging = initDragging(new Dragging());
+    this.editing = initEditing(new Editing(), {
       saveItem: (values: any) => {
         if (this.highlight.item) {
           props.saveMove(this.highlight.item, values);
         }
       },
     });
-    this.filtering = createFiltering();
-    this.highlight = createHighlight();
-    this.insertion = createInsertion({
+    this.filtering = initFiltering(new Filtering());
+    this.highlight = initHighlight(new Highlight());
+    this.insertion = initInsertion(new Insertion(), {
       insertItems: preview => {
         if (this.data._moveList) {
           props.setMoves(this.data._moveList, preview);
         }
       },
     });
-    this.data = createMovesData();
-    this.selection = createSelection();
+    this.data = initMovesData(new MovesData());
+    this.selection = initSelection(new Selection());
   }
 
   _applyPolicies(props: MovesContainerPropsT) {

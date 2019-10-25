@@ -42,8 +42,7 @@ function _handleCancel(self: Dragging) {
   );
 }
 
-export function createDragging() {
-  const self = new Dragging();
+export function initDragging(self: Dragging): Dragging {
   _handleCancel(self);
   return self;
 }

@@ -34,6 +34,6 @@ export class MovesData {
   static get: GetBvrT<MovesData>;
 }
 
-export function createMovesData() {
-  return new MovesData();
+export function initMovesData(self: MovesData): MovesData {
+  return self;
 }

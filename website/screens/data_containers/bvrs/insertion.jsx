@@ -82,12 +82,14 @@ const _handleInsert = (self: InsertionT) => {
   });
 };
 
-export const createInsertion = ({
-  insertItems,
-}: {
-  insertItems: (items: Array<any>) => any,
-}) => {
-  const self = new Insertion();
+export const initInsertion = (
+  self: Insertion,
+  {
+    insertItems,
+  }: {
+    insertItems: (items: Array<any>) => any,
+  }
+) => {
   self.insertItems = insertItems;
   _handleInsertPayload(self);
   _handleInsert(self);

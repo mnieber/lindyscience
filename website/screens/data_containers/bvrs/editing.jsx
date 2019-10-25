@@ -59,12 +59,14 @@ const _handleEditingSetIsEditing = (self: Editing) => {
   );
 };
 
-export const createEditing = ({
-  saveItem,
-}: {
-  saveItem: (values: any) => any,
-}): Editing => {
-  const self = new Editing();
+export const initEditing = (
+  self: Editing,
+  {
+    saveItem,
+  }: {
+    saveItem: (values: any) => any,
+  }
+): Editing => {
   self.saveItem = saveItem;
   _handleEditingCancel(self);
   _handleEditingSave(self);

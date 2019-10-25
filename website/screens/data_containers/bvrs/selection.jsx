@@ -65,8 +65,7 @@ function _handleSelection(self: Selection) {
   );
 }
 
-export function createSelection(): Selection {
-  const self = new Selection();
+export function initSelection(self: Selection): Selection {
   _handleSelection(self);
   return self;
 }

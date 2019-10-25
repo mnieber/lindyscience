@@ -31,6 +31,6 @@ export class MoveListsData {
   static get: GetBvrT<MoveListsData>;
 }
 
-export function createMoveListsData() {
-  return new MoveListsData();
+export function initMoveListsData(self: MoveListsData): MoveListsData {
+  return self;
 }

@@ -4,25 +4,22 @@ import { getIds } from "app/utils";
 import { behaviour, mapData } from "screens/data_containers/utils";
 import {
   MoveListsData,
-  createMoveListsData,
+  initMoveListsData,
 } from "screens/data_containers/bvrs/movelists_data";
 import type { MoveListT } from "move_lists/types";
-import {
-  Addition,
-  createAddition,
-} from "screens/data_containers/bvrs/addition";
-import { Editing, createEditing } from "screens/data_containers/bvrs/editing";
+import { Addition, initAddition } from "screens/data_containers/bvrs/addition";
+import { Editing, initEditing } from "screens/data_containers/bvrs/editing";
 import {
   Highlight,
-  createHighlight,
+  initHighlight,
 } from "screens/data_containers/bvrs/highlight";
 import {
   Insertion,
-  createInsertion,
+  initInsertion,
 } from "screens/data_containers/bvrs/insertion";
 import {
   Selection,
-  createSelection,
+  initSelection,
 } from "screens/data_containers/bvrs/selection";
 import type { UserProfileT } from "profiles/types";
 import { Policies } from "screens/data_containers/policies";
@@ -46,7 +43,7 @@ export class MoveListsContainer {
   @behaviour(Selection) selection: Selection;
 
   _createBehaviours(props: MoveListsContainerPropsT) {
-    this.addition = createAddition({
+    this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
         const userProfile = this.data._userProfile;
         return userProfile
@@ -58,21 +55,21 @@ export class MoveListsContainer {
           : undefined;
       },
     });
-    this.editing = createEditing({
+    this.editing = initEditing(new Editing(), {
       saveItem: (values: any) => {
         if (this.highlight.item) {
           props.saveMoveList(this.highlight.item, values);
         }
       },
     });
-    this.highlight = createHighlight();
-    this.insertion = createInsertion({
+    this.highlight = initHighlight(new Highlight());
+    this.insertion = initInsertion(new Insertion(), {
       insertItems: preview => {
         props.setMoveLists(preview);
       },
     });
-    this.data = createMoveListsData();
-    this.selection = createSelection();
+    this.data = initMoveListsData(new MoveListsData());
+    this.selection = initSelection(new Selection());
   }
 
   _applyPolicies(props: MoveListsContainerPropsT) {

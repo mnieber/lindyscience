@@ -34,10 +34,9 @@ const _handleHighlight = (self: Highlight) => {
   );
 };
 
-export const createHighlight = (): Highlight => {
-  const self = new Highlight();
-  _handleHighlight(self);
-  return self;
+export const initHighlight = (highlight: Highlight): Highlight => {
+  _handleHighlight(highlight);
+  return highlight;
 };
 
 export const highlightActsOnItems = ([Collection, itemById]: ClassMemberT) =>

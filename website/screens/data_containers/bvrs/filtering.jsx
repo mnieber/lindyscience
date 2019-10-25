@@ -64,8 +64,7 @@ const _handleFiltering = (self: Filtering) => {
   });
 };
 
-export const createFiltering = (): Filtering => {
-  const self = new Filtering();
+export const initFiltering = (self: Filtering): Filtering => {
   _handleFilteringSetEnabled(self);
   _handleFilteringApply(self);
   _handleFiltering(self);

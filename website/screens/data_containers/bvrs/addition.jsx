@@ -48,12 +48,14 @@ const _handleAddNewItem = (self: Addition) => {
   );
 };
 
-export const createAddition = ({
-  createItem,
-}: {
-  createItem: (values: any) => any,
-}) => {
-  const self = new Addition();
+export const initAddition = (
+  self: Addition,
+  {
+    createItem,
+  }: {
+    createItem: (values: any) => any,
+  }
+): Addition => {
   self.createItem = createItem;
   _handleCancelNewItem(self);
   _handleAddNewItem(self);

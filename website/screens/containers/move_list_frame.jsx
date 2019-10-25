@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { compose } from "redux";
+import { useHistory } from "utils/react_router_dom_wrapper";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import { sayMove } from "screens/data_containers/handlers/say_move";
@@ -25,16 +26,16 @@ import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
 import type { UserProfileT } from "profiles/types";
 
-function useMovesCtr(dispatch: Function) {
+function useMovesCtr(dispatch: Function, history: any) {
   const [movesCtr, setMovesCtr] = React.useState(() => {
-    return new MovesContainer(movesContainerProps(dispatch));
+    return new MovesContainer(movesContainerProps(dispatch, history));
   });
   return movesCtr;
 }
 
-function useMoveListsCtr(dispatch: Function) {
+function useMoveListsCtr(dispatch: Function, history: any) {
   const [moveListsCtr, setMoveListsCtr] = React.useState(() => {
-    return new MoveListsContainer(moveListsContainerProps(dispatch));
+    return new MoveListsContainer(moveListsContainerProps(dispatch, history));
   });
   return moveListsCtr;
 }
@@ -55,12 +56,13 @@ type MoveListFramePropsT = {
 };
 
 export function MoveListFrame(props: MoveListFramePropsT) {
+  const history = useHistory();
   const [moveList, setMoveList] = React.useState(undefined);
   const [blackboard, setBlackboard] = React.useState({
     ignoreHighlightChanges: false,
   });
 
-  const moveListsCtr = useMoveListsCtr(props.dispatch);
+  const moveListsCtr = useMoveListsCtr(props.dispatch, history);
   moveListsCtr.setInputs(props.inputMoveLists, props.userProfile);
 
   const moveListMatchingUrl = props.inputMoveLists.find(
@@ -88,7 +90,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
     );
   }, [props.ownerUsernamePrm, props.moveListSlugPrm]);
 
-  const movesCtr = useMovesCtr(props.dispatch);
+  const movesCtr = useMovesCtr(props.dispatch, history);
 
   movesCtr.setInputs(
     props.inputMoves,
@@ -100,12 +102,13 @@ export function MoveListFrame(props: MoveListFramePropsT) {
   React.useEffect(() => {
     listen(moveListsCtr.highlight, "highlightItem", id => {
       if (moveListsCtr.highlight.item && !blackboard.ignoreHighlightChanges) {
-        browseToMoveList(moveListsCtr.highlight.item);
+        browseToMoveList(history, moveListsCtr.highlight.item);
       }
     });
     listen(movesCtr.highlight, "highlightItem", id => {
       if (movesCtr.highlight.item) {
         browseToMove(
+          history,
           moveListsCtr.highlight.item,
           movesCtr.data.preview,
           movesCtr.highlight.item
@@ -118,12 +121,9 @@ export function MoveListFrame(props: MoveListFramePropsT) {
   const loadingDiv = <div>Loading move list, please wait...</div>;
 
   return (
-    <MoveListsContainerContext.Provider value={moveListsCtr}>
-      <MovesContainerContext.Provider value={movesCtr}>
-        <KeyboardEventHandler
-          handleKeys={["ctrl+e", "ctrl+down", "ctrl+up"]}
-          onKeyEvent={movesCtr.handlerKeys.handle().onKeyDown}
-        >
+    <span id="SPAN4">
+      <MoveListsContainerContext.Provider value={moveListsCtr}>
+        <MovesContainerContext.Provider value={movesCtr}>
           <MoveListPanel
             userProfile={props.userProfile}
             sayMove={sayMove}
@@ -131,7 +131,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
             movesCtr={movesCtr}
             moveListsCtr={moveListsCtr}
           >
-            {moveList && props.children}
+            {moveList && <span id="SPAN2">{props.children}</span>}
             {!moveList &&
               props.moveListNotFound[props.moveListUrl] &&
               notFoundDiv}
@@ -139,9 +139,9 @@ export function MoveListFrame(props: MoveListFramePropsT) {
               !props.moveListNotFound[props.moveListUrl] &&
               loadingDiv}
           </MoveListPanel>
-        </KeyboardEventHandler>
-      </MovesContainerContext.Provider>
-    </MoveListsContainerContext.Provider>
+        </MovesContainerContext.Provider>
+      </MoveListsContainerContext.Provider>
+    </span>
   );
 }
 

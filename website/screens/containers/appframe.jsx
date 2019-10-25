@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { navigate } from "@reach/router";
+import { useHistory } from "utils/react_router_dom_wrapper";
 import Cookies from "js-cookie";
 
 import { newMoveListSlug } from "screens/utils";
@@ -36,6 +36,7 @@ type AppFramePropsT = {
 
 function AppFrame(props: AppFramePropsT) {
   const [acceptsCookies, setAcceptsCookies] = React.useState(false);
+  const history = useHistory();
 
   const [loadedEmail, setLoadedEmail] = React.useState("");
   const [loadingMoveListUrls, setLoadingMoveListUrls] = React.useState([]);
@@ -127,7 +128,7 @@ function AppFrame(props: AppFramePropsT) {
   const signOut = () => {
     apiSignOut().catch(createErrorHandler("Could not update the move list"));
     props.dispatch(actSetSignedInEmail(""));
-    navigate("/app/sign-in/");
+    history.push("/app/sign-in/");
   };
 
   const _acceptCookies = () => {
@@ -164,12 +165,12 @@ function AppFrame(props: AppFramePropsT) {
           className="self-start"
           userProfile={props.userProfile}
           signIn={() =>
-            navigate("/app/sign-in/?next=" + window.location.pathname)
+            history.push("/app/sign-in/?next=" + window.location.pathname)
           }
           signOut={signOut}
         />
       </div>
-      {props.children}
+      <span id="SPAN1">{props.children}</span>
     </div>
   );
 }

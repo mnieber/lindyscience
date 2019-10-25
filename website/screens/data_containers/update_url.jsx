@@ -11,16 +11,21 @@ import { getId } from "app/utils";
 import { browseToMoveUrl } from "screens/containers";
 
 export function browseToMove(
+  history: any,
   moveList: MoveListT,
   moves: Array<MoveT>,
   move: MoveT
 ) {
   const isSlugUnique = moves.filter(makeSlugidMatcher(move.slug)).length <= 1;
   const maybeMoveId = isSlugUnique ? "" : getId(move);
-  browseToMoveUrl([makeMoveListUrl(moveList), move.slug, maybeMoveId], true);
+  browseToMoveUrl(
+    history,
+    [makeMoveListUrl(moveList), move.slug, maybeMoveId],
+    true
+  );
 }
 
-export function browseToMoveList(moveList: MoveListT) {
+export function browseToMoveList(history: any, moveList: MoveListT) {
   const updateProfile = moveList.slug != newMoveListSlug;
-  browseToMoveUrl([makeMoveListUrl(moveList)], updateProfile);
+  browseToMoveUrl(history, [makeMoveListUrl(moveList)], updateProfile);
 }

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { withFormik } from "formik";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import * as yup from "yup";
 import {
   passwordField,

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import classnames from "classnames";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 

@@ -11,7 +11,7 @@ import { newMoveListSlug } from "screens/utils";
 import { createErrorHandler } from "app/utils";
 import type { MoveListT } from "move_lists/types";
 
-export function moveListsContainerProps(dispatch: Function) {
+export function moveListsContainerProps(dispatch: Function, history: any) {
   function _saveMoveList(moveList: MoveListT, values: any) {
     const slug =
       values.slug == newMoveListSlug ? slugify(values.name) : values.slug;
@@ -47,7 +47,7 @@ export function moveListsContainerProps(dispatch: Function) {
   }
 
   function restoreHighlight() {
-    restoreLocationMemo(dispatch);
+    restoreLocationMemo(dispatch, history);
   }
 
   return {

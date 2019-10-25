@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { Link } from "@reach/router";
+import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { PasswordChangeForm } from "app/presentation/password_change_form";
 

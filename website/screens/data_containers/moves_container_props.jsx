@@ -21,8 +21,8 @@ export function storeLocationMemo(dispatch: Function) {
   dispatch(actStoreLocationMemo(window.location.pathname));
 }
 
-export function restoreLocationMemo(dispatch: Function) {
-  dispatch(actRestoreLocationMemo());
+export function restoreLocationMemo(dispatch: Function, history: any) {
+  dispatch(actRestoreLocationMemo(history));
 }
 
 export function createNewMove(
@@ -50,7 +50,7 @@ export function createNewMove(
   };
 }
 
-export function movesContainerProps(dispatch: Function) {
+export function movesContainerProps(dispatch: Function, history: any) {
   const setMoves = (moveList: MoveListT, moves: Array<MoveT>) => {
     const moveIds = moves.map(x => x.id);
     dispatch(actSetMoveIds(moveIds, getId(moveList)));
@@ -115,7 +115,7 @@ export function movesContainerProps(dispatch: Function) {
   }
 
   function restoreHighlight() {
-    restoreLocationMemo(dispatch);
+    restoreLocationMemo(dispatch, history);
   }
 
   return {

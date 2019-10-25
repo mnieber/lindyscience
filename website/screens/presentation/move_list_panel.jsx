@@ -131,7 +131,9 @@ function MoveListPanel_(props: MoveListPanelPropsT) {
         </div>
         {moveListWidget}
       </div>
-      <div className="movePanel pl-4 w-full">{props.children}</div>
+      <div className="movePanel pl-4 w-full">
+        {<span id="SPAN3">{props.children}</span>}
+      </div>
     </div>
   );
 }

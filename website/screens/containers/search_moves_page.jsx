@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { navigate } from "@reach/router";
+import { useHistory } from "utils/react_router_dom_wrapper";
 
 import { actSetMoveSearchResults } from "screens/actions";
 import Ctr from "screens/containers/index";
@@ -23,6 +23,7 @@ type SearchMovesPagePropsT = {
 
 function SearchMovesPage(props: SearchMovesPagePropsT) {
   const [latestOptions, setLatestOptions] = React.useState([]);
+  const history = useHistory();
 
   const _findMoves = async (values: any) => {
     const getUser = x => {
@@ -46,7 +47,7 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
     );
     props.dispatch(actSetMoveSearchResults(moveSearchResults));
     setLatestOptions({ ...values });
-    navigate(`/app/lists/${props.moveListUrl}/search`);
+    history.push(`/app/lists/${props.moveListUrl}/search`);
   };
 
   return (

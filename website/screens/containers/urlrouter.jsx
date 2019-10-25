@@ -1,7 +1,8 @@
 // @flow
 
 import React from "react";
-import { Router } from "@reach/router";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useHistory } from "utils/react_router_dom_wrapper";
 import MoveListFrame from "screens/containers/move_list_frame";
 import MovePage from "screens/containers/move_page";
 import MoveListDetailsPage from "screens/containers/move_list_details_page";
@@ -19,9 +20,11 @@ export type IndexPagePropsT = {
 };
 
 function IndexPage(props: IndexPagePropsT) {
+  const history = useHistory();
+
   function _loadRecentMove() {
     if (props.userProfile && props.userProfile.recentMoveUrl) {
-      browseToMoveUrl([props.userProfile.recentMoveUrl], false);
+      browseToMoveUrl(history, [props.userProfile.recentMoveUrl], false);
     }
   }
   React.useEffect(() => {
@@ -39,21 +42,23 @@ function UrlRouter(props: UrlRouterPropsT) {
   return (
     // $FlowFixMe
     <Router primary={false} id="reachRouter">
-      <AppFrame path="/app">
-        <IndexPage path="/" userProfile={props.userProfile} />
-        <ProfilePage path="/lists/:ownerUsernamePrm" />
-        <MoveListFrame path="/lists/:ownerUsernamePrm/:moveListSlugPrm">
-          <SearchResultsPage path="/search" />
-          <MoveListDetailsPage path="/" />
-          <MovePage path=":moveSlugPrm" />
-          <MovePage path=":moveSlugPrm/:moveIdPrm" />
-        </MoveListFrame>
-        <SignInPage path="/sign-in/" />
-        <RegisterPage path="/register/" />
-        <RegisterPage path="/register/activate/:uidPrm/:tokenPrm" />
-        <PasswordResetPage path="/sign-in/reset-password" />
-        <PasswordResetPage path="/sign-in/reset-password/:uidPrm/:tokenPrm" />
-      </AppFrame>
+      <Switch>
+        <AppFrame path="/app">
+          <IndexPage path="/" userProfile={props.userProfile} />
+          <ProfilePage path="/lists/:ownerUsernamePrm" />
+          <MoveListFrame path="/lists/:ownerUsernamePrm/:moveListSlugPrm">
+            <SearchResultsPage path="/search" />
+            <MoveListDetailsPage path="/" />
+            <MovePage path=":moveSlugPrm" />
+            <MovePage path=":moveSlugPrm/:moveIdPrm" />
+          </MoveListFrame>
+          <SignInPage path="/sign-in/" />
+          <RegisterPage path="/register/" />
+          <RegisterPage path="/register/activate/:uidPrm/:tokenPrm" />
+          <PasswordResetPage path="/sign-in/reset-password" />
+          <PasswordResetPage path="/sign-in/reset-password/:uidPrm/:tokenPrm" />
+        </AppFrame>
+      </Switch>
     </Router>
   );
 }

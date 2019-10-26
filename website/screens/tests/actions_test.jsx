@@ -4,7 +4,7 @@ import { Thunk, FlushThunks } from "redux-testkit";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
-import { createNewMove } from "screens/data_containers/moves_container_props";
+import { createNewMove } from "screens/moves_container/moves_container_props";
 import { test } from "tape";
 import * as actions from "screens/actions";
 import * as movesActions from "moves/actions";

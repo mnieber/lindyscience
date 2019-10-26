@@ -5,21 +5,21 @@ import { compose } from "redux";
 import { useHistory, useParams } from "utils/react_router_dom_wrapper";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
-import { sayMove } from "screens/data_containers/handlers/say_move";
-import { Selection } from "screens/data_containers/bvrs/selection";
-import { movesContainerProps } from "screens/data_containers/moves_container_props";
-import { MoveListsContainerContext } from "screens/data_containers/movelists_container_context";
-import { listen } from "screens/data_containers/utils";
+import { sayMove } from "screens/moves_container/handlers/say_move";
+import { Selection } from "facets/generic/selection";
+import { movesContainerProps } from "screens/moves_container/moves_container_props";
+import { MoveListsContainerContext } from "screens/movelists_container/movelists_container_context";
+import { listen } from "facets/index";
 import { actSetSelectedMoveListUrl } from "screens/actions";
-import { MovesContainerContext } from "screens/data_containers/moves_container_context";
-import { MovesContainer } from "screens/data_containers/moves_container";
+import { MovesContainerContext } from "screens/moves_container/moves_container_context";
+import { MovesContainer } from "screens/moves_container/moves_container";
 import {
   browseToMove,
   browseToMoveList,
-} from "screens/data_containers/update_url";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
+} from "screens/session_container/handlers/update_url";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { MoveListPanel } from "screens/presentation/move_list_panel";
-import { moveListsContainerProps } from "screens/data_containers/movelists_container_props";
+import { moveListsContainerProps } from "screens/movelists_container/movelists_container_props";
 import Ctr from "screens/containers/index";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";

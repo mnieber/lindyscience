@@ -6,15 +6,15 @@ import * as React from "react";
 import classnames from "classnames";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
-import { Selection } from "screens/data_containers/bvrs/selection";
+import { Selection } from "facets/generic/selection";
 import {
   getOwnerId,
   handleSelectionKeys2,
   isOwner,
   scrollIntoView,
 } from "app/utils";
-import { MovesContainer } from "screens/data_containers/moves_container";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
+import { MovesContainer } from "screens/moves_container/moves_container";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";

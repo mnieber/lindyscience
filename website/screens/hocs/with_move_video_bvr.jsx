@@ -6,7 +6,7 @@ import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
 
 import type { VideoT } from "video/types";
-import { MovesContainer } from "screens/data_containers/moves_container";
+import { MovesContainer } from "screens/moves_container/moves_container";
 import {
   createKeyDownHandler,
   createVideoKeyHandlers,

@@ -3,9 +3,9 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 
-import { withMoveListsCtr } from "screens/data_containers/movelists_container_context";
-import { Labelling } from "screens/data_containers/bvrs/labelling";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
+import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
+import { Labelling } from "facets/generic/labelling";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 
 type PropsT = {
   moveListsCtr: MoveListsContainer,

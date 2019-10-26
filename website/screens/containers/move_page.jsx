@@ -6,10 +6,10 @@ import { observer } from "mobx-react";
 
 import { useParams } from "utils/react_router_dom_wrapper";
 import { findMoveBySlugid, makeSlugid } from "screens/utils";
-import { Highlight } from "screens/data_containers/bvrs/highlight";
-import { Selection } from "screens/data_containers/bvrs/selection";
-import { withMovesCtr } from "screens/data_containers/moves_container_context";
-import { MovesContainer } from "screens/data_containers/moves_container";
+import { Highlight } from "facets/generic/highlight";
+import { Selection } from "facets/generic/selection";
+import { withMovesCtr } from "screens/moves_container/moves_container_context";
+import { MovesContainer } from "screens/moves_container/moves_container";
 import Ctr from "screens/containers/index";
 import { withMove } from "screens/hocs/with_move";
 import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";

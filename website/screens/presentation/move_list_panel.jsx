@@ -8,15 +8,15 @@ import { faVideo } from "@fortawesome/free-solid-svg-icons";
 
 import type { UserProfileT } from "profiles/types";
 import { isNone } from "utils/utils";
-import { MovesContainer } from "screens/data_containers/moves_container";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
+import { MovesContainer } from "screens/moves_container/moves_container";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
-import { withMovesCtr } from "screens/data_containers/moves_container_context";
+import { withMovesCtr } from "screens/moves_container/moves_container_context";
 import { getId, getOwnerId, isOwner } from "app/utils";
 import { MoveListFilter } from "move_lists/presentation/movelist_filter";
-import { Highlight } from "screens/data_containers/bvrs/highlight";
-import { Addition } from "screens/data_containers/bvrs/addition";
+import { Highlight } from "facets/generic/highlight";
+import { Addition } from "facets/generic/addition";
 import Widgets from "screens/presentation/index";
 
 ///////////////////////////////////////////////////////////////////////

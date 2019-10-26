@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
 import { createTagsAndKeywordsFilter } from "screens/utils";
-import { Filtering } from "screens/data_containers/bvrs/filtering";
-import { Selection } from "screens/data_containers/bvrs/selection";
-import { Addition } from "screens/data_containers/bvrs/addition";
-import { MovesContainer } from "screens/data_containers/moves_container";
+import { Filtering } from "facets/generic/filtering";
+import { Selection } from "facets/generic/selection";
+import { Addition } from "facets/generic/addition";
+import { MovesContainer } from "screens/moves_container/moves_container";
 import { makeUnique } from "utils/utils";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import {
   TagsAndKeywordsPicker,
   splitTextIntoTagsAndKeywords,

@@ -9,15 +9,15 @@ import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
 import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { UserProfileT } from "profiles/types";
-import { Highlight } from "screens/data_containers/bvrs/highlight";
-import { Editing } from "screens/data_containers/bvrs/editing";
+import { Highlight } from "facets/generic/highlight";
+import { Editing } from "facets/generic/editing";
 import {
   actAddCutPoints,
   actRemoveCutPoints,
   actSetCutVideoLink,
 } from "video/actions";
-import { withMoveListsCtr } from "screens/data_containers/movelists_container_context";
-import { MoveListsContainer } from "screens/data_containers/movelists_container";
+import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { apiSaveMove } from "moves/api";
 import { apiSaveMoveOrdering } from "move_lists/api";
 import { createErrorHandler, isOwner } from "app/utils";

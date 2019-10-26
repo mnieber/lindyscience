@@ -33,7 +33,7 @@ import { ClickToSelectItems } from "screens/data_containers/handlers/click_to_se
 import { DragItems } from "screens/data_containers/handlers/drag_items";
 import type { UserProfileT } from "profiles/types";
 import { Policies } from "screens/data_containers/policies";
-import { insertByCreatingAnItem } from "screens/data_containers/policies/insert_by_creating_an_item";
+import { insertByCreatingAnItem } from "screens/data_containers/policies/insert_by_creating_a_new_item";
 import { insertByDraggingSelection } from "screens/data_containers/policies/insert_by_dragging_selection";
 import { runInAction } from "utils/mobx_wrapper";
 import { createTagsAndKeywordsFilter } from "screens/utils";

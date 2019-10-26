@@ -23,7 +23,7 @@ import {
 } from "screens/data_containers/bvrs/selection";
 import type { UserProfileT } from "profiles/types";
 import { Policies } from "screens/data_containers/policies";
-import { insertByCreatingAnItem } from "screens/data_containers/policies/insert_by_creating_an_item";
+import { insertByCreatingAnItem } from "screens/data_containers/policies/insert_by_creating_a_new_item";
 import { runInAction } from "utils/mobx_wrapper";
 
 type MoveListsContainerPropsT = {

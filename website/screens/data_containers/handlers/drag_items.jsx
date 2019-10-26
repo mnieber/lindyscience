@@ -1,6 +1,6 @@
 // @flow
 
-import type { UUID } from "kernel/types";
+import { runInAction } from "utils/mobx_wrapper";
 import { Dragging } from "screens/data_containers/bvrs/dragging";
 import { isBefore } from "utils/ui_utils";
 
@@ -19,17 +19,18 @@ export class DragItems {
     this.props = props;
   }
 
-  handle(itemId: UUID) {
+  handle(itemId: any) {
     return {
       draggable: true,
       onDragStart: () => {},
       onDragOver: (e: any) => {
         e.preventDefault();
-        // TODO use action
-        Dragging.get(this.props.container).position = {
-          targetItemId: itemId,
-          isBefore: isBefore(e),
-        };
+        runInAction(() => {
+          Dragging.get(this.props.container).position = {
+            targetItemId: itemId,
+            isBefore: isBefore(e),
+          };
+        });
       },
       onDragEnd: () => Dragging.get(this.props.container).cancel(),
       onDrop: () => Dragging.get(this.props.container).drop(),

@@ -10,11 +10,10 @@ import {
   operation,
 } from "screens/data_containers/utils";
 import { lookUp, range } from "utils/utils";
-import type { UUID } from "kernel/types";
 import { action, observable } from "utils/mobx_wrapper";
 
 export type ItemSelectedPropsT = {
-  itemId: UUID,
+  itemId: any,
   isShift: boolean,
   isCtrl: boolean,
 };

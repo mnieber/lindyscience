@@ -2,7 +2,6 @@
 
 import { Editing } from "screens/data_containers/bvrs/editing";
 import { Highlight } from "screens/data_containers/bvrs/highlight";
-import type { UUID } from "kernel/types";
 import { pickNeighbour2, scrollIntoView } from "app/utils";
 import { Selection } from "screens/data_containers/bvrs/selection";
 
@@ -31,7 +30,7 @@ export class SelectWithKeys {
           e.stopPropagation();
           const moveId = Highlight.get(ctr).id;
           if (moveId) {
-            const selectMoveById = (moveId: UUID) => {
+            const selectMoveById = (moveId: any) => {
               scrollIntoView(document.getElementById(moveId));
               Selection.get(ctr).selectItem({
                 itemId: moveId,

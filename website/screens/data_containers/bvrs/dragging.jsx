@@ -6,11 +6,10 @@ import {
   listen,
   operation,
 } from "screens/data_containers/utils";
-import type { UUID } from "kernel/types";
 import { action, observable } from "utils/mobx_wrapper";
 
 export type InsertPositionT = {
-  targetItemId: UUID,
+  targetItemId: any,
   isBefore: boolean,
 };
 

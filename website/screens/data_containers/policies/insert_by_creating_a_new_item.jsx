@@ -3,6 +3,8 @@
 import type { InsertT } from "screens/data_containers/bvrs/insertion";
 import { Addition } from "screens/data_containers/bvrs/addition";
 
+export const topOfTheList = "<topOfTheList>";
+
 export const insertByCreatingAnItem = ({
   showPreview,
 }: {
@@ -18,7 +20,7 @@ export const insertByCreatingAnItem = ({
           showPreview,
         },
         position: {
-          targetItemId: parentId,
+          targetItemId: parentId == topOfTheList ? undefined : parentId,
           isBefore: false,
         },
       }

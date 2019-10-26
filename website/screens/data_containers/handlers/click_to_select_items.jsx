@@ -1,6 +1,5 @@
 // @flow
 
-import type { UUID } from "kernel/types";
 import { Selection } from "screens/data_containers/bvrs/selection";
 
 export type ClickToSelectItemsPropsT = {
@@ -15,7 +14,7 @@ export class ClickToSelectItems {
     this.props = props;
   }
 
-  handle(itemId: UUID) {
+  handle(itemId: any) {
     return {
       onMouseDown: (e: any) => {
         const ctr = this.props.container;

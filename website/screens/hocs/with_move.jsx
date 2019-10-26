@@ -77,7 +77,7 @@ export const withMove = compose(
 
     const space = <div key="space" className={classnames("flex flex-grow")} />;
 
-    const followMoveListBtn = <FollowMoveListBtn />;
+    const followMoveListBtn = <FollowMoveListBtn key="followMoveListBtn" />;
 
     const moveDiv = isEditing ? (
       <div>

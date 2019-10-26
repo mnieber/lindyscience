@@ -73,7 +73,7 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
     />
   );
 
-  const followMoveListBtn = <FollowMoveListBtn />;
+  const followMoveListBtn = <FollowMoveListBtn key="followMoveListBtn" />;
   const space = <div key="space" className="flex flex-grow" />;
 
   const div = isEditing ? (

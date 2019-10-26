@@ -101,4 +101,4 @@ export const insertionActsOnItems = ([Collection, items]: ClassMemberT) =>
 
 export const insertionCreatesThePreview = ({
   preview: [Collection, previewMember],
-}: AdapterT) => relayData([Collection, previewMember], [Insertion, "preview"]);
+}: AdapterT) => relayData([Insertion, "preview"], [Collection, previewMember]);

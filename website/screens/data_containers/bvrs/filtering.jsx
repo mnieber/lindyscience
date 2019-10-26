@@ -29,8 +29,6 @@ export class Filtering {
   static get: GetBvrT<Filtering>;
 }
 
-export type FilteringT = Filtering;
-
 const _handleFilteringSetEnabled = (self: Filtering) => {
   listen(
     self,

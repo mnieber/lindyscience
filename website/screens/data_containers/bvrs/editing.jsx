@@ -26,8 +26,6 @@ export class Editing {
   static get: GetBvrT<Editing>;
 }
 
-export type EditingT = Editing;
-
 const _handleEditingCancel = (self: Editing) => {
   listen(
     self,

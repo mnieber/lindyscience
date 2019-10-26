@@ -50,8 +50,6 @@ export class Insertion {
   static get: GetBvrT<Insertion>;
 }
 
-export type InsertionT = Insertion;
-
 const _handleInsertPayload = (self: Insertion) => {
   listen(
     self,
@@ -69,7 +67,7 @@ const _handleInsertPayload = (self: Insertion) => {
   );
 };
 
-const _handleInsert = (self: InsertionT) => {
+const _handleInsert = (self: Insertion) => {
   extendInterface(self, {
     get preview() {
       const payload = this.payload;

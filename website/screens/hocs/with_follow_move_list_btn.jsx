@@ -1,30 +1,24 @@
 // @flow
 
 import * as React from "react";
-import { compose } from "redux";
 import { observer } from "mobx-react";
 
-import { Labelling } from "screens/data_containers/bvrs/labelling";
 import { withMoveListsCtr } from "screens/data_containers/movelists_container_context";
+import { Labelling } from "screens/data_containers/bvrs/labelling";
 import { MoveListsContainer } from "screens/data_containers/movelists_container";
-import Ctr from "screens/containers/index";
 
 type PropsT = {
   moveListsCtr: MoveListsContainer,
 };
 
 // $FlowFixMe
-export const withFollowMoveListBtn = compose(
-  withMoveListsCtr,
-  observer,
-  Ctr.connect(state => ({})),
-  (WrappedComponent: any) => (props: any) => {
-    const { ...passThroughProps }: PropsT = props;
+export const FollowMoveListBtn = withMoveListsCtr(
+  observer((props: PropsT) => {
     const labelling = Labelling.get(props.moveListsCtr);
     const moveList = props.moveListsCtr.highlight.item;
     const isFollowing = labelling.ids("following").includes(moveList.id);
 
-    const followMoveListBtn = (
+    return (
       <div
         className={"button button--wide ml-2"}
         onClick={() =>
@@ -35,12 +29,5 @@ export const withFollowMoveListBtn = compose(
         {isFollowing ? "Stop following" : "Follow"}
       </div>
     );
-
-    return (
-      <WrappedComponent
-        followMoveListBtn={followMoveListBtn}
-        {...passThroughProps}
-      />
-    );
-  }
+  })
 );

@@ -7,6 +7,7 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import { FollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
 import type { UserProfileT } from "profiles/types";
 import { Highlight } from "screens/data_containers/bvrs/highlight";
 import { Editing } from "screens/data_containers/bvrs/editing";
@@ -23,7 +24,6 @@ import { createErrorHandler, isOwner } from "app/utils";
 import { isNone } from "utils/utils";
 import { actInsertMoveIds } from "move_lists/actions";
 import { actAddMoves } from "moves/actions";
-import { withFollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
 import { createMoveFromCutPoint } from "screens/utils";
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import Ctr from "screens/containers/index";
@@ -39,7 +39,6 @@ type MoveListDetailsPagePropsT = {
   cutVideoLink: string,
   videoBvr: VideoBvrT,
   editCutPointBvr: EditCutPointBvrT,
-  followMoveListBtn: any,
   cutPoints: Array<CutPointT>,
   dispatch: Function,
   moveListsCtr: MoveListsContainer,
@@ -74,6 +73,7 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
     />
   );
 
+  const followMoveListBtn = <FollowMoveListBtn />;
   const space = <div key="space" className="flex flex-grow" />;
 
   const div = isEditing ? (
@@ -89,7 +89,7 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
     <Widgets.MoveListDetails
       userProfile={userProfile}
       moveList={moveList}
-      buttons={[editBtn, space, props.followMoveListBtn]}
+      buttons={[editBtn, space, followMoveListBtn]}
     />
   );
 
@@ -169,7 +169,6 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
 MoveListDetailsPage = compose(
   withMoveListsCtr,
   withCutVideoBvr,
-  withFollowMoveListBtn,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),

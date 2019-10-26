@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import { compose } from "redux";
-import { useHistory, useParams } from "utils/react_router_dom_wrapper";
-import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import { SessionContainer } from "screens/session_container/session_container";
+import { withSessionCtr } from "screens/session_container/session_container_context";
+import { useHistory, useParams } from "utils/react_router_dom_wrapper";
 import { sayMove } from "screens/moves_container/handlers/say_move";
 import { Selection } from "facets/generic/selection";
 import { movesContainerProps } from "screens/moves_container/moves_container_props";
@@ -43,12 +44,12 @@ function useMoveListsCtr(dispatch: Function, history: any) {
 // MoveListFrame
 
 type MoveListFramePropsT = {
+  sessionCtr: SessionContainer,
   userProfile: UserProfileT,
   inputMoveTags: Array<TagT>,
   inputMoveLists: Array<MoveListT>,
   inputMoves: Array<MoveT>,
   moveListUrl: string,
-  moveListNotFound: any,
   children: any,
   dispatch: Function,
 };
@@ -98,6 +99,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
     props.userProfile
   );
 
+  // TODO: move to sessionCtr
   React.useEffect(() => {
     listen(moveListsCtr.highlight, "highlightItem", id => {
       if (moveListsCtr.highlight.item && !blackboard.ignoreHighlightChanges) {
@@ -118,6 +120,9 @@ export function MoveListFrame(props: MoveListFramePropsT) {
 
   const notFoundDiv = <div>Oops, I cannot find this move list</div>;
   const loadingDiv = <div>Loading move list, please wait...</div>;
+  const isMoveListNotFound = props.sessionCtr.data.notFoundMoveListUrls.includes(
+    props.moveListUrl
+  );
 
   return (
     <MoveListsContainerContext.Provider value={moveListsCtr}>
@@ -130,12 +135,8 @@ export function MoveListFrame(props: MoveListFramePropsT) {
           moveListsCtr={moveListsCtr}
         >
           {moveList && props.children}
-          {!moveList &&
-            props.moveListNotFound[props.moveListUrl] &&
-            notFoundDiv}
-          {!moveList &&
-            !props.moveListNotFound[props.moveListUrl] &&
-            loadingDiv}
+          {!moveList && isMoveListNotFound && notFoundDiv}
+          {!moveList && !isMoveListNotFound && loadingDiv}
         </MoveListPanel>
       </MovesContainerContext.Provider>
     </MoveListsContainerContext.Provider>
@@ -144,13 +145,13 @@ export function MoveListFrame(props: MoveListFramePropsT) {
 
 // $FlowFixMe
 MoveListFrame = compose(
+  withSessionCtr,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
     inputMoves: Ctr.fromStore.getMovesInList(state),
     inputMoveTags: Ctr.fromStore.getMoveTags(state),
     inputMoveLists: Ctr.fromStore.getMoveLists(state),
     moveListUrl: Ctr.fromStore.getSelectedMoveListUrl(state),
-    moveListNotFound: Ctr.fromStore.getMoveListNotFound(state),
   }))
 )(MoveListFrame);
 

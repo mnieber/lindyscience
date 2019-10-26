@@ -12,10 +12,3 @@ export function actSetSignedInEmail(email: string) {
     email,
   };
 }
-
-export function actSetLoadedMoveListUrls(moveListUrls: Array<string>) {
-  return {
-    type: "SET_LOADED_MOVE_LIST_URLS",
-    moveListUrls,
-  };
-}

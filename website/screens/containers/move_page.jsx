@@ -4,6 +4,8 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { SessionContainer } from "screens/session_container/session_container";
+import { withSessionCtr } from "screens/session_container/session_container_context";
 import { useParams } from "utils/react_router_dom_wrapper";
 import { findMoveBySlugid, makeSlugid } from "screens/utils";
 import { Highlight } from "facets/generic/highlight";
@@ -16,12 +18,12 @@ import { withMoveVideoBvr } from "screens/hocs/with_move_video_bvr";
 import type { UserProfileT } from "profiles/types";
 
 type MovePagePropsT = {
+  sessionCtr: SessionContainer,
+  movesCtr: MovesContainer,
   movePrivateDataPanel: any,
   moveDiv: any,
   userProfile: UserProfileT,
-  hasLoadedSelectedMoveList: boolean,
   dispatch: Function,
-  movesCtr: MovesContainer,
 };
 
 function MovePage(props: MovePagePropsT) {
@@ -44,8 +46,11 @@ function MovePage(props: MovePagePropsT) {
   }, [moveMatchingUrl]);
 
   const move = props.movesCtr.highlight.item;
+  const hasLoadedSelectedMoveList = props.sessionCtr.data.loadedMoveListUrls.includes(
+    props.sessionCtr.data.selectedMoveListUrl
+  );
   if (!move) {
-    const msg = props.hasLoadedSelectedMoveList
+    const msg = hasLoadedSelectedMoveList
       ? "Oops, I cannot find this move"
       : "Loading, please wait...";
 
@@ -57,12 +62,12 @@ function MovePage(props: MovePagePropsT) {
 
 // $FlowFixMe
 MovePage = compose(
+  withSessionCtr,
   withMovesCtr,
   withMoveVideoBvr,
   withMove,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
-    hasLoadedSelectedMoveList: Ctr.fromStore.hasLoadedSelectedMoveList(state),
   })),
   observer
 )(MovePage);

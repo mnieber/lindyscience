@@ -63,10 +63,3 @@ export function actSetMoveListTags(tags: Array<TagT>) {
     tags,
   };
 }
-
-export function actMarkMoveListNotFound(moveListUrl: string) {
-  return {
-    type: "MARK_MOVE_LIST_NOT_FOUND",
-    moveListUrl,
-  };
-}

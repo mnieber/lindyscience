@@ -47,8 +47,6 @@ export const getSelectedMoveListUrl = (state: RootReducerStateT) =>
   state.screens.selection.moveListUrl;
 export const getLocationMemo = (state: RootReducerStateT) =>
   state.screens.selection.locationMemo;
-export const hasLoadedSelectedMoveList = (state: RootReducerStateT) =>
-  state.app.loadedMoveListUrls.includes(state.screens.selection.moveListUrl);
 
 type SearchState = {
   moveSearchResults: Array<MoveSearchResultT>,

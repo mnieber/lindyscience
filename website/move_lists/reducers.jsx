@@ -1,14 +1,17 @@
+// @flow
+
 import { combineReducers } from "redux";
 import { createSelector } from "reselect";
+
+import type { RootReducerStateT, Selector } from "app/root_reducer";
 import { getObjectValues, insertIdsIntoList } from "utils/utils";
 import { addTags } from "tags/utils";
-
 import type { MoveListT, MoveListByIdT } from "move_lists/types";
 import type { TagT, TagMapT } from "tags/types";
 
 const _stateMoveLists = (state: RootReducerStateT): MoveListsStateT =>
   state.moveLists.moveLists;
-const _stateTags = (state: RootReducerStateT): MoveListsStateT =>
+const _stateTags = (state: RootReducerStateT): TagsStateT =>
   state.moveLists.tags;
 
 ///////////////////////////////////////////////////////////////////////
@@ -68,7 +71,9 @@ export function moveListsReducer(
   }
 }
 
-export function tagsReducer(state: TagMapT = {}, action: any): TagsStateT {
+type TagsStateT = TagMapT;
+
+export function tagsReducer(state: TagsStateT = {}, action: any): TagsStateT {
   switch (action.type) {
     case "SET_MOVE_LIST_TAGS":
       return {
@@ -88,6 +93,7 @@ export function tagsReducer(state: TagMapT = {}, action: any): TagsStateT {
   }
 }
 
+// $FlowFixMe
 export const getMoveListTags: Selector<Array<TagT>> = createSelector(
   [_stateTags],
 
@@ -96,6 +102,7 @@ export const getMoveListTags: Selector<Array<TagT>> = createSelector(
   }
 );
 
+// $FlowFixMe
 export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
   [_stateMoveLists],
 
@@ -105,34 +112,13 @@ export const getMoveLists: Selector<Array<MoveListT>> = createSelector(
 );
 export const getMoveListById = _stateMoveLists;
 
-type MoveListNotFoundStateT = { [string]: boolean };
-
-export function moveListNotFoundReducer(
-  state: MoveListNotFoundStateT = {},
-  action: any
-): TagsStateT {
-  switch (action.type) {
-    case "MARK_MOVE_LIST_NOT_FOUND":
-      return {
-        ...state,
-        [action.moveListUrl]: true,
-      };
-    default:
-      return state;
-  }
-}
-
-export const getMoveListNotFound = state => state.moveLists.moveListNotFound;
-
 export type ReducerStateT = {
   moveLists: MoveListsStateT,
   tags: TagsStateT,
-  moveListNotFound: MoveListNotFoundStateT,
 };
 
 // $FlowFixMe
 export const reducer = combineReducers({
   tags: tagsReducer,
   moveLists: moveListsReducer,
-  moveListNotFound: moveListNotFoundReducer,
 });

@@ -1,188 +1,90 @@
 // @flow
 
 import React from "react";
-import { useHistory } from "utils/react_router_dom_wrapper";
-import Cookies from "js-cookie";
 
-import { newMoveListSlug } from "screens/utils";
-import { actAddMoveLists, actMarkMoveListNotFound } from "move_lists/actions";
+import { createToastr } from "app/utils";
+import { SessionContainerContext } from "screens/session_container/session_container_context";
+import { sessionContainerProps } from "screens/session_container/session_container_props";
+import { SessionContainer } from "screens/session_container/session_container";
+import { useHistory } from "utils/react_router_dom_wrapper";
 import SearchMovesPage from "screens/containers/search_moves_page";
-import { actAddMoves, actSetMovePrivateDatas } from "moves/actions";
-import { actSetVotes } from "votes/actions";
-import { actSetUserProfile } from "profiles/actions";
-import { actSetLoadedMoveListUrls, actSetSignedInEmail } from "app/actions";
-import { actAddTips } from "tips/actions";
-import { createErrorHandler, createToastr } from "app/utils";
 import { AccountMenu } from "app/presentation/accountmenu";
 import Ctr from "screens/containers/index";
-import { getObjectValues } from "utils/utils";
-import { apiGetEmail, apiSignOut } from "app/api";
-import { apiLoadUserProfile } from "profiles/api";
-import { apiFindMoveLists, apiLoadMoveList } from "screens/api";
-import { apiLoadMovePrivateDatas } from "moves/api";
-import { apiLoadUserTags } from "tags/api";
-import { apiLoadUserVotes } from "votes/api";
 import type { UserProfileT } from "profiles/types";
+
+function useSessionCtr(dispatch: Function, history: any) {
+  const [sessionCtr, setSessionCtr] = React.useState(() => {
+    const result = new SessionContainer(
+      sessionContainerProps(dispatch, history)
+    );
+    result.data.loadEmail();
+    return result;
+  });
+  return sessionCtr;
+}
 
 // AppFrame
 type AppFramePropsT = {
   selectedMoveListUrl: string,
   userProfile: ?UserProfileT,
-  signedInEmail: string,
-  loadedMoveListUrls: Array<string>,
   children: any,
   dispatch: Function,
 };
 
 function AppFrame(props: AppFramePropsT) {
-  const [acceptsCookies, setAcceptsCookies] = React.useState(false);
   const history = useHistory();
 
-  const [loadedEmail, setLoadedEmail] = React.useState("");
-  const [loadingMoveListUrls, setLoadingMoveListUrls] = React.useState([]);
+  const sessionCtr = useSessionCtr(props.dispatch, history);
+  sessionCtr.setInputs(props.userProfile, props.selectedMoveListUrl);
 
-  async function _loadEmail() {
-    const [email] = await Promise.all([apiGetEmail()]);
-    props.dispatch(actSetSignedInEmail(email ? email : "anonymous"));
-  }
-
-  async function _loadUserProfile() {
-    if (!!props.signedInEmail && loadedEmail != props.signedInEmail) {
-      if (props.signedInEmail === "anonymous") {
-        props.dispatch(actSetUserProfile(undefined));
-        props.dispatch(actSetVotes({}));
-        props.dispatch(actSetMovePrivateDatas({}));
-      } else {
-        const [profile, votes, tags, movePrivateDatas] = await Promise.all([
-          apiLoadUserProfile(),
-          apiLoadUserVotes(),
-          apiLoadUserTags(),
-          apiLoadMovePrivateDatas(),
-        ]);
-        props.dispatch(actSetUserProfile(profile));
-        props.dispatch(actSetVotes(votes));
-        props.dispatch(
-          actSetMovePrivateDatas(
-            movePrivateDatas.entities.movePrivateDatas || {}
-          )
-        );
-
-        const [moveLists] = await Promise.all([
-          apiFindMoveLists({ followedByUsername: profile.username }),
-        ]);
-        props.dispatch(actAddMoveLists(moveLists.entities.moveLists || {}));
-      }
-
-      setLoadedEmail(props.signedInEmail);
-    }
-  }
-
-  async function _loadSelectedMoveList() {
-    if (
-      !!props.selectedMoveListUrl &&
-      !props.loadedMoveListUrls.includes(props.selectedMoveListUrl) &&
-      !loadingMoveListUrls.includes(props.selectedMoveListUrl)
-    ) {
-      setLoadingMoveListUrls([
-        ...loadingMoveListUrls,
-        props.selectedMoveListUrl,
-      ]);
-
-      const [ownerUsername, slug] = props.selectedMoveListUrl.split("/");
-
-      if (slug != newMoveListSlug) {
-        var moveList;
-        try {
-          [moveList] = await Promise.all([
-            apiLoadMoveList(ownerUsername, slug),
-          ]);
-        } catch {
-          props.dispatch(actMarkMoveListNotFound(props.selectedMoveListUrl));
-          return;
-        }
-        props.dispatch(
-          actAddMoves(getObjectValues(moveList.entities.moves || {}))
-        );
-        props.dispatch(actAddMoveLists(moveList.entities.moveLists));
-        props.dispatch(actAddTips(moveList.entities.tips || {}));
-        props.dispatch(
-          actSetLoadedMoveListUrls([
-            ...props.loadedMoveListUrls,
-            props.selectedMoveListUrl,
-          ])
-        );
-      }
-    }
-  }
-
-  React.useEffect(() => {
-    _loadEmail();
-  }, []);
-  React.useEffect(() => {
-    _loadUserProfile();
-  }, [props.signedInEmail]);
-  React.useEffect(() => {
-    _loadSelectedMoveList();
-  });
-
-  const signOut = () => {
-    apiSignOut().catch(createErrorHandler("Could not update the move list"));
-    props.dispatch(actSetSignedInEmail(""));
-    history.push("/app/sign-in/");
-  };
-
-  const _acceptCookies = () => {
-    Cookies.set("acceptCookies", 1);
-    setAcceptsCookies(true);
-  };
-
-  const cookieNotice = Cookies.get("acceptCookies") ? (
+  const cookieNotice = sessionCtr.data.acceptsCookies ? (
     undefined
   ) : (
     <div className="cookieNotice flexrow justify-around items-center">
       <div>
         This site uses cookies to store the settings for the logged in user. By
         continuing to use this site you agree with that.
-        <button className="button button--wide ml-2" onClick={_acceptCookies}>
+        <button
+          className="button button--wide ml-2"
+          onClick={sessionCtr.data.acceptCookies}
+        >
           Okay
         </button>
       </div>
     </div>
   );
 
-  const childrenPlaceholder = <div className="h-full" />;
-
   return (
-    <div className="appFrame px-4 flexcol">
-      {cookieNotice}
-      {createToastr()}
-      <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-8">
-        <div className="flexrow w-full">
-          <h1 className="appFrame__home" onClick={() => alert("TODO")}>
-            Lindy Science
-          </h1>
-          <SearchMovesPage />
+    <SessionContainerContext.Provider value={sessionCtr}>
+      <div className="appFrame px-4 flexcol">
+        {cookieNotice}
+        {createToastr()}
+        <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-8">
+          <div className="flexrow w-full">
+            <h1 className="appFrame__home" onClick={() => alert("TODO")}>
+              Lindy Science
+            </h1>
+            <SearchMovesPage />
+          </div>
+          <AccountMenu
+            className="self-start"
+            userProfile={props.userProfile}
+            signIn={() =>
+              history.push("/app/sign-in/?next=" + window.location.pathname)
+            }
+            signOut={sessionCtr.data.signOut}
+          />
         </div>
-        <AccountMenu
-          className="self-start"
-          userProfile={props.userProfile}
-          signIn={() =>
-            history.push("/app/sign-in/?next=" + window.location.pathname)
-          }
-          signOut={signOut}
-        />
+        {props.children}
       </div>
-      {props.children}
-    </div>
+    </SessionContainerContext.Provider>
   );
 }
 
 // $FlowFixMe
 AppFrame = Ctr.connect(state => ({
   userProfile: Ctr.fromStore.getUserProfile(state),
-  signedInEmail: Ctr.fromStore.getSignedInEmail(state),
   selectedMoveListUrl: Ctr.fromStore.getSelectedMoveListUrl(state),
-  loadedMoveListUrls: Ctr.fromStore.getLoadedMoveListUrls(state),
 }))(AppFrame);
 
 export default AppFrame;

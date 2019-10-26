@@ -10,7 +10,6 @@ import type { RootReducerStateT } from "app/root_reducer";
 
 type StatusStateT = {
   signedInEmail: string,
-  loadedMoveListUrls: Array<string>,
 };
 
 export type ReducerStateT = StatusStateT;
@@ -18,7 +17,6 @@ export type ReducerStateT = StatusStateT;
 const statusReducer = function(
   state: StatusStateT = {
     signedInEmail: "",
-    loadedMoveListUrls: [],
   },
   action: any
 ): StatusStateT {
@@ -28,11 +26,6 @@ const statusReducer = function(
         ...state,
         signedInEmail: action.email,
       };
-    case "SET_LOADED_MOVE_LIST_URLS":
-      return {
-        ...state,
-        loadedMoveListUrls: [...action.moveListUrls],
-      };
     default:
       return state;
   }
@@ -40,8 +33,5 @@ const statusReducer = function(
 
 export const getSignedInEmail = (state: RootReducerStateT): string =>
   state.app.signedInEmail;
-export const getLoadedMoveListUrls = (
-  state: RootReducerStateT
-): Array<string> => state.app.loadedMoveListUrls;
 
 export const reducer = statusReducer;

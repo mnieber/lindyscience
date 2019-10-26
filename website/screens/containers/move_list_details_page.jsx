@@ -7,7 +7,7 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
-import { FollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
+import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { UserProfileT } from "profiles/types";
 import { Highlight } from "screens/data_containers/bvrs/highlight";
 import { Editing } from "screens/data_containers/bvrs/editing";

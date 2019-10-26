@@ -7,7 +7,7 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
-import { FollowMoveListBtn } from "screens/hocs/with_follow_move_list_btn";
+import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 import type { VideoBvrT } from "video/types";

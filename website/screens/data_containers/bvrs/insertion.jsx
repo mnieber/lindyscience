@@ -1,6 +1,7 @@
 // @flow
 
 import {
+  type AdapterT,
   type ClassMemberT,
   type GetBvrT,
   behaviour_impl,
@@ -9,6 +10,7 @@ import {
   listen,
   mapData,
   operation,
+  relayData,
 } from "screens/data_containers/utils";
 import type {
   InsertPositionT,
@@ -96,3 +98,7 @@ export const initInsertion = (
 
 export const insertionActsOnItems = ([Collection, items]: ClassMemberT) =>
   mapData([Collection, items], [Insertion, "inputItems"]);
+
+export const insertionCreatesThePreview = ({
+  preview: [Collection, previewMember],
+}: AdapterT) => relayData([Collection, previewMember], [Insertion, "preview"]);

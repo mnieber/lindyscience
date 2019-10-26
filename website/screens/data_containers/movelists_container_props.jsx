@@ -1,12 +1,14 @@
 // @flow
 
+import { apiSaveMoveList, apiSaveMoveListOrdering } from "move_lists/api";
+import { actSetFollowedMoveListIds } from "profiles/actions";
+import type { UUID } from "kernel/types";
 import {
   restoreLocationMemo,
   storeLocationMemo,
 } from "screens/data_containers/moves_container_props";
 import { createUUID, listToItemById, slugify } from "utils/utils";
 import { actAddMoveLists } from "move_lists/actions";
-import { apiSaveMoveList } from "move_lists/api";
 import { newMoveListSlug } from "screens/utils";
 import { createErrorHandler } from "app/utils";
 import type { MoveListT } from "move_lists/types";
@@ -50,6 +52,13 @@ export function moveListsContainerProps(dispatch: Function, history: any) {
     restoreLocationMemo(dispatch, history);
   }
 
+  function setFollowedMoveListIds(ids: Array<UUID>) {
+    dispatch(actSetFollowedMoveListIds(ids));
+    apiSaveMoveListOrdering(ids).catch(
+      createErrorHandler(`Could not update the user profile`)
+    );
+  }
+
   return {
     saveMoveList: _saveMoveList,
     setMoveLists: (moveLists: Array<MoveListT>) => {
@@ -58,5 +67,6 @@ export function moveListsContainerProps(dispatch: Function, history: any) {
     createNewMoveList,
     storeHighlight,
     restoreHighlight,
+    setFollowedMoveListIds,
   };
 }

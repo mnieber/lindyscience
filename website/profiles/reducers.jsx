@@ -38,6 +38,11 @@ const userProfileReducer = function(
         ...state,
         moveListIds: acc,
       };
+    case "SET_FOLLOWED_MOVE_LIST_IDS":
+      return {
+        ...state,
+        moveListIds: action.ids,
+      };
     case "REMOVE_MOVE_LISTS_FROM_PROFILE":
       return {
         ...state,

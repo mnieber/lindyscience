@@ -2,7 +2,7 @@
 
 import { Signal } from "micro-signals";
 
-import { extendObservable } from "utils/mobx_wrapper";
+import { extendObservable, reaction } from "utils/mobx_wrapper";
 import { zip } from "utils/utils";
 
 export type ClassT = any;
@@ -164,6 +164,24 @@ export const mapData = (
       return transform ? transform(data) : data;
     },
   }));
+
+export const relayData = (
+  [fromPolicy, fromMember]: ClassMemberT,
+  [toPolicy, toMember]: ClassMemberT,
+  transform: ?Function,
+  setter: ?Function
+) => (ctr: any) =>
+  reaction(
+    () => fromPolicy.get(ctr)[fromMember],
+    data => {
+      const result = transform ? transform(data) : data;
+      if (setter) {
+        setter(result, toPolicy.get(ctr)[toMember]);
+      } else {
+        toPolicy.get(ctr)[toMember] = result;
+      }
+    }
+  );
 
 export const mapDatas = (
   fromPolicies: Array<ClassMemberT>,

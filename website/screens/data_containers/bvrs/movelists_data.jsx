@@ -23,6 +23,13 @@ export class MoveListsData {
   @computed get moveListById(): { [UUID]: MoveListT } {
     return listToItemById(this.preview);
   }
+  // $FlowFixMe
+  @computed get moveListsFollowing(): Array<MoveListT> {
+    const userProfile = this._userProfile;
+    return userProfile
+      ? this.preview.filter(x => userProfile.moveListIds.includes(x.id))
+      : [];
+  }
   @observable preview: Array<MoveListT> = [];
   @observable _userProfile: ?UserProfileT;
 

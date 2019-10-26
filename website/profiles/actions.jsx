@@ -35,6 +35,13 @@ export function actInsertMoveListIds(
   };
 }
 
+export function actSetFollowedMoveListIds(ids: Array<UUID>) {
+  return {
+    type: "SET_FOLLOWED_MOVE_LIST_IDS",
+    ids,
+  };
+}
+
 export function actRemoveMoveListIds(moveListIds: Array<UUID>) {
   const createAction = () => ({
     type: "REMOVE_MOVE_LISTS_FROM_PROFILE",

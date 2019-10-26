@@ -1,7 +1,12 @@
 // @flow
 
+import { behaviour, mapData, relayData } from "screens/data_containers/utils";
+import type { UUID } from "kernel/types";
+import {
+  Labelling,
+  initLabelling,
+} from "screens/data_containers/bvrs/labelling";
 import { getIds } from "app/utils";
-import { behaviour, mapData } from "screens/data_containers/utils";
 import {
   MoveListsData,
   initMoveListsData,
@@ -32,6 +37,7 @@ type MoveListsContainerPropsT = {
   createNewMoveList: any => MoveListT,
   storeHighlight: () => void,
   restoreHighlight: () => void,
+  setFollowedMoveListIds: (ids: Array<UUID>) => void,
 };
 
 export class MoveListsContainer {
@@ -41,6 +47,7 @@ export class MoveListsContainer {
   @behaviour(Insertion) insertion: Insertion;
   @behaviour(MoveListsData) data: MoveListsData;
   @behaviour(Selection) selection: Selection;
+  @behaviour(Labelling) labelling: Labelling;
 
   _createBehaviours(props: MoveListsContainerPropsT) {
     this.addition = initAddition(new Addition(), {
@@ -70,6 +77,13 @@ export class MoveListsContainer {
     });
     this.data = initMoveListsData(new MoveListsData());
     this.selection = initSelection(new Selection());
+    this.labelling = initLabelling(new Labelling(), {
+      saveIds: (label: string, ids: Array<UUID>) => {
+        if (label == "following") {
+          props.setFollowedMoveListIds(ids);
+        }
+      },
+    });
   }
 
   _applyPolicies(props: MoveListsContainerPropsT) {
@@ -97,6 +111,11 @@ export class MoveListsContainer {
       Policies.newItems.areConfirmedWhenSaved,
       Policies.newItems.areCanceledOnHighlightChange,
 
+      Policies.labelling.receivesIds(
+        [MoveListsData, "moveListsFollowing"],
+        "following",
+        getIds
+      ),
       mapData([MoveListsData, "preview"], [MoveListsData, "display"]),
       mapData([MoveListsData, "display"], [Selection, "selectableIds"], getIds),
     ].forEach(policy => policy(this));

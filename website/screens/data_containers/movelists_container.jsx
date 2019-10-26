@@ -107,8 +107,9 @@ export class MoveListsContainer {
 
       Policies.newItems.areCreatedBelowTheHighlight,
       Policies.newItems.areEdited,
-      Policies.newItems.areInsertedWhenConfirmed,
       Policies.newItems.areConfirmedWhenSaved,
+      Policies.newItems.areInsertedWhenConfirmed,
+      Policies.newItems.areFollowedWhenConfirmed,
       Policies.newItems.areCanceledOnHighlightChange,
 
       Policies.labelling.receivesIds(

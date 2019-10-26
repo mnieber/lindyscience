@@ -1,5 +1,6 @@
 // @flow
 
+import { newItemsAreFollowedWhenConfirmed } from "screens/data_containers/policies/new_items_are_followed_when_confirmed";
 import { labellingReceivesIds } from "screens/data_containers/bvrs/labelling";
 import {
   insertionActsOnItems,
@@ -46,6 +47,7 @@ export const Policies = {
     areConfirmedWhenSaved: newItemsAreConfirmedWhenSaved,
     areCanceledOnHighlightChange: newItemsAreCanceledOnHighlightChange,
     areEdited: newItemsAreEdited,
+    areFollowedWhenConfirmed: newItemsAreFollowedWhenConfirmed,
   },
   filtering: {
     actsOnItems: filteringActsOnItems,

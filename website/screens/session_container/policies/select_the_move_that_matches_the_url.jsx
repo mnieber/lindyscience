@@ -29,11 +29,13 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
     moveMatchingUrl => {
       if (moveMatchingUrl) {
         const selection = Selection.get(data.movesCtr);
-        selection.selectItem({
-          itemId: moveMatchingUrl.id,
-          isShift: false,
-          isCtrl: false,
-        });
+        if (!selection.ids.includes(moveMatchingUrl.id)) {
+          selection.selectItem({
+            itemId: moveMatchingUrl.id,
+            isShift: false,
+            isCtrl: false,
+          });
+        }
       }
     },
     {

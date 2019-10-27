@@ -14,7 +14,7 @@ export class ClickToSelectItems {
     this.props = props;
   }
 
-  handle(itemId: any, item: any, navigateTo: Function) {
+  handle(itemId: any, item: any, navigateTo: ?Function) {
     return {
       onMouseDown: (e: any) => {
         const ctr = this.props.container;
@@ -26,7 +26,7 @@ export class ClickToSelectItems {
             isShift: e.shiftKey,
             isCtrl: e.ctrlKey,
           });
-          navigateTo(item);
+          navigateTo && navigateTo(item);
         }
       },
       onMouseUp: (e: any) => {
@@ -38,7 +38,7 @@ export class ClickToSelectItems {
             isShift: e.shiftKey,
             isCtrl: e.ctrlKey,
           });
-          navigateTo(item);
+          navigateTo && navigateTo(item);
         }
         this._swallowMouseUp = false;
       },

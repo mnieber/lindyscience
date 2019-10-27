@@ -1,10 +1,14 @@
 // @flow
 
-import { browseToMove } from "screens/session_container/handlers/update_url";
+import {
+  makeMoveListUrl,
+  makeSlugidMatcher,
+  newMoveListSlug,
+} from "screens/utils";
+import { getId } from "app/utils";
 import type { MoveListT } from "move_lists/types";
 import { action } from "utils/mobx_wrapper";
 import type { MoveT } from "moves/types";
-import { makeMoveListUrl, newMoveListSlug } from "screens/utils";
 import { browseToMoveUrl } from "screens/containers";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { SessionData } from "screens/session_container/facets/session_data";
@@ -27,7 +31,7 @@ export const handleNavigateToMoveList = (ctr: any) => {
         moveListSlug: moveList.slug,
       });
       browseToMoveUrl(
-        navigation.history,
+        navigation.history.push,
         [makeMoveListUrl(moveList)],
         updateProfile
       );
@@ -55,7 +59,14 @@ export const handleNavigateToMove = (ctr: any) => {
         moveSlug: move.slug,
         moveId: move.id,
       });
-      browseToMove(navigation.history, moveList, movesData.preview, move);
+      const isSlugUnique =
+        movesData.preview.filter(makeSlugidMatcher(move.slug)).length <= 1;
+      const maybeMoveId = isSlugUnique ? "" : getId(move);
+      browseToMoveUrl(
+        navigation.history.push,
+        [makeMoveListUrl(moveList), move.slug, maybeMoveId],
+        true
+      );
     })
   );
 };

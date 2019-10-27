@@ -21,11 +21,13 @@ export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
     moveListMatchingUrl => {
       if (moveListMatchingUrl) {
         const selection = Selection.get(data.moveListsCtr);
-        selection.selectItem({
-          itemId: moveListMatchingUrl.id,
-          isShift: false,
-          isCtrl: false,
-        });
+        if (!selection.ids.includes(moveListMatchingUrl.id)) {
+          selection.selectItem({
+            itemId: moveListMatchingUrl.id,
+            isShift: false,
+            isCtrl: false,
+          });
+        }
       }
     },
     {

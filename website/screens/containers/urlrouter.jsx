@@ -29,7 +29,7 @@ function IndexPage(props: IndexPagePropsT) {
   // TODO: use navigation.browseToRecentMove()
   function _loadRecentMove() {
     if (props.userProfile && props.userProfile.recentMoveUrl) {
-      browseToMoveUrl(history, [props.userProfile.recentMoveUrl], false);
+      browseToMoveUrl(history.push, [props.userProfile.recentMoveUrl], false);
     }
   }
   React.useEffect(() => {
@@ -42,9 +42,9 @@ function IndexPage(props: IndexPagePropsT) {
 const withUrlParams = compose(
   withSessionCtr,
   (WrappedComponent: any) => (props: any) => {
-    React.useEffect(() =>
-      Navigation.get(props.sessionCtr).setUrlParams(props.match.params)
-    );
+    React.useEffect(() => {
+      Navigation.get(props.sessionCtr).setUrlParams(props.match.params);
+    });
     return <WrappedComponent {...props} />;
   }
 );

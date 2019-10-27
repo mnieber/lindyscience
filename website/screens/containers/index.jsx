@@ -22,7 +22,7 @@ export type ContainerT = {
 };
 
 export function browseToMoveUrl(
-  history: any,
+  setUrl: Function,
   moveUrlParts: Array<string>,
   mustUpdateProfile: boolean = true
 ) {
@@ -32,7 +32,7 @@ export function browseToMoveUrl(
   }
   const fullUrl = `/app/lists/${moveUrl}`;
   if (window.location.pathname != fullUrl) {
-    history.push(fullUrl);
+    setUrl(fullUrl);
   }
 }
 

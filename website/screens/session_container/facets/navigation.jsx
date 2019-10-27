@@ -15,7 +15,6 @@ export type UrlParamsT = {
 @behaviour_impl
 export class Navigation {
   @observable history: any;
-  @observable ignoreHighlightChanges: boolean = false;
   @observable urlParams: UrlParamsT;
 
   // $FlowFixMe

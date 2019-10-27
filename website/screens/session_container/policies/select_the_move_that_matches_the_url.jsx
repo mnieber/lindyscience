@@ -1,6 +1,6 @@
 // @flow
 
-import { compareIfNotNull, reaction } from "utils/mobx_wrapper";
+import { reaction } from "utils/mobx_wrapper";
 import { MovesData } from "screens/moves_container/moves_data";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { SessionData } from "screens/session_container/facets/session_data";
@@ -24,16 +24,20 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
       const moveMatchingUrl = slugId
         ? findMoveBySlugid(movesData.preview, slugId)
         : undefined;
-      return moveMatchingUrl || null;
+      return moveMatchingUrl;
     },
     moveMatchingUrl => {
-      const selection = Selection.get(data.movesCtr);
-      selection.selectItem({
-        itemId: moveMatchingUrl.id,
-        isShift: false,
-        isCtrl: false,
-      });
+      if (moveMatchingUrl) {
+        const selection = Selection.get(data.movesCtr);
+        selection.selectItem({
+          itemId: moveMatchingUrl.id,
+          isShift: false,
+          isCtrl: false,
+        });
+      }
     },
-    { name: "selectTheMoveThatMatchesTheUrl", equals: compareIfNotNull }
+    {
+      name: "selectTheMoveThatMatchesTheUrl",
+    }
   );
 };

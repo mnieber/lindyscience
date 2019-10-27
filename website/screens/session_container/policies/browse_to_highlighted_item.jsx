@@ -18,7 +18,7 @@ export const browseToHighlightedItem = (ctr: any) => {
   const movesData = MovesData.get(data.movesCtr);
 
   listen(moveListHighlight, "highlightItem", id => {
-    if (moveListHighlight.item && !navigation.ignoreHighlightChanges) {
+    if (moveListHighlight.item) {
       browseToMoveList(navigation.history, moveListHighlight.item);
     }
   });

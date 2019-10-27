@@ -20,21 +20,20 @@ export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
               moveList.slug == navigation.urlParams.moveListSlug
           )
         : undefined;
-      return moveListMatchingUrl || null;
+      return moveListMatchingUrl;
     },
     moveListMatchingUrl => {
-      const selection = Selection.get(data.moveListsCtr);
-      navigation.ignoreHighlightChanges = true;
-      selection.selectItem({
-        itemId: moveListMatchingUrl.id,
-        isShift: false,
-        isCtrl: false,
-      });
-      navigation.ignoreHighlightChanges = false;
+      if (moveListMatchingUrl) {
+        const selection = Selection.get(data.moveListsCtr);
+        selection.selectItem({
+          itemId: moveListMatchingUrl.id,
+          isShift: false,
+          isCtrl: false,
+        });
+      }
     },
     {
       name: "selectTheMoveListThatMatchesTheUrl",
-      equals: compareIfNotNull,
     }
   );
 };

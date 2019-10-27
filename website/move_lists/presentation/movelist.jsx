@@ -68,6 +68,7 @@ export const MoveList = observer((props: MoveListPropsT) => {
       isShift,
       isCtrl,
     });
+    navigateTo(itemId);
   };
 
   const dragPosition = props.movesCtr.dragging.position;

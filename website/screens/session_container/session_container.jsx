@@ -48,7 +48,8 @@ export class SessionContainer {
 
   _applyPolicies(props: SessionContainerPropsT) {
     [
-      Policies.navigation.browseToHighlightedItem,
+      Policies.navigation.handleBrowseToMove,
+      Policies.navigation.handleBrowseToMoveList,
       Policies.navigation.selectTheMoveListThatMatchesTheUrl,
       Policies.navigation.selectTheMoveThatMatchesTheUrl,
       Policies.profiling.handleLoadEmail,

@@ -6,6 +6,7 @@ import * as React from "react";
 import classnames from "classnames";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import { Highlight } from "facets/generic/highlight";
 import { Selection } from "facets/generic/selection";
 import {
   getOwnerId,
@@ -57,6 +58,7 @@ type MoveListPropsT = {|
   moveContextMenu: any,
   movesCtr: MovesContainer,
   moveListsCtr: MoveListsContainer,
+  navigateTo: MoveT => any,
   className?: string,
 |};
 
@@ -68,7 +70,7 @@ export const MoveList = observer((props: MoveListPropsT) => {
       isShift,
       isCtrl,
     });
-    navigateTo(itemId);
+    props.navigateTo(Highlight.get(props.movesCtr).item);
   };
 
   const dragPosition = props.movesCtr.dragging.position;
@@ -108,7 +110,7 @@ export const MoveList = observer((props: MoveListPropsT) => {
         })}
         id={move.id}
         key={idx}
-        {...props.movesCtr.handlerClick.handle(move.id)}
+        {...props.movesCtr.handlerClick.handle(move.id, move, props.navigateTo)}
         {...(isMoveListOwner ? props.movesCtr.handlerDrag.handle(move.id) : {})}
       >
         {move.name}

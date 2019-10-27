@@ -6,6 +6,7 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 
+import { withSessionCtr } from "screens/session_container/session_container_context";
 import { sayMove } from "screens/moves_container/handlers/say_move";
 import { isNone } from "utils/utils";
 import { getOwnerId, isOwner } from "app/utils";
@@ -29,6 +30,7 @@ import type { UserProfileT } from "profiles/types";
 type MoveListFramePropsT = {
   moveListsCtr: MoveListsContainer,
   movesCtr: MovesContainer,
+  sessionCtr: SessionContainer,
   moveContextMenu: any,
   moveTags: Array<TagT>,
   userProfile: UserProfileT,
@@ -56,6 +58,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
       className=""
       filter={isFollowing}
       moveListsCtr={props.moveListsCtr}
+      navigateTo={x => props.sessionCtr.navigation.browseToMoveList(x)}
     />
   );
 
@@ -96,6 +99,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
       moveListsCtr={props.moveListsCtr}
       moveContextMenu={props.moveContextMenu}
       userProfile={props.userProfile}
+      navigateTo={x => props.sessionCtr.navigation.browseToMove(x)}
     />
   );
 
@@ -117,6 +121,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
 
 // $FlowFixMe
 MoveListFrame = compose(
+  withSessionCtr,
   withMovesCtr,
   withMoveListsCtr,
   withMoveContextMenu,

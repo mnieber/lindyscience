@@ -6,6 +6,7 @@ import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
+import { Highlight } from "facets/generic/highlight";
 import { createTagsAndKeywordsFilter } from "screens/utils";
 import { Filtering } from "facets/generic/filtering";
 import { Selection } from "facets/generic/selection";
@@ -27,6 +28,7 @@ type MoveListPickerPropsT = {|
   moveListsCtr: MoveListsContainer,
   filter: MoveListT => boolean,
   className?: string,
+  navigateTo: MoveListT => any,
 |};
 
 export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
@@ -74,7 +76,7 @@ export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
               isShift: false,
               isCtrl: false,
             });
-            navigateTo(itemId);
+            props.navigateTo(Highlight.get(ctr).item);
           }
         }}
       />

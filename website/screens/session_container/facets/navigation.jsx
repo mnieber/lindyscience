@@ -1,5 +1,7 @@
 // @flow
 
+import type { MoveT } from "moves/types";
+import type { MoveListT } from "move_lists/types";
 import { action, computed, observable, runInAction } from "utils/mobx_wrapper";
 import type { UUID } from "kernel/types";
 import { type GetBvrT, behaviour_impl, listen, operation } from "facets/index";
@@ -28,6 +30,10 @@ export class Navigation {
 
   // $FlowFixMe
   @operation setUrlParams(urlParams: UrlParamsT) {}
+  // $FlowFixMe
+  @operation browseToMove(move: MoveT) {}
+  // $FlowFixMe
+  @operation browseToMoveList(moveList: MoveListT) {}
 
   static get: GetBvrT<Navigation>;
 }

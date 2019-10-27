@@ -4,7 +4,7 @@ import { getIds } from "app/utils";
 import { MovesData, initMovesData } from "screens/moves_container/moves_data";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
-import { behaviour, mapData } from "facets/index";
+import { facet, mapData } from "facets/index";
 import { Addition, initAddition } from "facets/generic/addition";
 import { Dragging, initDragging } from "facets/generic/dragging";
 import { Editing, initEditing } from "facets/generic/editing";
@@ -33,14 +33,14 @@ type MovesContainerPropsT = {
 };
 
 export class MovesContainer {
-  @behaviour(Addition) addition: Addition;
-  @behaviour(Dragging) dragging: Dragging;
-  @behaviour(Editing) editing: Editing;
-  @behaviour(Filtering) filtering: Filtering;
-  @behaviour(Highlight) highlight: Highlight;
-  @behaviour(Insertion) insertion: Insertion;
-  @behaviour(MovesData) data: MovesData;
-  @behaviour(Selection) selection: Selection;
+  @facet(Addition) addition: Addition;
+  @facet(Dragging) dragging: Dragging;
+  @facet(Editing) editing: Editing;
+  @facet(Filtering) filtering: Filtering;
+  @facet(Highlight) highlight: Highlight;
+  @facet(Insertion) insertion: Insertion;
+  @facet(MovesData) data: MovesData;
+  @facet(Selection) selection: Selection;
   clipboard: Clipboard;
 
   handlerKeys = new SelectWithKeys({ container: this });

@@ -12,21 +12,21 @@ export type AdapterT = {
   [MemberNameT]: ClassMemberT,
 };
 
-const signals = Symbol("behaviourSignals");
-const datas = Symbol("behaviourDatas");
-const symbol = Symbol("behaviourSymbol");
+const signals = Symbol("facetSignals");
+const datas = Symbol("facetDatas");
+const symbol = Symbol("facetSymbol");
 
-export function behaviour(Inf: any) {
+export function facet(Inf: any) {
   return function(target: any, name: string, descriptor: any) {
     if (target[Inf[symbol]]) {
-      console.warn(`Overwriting behaviour ${name} on ${target}`);
+      console.warn(`Overwriting facet ${name} on ${target}`);
     }
     target[Inf[symbol]] = name;
     return descriptor;
   };
 }
 
-export function behaviour_impl(target: any) {
+export function facetClass(target: any) {
   target[symbol] = Symbol(target.name);
 
   target.get = (ctr: any) => {
@@ -52,23 +52,23 @@ export function facetClassName(Inf: any) {
   return _symbolName(Inf[symbol]);
 }
 
-export function behaviourInstanceName(inf: any) {
+export function facetInstanceName(inf: any) {
   return _symbolName(inf.constructor[symbol]);
 }
 
 export function extendInterface(intrface: any, members: any) {
-  const behaviourName = behaviourInstanceName(intrface);
-  const behaviourDatas = intrface.constructor[datas];
+  const facetName = facetInstanceName(intrface);
+  const facetDatas = intrface.constructor[datas];
 
   for (const prop in members) {
     if (!prop.startsWith("_")) {
       if (!intrface.hasOwnProperty(prop)) {
         console.warn(
-          `Patching a property ${prop} that doesn't exist in ${behaviourName}`
+          `Patching a property ${prop} that doesn't exist in ${facetName}`
         );
-      } else if (!(behaviourDatas && behaviourDatas[prop])) {
+      } else if (!(facetDatas && facetDatas[prop])) {
         console.error(
-          `Patching a property ${prop} that wasn't decorated with @data in ${behaviourName}`
+          `Patching a property ${prop} that wasn't decorated with @data in ${facetName}`
         );
       }
     }

@@ -4,7 +4,7 @@ import {
   type AdapterT,
   type ClassMemberT,
   type GetBvrT,
-  behaviour_impl,
+  facetClass,
   data,
   extendInterface,
   listen,
@@ -35,7 +35,7 @@ export function getPreview(
 }
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Insertion {
   @data payload: ?PayloadT;
   @data position: ?InsertPositionT;

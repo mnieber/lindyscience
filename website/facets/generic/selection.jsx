@@ -3,7 +3,7 @@
 import {
   type ClassMemberT,
   type GetBvrT,
-  behaviour_impl,
+  facetClass,
   data,
   listen,
   mapDatas,
@@ -19,7 +19,7 @@ export type ItemSelectedPropsT = {
 };
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Selection {
   @data selectableIds: Array<any>;
   @observable ids: Array<any> = [];

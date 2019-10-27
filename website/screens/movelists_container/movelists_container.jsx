@@ -1,6 +1,6 @@
 // @flow
 
-import { behaviour, mapData, relayData } from "facets/index";
+import { facet, mapData, relayData } from "facets/index";
 import type { UUID } from "kernel/types";
 import { Labelling, initLabelling } from "facets/generic/labelling";
 import { getIds } from "app/utils";
@@ -29,13 +29,13 @@ type MoveListsContainerPropsT = {
 };
 
 export class MoveListsContainer {
-  @behaviour(Addition) addition: Addition;
-  @behaviour(Editing) editing: Editing;
-  @behaviour(Highlight) highlight: Highlight;
-  @behaviour(Insertion) insertion: Insertion;
-  @behaviour(MoveListsData) data: MoveListsData;
-  @behaviour(Selection) selection: Selection;
-  @behaviour(Labelling) labelling: Labelling;
+  @facet(Addition) addition: Addition;
+  @facet(Editing) editing: Editing;
+  @facet(Highlight) highlight: Highlight;
+  @facet(Insertion) insertion: Insertion;
+  @facet(MoveListsData) data: MoveListsData;
+  @facet(Selection) selection: Selection;
+  @facet(Labelling) labelling: Labelling;
 
   _createBehaviours(props: MoveListsContainerPropsT) {
     this.addition = initAddition(new Addition(), {

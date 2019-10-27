@@ -19,7 +19,7 @@ import {
   SessionData,
   initSessionData,
 } from "screens/session_container/facets/session_data";
-import { behaviour } from "facets/index";
+import { facet } from "facets/index";
 import { Policies } from "screens/session_container/policies";
 
 type SessionContainerPropsT = {
@@ -30,10 +30,10 @@ type SessionContainerPropsT = {
 };
 
 export class SessionContainer {
-  @behaviour(SessionData) data: SessionData;
-  @behaviour(Loading) loading: Loading;
-  @behaviour(Navigation) navigation: Navigation;
-  @behaviour(Profiling) profiling: Profiling;
+  @facet(SessionData) data: SessionData;
+  @facet(Loading) loading: Loading;
+  @facet(Navigation) navigation: Navigation;
+  @facet(Profiling) profiling: Profiling;
 
   _createFacets(props: SessionContainerPropsT) {
     this.data = initSessionData(

@@ -1,10 +1,10 @@
 // @flow
 
-import { type GetBvrT, behaviour_impl } from "facets/index";
+import { type GetBvrT, facetClass } from "facets/index";
 import { observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Loading {
   @observable loadedMoveListUrls: Array<string> = [];
   @observable notFoundMoveListUrls: Array<string> = [];

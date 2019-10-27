@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetBvrT, behaviour_impl, data } from "facets/index";
+import { type GetBvrT, facetClass, data } from "facets/index";
 import { computed, observable } from "utils/mobx_wrapper";
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";
@@ -8,7 +8,7 @@ import type { UUID } from "kernel/types";
 import { listToItemById } from "utils/utils";
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class MoveListsData {
   @observable moveLists: Array<MoveListT> = [];
   // $FlowFixMe

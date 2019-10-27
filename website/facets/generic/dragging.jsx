@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetBvrT, behaviour_impl, listen, operation } from "facets/index";
+import { type GetBvrT, facetClass, listen, operation } from "facets/index";
 import { action, observable } from "utils/mobx_wrapper";
 
 export type InsertPositionT = {
@@ -14,7 +14,7 @@ export type PayloadT = {
 };
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Dragging {
   @observable position: ?InsertPositionT;
 

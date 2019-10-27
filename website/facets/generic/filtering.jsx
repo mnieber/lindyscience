@@ -3,7 +3,7 @@
 import {
   type ClassMemberT,
   type GetBvrT,
-  behaviour_impl,
+  facetClass,
   data,
   extendInterface,
   listen,
@@ -13,7 +13,7 @@ import {
 import { action, observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Filtering {
   @observable isEnabled: boolean;
   @observable filter: any => boolean;

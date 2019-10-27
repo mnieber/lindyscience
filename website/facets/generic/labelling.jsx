@@ -3,7 +3,7 @@
 import {
   type ClassMemberT,
   type GetBvrT,
-  behaviour_impl,
+  facetClass,
   data,
   listen,
   mapDatas,
@@ -17,7 +17,7 @@ export type IdsByLabelT = { [string]: Array<any> };
 export type ItemsByLabelT = { [string]: Array<any> };
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Labelling {
   @observable idsByLabel: IdsByLabelT = {};
   ids = (label: string) => this.idsByLabel[label] || [];

@@ -2,7 +2,7 @@
 
 import {
   type GetBvrT,
-  behaviour_impl,
+  facetClass,
   listen,
   operation,
   data,
@@ -10,7 +10,7 @@ import {
 import { action, observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Editing {
   @observable isEditing: boolean;
 

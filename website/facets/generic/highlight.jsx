@@ -3,7 +3,7 @@
 import {
   type ClassMemberT,
   type GetBvrT,
-  behaviour_impl,
+  facetClass,
   data,
   listen,
   mapDatas,
@@ -12,7 +12,7 @@ import {
 import { action, observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
-@behaviour_impl
+@facetClass
 export class Highlight {
   @observable id: any;
 

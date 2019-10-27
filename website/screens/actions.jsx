@@ -7,16 +7,6 @@ import type { MoveSearchResultT } from "screens/types";
 // Actions
 ///////////////////////////////////////////////////////////////////////
 
-export function actSetSelectedMoveListUrl(
-  ownerUsername: string,
-  moveListSlug: string
-) {
-  return {
-    type: "SET_SELECTED_MOVE_LIST_URL",
-    moveListUrl: ownerUsername + "/" + moveListSlug,
-  };
-}
-
 export function actSetMoveSearchResults(
   moveSearchResults: Array<MoveSearchResultT>
 ) {

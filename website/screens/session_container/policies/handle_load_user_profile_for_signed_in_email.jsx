@@ -44,6 +44,7 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
         });
         dispatch(actAddMoveLists(moveLists.entities.moveLists || {}));
       }
-    }
+    },
+    { name: "handleLoadUserProfileForSignedInEmail" }
   );
 };

@@ -31,7 +31,7 @@ const _handleCancelNewItem = (self: Addition) => {
   listen(
     self,
     "cancel",
-    action(function() {
+    action("cancelNewItem", function() {
       self.item = undefined;
       self.parentId = undefined;
     })
@@ -42,7 +42,7 @@ const _handleAddNewItem = (self: Addition) => {
   listen(
     self,
     "add",
-    action(function(values: any) {
+    action("addNewItem", function(values: any) {
       self.item = self.createItem(values);
     })
   );

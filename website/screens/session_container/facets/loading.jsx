@@ -1,11 +1,7 @@
 // @flow
 
-import Cookies from "js-cookie";
-
-import type { GetBvrT } from "facets/index";
-import { behaviour_impl, data, operation } from "facets/index";
-import { observable, runInAction } from "utils/mobx_wrapper";
-import type { UserProfileT } from "profiles/types";
+import { type GetBvrT, behaviour_impl } from "facets/index";
+import { observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
 @behaviour_impl
@@ -17,6 +13,5 @@ export class Loading {
 }
 
 export function initLoading(self: Loading): Loading {
-  runInAction(() => {});
   return self;
 }

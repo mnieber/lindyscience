@@ -3,6 +3,7 @@
 import Cookies from "js-cookie";
 import jQuery from "jquery";
 import thunk from "redux-thunk";
+import { spy } from "utils/mobx_wrapper";
 import { createLogger } from "redux-logger";
 import { createStore, applyMiddleware } from "redux";
 import { reducer } from "app/root_reducer";
@@ -28,9 +29,20 @@ const configureStore = () => {
     traditional: true,
   });
 
+  const logRedux = false;
+  const logMobx = true;
+
   let middleware = [thunk];
   if (process.env.NODE_ENV !== "production") {
-    middleware = [...middleware, ...(false ? [createLogger()] : [])];
+    middleware = [...middleware, ...(logRedux ? [createLogger()] : [])];
+  }
+
+  if (logMobx) {
+    spy(event => {
+      if (event.type === "action") {
+        console.log(`${event.name} with args: ${event.arguments}`);
+      }
+    });
   }
 
   const store = createStore(reducer, applyMiddleware(...middleware));

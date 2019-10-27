@@ -18,7 +18,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
 
   reaction(
     () => navigation.selectedMoveListUrl,
-    action(async selectedMoveListUrl => {
+    action("loadSelectedMoveListFromUrl", async selectedMoveListUrl => {
       if (
         !!selectedMoveListUrl &&
         !loading.loadedMoveListUrls.includes(selectedMoveListUrl)
@@ -43,6 +43,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
           }
         }
       }
-    })
+    }),
+    { name: "handleLoadSelectedMoveListFromUrl" }
   );
 };

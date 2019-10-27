@@ -116,7 +116,7 @@ export class MoveListsContainer {
   }
 
   setInputs(moveLists: Array<MoveListT>, userProfile: ?UserProfileT) {
-    runInAction(() => {
+    runInAction("moveListsContainer.setInputs", () => {
       this.data.moveLists = moveLists;
       this.data._userProfile = userProfile;
     });

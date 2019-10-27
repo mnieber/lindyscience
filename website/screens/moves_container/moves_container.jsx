@@ -129,7 +129,7 @@ export class MovesContainer {
     moveLists: Array<MoveListT>,
     userProfile: ?UserProfileT
   ) {
-    runInAction(() => {
+    runInAction("movesContainer.setInputs", () => {
       this.data.moves = moves;
       this.data._userProfile = userProfile;
       this.data._moveList = moveList;

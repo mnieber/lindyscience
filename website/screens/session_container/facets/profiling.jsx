@@ -26,14 +26,14 @@ export class Profiling {
 
 function _handleAcceptCookies(self: Profiling) {
   Cookies.set("acceptCookies", "1");
-  runInAction(() => {
+  runInAction("acceptCookies", () => {
     self.acceptsCookies = true;
   });
 }
 
 export function initProfiling(self: Profiling): Profiling {
   _handleAcceptCookies(self);
-  runInAction(() => {
+  runInAction("initProfiling", () => {
     self.acceptsCookies = Cookies.get("acceptCookies") === "1";
   });
   return self;

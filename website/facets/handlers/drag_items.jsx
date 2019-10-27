@@ -25,7 +25,7 @@ export class DragItems {
       onDragStart: () => {},
       onDragOver: (e: any) => {
         e.preventDefault();
-        runInAction(() => {
+        runInAction("onDragOver", () => {
           Dragging.get(this.props.container).position = {
             targetItemId: itemId,
             isBefore: isBefore(e),

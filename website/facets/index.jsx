@@ -180,6 +180,11 @@ export const relayData = (
       } else {
         toPolicy.get(ctr)[toMember] = result;
       }
+    },
+    {
+      name: `relayData from ${behaviourClassName(
+        fromPolicy
+      )}.${fromMember} to ${behaviourClassName(toPolicy)}.${toMember}`,
     }
   );
 

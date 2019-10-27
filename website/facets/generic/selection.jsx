@@ -36,7 +36,7 @@ function _handleSelection(self: Selection) {
   listen(
     self,
     "selectItem",
-    action(({ itemId, isShift, isCtrl }: ItemSelectedPropsT) => {
+    action("selectItem", ({ itemId, isShift, isCtrl }: ItemSelectedPropsT) => {
       const hasItem = self.ids.includes(itemId);
 
       if (isShift) {

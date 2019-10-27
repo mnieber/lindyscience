@@ -35,7 +35,7 @@ const _handleLabelling = (self: Labelling) => {
   listen(
     self,
     "setLabel",
-    action(function(label: string, id: any, flag: boolean) {
+    action("setLabel", function(label: string, id: any, flag: boolean) {
       self.idsByLabel[label] = self.idsByLabel[label] || [];
       if (flag && !self.idsByLabel[label].includes(id)) {
         self.idsByLabel[label].push(id);

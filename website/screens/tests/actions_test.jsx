@@ -50,13 +50,3 @@ test("test actInsertMoveIds", function(t) {
   }
   t.end();
 });
-
-test("test actSetSelectedMoveListUrl", function(t) {
-  const { store } = _setUp();
-
-  store.dispatch(actions.actSetSelectedMoveListUrl("mnieber", "moves"));
-  const moveList = fromStore.getSelectedMoveList(store.getState());
-  t.equal(!!moveList && moveList.id, data.moveList1.id);
-
-  t.end();
-});

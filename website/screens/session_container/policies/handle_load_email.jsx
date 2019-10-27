@@ -15,7 +15,7 @@ export const handleLoadEmail = (ctr: any) => {
     const [email] = await Promise.all([apiGetEmail()]);
     const signedInEmail = email ? email : "anonymous";
     data.dispatch(actSetSignedInEmail(signedInEmail));
-    runInAction(() => {
+    runInAction("handleLoadEmail", () => {
       profiling.signedInEmail = signedInEmail;
     });
   });

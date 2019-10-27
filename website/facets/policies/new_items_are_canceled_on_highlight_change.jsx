@@ -13,6 +13,7 @@ export const newItemsAreCanceledOnHighlightChange = (ctr: any) => {
         Addition.get(ctr).cancel();
         Editing.get(ctr).setIsEditing(false);
       }
-    }
+    },
+    { name: "newItemsAreCanceledOnHighlightChange" }
   );
 };

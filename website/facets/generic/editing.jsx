@@ -30,7 +30,7 @@ const _handleEditingCancel = (self: Editing) => {
   listen(
     self,
     "cancel",
-    action(function() {
+    action("editingCancel", function() {
       self.isEditing = false;
     })
   );
@@ -40,7 +40,7 @@ const _handleEditingSave = (self: Editing) => {
   listen(
     self,
     "save",
-    action(function(values: any) {
+    action("editingSave", function(values: any) {
       self.isEditing = false;
       self.saveItem(values);
     })
@@ -51,7 +51,7 @@ const _handleEditingSetIsEditing = (self: Editing) => {
   listen(
     self,
     "setIsEditing",
-    action(function(flag: boolean) {
+    action("setIsEditing", function(flag: boolean) {
       self.isEditing = flag;
     })
   );

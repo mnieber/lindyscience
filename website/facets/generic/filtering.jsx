@@ -33,7 +33,7 @@ const _handleFilteringSetEnabled = (self: Filtering) => {
   listen(
     self,
     "setEnabled",
-    action(function(flag: boolean) {
+    action("filteringSetEnabled", function(flag: boolean) {
       self.isEnabled = flag;
     })
   );
@@ -43,7 +43,7 @@ const _handleFilteringApply = (self: Filtering) => {
   listen(
     self,
     "apply",
-    action(function(filter: any) {
+    action("filteringApply", function(filter: any) {
       self.filter = filter;
       self.isEnabled = true;
     })

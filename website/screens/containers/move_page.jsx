@@ -7,10 +7,6 @@ import { observer } from "mobx-react";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { SessionContainer } from "screens/session_container/session_container";
 import { withSessionCtr } from "screens/session_container/session_container_context";
-import { useParams } from "utils/react_router_dom_wrapper";
-import { findMoveBySlugid, makeSlugid } from "screens/utils";
-import { Highlight } from "facets/generic/highlight";
-import { Selection } from "facets/generic/selection";
 import { withMovesCtr } from "screens/moves_container/moves_container_context";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import Ctr from "screens/containers/index";
@@ -22,7 +18,6 @@ type MovePagePropsT = {
   sessionCtr: SessionContainer,
   movesCtr: MovesContainer,
   moveListsCtr: MoveListsContainer,
-  moveListUrl: string,
   movePrivateDataPanel: any,
   moveDiv: any,
   userProfile: UserProfileT,
@@ -30,56 +25,31 @@ type MovePagePropsT = {
 };
 
 function MovePage(props: MovePagePropsT) {
-  const params = useParams();
-
-  const moveMatchingUrl = findMoveBySlugid(
-    props.movesCtr.data.preview,
-    makeSlugid(params.moveSlug, params.moveId)
-  );
-
-  // TODO: move to sessionCtr
-  React.useEffect(() => {
-    if (moveMatchingUrl) {
-      Highlight.get(props.movesCtr).id = moveMatchingUrl.id;
-      Selection.get(props.movesCtr).selectItem({
-        itemId: moveMatchingUrl.id,
-        isShift: false,
-        isCtrl: false,
-      });
-    }
-  }, [moveMatchingUrl]);
-
   const move = props.movesCtr.highlight.item;
   const hasLoadedSelectedMoveList = props.sessionCtr.loading.loadedMoveListUrls.includes(
+    props.sessionCtr.navigation.selectedMoveListUrl
+  );
+  const isMoveListNotFound = props.sessionCtr.loading.notFoundMoveListUrls.includes(
     props.sessionCtr.navigation.selectedMoveListUrl
   );
 
   const notFoundDiv = <div>Oops, I cannot find this move list</div>;
   const loadingDiv = <div>Loading move list, please wait...</div>;
-
-  const isMoveListNotFound = props.sessionCtr.loading.notFoundMoveListUrls.includes(
-    props.moveListUrl
+  const moveNotFoundMsg = hasLoadedSelectedMoveList
+    ? "Oops, I cannot find this move"
+    : "Loading, please wait...";
+  const moveNotFoundDiv = (
+    <div className="noMoveHighlighted">{moveNotFoundMsg}</div>
   );
 
-  if (!move) {
-    const msg = hasLoadedSelectedMoveList
-      ? "Oops, I cannot find this move"
-      : "Loading, please wait...";
-
-    return <div className="noMoveHighlighted">{msg}</div>;
-  }
-
   const moveList = props.moveListsCtr.highlight.item;
-
-  if (!moveList && isMoveListNotFound) {
-    return notFoundDiv;
-  }
-
-  if (!moveList && !isMoveListNotFound) {
-    return loadingDiv;
-  }
-
-  return props.moveDiv;
+  return !moveList && isMoveListNotFound
+    ? notFoundDiv
+    : !moveList && !isMoveListNotFound
+    ? loadingDiv
+    : moveList && !move
+    ? moveNotFoundDiv
+    : props.moveDiv;
 }
 
 // $FlowFixMe
@@ -90,7 +60,6 @@ MovePage = compose(
   withMove,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
-    moveListUrl: Ctr.fromStore.getSelectedMoveListUrl(state),
   })),
   observer
 )(MovePage);

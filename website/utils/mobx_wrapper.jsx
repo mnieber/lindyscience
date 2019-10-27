@@ -25,3 +25,4 @@ export const action = _action;
 export const runInAction = _runInAction;
 export const intercept = _intercept;
 export const reaction = _reaction;
+export const spy = _spy;

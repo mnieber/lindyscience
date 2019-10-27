@@ -1,26 +1,30 @@
 // @flow
 
-import Cookies from "js-cookie";
-
-import type { GetBvrT } from "facets/index";
-import { behaviour_impl, data, operation } from "facets/index";
+import { type GetBvrT, behaviour_impl } from "facets/index";
+import { MovesContainer } from "screens/moves_container/moves_container";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { observable, runInAction } from "utils/mobx_wrapper";
-import type { UserProfileT } from "profiles/types";
 
 // $FlowFixMe
 @behaviour_impl
 export class SessionData {
   @observable dispatch: Function;
+  @observable movesCtr: MovesContainer;
+  @observable moveListsCtr: MoveListsContainer;
 
   static get: GetBvrT<SessionData>;
 }
 
 export function initSessionData(
   self: SessionData,
-  dispatch: Function
+  dispatch: Function,
+  movesCtr: MovesContainer,
+  moveListsCtr: MoveListsContainer
 ): SessionData {
-  runInAction(() => {
+  runInAction("initSessionData", () => {
     self.dispatch = dispatch;
+    self.movesCtr = movesCtr;
+    self.moveListsCtr = moveListsCtr;
   });
   return self;
 }

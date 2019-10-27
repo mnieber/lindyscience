@@ -34,8 +34,6 @@ export function selectionReducer(
   action: any
 ): SelectionState {
   switch (action.type) {
-    case "SET_SELECTED_MOVE_LIST_URL":
-      return { ...state, moveListUrl: action.moveListUrl };
     case "SET_LOCATION_MEMO":
       return { ...state, locationMemo: action.pathname };
     default:
@@ -43,8 +41,6 @@ export function selectionReducer(
   }
 }
 
-export const getSelectedMoveListUrl = (state: RootReducerStateT) =>
-  state.screens.selection.moveListUrl;
 export const getLocationMemo = (state: RootReducerStateT) =>
   state.screens.selection.locationMemo;
 

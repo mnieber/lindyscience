@@ -28,7 +28,7 @@ const _handleHighlight = (self: Highlight) => {
   listen(
     self,
     "highlightItem",
-    action(function(id) {
+    action("highlightItem", function(id) {
       self.id = id;
     })
   );

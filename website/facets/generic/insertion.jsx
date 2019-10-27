@@ -53,7 +53,7 @@ const _handleInsertPayload = (self: Insertion) => {
   listen(
     self,
     "insertPayload",
-    action(function() {
+    action("insertPayload", function() {
       if (self.position && self.payload) {
         const preview = getPreview(
           self.inputItems,

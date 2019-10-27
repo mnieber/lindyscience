@@ -9,7 +9,7 @@ export const newItemsAreInsertedWhenConfirmed = (ctr: any) => {
   listen(
     Addition.get(ctr),
     "confirm",
-    action(function() {
+    action("insertItemWhenConfirmed", function() {
       Insertion.get(ctr).insertPayload();
       Addition.get(ctr).item = undefined;
       Addition.get(ctr).parentId = undefined;

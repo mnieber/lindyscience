@@ -30,7 +30,7 @@ function _handleCancel(self: Dragging) {
   listen(
     self,
     "cancel",
-    action(function() {
+    action("cancelDrag", function() {
       self.position = undefined;
     })
   );

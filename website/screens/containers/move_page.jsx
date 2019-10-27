@@ -27,10 +27,10 @@ type MovePagePropsT = {
 function MovePage(props: MovePagePropsT) {
   const move = props.movesCtr.highlight.item;
   const hasLoadedSelectedMoveList = props.sessionCtr.loading.loadedMoveListUrls.includes(
-    props.sessionCtr.navigation.selectedMoveListUrl
+    props.sessionCtr.navigation.moveListUrl
   );
   const isMoveListNotFound = props.sessionCtr.loading.notFoundMoveListUrls.includes(
-    props.sessionCtr.navigation.selectedMoveListUrl
+    props.sessionCtr.navigation.moveListUrl
   );
 
   const notFoundDiv = <div>Oops, I cannot find this move list</div>;

@@ -17,7 +17,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
   const data = SessionData.get(ctr);
 
   reaction(
-    () => navigation.selectedMoveListUrl,
+    () => navigation.moveListUrl,
     action("loadSelectedMoveListFromUrl", async selectedMoveListUrl => {
       if (
         !!selectedMoveListUrl &&

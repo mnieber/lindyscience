@@ -20,7 +20,7 @@ export class Navigation {
   @observable urlParams: UrlParamsT;
 
   // $FlowFixMe
-  @computed get selectedMoveListUrl() {
+  @computed get moveListUrl() {
     return this.urlParams &&
       this.urlParams.ownerUsername &&
       this.urlParams.moveListSlug

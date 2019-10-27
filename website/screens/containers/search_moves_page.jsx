@@ -51,8 +51,8 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
     );
     props.dispatch(actSetMoveSearchResults(moveSearchResults));
     setLatestOptions({ ...values });
-    if (navigation.selectedMoveListUrl) {
-      history.push(`/app/lists/${navigation.selectedMoveListUrl}/search`);
+    if (navigation.moveListUrl) {
+      history.push(`/app/lists/${navigation.moveListUrl}/search`);
     }
   };
 

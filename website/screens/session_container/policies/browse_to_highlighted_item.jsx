@@ -20,8 +20,8 @@ export const handleNavigateToMoveList = (ctr: any) => {
     action("navigateToMoveList", (moveList: MoveListT) => {
       const updateProfile = moveList.slug != newMoveListSlug;
       // We need this to prevent a stale value of
-      // navigation.selectedMoveListUrl (in this function, we are
-      // effectively setting a new value of navigation.selectedMoveListUrl)
+      // navigation.moveListUrl (in this function, we are
+      // effectively setting a new value of navigation.moveListUrl)
       navigation.setUrlParams({
         ownerUsername: moveList.ownerUsername,
         moveListSlug: moveList.slug,
@@ -47,8 +47,8 @@ export const handleNavigateToMove = (ctr: any) => {
       const movesData = MovesData.get(data.movesCtr);
 
       // We need this to prevent a stale value of
-      // navigation.selectedMoveListUrl (in this function, we are
-      // effectively setting a new value of navigation.selectedMoveListUrl)
+      // navigation.moveListUrl (in this function, we are
+      // effectively setting a new value of navigation.moveListUrl)
       navigation.setUrlParams({
         ownerUsername: moveList.ownerUsername,
         moveListSlug: moveList.slug,

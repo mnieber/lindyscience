@@ -1,5 +1,6 @@
 // @flow
 
+import { findMoveListByUrl } from "screens/utils";
 import { compareIfNotNull, reaction } from "utils/mobx_wrapper";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { SessionData } from "screens/session_container/facets/session_data";
@@ -13,14 +14,12 @@ export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
   reaction(
     () => {
       const moveListsData = MoveListsData.get(data.moveListsCtr);
-      const moveListMatchingUrl = navigation.urlParams
-        ? moveListsData.moveLists.find(
-            moveList =>
-              moveList.ownerUsername == navigation.urlParams.ownerUsername &&
-              moveList.slug == navigation.urlParams.moveListSlug
+      return navigation.selectedMoveListUrl
+        ? findMoveListByUrl(
+            moveListsData.preview,
+            navigation.selectedMoveListUrl
           )
         : undefined;
-      return moveListMatchingUrl;
     },
     moveListMatchingUrl => {
       if (moveListMatchingUrl) {

@@ -12,13 +12,20 @@ import { Highlight } from "facets/generic/highlight";
 import { MovesData } from "screens/moves_container/moves_data";
 import { listen } from "facets/index";
 
-export const handleBrowseToMoveList = (ctr: any) => {
+export const handleNavigateToMoveList = (ctr: any) => {
   const navigation = Navigation.get(ctr);
   listen(
     navigation,
-    "browseToMoveList",
-    action("browseToMoveList", (moveList: MoveListT) => {
+    "navigateToMoveList",
+    action("navigateToMoveList", (moveList: MoveListT) => {
       const updateProfile = moveList.slug != newMoveListSlug;
+      // We need this to prevent a stale value of
+      // navigation.selectedMoveListUrl (in this function, we are
+      // effectively setting a new value of navigation.selectedMoveListUrl)
+      navigation.setUrlParams({
+        ownerUsername: moveList.ownerUsername,
+        moveListSlug: moveList.slug,
+      });
       browseToMoveUrl(
         navigation.history,
         [makeMoveListUrl(moveList)],
@@ -28,16 +35,26 @@ export const handleBrowseToMoveList = (ctr: any) => {
   );
 };
 
-export const handleBrowseToMove = (ctr: any) => {
+export const handleNavigateToMove = (ctr: any) => {
   const navigation = Navigation.get(ctr);
   const data = SessionData.get(ctr);
 
   listen(
     navigation,
-    "browseToMove",
-    action("browseToMove", (move: MoveT) => {
+    "navigateToMove",
+    action("navigateToMove", (move: MoveT) => {
       const moveList = Highlight.get(data.moveListsCtr).item;
       const movesData = MovesData.get(data.movesCtr);
+
+      // We need this to prevent a stale value of
+      // navigation.selectedMoveListUrl (in this function, we are
+      // effectively setting a new value of navigation.selectedMoveListUrl)
+      navigation.setUrlParams({
+        ownerUsername: moveList.ownerUsername,
+        moveListSlug: moveList.slug,
+        moveSlug: move.slug,
+        moveId: move.id,
+      });
       browseToMove(navigation.history, moveList, movesData.preview, move);
     })
   );

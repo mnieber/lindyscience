@@ -31,9 +31,9 @@ export class Navigation {
   // $FlowFixMe
   @operation setUrlParams(urlParams: UrlParamsT) {}
   // $FlowFixMe
-  @operation browseToMove(move: MoveT) {}
+  @operation navigateToMove(move: MoveT) {}
   // $FlowFixMe
-  @operation browseToMoveList(moveList: MoveListT) {}
+  @operation navigateToMoveList(moveList: MoveListT) {}
 
   static get: GetBvrT<Navigation>;
 }

@@ -29,8 +29,8 @@ const configureStore = () => {
     traditional: true,
   });
 
-  const logRedux = true;
-  const logMobx = true;
+  const logRedux = false;
+  const logMobx = false;
   const blackList = ["relayData"];
 
   let middleware = [thunk];

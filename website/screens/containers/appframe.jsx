@@ -4,8 +4,6 @@ import React from "react";
 import { compose } from "redux";
 
 import type { MoveByIdT } from "moves/types";
-import { Highlight } from "facets/generic/highlight";
-import { lookUp } from "utils/utils";
 import {
   MoveListsContainerContext,
   useMoveListsCtr,
@@ -39,29 +37,14 @@ function AppFrame(props: AppFramePropsT) {
   const history = useHistory();
 
   const moveListsCtr = useMoveListsCtr(props.dispatch, history);
-  moveListsCtr.setInputs(props.inputMoveLists, props.userProfile);
-
-  const moveList = Highlight.get(moveListsCtr).item;
-  const inputMoves = lookUp(
-    moveList ? moveList.moves : [],
-    props.moveById
-  ).filter(x => !!x);
-
   const movesCtr = useMovesCtr(props.dispatch, history);
-  movesCtr.setInputs(
-    inputMoves,
-    moveList,
-    props.inputMoveLists,
-    props.userProfile
-  );
-
   const sessionCtr = useSessionCtr(
     props.dispatch,
     history,
     movesCtr,
     moveListsCtr
   );
-  sessionCtr.setInputs(props.userProfile);
+  sessionCtr.setInputs(props.userProfile, props.inputMoveLists, props.moveById);
 
   const cookieNotice = sessionCtr.profiling.acceptsCookies ? (
     undefined

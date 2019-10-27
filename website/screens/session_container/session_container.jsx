@@ -1,10 +1,13 @@
 // @flow
 
+import type { MoveByIdT, MoveT } from "moves/types";
 import {
   Navigation,
-  type UrlParamsT,
   initNavigation,
 } from "screens/session_container/facets/navigation";
+import { Highlight } from "facets/generic/highlight";
+import type { MoveListT } from "move_lists/types";
+import { reaction, runInAction } from "utils/mobx_wrapper";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import {
@@ -18,8 +21,25 @@ import {
   initSessionData,
 } from "screens/session_container/facets/session_data";
 import { behaviour } from "facets/index";
-import { runInAction } from "utils/mobx_wrapper";
 import { Policies } from "screens/session_container/policies";
+
+const updateMovesCtrInputs = (ctr: SessionContainer) => {
+  reaction(
+    () => ctr.data.inputMoves,
+    (inputMoves: Array<MoveT>) => {
+      const moveListsCtr = ctr.data.moveListsCtr;
+      const moveList = Highlight.get(moveListsCtr).item;
+
+      // TODO use relayData?
+      ctr.data.movesCtr.setInputs(
+        inputMoves,
+        moveList,
+        ctr.data.moveListsCtr.data.preview,
+        ctr.profiling.userProfile
+      );
+    }
+  );
+};
 
 type SessionContainerPropsT = {
   dispatch: Function,
@@ -48,14 +68,16 @@ export class SessionContainer {
 
   _applyPolicies(props: SessionContainerPropsT) {
     [
-      Policies.navigation.handleBrowseToMove,
-      Policies.navigation.handleBrowseToMoveList,
+      Policies.navigation.handleNavigateToMove,
+      Policies.navigation.handleNavigateToMoveList,
       Policies.navigation.selectTheMoveListThatMatchesTheUrl,
       Policies.navigation.selectTheMoveThatMatchesTheUrl,
       Policies.profiling.handleLoadEmail,
       Policies.profiling.handleLoadUserProfileForSignedInEmail,
       Policies.profiling.handleSignOut,
       Policies.url.handleLoadSelectedMoveListFromUrl,
+
+      updateMovesCtrInputs,
     ].forEach(policy => policy(this));
   }
 
@@ -64,9 +86,15 @@ export class SessionContainer {
     this._applyPolicies(props);
   }
 
-  setInputs(userProfile: ?UserProfileT) {
+  setInputs(
+    userProfile: ?UserProfileT,
+    moveLists: Array<MoveListT>,
+    moveById: MoveByIdT
+  ) {
     runInAction("sessionContainer.setInputs", () => {
       this.profiling.userProfile = userProfile;
     });
+    this.data.moveListsCtr.setInputs(moveLists, userProfile);
+    this.data.moveById = moveById;
   }
 }

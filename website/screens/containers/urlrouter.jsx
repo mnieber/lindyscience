@@ -42,7 +42,9 @@ function IndexPage(props: IndexPagePropsT) {
 const withUrlParams = compose(
   withSessionCtr,
   (WrappedComponent: any) => (props: any) => {
-    Navigation.get(props.sessionCtr).setUrlParams(props.match.params);
+    React.useEffect(() =>
+      Navigation.get(props.sessionCtr).setUrlParams(props.match.params)
+    );
     return <WrappedComponent {...props} />;
   }
 );

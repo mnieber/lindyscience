@@ -58,7 +58,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
       className=""
       filter={isFollowing}
       moveListsCtr={props.moveListsCtr}
-      navigateTo={x => props.sessionCtr.navigation.browseToMoveList(x)}
+      navigateTo={x => props.sessionCtr.navigation.navigateToMoveList(x)}
     />
   );
 
@@ -99,7 +99,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
       moveListsCtr={props.moveListsCtr}
       moveContextMenu={props.moveContextMenu}
       userProfile={props.userProfile}
-      navigateTo={x => props.sessionCtr.navigation.browseToMove(x)}
+      navigateTo={x => props.sessionCtr.navigation.navigateToMove(x)}
     />
   );
 

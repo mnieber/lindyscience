@@ -37,15 +37,9 @@ export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
   const moveLists = ctr.data.display;
 
   function _onChange(pickedItem) {
-    if (moveLists.some(x => x.id === pickedItem.value)) {
-      const itemId = pickedItem.value;
-      Selection.get(ctr).selectItem({
-        itemId,
-        isShift: false,
-        isCtrl: false,
-      });
-    } else {
+    if (!moveLists.some(x => x.id === pickedItem.value)) {
       Addition.get(ctr).add({ name: pickedItem.label });
+      props.navigateTo(Addition.get(ctr).item);
     }
   }
 
@@ -70,9 +64,8 @@ export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
         value={option}
         setValue={x => {
           if (options.includes(x)) {
-            const itemId = x.value;
             Selection.get(ctr).selectItem({
-              itemId,
+              itemId: x.value,
               isShift: false,
               isCtrl: false,
             });

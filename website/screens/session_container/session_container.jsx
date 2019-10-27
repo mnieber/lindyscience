@@ -1,13 +1,12 @@
 // @flow
 
-import type { MoveByIdT, MoveT } from "moves/types";
+import type { MoveByIdT } from "moves/types";
+import { runInAction } from "utils/mobx_wrapper";
 import {
   Navigation,
   initNavigation,
 } from "screens/session_container/facets/navigation";
-import { Highlight } from "facets/generic/highlight";
 import type { MoveListT } from "move_lists/types";
-import { reaction, runInAction } from "utils/mobx_wrapper";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import {
@@ -22,24 +21,6 @@ import {
 } from "screens/session_container/facets/session_data";
 import { behaviour } from "facets/index";
 import { Policies } from "screens/session_container/policies";
-
-const updateMovesCtrInputs = (ctr: SessionContainer) => {
-  reaction(
-    () => ctr.data.inputMoves,
-    (inputMoves: Array<MoveT>) => {
-      const moveListsCtr = ctr.data.moveListsCtr;
-      const moveList = Highlight.get(moveListsCtr).item;
-
-      // TODO use relayData?
-      ctr.data.movesCtr.setInputs(
-        inputMoves,
-        moveList,
-        ctr.data.moveListsCtr.data.preview,
-        ctr.profiling.userProfile
-      );
-    }
-  );
-};
 
 type SessionContainerPropsT = {
   dispatch: Function,
@@ -72,12 +53,14 @@ export class SessionContainer {
       Policies.navigation.handleNavigateToMoveList,
       Policies.navigation.selectTheMoveListThatMatchesTheUrl,
       Policies.navigation.selectTheMoveThatMatchesTheUrl,
+
       Policies.profiling.handleLoadEmail,
       Policies.profiling.handleLoadUserProfileForSignedInEmail,
       Policies.profiling.handleSignOut,
+
       Policies.url.handleLoadSelectedMoveListFromUrl,
 
-      updateMovesCtrInputs,
+      Policies.data.updateMovesCtrInputs,
     ].forEach(policy => policy(this));
   }
 

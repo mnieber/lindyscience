@@ -1,7 +1,11 @@
 // @flow
 
 import React from "react";
+import { compose } from "redux";
 
+import type { MoveByIdT } from "moves/types";
+import { Highlight } from "facets/generic/highlight";
+import { lookUp } from "utils/utils";
 import {
   MoveListsContainerContext,
   useMoveListsCtr,
@@ -15,8 +19,7 @@ import {
   useSessionCtr,
 } from "screens/session_container/session_container_context";
 import type { MoveListT } from "move_lists/types";
-import type { MoveT } from "moves/types";
-import { useHistory, useParams } from "utils/react_router_dom_wrapper";
+import { useHistory, withRouter } from "utils/react_router_dom_wrapper";
 import { createToastr } from "app/utils";
 import SearchMovesPage from "screens/containers/search_moves_page";
 import { AccountMenu } from "app/presentation/accountmenu";
@@ -29,20 +32,25 @@ type AppFramePropsT = {
   children: any,
   dispatch: Function,
   inputMoveLists: Array<MoveListT>,
-  inputMoves: Array<MoveT>,
+  moveById: MoveByIdT,
 };
 
 function AppFrame(props: AppFramePropsT) {
   const history = useHistory();
-  const params = useParams();
 
   const moveListsCtr = useMoveListsCtr(props.dispatch, history);
   moveListsCtr.setInputs(props.inputMoveLists, props.userProfile);
 
+  const moveList = Highlight.get(moveListsCtr).item;
+  const inputMoves = lookUp(
+    moveList ? moveList.moves : [],
+    props.moveById
+  ).filter(x => !!x);
+
   const movesCtr = useMovesCtr(props.dispatch, history);
   movesCtr.setInputs(
-    props.inputMoves,
-    moveListsCtr.highlight.item,
+    inputMoves,
+    moveList,
     props.inputMoveLists,
     props.userProfile
   );
@@ -53,7 +61,7 @@ function AppFrame(props: AppFramePropsT) {
     movesCtr,
     moveListsCtr
   );
-  sessionCtr.setInputs(props.userProfile, params);
+  sessionCtr.setInputs(props.userProfile);
 
   const cookieNotice = sessionCtr.profiling.acceptsCookies ? (
     undefined
@@ -104,11 +112,13 @@ function AppFrame(props: AppFramePropsT) {
 }
 
 // $FlowFixMe
-AppFrame = Ctr.connect(state => ({
-  inputMoveLists: Ctr.fromStore.getMoveLists(state),
-  userProfile: Ctr.fromStore.getUserProfile(state),
-  inputMoves: Ctr.fromStore.getMovesInList(state),
-  inputMoveLists: Ctr.fromStore.getMoveLists(state),
-}))(AppFrame);
+AppFrame = compose(
+  withRouter,
+  Ctr.connect(state => ({
+    inputMoveLists: Ctr.fromStore.getMoveLists(state),
+    userProfile: Ctr.fromStore.getUserProfile(state),
+    moveById: Ctr.fromStore.getMoveById(state),
+  }))
+)(AppFrame);
 
 export default AppFrame;

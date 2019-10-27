@@ -1,9 +1,11 @@
-import { MoveListFrame } from "screens/containers/move_list_frame";
-
 // @flow
 
 import React from "react";
+import { compose } from "redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { withSessionCtr } from "screens/session_container/session_container_context";
+import { Navigation } from "screens/session_container/facets/navigation";
 import { useHistory } from "utils/react_router_dom_wrapper";
 import MovePage from "screens/containers/move_page";
 import MoveListDetailsPage from "screens/containers/move_list_details_page";
@@ -11,6 +13,7 @@ import AppFrame from "screens/containers/appframe";
 import SearchResultsPage from "screens/containers/search_results_page";
 import SignInPage from "app/containers/signinpage";
 import RegisterPage from "app/containers/register_page";
+import { MoveListFrame } from "screens/containers/move_list_frame";
 import PasswordResetPage from "app/containers/password_reset_page";
 import ProfilePage from "screens/containers/profile_page";
 import Ctr, { browseToMoveUrl } from "screens/containers/index";
@@ -23,6 +26,7 @@ export type IndexPagePropsT = {
 function IndexPage(props: IndexPagePropsT) {
   const history = useHistory();
 
+  // TODO: use navigation.browseToRecentMove()
   function _loadRecentMove() {
     if (props.userProfile && props.userProfile.recentMoveUrl) {
       browseToMoveUrl(history, [props.userProfile.recentMoveUrl], false);
@@ -35,26 +39,38 @@ function IndexPage(props: IndexPagePropsT) {
   return <div className="h-full" />;
 }
 
+const withUrlParams = compose(
+  withSessionCtr,
+  (WrappedComponent: any) => (props: any) => {
+    Navigation.get(props.sessionCtr).setUrlParams(props.match.params);
+    return <WrappedComponent {...props} />;
+  }
+);
+
 type UrlRouterPropsT = {
   userProfile: UserProfileT,
 };
 
 function ListsRouter() {
   return (
+    // $FlowFixMe
     <MoveListFrame>
       <Switch>
-        <Route exact path="/app/lists/:ownerUsername/:moveListSlug">
-          <MoveListDetailsPage />
-        </Route>
-        <Route exact path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug">
-          <MovePage />
-        </Route>
+        <Route
+          exact
+          path="/app/lists/:ownerUsername/:moveListSlug"
+          component={withUrlParams(MoveListDetailsPage)}
+        />
+        <Route
+          exact
+          path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug"
+          component={withUrlParams(MovePage)}
+        />
         <Route
           exact
           path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId"
-        >
-          <MovePage />
-        </Route>
+          component={withUrlParams(MovePage)}
+        />
       </Switch>
     </MoveListFrame>
   );

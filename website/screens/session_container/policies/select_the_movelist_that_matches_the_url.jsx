@@ -7,8 +7,8 @@ import { MoveListsData } from "screens/movelists_container/movelists_data";
 import { Selection } from "facets/generic/selection";
 
 export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
-  const navigation = Navigation.get(ctr);
   const data = SessionData.get(ctr);
+  const navigation = Navigation.get(ctr);
 
   reaction(
     () => {

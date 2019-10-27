@@ -26,13 +26,13 @@ export function behaviour(Inf: any) {
   };
 }
 
-export function behaviour_impl(target: any, name: string) {
-  target[symbol] = Symbol(name);
+export function behaviour_impl(target: any) {
+  target[symbol] = Symbol(target.name);
 
   target.get = (ctr: any) => {
     const memberName = ctr[target[symbol]];
     if (!memberName) {
-      console.error(`No interface ${name} in container`);
+      console.error(`No interface ${target.name} in container`);
     }
     return ctr[memberName];
   };
@@ -48,7 +48,7 @@ function _symbolName(symbol) {
   return chop(symbol.toString());
 }
 
-export function behaviourClassName(Inf: any) {
+export function facetClassName(Inf: any) {
   return _symbolName(Inf[symbol]);
 }
 
@@ -182,9 +182,9 @@ export const relayData = (
       }
     },
     {
-      name: `relayData from ${behaviourClassName(
+      name: `relayData from ${facetClassName(
         fromPolicy
-      )}.${fromMember} to ${behaviourClassName(toPolicy)}.${toMember}`,
+      )}.${fromMember} to ${facetClassName(toPolicy)}.${toMember}`,
     }
   );
 

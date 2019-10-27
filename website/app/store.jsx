@@ -29,8 +29,9 @@ const configureStore = () => {
     traditional: true,
   });
 
-  const logRedux = false;
-  const logMobx = true;
+  const logRedux = true;
+  const logMobx = false;
+  const blackList = ["relayData"];
 
   let middleware = [thunk];
   if (process.env.NODE_ENV !== "production") {
@@ -39,8 +40,14 @@ const configureStore = () => {
 
   if (logMobx) {
     spy(event => {
-      if (event.type === "action") {
-        console.log(`${event.name} with args: ${event.arguments}`);
+      if (
+        event.type === "action" &&
+        !blackList.includes(event.name.split(" ")[0])
+      ) {
+        const args = event.arguments.length
+          ? ` with args: ${event.arguments}`
+          : "";
+        (console: any).log(`${event.name}${args}`);
       }
     });
   }

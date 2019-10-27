@@ -1,8 +1,8 @@
 // @flow
 
+import { action, computed, observable, runInAction } from "utils/mobx_wrapper";
 import type { UUID } from "kernel/types";
-import { type GetBvrT, behaviour_impl } from "facets/index";
-import { observable, runInAction, computed } from "utils/mobx_wrapper";
+import { type GetBvrT, behaviour_impl, listen, operation } from "facets/index";
 
 export type UrlParamsT = {
   ownerUsername: ?string,
@@ -27,10 +27,24 @@ export class Navigation {
       : undefined;
   }
 
+  // $FlowFixMe
+  @operation setUrlParams(urlParams: UrlParamsT) {}
+
   static get: GetBvrT<Navigation>;
 }
 
+function _handleSetUrlParams(self: Navigation) {
+  listen(
+    self,
+    "setUrlParams",
+    action("setUrlParams", (urlParams: UrlParamsT) => {
+      self.urlParams = urlParams;
+    })
+  );
+}
+
 export function initNavigation(self: Navigation, history: any): Navigation {
+  _handleSetUrlParams(self);
   runInAction("initNavigation", () => {
     self.history = history;
   });

@@ -22,13 +22,11 @@ const _stateSelection = (state: RootReducerStateT): SelectionState =>
 ///////////////////////////////////////////////////////////////////////
 
 type SelectionState = {
-  moveListUrl: string,
   locationMemo: string,
 };
 
 export function selectionReducer(
   state: SelectionState = {
-    moveListUrl: "",
     locationMemo: "",
   },
   action: any
@@ -75,26 +73,6 @@ export const reducer = combineReducers({
   selection: selectionReducer,
   search: searchReducer,
 });
-
-export const getSelectedMoveList: Selector<?MoveListT> = createSelector(
-  [_stateSelection, getMoveLists],
-
-  (stateSelection, moveLists): ?MoveListT => {
-    const [ownerUsername, slug] = stateSelection.moveListUrl.split("/");
-    const isMatch = x => x.ownerUsername == ownerUsername && x.slug == slug;
-    return moveLists.find(isMatch);
-  }
-);
-
-export const getMovesInList: Selector<Array<MoveT>> = createSelector(
-  [getMoveById, getSelectedMoveList],
-
-  (moveById, moveList): Array<MoveT> => {
-    return moveList
-      ? (moveList.moves || []).map(moveId => moveById[moveId]).filter(x => !!x)
-      : [];
-  }
-);
 
 export const getMoveSearchResults = (
   state: RootReducerStateT

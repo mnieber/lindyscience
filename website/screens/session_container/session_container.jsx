@@ -63,10 +63,9 @@ export class SessionContainer {
     this._applyPolicies(props);
   }
 
-  setInputs(userProfile: ?UserProfileT, urlParams: UrlParamsT) {
+  setInputs(userProfile: ?UserProfileT) {
     runInAction("sessionContainer.setInputs", () => {
       this.profiling.userProfile = userProfile;
-      this.navigation.urlParams = urlParams;
     });
   }
 }

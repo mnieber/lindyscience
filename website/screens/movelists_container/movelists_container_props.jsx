@@ -32,6 +32,7 @@ export function moveListsContainerProps(dispatch: Function, history: any) {
 
   function createNewMoveList(props: any): MoveListT {
     return {
+      // id: "<<< NEW MOVELIST >>>",
       id: createUUID(),
       slug: props.name ? slugify(props.name) : newMoveListSlug,
       name: "New move list",

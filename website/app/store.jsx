@@ -30,7 +30,7 @@ const configureStore = () => {
   });
 
   const logRedux = true;
-  const logMobx = false;
+  const logMobx = true;
   const blackList = ["relayData"];
 
   let middleware = [thunk];
@@ -47,7 +47,8 @@ const configureStore = () => {
         const args = event.arguments.length
           ? ` with args: ${event.arguments}`
           : "";
-        (console: any).log(`${event.name}${args}`);
+        const css = "background: #222; color: #bada55";
+        (console: any).log(`%c${event.name}`, css, `${args}`);
       }
     });
   }

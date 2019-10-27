@@ -1,9 +1,9 @@
 // @flow
 
+import { compareIfNotNull, reaction } from "utils/mobx_wrapper";
 import { MovesData } from "screens/moves_container/moves_data";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { SessionData } from "screens/session_container/facets/session_data";
-import { reaction } from "utils/mobx_wrapper";
 import { findMoveBySlugid, makeSlugid } from "screens/utils";
 import { Selection } from "facets/generic/selection";
 
@@ -15,9 +15,7 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
     () => {
       const movesData = MovesData.get(data.movesCtr);
       const slugId =
-        navigation.urlParams &&
-        navigation.urlParams.moveSlug &&
-        navigation.urlParams.moveId
+        navigation.urlParams && navigation.urlParams.moveSlug
           ? makeSlugid(
               navigation.urlParams.moveSlug,
               navigation.urlParams.moveId
@@ -26,18 +24,16 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
       const moveMatchingUrl = slugId
         ? findMoveBySlugid(movesData.preview, slugId)
         : undefined;
-      return moveMatchingUrl;
+      return moveMatchingUrl || null;
     },
     moveMatchingUrl => {
       const selection = Selection.get(data.movesCtr);
-      if (moveMatchingUrl) {
-        selection.selectItem({
-          itemId: moveMatchingUrl.id,
-          isShift: false,
-          isCtrl: false,
-        });
-      }
+      selection.selectItem({
+        itemId: moveMatchingUrl.id,
+        isShift: false,
+        isCtrl: false,
+      });
     },
-    { name: "selectTheMoveThatMatchesTheUrl" }
+    { name: "selectTheMoveThatMatchesTheUrl", equals: compareIfNotNull }
   );
 };

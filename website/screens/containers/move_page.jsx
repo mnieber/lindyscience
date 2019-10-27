@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { SessionContainer } from "screens/session_container/session_container";
 import { withSessionCtr } from "screens/session_container/session_container_context";
 import { useParams } from "utils/react_router_dom_wrapper";
@@ -20,6 +21,8 @@ import type { UserProfileT } from "profiles/types";
 type MovePagePropsT = {
   sessionCtr: SessionContainer,
   movesCtr: MovesContainer,
+  moveListsCtr: MoveListsContainer,
+  moveListUrl: string,
   movePrivateDataPanel: any,
   moveDiv: any,
   userProfile: UserProfileT,
@@ -34,6 +37,7 @@ function MovePage(props: MovePagePropsT) {
     makeSlugid(params.moveSlug, params.moveId)
   );
 
+  // TODO: move to sessionCtr
   React.useEffect(() => {
     if (moveMatchingUrl) {
       Highlight.get(props.movesCtr).id = moveMatchingUrl.id;
@@ -46,15 +50,33 @@ function MovePage(props: MovePagePropsT) {
   }, [moveMatchingUrl]);
 
   const move = props.movesCtr.highlight.item;
-  const hasLoadedSelectedMoveList = props.sessionCtr.data.loadedMoveListUrls.includes(
-    props.sessionCtr.data.selectedMoveListUrl
+  const hasLoadedSelectedMoveList = props.sessionCtr.loading.loadedMoveListUrls.includes(
+    props.sessionCtr.navigation.selectedMoveListUrl
   );
+
+  const notFoundDiv = <div>Oops, I cannot find this move list</div>;
+  const loadingDiv = <div>Loading move list, please wait...</div>;
+
+  const isMoveListNotFound = props.sessionCtr.loading.notFoundMoveListUrls.includes(
+    props.moveListUrl
+  );
+
   if (!move) {
     const msg = hasLoadedSelectedMoveList
       ? "Oops, I cannot find this move"
       : "Loading, please wait...";
 
     return <div className="noMoveHighlighted">{msg}</div>;
+  }
+
+  const moveList = props.moveListsCtr.highlight.item;
+
+  if (!moveList && isMoveListNotFound) {
+    return notFoundDiv;
+  }
+
+  if (!moveList && !isMoveListNotFound) {
+    return loadingDiv;
   }
 
   return props.moveDiv;
@@ -68,6 +90,7 @@ MovePage = compose(
   withMove,
   Ctr.connect(state => ({
     userProfile: Ctr.fromStore.getUserProfile(state),
+    moveListUrl: Ctr.fromStore.getSelectedMoveListUrl(state),
   })),
   observer
 )(MovePage);

@@ -6,7 +6,7 @@ import { handleLoadEmail } from "screens/session_container/policies/handle_load_
 import { handleLoadUserProfileForSignedInEmail } from "screens/session_container/policies/handle_load_user_profile_for_signed_in_email";
 
 export const Policies = {
-  userProfile: {
+  profiling: {
     handleLoadEmail,
     handleLoadUserProfileForSignedInEmail: handleLoadUserProfileForSignedInEmail,
   },

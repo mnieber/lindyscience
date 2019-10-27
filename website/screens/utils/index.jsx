@@ -16,8 +16,12 @@ export function makeSlugid(slug: string, id: ?UUID) {
   return slug + (id ? "/" + id : "");
 }
 
+export function moveListUrl(ownerUsername: string, slug: string) {
+  return ownerUsername + "/" + slug;
+}
+
 export function makeMoveListUrl(moveList: MoveListT) {
-  return moveList.ownerUsername + "/" + moveList.slug;
+  return moveListUrl(moveList.ownerUsername, moveList.slug);
 }
 
 export function makeSlugidMatcher(slugid: SlugidT) {

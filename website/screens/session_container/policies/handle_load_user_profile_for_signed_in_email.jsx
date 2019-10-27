@@ -1,5 +1,6 @@
 // @flow
 
+import { Profiling } from "screens/session_container/facets/profiling";
 import { reaction } from "utils/mobx_wrapper";
 import { actSetUserProfile } from "profiles/actions";
 import { actSetVotes } from "votes/actions";
@@ -12,10 +13,11 @@ import { apiFindMoveLists } from "screens/api";
 import { actAddMoveLists } from "move_lists/actions";
 
 export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
+  const profiling = Profiling.get(ctr);
   const dispatch = ctr.data.dispatch;
 
   reaction(
-    () => ctr.data.signedInEmail,
+    () => profiling.signedInEmail,
     async signedInEmail => {
       if (signedInEmail === "anonymous") {
         dispatch(actSetUserProfile(undefined));

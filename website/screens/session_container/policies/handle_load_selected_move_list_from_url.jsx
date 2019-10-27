@@ -1,5 +1,8 @@
 // @flow
 
+import { SessionData } from "screens/session_container/facets/session_data";
+import { Loading } from "screens/session_container/facets/loading";
+import { Navigation } from "screens/session_container/facets/navigation";
 import { reaction, action } from "utils/mobx_wrapper";
 import { newMoveListSlug } from "screens/utils";
 import { apiLoadMoveList } from "screens/api";
@@ -9,12 +12,16 @@ import { actAddMoveLists } from "move_lists/actions";
 import { actAddTips } from "tips/actions";
 
 export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
+  const navigation = Navigation.get(ctr);
+  const loading = Loading.get(ctr);
+  const data = SessionData.get(ctr);
+
   reaction(
-    () => ctr.data.selectedMoveListUrl,
+    () => navigation.selectedMoveListUrl,
     action(async selectedMoveListUrl => {
       if (
         !!selectedMoveListUrl &&
-        !ctr.data.loadedMoveListUrls.includes(selectedMoveListUrl)
+        !loading.loadedMoveListUrls.includes(selectedMoveListUrl)
       ) {
         const [ownerUsername, slug] = selectedMoveListUrl.split("/");
 
@@ -23,16 +30,16 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
           try {
             moveList = await apiLoadMoveList(ownerUsername, slug);
           } catch {
-            ctr.data.notFoundMoveListUrls.push(selectedMoveListUrl);
+            loading.notFoundMoveListUrls.push(selectedMoveListUrl);
           }
 
           if (moveList) {
-            ctr.data.dispatch(
+            data.dispatch(
               actAddMoves(getObjectValues(moveList.entities.moves || {}))
             );
-            ctr.data.dispatch(actAddMoveLists(moveList.entities.moveLists));
-            ctr.data.dispatch(actAddTips(moveList.entities.tips || {}));
-            ctr.data.loadedMoveListUrls.push(selectedMoveListUrl);
+            data.dispatch(actAddMoveLists(moveList.entities.moveLists));
+            data.dispatch(actAddTips(moveList.entities.tips || {}));
+            loading.loadedMoveListUrls.push(selectedMoveListUrl);
           }
         }
       }

@@ -1,9 +1,10 @@
+import { MoveListFrame } from "screens/containers/move_list_frame";
+
 // @flow
 
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useHistory } from "utils/react_router_dom_wrapper";
-import MoveListFrame from "screens/containers/move_list_frame";
 import MovePage from "screens/containers/move_page";
 import MoveListDetailsPage from "screens/containers/move_list_details_page";
 import AppFrame from "screens/containers/appframe";
@@ -38,6 +39,49 @@ type UrlRouterPropsT = {
   userProfile: UserProfileT,
 };
 
+function ListsRouter() {
+  return (
+    <MoveListFrame>
+      <Switch>
+        <Route exact path="/app/lists/:ownerUsername/:moveListSlug">
+          <MoveListDetailsPage />
+        </Route>
+        <Route exact path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug">
+          <MovePage />
+        </Route>
+        <Route
+          exact
+          path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId"
+        >
+          <MovePage />
+        </Route>
+      </Switch>
+    </MoveListFrame>
+  );
+}
+
+function SignInRouter() {
+  return (
+    <Switch>
+      <Route exact path="/app/sign-in">
+        <SignInPage />
+      </Route>
+      <Route exact path="/app/register">
+        <RegisterPage />
+      </Route>
+      <Route exact path="/app/register/activate/:uid/:token">
+        <RegisterPage />
+      </Route>
+      <Route exact path="/app/sign-in/reset-password">
+        <PasswordResetPage />
+      </Route>
+      <Route exact path="/app/sign-in/reset-password/:uid/:token">
+        <PasswordResetPage />
+      </Route>
+    </Switch>
+  );
+}
+
 function UrlRouter(props: UrlRouterPropsT) {
   return (
     <Router>
@@ -49,48 +93,11 @@ function UrlRouter(props: UrlRouterPropsT) {
           <Route exact path="/app/people/:username">
             <ProfilePage />
           </Route>
-          <Route path="/app/lists/:ownerUsername/:moveListSlug">
-            <MoveListFrame>
-              <Switch>
-                <Route
-                  exact
-                  path="/app/lists/:ownerUsername/:moveListSlug/search"
-                >
-                  <SearchResultsPage />
-                </Route>
-                <Route exact path="/app/lists/:ownerUsername/:moveListSlug">
-                  <MoveListDetailsPage />
-                </Route>
-                <Route
-                  exact
-                  path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug"
-                >
-                  <MovePage />
-                </Route>
-                <Route
-                  exact
-                  path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId"
-                >
-                  <MovePage />
-                </Route>
-              </Switch>
-            </MoveListFrame>
+          <Route exact path="/app/lists/:ownerUsername/:moveListSlug/search">
+            <SearchResultsPage />
           </Route>
-          <Route exact path="/app/sign-in">
-            <SignInPage />
-          </Route>
-          <Route exact path="/app/register">
-            <RegisterPage />
-          </Route>
-          <Route exact path="/app/register/activate/:uid/:token">
-            <RegisterPage />
-          </Route>
-          <Route exact path="/app/sign-in/reset-password">
-            <PasswordResetPage />
-          </Route>
-          <Route exact path="/app/sign-in/reset-password/:uid/:token">
-            <PasswordResetPage />
-          </Route>
+          <ListsRouter />
+          <SignInRouter />
         </Switch>
       </AppFrame>
     </Router>

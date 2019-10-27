@@ -1,20 +1,17 @@
 // @flow
 
+import Cookies from "js-cookie";
+
+import type { GetBvrT } from "facets/index";
 import { behaviour_impl, data, operation } from "facets/index";
 import { observable, runInAction } from "utils/mobx_wrapper";
 import type { UserProfileT } from "profiles/types";
-import Cookies from "js-cookie";
 
 // $FlowFixMe
 @behaviour_impl
-export class SessionData {
+export class Profiling {
   @data userProfile: ?UserProfileT;
   @observable signedInEmail: ?string;
-  @observable dispatch: Function;
-  @observable history: any;
-  @observable selectedMoveListUrl: string;
-  @observable loadedMoveListUrls: Array<string> = [];
-  @observable notFoundMoveListUrls: Array<string> = [];
   @observable acceptsCookies: boolean = false;
 
   // $FlowFixMe
@@ -23,23 +20,20 @@ export class SessionData {
   @operation signOut() {}
   // $FlowFixMe
   @operation acceptCookies() {}
+
+  static get: GetBvrT<Profiling>;
 }
 
-function _handleAcceptCookies(self: SessionData) {
+function _handleAcceptCookies(self: Profiling) {
   Cookies.set("acceptCookies", "1");
   runInAction(() => {
     self.acceptsCookies = true;
   });
 }
 
-export function initSessionData(
-  self: SessionData,
-  dispatch: Function,
-  history: any
-): SessionData {
+export function initProfiling(self: Profiling): Profiling {
   _handleAcceptCookies(self);
   runInAction(() => {
-    self.dispatch = dispatch;
     self.acceptsCookies = Cookies.get("acceptCookies") === "1";
   });
   return self;

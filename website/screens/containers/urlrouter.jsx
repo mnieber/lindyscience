@@ -111,7 +111,7 @@ function UrlRouter(props: UrlRouterPropsT) {
           <Route exact path="/app/people/:username">
             <ProfilePage />
           </Route>
-          <Route exact path="/app/lists/:ownerUsername/:moveListSlug/search">
+          <Route exact path="/app/search">
             <SearchResultsPage />
           </Route>
           <ListsRouter />

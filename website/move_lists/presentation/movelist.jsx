@@ -22,36 +22,6 @@ import type { UserProfileT } from "profiles/types";
 
 // MoveList
 
-type KeyHandlersT = {|
-  handleKeyDown: Function,
-|};
-
-function createKeyHandlers(
-  moves: Array<MoveT>,
-  highlightedMoveId: UUID,
-  selectMoveById: (UUID, boolean, boolean) => void,
-  props: MoveListPropsT
-): KeyHandlersT {
-  function handleKeyDown(key, e) {
-    if (highlightedMoveId) {
-      e.target.id == "moveList" &&
-        handleSelectionKeys2(
-          key,
-          e,
-          moves.map(x => x.id),
-          highlightedMoveId,
-          // TODO support shift selection with keyboard (e.shiftKey)
-          // Note: in that case, anchor != highlight
-          x => selectMoveById(x, false, false)
-        );
-    }
-  }
-
-  return {
-    handleKeyDown,
-  };
-}
-
 type MoveListPropsT = {|
   userProfile: ?UserProfileT,
   createHostedPanels: MoveT => any,
@@ -74,20 +44,13 @@ export const MoveList = observer((props: MoveListPropsT) => {
   };
 
   const dragPosition = props.movesCtr.dragging.position;
-  const selectionIds = props.movesCtr.selection.ids;
+  const selectionIds = props.movesCtr.selection.ids || [];
   const highlightId = props.movesCtr.highlight.id;
   const moves = props.movesCtr.data.display;
   const moveList = props.moveListsCtr.highlight.item;
   const userProfile = props.userProfile;
-
   const isMoveListOwner =
     userProfile && isOwner(userProfile, getOwnerId(moveList));
-  const keyHandlers = createKeyHandlers(
-    moves,
-    highlightId,
-    selectMoveById,
-    props
-  );
 
   const moveNodes = moves.map((move, idx) => {
     const hostedPanels = props.createHostedPanels(move);
@@ -96,8 +59,7 @@ export const MoveList = observer((props: MoveListPropsT) => {
       <div
         className={classnames({
           moveList__item: true,
-          "moveList__item--selected":
-            move && (selectionIds || []).includes(move.id),
+          "moveList__item--selected": move && selectionIds.includes(move.id),
           "moveList__item--highlighted": move && move.id == highlightId,
           "moveList__item--drag_before":
             dragPosition &&
@@ -122,7 +84,13 @@ export const MoveList = observer((props: MoveListPropsT) => {
   return (
     <KeyboardEventHandler
       handleKeys={["up", "down"]}
-      onKeyEvent={keyHandlers.handleKeyDown}
+      onKeyEvent={
+        props.movesCtr.handlerSelectWithKeys.handle(
+          "up",
+          "down",
+          props.navigateTo
+        ).onKeyDown
+      }
     >
       <div
         className={classnames(props.className, "moveList")}

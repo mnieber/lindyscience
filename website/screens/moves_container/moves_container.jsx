@@ -43,7 +43,7 @@ export class MovesContainer {
   @facet(Selection) selection: Selection;
   clipboard: Clipboard;
 
-  handlerKeys = new SelectWithKeys({ container: this });
+  handlerSelectWithKeys = new SelectWithKeys({ container: this });
   handlerClick = new ClickToSelectItems({ container: this });
   handlerDrag = new DragItems({ container: this });
 

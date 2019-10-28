@@ -1,5 +1,7 @@
 // @flow
 
+import { Selection } from "facets/generic/selection";
+import { makeSlugid } from "screens/utils";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import { action, computed, observable, runInAction } from "utils/mobx_wrapper";
@@ -25,6 +27,13 @@ export class Navigation {
       this.urlParams.ownerUsername &&
       this.urlParams.moveListSlug
       ? this.urlParams.ownerUsername + "/" + this.urlParams.moveListSlug
+      : undefined;
+  }
+
+  // $FlowFixMe
+  @computed get moveSlugId() {
+    return this.urlParams && this.urlParams.moveSlug
+      ? makeSlugid(this.urlParams.moveSlug, this.urlParams.moveId)
       : undefined;
   }
 
@@ -55,3 +64,13 @@ export function initNavigation(self: Navigation, history: any): Navigation {
   });
   return self;
 }
+
+export const ensureSelected = (selection: Selection, id: any) => {
+  if (!selection.ids.includes(id)) {
+    selection.selectItem({
+      itemId: id,
+      isShift: false,
+      isCtrl: false,
+    });
+  }
+};

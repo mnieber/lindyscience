@@ -1,6 +1,6 @@
 // @flow
 
-import { SessionData } from "screens/session_container/facets/session_data";
+import { Inputs } from "screens/session_container/facets/inputs";
 import { Loading } from "screens/session_container/facets/loading";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { reaction, action } from "utils/mobx_wrapper";
@@ -14,7 +14,7 @@ import { actAddTips } from "tips/actions";
 export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
   const navigation = Navigation.get(ctr);
   const loading = Loading.get(ctr);
-  const data = SessionData.get(ctr);
+  const inputs = Inputs.get(ctr);
 
   reaction(
     () => navigation.moveListUrl,
@@ -34,11 +34,11 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
           }
 
           if (moveList) {
-            data.dispatch(
+            inputs.dispatch(
               actAddMoves(getObjectValues(moveList.entities.moves || {}))
             );
-            data.dispatch(actAddMoveLists(moveList.entities.moveLists));
-            data.dispatch(actAddTips(moveList.entities.tips || {}));
+            inputs.dispatch(actAddMoveLists(moveList.entities.moveLists));
+            inputs.dispatch(actAddTips(moveList.entities.tips || {}));
             loading.loadedMoveListUrls.push(selectedMoveListUrl);
           }
         }

@@ -1,5 +1,6 @@
 // @flow
 
+import { Inputs } from "screens/session_container/facets/inputs";
 import { Profiling } from "screens/session_container/facets/profiling";
 import { reaction } from "utils/mobx_wrapper";
 import { actSetUserProfile } from "profiles/actions";
@@ -14,7 +15,8 @@ import { actAddMoveLists } from "move_lists/actions";
 
 export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
   const profiling = Profiling.get(ctr);
-  const dispatch = ctr.data.dispatch;
+  const inputs = Inputs.get(ctr);
+  const dispatch = inputs.dispatch;
 
   reaction(
     () => profiling.signedInEmail,

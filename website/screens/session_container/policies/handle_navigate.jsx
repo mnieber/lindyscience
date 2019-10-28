@@ -1,5 +1,7 @@
 // @flow
 
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
+import { MovesContainer } from "screens/moves_container/moves_container";
 import {
   makeMoveListUrl,
   makeSlugidMatcher,
@@ -11,7 +13,7 @@ import { action } from "utils/mobx_wrapper";
 import type { MoveT } from "moves/types";
 import { browseToMoveUrl } from "screens/containers";
 import { Navigation } from "screens/session_container/facets/navigation";
-import { SessionData } from "screens/session_container/facets/session_data";
+import { Inputs } from "screens/session_container/facets/inputs";
 import { Highlight } from "facets/generic/highlight";
 import { MovesData } from "screens/moves_container/moves_data";
 import { listen } from "facets/index";
@@ -41,14 +43,15 @@ export const handleNavigateToMoveList = (ctr: any) => {
 
 export const handleNavigateToMove = (ctr: any) => {
   const navigation = Navigation.get(ctr);
-  const data = SessionData.get(ctr);
+  const moveListsCtr = MoveListsContainer.get(ctr);
+  const movesCtr = MovesContainer.get(ctr);
 
   listen(
     navigation,
     "navigateToMove",
     action("navigateToMove", (move: MoveT) => {
-      const moveList = Highlight.get(data.moveListsCtr).item;
-      const movesData = MovesData.get(data.movesCtr);
+      const moveList = Highlight.get(moveListsCtr).item;
+      const movesData = MovesData.get(movesCtr);
 
       // We need this to prevent a stale value of
       // navigation.moveListUrl (in this function, we are

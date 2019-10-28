@@ -5,12 +5,10 @@ import Cookies from "js-cookie";
 import type { GetBvrT } from "facets/index";
 import { facetClass, data, operation } from "facets/index";
 import { observable, runInAction } from "utils/mobx_wrapper";
-import type { UserProfileT } from "profiles/types";
 
 // $FlowFixMe
 @facetClass
 export class Profiling {
-  @data userProfile: ?UserProfileT;
   @observable signedInEmail: ?string;
   @observable acceptsCookies: boolean = false;
 

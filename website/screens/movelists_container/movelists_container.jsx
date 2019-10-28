@@ -1,6 +1,7 @@
 // @flow
 
-import { facet, mapData, relayData } from "facets/index";
+import type { GetBvrT } from "facets/index";
+import { facet, facetClass, mapData, relayData } from "facets/index";
 import type { UUID } from "kernel/types";
 import { Labelling, initLabelling } from "facets/generic/labelling";
 import { getIds } from "app/utils";
@@ -28,6 +29,8 @@ type MoveListsContainerPropsT = {
   setFollowedMoveListIds: (ids: Array<UUID>) => void,
 };
 
+// $FlowFixMe
+@facetClass
 export class MoveListsContainer {
   @facet(Addition) addition: Addition;
   @facet(Editing) editing: Editing;
@@ -121,4 +124,6 @@ export class MoveListsContainer {
       this.data._userProfile = userProfile;
     });
   }
+
+  static get: GetBvrT<MoveListsContainer>;
 }

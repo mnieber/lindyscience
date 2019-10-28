@@ -15,11 +15,8 @@ import {
 } from "screens/session_container/facets/profiling";
 import { Loading, initLoading } from "screens/session_container/facets/loading";
 import type { UserProfileT } from "profiles/types";
-import {
-  SessionData,
-  initSessionData,
-} from "screens/session_container/facets/session_data";
-import { facet } from "facets/index";
+import { Inputs, initInputs } from "screens/session_container/facets/inputs";
+import { facet, facetClass } from "facets/index";
 import { Policies } from "screens/session_container/policies";
 
 type SessionContainerPropsT = {
@@ -29,19 +26,22 @@ type SessionContainerPropsT = {
   moveListsCtr: MoveListsContainer,
 };
 
+// $FlowFixMe
+@facetClass
 export class SessionContainer {
-  @facet(SessionData) data: SessionData;
+  @facet(Inputs) inputs: Inputs;
   @facet(Loading) loading: Loading;
   @facet(Navigation) navigation: Navigation;
   @facet(Profiling) profiling: Profiling;
 
+  @facet(MovesContainer) movesCtr: MovesContainer;
+  @facet(MoveListsContainer) moveListsCtr: MoveListsContainer;
+
   _createFacets(props: SessionContainerPropsT) {
-    this.data = initSessionData(
-      new SessionData(),
-      props.dispatch,
-      props.movesCtr,
-      props.moveListsCtr
-    );
+    this.movesCtr = props.movesCtr;
+    this.moveListsCtr = props.moveListsCtr;
+
+    this.inputs = initInputs(new Inputs(), props.dispatch);
     this.loading = initLoading(new Loading());
     this.navigation = initNavigation(new Navigation(), props.history);
     this.profiling = initProfiling(new Profiling());
@@ -75,9 +75,9 @@ export class SessionContainer {
     moveById: MoveByIdT
   ) {
     runInAction("sessionContainer.setInputs", () => {
-      this.profiling.userProfile = userProfile;
+      this.inputs.userProfile = userProfile;
+      this.inputs.moveById = moveById;
     });
-    this.data.moveListsCtr.setInputs(moveLists, userProfile);
-    this.data.moveById = moveById;
+    this.moveListsCtr.setInputs(moveLists, userProfile);
   }
 }

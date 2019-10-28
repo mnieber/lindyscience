@@ -1,10 +1,11 @@
 // @flow
 
+import type { GetBvrT } from "facets/index";
 import { getIds } from "app/utils";
 import { MovesData, initMovesData } from "screens/moves_container/moves_data";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
-import { facet, mapData } from "facets/index";
+import { facet, mapData, facetClass } from "facets/index";
 import { Addition, initAddition } from "facets/generic/addition";
 import { Dragging, initDragging } from "facets/generic/dragging";
 import { Editing, initEditing } from "facets/generic/editing";
@@ -32,6 +33,8 @@ type MovesContainerPropsT = {
   restoreHighlight: () => void,
 };
 
+// $FlowFixMe
+@facetClass
 export class MovesContainer {
   @facet(Addition) addition: Addition;
   @facet(Dragging) dragging: Dragging;
@@ -41,6 +44,7 @@ export class MovesContainer {
   @facet(Insertion) insertion: Insertion;
   @facet(MovesData) data: MovesData;
   @facet(Selection) selection: Selection;
+
   clipboard: Clipboard;
 
   handlerSelectWithKeys = new SelectWithKeys({ container: this });
@@ -136,4 +140,6 @@ export class MovesContainer {
       this.data._moveLists = moveLists;
     });
   }
+
+  static get: GetBvrT<MovesContainer>;
 }

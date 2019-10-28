@@ -22,7 +22,11 @@ export const FollowMoveListBtn = withMoveListsCtr(
       <div
         className={"button button--wide ml-2"}
         onClick={() =>
-          labelling.setLabel("following", moveList.id, !isFollowing)
+          labelling.setLabel({
+            label: "following",
+            id: moveList.id,
+            flag: !isFollowing,
+          })
         }
         key={2}
       >

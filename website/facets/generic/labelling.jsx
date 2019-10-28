@@ -15,6 +15,7 @@ import { action, observable } from "utils/mobx_wrapper";
 
 export type IdsByLabelT = { [string]: Array<any> };
 export type ItemsByLabelT = { [string]: Array<any> };
+export type LabelValueT = { label: string, id: any, flag: boolean };
 
 // $FlowFixMe
 @facetClass
@@ -26,7 +27,7 @@ export class Labelling {
   @data saveIds: (label: string, ids: Array<any>) => any;
 
   // $FlowFixMe
-  @operation setLabel(label: string, id: any, flag: boolean) {}
+  @operation setLabel(labelValue: LabelValueT) {}
 
   static get: GetBvrT<Labelling>;
 }
@@ -35,7 +36,7 @@ const _handleLabelling = (self: Labelling) => {
   listen(
     self,
     "setLabel",
-    action("setLabel", function(label: string, id: any, flag: boolean) {
+    action("setLabel", function({ label, id, flag }: LabelValueT) {
       self.idsByLabel[label] = self.idsByLabel[label] || [];
       if (flag && !self.idsByLabel[label].includes(id)) {
         self.idsByLabel[label].push(id);

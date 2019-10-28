@@ -1,7 +1,10 @@
 // @flow
 
-import { Inputs, initInputs } from "screens/movelists_container/inputs";
-import { Outputs, initOutputs } from "screens/movelists_container/outputs";
+import { Inputs, initInputs } from "screens/movelists_container/facets/inputs";
+import {
+  Outputs,
+  initOutputs,
+} from "screens/movelists_container/facets/outputs";
 import { type GetBvrT, facet, facetClass, mapData } from "facets/index";
 import type { UUID } from "kernel/types";
 import { Labelling, initLabelling } from "facets/generic/labelling";

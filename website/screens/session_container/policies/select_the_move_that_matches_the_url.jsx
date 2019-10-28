@@ -1,6 +1,6 @@
 // @flow
 
-import { Outputs } from "screens/moves_container/outputs";
+import { Outputs } from "screens/moves_container/facets/outputs";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { reaction } from "utils/mobx_wrapper";
 import { Navigation } from "screens/session_container/facets/navigation";

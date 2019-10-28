@@ -1,10 +1,10 @@
 // @flow
 
-import { Outputs, initOutputs } from "screens/moves_container/outputs";
+import { Outputs, initOutputs } from "screens/moves_container/facets/outputs";
 import { type GetBvrT, facet, facetClass, mapData } from "facets/index";
 import { Clipboard } from "screens/moves_container/facets/clipboard";
 import { getIds } from "app/utils";
-import { Inputs, initInputs } from "screens/moves_container/inputs";
+import { Inputs, initInputs } from "screens/moves_container/facets/inputs";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import { Addition, initAddition } from "facets/generic/addition";

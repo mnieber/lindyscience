@@ -1,6 +1,6 @@
 // @flow
 
-import { Editing } from "facet/generic/editing";
+import { Editing } from "facet/facets/editing";
 
 export type EditWithKeysPropsT = {
   container: any,

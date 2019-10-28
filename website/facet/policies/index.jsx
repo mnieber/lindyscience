@@ -1,14 +1,14 @@
 // @flow
 
 import { newItemsAreFollowedWhenConfirmed } from "screens/movelists_container/policies/new_items_are_followed_when_confirmed";
-import { labellingReceivesIds } from "facet/generic/labelling";
+import { labellingReceivesIds } from "facet/facets/labelling";
 import {
   insertionActsOnItems,
   insertionCreatesThePreview,
-} from "facet/generic/insertion";
-import { selectionActsOnItems } from "facet/generic/selection";
-import { highlightActsOnItems } from "facet/generic/highlight";
-import { filteringActsOnItems } from "facet/generic/filtering";
+} from "facet/facets/insertion";
+import { selectionActsOnItems } from "facet/facets/selection";
+import { highlightActsOnItems } from "facet/facets/highlight";
+import { filteringActsOnItems } from "facet/facets/filtering";
 import { highlightFollowsSelection } from "facet/policies/highlight_follows_selection";
 import { highlightIsCorrectedOnFilterChange } from "facet/policies/highlight_is_corrected_on_filter_change";
 import {

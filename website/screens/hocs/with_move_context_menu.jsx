@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import { getId } from "app/utils";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
-import { Highlight } from "facet/generic/highlight";
+import { Highlight } from "facet/facets/highlight";
 import Widgets from "screens/presentation/index";
 
 ///////////////////////////////////////////////////////////////////////

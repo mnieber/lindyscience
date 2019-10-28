@@ -6,8 +6,8 @@ import * as React from "react";
 import classnames from "classnames";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
-import { Highlight } from "facet/generic/highlight";
-import { Selection } from "facet/generic/selection";
+import { Highlight } from "facet/facets/highlight";
+import { Selection } from "facet/facets/selection";
 import {
   getOwnerId,
   handleSelectionKeys2,

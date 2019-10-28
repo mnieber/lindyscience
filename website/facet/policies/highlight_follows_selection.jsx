@@ -1,8 +1,8 @@
 // @flow
 
 import { listen } from "facet/index";
-import { Selection } from "facet/generic/selection";
-import { Highlight } from "facet/generic/highlight";
+import { Selection } from "facet/facets/selection";
+import { Highlight } from "facet/facets/highlight";
 
 export const highlightFollowsSelection = (ctr: any) => {
   listen(Selection.get(ctr), "selectItem", ({ itemId, isShift, isCtrl }) => {

@@ -7,7 +7,7 @@ import { lookUp } from "utils/utils";
 import { SessionContainer } from "screens/session_container/session_container";
 import { reaction } from "utils/mobx_wrapper";
 import type { MoveT } from "moves/types";
-import { Highlight } from "facet/generic/highlight";
+import { Highlight } from "facet/facets/highlight";
 
 export const updateMovesCtrInputs = (ctr: SessionContainer) => {
   const moveListsCtr = MoveListsContainer.get(ctr);

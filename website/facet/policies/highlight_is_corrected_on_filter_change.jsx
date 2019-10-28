@@ -1,8 +1,8 @@
 // @flow
 
 import { listen } from "facet/index";
-import { Filtering } from "facet/generic/filtering";
-import { Highlight } from "facet/generic/highlight";
+import { Filtering } from "facet/facets/filtering";
+import { Highlight } from "facet/facets/highlight";
 import { findNeighbourIdx2 } from "screens/utils";
 
 export const highlightIsCorrectedOnFilterChange = (ctr: any) => {

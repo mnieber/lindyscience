@@ -1,9 +1,9 @@
 // @flow
 
 import { listen } from "facet/index";
-import { Addition } from "facet/generic/addition";
+import { Addition } from "facet/facets/addition";
 import { action } from "utils/mobx_wrapper";
-import { Insertion } from "facet/generic/insertion";
+import { Insertion } from "facet/facets/insertion";
 
 export const newItemsAreInsertedWhenConfirmed = (ctr: any) => {
   listen(

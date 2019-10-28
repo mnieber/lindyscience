@@ -1,8 +1,8 @@
 // @flow
 
 import { listen } from "facet/index";
-import { Editing } from "facet/generic/editing";
-import { Addition } from "facet/generic/addition";
+import { Editing } from "facet/facets/editing";
+import { Addition } from "facet/facets/addition";
 
 export const newItemsAreConfirmedWhenSaved = (ctr: any) => {
   listen(Editing.get(ctr), "save", function(item: any) {

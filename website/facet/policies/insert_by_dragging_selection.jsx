@@ -1,8 +1,8 @@
 // @flow
 
-import type { InsertT } from "facet/generic/insertion";
-import { Dragging } from "facet/generic/dragging";
-import { Selection } from "facet/generic/selection";
+import type { InsertT } from "facet/facets/insertion";
+import { Dragging } from "facet/facets/dragging";
+import { Selection } from "facet/facets/selection";
 
 export const insertByDraggingSelection = ({
   showPreview,

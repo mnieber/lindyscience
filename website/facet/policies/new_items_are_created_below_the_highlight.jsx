@@ -1,9 +1,9 @@
 // @flow
 
 import { listen } from "facet/index";
-import { Addition } from "facet/generic/addition";
-import { Highlight } from "facet/generic/highlight";
-import { Selection } from "facet/generic/selection";
+import { Addition } from "facet/facets/addition";
+import { Highlight } from "facet/facets/highlight";
+import { Selection } from "facet/facets/selection";
 import { topOfTheList } from "facet/policies/insert_by_creating_a_new_item";
 
 export const newItemsAreCreatedBelowTheHighlight = (ctr: any) => {

@@ -1,9 +1,9 @@
 // @flow
 
 import { reaction } from "utils/mobx_wrapper";
-import { Highlight } from "facet/generic/highlight";
-import { Addition } from "facet/generic/addition";
-import { Editing } from "facet/generic/editing";
+import { Highlight } from "facet/facets/highlight";
+import { Addition } from "facet/facets/addition";
+import { Editing } from "facet/facets/editing";
 
 export const newItemsAreCanceledOnHighlightChange = (ctr: any) => {
   reaction(

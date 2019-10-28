@@ -1,8 +1,8 @@
 // @flow
 
 import { listen } from "facet/index";
-import { Addition } from "facet/generic/addition";
-import { Filtering } from "facet/generic/filtering";
+import { Addition } from "facet/facets/addition";
+import { Filtering } from "facet/facets/filtering";
 
 export const filteringIsDisabledOnNewItem = (ctr: any) => {
   listen(Addition.get(ctr), "add", function() {

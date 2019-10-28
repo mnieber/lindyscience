@@ -1,7 +1,7 @@
 // @flow
 
-import type { InsertT } from "facet/generic/insertion";
-import { Addition } from "facet/generic/addition";
+import type { InsertT } from "facet/facets/insertion";
+import { Addition } from "facet/facets/addition";
 
 export const topOfTheList = "<topOfTheList>";
 

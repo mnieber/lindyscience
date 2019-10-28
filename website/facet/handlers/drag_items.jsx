@@ -1,7 +1,7 @@
 // @flow
 
 import { runInAction } from "utils/mobx_wrapper";
-import { Dragging } from "facet/generic/dragging";
+import { Dragging } from "facet/facets/dragging";
 import { isBefore } from "utils/ui_utils";
 
 export type DragPosition2T = {

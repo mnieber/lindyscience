@@ -1,6 +1,6 @@
 // @flow
 
-import { Selection } from "facet/generic/selection";
+import { Selection } from "facet/facets/selection";
 import { findMoveBySlugid } from "screens/utils";
 import { Outputs } from "screens/moves_container/facets/outputs";
 import { MovesContainer } from "screens/moves_container/moves_container";

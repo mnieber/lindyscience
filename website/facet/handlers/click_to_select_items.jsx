@@ -1,6 +1,6 @@
 // @flow
 
-import { Selection } from "facet/generic/selection";
+import { Selection } from "facet/facets/selection";
 
 export type ClickToSelectItemsPropsT = {
   container: any,

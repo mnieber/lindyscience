@@ -1,8 +1,8 @@
 // @flow
 
-import { Highlight } from "facet/generic/highlight";
+import { Highlight } from "facet/facets/highlight";
 import { pickNeighbour2, scrollIntoView } from "app/utils";
-import { Selection } from "facet/generic/selection";
+import { Selection } from "facet/facets/selection";
 
 export type SelectWithKeysPropsT = {
   container: any,

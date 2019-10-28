@@ -1,6 +1,6 @@
 // @flow
 
-import { Selection } from "facet/generic/selection";
+import { Selection } from "facet/facets/selection";
 import { makeSlugid } from "screens/utils";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";

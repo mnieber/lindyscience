@@ -1,6 +1,6 @@
 // @flow
 
-import { Insertion, type PayloadSourceT } from "facet/generic/insertion";
+import { Insertion, type PayloadSourceT } from "facet/facets/insertion";
 import { createPatch } from "facet/index";
 
 export const insertionPicksAPayloadsSource = ({

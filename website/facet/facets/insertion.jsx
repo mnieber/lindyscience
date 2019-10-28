@@ -12,7 +12,7 @@ import {
   operation,
   relayData,
 } from "facet/index";
-import type { InsertPositionT, PayloadT } from "facet/generic/dragging";
+import type { InsertPositionT, PayloadT } from "facet/facets/dragging";
 import { action } from "utils/mobx_wrapper";
 import { getPreview2 } from "screens/utils";
 

@@ -13,9 +13,8 @@ import { action } from "utils/mobx_wrapper";
 import type { MoveT } from "moves/types";
 import { browseToMoveUrl } from "screens/containers";
 import { Navigation } from "screens/session_container/facets/navigation";
-import { Inputs } from "screens/session_container/facets/inputs";
 import { Highlight } from "facets/generic/highlight";
-import { MovesData } from "screens/moves_container/moves_data";
+import { Inputs } from "screens/moves_container/inputs";
 import { listen } from "facets/index";
 
 export const handleNavigateToMoveList = (ctr: any) => {
@@ -51,7 +50,7 @@ export const handleNavigateToMove = (ctr: any) => {
     "navigateToMove",
     action("navigateToMove", (move: MoveT) => {
       const moveList = Highlight.get(moveListsCtr).item;
-      const movesData = MovesData.get(movesCtr);
+      const movesData = Inputs.get(movesCtr);
 
       // We need this to prevent a stale value of
       // navigation.moveListUrl (in this function, we are

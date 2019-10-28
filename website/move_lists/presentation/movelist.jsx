@@ -46,7 +46,7 @@ export const MoveList = observer((props: MoveListPropsT) => {
   const dragPosition = props.movesCtr.dragging.position;
   const selectionIds = props.movesCtr.selection.ids || [];
   const highlightId = props.movesCtr.highlight.id;
-  const moves = props.movesCtr.data.display;
+  const moves = props.movesCtr.inputs.display;
   const moveList = props.moveListsCtr.highlight.item;
   const userProfile = props.userProfile;
   const isMoveListOwner =

@@ -9,7 +9,7 @@ import { listToItemById } from "utils/utils";
 
 // $FlowFixMe
 @facetClass
-export class MoveListsData {
+export class Inputs {
   @observable moveLists: Array<MoveListT> = [];
   // $FlowFixMe
   @computed get moveListIds(): Array<UUID> {
@@ -21,19 +21,19 @@ export class MoveListsData {
   }
   // $FlowFixMe
   @computed get moveListsFollowing(): Array<MoveListT> {
-    const userProfile = this._userProfile;
+    const userProfile = this.userProfile;
     return userProfile
       ? this.preview.filter(x => userProfile.moveListIds.includes(x.id))
       : [];
   }
   @observable preview: Array<MoveListT> = [];
-  @observable _userProfile: ?UserProfileT;
+  @observable userProfile: ?UserProfileT;
 
   @data display: Array<MoveListT> = [];
 
-  static get: GetBvrT<MoveListsData>;
+  static get: GetBvrT<Inputs>;
 }
 
-export function initMoveListsData(self: MoveListsData): MoveListsData {
+export function initMoveListsData(self: Inputs): Inputs {
   return self;
 }

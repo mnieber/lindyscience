@@ -22,7 +22,7 @@ export class Clipboard {
   @computed get targetMoveLists() {
     const ids = this.props.ctr.selection.ids;
     // $FlowFixMe
-    return this.props.ctr.data._moveLists.filter(moveList => {
+    return this.props.ctr.inputs.moveLists.filter(moveList => {
       ids.some(moveId => !moveList.moves.includes(moveId));
     });
   }
@@ -39,7 +39,7 @@ export class Clipboard {
     this.props.shareMovesToList(
       this.props.ctr.selection.items,
       moveList,
-      this.props.ctr.data._moveList
+      this.props.ctr.inputs.moveList
     );
   }
 
@@ -54,7 +54,7 @@ export class Clipboard {
   }
 
   copyLinks() {
-    const moveList = this.props.ctr.data._moveList;
+    const moveList = this.props.ctr.inputs.moveList;
     const selection = this.props.ctr.selection.items;
 
     if (moveList && selection.length) {

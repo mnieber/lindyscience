@@ -30,7 +30,7 @@ export const updateMovesCtrInputs = (ctr: SessionContainer) => {
       movesCtr.setInputs(
         inputMoves,
         moveList,
-        moveListsCtr.data.preview,
+        moveListsCtr.inputs.preview,
         inputs.userProfile
       );
     }

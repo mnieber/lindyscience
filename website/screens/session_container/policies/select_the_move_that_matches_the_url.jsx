@@ -2,7 +2,7 @@
 
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { reaction } from "utils/mobx_wrapper";
-import { MovesData } from "screens/moves_container/moves_data";
+import { Inputs } from "screens/moves_container/inputs";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { findMoveBySlugid, makeSlugid } from "screens/utils";
 import { Selection } from "facets/generic/selection";
@@ -13,7 +13,7 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
 
   reaction(
     () => {
-      const movesData = MovesData.get(movesCtr);
+      const movesData = Inputs.get(movesCtr);
       const slugId =
         navigation.urlParams && navigation.urlParams.moveSlug
           ? makeSlugid(

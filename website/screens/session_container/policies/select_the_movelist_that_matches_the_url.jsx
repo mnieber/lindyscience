@@ -4,7 +4,7 @@ import { reaction } from "utils/mobx_wrapper";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { findMoveListByUrl } from "screens/utils";
 import { Navigation } from "screens/session_container/facets/navigation";
-import { MoveListsData } from "screens/movelists_container/movelists_data";
+import { Inputs } from "screens/movelists_container/inputs";
 import { Selection } from "facets/generic/selection";
 
 export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
@@ -13,7 +13,7 @@ export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
 
   reaction(
     () => {
-      const moveListsData = MoveListsData.get(moveListsCtr);
+      const moveListsData = Inputs.get(moveListsCtr);
       return navigation.moveListUrl
         ? findMoveListByUrl(moveListsData.preview, navigation.moveListUrl)
         : undefined;

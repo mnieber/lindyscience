@@ -1,11 +1,11 @@
 // @flow
 
-import type { GetBvrT } from "facets/index";
+import { type GetBvrT, facet, facetClass, mapData } from "facets/index";
+import { Clipboard } from "screens/moves_container/facets/clipboard";
 import { getIds } from "app/utils";
-import { MovesData, initMovesData } from "screens/moves_container/moves_data";
+import { Inputs, initMovesData } from "screens/moves_container/inputs";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
-import { facet, mapData, facetClass } from "facets/index";
 import { Addition, initAddition } from "facets/generic/addition";
 import { Dragging, initDragging } from "facets/generic/dragging";
 import { Editing, initEditing } from "facets/generic/editing";
@@ -13,7 +13,6 @@ import { Filtering, initFiltering } from "facets/generic/filtering";
 import { Highlight, initHighlight } from "facets/generic/highlight";
 import { Insertion, initInsertion } from "facets/generic/insertion";
 import { Selection, initSelection } from "facets/generic/selection";
-import { Clipboard } from "facets/generic/clipboard";
 import { SelectWithKeys } from "facets/handlers/select_with_keys";
 import { ClickToSelectItems } from "facets/handlers/click_to_select_items";
 import { DragItems } from "facets/handlers/drag_items";
@@ -22,7 +21,6 @@ import { Policies } from "facets/policies";
 import { insertByCreatingAnItem } from "facets/policies/insert_by_creating_a_new_item";
 import { insertByDraggingSelection } from "facets/policies/insert_by_dragging_selection";
 import { runInAction } from "utils/mobx_wrapper";
-import { createTagsAndKeywordsFilter } from "screens/utils";
 import { createNewMove } from "screens/moves_container/moves_container_props";
 
 type MovesContainerPropsT = {
@@ -42,7 +40,7 @@ export class MovesContainer {
   @facet(Filtering) filtering: Filtering;
   @facet(Highlight) highlight: Highlight;
   @facet(Insertion) insertion: Insertion;
-  @facet(MovesData) data: MovesData;
+  @facet(Inputs) inputs: Inputs;
   @facet(Selection) selection: Selection;
 
   clipboard: Clipboard;
@@ -54,8 +52,8 @@ export class MovesContainer {
   _createBehaviours(props: MovesContainerPropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
-        return this.data._moveList && this.data._userProfile
-          ? createNewMove(this.data._userProfile, this.data._moveList.id)
+        return this.inputs.moveList && this.inputs.userProfile
+          ? createNewMove(this.inputs.userProfile, this.inputs.moveList.id)
           : undefined;
       },
     });
@@ -71,19 +69,19 @@ export class MovesContainer {
     this.highlight = initHighlight(new Highlight());
     this.insertion = initInsertion(new Insertion(), {
       insertItems: preview => {
-        if (this.data._moveList) {
-          props.setMoves(this.data._moveList, preview);
+        if (this.inputs.moveList) {
+          props.setMoves(this.inputs.moveList, preview);
         }
       },
     });
-    this.data = initMovesData(new MovesData());
+    this.inputs = initMovesData(new Inputs());
     this.selection = initSelection(new Selection());
   }
 
   _applyPolicies(props: MovesContainerPropsT) {
-    const itemById = [MovesData, "moveById"];
-    const inputItems = [MovesData, "moves"];
-    const preview = [MovesData, "preview"];
+    const itemById = [Inputs, "moveById"];
+    const inputItems = [Inputs, "moves"];
+    const preview = [Inputs, "preview"];
 
     [
       Policies.selection.actsOnItems(itemById),
@@ -113,8 +111,8 @@ export class MovesContainer {
       Policies.filtering.actsOnItems(preview),
       Policies.filtering.isDisabledOnNewItem,
 
-      mapData([Filtering, "filteredItems"], [MovesData, "display"]),
-      mapData([MovesData, "display"], [Selection, "selectableIds"], getIds),
+      mapData([Filtering, "filteredItems"], [Inputs, "display"]),
+      mapData([Inputs, "display"], [Selection, "selectableIds"], getIds),
     ].forEach(policy => policy(this));
   }
 
@@ -134,10 +132,10 @@ export class MovesContainer {
     userProfile: ?UserProfileT
   ) {
     runInAction("movesContainer.setInputs", () => {
-      this.data.moves = moves;
-      this.data._userProfile = userProfile;
-      this.data._moveList = moveList;
-      this.data._moveLists = moveLists;
+      this.inputs.moves = moves;
+      this.inputs.userProfile = userProfile;
+      this.inputs.moveList = moveList;
+      this.inputs.moveLists = moveLists;
     });
   }
 

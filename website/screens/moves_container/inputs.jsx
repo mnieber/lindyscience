@@ -10,7 +10,7 @@ import { listToItemById } from "utils/utils";
 
 // $FlowFixMe
 @facetClass
-export class MovesData {
+export class Inputs {
   @observable moves: Array<MoveT> = [];
   // $FlowFixMe
   @computed get moveIds(): Array<UUID> {
@@ -20,16 +20,16 @@ export class MovesData {
   @computed get moveById(): { [UUID]: MoveT } {
     return listToItemById(this.preview);
   }
-  @observable _userProfile: ?UserProfileT;
-  @observable _moveList: ?MoveListT;
-  @observable _moveLists: Array<MoveListT> = [];
+  @observable userProfile: ?UserProfileT;
+  @observable moveList: ?MoveListT;
+  @observable moveLists: Array<MoveListT> = [];
 
   @observable preview: Array<MoveT> = [];
   @data display: Array<MoveT> = [];
 
-  static get: GetBvrT<MovesData>;
+  static get: GetBvrT<Inputs>;
 }
 
-export function initMovesData(self: MovesData): MovesData {
+export function initMovesData(self: Inputs): Inputs {
   return self;
 }

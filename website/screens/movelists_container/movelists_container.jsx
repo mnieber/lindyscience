@@ -5,10 +5,7 @@ import { facet, facetClass, mapData, relayData } from "facets/index";
 import type { UUID } from "kernel/types";
 import { Labelling, initLabelling } from "facets/generic/labelling";
 import { getIds } from "app/utils";
-import {
-  MoveListsData,
-  initMoveListsData,
-} from "screens/movelists_container/movelists_data";
+import { Inputs, initMoveListsData } from "screens/movelists_container/inputs";
 import type { MoveListT } from "move_lists/types";
 import { Addition, initAddition } from "facets/generic/addition";
 import { Editing, initEditing } from "facets/generic/editing";
@@ -36,14 +33,14 @@ export class MoveListsContainer {
   @facet(Editing) editing: Editing;
   @facet(Highlight) highlight: Highlight;
   @facet(Insertion) insertion: Insertion;
-  @facet(MoveListsData) data: MoveListsData;
+  @facet(Inputs) inputs: Inputs;
   @facet(Selection) selection: Selection;
   @facet(Labelling) labelling: Labelling;
 
   _createBehaviours(props: MoveListsContainerPropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
-        const userProfile = this.data._userProfile;
+        const userProfile = this.inputs.userProfile;
         return userProfile
           ? props.createNewMoveList({
               ...values,
@@ -66,7 +63,7 @@ export class MoveListsContainer {
         props.setMoveLists(preview);
       },
     });
-    this.data = initMoveListsData(new MoveListsData());
+    this.inputs = initMoveListsData(new Inputs());
     this.selection = initSelection(new Selection());
     this.labelling = initLabelling(new Labelling(), {
       saveIds: (label: string, ids: Array<UUID>) => {
@@ -78,9 +75,9 @@ export class MoveListsContainer {
   }
 
   _applyPolicies(props: MoveListsContainerPropsT) {
-    const itemById = [MoveListsData, "moveListById"];
-    const inputItems = [MoveListsData, "moveLists"];
-    const preview = [MoveListsData, "preview"];
+    const itemById = [Inputs, "moveListById"];
+    const inputItems = [Inputs, "moveLists"];
+    const preview = [Inputs, "preview"];
 
     [
       Policies.selection.actsOnItems(itemById),
@@ -104,12 +101,12 @@ export class MoveListsContainer {
       Policies.newItems.areCanceledOnHighlightChange,
 
       Policies.labelling.receivesIds(
-        [MoveListsData, "moveListsFollowing"],
+        [Inputs, "moveListsFollowing"],
         "following",
         getIds
       ),
-      mapData([MoveListsData, "preview"], [MoveListsData, "display"]),
-      mapData([MoveListsData, "display"], [Selection, "selectableIds"], getIds),
+      mapData([Inputs, "preview"], [Inputs, "display"]),
+      mapData([Inputs, "display"], [Selection, "selectableIds"], getIds),
     ].forEach(policy => policy(this));
   }
 
@@ -120,8 +117,8 @@ export class MoveListsContainer {
 
   setInputs(moveLists: Array<MoveListT>, userProfile: ?UserProfileT) {
     runInAction("moveListsContainer.setInputs", () => {
-      this.data.moveLists = moveLists;
-      this.data._userProfile = userProfile;
+      this.inputs.moveLists = moveLists;
+      this.inputs.userProfile = userProfile;
     });
   }
 

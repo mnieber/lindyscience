@@ -1,5 +1,6 @@
 // @flow
 
+import { ensureSelected } from "screens/session_container/policies/select_the_movelist_that_matches_the_url";
 import { Outputs } from "screens/moves_container/facets/outputs";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { reaction } from "utils/mobx_wrapper";
@@ -21,21 +22,11 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
               navigation.urlParams.moveId
             )
           : undefined;
-      const moveMatchingUrl = slugId
-        ? findMoveBySlugid(outputs.preview, slugId)
-        : undefined;
-      return moveMatchingUrl;
+      return slugId ? findMoveBySlugid(outputs.preview, slugId) : undefined;
     },
     moveMatchingUrl => {
       if (moveMatchingUrl) {
-        const selection = Selection.get(movesCtr);
-        if (!selection.ids.includes(moveMatchingUrl.id)) {
-          selection.selectItem({
-            itemId: moveMatchingUrl.id,
-            isShift: false,
-            isCtrl: false,
-          });
-        }
+        ensureSelected(Selection.get(movesCtr), moveMatchingUrl.id);
       }
     },
     {

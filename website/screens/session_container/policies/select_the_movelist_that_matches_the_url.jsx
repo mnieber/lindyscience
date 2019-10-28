@@ -7,6 +7,16 @@ import { findMoveListByUrl } from "screens/utils";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { Selection } from "facets/generic/selection";
 
+export const ensureSelected = (selection: Selection, id: any) => {
+  if (!selection.ids.includes(id)) {
+    selection.selectItem({
+      itemId: id,
+      isShift: false,
+      isCtrl: false,
+    });
+  }
+};
+
 export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
   const navigation = Navigation.get(ctr);
   const moveListsCtr = MoveListsContainer.get(ctr);
@@ -20,14 +30,7 @@ export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
     },
     moveListMatchingUrl => {
       if (moveListMatchingUrl) {
-        const selection = Selection.get(moveListsCtr);
-        if (!selection.ids.includes(moveListMatchingUrl.id)) {
-          selection.selectItem({
-            itemId: moveListMatchingUrl.id,
-            isShift: false,
-            isCtrl: false,
-          });
-        }
+        ensureSelected(Selection.get(moveListsCtr), moveListMatchingUrl.id);
       }
     },
     {

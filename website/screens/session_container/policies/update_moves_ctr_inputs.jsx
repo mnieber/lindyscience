@@ -22,17 +22,11 @@ export const updateMovesCtrInputs = (ctr: SessionContainer) => {
             x => !!x
           )
         : [];
-      return inputMoves;
+      const moves = moveListsCtr.outputs.preview;
+      return { inputMoves, moveList, moves };
     },
-    (inputMoves: Array<MoveT>) => {
-      const moveList = Highlight.get(moveListsCtr).item;
-
-      movesCtr.setInputs(
-        inputMoves,
-        moveList,
-        moveListsCtr.inputs.preview,
-        inputs.userProfile
-      );
+    ({ inputMoves, moveList, moves }) => {
+      movesCtr.setInputs(inputMoves, moveList, moves, inputs.userProfile);
     }
   );
 };

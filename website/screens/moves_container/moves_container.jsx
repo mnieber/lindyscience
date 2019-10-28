@@ -1,9 +1,10 @@
 // @flow
 
+import { Outputs, initOutputs } from "screens/moves_container/outputs";
 import { type GetBvrT, facet, facetClass, mapData } from "facets/index";
 import { Clipboard } from "screens/moves_container/facets/clipboard";
 import { getIds } from "app/utils";
-import { Inputs, initMovesData } from "screens/moves_container/inputs";
+import { Inputs, initInputs } from "screens/moves_container/inputs";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import { Addition, initAddition } from "facets/generic/addition";
@@ -41,6 +42,7 @@ export class MovesContainer {
   @facet(Highlight) highlight: Highlight;
   @facet(Insertion) insertion: Insertion;
   @facet(Inputs) inputs: Inputs;
+  @facet(Outputs) outputs: Outputs;
   @facet(Selection) selection: Selection;
 
   clipboard: Clipboard;
@@ -74,14 +76,15 @@ export class MovesContainer {
         }
       },
     });
-    this.inputs = initMovesData(new Inputs());
+    this.inputs = initInputs(new Inputs());
+    this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());
   }
 
   _applyPolicies(props: MovesContainerPropsT) {
-    const itemById = [Inputs, "moveById"];
     const inputItems = [Inputs, "moves"];
-    const preview = [Inputs, "preview"];
+    const itemById = [Outputs, "moveById"];
+    const preview = [Outputs, "preview"];
 
     [
       Policies.selection.actsOnItems(itemById),
@@ -111,8 +114,8 @@ export class MovesContainer {
       Policies.filtering.actsOnItems(preview),
       Policies.filtering.isDisabledOnNewItem,
 
-      mapData([Filtering, "filteredItems"], [Inputs, "display"]),
-      mapData([Inputs, "display"], [Selection, "selectableIds"], getIds),
+      mapData([Filtering, "filteredItems"], [Outputs, "display"]),
+      mapData([Outputs, "display"], [Selection, "selectableIds"], getIds),
     ].forEach(policy => policy(this));
   }
 

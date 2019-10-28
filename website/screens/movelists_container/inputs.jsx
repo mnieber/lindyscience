@@ -11,29 +11,19 @@ import { listToItemById } from "utils/utils";
 @facetClass
 export class Inputs {
   @observable moveLists: Array<MoveListT> = [];
-  // $FlowFixMe
-  @computed get moveListIds(): Array<UUID> {
-    return Object.keys(this.moveListById);
-  }
-  // $FlowFixMe
-  @computed get moveListById(): { [UUID]: MoveListT } {
-    return listToItemById(this.preview);
-  }
+  @observable userProfile: ?UserProfileT;
+
   // $FlowFixMe
   @computed get moveListsFollowing(): Array<MoveListT> {
     const userProfile = this.userProfile;
     return userProfile
-      ? this.preview.filter(x => userProfile.moveListIds.includes(x.id))
+      ? this.moveLists.filter(x => userProfile.moveListIds.includes(x.id))
       : [];
   }
-  @observable preview: Array<MoveListT> = [];
-  @observable userProfile: ?UserProfileT;
-
-  @data display: Array<MoveListT> = [];
 
   static get: GetBvrT<Inputs>;
 }
 
-export function initMoveListsData(self: Inputs): Inputs {
+export function initInputs(self: Inputs): Inputs {
   return self;
 }

@@ -34,7 +34,7 @@ type MoveListPickerPropsT = {|
 export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
   const ctr = props.moveListsCtr;
   const moveListId = ctr.highlight.id;
-  const moveLists = ctr.inputs.display;
+  const moveLists = ctr.outputs.display;
 
   function _onChange(pickedItem) {
     if (!moveLists.some(x => x.id === pickedItem.value)) {

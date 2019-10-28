@@ -20,7 +20,7 @@ type MoveContextMenuHOCPropsT = {
 
 export const withMoveContextMenu = (WrappedComponent: any) =>
   observer((props: MoveContextMenuHOCPropsT) => {
-    const moveLists = props.moveListsCtr.inputs.display;
+    const moveLists = props.moveListsCtr.outputs.display;
     const moveListId = Highlight.get(props.moveListsCtr).id;
 
     const targetMoveLists = props.movesCtr.clipboard.targetMoveLists;

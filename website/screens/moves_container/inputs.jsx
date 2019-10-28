@@ -12,24 +12,13 @@ import { listToItemById } from "utils/utils";
 @facetClass
 export class Inputs {
   @observable moves: Array<MoveT> = [];
-  // $FlowFixMe
-  @computed get moveIds(): Array<UUID> {
-    return Object.keys(this.moveById);
-  }
-  // $FlowFixMe
-  @computed get moveById(): { [UUID]: MoveT } {
-    return listToItemById(this.preview);
-  }
   @observable userProfile: ?UserProfileT;
   @observable moveList: ?MoveListT;
   @observable moveLists: Array<MoveListT> = [];
 
-  @observable preview: Array<MoveT> = [];
-  @data display: Array<MoveT> = [];
-
   static get: GetBvrT<Inputs>;
 }
 
-export function initMovesData(self: Inputs): Inputs {
+export function initInputs(self: Inputs): Inputs {
   return self;
 }

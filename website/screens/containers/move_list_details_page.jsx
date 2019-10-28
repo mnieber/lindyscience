@@ -49,7 +49,7 @@ type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT;
 export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
   const ctr = props.moveListsCtr;
   const moveList = Highlight.get(ctr).item;
-  const moveLists = ctr.inputs.preview;
+  const moveLists = ctr.outputs.preview;
   const userProfile = props.userProfile;
   const isEditing = Editing.get(ctr).isEditing;
 

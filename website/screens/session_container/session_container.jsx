@@ -61,6 +61,7 @@ export class SessionContainer {
       Policies.url.handleLoadSelectedMoveListFromUrl,
 
       Policies.data.updateMovesCtrInputs,
+      Policies.data.updateMoveListsCtrInputs,
     ].forEach(policy => policy(this));
   }
 
@@ -77,7 +78,7 @@ export class SessionContainer {
     runInAction("sessionContainer.setInputs", () => {
       this.inputs.userProfile = userProfile;
       this.inputs.moveById = moveById;
+      this.inputs.moveLists = moveLists;
     });
-    this.moveListsCtr.setInputs(moveLists, userProfile);
   }
 }

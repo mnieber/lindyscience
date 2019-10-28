@@ -1,8 +1,8 @@
 // @flow
 
+import { Outputs } from "screens/moves_container/outputs";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { reaction } from "utils/mobx_wrapper";
-import { Inputs } from "screens/moves_container/inputs";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { findMoveBySlugid, makeSlugid } from "screens/utils";
 import { Selection } from "facets/generic/selection";
@@ -13,7 +13,7 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
 
   reaction(
     () => {
-      const movesData = Inputs.get(movesCtr);
+      const outputs = Outputs.get(movesCtr);
       const slugId =
         navigation.urlParams && navigation.urlParams.moveSlug
           ? makeSlugid(
@@ -22,7 +22,7 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
             )
           : undefined;
       const moveMatchingUrl = slugId
-        ? findMoveBySlugid(movesData.preview, slugId)
+        ? findMoveBySlugid(outputs.preview, slugId)
         : undefined;
       return moveMatchingUrl;
     },

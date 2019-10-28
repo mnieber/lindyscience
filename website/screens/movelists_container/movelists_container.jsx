@@ -1,11 +1,11 @@
 // @flow
 
-import type { GetBvrT } from "facets/index";
-import { facet, facetClass, mapData, relayData } from "facets/index";
+import { Inputs, initInputs } from "screens/movelists_container/inputs";
+import { Outputs, initOutputs } from "screens/movelists_container/outputs";
+import { type GetBvrT, facet, facetClass, mapData } from "facets/index";
 import type { UUID } from "kernel/types";
 import { Labelling, initLabelling } from "facets/generic/labelling";
 import { getIds } from "app/utils";
-import { Inputs, initMoveListsData } from "screens/movelists_container/inputs";
 import type { MoveListT } from "move_lists/types";
 import { Addition, initAddition } from "facets/generic/addition";
 import { Editing, initEditing } from "facets/generic/editing";
@@ -34,6 +34,7 @@ export class MoveListsContainer {
   @facet(Highlight) highlight: Highlight;
   @facet(Insertion) insertion: Insertion;
   @facet(Inputs) inputs: Inputs;
+  @facet(Outputs) outputs: Outputs;
   @facet(Selection) selection: Selection;
   @facet(Labelling) labelling: Labelling;
 
@@ -63,7 +64,8 @@ export class MoveListsContainer {
         props.setMoveLists(preview);
       },
     });
-    this.inputs = initMoveListsData(new Inputs());
+    this.inputs = initInputs(new Inputs());
+    this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());
     this.labelling = initLabelling(new Labelling(), {
       saveIds: (label: string, ids: Array<UUID>) => {
@@ -75,9 +77,9 @@ export class MoveListsContainer {
   }
 
   _applyPolicies(props: MoveListsContainerPropsT) {
-    const itemById = [Inputs, "moveListById"];
     const inputItems = [Inputs, "moveLists"];
-    const preview = [Inputs, "preview"];
+    const itemById = [Outputs, "moveListById"];
+    const preview = [Outputs, "preview"];
 
     [
       Policies.selection.actsOnItems(itemById),
@@ -105,8 +107,8 @@ export class MoveListsContainer {
         "following",
         getIds
       ),
-      mapData([Inputs, "preview"], [Inputs, "display"]),
-      mapData([Inputs, "display"], [Selection, "selectableIds"], getIds),
+      mapData([Outputs, "preview"], [Outputs, "display"]),
+      mapData([Outputs, "display"], [Selection, "selectableIds"], getIds),
     ].forEach(policy => policy(this));
   }
 

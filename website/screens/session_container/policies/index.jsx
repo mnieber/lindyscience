@@ -1,5 +1,6 @@
 // @flow
 
+import { updateMoveListsCtrInputs } from "screens/session_container/policies/update_movelists_ctr_inputs";
 import { updateMovesCtrInputs } from "screens/session_container/policies/update_moves_ctr_inputs";
 import {
   handleNavigateToMove,
@@ -30,5 +31,6 @@ export const Policies = {
   },
   data: {
     updateMovesCtrInputs,
+    updateMoveListsCtrInputs,
   },
 };

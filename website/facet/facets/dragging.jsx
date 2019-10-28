@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetBvrT, facetClass, listen, operation } from "facet/index";
+import { type GetFacet, facetClass, listen, operation } from "facet/index";
 import { action, observable } from "utils/mobx_wrapper";
 
 export type InsertPositionT = {
@@ -23,7 +23,7 @@ export class Dragging {
   // $FlowFixMe
   @operation cancel() {}
 
-  static get: GetBvrT<Dragging>;
+  static get: GetFacet<Dragging>;
 }
 
 function _handleCancel(self: Dragging) {

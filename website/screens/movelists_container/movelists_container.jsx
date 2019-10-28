@@ -5,7 +5,7 @@ import {
   Outputs,
   initOutputs,
 } from "screens/movelists_container/facets/outputs";
-import { type GetBvrT, facet, facetClass, mapData } from "facet/index";
+import { type GetFacet, facet, facetClass, mapData } from "facet/index";
 import type { UUID } from "kernel/types";
 import { Labelling, initLabelling } from "facet/facets/labelling";
 import { getIds } from "app/utils";
@@ -127,5 +127,5 @@ export class MoveListsContainer {
     });
   }
 
-  static get: GetBvrT<MoveListsContainer>;
+  static get: GetFacet<MoveListsContainer>;
 }

@@ -3,7 +3,7 @@
 import {
   type AdapterT,
   type ClassMemberT,
-  type GetBvrT,
+  type GetFacet,
   facetClass,
   data,
   extendInterface,
@@ -46,7 +46,7 @@ export class Insertion {
   // $FlowFixMe
   @operation insertPayload() {}
 
-  static get: GetBvrT<Insertion>;
+  static get: GetFacet<Insertion>;
 }
 
 const _handleInsertPayload = (self: Insertion) => {

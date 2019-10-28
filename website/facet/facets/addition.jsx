@@ -1,6 +1,12 @@
 // @flow
 
-import { type GetBvrT, facetClass, listen, operation, data } from "facet/index";
+import {
+  type GetFacet,
+  facetClass,
+  listen,
+  operation,
+  data,
+} from "facet/index";
 import { action, observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
@@ -18,7 +24,7 @@ export class Addition {
   // $FlowFixMe
   @operation cancel() {}
 
-  static get: GetBvrT<Addition>;
+  static get: GetFacet<Addition>;
 }
 
 const _handleCancelNewItem = (self: Addition) => {

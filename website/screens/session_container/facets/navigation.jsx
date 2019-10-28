@@ -6,7 +6,7 @@ import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import { action, computed, observable, runInAction } from "utils/mobx_wrapper";
 import type { UUID } from "kernel/types";
-import { type GetBvrT, facetClass, listen, operation } from "facet/index";
+import { type GetFacet, facetClass, listen, operation } from "facet/index";
 
 export type UrlParamsT = {
   ownerUsername: ?string,
@@ -44,7 +44,7 @@ export class Navigation {
   // $FlowFixMe
   @operation navigateToMoveList(moveList: MoveListT) {}
 
-  static get: GetBvrT<Navigation>;
+  static get: GetFacet<Navigation>;
 }
 
 function _handleSetUrlParams(self: Navigation) {

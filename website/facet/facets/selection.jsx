@@ -2,7 +2,7 @@
 
 import {
   type ClassMemberT,
-  type GetBvrT,
+  type GetFacet,
   facetClass,
   data,
   listen,
@@ -29,7 +29,7 @@ export class Selection {
   // $FlowFixMe
   @operation selectItem({ itemId, isShift, isCtrl }: ItemSelectedPropsT) {}
 
-  static get: GetBvrT<Selection>;
+  static get: GetFacet<Selection>;
 }
 
 function _handleSelection(self: Selection) {

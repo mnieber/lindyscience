@@ -2,7 +2,7 @@
 
 import {
   type ClassMemberT,
-  type GetBvrT,
+  type GetFacet,
   facetClass,
   data,
   listen,
@@ -21,7 +21,7 @@ export class Highlight {
   // $FlowFixMe
   @operation highlightItem(id: any) {}
 
-  static get: GetBvrT<Highlight>;
+  static get: GetFacet<Highlight>;
 }
 
 const _handleHighlight = (self: Highlight) => {

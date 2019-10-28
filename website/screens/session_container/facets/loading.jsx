@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetBvrT, facetClass } from "facet/index";
+import { type GetFacet, facetClass } from "facet/index";
 import { observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
@@ -9,7 +9,7 @@ export class Loading {
   @observable loadedMoveListUrls: Array<string> = [];
   @observable notFoundMoveListUrls: Array<string> = [];
 
-  static get: GetBvrT<Loading>;
+  static get: GetFacet<Loading>;
 }
 
 export function initLoading(self: Loading): Loading {

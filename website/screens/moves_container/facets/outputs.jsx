@@ -3,7 +3,7 @@
 import { computed, observable } from "utils/mobx_wrapper";
 import type { UUID } from "kernel/types";
 import { listToItemById } from "utils/utils";
-import { type GetBvrT, facetClass, data } from "facet/index";
+import { type GetFacet, facetClass, data } from "facet/index";
 import type { MoveT } from "moves/types";
 
 // $FlowFixMe
@@ -21,7 +21,7 @@ export class Outputs {
     return listToItemById(this.preview);
   }
 
-  static get: GetBvrT<Outputs>;
+  static get: GetFacet<Outputs>;
 }
 
 export function initOutputs(self: Outputs): Outputs {

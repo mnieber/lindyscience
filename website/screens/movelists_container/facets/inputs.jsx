@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetBvrT, facetClass, data } from "facet/index";
+import { type GetFacet, facetClass, data } from "facet/index";
 import { computed, observable } from "utils/mobx_wrapper";
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";
@@ -21,7 +21,7 @@ export class Inputs {
       : [];
   }
 
-  static get: GetBvrT<Inputs>;
+  static get: GetFacet<Inputs>;
 }
 
 export function initInputs(self: Inputs): Inputs {

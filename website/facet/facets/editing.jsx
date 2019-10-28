@@ -1,6 +1,12 @@
 // @flow
 
-import { type GetBvrT, facetClass, listen, operation, data } from "facet/index";
+import {
+  type GetFacet,
+  facetClass,
+  listen,
+  operation,
+  data,
+} from "facet/index";
 import { action, observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe
@@ -17,7 +23,7 @@ export class Editing {
   // $FlowFixMe
   @operation setIsEditing(flag: boolean) {}
 
-  static get: GetBvrT<Editing>;
+  static get: GetFacet<Editing>;
 }
 
 const _handleEditingCancel = (self: Editing) => {

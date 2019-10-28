@@ -6,7 +6,7 @@ import { reaction } from "utils/mobx_wrapper";
 import * as Internal from "facet/internal";
 import { zip } from "utils/utils";
 
-export type GetBvrT<T> = (ctr: any) => T;
+export type GetFacet<T> = (ctr: any) => T;
 export type ClassT = any;
 export type MemberNameT = string;
 export type ClassMemberT = [ClassT, MemberNameT];

@@ -2,7 +2,7 @@
 
 import Cookies from "js-cookie";
 
-import type { GetBvrT } from "facet/index";
+import type { GetFacet } from "facet/index";
 import { facetClass, data, operation } from "facet/index";
 import { observable, runInAction } from "utils/mobx_wrapper";
 
@@ -19,7 +19,7 @@ export class Profiling {
   // $FlowFixMe
   @operation acceptCookies() {}
 
-  static get: GetBvrT<Profiling>;
+  static get: GetFacet<Profiling>;
 }
 
 function _handleAcceptCookies(self: Profiling) {

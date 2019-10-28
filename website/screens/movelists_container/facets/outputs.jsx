@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetBvrT, facetClass, data } from "facet/index";
+import { type GetFacet, facetClass, data } from "facet/index";
 import { computed, observable } from "utils/mobx_wrapper";
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";
@@ -21,7 +21,7 @@ export class Outputs {
   @observable preview: Array<MoveListT> = [];
   @data display: Array<MoveListT> = [];
 
-  static get: GetBvrT<Outputs>;
+  static get: GetFacet<Outputs>;
 }
 
 export function initOutputs(self: Outputs): Outputs {

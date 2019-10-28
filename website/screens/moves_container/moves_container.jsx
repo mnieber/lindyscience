@@ -1,7 +1,7 @@
 // @flow
 
 import { Outputs, initOutputs } from "screens/moves_container/facets/outputs";
-import { type GetBvrT, facet, facetClass, mapData } from "facet/index";
+import { type GetFacet, facet, facetClass, mapData } from "facet/index";
 import { Clipboard } from "screens/moves_container/facets/clipboard";
 import { getIds } from "app/utils";
 import { Inputs, initInputs } from "screens/moves_container/facets/inputs";
@@ -142,5 +142,5 @@ export class MovesContainer {
     });
   }
 
-  static get: GetBvrT<MovesContainer>;
+  static get: GetFacet<MovesContainer>;
 }

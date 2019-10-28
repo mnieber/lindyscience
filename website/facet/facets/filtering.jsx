@@ -2,7 +2,7 @@
 
 import {
   type ClassMemberT,
-  type GetBvrT,
+  type GetFacet,
   facetClass,
   data,
   extendInterface,
@@ -26,7 +26,7 @@ export class Filtering {
   // $FlowFixMe
   @operation setEnabled(flag: boolean) {}
 
-  static get: GetBvrT<Filtering>;
+  static get: GetFacet<Filtering>;
 }
 
 const _handleFilteringSetEnabled = (self: Filtering) => {

@@ -2,7 +2,7 @@
 
 import {
   type ClassMemberT,
-  type GetBvrT,
+  type GetFacet,
   facetClass,
   data,
   listen,
@@ -29,7 +29,7 @@ export class Labelling {
   // $FlowFixMe
   @operation setLabel(labelValue: LabelValueT) {}
 
-  static get: GetBvrT<Labelling>;
+  static get: GetFacet<Labelling>;
 }
 
 const _handleLabelling = (self: Labelling) => {

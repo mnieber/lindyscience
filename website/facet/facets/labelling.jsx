@@ -4,7 +4,7 @@ import {
   type ClassMemberT,
   type GetFacet,
   facetClass,
-  data,
+  input,
   listen,
   mapDatas,
   operation,
@@ -23,8 +23,8 @@ export class Labelling {
   @observable idsByLabel: IdsByLabelT = {};
   ids = (label: string) => this.idsByLabel[label] || [];
 
-  @data itemsByLabel: ItemsByLabelT;
-  @data saveIds: (label: string, ids: Array<any>) => any;
+  @input itemsByLabel: ItemsByLabelT;
+  @input saveIds: (label: string, ids: Array<any>) => any;
 
   // $FlowFixMe
   @operation setLabel(labelValue: LabelValueT) {}

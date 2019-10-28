@@ -4,7 +4,7 @@ import {
   type ClassMemberT,
   type GetFacet,
   facetClass,
-  data,
+  output,
   listen,
   mapDatas,
   operation,
@@ -16,7 +16,7 @@ import { action, observable } from "utils/mobx_wrapper";
 export class Highlight {
   @observable id: any;
 
-  @data item: any;
+  @output item: any;
 
   // $FlowFixMe
   @operation highlightItem(id: any) {}

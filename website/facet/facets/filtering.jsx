@@ -4,7 +4,8 @@ import {
   type ClassMemberT,
   type GetFacet,
   facetClass,
-  data,
+  input,
+  output,
   extendInterface,
   listen,
   mapData,
@@ -18,8 +19,8 @@ export class Filtering {
   @observable isEnabled: boolean;
   @observable filter: any => boolean;
 
-  @data inputItems: Array<any>;
-  @data filteredItems: Array<any>;
+  @input inputItems: Array<any>;
+  @output filteredItems: Array<any>;
 
   // $FlowFixMe
   @operation apply(filter: any => boolean) {}

@@ -41,7 +41,7 @@ export class MoveListsContainer {
   @facet(Selection) selection: Selection;
   @facet(Labelling) labelling: Labelling;
 
-  _createBehaviours(props: MoveListsContainerPropsT) {
+  _createFacets(props: MoveListsContainerPropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
         const userProfile = this.inputs.userProfile;
@@ -116,7 +116,7 @@ export class MoveListsContainer {
   }
 
   constructor(props: MoveListsContainerPropsT) {
-    this._createBehaviours(props);
+    this._createFacets(props);
     this._applyPolicies(props);
   }
 

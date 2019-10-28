@@ -5,7 +5,7 @@ import {
   facetClass,
   listen,
   operation,
-  data,
+  input,
 } from "facet/index";
 import { action, observable } from "utils/mobx_wrapper";
 
@@ -14,7 +14,7 @@ import { action, observable } from "utils/mobx_wrapper";
 export class Editing {
   @observable isEditing: boolean;
 
-  @data saveItem: (values: any) => any;
+  @input saveItem: (values: any) => any;
 
   // $FlowFixMe
   @operation save(values: any) {}

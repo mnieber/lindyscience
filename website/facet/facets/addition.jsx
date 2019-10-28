@@ -5,7 +5,7 @@ import {
   facetClass,
   listen,
   operation,
-  data,
+  input,
 } from "facet/index";
 import { action, observable } from "utils/mobx_wrapper";
 
@@ -15,7 +15,7 @@ export class Addition {
   @observable item: any;
   @observable parentId: any;
 
-  @data createItem: (values: any) => any;
+  @input createItem: (values: any) => any;
 
   // $FlowFixMe
   @operation add(values: any) {}

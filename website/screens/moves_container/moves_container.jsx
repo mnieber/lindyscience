@@ -51,7 +51,7 @@ export class MovesContainer {
   handlerClick = new ClickToSelectItems({ container: this });
   handlerDrag = new DragItems({ container: this });
 
-  _createBehaviours(props: MovesContainerPropsT) {
+  _createFacets(props: MovesContainerPropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
         return this.inputs.moveList && this.inputs.userProfile
@@ -120,7 +120,7 @@ export class MovesContainer {
   }
 
   constructor(props: MovesContainerPropsT) {
-    this._createBehaviours(props);
+    this._createFacets(props);
     this._applyPolicies(props);
     this.clipboard = new Clipboard({
       ctr: this,

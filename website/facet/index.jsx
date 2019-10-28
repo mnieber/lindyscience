@@ -63,13 +63,16 @@ export function operation(target: any, name: string, descriptor: any) {
   return descriptor;
 }
 
-export function data(target: any, name: string, descriptor: any) {
+function data(target: any, name: string, descriptor: any) {
   if (!target.constructor[Internal.datas]) {
     target.constructor[Internal.datas] = {};
   }
   target.constructor[Internal.datas][name] = true;
   return descriptor;
 }
+
+export const input = data;
+export const output = data;
 
 export const mapData = (
   [fromPolicy, fromMember]: ClassMemberT,

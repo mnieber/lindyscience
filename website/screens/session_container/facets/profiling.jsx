@@ -3,7 +3,7 @@
 import Cookies from "js-cookie";
 
 import type { GetFacet } from "facet/index";
-import { facetClass, data, operation } from "facet/index";
+import { facetClass, operation } from "facet/index";
 import { observable, runInAction } from "utils/mobx_wrapper";
 
 // $FlowFixMe

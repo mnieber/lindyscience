@@ -4,7 +4,8 @@ import {
   type ClassMemberT,
   type GetFacet,
   facetClass,
-  data,
+  input,
+  output,
   listen,
   mapDatas,
   operation,
@@ -21,10 +22,10 @@ export type ItemSelectedPropsT = {
 // $FlowFixMe
 @facetClass
 export class Selection {
-  @data selectableIds: Array<any>;
+  @input selectableIds: Array<any>;
   @observable ids: Array<any> = [];
   @observable anchorId: any;
-  @data items: Array<any>;
+  @output items: Array<any>;
 
   // $FlowFixMe
   @operation selectItem({ itemId, isShift, isCtrl }: ItemSelectedPropsT) {}

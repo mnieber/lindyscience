@@ -5,7 +5,8 @@ import {
   type ClassMemberT,
   type GetFacet,
   facetClass,
-  data,
+  input,
+  output,
   extendInterface,
   listen,
   mapData,
@@ -37,11 +38,11 @@ export function getPreview(
 // $FlowFixMe
 @facetClass
 export class Insertion {
-  @data payload: ?PayloadT;
-  @data position: ?InsertPositionT;
-  @data inputItems: Array<any>;
-  @data preview: Array<any>;
-  @data insertItems: (items: Array<any>) => any;
+  @input payload: ?PayloadT;
+  @input position: ?InsertPositionT;
+  @input inputItems: Array<any>;
+  @input insertItems: (items: Array<any>) => any;
+  @output preview: Array<any>;
 
   // $FlowFixMe
   @operation insertPayload() {}

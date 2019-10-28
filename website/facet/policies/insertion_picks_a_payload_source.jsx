@@ -6,16 +6,14 @@ import { createPatch } from "facet/index";
 export const insertionPicksAPayloadsSource = ({
   payloadSources,
 }: {
-  payloadSources: Array<?PayloadSourceT>,
+  payloadSources: Array<PayloadSourceT>,
 }) =>
   createPatch(Insertion, [null], container => ({
     get _sourcedPayload() {
       for (var payloadSource of payloadSources) {
-        if (payloadSource) {
-          const payload = payloadSource(container);
-          if (payload) {
-            return payload;
-          }
+        const payload = payloadSource(container);
+        if (payload) {
+          return payload;
         }
       }
       return undefined;

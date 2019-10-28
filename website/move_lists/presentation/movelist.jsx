@@ -33,16 +33,6 @@ type MoveListPropsT = {|
 |};
 
 export const MoveList = observer((props: MoveListPropsT) => {
-  const selectMoveById = (moveId: UUID, isShift: boolean, isCtrl: boolean) => {
-    scrollIntoView(document.getElementById(moveId));
-    Selection.get(props.movesCtr).selectItem({
-      itemId: moveId,
-      isShift,
-      isCtrl,
-    });
-    props.navigateTo(Highlight.get(props.movesCtr).item);
-  };
-
   const dragPosition = props.movesCtr.dragging.position;
   const selectionIds = props.movesCtr.selection.ids || [];
   const highlightId = props.movesCtr.highlight.id;

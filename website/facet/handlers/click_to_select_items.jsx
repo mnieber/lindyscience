@@ -14,7 +14,7 @@ export class ClickToSelectItems {
     this.props = props;
   }
 
-  handle(itemId: any, item: any, navigateTo: ?Function) {
+  handle(itemId: any, item: ?any, navigateTo: ?Function) {
     return {
       onMouseDown: (e: any) => {
         const ctr = this.props.container;

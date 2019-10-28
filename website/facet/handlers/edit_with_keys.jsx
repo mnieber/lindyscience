@@ -13,11 +13,11 @@ export class EditWithKeys {
     this.props = props;
   }
 
-  handle(navigateTo: ?Function) {
+  handle(keyEdit: string) {
     return {
       onKeyDown: (key: string, e: any) => {
         const ctr = this.props.container;
-        if (key == "ctrl+e") {
+        if (key == keyEdit) {
           e.preventDefault();
           e.stopPropagation();
           Editing.get(ctr).setIsEditing(!Editing.get(ctr).isEditing);

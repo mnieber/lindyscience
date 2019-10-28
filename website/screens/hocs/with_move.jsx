@@ -19,7 +19,7 @@ import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
 import { isOwner } from "app/utils";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayerPanel } from "video/presentation/video_player";
-import { Editing } from "facets/generic/editing";
+import { Editing } from "facet/generic/editing";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 

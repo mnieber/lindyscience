@@ -5,19 +5,19 @@ import {
   Outputs,
   initOutputs,
 } from "screens/movelists_container/facets/outputs";
-import { type GetBvrT, facet, facetClass, mapData } from "facets/index";
+import { type GetBvrT, facet, facetClass, mapData } from "facet/index";
 import type { UUID } from "kernel/types";
-import { Labelling, initLabelling } from "facets/generic/labelling";
+import { Labelling, initLabelling } from "facet/generic/labelling";
 import { getIds } from "app/utils";
 import type { MoveListT } from "move_lists/types";
-import { Addition, initAddition } from "facets/generic/addition";
-import { Editing, initEditing } from "facets/generic/editing";
-import { Highlight, initHighlight } from "facets/generic/highlight";
-import { Insertion, initInsertion } from "facets/generic/insertion";
-import { Selection, initSelection } from "facets/generic/selection";
+import { Addition, initAddition } from "facet/generic/addition";
+import { Editing, initEditing } from "facet/generic/editing";
+import { Highlight, initHighlight } from "facet/generic/highlight";
+import { Insertion, initInsertion } from "facet/generic/insertion";
+import { Selection, initSelection } from "facet/generic/selection";
 import type { UserProfileT } from "profiles/types";
-import { Policies } from "facets/policies";
-import { insertByCreatingAnItem } from "facets/policies/insert_by_creating_a_new_item";
+import { Policies } from "facet/policies";
+import { insertByCreatingAnItem } from "facet/policies/insert_by_creating_a_new_item";
 import { runInAction } from "utils/mobx_wrapper";
 
 type MoveListsContainerPropsT = {

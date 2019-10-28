@@ -16,7 +16,7 @@ import {
 import { Loading, initLoading } from "screens/session_container/facets/loading";
 import type { UserProfileT } from "profiles/types";
 import { Inputs, initInputs } from "screens/session_container/facets/inputs";
-import { facet, facetClass } from "facets/index";
+import { facet, facetClass } from "facet/index";
 import { Policies } from "screens/session_container/policies";
 
 type SessionContainerPropsT = {

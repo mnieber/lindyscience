@@ -2,7 +2,7 @@
 
 import { Inputs } from "screens/session_container/facets/inputs";
 import { Profiling } from "screens/session_container/facets/profiling";
-import { listen } from "facets/index";
+import { listen } from "facet/index";
 import { apiGetEmail } from "app/api";
 import { actSetSignedInEmail } from "app/actions";
 import { runInAction } from "utils/mobx_wrapper";

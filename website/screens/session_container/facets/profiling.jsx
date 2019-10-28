@@ -2,8 +2,8 @@
 
 import Cookies from "js-cookie";
 
-import type { GetBvrT } from "facets/index";
-import { facetClass, data, operation } from "facets/index";
+import type { GetBvrT } from "facet/index";
+import { facetClass, data, operation } from "facet/index";
 import { observable, runInAction } from "utils/mobx_wrapper";
 
 // $FlowFixMe

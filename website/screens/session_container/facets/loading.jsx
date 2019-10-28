@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetBvrT, facetClass } from "facets/index";
+import { type GetBvrT, facetClass } from "facet/index";
 import { observable } from "utils/mobx_wrapper";
 
 // $FlowFixMe

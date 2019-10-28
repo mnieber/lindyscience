@@ -23,7 +23,7 @@ module.name_mapper='^tips/\(.*\)$' -> '<PROJECT_ROOT>/tips/\1'
 module.name_mapper='^utils/\(.*\)$' -> '<PROJECT_ROOT>/utils/\1'
 module.name_mapper='^video/\(.*\)$' -> '<PROJECT_ROOT>/video/\1'
 module.name_mapper='^votes/\(.*\)$' -> '<PROJECT_ROOT>/votes/\1'
-module.name_mapper='^facets/\(.*\)$' -> '<PROJECT_ROOT>/facets/\1'
+module.name_mapper='^facet/\(.*\)$' -> '<PROJECT_ROOT>/facet/\1'
 esproposal.optional_chaining=enable
 
 [strict]

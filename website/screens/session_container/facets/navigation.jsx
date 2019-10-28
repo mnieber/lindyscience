@@ -1,12 +1,12 @@
 // @flow
 
-import { Selection } from "facets/generic/selection";
+import { Selection } from "facet/generic/selection";
 import { makeSlugid } from "screens/utils";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import { action, computed, observable, runInAction } from "utils/mobx_wrapper";
 import type { UUID } from "kernel/types";
-import { type GetBvrT, facetClass, listen, operation } from "facets/index";
+import { type GetBvrT, facetClass, listen, operation } from "facet/index";
 
 export type UrlParamsT = {
   ownerUsername: ?string,

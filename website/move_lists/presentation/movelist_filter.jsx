@@ -6,11 +6,11 @@ import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
-import { Highlight } from "facets/generic/highlight";
+import { Highlight } from "facet/generic/highlight";
 import { createTagsAndKeywordsFilter } from "screens/utils";
-import { Filtering } from "facets/generic/filtering";
-import { Selection } from "facets/generic/selection";
-import { Addition } from "facets/generic/addition";
+import { Filtering } from "facet/generic/filtering";
+import { Selection } from "facet/generic/selection";
+import { Addition } from "facet/generic/addition";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { makeUnique } from "utils/utils";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";

@@ -9,8 +9,8 @@ import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
 import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { UserProfileT } from "profiles/types";
-import { Highlight } from "facets/generic/highlight";
-import { Editing } from "facets/generic/editing";
+import { Highlight } from "facet/generic/highlight";
+import { Editing } from "facet/generic/editing";
 import {
   actAddCutPoints,
   actRemoveCutPoints,

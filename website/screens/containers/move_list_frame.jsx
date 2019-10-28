@@ -11,7 +11,7 @@ import { sayMove } from "screens/moves_container/handlers/say_move";
 import { isNone } from "utils/utils";
 import { getOwnerId, isOwner } from "app/utils";
 import { MoveListFilter } from "move_lists/presentation/movelist_filter";
-import { Addition } from "facets/generic/addition";
+import { Addition } from "facet/generic/addition";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { withMovesCtr } from "screens/moves_container/moves_container_context";
 import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";

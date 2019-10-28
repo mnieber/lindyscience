@@ -5,7 +5,7 @@ import { Inputs } from "screens/session_container/facets/inputs";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { apiSignOut } from "app/api";
 import { createErrorHandler } from "app/utils";
-import { listen } from "facets/index";
+import { listen } from "facet/index";
 import { actSetSignedInEmail } from "app/actions";
 
 export const handleSignOut = (ctr: any) => {

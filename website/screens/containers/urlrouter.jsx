@@ -4,6 +4,7 @@ import React from "react";
 import { compose } from "redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { makeSlugid } from "screens/utils";
 import { withSessionCtr } from "screens/session_container/session_container_context";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { useHistory } from "utils/react_router_dom_wrapper";
@@ -39,11 +40,30 @@ function IndexPage(props: IndexPagePropsT) {
   return <div className="h-full" />;
 }
 
-const withUrlParams = compose(
+const withMoveTarget = compose(
   withSessionCtr,
   (WrappedComponent: any) => (props: any) => {
     React.useEffect(() => {
-      Navigation.get(props.sessionCtr).setUrlParams(props.match.params);
+      const navigation = Navigation.get(props.sessionCtr);
+      const params = props.match.params;
+      navigation.setTarget({
+        moveSlugid: makeSlugid(params.moveSlug, params.moveId),
+        moveListUrl: params.ownerUsername + "/" + params.moveListSlug,
+      });
+    });
+    return <WrappedComponent {...props} />;
+  }
+);
+
+const withMoveListTarget = compose(
+  withSessionCtr,
+  (WrappedComponent: any) => (props: any) => {
+    React.useEffect(() => {
+      const navigation = Navigation.get(props.sessionCtr);
+      const params = props.match.params;
+      navigation.setTarget({
+        moveListUrl: params.ownerUsername + "/" + params.moveListSlug,
+      });
     });
     return <WrappedComponent {...props} />;
   }
@@ -56,17 +76,17 @@ function ListsSwitch() {
         <Route
           exact
           path="/app/lists/:ownerUsername/:moveListSlug"
-          component={withUrlParams(MoveListDetailsPage)}
+          component={withMoveListTarget(MoveListDetailsPage)}
         />
         <Route
           exact
           path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug"
-          component={withUrlParams(MovePage)}
+          component={withMoveTarget(MovePage)}
         />
         <Route
           exact
           path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId"
-          component={withUrlParams(MovePage)}
+          component={withMoveTarget(MovePage)}
         />
       </Switch>
     </MoveListFrame>

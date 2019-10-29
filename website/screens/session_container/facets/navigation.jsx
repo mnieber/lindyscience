@@ -8,38 +8,21 @@ import { action, computed, observable, runInAction } from "utils/mobx_wrapper";
 import type { UUID } from "kernel/types";
 import { type GetFacet, facetClass, listen, operation } from "facet/index";
 
-export type UrlParamsT = {
-  ownerUsername: ?string,
-  moveListSlug: ?string,
-  moveSlug: ?string,
-  moveId: ?UUID,
+export type TargetT = {
+  moveSlugid?: string,
+  moveListUrl?: string,
+  profileUrl?: string,
 };
 
 // $FlowFixMe
 @facetClass
 export class Navigation {
   @observable history: any;
-  @observable urlParams: UrlParamsT;
   @observable locationMemo: string;
+  @observable target: TargetT = {};
 
   // $FlowFixMe
-  @computed get moveListUrl() {
-    return this.urlParams &&
-      this.urlParams.ownerUsername &&
-      this.urlParams.moveListSlug
-      ? this.urlParams.ownerUsername + "/" + this.urlParams.moveListSlug
-      : undefined;
-  }
-
-  // $FlowFixMe
-  @computed get moveSlugId() {
-    return this.urlParams && this.urlParams.moveSlug
-      ? makeSlugid(this.urlParams.moveSlug, this.urlParams.moveId)
-      : undefined;
-  }
-
-  // $FlowFixMe
-  @operation setUrlParams(urlParams: UrlParamsT) {}
+  @operation setTarget(target: TargetT) {}
   // $FlowFixMe
   @operation navigateToMove(move: MoveT) {}
   // $FlowFixMe
@@ -52,12 +35,12 @@ export class Navigation {
   static get: GetFacet<Navigation>;
 }
 
-function _handleSetUrlParams(self: Navigation) {
+function _handleSetTarget(self: Navigation) {
   listen(
     self,
-    "setUrlParams",
-    action("setUrlParams", (urlParams: UrlParamsT) => {
-      self.urlParams = urlParams;
+    "setTarget",
+    action("setTarget", (target: TargetT) => {
+      self.target = target;
     })
   );
 }
@@ -79,7 +62,7 @@ export function initNavigation(self: Navigation, history: any): Navigation {
   runInAction("initNavigation", () => {
     self.history = history;
   });
-  _handleSetUrlParams(self);
+  _handleSetTarget(self);
   _handleStoreAndRestoreLocation(self);
   return self;
 }

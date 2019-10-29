@@ -10,9 +10,9 @@ import type { MoveT } from "moves/types";
 import { Highlight } from "facet/facets/highlight";
 
 export const updateMovesCtrInputs = (ctr: SessionContainer) => {
+  const inputs = Inputs.get(ctr);
   const moveListsCtr = MoveListsContainer.get(ctr);
   const movesCtr = MovesContainer.get(ctr);
-  const inputs = Inputs.get(ctr);
 
   reaction(
     () => {

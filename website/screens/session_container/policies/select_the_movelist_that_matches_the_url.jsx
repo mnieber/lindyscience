@@ -17,8 +17,8 @@ export const selectTheMoveListThatMatchesTheUrl = (ctr: any) => {
   reaction(
     () => {
       const outputs = Outputs.get(moveListsCtr);
-      return navigation.moveListUrl
-        ? findMoveListByUrl(outputs.preview, navigation.moveListUrl)
+      return navigation.target.moveListUrl
+        ? findMoveListByUrl(outputs.preview, navigation.target.moveListUrl)
         : undefined;
     },
     moveListMatchingUrl => {

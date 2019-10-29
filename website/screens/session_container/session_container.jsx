@@ -42,24 +42,8 @@ export class SessionContainer {
     this.profiling = initProfiling(new Profiling());
   }
 
-  _applyPolicies(props: SessionContainerPropsT) {
-    [
-      Policies.navigation.handleNavigateToMove,
-      Policies.navigation.handleNavigateToMoveList,
-      Policies.navigation.selectTheMoveListThatMatchesTheUrl,
-      Policies.navigation.selectTheMoveThatMatchesTheUrl,
-
-      Policies.profiling.handleLoadEmail,
-      Policies.profiling.handleLoadUserProfileForSignedInEmail,
-      Policies.profiling.handleSignOut,
-
-      Policies.url.handleLoadSelectedMoveListFromUrl,
-    ].forEach(policy => policy(this));
-  }
-
   constructor(props: SessionContainerPropsT) {
     this._createFacets(props);
-    this._applyPolicies(props);
   }
 
   setInputs(
@@ -81,8 +65,21 @@ export const initSessionContainer = (
   moveListsCtr: MoveListsContainer
 ) => {
   self.movesCtr = movesCtr;
-  Policies.data.updateMovesCtrInputs(self);
-
   self.moveListsCtr = moveListsCtr;
-  Policies.data.updateMoveListsCtrInputs(self);
+
+  [
+    Policies.navigation.handleNavigateToMove,
+    Policies.navigation.handleNavigateToMoveList,
+    Policies.navigation.selectTheMoveListThatMatchesTheUrl,
+    Policies.navigation.selectTheMoveThatMatchesTheUrl,
+
+    Policies.profiling.handleLoadEmail,
+    Policies.profiling.handleLoadUserProfileForSignedInEmail,
+    Policies.profiling.handleSignOut,
+
+    Policies.url.handleLoadSelectedMoveListFromUrl,
+
+    Policies.data.updateMovesCtrInputs,
+    Policies.data.updateMoveListsCtrInputs,
+  ].forEach(policy => policy(self));
 };

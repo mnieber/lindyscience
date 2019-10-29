@@ -6,8 +6,8 @@ import { SessionContainer } from "screens/session_container/session_container";
 import { reaction } from "utils/mobx_wrapper";
 
 export const updateMoveListsCtrInputs = (ctr: SessionContainer) => {
-  const moveListsCtr = MoveListsContainer.get(ctr);
   const inputs = Inputs.get(ctr);
+  const moveListsCtr = MoveListsContainer.get(ctr);
 
   reaction(
     () => {

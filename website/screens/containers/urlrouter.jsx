@@ -49,13 +49,8 @@ const withUrlParams = compose(
   }
 );
 
-type UrlRouterPropsT = {
-  userProfile: UserProfileT,
-};
-
-function ListsRouter() {
+function ListsSwitch() {
   return (
-    // $FlowFixMe
     <MoveListFrame>
       <Switch>
         <Route
@@ -78,7 +73,7 @@ function ListsRouter() {
   );
 }
 
-function SignInRouter() {
+function SignInSwitch() {
   return (
     <Switch>
       <Route exact path="/app/sign-in">
@@ -100,6 +95,10 @@ function SignInRouter() {
   );
 }
 
+type UrlRouterPropsT = {
+  userProfile: UserProfileT,
+};
+
 function UrlRouter(props: UrlRouterPropsT) {
   return (
     <Router>
@@ -114,8 +113,12 @@ function UrlRouter(props: UrlRouterPropsT) {
           <Route exact path="/app/search">
             <SearchResultsPage />
           </Route>
-          <ListsRouter />
-          <SignInRouter />
+          <Route path="/app/lists/">
+            <ListsSwitch />
+          </Route>
+          <Route path="/">
+            <SignInSwitch />
+          </Route>
         </Switch>
       </AppFrame>
     </Router>

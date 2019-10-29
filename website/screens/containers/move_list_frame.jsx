@@ -38,7 +38,7 @@ type MoveListFramePropsT = {
   dispatch: Function,
 };
 
-export function MoveListFrame(props: MoveListFramePropsT) {
+function _MoveListFrame(props: MoveListFramePropsT) {
   const selection = props.movesCtr.selection.items;
   const moveList = props.moveListsCtr.highlight.item;
 
@@ -120,7 +120,7 @@ export function MoveListFrame(props: MoveListFramePropsT) {
 }
 
 // $FlowFixMe
-MoveListFrame = compose(
+export const MoveListFrame = compose(
   withSessionCtr,
   withMovesCtr,
   withMoveListsCtr,
@@ -130,6 +130,4 @@ MoveListFrame = compose(
     moveTags: Ctr.fromStore.getMoveTags(state),
   })),
   observer
-)(MoveListFrame);
-
-export default MoveListFrame;
+)(_MoveListFrame);

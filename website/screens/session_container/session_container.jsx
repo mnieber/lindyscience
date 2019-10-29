@@ -13,7 +13,6 @@ import {
   Profiling,
   initProfiling,
 } from "screens/session_container/facets/profiling";
-import { Loading, initLoading } from "screens/session_container/facets/loading";
 import type { UserProfileT } from "profiles/types";
 import { Inputs, initInputs } from "screens/session_container/facets/inputs";
 import { facet, facetClass } from "facet/index";
@@ -28,7 +27,6 @@ type SessionContainerPropsT = {
 @facetClass
 export class SessionContainer {
   @facet(Inputs) inputs: Inputs;
-  @facet(Loading) loading: Loading;
   @facet(Navigation) navigation: Navigation;
   @facet(Profiling) profiling: Profiling;
 
@@ -37,7 +35,6 @@ export class SessionContainer {
 
   _createFacets(props: SessionContainerPropsT) {
     this.inputs = initInputs(new Inputs(), props.dispatch);
-    this.loading = initLoading(new Loading());
     this.navigation = initNavigation(new Navigation(), props.history);
     this.profiling = initProfiling(new Profiling());
   }

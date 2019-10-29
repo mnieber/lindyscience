@@ -46,7 +46,7 @@ const withMoveTarget = compose(
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);
       const params = props.match.params;
-      navigation.setTarget({
+      navigation.requestData({
         moveSlugid: makeSlugid(params.moveSlug, params.moveId),
         moveListUrl: params.ownerUsername + "/" + params.moveListSlug,
       });
@@ -61,7 +61,7 @@ const withMoveListTarget = compose(
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);
       const params = props.match.params;
-      navigation.setTarget({
+      navigation.requestData({
         moveListUrl: params.ownerUsername + "/" + params.moveListSlug,
       });
     });

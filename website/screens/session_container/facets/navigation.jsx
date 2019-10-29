@@ -8,21 +8,29 @@ import { action, computed, observable, runInAction } from "utils/mobx_wrapper";
 import type { UUID } from "kernel/types";
 import { type GetFacet, facetClass, listen, operation } from "facet/index";
 
-export type TargetT = {
+export type DataRequestT = {
   moveSlugid?: string,
   moveListUrl?: string,
   profileUrl?: string,
 };
+
+const createDataRequestMap = (createValue: Function) => ({
+  moveSlugid: createValue(),
+  moveListUrl: createValue(),
+  profileUrl: createValue(),
+});
 
 // $FlowFixMe
 @facetClass
 export class Navigation {
   @observable history: any;
   @observable locationMemo: string;
-  @observable target: TargetT = {};
+  @observable dataRequest: DataRequestT = {};
+  @observable loadedData = createDataRequestMap(() => []);
+  @observable notFoundData = createDataRequestMap(() => []);
 
   // $FlowFixMe
-  @operation setTarget(target: TargetT) {}
+  @operation requestData(dataRequest: DataRequestT) {}
   // $FlowFixMe
   @operation navigateToMove(move: MoveT) {}
   // $FlowFixMe
@@ -35,12 +43,12 @@ export class Navigation {
   static get: GetFacet<Navigation>;
 }
 
-function _handleSetTarget(self: Navigation) {
+function _handleRequestData(self: Navigation) {
   listen(
     self,
-    "setTarget",
-    action("setTarget", (target: TargetT) => {
-      self.target = target;
+    "requestData",
+    action("requestData", (dataRequest: DataRequestT) => {
+      self.dataRequest = dataRequest;
     })
   );
 }
@@ -62,7 +70,7 @@ export function initNavigation(self: Navigation, history: any): Navigation {
   runInAction("initNavigation", () => {
     self.history = history;
   });
-  _handleSetTarget(self);
+  _handleRequestData(self);
   _handleStoreAndRestoreLocation(self);
   return self;
 }
@@ -75,4 +83,17 @@ export const ensureSelected = (selection: Selection, id: any) => {
       isCtrl: false,
     });
   }
+};
+
+export const getStatus = (self: Navigation) => {
+  const entries = Object.entries(self.dataRequest);
+  return entries.reduce((acc, [resourceName, url]) => {
+    return {
+      ...acc,
+      [resourceName]: {
+        hasLoaded: self.loadedData[resourceName].includes(url),
+        notFound: self.notFoundData[resourceName].includes(url),
+      },
+    };
+  }, createDataRequestMap(() => ({ hasLoaded: false, notFound: false })));
 };

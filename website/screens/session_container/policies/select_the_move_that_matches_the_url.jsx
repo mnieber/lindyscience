@@ -17,8 +17,8 @@ export const selectTheMoveThatMatchesTheUrl = (ctr: any) => {
   reaction(
     () => {
       const outputs = Outputs.get(movesCtr);
-      return navigation.target.moveSlugid
-        ? findMoveBySlugid(outputs.preview, navigation.target.moveSlugid)
+      return navigation.dataRequest.moveSlugid
+        ? findMoveBySlugid(outputs.preview, navigation.dataRequest.moveSlugid)
         : undefined;
     },
     moveMatchingUrl => {

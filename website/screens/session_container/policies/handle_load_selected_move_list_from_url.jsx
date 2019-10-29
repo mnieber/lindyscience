@@ -1,7 +1,6 @@
 // @flow
 
 import { Inputs } from "screens/session_container/facets/inputs";
-import { Loading } from "screens/session_container/facets/loading";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { reaction, action } from "utils/mobx_wrapper";
 import { newMoveListSlug } from "screens/utils";
@@ -13,15 +12,14 @@ import { actAddTips } from "tips/actions";
 
 export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
   const navigation = Navigation.get(ctr);
-  const loading = Loading.get(ctr);
   const inputs = Inputs.get(ctr);
 
   reaction(
-    () => navigation.target.moveListUrl,
+    () => navigation.dataRequest.moveListUrl,
     action("loadSelectedMoveListFromUrl", async selectedMoveListUrl => {
       if (
         !!selectedMoveListUrl &&
-        !loading.loadedMoveListUrls.includes(selectedMoveListUrl)
+        !navigation.loadedData.moveListUrl.includes(selectedMoveListUrl)
       ) {
         const [ownerUsername, slug] = selectedMoveListUrl.split("/");
 
@@ -30,7 +28,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
           try {
             moveList = await apiLoadMoveList(ownerUsername, slug);
           } catch {
-            loading.notFoundMoveListUrls.push(selectedMoveListUrl);
+            navigation.notFoundData.moveListUrl.push(selectedMoveListUrl);
           }
 
           if (moveList) {
@@ -39,7 +37,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
             );
             inputs.dispatch(actAddMoveLists(moveList.entities.moveLists));
             inputs.dispatch(actAddTips(moveList.entities.tips || {}));
-            loading.loadedMoveListUrls.push(selectedMoveListUrl);
+            navigation.loadedData.moveListUrl.push(selectedMoveListUrl);
           }
         }
       }

@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { getStatus } from "screens/session_container/facets/navigation";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { SessionContainer } from "screens/session_container/session_container";
 import { withSessionCtr } from "screens/session_container/session_container_context";
@@ -25,34 +26,22 @@ type MovePagePropsT = {
 };
 
 function MovePage(props: MovePagePropsT) {
-  const move = props.movesCtr.highlight.item;
-  const loading = props.sessionCtr.loading;
   const navigation = props.sessionCtr.navigation;
 
-  const hasLoadedSelectedMoveList = loading.loadedMoveListUrls.includes(
-    navigation.target.moveListUrl
-  );
-  const isMoveListNotFound = loading.notFoundMoveListUrls.includes(
-    navigation.target.moveListUrl
-  );
-
-  const notFoundDiv = <div>Oops, I cannot find this move list</div>;
-  const loadingDiv = <div>Loading move list, please wait...</div>;
-  const moveNotFoundMsg = hasLoadedSelectedMoveList
-    ? "Oops, I cannot find this move"
-    : "Loading, please wait...";
-  const moveNotFoundDiv = (
-    <div className="noMoveHighlighted">{moveNotFoundMsg}</div>
-  );
-
   const moveList = props.moveListsCtr.highlight.item;
-  return !moveList && isMoveListNotFound
-    ? notFoundDiv
-    : !moveList && !isMoveListNotFound
-    ? loadingDiv
-    : moveList && !move
-    ? moveNotFoundDiv
-    : props.moveDiv;
+  if (!moveList) {
+    const status = getStatus(navigation);
+    const notFoundDiv = <div>Oops, I cannot find this move list</div>;
+    const loadingDiv = <div>Loading move list, please wait...</div>;
+    return status.moveListUrl.notFound ? notFoundDiv : loadingDiv;
+  }
+
+  const move = props.movesCtr.highlight.item;
+  if (!move) {
+    return <div>Oops, I cannot find this move</div>;
+  }
+
+  return props.moveDiv;
 }
 
 // $FlowFixMe

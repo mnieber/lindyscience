@@ -22,7 +22,7 @@ export const handleNavigateToMoveList = (ctr: any) => {
     // We need this to prevent a stale value of
     // navigation.moveListUrl (in this function, we are
     // effectively setting a new value of navigation.moveListUrl)
-    navigation.setTarget({
+    navigation.requestData({
       moveListUrl,
     });
 
@@ -44,7 +44,7 @@ export const handleNavigateToMove = (ctr: any) => {
     // We need this to prevent a stale value of
     // navigation.moveListUrl (in this function, we are
     // effectively setting a new value of navigation.moveListUrl)
-    navigation.setTarget({
+    navigation.requestData({
       moveSlugid,
       moveListUrl,
     });

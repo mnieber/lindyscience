@@ -10,8 +10,6 @@ type RegisterDialogPropsT = {
 };
 
 export function RegisterDialog(props: RegisterDialogPropsT) {
-  const [isModal, setIsModal] = React.useState(true);
-
   const goToSignInDiv = (
     <div className="mt-4">
       If you are registered then you can
@@ -23,10 +21,7 @@ export function RegisterDialog(props: RegisterDialogPropsT) {
 
   return (
     <React.Fragment>
-      <div
-        id="registerDialog"
-        className={classnames("modalWindow", { "modalWindow--open": isModal })}
-      >
+      <div id="registerDialog" className={classnames("bullsEyeWindow")}>
         <div>
           <RegisterForm register={props.register} />
           {goToSignInDiv}

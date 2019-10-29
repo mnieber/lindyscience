@@ -9,7 +9,6 @@ type PasswordResetDialogPropsT = {
 };
 
 export function PasswordResetDialog(props: PasswordResetDialogPropsT) {
-  const [isModal, setIsModal] = React.useState(true);
   const [isPasswordReset, setIsPasswordReset] = React.useState(false);
 
   const confirmationDiv = (
@@ -29,10 +28,7 @@ export function PasswordResetDialog(props: PasswordResetDialogPropsT) {
 
   return (
     <React.Fragment>
-      <div
-        id="passwordResetDialog"
-        className={classnames("modalWindow", { "modalWindow--open": isModal })}
-      >
+      <div id="passwordResetDialog" className={classnames("bullsEyeWindow")}>
         <div>
           {isPasswordReset && confirmationDiv}
           {!isPasswordReset && explanationDiv}

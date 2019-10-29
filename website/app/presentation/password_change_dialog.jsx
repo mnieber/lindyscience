@@ -10,7 +10,6 @@ type PasswordChangeDialogPropsT = {
 };
 
 export function PasswordChangeDialog(props: PasswordChangeDialogPropsT) {
-  const [isModal, setIsModal] = React.useState(true);
   const [isPasswordChanged, setIsPasswordChanged] = React.useState(false);
 
   const explanationDiv = <div>Please enter your new password.</div>;
@@ -31,10 +30,7 @@ export function PasswordChangeDialog(props: PasswordChangeDialogPropsT) {
 
   return (
     <React.Fragment>
-      <div
-        id="passwordChangeDialog"
-        className={classnames("modalWindow", { "modalWindow--open": isModal })}
-      >
+      <div id="passwordChangeDialog" className={classnames("bullsEyeWindow")}>
         <div>
           {isPasswordChanged && confirmationDiv}
           {!isPasswordChanged && explanationDiv}

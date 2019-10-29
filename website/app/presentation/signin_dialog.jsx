@@ -10,8 +10,6 @@ type SignInDialogPropsT = {
 };
 
 export function SignInDialog(props: SignInDialogPropsT) {
-  const [isModal, setIsModel] = React.useState(true);
-
   const goToRegisterDiv = (
     <div className="mt-4">
       If you don't have an account yet then you can
@@ -34,10 +32,7 @@ export function SignInDialog(props: SignInDialogPropsT) {
 
   return (
     <React.Fragment>
-      <div
-        id="signInDialog"
-        className={classnames("modalWindow", { "modalWindow--open": isModal })}
-      >
+      <div id="signInDialog" className={classnames("bullsEyeWindow")}>
         <div>
           <SignInForm signIn={props.signIn} />
           {goToResetDiv}

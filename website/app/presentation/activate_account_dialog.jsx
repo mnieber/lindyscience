@@ -11,7 +11,6 @@ type ActivateAccountDialogPropsT = {
 };
 
 export function ActivateAccountDialog(props: ActivateAccountDialogPropsT) {
-  const [isModal, setIsModal] = React.useState(true);
   const [globalErrorMsg, setGlobalErrorMsg] = React.useState("");
 
   async function activateAccount() {
@@ -35,10 +34,7 @@ export function ActivateAccountDialog(props: ActivateAccountDialogPropsT) {
 
   return (
     <React.Fragment>
-      <div
-        id="activateAccountDialog"
-        className={classnames("modalWindow", { "modalWindow--open": isModal })}
-      >
+      <div id="activateAccountDialog" className={classnames("bullsEyeWindow")}>
         {globalErrorMsg}
       </div>
     </React.Fragment>

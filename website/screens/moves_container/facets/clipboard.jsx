@@ -1,7 +1,7 @@
 // @flow
 
 import { makeMoveListUrl } from "screens/utils";
-import { computed } from "utils/mobx_wrapper";
+import { computed, observable } from "utils/mobx_wrapper";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 import { MovesContainer } from "screens/moves_container/moves_container";
@@ -11,6 +11,7 @@ type PropsT = {
   shareMovesToList: (Array<MoveT>, MoveListT, ?MoveListT) => any,
 };
 
+// $FlowFixMe
 export class Clipboard {
   props: PropsT;
 
@@ -23,7 +24,7 @@ export class Clipboard {
     const ids = this.props.ctr.selection.ids;
     // $FlowFixMe
     return this.props.ctr.inputs.moveLists.filter(moveList => {
-      ids.some(moveId => !moveList.moves.includes(moveId));
+      return ids.some(moveId => !moveList.moves.includes(moveId));
     });
   }
 
@@ -41,6 +42,19 @@ export class Clipboard {
       moveList,
       this.props.ctr.inputs.moveList
     );
+  }
+
+  moveToTrash() {
+    const trashList = this.props.ctr.inputs.moveLists.find(
+      x => x.role == "TRASH"
+    );
+    if (trashList) {
+      this.props.shareMovesToList(
+        this.props.ctr.selection.items,
+        trashList,
+        this.props.ctr.inputs.moveList
+      );
+    }
   }
 
   copyNames() {

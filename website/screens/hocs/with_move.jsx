@@ -7,55 +7,48 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
-import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { UserProfileT } from "profiles/types";
+import type { MoveListT } from "move_lists/types";
+import type { MoveT } from "moves/types";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { TagT } from "tags/types";
 import type { VideoBvrT } from "video/types";
-import { MovesContainer } from "screens/moves_container/moves_container";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
-import { withMovesCtr } from "screens/moves_container/moves_container_context";
-import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
 import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
-import { isOwner } from "app/utils";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayerPanel } from "video/presentation/video_player";
-import { Editing } from "facet/facets/editing";
+import { Editing } from "facet-mobx/facets/editing";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 
 type PropsT = {
-  userProfile: UserProfileT,
   moveTags: Array<TagT>,
   hostedMovePanels: any,
   videoBvr: VideoBvrT,
-  movesCtr: MovesContainer,
-  moveListsCtr: MoveListsContainer,
+  defaultProps: any,
+} & {
+  // default props
+  movesEditing: Editing,
+  userProfile: ?UserProfileT,
+  isOwner: any => boolean,
+  moveList: MoveListT,
+  move: MoveT,
 };
 
 // $FlowFixMe
-export const withMove = compose(
-  withMovesCtr,
-  withMoveListsCtr,
+export const withMoveDiv = compose(
   withHostedMovePanels,
   Ctr.connect(state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
   })),
+  withDefaultProps,
   observer,
-  (WrappedComponent: any) => (props: any) => {
-    const {
-      userProfile,
-      moveTags,
-      hostedMovePanels,
-      ...passThroughProps
-    }: PropsT = props;
+  (WrappedComponent: any) => (p: PropsT) => {
+    const props = mergeDefaultProps(p);
 
-    const isEditing = props.movesCtr.editing.isEditing;
-    const moveList = props.moveListsCtr.highlight.item;
-    const move = props.movesCtr.highlight.item;
-
-    const isOwnMove = !!move && isOwner(props.userProfile, move.ownerId);
-    const moveListTitle = <MoveListTitle moveList={moveList} />;
+    const { moveTags, hostedMovePanels, ...passThroughProps }: PropsT = props;
+    const isOwnMove = !!props.move && props.isOwner(props.move);
+    const moveListTitle = <MoveListTitle moveList={props.moveList} />;
 
     const editMoveBtn = (
       <FontAwesomeIcon
@@ -63,7 +56,7 @@ export const withMove = compose(
         className={classnames("ml-2 text-lg", { hidden: !isOwnMove })}
         size="lg"
         icon={faEdit}
-        onClick={() => Editing.get(props.movesCtr).setIsEditing(true)}
+        onClick={() => props.movesEditing.setIsEditing(true)}
       />
     );
 
@@ -71,22 +64,29 @@ export const withMove = compose(
       <VideoPlayerPanel
         key="videoPlayerPanel"
         videoBvr={props.videoBvr}
-        restartId={move ? move.id : ""}
+        restartId={props.move ? props.move.id : ""}
       />
     );
 
     const space = <div key="space" className={classnames("flex flex-grow")} />;
 
-    const followMoveListBtn = <FollowMoveListBtn key="followMoveListBtn" />;
+    const followMoveListButtons = props.userProfile
+      ? [
+          <FollowMoveListBtn
+            key="followMoveListBtn"
+            defaultProps={props.defaultProps}
+          />,
+        ]
+      : [];
 
-    const moveDiv = isEditing ? (
+    const moveDiv = props.movesEditing.isEditing ? (
       <div>
         {videoPlayerPanel}
         <Widgets.MoveForm
           autoFocus={true}
-          move={move}
-          onSubmit={values => Editing.get(props.movesCtr).save(values)}
-          onCancel={() => Editing.get(props.movesCtr).cancel()}
+          move={props.move}
+          onSubmit={values => props.movesEditing.save(values)}
+          onCancel={() => props.movesEditing.cancel()}
           knownTags={moveTags}
           videoPlayer={props.videoBvr.player}
         />
@@ -94,13 +94,13 @@ export const withMove = compose(
     ) : (
       <div>
         <Widgets.MoveHeader
-          move={move}
+          move={props.move}
           moveListTitle={moveListTitle}
           moveTags={moveTags}
-          buttons={[editMoveBtn, space, followMoveListBtn]}
+          buttons={[editMoveBtn, space, ...followMoveListButtons]}
         />
         {videoPlayerPanel}
-        <Widgets.Move move={move} videoPlayer={props.videoBvr.player} />
+        <Widgets.Move move={props.move} videoPlayer={props.videoBvr.player} />
         {hostedMovePanels}
       </div>
     );

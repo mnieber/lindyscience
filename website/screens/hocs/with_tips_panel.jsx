@@ -4,7 +4,11 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
-import { MovesContainer } from "screens/moves_container/moves_container";
+import type { TipsByIdT, TipT } from "tips/types";
+import type { VoteByIdT, VoteT } from "votes/types";
+import type { MoveT } from "moves/types";
+import type { UserProfileT } from "profiles/types";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import Ctr from "screens/containers/index";
 import { actCastVote } from "votes/actions";
 import { actAddTips, actRemoveTips } from "tips/actions";
@@ -13,37 +17,34 @@ import { getId, createErrorHandler } from "app/utils";
 import { listToItemById } from "utils/utils";
 import { apiSaveTip, apiDeleteTip } from "tips/api";
 import { apiVoteTip } from "votes/api";
-import type { TipT } from "tips/types";
 import type { UUID } from "kernel/types";
-import type { VoteT } from "votes/types";
-import type { UserProfileT } from "profiles/types";
 
 type PropsT = {
-  userProfile: UserProfileT,
-  movesCtr: MovesContainer,
+  tipsByMoveId: TipsByIdT,
+  voteByObjectId: VoteByIdT,
+  dispatch: Function,
+  defaultProps: any,
+} & {
+  // default props
+  move: MoveT,
 };
 
 // $FlowFixMe
 export const withTipsPanel = compose(
   Ctr.connect(state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
     tipsByMoveId: Ctr.fromStore.getTipsByMoveId(state),
     voteByObjectId: Ctr.fromStore.getVoteByObjectId(state),
   })),
+  withDefaultProps,
   observer,
-  (WrappedComponent: any) => (props: any) => {
-    const {
-      userProfile,
-      tipsByMoveId,
-      voteByObjectId,
-      ...passThroughProps
-    }: PropsT = props;
+  (WrappedComponent: any) => (p: PropsT) => {
+    const props = mergeDefaultProps(p);
 
-    const move = props.movesCtr.highlight.item;
+    const { tipsByMoveId, voteByObjectId, ...passThroughProps }: PropsT = props;
 
     const saveTip = (tip: TipT) => {
       props.dispatch(actAddTips(listToItemById([tip])));
-      apiSaveTip(move.id, tip).catch(
+      apiSaveTip(props.move.id, tip).catch(
         createErrorHandler("We could not save the tip")
       );
     };
@@ -64,13 +65,13 @@ export const withTipsPanel = compose(
 
     const tipsPanel = (
       <Widgets.TipsPanel
-        parentObject={move}
-        userProfile={props.userProfile}
-        tips={props.tipsByMoveId[getId(move)] || []}
+        parentObject={props.move}
+        tips={props.tipsByMoveId[getId(props.move)] || []}
         voteByObjectId={props.voteByObjectId}
         saveTip={saveTip}
         deleteTip={deleteTip}
         voteTip={voteTip}
+        defaultProps={props.defaultProps}
       />
     );
 

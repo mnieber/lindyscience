@@ -2,59 +2,30 @@
 
 import React from "react";
 import { compose } from "redux";
+import { observer } from "mobx-react";
 
-import { moveListsContainerProps } from "screens/movelists_container/movelists_container_props";
-import { initSessionContainer } from "screens/session_container/session_container";
-import type { MoveByIdT } from "moves/types";
-import {
-  MoveListsContainerContext,
-  useMoveListsCtr,
-} from "screens/movelists_container/movelists_container_context";
-import {
-  MovesContainerContext,
-  useMovesCtr,
-} from "screens/moves_container/moves_container_context";
-import {
-  SessionContainerContext,
-  useSessionCtr,
-} from "screens/session_container/session_container_context";
-import type { MoveListT } from "move_lists/types";
-import { useHistory, withRouter } from "utils/react_router_dom_wrapper";
+import { Profiling } from "screens/session_container/facets/profiling";
+import { withRouter } from "utils/react_router_dom_wrapper";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import { createToastr } from "app/utils";
 import SearchMovesPage from "screens/containers/search_moves_page";
 import { AccountMenu } from "app/presentation/accountmenu";
 import Ctr from "screens/containers/index";
-import type { UserProfileT } from "profiles/types";
 
 // AppFrame
 type AppFramePropsT = {
-  userProfile: ?UserProfileT,
   children: any,
-  dispatch: Function,
-  inputMoveLists: Array<MoveListT>,
-  moveById: MoveByIdT,
+  defaultProps: any,
 };
 
-function AppFrame(props: AppFramePropsT) {
-  const history = useHistory();
+type DefaultPropsT = {
+  profiling: Profiling,
+};
 
-  const sessionCtr = useSessionCtr(props.dispatch, history);
-  const moveListsCtr = useMoveListsCtr(
-    moveListsContainerProps(
-      props.dispatch,
-      sessionCtr.navigation.storeLocation,
-      sessionCtr.navigation.restoreLocation
-    )
-  );
-  const movesCtr = useMovesCtr(
-    props.dispatch,
-    sessionCtr.navigation.storeLocation,
-    sessionCtr.navigation.restoreLocation
-  );
-  initSessionContainer(sessionCtr, movesCtr, moveListsCtr);
-  sessionCtr.setInputs(props.userProfile, props.inputMoveLists, props.moveById);
+function AppFrame(p: AppFramePropsT) {
+  const props = mergeDefaultProps<AppFramePropsT & DefaultPropsT>(p);
 
-  const cookieNotice = sessionCtr.profiling.acceptsCookies ? (
+  const cookieNotice = props.profiling.acceptsCookies ? (
     undefined
   ) : (
     <div className="cookieNotice flexrow justify-around items-center">
@@ -63,7 +34,7 @@ function AppFrame(props: AppFramePropsT) {
         continuing to use this site you agree with that.
         <button
           className="button button--wide ml-2"
-          onClick={sessionCtr.profiling.acceptCookies}
+          onClick={props.profiling.acceptCookies}
         >
           Okay
         </button>
@@ -72,44 +43,29 @@ function AppFrame(props: AppFramePropsT) {
   );
 
   return (
-    <SessionContainerContext.Provider value={sessionCtr}>
-      <MoveListsContainerContext.Provider value={moveListsCtr}>
-        <MovesContainerContext.Provider value={movesCtr}>
-          <div className="appFrame px-4 flexcol">
-            {cookieNotice}
-            {createToastr()}
-            <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-8">
-              <div className="flexrow w-full">
-                <h1 className="appFrame__home" onClick={() => alert("TODO")}>
-                  Lindy Science
-                </h1>
-                <SearchMovesPage />
-              </div>
-              <AccountMenu
-                className="self-start"
-                userProfile={props.userProfile}
-                signIn={() =>
-                  history.push("/app/sign-in/?next=" + window.location.pathname)
-                }
-                signOut={sessionCtr.profiling.signOut}
-              />
-            </div>
-            {props.children}
-          </div>
-        </MovesContainerContext.Provider>
-      </MoveListsContainerContext.Provider>
-    </SessionContainerContext.Provider>
+    <div className="appFrame px-4 flexcol">
+      {cookieNotice}
+      {createToastr()}
+      <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-8">
+        <div className="flexrow w-full">
+          <h1 className="appFrame__home" onClick={() => alert("TODO")}>
+            Lindy Science
+          </h1>
+          <SearchMovesPage />
+        </div>
+        <AccountMenu defaultProps={props.defaultProps} />
+      </div>
+      {props.children}
+    </div>
   );
 }
 
 // $FlowFixMe
 AppFrame = compose(
   withRouter,
-  Ctr.connect(state => ({
-    inputMoveLists: Ctr.fromStore.getMoveLists(state),
-    userProfile: Ctr.fromStore.getUserProfile(state),
-    moveById: Ctr.fromStore.getMoveById(state),
-  }))
+  withDefaultProps,
+  observer,
+  Ctr.connect(state => ({}))
 )(AppFrame);
 
 export default AppFrame;

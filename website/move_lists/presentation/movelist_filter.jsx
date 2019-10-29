@@ -2,18 +2,19 @@
 
 import * as React from "react";
 import { observer } from "mobx-react";
+import { compose } from "redux";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
-import { Highlight } from "facet/facets/highlight";
+import { mergeDefaultProps } from "screens/default_props";
+import { Highlight } from "facet-mobx/facets/highlight";
 import { createTagsAndKeywordsFilter } from "screens/utils";
-import { Filtering } from "facet/facets/filtering";
-import { Selection } from "facet/facets/selection";
-import { Addition } from "facet/facets/addition";
+import { Filtering } from "facet-mobx/facets/filtering";
+import { Selection } from "facet-mobx/facets/selection";
+import { Addition } from "facet-mobx/facets/addition";
 import { MovesContainer } from "screens/moves_container/moves_container";
 import { makeUnique } from "utils/utils";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import {
   TagsAndKeywordsPicker,
   splitTextIntoTagsAndKeywords,
@@ -25,21 +26,26 @@ import type { TagT } from "tags/types";
 // MoveListPicker
 
 type MoveListPickerPropsT = {|
-  moveListsCtr: MoveListsContainer,
   filter: MoveListT => boolean,
   className?: string,
   navigateTo: MoveListT => any,
-|};
+  defaultProps: any,
+|} & {
+  // default props
+  moveListsAddition: Addition,
+  moveListsHighlight: Highlight,
+  moveListsSelection: Selection,
+  moveLists: Array<MoveListT>,
+};
 
-export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
-  const ctr = props.moveListsCtr;
-  const moveListId = ctr.highlight.id;
-  const moveLists = ctr.outputs.display;
+// $FlowFixMe
+export const MoveListPicker = compose(observer)((p: MoveListPickerPropsT) => {
+  const props = mergeDefaultProps(p);
 
   function _onChange(pickedItem) {
-    if (!moveLists.some(x => x.id === pickedItem.value)) {
-      Addition.get(ctr).add({ name: pickedItem.label });
-      props.navigateTo(Addition.get(ctr).item);
+    if (!props.moveLists.some(x => x.id === pickedItem.value)) {
+      props.moveListsAddition.add({ name: pickedItem.label });
+      props.navigateTo(props.moveListsAddition.item);
     }
   }
 
@@ -50,8 +56,8 @@ export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
     };
   }
 
-  const options = moveLists.filter(props.filter).map(toPickerValue);
-  const option = options.find(x => x.value == moveListId);
+  const options = props.moveLists.filter(props.filter).map(toPickerValue);
+  const option = options.find(x => x.value == props.moveListsHighlight.id);
 
   return (
     <div className={classnames("moveListPicker mt-2", props.className)}>
@@ -64,12 +70,12 @@ export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
         value={option}
         setValue={x => {
           if (options.includes(x)) {
-            Selection.get(ctr).selectItem({
+            props.moveListsSelection.selectItem({
               itemId: x.value,
               isShift: false,
               isCtrl: false,
             });
-            props.navigateTo(Highlight.get(ctr).item);
+            props.navigateTo(props.moveListsHighlight.item);
           }
         }}
       />
@@ -81,25 +87,23 @@ export const MoveListPicker = observer((props: MoveListPickerPropsT) => {
 
 type MoveListFilterPropsT = {|
   moveTags: Array<TagT>,
-  movesCtr: MovesContainer,
+  movesFiltering: Filtering,
   className?: string,
 |};
 
 export const MoveListFilter = observer((props: MoveListFilterPropsT) => {
-  const ctr = props.movesCtr;
-
-  const isFilterEnabled = props.movesCtr.filtering.isEnabled;
+  const isFilterEnabled = props.movesFiltering.isEnabled;
 
   function _onPickerChange(tags, text) {
     const splitResult = splitTextIntoTagsAndKeywords(text);
     const allTags = makeUnique([...splitResult.tags, ...tags]);
-    Filtering.get(ctr).apply(
+    props.movesFiltering.apply(
       createTagsAndKeywordsFilter(allTags, splitResult.keywords)
     );
   }
 
   const onFlagChanged = () => {
-    Filtering.get(ctr).setEnabled(!isFilterEnabled);
+    props.movesFiltering.setEnabled(!isFilterEnabled);
   };
 
   const flag = (

@@ -1,10 +1,12 @@
+import { splitKeyhandlerKeys } from "video/utils";
+
 // @flow
 
 import type { VideoBvrT } from "video/types";
 import { isNone } from "utils/utils";
 
 export const createVideoKeyHandlers = (videoBvr: VideoBvrT) => {
-  return {
+  return splitKeyhandlerKeys({
     "ctrl+space": () => videoBvr.togglePlay(),
     "ctrl+shift+1": () => videoBvr.player.setPlaybackRate(0.25),
     "ctrl+shift+2": () => videoBvr.player.setPlaybackRate(0.5),
@@ -14,37 +16,37 @@ export const createVideoKeyHandlers = (videoBvr: VideoBvrT) => {
     "ctrl+shift+6": () => videoBvr.player.setPlaybackRate(1.5),
     "ctrl+shift+7": () => videoBvr.player.setPlaybackRate(1.75),
     "ctrl+shift+8": () => videoBvr.player.setPlaybackRate(2),
-    "ctrl+shift+down": () =>
+    "ctrl+down": () =>
       videoBvr.player.seekTo(videoBvr.player.getCurrentTime() - 0.6),
-    "alt+shift+down": () =>
+    "ctrl+shift+down": () =>
       videoBvr.player.seekTo(videoBvr.player.getCurrentTime() - 0.15),
-    "ctrl+shift+up": () =>
+    "ctrl+up": () =>
       videoBvr.player.seekTo(videoBvr.player.getCurrentTime() + 0.5),
-    "alt+shift+up": () =>
+    "ctrl+shift+up": () =>
       videoBvr.player.seekTo(videoBvr.player.getCurrentTime() + 0.1),
-  };
+  });
 };
 
 export const createVideoTimePointKeyHandlers = (
   videoBvr: VideoBvrT,
   timePoints: Array<number>
 ) => {
-  return {
-    "ctrl+shift+pageUp": () => {
+  return splitKeyhandlerKeys({
+    "ctrl+shift+pageUp;ctrl+t": () => {
       const t = videoBvr.player.getCurrentTime();
       const tp = Math.min.apply(Math, timePoints.filter(tp => tp > t));
       if (!isNone(tp) && isFinite(tp)) {
         videoBvr.player.seekTo(tp);
       }
     },
-    "ctrl+shift+pageDown": () => {
+    "ctrl+shift+pageDown;ctrl+shift+t": () => {
       const t = videoBvr.player.getCurrentTime();
       const tp = Math.max.apply(Math, timePoints.filter(tp => tp < t));
       if (!isNone(tp) && isFinite(tp)) {
         videoBvr.player.seekTo(tp);
       }
     },
-  };
+  });
 };
 
 export const createVideoStartEndKeyHandlers = (
@@ -52,10 +54,10 @@ export const createVideoStartEndKeyHandlers = (
   startTime: ?number,
   endTime: ?number
 ) => {
-  return {
-    "ctrl+shift+home": () => videoBvr.player.seekTo(startTime),
-    "ctrl+shift+end": () => videoBvr.player.seekTo(endTime),
-  };
+  return splitKeyhandlerKeys({
+    "ctrl+shift+home;ctrl+h": () => videoBvr.player.seekTo(startTime),
+    "ctrl+shift+end;ctrl+shift+h": () => videoBvr.player.seekTo(endTime),
+  });
 };
 
 export function createKeyDownHandler(keyHandlers: { [string]: Function }) {

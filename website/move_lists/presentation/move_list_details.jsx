@@ -7,7 +7,6 @@ import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
 import { toReadOnlyEditorState } from "rich_text/utils/editor_state";
 
 import type { MoveListT } from "move_lists/types";
-import type { UserProfileT } from "profiles/types";
 
 // MoveListDetails
 
@@ -33,7 +32,6 @@ export function MoveListTitle(props: MoveListTitlePropsT) {
 }
 
 type MoveListDetailsPropsT = {|
-  userProfile: ?UserProfileT,
   moveList: MoveListT,
   buttons: Array<any>,
 |};

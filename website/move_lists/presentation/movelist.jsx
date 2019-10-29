@@ -2,47 +2,47 @@
 
 import { MenuProvider } from "react-contexify";
 import { observer } from "mobx-react";
+import { compose } from "redux";
 import * as React from "react";
 import classnames from "classnames";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
-import { Highlight } from "facet/facets/highlight";
-import { Selection } from "facet/facets/selection";
-import {
-  getOwnerId,
-  handleSelectionKeys2,
-  isOwner,
-  scrollIntoView,
-} from "app/utils";
+import { Dragging } from "facet-mobx/facets/dragging";
+import type { MoveListT } from "move_lists/types";
+import { mergeDefaultProps } from "screens/default_props";
+import { Highlight } from "facet-mobx/facets/highlight";
+import { Selection } from "facet-mobx/facets/selection";
 import { MovesContainer } from "screens/moves_container/moves_container";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import type { MoveT } from "moves/types";
-import type { UUID } from "kernel/types";
-import type { UserProfileT } from "profiles/types";
 
 // MoveList
 
-type MoveListPropsT = {|
-  userProfile: ?UserProfileT,
+type MoveListPropsT = {
   createHostedPanels: MoveT => any,
   moveContextMenu: any,
-  movesCtr: MovesContainer,
-  moveListsCtr: MoveListsContainer,
   navigateTo: MoveT => any,
   className?: string,
-|};
+  defaultProps: any,
+} & {
+  // default props
+  isOwner: any => boolean,
+  moveList: MoveListT,
+  moves: Array<MoveT>,
+  movesCtr: MovesContainer,
+  movesDragging: Dragging,
+  movesHighlight: Highlight,
+  movesSelection: Selection,
+};
 
-export const MoveList = observer((props: MoveListPropsT) => {
-  const dragPosition = props.movesCtr.dragging.position;
-  const selectionIds = props.movesCtr.selection.ids || [];
-  const highlightId = props.movesCtr.highlight.id;
-  const moves = props.movesCtr.outputs.display;
-  const moveList = props.moveListsCtr.highlight.item;
-  const userProfile = props.userProfile;
-  const isMoveListOwner =
-    userProfile && isOwner(userProfile, getOwnerId(moveList));
+// $FlowFixMe
+export const MoveList = compose(observer)((p: MoveListPropsT) => {
+  const props = mergeDefaultProps(p);
 
-  const moveNodes = moves.map((move, idx) => {
+  const dragPosition = props.movesDragging.position;
+  const selectionIds = props.movesSelection.ids || [];
+  const highlightId = props.movesHighlight.id;
+
+  const moveNodes = props.moves.map((move, idx) => {
     const hostedPanels = props.createHostedPanels(move);
 
     return (
@@ -63,7 +63,9 @@ export const MoveList = observer((props: MoveListPropsT) => {
         id={move.id}
         key={idx}
         {...props.movesCtr.handlerClick.handle(move.id, move, props.navigateTo)}
-        {...(isMoveListOwner ? props.movesCtr.handlerDrag.handle(move.id) : {})}
+        {...(props.isOwner(props.moveList)
+          ? props.movesCtr.handlerDrag.handle(move.id)
+          : {})}
       >
         {move.name}
         {hostedPanels}

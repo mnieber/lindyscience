@@ -1,7 +1,7 @@
 // @flow
 
 import * as React from "react";
-import { isYoutubePlaying } from "video/utils/utils";
+import { isYoutubePlaying } from "video/utils";
 
 import type { VideoT, VideoBvrT } from "video/types";
 

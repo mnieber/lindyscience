@@ -1,31 +1,42 @@
 // @flow
 
 import * as React from "react";
+import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import type { MoveListT } from "move_lists/types";
+import { Clipboard } from "screens/moves_container/facets/clipboard";
 import { getId } from "app/utils";
-import { MovesContainer } from "screens/moves_container/moves_container";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
-import { Highlight } from "facet/facets/highlight";
 import Widgets from "screens/presentation/index";
 
 ///////////////////////////////////////////////////////////////////////
 //
 ///////////////////////////////////////////////////////////////////////
 
-type MoveContextMenuHOCPropsT = {
-  movesCtr: MovesContainer,
-  moveListsCtr: MoveListsContainer,
+type PropsT = {
+  defaultProps: any,
 };
 
-export const withMoveContextMenu = (WrappedComponent: any) =>
-  observer((props: MoveContextMenuHOCPropsT) => {
-    const moveLists = props.moveListsCtr.outputs.display;
-    const moveListId = Highlight.get(props.moveListsCtr).id;
+type DefaultPropsT = {
+  // default props
+  moveLists: Array<MoveListT>,
+  movesClipboard: Clipboard,
+  moveList: MoveListT,
+  isOwner: any => boolean,
+};
 
-    const targetMoveLists = props.movesCtr.clipboard.targetMoveLists;
+// $FlowFixMe
+export const withMoveContextMenu = compose(
+  withDefaultProps,
+  observer,
+  (WrappedComponent: any) => (p: PropsT) => {
+    const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
 
-    const targetMoveListsForMoving = moveLists.filter(
+    const moveListId = getId(props.moveList);
+    const targetMoveLists = props.movesClipboard.targetMoveLists;
+
+    const targetMoveListsForMoving = props.moveLists.filter(
       x => moveListId != getId(x)
     );
 
@@ -33,9 +44,11 @@ export const withMoveContextMenu = (WrappedComponent: any) =>
       <Widgets.MoveContextMenu
         targetMoveLists={targetMoveLists || []}
         targetMoveListsForMoving={targetMoveListsForMoving}
-        movesCtr={props.movesCtr}
+        movesClipboard={props.movesClipboard}
+        isOwnerOfMoveList={props.moveList && props.isOwner(props.moveList)}
       />
     );
 
     return <WrappedComponent moveContextMenu={moveContextMenu} {...props} />;
-  });
+  }
+);

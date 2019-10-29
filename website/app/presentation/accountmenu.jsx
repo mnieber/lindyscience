@@ -1,31 +1,40 @@
 // @flow
 
 import React from "react";
+import { observer } from "mobx-react";
 import classnames from "classnames";
+
+import { mergeDefaultProps } from "screens/default_props";
+import { createErrorHandler } from "app/utils";
+import { Profiling } from "screens/session_container/facets/profiling";
+import { Navigation } from "screens/session_container/facets/navigation";
 import type { UserProfileT } from "profiles/types";
 
-type AccountMenuPropsT = {
-  className: string,
+type AccountMenuPropsT = {};
+
+type DefaultPropsT = {
   userProfile: ?UserProfileT,
-  signIn: () => void,
-  signOut: () => void,
+  navigation: Navigation,
+  profiling: Profiling,
 };
 
-export function AccountMenu(props: AccountMenuPropsT) {
+export const AccountMenu = observer((p: AccountMenuPropsT) => {
+  const props = mergeDefaultProps<AccountMenuPropsT & DefaultPropsT>(p);
+
   const [expanded, setExpanded] = React.useState(false);
 
   function toggle() {
     setExpanded(!expanded);
   }
 
-  const node = props.userProfile ? (
+  const node = (
     <React.Fragment>
       <button onClick={toggle}>{`Hello ${
-        props.userProfile.username
+        props.userProfile ? props.userProfile.username : "stranger!"
       } ⛛`}</button>
       {expanded && (
         <ul className="list-reset bg-green">
-          <li>
+          <li className={classnames({ hidden: !props.userProfile })}>
             <a
               href="#"
               className="px-4 py-2 block text-black hover:bg-grey-light"
@@ -33,7 +42,7 @@ export function AccountMenu(props: AccountMenuPropsT) {
               My account
             </a>
           </li>
-          <li>
+          <li className={classnames({ hidden: !props.userProfile })}>
             <a
               href="#"
               className="px-4 py-2 block text-black hover:bg-grey-light"
@@ -48,21 +57,52 @@ export function AccountMenu(props: AccountMenuPropsT) {
             <a
               href="#"
               className="px-4 py-2 block text-black hover:bg-grey-light"
-              onClick={props.signOut}
+              onClick={() => {
+                props.navigation.history.push(
+                  "/app/lists/lindyscience/help/welcome-to-lindy-science"
+                );
+              }}
+            >
+              Help
+            </a>
+          </li>
+          <li className={classnames({ hidden: !props.userProfile })}>
+            <a
+              href="#"
+              className="px-4 py-2 block text-black hover:bg-grey-light"
+              onClick={() => {
+                setExpanded(false);
+                props.profiling
+                  .signOut()
+                  .catch(createErrorHandler("Could not sign out"));
+              }}
             >
               Sign out
+            </a>
+          </li>
+          <li className={classnames({ hidden: !!props.userProfile })}>
+            <a
+              href="#"
+              className="px-4 py-2 block text-black hover:bg-grey-light"
+              onClick={() => {
+                setExpanded(false);
+                const postfix = window.location.pathname.includes("/sign-in")
+                  ? ""
+                  : `?next=${window.location.pathname}`;
+                props.navigation.history.push("/app/sign-in/" + postfix);
+              }}
+            >
+              Sign in
             </a>
           </li>
         </ul>
       )}
     </React.Fragment>
-  ) : (
-    <button onClick={props.signIn}>{`Sign in`}</button>
   );
 
   return (
-    <div className={classnames(props.className, "w-32")}>
+    <div className={classnames("self-start", "w-32")}>
       <div className={classnames("absolute", "z-10")}>{node}</div>
     </div>
   );
-}
+});

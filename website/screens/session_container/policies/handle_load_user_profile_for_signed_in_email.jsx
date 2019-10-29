@@ -2,7 +2,7 @@
 
 import { Inputs } from "screens/session_container/facets/inputs";
 import { Profiling } from "screens/session_container/facets/profiling";
-import { reaction } from "utils/mobx_wrapper";
+import { reaction } from "facet-mobx";
 import { actSetUserProfile } from "profiles/actions";
 import { actSetVotes } from "votes/actions";
 import { actSetMovePrivateDatas } from "moves/actions";

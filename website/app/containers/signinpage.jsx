@@ -1,41 +1,43 @@
 // @flow
 
 import * as React from "react";
+import { compose } from "redux";
+import { observer } from "mobx-react";
 
+import { createErrorHandler } from "app/utils";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import { Profiling } from "screens/session_container/facets/profiling";
 import Ctr from "app/containers/index";
-import { actSetSignedInEmail } from "app/actions";
-import { useHistory } from "utils/react_router_dom_wrapper";
-import { urlParam } from "utils/utils";
 import { SignInDialog } from "app/presentation/signin_dialog";
-import { apiSignIn } from "app/api";
 
 // SignInPage
 
-type SignInPagePropsT = {
-  dispatch: Function,
+type SignInPagePropsT = {} & {
+  // default props
+  profiling: Profiling,
 };
 
-function SignInPage(props: SignInPagePropsT) {
-  const history = useHistory();
-
-  async function _signIn(email: string, password: string) {
-    const errorState = await apiSignIn(email, password);
-    if (!errorState) {
-      props.dispatch(actSetSignedInEmail(email));
-      const next = urlParam("next");
-      history.push(next ? next : "/app/lists");
-    }
-    return errorState;
-  }
+function SignInPage(p: SignInPagePropsT) {
+  const props = mergeDefaultProps(p);
 
   return (
     <div className="signInPage flexrow">
-      <SignInDialog signIn={_signIn} />
+      <SignInDialog
+        signIn={(email, password) =>
+          props.profiling
+            .signIn(email, password)
+            .catch(createErrorHandler("Could not sign in"))
+        }
+      />
     </div>
   );
 }
 
 // $FlowFixMe
-SignInPage = Ctr.connect(state => ({}))(SignInPage);
+SignInPage = compose(
+  Ctr.connect(state => ({})),
+  withDefaultProps,
+  observer
+)(SignInPage);
 
 export default SignInPage;

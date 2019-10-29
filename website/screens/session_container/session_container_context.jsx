@@ -18,12 +18,17 @@ export const withSessionCtr = (WrappedComponent: any) => (props: any) => {
   );
 };
 
-export function useSessionCtr(dispatch: Function, history: any) {
+export function useSessionCtr(
+  dispatch: Function,
+  history: any,
+  movesCtr: MovesContainer,
+  moveListsCtr: MoveListsContainer
+) {
   const [sessionCtr, setSessionCtr] = React.useState(() => {
     const result = new SessionContainer(
-      sessionContainerProps(dispatch, history)
+      sessionContainerProps(dispatch, history, movesCtr, moveListsCtr)
     );
-    result.profiling.loadEmail();
+    result.profiling.loadEmail().catch(e => {});
     return result;
   });
   return sessionCtr;

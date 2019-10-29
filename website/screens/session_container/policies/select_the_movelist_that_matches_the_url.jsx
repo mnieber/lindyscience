@@ -1,8 +1,8 @@
 // @flow
 
-import { Selection } from "facet/facets/selection";
+import { Selection } from "facet-mobx/facets/selection";
 import { Outputs } from "screens/movelists_container/facets/outputs";
-import { reaction } from "utils/mobx_wrapper";
+import { reaction } from "facet-mobx";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { findMoveListByUrl } from "screens/utils";
 import {

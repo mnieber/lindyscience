@@ -5,8 +5,9 @@ import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
 
+import type { MoveT } from "moves/types";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import type { VideoT } from "video/types";
-import { MovesContainer } from "screens/moves_container/moves_container";
 import {
   createKeyDownHandler,
   createVideoKeyHandlers,
@@ -16,28 +17,34 @@ import {
 import { useInterval } from "utils/use_interval";
 import { useVideo } from "video/bvrs/use_video";
 import { getVideoFromMove } from "moves/utils";
-import { styleTimePoints, extractTimePoints } from "video/utils/cut_points";
+import { styleTimePoints, extractTimePoints } from "video/utils";
 import Ctr from "screens/containers/index";
 
 type PropsT = {
-  movesCtr: MovesContainer,
+  defaultProps: any,
+} & {
+  // default props
+  move: MoveT,
 };
 
 // $FlowFixMe
 export const withMoveVideoBvr = compose(
   Ctr.connect(state => ({})),
+  withDefaultProps,
   observer,
-  (WrappedComponent: any) => (props: any) => {
+  (WrappedComponent: any) => (p: any) => {
+    const props = mergeDefaultProps(p);
+
     const { ...passThroughProps }: PropsT = props;
 
-    const move = props.movesCtr.highlight.item;
-
     const parentDivId = "moveDiv";
-    const video: ?VideoT = move && move.link ? getVideoFromMove(move) : null;
+    const video: ?VideoT =
+      props.move && props.move.link ? getVideoFromMove(props.move) : null;
     const videoBvr = useVideo(parentDivId, video);
 
-    const description = move ? move.description : "";
-    const privateNotes = move && move.privateData ? move.privateData.notes : "";
+    const description = props.move ? props.move.description : "";
+    const privateNotes =
+      props.move && props.move.privateData ? props.move.privateData.notes : "";
     const textWithTimePoints = description + privateNotes;
 
     const timePoints = React.useMemo(
@@ -54,11 +61,11 @@ export const withMoveVideoBvr = compose(
     const videoKeyHandlers = {
       ...createVideoKeyHandlers(videoBvr),
       ...createVideoTimePointKeyHandlers(videoBvr, timePoints),
-      ...(move
+      ...(props.move
         ? createVideoStartEndKeyHandlers(
             videoBvr,
-            move.startTimeMs ? move.startTimeMs / 1000 : undefined,
-            move.endTimeMs ? move.endTimeMs / 1000 : undefined
+            props.move.startTimeMs ? props.move.startTimeMs / 1000 : undefined,
+            props.move.endTimeMs ? props.move.endTimeMs / 1000 : undefined
           )
         : {}),
     };

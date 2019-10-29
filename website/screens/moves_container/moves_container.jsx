@@ -1,30 +1,39 @@
 // @flow
 
+import type { UUID } from "kernel/types";
 import { Outputs, initOutputs } from "screens/moves_container/facets/outputs";
-import { type GetFacet, facet, facetClass, mapData } from "facet/index";
+import {
+  type GetFacet,
+  facet,
+  facetClass,
+  registerFacets,
+  installPolicies,
+} from "facet";
+import { mapData } from "facet-mobx";
 import { Clipboard } from "screens/moves_container/facets/clipboard";
 import { getIds } from "app/utils";
 import { Inputs, initInputs } from "screens/moves_container/facets/inputs";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
-import { Addition, initAddition } from "facet/facets/addition";
-import { Dragging, initDragging } from "facet/facets/dragging";
-import { Editing, initEditing } from "facet/facets/editing";
-import { Filtering, initFiltering } from "facet/facets/filtering";
-import { Highlight, initHighlight } from "facet/facets/highlight";
-import { Insertion, initInsertion } from "facet/facets/insertion";
-import { Selection, initSelection } from "facet/facets/selection";
-import { SelectWithKeys } from "facet/handlers/select_with_keys";
-import { ClickToSelectItems } from "facet/handlers/click_to_select_items";
-import { DragItems } from "facet/handlers/drag_items";
+import { Addition, initAddition } from "facet-mobx/facets/addition";
+import { Dragging, initDragging } from "facet-mobx/facets/dragging";
+import { Editing, initEditing } from "facet-mobx/facets/editing";
+import { Filtering, initFiltering } from "facet-mobx/facets/filtering";
+import { Highlight, initHighlight } from "facet-mobx/facets/highlight";
+import { Insertion, initInsertion } from "facet-mobx/facets/insertion";
+import { Selection, initSelection } from "facet-mobx/facets/selection";
+import { SelectWithKeys } from "screens/facet/handlers/select_with_keys";
+import { ClickToSelectItems } from "screens/facet/handlers/click_to_select_items";
+import { DragItems } from "screens/facet/handlers/drag_items";
 import type { UserProfileT } from "profiles/types";
-import { Policies } from "facet/policies";
-import { insertByCreatingAnItem } from "facet/policies/insert_by_creating_a_new_item";
-import { insertByDraggingSelection } from "facet/policies/insert_by_dragging_selection";
+import { Policies } from "screens/facet/policies";
+import { insertByCreatingAnItem } from "facet-mobx/policies/insert_by_creating_a_new_item";
+import { insertByDraggingSelection } from "facet-mobx/policies/insert_by_dragging_selection";
 import { runInAction } from "utils/mobx_wrapper";
-import { createNewMove } from "screens/moves_container/moves_container_props";
 
-type MovesContainerPropsT = {
+export type MovesContainerPropsT = {
+  isEqual: (lhs: any, rhs: any) => boolean,
+  createNewMove: (userProfile: UserProfileT, sourceMoveListId: UUID) => MoveT,
   setMoves: (MoveListT, Array<MoveT>) => any,
   saveMove: (MoveT, values: any) => any,
   shareMovesToList: (Array<MoveT>, MoveListT, ?MoveListT) => any,
@@ -55,9 +64,13 @@ export class MovesContainer {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
         return this.inputs.moveList && this.inputs.userProfile
-          ? createNewMove(this.inputs.userProfile, this.inputs.moveList.id)
+          ? props.createNewMove(
+              this.inputs.userProfile,
+              this.inputs.moveList.id
+            )
           : undefined;
       },
+      isEqual: props.isEqual,
     });
     this.dragging = initDragging(new Dragging());
     this.editing = initEditing(new Editing(), {
@@ -79,6 +92,8 @@ export class MovesContainer {
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());
+
+    registerFacets(this);
   }
 
   _applyPolicies(props: MovesContainerPropsT) {
@@ -86,7 +101,7 @@ export class MovesContainer {
     const itemById = [Outputs, "moveById"];
     const preview = [Outputs, "preview"];
 
-    [
+    const policies = [
       Policies.selection.actsOnItems(itemById),
 
       Policies.highlight.actsOnItems(itemById),
@@ -119,7 +134,9 @@ export class MovesContainer {
 
       mapData([Filtering, "filteredItems"], [Outputs, "display"]),
       mapData([Outputs, "display"], [Selection, "selectableIds"], getIds),
-    ].forEach(policy => policy(this));
+    ];
+
+    installPolicies(policies, this);
   }
 
   constructor(props: MovesContainerPropsT) {

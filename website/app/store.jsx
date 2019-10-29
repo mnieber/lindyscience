@@ -3,10 +3,12 @@
 import Cookies from "js-cookie";
 import jQuery from "jquery";
 import thunk from "redux-thunk";
-import { spy } from "utils/mobx_wrapper";
 import { createLogger } from "redux-logger";
 import { createStore, applyMiddleware } from "redux";
+
+import { spy, toJS } from "utils/mobx_wrapper";
 import { reducer } from "app/root_reducer";
+import { options as facetOptions } from "facet";
 
 function csrfSafeMethod(method) {
   // these HTTP methods do not require CSRF protection
@@ -29,20 +31,26 @@ const configureStore = () => {
     traditional: true,
   });
 
+  const logFacet = false;
   const logRedux = false;
-  const logMobx = false;
-  const blackList = ["relayData"];
+  const logMobX = false;
+  const logMobXBlackList = ["relayData"];
 
   let middleware = [thunk];
   if (process.env.NODE_ENV !== "production") {
     middleware = [...middleware, ...(logRedux ? [createLogger()] : [])];
   }
 
-  if (logMobx) {
+  if (logFacet) {
+    facetOptions.logging = true;
+    facetOptions.formatObject = x => toJS(x, { recurseEverything: true });
+  }
+
+  if (logMobX) {
     spy(event => {
       if (
         event.type === "action" &&
-        !blackList.includes(event.name.split(" ")[0])
+        !logMobXBlackList.includes(event.name.split(" ")[0])
       ) {
         const args = event.arguments.length
           ? ` with args: ${event.arguments}`

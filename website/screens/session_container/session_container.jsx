@@ -15,12 +15,14 @@ import {
 } from "screens/session_container/facets/profiling";
 import type { UserProfileT } from "profiles/types";
 import { Inputs, initInputs } from "screens/session_container/facets/inputs";
-import { facet, facetClass } from "facet/index";
+import { facet, facetClass, registerFacets, installPolicies } from "facet";
 import { Policies } from "screens/session_container/policies";
 
 type SessionContainerPropsT = {
   dispatch: Function,
   history: any,
+  movesCtr: MovesContainer,
+  moveListsCtr: MoveListsContainer,
 };
 
 // $FlowFixMe
@@ -37,10 +39,37 @@ export class SessionContainer {
     this.inputs = initInputs(new Inputs(), props.dispatch);
     this.navigation = initNavigation(new Navigation(), props.history);
     this.profiling = initProfiling(new Profiling());
+    this.movesCtr = props.movesCtr;
+    this.moveListsCtr = props.moveListsCtr;
+
+    registerFacets(this);
+  }
+
+  _applyPolicies(props: SessionContainerPropsT) {
+    const policies = [
+      Policies.navigation.handleNavigateToMove,
+      Policies.navigation.handleNavigateToMoveList,
+      Policies.navigation.selectTheMoveListThatMatchesTheUrl,
+      Policies.navigation.syncMoveWithCurrentUrl,
+      Policies.navigation.syncUrlWithNewMove,
+
+      Policies.profiling.handleLoadUserProfileForSignedInEmail,
+      Policies.profiling.handleLoadEmail,
+      Policies.profiling.handleSignIn,
+      Policies.profiling.handleSignOut,
+
+      Policies.url.handleLoadSelectedMoveListFromUrl,
+
+      Policies.data.updateMovesCtrInputs,
+      Policies.data.updateMoveListsCtrInputs,
+    ];
+
+    installPolicies(policies, this);
   }
 
   constructor(props: SessionContainerPropsT) {
     this._createFacets(props);
+    this._applyPolicies(props);
   }
 
   setInputs(
@@ -55,28 +84,3 @@ export class SessionContainer {
     });
   }
 }
-
-export const initSessionContainer = (
-  self: SessionContainer,
-  movesCtr: MovesContainer,
-  moveListsCtr: MoveListsContainer
-) => {
-  self.movesCtr = movesCtr;
-  self.moveListsCtr = moveListsCtr;
-
-  [
-    Policies.navigation.handleNavigateToMove,
-    Policies.navigation.handleNavigateToMoveList,
-    Policies.navigation.selectTheMoveListThatMatchesTheUrl,
-    Policies.navigation.selectTheMoveThatMatchesTheUrl,
-
-    Policies.profiling.handleLoadEmail,
-    Policies.profiling.handleLoadUserProfileForSignedInEmail,
-    Policies.profiling.handleSignOut,
-
-    Policies.url.handleLoadSelectedMoveListFromUrl,
-
-    Policies.data.updateMovesCtrInputs,
-    Policies.data.updateMoveListsCtrInputs,
-  ].forEach(policy => policy(self));
-};

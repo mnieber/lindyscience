@@ -4,22 +4,24 @@ import * as React from "react";
 import { Menu, Item, Submenu } from "react-contexify";
 import { observer } from "mobx-react";
 
-import { MovesContainer } from "screens/moves_container/moves_container";
+import { getId } from "app/utils";
+import { Clipboard } from "screens/moves_container/facets/clipboard";
 import type { MoveListT } from "move_lists/types";
 
 type MoveContextMenuPropsT = {
   targetMoveLists: Array<MoveListT>,
   targetMoveListsForMoving: Array<MoveListT>,
-  movesCtr: MovesContainer,
+  movesClipboard: Clipboard,
+  isOwnerOfMoveList: boolean,
 };
 
 export const MoveContextMenu = observer((props: MoveContextMenuPropsT) => {
   function _shareToList(e) {
-    props.movesCtr.clipboard.shareToList(e.props);
+    props.movesClipboard.shareToList(e.props);
   }
 
   function _moveToList(e) {
-    props.movesCtr.clipboard.moveToList(e.props);
+    props.movesClipboard.moveToList(e.props);
   }
 
   const shareToListMenuItems = props.targetMoveLists.map((moveList, idx) => {
@@ -32,7 +34,8 @@ export const MoveContextMenu = observer((props: MoveContextMenuPropsT) => {
 
   const moveToListMenuItems = props.targetMoveListsForMoving.map(
     (moveList, idx) => {
-      const postfix = props.targetMoveLists.includes(moveList) ? "" : " *";
+      const targetMoveListIds = props.targetMoveLists.map(getId);
+      const postfix = targetMoveListIds.includes(moveList.id) ? "" : " *";
       return (
         <Item onClick={_moveToList} key={moveList.id} data={moveList}>
           {moveList.name + postfix}
@@ -42,10 +45,10 @@ export const MoveContextMenu = observer((props: MoveContextMenuPropsT) => {
   );
 
   const exportMenuItems = [
-    <Item onClick={() => props.movesCtr.clipboard.copyNames()} key={1}>
+    <Item onClick={() => props.movesClipboard.copyNames()} key={1}>
       Copy names
     </Item>,
-    <Item onClick={() => props.movesCtr.clipboard.copyLinks()} key={2}>
+    <Item onClick={() => props.movesClipboard.copyLinks()} key={2}>
       Copy links
     </Item>,
   ];
@@ -54,8 +57,14 @@ export const MoveContextMenu = observer((props: MoveContextMenuPropsT) => {
     <Menu id="moveContextMenu">
       <Submenu label="Export">{exportMenuItems}</Submenu>
       <Submenu label="Share to list">{shareToListMenuItems}</Submenu>
-      <Submenu label="Move to list">{moveToListMenuItems}</Submenu>
+      {props.isOwnerOfMoveList && (
+        <Submenu label="Move to list">{moveToListMenuItems}</Submenu>
+      )}
+      {props.isOwnerOfMoveList && (
+        <Item onClick={() => props.movesClipboard.moveToTrash()} key={1}>
+          Move to trash
+        </Item>
+      )}
     </Menu>
   );
 });
-

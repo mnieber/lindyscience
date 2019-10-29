@@ -4,7 +4,7 @@ import * as React from "react";
 import YouTube from "react-youtube";
 
 import type { VideoUrlPropsT, VideoBvrT, RestartIdT } from "video/types";
-import { isNone } from "utils/utils2";
+import { isNone } from "utils/utils";
 
 type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,

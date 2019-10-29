@@ -55,46 +55,6 @@ export function findNeighbourIdx(
   return undefined;
 }
 
-export function findNeighbourIdx2(
-  filteredItems: Array<any>,
-  allItems: Array<any>,
-  beginIndex: number,
-  endIndex: number,
-  step: number
-) {
-  for (var idx = beginIndex; idx != endIndex; idx += step) {
-    if (filteredItems.includes(allItems[idx])) {
-      return { result: idx };
-    }
-  }
-  return undefined;
-}
-
-export function getPreview2(
-  items: Array<any>,
-  targetItemId: UUID,
-  isBefore: boolean,
-  payload: Array<any>
-): Array<any> {
-  return !payload.length
-    ? items
-    : items.reduce(
-        (acc, item) => {
-          if (item.id == targetItemId && isBefore) {
-            acc.push(...payload);
-          }
-          if (!payload.find(x => x.id === item.id)) {
-            acc.push(item);
-          }
-          if (item.id == targetItemId && !isBefore) {
-            acc.push(...payload);
-          }
-          return acc;
-        },
-        targetItemId ? [] : [...payload]
-      );
-}
-
 export function createTagsAndKeywordsFilter(
   tags: Array<TagT>,
   keywords: Array<string>

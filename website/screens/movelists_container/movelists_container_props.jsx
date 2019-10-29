@@ -1,6 +1,6 @@
 // @flow
 
-import { listToItemById, slugify } from "utils/utils";
+import { createUUID, listToItemById, slugify } from "utils/utils";
 import { apiSaveMoveList, apiSaveMoveListOrdering } from "move_lists/api";
 import { actSetFollowedMoveListIds } from "profiles/actions";
 import type { UUID } from "kernel/types";
@@ -14,7 +14,7 @@ export function moveListsContainerProps(
   storeLocation: Function,
   restoreLocation: Function
 ) {
-  function _saveMoveList(moveList: MoveListT, values: any) {
+  function saveMoveList(moveList: MoveListT, values: any) {
     const slug =
       values.slug == newMoveListSlug ? slugify(values.name) : values.slug;
 
@@ -32,8 +32,8 @@ export function moveListsContainerProps(
 
   function createNewMoveList(props: any): MoveListT {
     return {
-      id: "<<< NEW MOVELIST >>>",
-      // id: createUUID(),
+      // id: "<<< NEW MOVELIST >>>",
+      id: createUUID(),
       slug: props.name ? slugify(props.name) : newMoveListSlug,
       name: "New move list",
       description: "",
@@ -52,11 +52,18 @@ export function moveListsContainerProps(
     );
   }
 
+  function setMoveLists(moveLists: Array<MoveListT>) {
+    // Nothing to do
+  }
+
+  function isEqual(lhs: any, rhs: any): boolean {
+    return lhs.id == rhs.id;
+  }
+
   return {
-    saveMoveList: _saveMoveList,
-    setMoveLists: (moveLists: Array<MoveListT>) => {
-      // Nothing to do
-    },
+    isEqual,
+    saveMoveList,
+    setMoveLists,
     createNewMoveList,
     setFollowedMoveListIds,
     storeLocation,

@@ -13,6 +13,11 @@ function _hasError(e, fieldName, errorMsg) {
 // Api app
 
 export async function apiSignIn(email: string, password: string) {
+  if (email == "guest@guest.com") {
+    email = "lindyscience" + "@";
+    password = "trickeration";
+    email += "gmail" + ".com";
+  }
   try {
     const response = toCamelCase(
       await post("/auth/token/login", { email, password })
@@ -22,7 +27,7 @@ export async function apiSignIn(email: string, password: string) {
       return "";
     }
   } catch (e) {
-    return _hasError(
+    throw _hasError(
       e,
       "non_field_errors",
       "Unable to log in with provided credentials."
@@ -36,20 +41,15 @@ export async function apiSignOut() {
   try {
     await post("/auth/token/logout", {});
     setToken("");
-    return true;
+    return "";
   } catch (e) {
-    console.error(e);
+    throw "Could not sign out";
   }
-  return false;
 }
 
 export async function apiGetEmail() {
-  try {
-    const response = toCamelCase(await get("/auth/users/me"));
-    return response.email;
-  } catch (e) {
-    return "";
-  }
+  const response = toCamelCase(await get("/auth/users/me"));
+  return response.email;
 }
 
 export async function apiResetPassword(email: string) {
@@ -61,7 +61,7 @@ export async function apiResetPassword(email: string) {
     );
     return "";
   } catch (e) {
-    return _hasError(e, "email", "Enter a valid email address.")
+    throw _hasError(e, "email", "Enter a valid email address.")
       ? "invalid_email"
       : "cannot_reset";
   }
@@ -80,9 +80,8 @@ export async function apiChangePassword(
         new_password: newPassword,
       })
     );
-    return "";
   } catch (e) {
-    return _hasError(e, "non_field_errors", "Invalid token for given user.")
+    throw _hasError(e, "non_field_errors", "Invalid token for given user.")
       ? "invalid_token"
       : "cannot_sign_in";
   }
@@ -96,9 +95,8 @@ export async function apiActivateAccount(uid: string, token: string) {
         token,
       })
     );
-    return "";
   } catch (e) {
-    return _hasError(e, "non_field_errors", "Invalid token for given user.")
+    throw _hasError(e, "non_field_errors", "Invalid token for given user.")
       ? "invalid_token"
       : "cannot_sign_in";
   }
@@ -118,8 +116,7 @@ export async function apiRegister(
         accepts_terms: true,
       })
     );
-    return "";
   } catch (e) {
-    return "error_registering_user";
+    throw "error_registering_user";
   }
 }

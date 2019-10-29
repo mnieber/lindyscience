@@ -3,7 +3,9 @@
 import * as React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
+import classnames from "classnames";
 
+import { mergeDefaultProps } from "screens/default_props";
 import {
   useInsertTip,
   useNewTip,
@@ -17,15 +19,21 @@ import type { TipT } from "tips/types";
 
 type TipsPanelPropsT = {
   parentObject: OwnedObjectT,
-  userProfile: ?UserProfileT,
   tips: Array<TipT>,
   voteByObjectId: VoteByIdT,
   saveTip: TipT => void,
   deleteTip: TipT => void,
   voteTip: (UUID, VoteT) => void,
+  defaultProps: any,
 };
 
-export function TipsPanel(props: TipsPanelPropsT) {
+type DefaultPropsT = {
+  userProfile: ?UserProfileT,
+};
+
+export function TipsPanel(p: TipsPanelPropsT) {
+  const props = mergeDefaultProps<TipsPanelPropsT & DefaultPropsT>(p);
+
   const insertTipBvr = useInsertTip(props.tips);
   const newTipBvr = useNewTip(
     props.userProfile ? props.userProfile.userId : -1,
@@ -42,9 +50,9 @@ export function TipsPanel(props: TipsPanelPropsT) {
   const addTipBtn = (
     <FontAwesomeIcon
       key={"edit"}
-      className="ml-2"
+      className={classnames("ml-2", { "opacity-50": !props.userProfile })}
       icon={faPlusSquare}
-      onClick={newTipBvr.add}
+      onClick={props.userProfile ? newTipBvr.add : undefined}
     />
   );
 

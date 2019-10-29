@@ -7,16 +7,16 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
-import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
+import type { MoveListT } from "move_lists/types";
+import { withDefaultProps, mergeDefaultProps } from "screens/default_props";
 import type { UserProfileT } from "profiles/types";
-import { Highlight } from "facet/facets/highlight";
-import { Editing } from "facet/facets/editing";
+import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
+import { Editing } from "facet-mobx/facets/editing";
 import {
   actAddCutPoints,
   actRemoveCutPoints,
   actSetCutVideoLink,
 } from "video/actions";
-import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { apiSaveMove } from "moves/api";
 import { apiSaveMoveOrdering } from "move_lists/api";
@@ -33,7 +33,6 @@ import type { TagT } from "tags/types";
 import type { EditCutPointBvrT } from "video/bvrs/cut_point_crud_behaviours";
 
 type MoveListDetailsPagePropsT = {
-  userProfile: ?UserProfileT,
   moveListTags: Array<TagT>,
   moveTags: Array<TagT>,
   cutVideoLink: string,
@@ -41,54 +40,59 @@ type MoveListDetailsPagePropsT = {
   editCutPointBvr: EditCutPointBvrT,
   cutPoints: Array<CutPointT>,
   dispatch: Function,
-  moveListsCtr: MoveListsContainer,
+  defaultProps: any,
+} & {
+  // default props
+  isOwner: any => boolean,
+  moveList: MoveListT,
+  moveListsEditing: Editing,
+  moveListsPreview: Array<MoveListT>,
+  userProfile: ?UserProfileT,
 };
 
-type _MoveListDetailsPagePropsT = MoveListDetailsPagePropsT;
+export const _MoveListDetailsPage = (p: MoveListDetailsPagePropsT) => {
+  const props = mergeDefaultProps(p);
 
-export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
-  const ctr = props.moveListsCtr;
-  const moveList = Highlight.get(ctr).item;
-  const moveLists = ctr.outputs.preview;
-  const userProfile = props.userProfile;
-  const isEditing = Editing.get(ctr).isEditing;
-
-  if (!moveList) {
+  if (!props.moveList) {
     return <React.Fragment />;
   }
 
-  const bannedMoveListSlugs = moveLists
-    .filter(x => userProfile && isOwner(userProfile, x.ownerId))
-    .filter(x => x !== moveList)
+  const bannedMoveListSlugs = props.moveListsPreview
+    .filter(x => props.isOwner(x))
+    .filter(x => x.id !== props.moveList.id)
     .map(x => x.slug);
-
-  const isOwned = userProfile && isOwner(userProfile, moveList.ownerId);
 
   const editBtn = (
     <FontAwesomeIcon
       key={1}
-      className={classnames("ml-2", { hidden: !isOwned })}
+      className={classnames("ml-2", {
+        hidden: !props.isOwner(props.moveList),
+      })}
       icon={faEdit}
-      onClick={() => Editing.get(ctr).setIsEditing(true)}
+      onClick={() => props.moveListsEditing.setIsEditing(true)}
     />
   );
 
-  const followMoveListBtn = <FollowMoveListBtn key="followMoveListBtn" />;
+  const followMoveListBtn = (
+    <FollowMoveListBtn
+      key="followMoveListBtn"
+      defaultProps={props.defaultProps}
+    />
+  );
   const space = <div key="space" className="flex flex-grow" />;
 
-  const div = isEditing ? (
+  const div = props.moveListsEditing.isEditing ? (
     <Widgets.MoveListForm
+      moveList={props.moveList}
       autoFocus={true}
       knownTags={props.moveListTags}
-      moveList={moveList}
       moveListSlugs={bannedMoveListSlugs}
-      onSubmit={values => Editing.get(ctr).save(values)}
-      onCancel={() => Editing.get(ctr).cancel()}
+      onSubmit={values => props.moveListsEditing.save(values)}
+      onCancel={() => props.moveListsEditing.cancel()}
     />
   ) : (
     <Widgets.MoveListDetails
-      userProfile={userProfile}
-      moveList={moveList}
+      moveList={props.moveList}
       buttons={[editBtn, space, followMoveListBtn]}
     />
   );
@@ -113,12 +117,12 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
                 { ...lastMove, endTimeMs: cutPoint.t * 1000 },
               ]
             : acc;
-        } else if (userProfile) {
+        } else if (props.userProfile) {
           const newMove = createMoveFromCutPoint(
             cutPoint,
-            userProfile,
+            props.userProfile,
             props.cutVideoLink,
-            moveList
+            props.moveList
           );
           return [...acc, newMove];
         } else {
@@ -126,14 +130,15 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
         }
       }, []);
 
-      const lastMoveIdx = moveList.moves.length - 1;
-      const lastMoveId = lastMoveIdx >= 0 ? moveList.moves[lastMoveIdx] : "";
+      const lastMoveIdx = props.moveList.moves.length - 1;
+      const lastMoveId =
+        lastMoveIdx >= 0 ? props.moveList.moves[lastMoveIdx] : "";
 
       props.dispatch(actAddMoves(newMoves));
       const moveIdsInMoveList = props.dispatch(
         actInsertMoveIds(
           newMoves.map(x => x.id),
-          moveList.id,
+          props.moveList.id,
           lastMoveId,
           false
         )
@@ -143,7 +148,7 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
         apiSaveMove(newMove).catch(
           createErrorHandler("We could not save the move")
         );
-        apiSaveMoveOrdering(moveList.id, moveIdsInMoveList).catch(
+        apiSaveMoveOrdering(props.moveList.id, moveIdsInMoveList).catch(
           createErrorHandler("We could not update the movelist")
         );
       });
@@ -163,20 +168,19 @@ export function MoveListDetailsPage(props: _MoveListDetailsPagePropsT) {
       />
     </div>
   );
-}
+};
 
 // $FlowFixMe
-MoveListDetailsPage = compose(
-  withMoveListsCtr,
+const MoveListDetailsPage = compose(
   withCutVideoBvr,
   Ctr.connect(state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
     moveListTags: Ctr.fromStore.getMoveListTags(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
     cutPoints: Ctr.fromStore.getCutPoints(state),
   })),
+  withDefaultProps,
   observer
-)(MoveListDetailsPage);
+)(_MoveListDetailsPage);
 
 export default MoveListDetailsPage;

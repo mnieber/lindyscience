@@ -71,8 +71,8 @@ export function SignInForm(props: SignInFormPropsT) {
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({
-      email: "",
-      password: "",
+      email: "guest@guest.com",
+      password: "guest",
     }),
     validationSchema: yup.object().shape({
       email: yup.string().required("This field is required"),

@@ -54,18 +54,8 @@ $panGrey: #bbbbbb;
   background-image: url("/static/img/downvote_0.png");
 }
 
-#reachRouter {
-  @apply h-full;
-}
-
 .appFrame {
   @apply h-full;
-
-  // HACK: Reach Router inserts anonymous divs
-  > div:nth-of-type(2) {
-    flex: 1;
-    height: 100%;
-  }
 }
 
 .appFrame__banner {
@@ -73,11 +63,12 @@ $panGrey: #bbbbbb;
 }
 
 .moveListPanel {
-  @apply h-full;
+  flex: 1;
+  min-height: 0; /* new */
 }
 
 .moveList {
-  @apply flexcol overflow-y-scroll;
+  @apply flexcol overflow-y-scroll flex-grow;
 }
 
 .moveList__item {
@@ -101,7 +92,8 @@ $panGrey: #bbbbbb;
 }
 
 .move__description {
-  @apply text-lg;
+  @apply text-lg overflow-y-scroll;
+  max-height: 200px;
 }
 
 .moveForm__description {
@@ -211,4 +203,10 @@ $panGrey: #bbbbbb;
 .moveListPanel__inner {
   min-width: 20rem;
   max-width: 20rem;
+
+  // Style the keyboard event handler span
+  > span {
+    display: flex;
+    min-height: 0;
+  }
 }

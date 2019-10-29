@@ -3,7 +3,7 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import { secondsToTimeString } from "utils/utils2";
+import { secondsToTimeString } from "utils/utils";
 
 import type { CutPointT } from "video/types";
 import type { UUID } from "kernel/types";

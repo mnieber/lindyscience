@@ -1,6 +1,6 @@
 // @flow
 
-import { createUUID } from "utils/utils2";
+import { createUUID } from "utils/utils";
 import type { CutPointT, VideoBvrT } from "video/types";
 import type { UUID } from "kernel/types";
 

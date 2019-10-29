@@ -3,7 +3,7 @@
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { Inputs } from "screens/session_container/facets/inputs";
 import { SessionContainer } from "screens/session_container/session_container";
-import { reaction } from "utils/mobx_wrapper";
+import { reaction } from "facet-mobx";
 
 export const updateMoveListsCtrInputs = (ctr: SessionContainer) => {
   const inputs = Inputs.get(ctr);

@@ -5,22 +5,30 @@ import {
   Outputs,
   initOutputs,
 } from "screens/movelists_container/facets/outputs";
-import { type GetFacet, facet, facetClass, mapData } from "facet/index";
+import {
+  type GetFacet,
+  facet,
+  facetClass,
+  registerFacets,
+  installPolicies,
+} from "facet";
+import { mapData } from "facet-mobx";
 import type { UUID } from "kernel/types";
-import { Labelling, initLabelling } from "facet/facets/labelling";
+import { Labelling, initLabelling } from "facet-mobx/facets/labelling";
 import { getIds } from "app/utils";
 import type { MoveListT } from "move_lists/types";
-import { Addition, initAddition } from "facet/facets/addition";
-import { Editing, initEditing } from "facet/facets/editing";
-import { Highlight, initHighlight } from "facet/facets/highlight";
-import { Insertion, initInsertion } from "facet/facets/insertion";
-import { Selection, initSelection } from "facet/facets/selection";
+import { Addition, initAddition } from "facet-mobx/facets/addition";
+import { Editing, initEditing } from "facet-mobx/facets/editing";
+import { Highlight, initHighlight } from "facet-mobx/facets/highlight";
+import { Insertion, initInsertion } from "facet-mobx/facets/insertion";
+import { Selection, initSelection } from "facet-mobx/facets/selection";
 import type { UserProfileT } from "profiles/types";
-import { Policies } from "facet/policies";
-import { insertByCreatingAnItem } from "facet/policies/insert_by_creating_a_new_item";
+import { Policies } from "screens/facet/policies";
+import { insertByCreatingAnItem } from "facet-mobx/policies/insert_by_creating_a_new_item";
 import { runInAction } from "utils/mobx_wrapper";
 
 export type MoveListsContainerPropsT = {
+  isEqual: (lhs: any, rhs: any) => boolean,
   setMoveLists: (Array<MoveListT>) => any,
   saveMoveList: (MoveListT, values: any) => any,
   createNewMoveList: any => MoveListT,
@@ -53,6 +61,7 @@ export class MoveListsContainer {
             })
           : undefined;
       },
+      isEqual: props.isEqual,
     });
     this.editing = initEditing(new Editing(), {
       saveItem: (values: any) => {
@@ -77,6 +86,8 @@ export class MoveListsContainer {
         }
       },
     });
+
+    registerFacets(this);
   }
 
   _applyPolicies(props: MoveListsContainerPropsT) {
@@ -84,7 +95,7 @@ export class MoveListsContainer {
     const itemById = [Outputs, "moveListById"];
     const preview = [Outputs, "preview"];
 
-    [
+    const policies = [
       Policies.selection.actsOnItems(itemById),
 
       Policies.highlight.actsOnItems(itemById),
@@ -115,7 +126,9 @@ export class MoveListsContainer {
       ),
       mapData([Outputs, "preview"], [Outputs, "display"]),
       mapData([Outputs, "display"], [Selection, "selectableIds"], getIds),
-    ].forEach(policy => policy(this));
+    ];
+
+    installPolicies(policies, this);
   }
 
   constructor(props: MoveListsContainerPropsT) {

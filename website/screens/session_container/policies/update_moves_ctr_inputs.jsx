@@ -5,9 +5,9 @@ import { MovesContainer } from "screens/moves_container/moves_container";
 import { Inputs } from "screens/session_container/facets/inputs";
 import { lookUp } from "utils/utils";
 import { SessionContainer } from "screens/session_container/session_container";
-import { reaction } from "utils/mobx_wrapper";
+import { reaction } from "facet-mobx";
 import type { MoveT } from "moves/types";
-import { Highlight } from "facet/facets/highlight";
+import { Highlight } from "facet-mobx/facets/highlight";
 
 export const updateMovesCtrInputs = (ctr: SessionContainer) => {
   const inputs = Inputs.get(ctr);

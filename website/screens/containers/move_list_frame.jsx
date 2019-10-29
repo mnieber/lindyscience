@@ -6,47 +6,52 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 
-import { withSessionCtr } from "screens/session_container/session_container_context";
+import { MoveListsContainer } from "screens/movelists_container/movelists_container";
+import { Navigation } from "screens/session_container/facets/navigation";
+import { Filtering } from "facet-mobx/facets/filtering";
+import type { UserProfileT } from "profiles/types";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import { sayMove } from "screens/moves_container/handlers/say_move";
 import { isNone } from "utils/utils";
-import { getOwnerId, isOwner } from "app/utils";
 import { MoveListFilter } from "move_lists/presentation/movelist_filter";
-import { Addition } from "facet/facets/addition";
+import { Addition } from "facet-mobx/facets/addition";
 import { MovesContainer } from "screens/moves_container/moves_container";
-import { withMovesCtr } from "screens/moves_container/moves_container_context";
-import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
 import { SessionContainer } from "screens/session_container/session_container";
 import { withMoveContextMenu } from "screens/hocs/with_move_context_menu";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
-import type { UserProfileT } from "profiles/types";
 
 // MoveListFrame
 
 type MoveListFramePropsT = {
-  moveListsCtr: MoveListsContainer,
-  movesCtr: MovesContainer,
-  sessionCtr: SessionContainer,
   moveContextMenu: any,
   moveTags: Array<TagT>,
-  userProfile: UserProfileT,
   children: any,
   dispatch: Function,
+  defaultProps: any,
+} & {
+  // default props
+  isOwner: any => boolean,
+  moveList: ?MoveListT,
+  movesSelection: Array<MoveT>,
+  userProfile: ?UserProfileT,
+  movesFiltering: Filtering,
+  movesAddition: Addition,
+  navigation: Navigation,
 };
 
-function _MoveListFrame(props: MoveListFramePropsT) {
-  const selection = props.movesCtr.selection.items;
-  const moveList = props.moveListsCtr.highlight.item;
-
-  const isMoveListOwner =
-    props.userProfile && isOwner(props.userProfile, getOwnerId(moveList));
+const _MoveListFrame = (p: MoveListFramePropsT) => {
+  const props = mergeDefaultProps(p);
 
   const moveListPlayerBtns = (
-    <Widgets.MoveListPlayer moves={selection} sayMove={sayMove} className="" />
+    <Widgets.MoveListPlayer
+      moves={props.movesSelection}
+      sayMove={sayMove}
+      className=""
+    />
   );
 
   const isFollowing = ml =>
@@ -54,18 +59,18 @@ function _MoveListFrame(props: MoveListFramePropsT) {
 
   const moveListPicker = (
     <Widgets.MoveListPicker
-      key={moveList ? moveList.id : ""}
+      key={props.moveList ? props.moveList.id : ""}
       className=""
       filter={isFollowing}
-      moveListsCtr={props.moveListsCtr}
-      navigateTo={x => props.sessionCtr.navigation.navigateToMoveList(x)}
+      navigateTo={x => props.navigation.navigateToMoveList(x)}
+      defaultProps={props.defaultProps}
     />
   );
 
   const moveListHeaderBtns = (
     <Widgets.MoveListHeader
       addNewMove={() => {
-        Addition.get(props.movesCtr).add({});
+        props.movesAddition.add({});
       }}
       className="ml-2"
     />
@@ -75,7 +80,7 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     <MoveListFilter
       className=""
       moveTags={props.moveTags}
-      movesCtr={props.movesCtr}
+      movesFiltering={props.movesFiltering}
     />
   );
 
@@ -95,11 +100,9 @@ function _MoveListFrame(props: MoveListFramePropsT) {
     <Widgets.MoveList
       className=""
       createHostedPanels={createHostedPanels}
-      movesCtr={props.movesCtr}
-      moveListsCtr={props.moveListsCtr}
       moveContextMenu={props.moveContextMenu}
-      userProfile={props.userProfile}
-      navigateTo={x => props.sessionCtr.navigation.navigateToMove(x)}
+      navigateTo={x => props.navigation.navigateToMove(x)}
+      defaultProps={props.defaultProps}
     />
   );
 
@@ -110,24 +113,23 @@ function _MoveListFrame(props: MoveListFramePropsT) {
         {moveListFilter}
         <div className="flexrow w-full my-4">
           {moveListPlayerBtns}
-          {isMoveListOwner && moveListHeaderBtns}
+          {props.moveList &&
+            props.isOwner(props.moveList) &&
+            moveListHeaderBtns}
         </div>
         {moveListWidget}
       </div>
       <div className="movePanel pl-4 w-full">{props.children}</div>
     </div>
   );
-}
+};
 
 // $FlowFixMe
 export const MoveListFrame = compose(
-  withSessionCtr,
-  withMovesCtr,
-  withMoveListsCtr,
   withMoveContextMenu,
   Ctr.connect(state => ({
-    userProfile: Ctr.fromStore.getUserProfile(state),
     moveTags: Ctr.fromStore.getMoveTags(state),
   })),
+  withDefaultProps,
   observer
 )(_MoveListFrame);

@@ -2,18 +2,20 @@
 
 import Cookies from "js-cookie";
 
-import type { GetFacet } from "facet/index";
-import { facetClass, operation } from "facet/index";
+import type { GetFacet } from "facet";
+import { facetClass, operation, data } from "facet";
 import { observable, runInAction } from "utils/mobx_wrapper";
 
 // $FlowFixMe
 @facetClass
 export class Profiling {
-  @observable signedInEmail: ?string;
-  @observable acceptsCookies: boolean = false;
+  @data @observable signedInEmail: ?string;
+  @data @observable acceptsCookies: boolean = false;
 
   // $FlowFixMe
   @operation loadEmail() {}
+  // $FlowFixMe
+  @operation signIn() {}
   // $FlowFixMe
   @operation signOut() {}
   // $FlowFixMe

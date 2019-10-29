@@ -1,7 +1,11 @@
+// @flow
+
 import * as React from "react";
 
-import { MovesContainer } from "screens/moves_container/moves_container";
-import { movesContainerProps } from "screens/moves_container/moves_container_props";
+import {
+  MovesContainer,
+  type MovesContainerPropsT,
+} from "screens/moves_container/moves_container";
 
 // $FlowFixMe
 export const MovesContainerContext = React.createContext({});
@@ -14,9 +18,9 @@ export const withMovesCtr = (WrappedComponent: any) => (props: any) => {
   );
 };
 
-export function useMovesCtr(dispatch: Function, history: any) {
+export function useMovesCtr(props: MovesContainerPropsT) {
   const [movesCtr, setMovesCtr] = React.useState(() => {
-    return new MovesContainer(movesContainerProps(dispatch, history));
+    return new MovesContainer(props);
   });
   return movesCtr;
 }

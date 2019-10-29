@@ -10,8 +10,8 @@ import { action } from "utils/mobx_wrapper";
 import type { MoveT } from "moves/types";
 import { browseToMoveUrl } from "screens/containers";
 import { Navigation } from "screens/session_container/facets/navigation";
-import { Highlight } from "facet/facets/highlight";
-import { listen } from "facet/index";
+import { Highlight } from "facet-mobx/facets/highlight";
+import { listen } from "facet";
 
 export const handleNavigateToMoveList = (ctr: any) => {
   const navigation = Navigation.get(ctr);

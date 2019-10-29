@@ -4,30 +4,31 @@ import * as React from "react";
 import { observer } from "mobx-react";
 import { compose } from "redux";
 
-import { withSessionCtr } from "screens/session_container/session_container_context";
-import { SessionContainer } from "screens/session_container/session_container";
-import { Navigation } from "screens/session_container/facets/navigation";
+import type { UserProfileT } from "profiles/types";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import { useHistory } from "utils/react_router_dom_wrapper";
 import { actSetMoveSearchResults } from "screens/actions";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
 import { apiFindMoves } from "screens/api";
-import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 
 // SearchMovesPage
 
 type SearchMovesPagePropsT = {
-  sessionCtr: SessionContainer,
-  userProfile: ?UserProfileT,
   moveTags: Array<TagT>,
   dispatch: Function,
+  defaultProps: any,
+} & {
+  // default props
+  userProfile: UserProfileT,
 };
 
-function SearchMovesPage(props: SearchMovesPagePropsT) {
+const _SearchMovesPage = (p: SearchMovesPagePropsT) => {
+  const props = mergeDefaultProps(p);
+
   const [latestOptions, setLatestOptions] = React.useState([]);
   const history = useHistory();
-  const navigation = Navigation.get(props.sessionCtr);
 
   const _findMoves = async (values: any) => {
     const getUser = x => {
@@ -62,16 +63,15 @@ function SearchMovesPage(props: SearchMovesPagePropsT) {
       onSubmit={_findMoves}
     />
   );
-}
+};
 
 // $FlowFixMe
-SearchMovesPage = compose(
-  withSessionCtr,
+const SearchMovesPage = compose(
   Ctr.connect(state => ({
     moveTags: Ctr.fromStore.getMoveTags(state),
-    userProfile: Ctr.fromStore.getUserProfile(state),
   })),
+  withDefaultProps,
   observer
-)(SearchMovesPage);
+)(_SearchMovesPage);
 
 export default SearchMovesPage;

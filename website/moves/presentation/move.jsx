@@ -28,7 +28,7 @@ export function Move(props: MovePropsT) {
           {props.move.ownerUsername}
         </Link>
       </div>
-      <div className={"move__description panel"}>
+      <div id="move__description" className={"move__description panel"}>
         <h2>Description</h2>
         <MoveDescriptionEditor
           editorId={"move_" + props.move.id}

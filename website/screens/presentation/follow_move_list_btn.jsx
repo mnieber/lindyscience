@@ -2,36 +2,44 @@
 
 import * as React from "react";
 import { observer } from "mobx-react";
+import { compose } from "redux";
 
-import { withMoveListsCtr } from "screens/movelists_container/movelists_container_context";
-import { Labelling } from "facet/facets/labelling";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
+import type { MoveListT } from "move_lists/types";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import { Labelling } from "facet-mobx/facets/labelling";
 
 type PropsT = {
-  moveListsCtr: MoveListsContainer,
+  defaultProps: any,
+} & {
+  // default props
+  moveList: MoveListT,
+  moveListsLabelling: Labelling,
 };
 
 // $FlowFixMe
-export const FollowMoveListBtn = withMoveListsCtr(
-  observer((props: PropsT) => {
-    const labelling = Labelling.get(props.moveListsCtr);
-    const moveList = props.moveListsCtr.highlight.item;
-    const isFollowing = labelling.ids("following").includes(moveList.id);
+export const FollowMoveListBtn = compose(
+  withDefaultProps,
+  observer
+)((p: PropsT) => {
+  const props = mergeDefaultProps(p);
 
-    return (
-      <div
-        className={"button button--wide ml-2"}
-        onClick={() =>
-          labelling.setLabel({
-            label: "following",
-            id: moveList.id,
-            flag: !isFollowing,
-          })
-        }
-        key={2}
-      >
-        {isFollowing ? "Stop following" : "Follow"}
-      </div>
-    );
-  })
-);
+  const isFollowing = props.moveListsLabelling
+    .ids("following")
+    .includes(props.moveList.id);
+
+  return (
+    <div
+      className={"button button--wide ml-2"}
+      onClick={() =>
+        props.moveListsLabelling.setLabel({
+          label: "following",
+          id: props.moveList.id,
+          flag: !isFollowing,
+        })
+      }
+      key={2}
+    >
+      {isFollowing ? "Stop following" : "Follow"}
+    </div>
+  );
+});

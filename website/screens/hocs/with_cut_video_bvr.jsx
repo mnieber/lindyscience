@@ -6,16 +6,14 @@ import jQuery from "jquery";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import type { CutPointT, VideoT } from "video/types";
 import {
   createKeyDownHandler,
   createVideoKeyHandlers,
 } from "screens/presentation/video_keyhandler";
-import type { CutPointT, VideoBvrT, VideoT } from "video/types";
 import { actAddCutPoints } from "video/actions";
 import { useEditCutPoint } from "video/bvrs/cut_point_crud_behaviours";
-import { useInterval } from "utils/use_interval";
 import { useVideo } from "video/bvrs/use_video";
-import { styleTimePoints, extractTimePoints } from "video/utils/cut_points";
 import Ctr from "screens/containers/index";
 
 type PropsT = {

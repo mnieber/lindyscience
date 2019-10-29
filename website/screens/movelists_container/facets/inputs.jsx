@@ -1,6 +1,6 @@
 // @flow
 
-import { type GetFacet, facetClass } from "facet/index";
+import { type GetFacet, facetClass } from "facet";
 import { computed, observable } from "utils/mobx_wrapper";
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";

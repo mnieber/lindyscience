@@ -4,6 +4,7 @@ import React from "react";
 import { compose } from "redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import ContainerProvider from "screens/containers/container_provider";
 import { makeSlugid } from "screens/utils";
 import { withSessionCtr } from "screens/session_container/session_container_context";
 import { Navigation } from "screens/session_container/facets/navigation";
@@ -71,6 +72,7 @@ const withMoveListTarget = compose(
 
 function ListsSwitch() {
   return (
+    // $FlowFixMe
     <MoveListFrame>
       <Switch>
         <Route
@@ -122,25 +124,27 @@ type UrlRouterPropsT = {
 function UrlRouter(props: UrlRouterPropsT) {
   return (
     <Router>
-      <AppFrame>
-        <Switch>
-          <Route exact path="/app/">
-            <IndexPage userProfile={props.userProfile} />
-          </Route>
-          <Route exact path="/app/people/:username">
-            <ProfilePage />
-          </Route>
-          <Route exact path="/app/search">
-            <SearchResultsPage />
-          </Route>
-          <Route path="/app/lists/">
-            <ListsSwitch />
-          </Route>
-          <Route path="/">
-            <SignInSwitch />
-          </Route>
-        </Switch>
-      </AppFrame>
+      <ContainerProvider>
+        <AppFrame>
+          <Switch>
+            <Route exact path="/app/">
+              <IndexPage userProfile={props.userProfile} />
+            </Route>
+            <Route exact path="/app/people/:username">
+              <ProfilePage />
+            </Route>
+            <Route exact path="/app/search">
+              <SearchResultsPage />
+            </Route>
+            <Route path="/app/lists/">
+              <ListsSwitch />
+            </Route>
+            <Route path="/">
+              <SignInSwitch />
+            </Route>
+          </Switch>
+        </AppFrame>
+      </ContainerProvider>
     </Router>
   );
 }

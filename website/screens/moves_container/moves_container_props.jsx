@@ -1,5 +1,6 @@
 // @flow
 
+import { Navigation } from "screens/session_container/facets/navigation";
 import { createUUID, slugify } from "utils/utils";
 import { apiSaveMoveOrdering, apiUpdateSourceMoveListId } from "move_lists/api";
 import {
@@ -17,13 +18,9 @@ import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
 
 export function createNewMove(
-  userProfile: ?UserProfileT,
+  userProfile: UserProfileT,
   sourceMoveListId: UUID
-): ?MoveT {
-  if (!userProfile) {
-    return null;
-  }
-
+): MoveT {
   return {
     id: createUUID(),
     // id: "<<<      NEWMOVE      >>>",
@@ -43,8 +40,7 @@ export function createNewMove(
 
 export function movesContainerProps(
   dispatch: Function,
-  storeLocationMemo: Function,
-  restoreLocationMemo: Function
+  getNavigation: () => Navigation
 ) {
   const setMoves = (moveList: MoveListT, moves: Array<MoveT>) => {
     const moveIds = moves.map(x => x.id);
@@ -55,8 +51,8 @@ export function movesContainerProps(
   };
 
   function saveMove(move: MoveT, values: any) {
-    const slug =
-      values.slug == newMoveSlug ? slugify(values.name) : values.slug;
+    const isNewMove = values.slug == newMoveSlug;
+    const slug = isNewMove ? slugify(values.name) : values.slug;
 
     const newMove = {
       ...move,
@@ -66,9 +62,13 @@ export function movesContainerProps(
 
     dispatch(actAddMoves([newMove]));
 
-    return apiSaveMove(newMove).catch(
+    apiSaveMove(newMove).catch(
       createErrorHandler("We could not save the move")
     );
+
+    if (isNewMove) {
+      getNavigation().navigateToMove(newMove);
+    }
   }
 
   function shareMovesToList(
@@ -105,11 +105,17 @@ export function movesContainerProps(
     }
   }
 
+  function isEqual(lhs: any, rhs: any): boolean {
+    return lhs.id == rhs.id;
+  }
+
   return {
+    isEqual,
+    createNewMove,
     setMoves,
     saveMove,
     shareMovesToList,
-    storeLocationMemo,
-    restoreLocationMemo,
+    storeLocation: () => getNavigation().storeLocation(),
+    restoreLocation: () => getNavigation().restoreLocation(),
   };
 }

@@ -13,6 +13,7 @@ import {
   intercept as _intercept,
   reaction as _reaction,
   comparer as _comparer,
+  toJS as _toJS,
   // $FlowFixMe
 } from "mobx";
 
@@ -28,6 +29,7 @@ export const intercept = _intercept;
 export const reaction = _reaction;
 export const spy = _spy;
 export const comparer = _comparer;
+export const toJS = _toJS;
 
 export const compareIfNotNull = (lhs: any, rhs: any) => {
   return rhs === null || comparer.structural(lhs, rhs);

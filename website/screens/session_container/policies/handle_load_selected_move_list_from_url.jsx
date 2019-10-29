@@ -2,13 +2,14 @@
 
 import { Inputs } from "screens/session_container/facets/inputs";
 import { Navigation } from "screens/session_container/facets/navigation";
-import { reaction, action } from "utils/mobx_wrapper";
+import { action } from "utils/mobx_wrapper";
 import { newMoveListSlug } from "screens/utils";
 import { apiLoadMoveList } from "screens/api";
 import { actAddMoves } from "moves/actions";
 import { getObjectValues } from "utils/utils";
 import { actAddMoveLists } from "move_lists/actions";
 import { actAddTips } from "tips/actions";
+import { reaction } from "facet-mobx";
 
 export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
   const navigation = Navigation.get(ctr);

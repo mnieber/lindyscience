@@ -8,7 +8,7 @@ import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
 import { isNone, truncDecimals } from "utils/utils";
-import { createUUID } from "utils/utils2";
+import { createUUID } from "utils/utils";
 
 import type { CutPointT } from "video/types";
 import type { TagT } from "tags/types";

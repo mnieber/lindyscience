@@ -1,8 +1,8 @@
 // @flow
 
-import { Labelling } from "facet/facets/labelling";
-import { listen } from "facet/index";
-import { Addition } from "facet/facets/addition";
+import { Labelling } from "facet-mobx/facets/labelling";
+import { listen } from "facet";
+import { Addition } from "facet-mobx/facets/addition";
 
 export const newItemsAreFollowedWhenConfirmed = (ctr: any) => {
   const addition = Addition.get(ctr);

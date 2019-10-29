@@ -2,9 +2,23 @@
 
 import { Signal } from "micro-signals";
 
-import { reaction } from "utils/mobx_wrapper";
-import * as Internal from "facet/internal";
-import { zip } from "utils/utils";
+import {
+  options as _options,
+  clearContext,
+  getContext as _getContext,
+  setContext,
+} from "facet/internal/options";
+import {
+  log,
+  opName,
+  popCrumb,
+  pushCrumb,
+  facetName as _facetName,
+  facetClassName as _facetClassName,
+  withCrumb as _withCrumb,
+} from "facet/internal/logging";
+import { getOrCreate } from "facet/internal/utils";
+import { symbols } from "facet/internal/symbols";
 
 export type GetFacet<T> = (ctr: any) => T;
 export type ClassT = any;
@@ -14,123 +28,185 @@ export type AdapterT = {
   [MemberNameT]: ClassMemberT,
 };
 
-export function facet(Inf: any) {
-  return function(target: any, name: string, descriptor: any) {
-    if (target[Inf[Internal.symbol]]) {
-      console.warn(`Overwriting facet ${name} on ${target}`);
+export const options = _options;
+export const getContext = _getContext;
+export const withCrumb = _withCrumb;
+export const facetName = _facetName;
+export const facetClassName = _facetClassName;
+
+export function facet(facetClass: any) {
+  const facetSymbol = facetClass[symbols.symbol];
+
+  return function(facetHost: any, facetMember: string, descriptor: any) {
+    // Register the facet under the facet symbol
+    if (facetHost[facetSymbol]) {
+      console.warn(`Overwriting facet ${facetMember} on ${facetHost}`);
     }
-    target[Inf[Internal.symbol]] = name;
+    facetHost[facetSymbol] = facetMember;
+
+    // Add the facetMember to the list of facetNembers
+    const facetMembers = getOrCreate(
+      facetHost.constructor,
+      symbols.facetMembers,
+      () => []
+    );
+    facetMembers.push(facetMember);
+
     return descriptor;
   };
 }
 
-export function facetClass(target: any) {
-  target[Internal.symbol] = Symbol(target.name);
+export function facetClass(facetClass: any) {
+  // Add a symbol member
+  const symbol = Symbol(facetClass.name);
+  facetClass[symbols.symbol] = symbol;
 
-  target.get = (ctr: any) => {
-    const memberName = ctr[target[Internal.symbol]];
-    if (!memberName) {
-      console.error(`No interface ${target.name} in container`);
+  // Add a get member function
+  facetClass.get = (ctr: any) => {
+    const facetMember = ctr[symbol];
+    if (!facetMember) {
+      console.error(`No interface ${facetClass.name} in container`);
     }
-    return ctr[memberName];
+    return ctr[facetMember];
   };
-  return target;
+  return facetClass;
 }
 
-export function listen(target: any, memberName: string, callback: Function) {
-  if (!target[memberName]) {
-    console.error(`No member function ${memberName} in ${target}`);
+export function listen(
+  operationHost: any,
+  operationMember: string,
+  callback: Function
+) {
+  if (!operationHost[operationMember]) {
+    console.error(`No member function ${operationMember} in ${operationHost}`);
   }
-  if (!target[Internal.signals]) {
-    target[Internal.signals] = {};
-  }
-  if (!target[Internal.signals][memberName]) {
-    target[Internal.signals][memberName] = new Signal();
-  }
-  target[Internal.signals][memberName].add(callback);
+  const signals = getOrCreate(
+    operationHost,
+    symbols.operationSignals,
+    () => ({})
+  );
+  const signal = getOrCreate(signals, operationMember, () => new Signal());
+
+  const contextName = getContext().name;
+  const ctr = getContext().ctr;
+
+  signal.add(withCrumb(args => callback(...args)));
 }
 
-export function operation(target: any, name: string, descriptor: any) {
+export function handle(
+  operationHost: any,
+  operationMember: string,
+  callback: Function
+) {
+  if (!operationHost[operationMember]) {
+    console.error(`No member function ${operationMember} in ${operationHost}`);
+  }
+  const handlers = getOrCreate(
+    operationHost,
+    symbols.operationHandlers,
+    () => ({})
+  );
+  if (operationMember in handlers) {
+    console.error(
+      `Operation ${operationMember} in facet ${_facetName(
+        operationHost
+      )} already has a handler`
+    );
+  }
+  handlers[operationMember] = callback;
+}
+
+export function operation(
+  operationHost: any,
+  operationMember: string,
+  descriptor: any
+) {
   const f = descriptor.value;
-  if (typeof f === "function") {
-    descriptor.value = function(args) {
-      f(this, args);
-      if (this[Internal.signals] && this[Internal.signals][name]) {
-        this[Internal.signals][name].dispatch(args);
+  if (typeof descriptor.value === "function") {
+    descriptor.value = function(...args) {
+      const facet = this;
+
+      const altArgs = f.bind(this)(...args);
+      if (altArgs != undefined) {
+        args = altArgs;
+      }
+
+      if (options.logging) {
+        const ctr = facet[symbols.parentContainer];
+        log(ctr, operationMember, facet, args, true);
+        pushCrumb(ctr, opName(operationMember));
+      }
+
+      const handlers = facet[symbols.operationHandlers];
+      if (handlers && handlers[operationMember]) {
+        return handlers[operationMember](...args);
+      }
+
+      const signals = facet[symbols.operationSignals];
+      if (signals && signals[operationMember]) {
+        signals[operationMember].dispatch(args);
+      }
+
+      if (options.logging) {
+        const ctr = facet[symbols.parentContainer];
+        popCrumb(ctr);
+        log(ctr, operationMember, facet, args, false);
       }
     };
   }
-  return descriptor;
+
+  // Do some magic to ensure that the member function
+  // is bound to it's host.
+  // Copied from the bind-decorator npm package.
+  return {
+    configurable: true,
+    get() {
+      const bound = descriptor.value.bind(this);
+      Object.defineProperty(this, operationMember, {
+        value: bound,
+        configurable: true,
+        writable: true,
+      });
+      return bound;
+    },
+  };
 }
 
-function data(target: any, name: string, descriptor: any) {
-  if (!target.constructor[Internal.datas]) {
-    target.constructor[Internal.datas] = {};
-  }
-  target.constructor[Internal.datas][name] = true;
+export function data(dataHost: any, dataMember: string, descriptor: any) {
+  const facetClass = dataHost.constructor;
+  const datas = getOrCreate(facetClass, symbols.dataMembers, () => ({}));
+  datas[dataMember] = true;
   return descriptor;
 }
 
 export const input = data;
 export const output = data;
 
-export const mapData = (
-  [fromPolicy, fromMember]: ClassMemberT,
-  [toPolicy, toMember]: ClassMemberT,
-  transform: ?Function
-) =>
-  createPatch(toPolicy, [fromPolicy], (fromInstance: any) => ({
-    // $FlowFixMe
-    get [toMember]() {
-      // TODO: check that fromMember is found
-      const data = fromInstance[fromMember];
-      return transform ? transform(data) : data;
-    },
-  }));
-
-export const mapDatas = (
-  fromPolicies: Array<ClassMemberT>,
-  [toPolicy, toMember]: ClassMemberT,
-  transform: Function
-) => {
-  const policies = fromPolicies.map(x => x[0]);
-  const members = fromPolicies.map(x => x[1]);
-
-  return createPatch(toPolicy, policies, (...fromInstances: Array<any>) => ({
-    // $FlowFixMe
-    get [toMember]() {
-      const datas = zip(fromInstances, members).map(([instance, member]) => {
-        // TODO: check that fromMember is found
-        return instance[member];
-      });
-      return transform(...datas);
-    },
-  }));
-};
-
-export const relayData = (
-  [fromPolicy, fromMember]: ClassMemberT,
-  [toPolicy, toMember]: ClassMemberT,
-  transform: ?Function,
-  setter: ?Function
-) => (ctr: any) =>
-  reaction(
-    () => fromPolicy.get(ctr)[fromMember],
-    data => {
-      const result = transform ? transform(data) : data;
-      if (setter) {
-        setter(result, toPolicy.get(ctr)[toMember]);
-      } else {
-        toPolicy.get(ctr)[toMember] = result;
-      }
-    },
-    {
-      name: `relayData from ${facetClassName(
-        fromPolicy
-      )}.${fromMember} to ${facetClassName(toPolicy)}.${toMember}`,
-    }
+export function registerFacets(ctr: any) {
+  const facetMembers = ctr.constructor[symbols.facetMembers];
+  (facetMembers || []).forEach(
+    member => (ctr[member][symbols.parentContainer] = ctr)
   );
+}
 
-export const createPatch = Internal.createPatch;
-export const facetClassName = Internal.facetClassName;
-export const extendInterface = Internal.extendInterface;
+export function installPolicies(policies: Array<Function>, ctr: any) {
+  policies.forEach(policy => {
+    setContext({
+      name: policy.name,
+      ctr: ctr,
+    });
+    policy(ctr);
+    clearContext();
+  });
+}
+
+export function installHandlers(handlers: Array<Function>, facet: any) {
+  handlers.forEach(handler => {
+    handler(facet);
+  });
+}
+
+export function isDataMember(facetClass: any, prop: string) {
+  const facetDatas = facetClass[symbols.dataMembers];
+  return facetDatas && facetDatas[prop];
+}

@@ -1,6 +1,5 @@
 // @flow
 
-import { actRestoreLocationMemo, actStoreLocationMemo } from "screens/actions";
 import { createUUID, slugify } from "utils/utils";
 import { apiSaveMoveOrdering, apiUpdateSourceMoveListId } from "move_lists/api";
 import {
@@ -16,14 +15,6 @@ import type { UUID } from "kernel/types";
 import type { UserProfileT } from "profiles/types";
 import type { MoveT } from "moves/types";
 import type { MoveListT } from "move_lists/types";
-
-export function storeLocationMemo(dispatch: Function) {
-  dispatch(actStoreLocationMemo(window.location.pathname));
-}
-
-export function restoreLocationMemo(dispatch: Function, history: any) {
-  dispatch(actRestoreLocationMemo(history));
-}
 
 export function createNewMove(
   userProfile: ?UserProfileT,
@@ -50,7 +41,11 @@ export function createNewMove(
   };
 }
 
-export function movesContainerProps(dispatch: Function, history: any) {
+export function movesContainerProps(
+  dispatch: Function,
+  storeLocationMemo: Function,
+  restoreLocationMemo: Function
+) {
   const setMoves = (moveList: MoveListT, moves: Array<MoveT>) => {
     const moveIds = moves.map(x => x.id);
     dispatch(actSetMoveIds(moveIds, getId(moveList)));
@@ -110,19 +105,11 @@ export function movesContainerProps(dispatch: Function, history: any) {
     }
   }
 
-  function storeHighlight() {
-    storeLocationMemo(dispatch);
-  }
-
-  function restoreHighlight() {
-    restoreLocationMemo(dispatch, history);
-  }
-
   return {
     setMoves,
     saveMove,
     shareMovesToList,
-    storeHighlight,
-    restoreHighlight,
+    storeLocationMemo,
+    restoreLocationMemo,
   };
 }

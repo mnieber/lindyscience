@@ -15,16 +15,3 @@ export function actSetMoveSearchResults(
     moveSearchResults,
   };
 }
-
-export function actStoreLocationMemo(pathname: string) {
-  return {
-    type: "SET_LOCATION_MEMO",
-    pathname,
-  };
-}
-
-export function actRestoreLocationMemo(history: any) {
-  return (dispatch: Function, getState: Function) => {
-    history.push(fromStore.getLocationMemo(getState()));
-  };
-}

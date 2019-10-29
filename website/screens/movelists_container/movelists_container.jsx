@@ -20,12 +20,12 @@ import { Policies } from "facet/policies";
 import { insertByCreatingAnItem } from "facet/policies/insert_by_creating_a_new_item";
 import { runInAction } from "utils/mobx_wrapper";
 
-type MoveListsContainerPropsT = {
+export type MoveListsContainerPropsT = {
   setMoveLists: (Array<MoveListT>) => any,
   saveMoveList: (MoveListT, values: any) => any,
   createNewMoveList: any => MoveListT,
-  storeHighlight: () => void,
-  restoreHighlight: () => void,
+  storeLocation: () => void,
+  restoreLocation: () => void,
   setFollowedMoveListIds: (ids: Array<UUID>) => void,
 };
 
@@ -89,8 +89,11 @@ export class MoveListsContainer {
 
       Policies.highlight.actsOnItems(itemById),
       Policies.highlight.followsSelection,
-      Policies.highlight.isStoredOnNewItem(props.storeHighlight),
-      Policies.highlight.isRestoredOnCancelNewItem(props.restoreHighlight),
+
+      Policies.navigation.locationIsStoredOnNewItem(props.storeLocation),
+      Policies.navigation.locationIsRestoredOnCancelNewItem(
+        props.restoreLocation
+      ),
 
       Policies.insertion.actsOnItems(inputItems),
       Policies.insertion.createsThePreview({ preview }),

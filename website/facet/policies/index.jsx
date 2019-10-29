@@ -1,5 +1,9 @@
 // @flow
 
+import {
+  locationIsRestoredOnCancelNewItem,
+  locationIsStoredOnNewItem,
+} from "facet/policies/location_is_stored_on_new_item";
 import { newItemsAreFollowedWhenConfirmed } from "screens/movelists_container/policies/new_items_are_followed_when_confirmed";
 import { labellingReceivesIds } from "facet/facets/labelling";
 import {
@@ -11,10 +15,6 @@ import { highlightActsOnItems } from "facet/facets/highlight";
 import { filteringActsOnItems } from "facet/facets/filtering";
 import { highlightFollowsSelection } from "facet/policies/highlight_follows_selection";
 import { highlightIsCorrectedOnFilterChange } from "facet/policies/highlight_is_corrected_on_filter_change";
-import {
-  highlightIsRestoredOnCancelNewItem,
-  highlightIsStoredOnNewItem,
-} from "facet/policies/highlight_is_stored_on_new_item";
 import { insertionPicksAPayloadsSource } from "facet/policies/insertion_picks_a_payload_source";
 import { insertionHappensOnDrop } from "facet/policies/insertion_happens_on_drop";
 import { newItemsAreCreatedBelowTheHighlight } from "facet/policies/new_items_are_created_below_the_highlight";
@@ -32,8 +32,10 @@ export const Policies = {
     actsOnItems: highlightActsOnItems,
     followsSelection: highlightFollowsSelection,
     isCorrectedOnFilterChange: highlightIsCorrectedOnFilterChange,
-    isStoredOnNewItem: highlightIsStoredOnNewItem,
-    isRestoredOnCancelNewItem: highlightIsRestoredOnCancelNewItem,
+  },
+  navigation: {
+    locationIsStoredOnNewItem: locationIsStoredOnNewItem,
+    locationIsRestoredOnCancelNewItem: locationIsRestoredOnCancelNewItem,
   },
   insertion: {
     actsOnItems: insertionActsOnItems,

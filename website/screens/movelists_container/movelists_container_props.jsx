@@ -1,19 +1,19 @@
 // @flow
 
+import { listToItemById, slugify } from "utils/utils";
 import { apiSaveMoveList, apiSaveMoveListOrdering } from "move_lists/api";
 import { actSetFollowedMoveListIds } from "profiles/actions";
 import type { UUID } from "kernel/types";
-import {
-  restoreLocationMemo,
-  storeLocationMemo,
-} from "screens/moves_container/moves_container_props";
-import { createUUID, listToItemById, slugify } from "utils/utils";
 import { actAddMoveLists } from "move_lists/actions";
 import { newMoveListSlug } from "screens/utils";
 import { createErrorHandler } from "app/utils";
 import type { MoveListT } from "move_lists/types";
 
-export function moveListsContainerProps(dispatch: Function, history: any) {
+export function moveListsContainerProps(
+  dispatch: Function,
+  storeLocation: Function,
+  restoreLocation: Function
+) {
   function _saveMoveList(moveList: MoveListT, values: any) {
     const slug =
       values.slug == newMoveListSlug ? slugify(values.name) : values.slug;
@@ -45,14 +45,6 @@ export function moveListsContainerProps(dispatch: Function, history: any) {
     };
   }
 
-  function storeHighlight() {
-    storeLocationMemo(dispatch);
-  }
-
-  function restoreHighlight() {
-    restoreLocationMemo(dispatch, history);
-  }
-
   function setFollowedMoveListIds(ids: Array<UUID>) {
     dispatch(actSetFollowedMoveListIds(ids));
     apiSaveMoveListOrdering(ids).catch(
@@ -66,8 +58,8 @@ export function moveListsContainerProps(dispatch: Function, history: any) {
       // Nothing to do
     },
     createNewMoveList,
-    storeHighlight,
-    restoreHighlight,
     setFollowedMoveListIds,
+    storeLocation,
+    restoreLocation,
   };
 }

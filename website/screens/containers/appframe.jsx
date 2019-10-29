@@ -3,6 +3,8 @@
 import React from "react";
 import { compose } from "redux";
 
+import { moveListsContainerProps } from "screens/movelists_container/movelists_container_props";
+import { initSessionContainer } from "screens/session_container/session_container";
 import type { MoveByIdT } from "moves/types";
 import {
   MoveListsContainerContext,
@@ -36,14 +38,20 @@ type AppFramePropsT = {
 function AppFrame(props: AppFramePropsT) {
   const history = useHistory();
 
-  const moveListsCtr = useMoveListsCtr(props.dispatch, history);
-  const movesCtr = useMovesCtr(props.dispatch, history);
-  const sessionCtr = useSessionCtr(
-    props.dispatch,
-    history,
-    movesCtr,
-    moveListsCtr
+  const sessionCtr = useSessionCtr(props.dispatch, history);
+  const moveListsCtr = useMoveListsCtr(
+    moveListsContainerProps(
+      props.dispatch,
+      sessionCtr.navigation.storeLocation,
+      sessionCtr.navigation.restoreLocation
+    )
   );
+  const movesCtr = useMovesCtr(
+    props.dispatch,
+    sessionCtr.navigation.storeLocation,
+    sessionCtr.navigation.restoreLocation
+  );
+  initSessionContainer(sessionCtr, movesCtr, moveListsCtr);
   sessionCtr.setInputs(props.userProfile, props.inputMoveLists, props.moveById);
 
   const cookieNotice = sessionCtr.profiling.acceptsCookies ? (

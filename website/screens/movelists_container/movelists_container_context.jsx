@@ -2,7 +2,10 @@
 
 import * as React from "react";
 
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
+import {
+  MoveListsContainer,
+  type MoveListsContainerPropsT,
+} from "screens/movelists_container/movelists_container";
 import { moveListsContainerProps } from "screens/movelists_container/movelists_container_props";
 
 // $FlowFixMe
@@ -18,9 +21,9 @@ export const withMoveListsCtr = (WrappedComponent: any) => (props: any) => {
   );
 };
 
-export function useMoveListsCtr(dispatch: Function, history: any) {
+export function useMoveListsCtr(props: MoveListsContainerPropsT) {
   const [moveListsCtr, setMoveListsCtr] = React.useState(() => {
-    return new MoveListsContainer(moveListsContainerProps(dispatch, history));
+    return new MoveListsContainer(props);
   });
   return moveListsCtr;
 }

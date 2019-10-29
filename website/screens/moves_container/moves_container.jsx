@@ -28,8 +28,8 @@ type MovesContainerPropsT = {
   setMoves: (MoveListT, Array<MoveT>) => any,
   saveMove: (MoveT, values: any) => any,
   shareMovesToList: (Array<MoveT>, MoveListT, ?MoveListT) => any,
-  storeHighlight: () => void,
-  restoreHighlight: () => void,
+  storeLocation: () => void,
+  restoreLocation: () => void,
 };
 
 // $FlowFixMe
@@ -91,9 +91,12 @@ export class MovesContainer {
 
       Policies.highlight.actsOnItems(itemById),
       Policies.highlight.followsSelection,
-      Policies.highlight.isStoredOnNewItem(props.storeHighlight),
-      Policies.highlight.isRestoredOnCancelNewItem(props.restoreHighlight),
       Policies.highlight.isCorrectedOnFilterChange,
+
+      Policies.navigation.locationIsStoredOnNewItem(props.storeLocation),
+      Policies.navigation.locationIsRestoredOnCancelNewItem(
+        props.restoreLocation
+      ),
 
       Policies.insertion.actsOnItems(inputItems),
       Policies.insertion.createsThePreview({ preview }),

@@ -22,8 +22,6 @@ import { Policies } from "screens/session_container/policies";
 type SessionContainerPropsT = {
   dispatch: Function,
   history: any,
-  movesCtr: MovesContainer,
-  moveListsCtr: MoveListsContainer,
 };
 
 // $FlowFixMe
@@ -38,9 +36,6 @@ export class SessionContainer {
   @facet(MoveListsContainer) moveListsCtr: MoveListsContainer;
 
   _createFacets(props: SessionContainerPropsT) {
-    this.movesCtr = props.movesCtr;
-    this.moveListsCtr = props.moveListsCtr;
-
     this.inputs = initInputs(new Inputs(), props.dispatch);
     this.loading = initLoading(new Loading());
     this.navigation = initNavigation(new Navigation(), props.history);
@@ -59,9 +54,6 @@ export class SessionContainer {
       Policies.profiling.handleSignOut,
 
       Policies.url.handleLoadSelectedMoveListFromUrl,
-
-      Policies.data.updateMovesCtrInputs,
-      Policies.data.updateMoveListsCtrInputs,
     ].forEach(policy => policy(this));
   }
 
@@ -82,3 +74,15 @@ export class SessionContainer {
     });
   }
 }
+
+export const initSessionContainer = (
+  self: SessionContainer,
+  movesCtr: MovesContainer,
+  moveListsCtr: MoveListsContainer
+) => {
+  self.movesCtr = movesCtr;
+  Policies.data.updateMovesCtrInputs(self);
+
+  self.moveListsCtr = moveListsCtr;
+  Policies.data.updateMoveListsCtrInputs(self);
+};

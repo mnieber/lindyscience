@@ -20,6 +20,7 @@ export type UrlParamsT = {
 export class Navigation {
   @observable history: any;
   @observable urlParams: UrlParamsT;
+  @observable locationMemo: string;
 
   // $FlowFixMe
   @computed get moveListUrl() {
@@ -43,6 +44,10 @@ export class Navigation {
   @operation navigateToMove(move: MoveT) {}
   // $FlowFixMe
   @operation navigateToMoveList(moveList: MoveListT) {}
+  // $FlowFixMe
+  @operation storeLocation() {}
+  // $FlowFixMe
+  @operation restoreLocation() {}
 
   static get: GetFacet<Navigation>;
 }
@@ -57,11 +62,25 @@ function _handleSetUrlParams(self: Navigation) {
   );
 }
 
+function _handleStoreAndRestoreLocation(self: Navigation) {
+  listen(
+    self,
+    "storeLocation",
+    action("storeLocation", () => {
+      self.locationMemo = window.location.pathname;
+    })
+  );
+  listen(self, "restoreLocation", () => {
+    self.history.push(self.locationMemo);
+  });
+}
+
 export function initNavigation(self: Navigation, history: any): Navigation {
-  _handleSetUrlParams(self);
   runInAction("initNavigation", () => {
     self.history = history;
   });
+  _handleSetUrlParams(self);
+  _handleStoreAndRestoreLocation(self);
   return self;
 }
 

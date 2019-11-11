@@ -46,7 +46,7 @@ function AppFrame(p: AppFramePropsT) {
     <div className="appFrame px-4 flexcol">
       {cookieNotice}
       {createToastr()}
-      <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-8">
+      <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-4">
         <div className="flexrow w-full">
           <h1 className="appFrame__home" onClick={() => alert("TODO")}>
             Lindy Science

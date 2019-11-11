@@ -1,53 +1,38 @@
 // @flow
 
 import * as React from "react";
-import { isYoutubePlaying } from "video/utils";
 
+import { autorun, observable } from "utils/mobx_wrapper";
+import { isYoutubePlaying } from "video/utils";
 import type { VideoT, VideoBvrT } from "video/types";
 
-function _updatePlayer(player, isPlaying, pauseTimeout, setPauseTimeout) {
-  if (player && isPlaying != isYoutubePlaying(player)) {
-    if (isPlaying) {
-      player.playVideo();
-    } else {
-      setTimeout(() => {
-        player.pauseVideo();
-        setPauseTimeout(100);
-      }, pauseTimeout);
+export class Video {
+  @observable video: ?VideoT;
+  @observable parentDivId: any;
+  @observable player: any;
+  @observable isPlaying: boolean = false;
+  pauseTimeout: number = 500;
+
+  constructor(parentDivId: any) {
+    this.parentDivId = parentDivId;
+    autorun(() => this._updatePlayer());
+  }
+
+  _updatePlayer() {
+    if (this.player && this.isPlaying != isYoutubePlaying(this.player)) {
+      if (this.isPlaying) {
+        this.player.playVideo();
+      } else {
+        setTimeout(() => {
+          this.player.pauseVideo();
+          this.pauseTimeout = 100;
+        }, this.pauseTimeout);
+      }
     }
   }
 }
 
-export function useVideo(parentDivId: string, video: ?VideoT): VideoBvrT {
-  const [_isPlaying, _setIsPlaying] = React.useState(false);
-  const [_player, _setPlayer] = React.useState(null);
-  const [pauseTimeout, setPauseTimeout] = React.useState(500);
-
-  function setPlayer(player) {
-    if (player != _player) {
-      _setPlayer(player);
-      _updatePlayer(player, _isPlaying, 500, setPauseTimeout);
-    }
-  }
-
-  function setIsPlaying(isPlaying) {
-    if (isPlaying != _isPlaying) {
-      _setIsPlaying(isPlaying);
-      _updatePlayer(_player, isPlaying, pauseTimeout, setPauseTimeout);
-    }
-  }
-
-  function togglePlay() {
-    setIsPlaying(!_isPlaying);
-  }
-
-  return {
-    player: _player,
-    setPlayer,
-    isPlaying: _isPlaying,
-    setIsPlaying,
-    togglePlay,
-    video,
-    parentDivId,
-  };
+export function useVideo(parentDivId: any): Video {
+  const [video, setVideo] = React.useState(() => new Video(parentDivId));
+  return video;
 }

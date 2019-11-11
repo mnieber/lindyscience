@@ -1,7 +1,8 @@
 // @flow
 
+import type { CutPointT } from "video/types";
 import { createUUID } from "utils/utils";
-import type { CutPointT, VideoBvrT } from "video/types";
+import { Video } from "video/bvrs/use_video";
 import type { UUID } from "kernel/types";
 
 export type EditCutPointBvrT = {
@@ -11,7 +12,7 @@ export type EditCutPointBvrT = {
 
 export function useEditCutPoint(
   cutPoints: Array<CutPointT>,
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   addCutPoint: CutPointT => void
 ): EditCutPointBvrT {
   function _createNewCutPoint(cutPointType: "start" | "end"): CutPointT {

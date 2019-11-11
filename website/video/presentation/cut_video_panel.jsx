@@ -1,19 +1,18 @@
 // @flow
 
 import * as React from "react";
-import YouTube from "react-youtube";
 
+import type { CutPointT, CutPointBvrsT } from "video/types";
+import { Video } from "video/bvrs/use_video";
 import { VideoPlayerPanel } from "video/presentation/video_player";
 import { CutPointList } from "video/presentation/cut_point_list";
-
-import type { CutPointT, VideoBvrT, CutPointBvrsT } from "video/types";
 import type { TagT } from "tags/types";
 
 type CutVideoPanelPropsT = {
   moveTags: Array<TagT>,
   cutVideoLink: string,
   actSetCutVideoLink: Function,
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   cutPoints: Array<CutPointT>,
   cutPointBvrs: CutPointBvrsT,
 };

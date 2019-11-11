@@ -3,10 +3,11 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import type { VideoBvrT } from "video/types";
+import { Video } from "video/bvrs/use_video";
+import { runInAction } from "utils/mobx_wrapper";
 
 type VideoControlPanelPropsT = {
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
 };
 
 export function VideoControlPanel(props: VideoControlPanelPropsT) {
@@ -18,7 +19,11 @@ export function VideoControlPanel(props: VideoControlPanelPropsT) {
         className={classnames(
           "videoControlPanel__button--" + _state(props.videoBvr.isPlaying)
         )}
-        onClick={props.videoBvr.togglePlay}
+        onClick={() => {
+          runInAction(() => {
+            props.videoBvr.isPlaying = !props.videoBvr.isPlaying;
+          });
+        }}
       >
         Play
       </button>

@@ -31,12 +31,13 @@ export const withCutVideoBvr = compose(
   (WrappedComponent: any) => (props: any) => {
     const { cutVideoLink, cutPoints, ...passThroughProps }: PropsT = props;
     const parentDivId = "cutVideoDiv";
-    const video: VideoT = {
+
+    const videoBvr = useVideo(parentDivId);
+    videoBvr.video = {
       link: cutVideoLink,
       startTimeMs: null,
       endTimeMs: null,
     };
-    const videoBvr = useVideo(parentDivId, video);
 
     const editCutPointBvr = useEditCutPoint(cutPoints, videoBvr, cutPoint => {
       props.dispatch(actAddCutPoints([cutPoint]));

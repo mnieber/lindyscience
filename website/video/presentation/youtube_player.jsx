@@ -3,6 +3,7 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 
+import { runInAction } from "utils/mobx_wrapper";
 import type { VideoUrlPropsT, VideoBvrT, RestartIdT } from "video/types";
 import { isNone } from "utils/utils";
 
@@ -37,17 +38,23 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
 
   const _onReady = event => {
     const player = event.target;
-    props.videoBvr.setPlayer(player);
+    runInAction(() => {
+      props.videoBvr.player = player;
+    });
     if (props.onReady) {
       (props.onReady: any)(player.getIframe());
     }
   };
 
   const _onPlay = () => {
-    props.videoBvr.setIsPlaying(true);
+    runInAction(() => {
+      props.videoBvr.isPlaying = true;
+    });
   };
   const _onPause = () => {
-    props.videoBvr.setIsPlaying(false);
+    runInAction(() => {
+      props.videoBvr.isPlaying = false;
+    });
   };
 
   const youtubeRef = React.useRef(null);

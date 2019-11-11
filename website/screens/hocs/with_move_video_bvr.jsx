@@ -38,9 +38,9 @@ export const withMoveVideoBvr = compose(
     const { ...passThroughProps }: PropsT = props;
 
     const parentDivId = "moveDiv";
-    const video: ?VideoT =
+    const videoBvr = useVideo(parentDivId);
+    videoBvr.video =
       props.move && props.move.link ? getVideoFromMove(props.move) : null;
-    const videoBvr = useVideo(parentDivId, video);
 
     const description = props.move ? props.move.description : "";
     const privateNotes =

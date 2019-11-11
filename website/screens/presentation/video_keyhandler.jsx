@@ -1,13 +1,16 @@
-import { splitKeyhandlerKeys } from "video/utils";
-
 // @flow
 
-import type { VideoBvrT } from "video/types";
+import { runInAction } from "utils/mobx_wrapper";
+import { splitKeyhandlerKeys } from "video/utils";
 import { isNone } from "utils/utils";
+import type { VideoBvrT } from "video/types";
 
 export const createVideoKeyHandlers = (videoBvr: VideoBvrT) => {
   return splitKeyhandlerKeys({
-    "ctrl+space": () => videoBvr.togglePlay(),
+    "ctrl+space": () =>
+      runInAction(() => {
+        videoBvr.isPlaying = !videoBvr.isPlaying;
+      }),
     "ctrl+shift+1": () => videoBvr.player.setPlaybackRate(0.25),
     "ctrl+shift+2": () => videoBvr.player.setPlaybackRate(0.5),
     "ctrl+shift+3": () => videoBvr.player.setPlaybackRate(0.75),

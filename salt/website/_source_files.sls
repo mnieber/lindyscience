@@ -1,12 +1,16 @@
 ---
+Remove destination for copying source files:
+  file.absent:
+    - name: {{ pillar['srv_dir'] }}/static/bundles
+
 Create destination for copying source files:
   file.directory:
-    - name: {{ pillar['srv_dir'] }}/src
+    - name: {{ pillar['srv_dir'] }}/static/bundles
 
 Copy website source files:
   file.recurse:
-    - name: {{ pillar['srv_dir'] }}/src/website
-    - source: salt://website/source_files/website
+    - name: {{ pillar['srv_dir'] }}/static/bundles
+    - source: salt://website/bundles
     - user: root
     - group: root
     - file-mode: 0600

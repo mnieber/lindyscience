@@ -17,3 +17,4 @@ website/webpack-test.js
 .pytest_cache
 test_report.html
 django/assets/
+salt/website/bundles

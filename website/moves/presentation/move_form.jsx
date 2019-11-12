@@ -3,14 +3,13 @@
 import { withFormik } from "formik";
 import React from "react";
 
+import { slugify, truncDecimals } from "utils/utils";
+import { Video } from "video/bvrs/use_video";
 import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
 import { ValuePicker, strToPickerValue } from "utils/value_picker";
-
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
-import { isNone, slugify, truncDecimals } from "utils/utils";
 import { newMoveSlug } from "moves/utils";
-
 import type { MoveT } from "moves/types";
 import type { TagT } from "tags/types";
 import type { UUID } from "kernel/types";
@@ -24,6 +23,7 @@ type InnerFormPropsT = {
   editorRef: any,
   videoPlayer: any,
   moveId: UUID,
+  setLink: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -75,6 +75,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       fieldName="link"
       type="text"
       placeholder="Link"
+      onChange={props.setLink}
     />
   );
 
@@ -240,7 +241,7 @@ type MoveFormPropsT = {
   onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   move: MoveT,
-  videoPlayer: any,
+  videoBvr: Video,
   autoFocus: boolean,
 };
 
@@ -294,7 +295,14 @@ export function MoveForm(props: MoveFormPropsT) {
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
       onCancel: props.onCancel,
-      videoPlayer: props.videoPlayer,
+      videoPlayer: props.videoBvr.player,
+      setLink: link => {
+        props.videoBvr.video = {
+          link: link.target.value || "",
+          startTimeMs: undefined,
+          endTimeMs: undefined,
+        };
+      },
       moveId: props.move.id,
       editorRef,
       tagsPickerValue,

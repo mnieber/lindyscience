@@ -57,6 +57,7 @@ type FormFieldPropsT = {
   placeholder?: string,
   autoFocus?: boolean,
   disabled?: boolean,
+  onChange?: Function,
 };
 
 export function FormField(props: FormFieldPropsT) {
@@ -69,7 +70,12 @@ export function FormField(props: FormFieldPropsT) {
   const formFieldProps = {
     id: props.fieldName,
     value: props.formProps.values[props.fieldName],
-    onChange: props.formProps.handleChange,
+    onChange: x => {
+      props.formProps.handleChange(x);
+      if (props.onChange) {
+        props.onChange(x);
+      }
+    },
     onBlur: props.formProps.handleBlur,
     className: classnames({
       formField__field: props.type != "checkbox",

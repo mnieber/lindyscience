@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import urlParser from "js-video-url-parser";
+import { observer } from "mobx-react";
 
 import type { RestartIdT, VideoBvrT } from "video/types";
 import { Video } from "video/bvrs/use_video";
@@ -42,7 +43,7 @@ type VideoPlayerPanelPropsT = {
   restartId: RestartIdT,
 };
 
-export function VideoPlayerPanel(props: VideoPlayerPanelPropsT) {
+export const VideoPlayerPanel = observer((props: VideoPlayerPanelPropsT) => {
   const controlPanel = <VideoControlPanel videoBvr={props.videoBvr} />;
 
   return props.videoBvr.video ? (
@@ -52,4 +53,4 @@ export function VideoPlayerPanel(props: VideoPlayerPanelPropsT) {
   ) : (
     <React.Fragment />
   );
-}
+});

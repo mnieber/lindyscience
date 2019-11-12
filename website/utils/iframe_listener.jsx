@@ -20,7 +20,10 @@ function createDataStore(parentDivId: string, iframe: any) {
   const focusParentDiv = () => {
     const elm = document.getElementById(parentDivId);
     if (elm) {
+      let x = window.scrollX,
+        y = window.scrollY;
       elm.focus();
+      window.scrollTo(x, y);
     }
   };
 

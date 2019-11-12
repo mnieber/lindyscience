@@ -88,7 +88,7 @@ export const withMoveDiv = compose(
           onSubmit={values => props.movesEditing.save(values)}
           onCancel={() => props.movesEditing.cancel()}
           knownTags={moveTags}
-          videoPlayer={props.videoBvr.player}
+          videoBvr={props.videoBvr}
         />
       </div>
     ) : (

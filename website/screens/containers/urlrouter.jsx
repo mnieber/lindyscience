@@ -4,6 +4,7 @@ import React from "react";
 import { compose } from "redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { helpUrl } from "moves/utils";
 import ContainerProvider from "screens/containers/container_provider";
 import { makeSlugid } from "screens/utils";
 import { withSessionCtr } from "screens/session_container/session_container_context";
@@ -28,11 +29,12 @@ export type IndexPagePropsT = {
 function IndexPage(props: IndexPagePropsT) {
   const history = useHistory();
 
-  // TODO: use navigation.browseToRecentMove()
   function _loadRecentMove() {
-    if (props.userProfile && props.userProfile.recentMoveUrl) {
-      browseToMoveUrl(history.push, [props.userProfile.recentMoveUrl], false);
-    }
+    const url =
+      props.userProfile && props.userProfile.recentMoveUrl
+        ? props.userProfile.recentMoveUrl
+        : helpUrl.substr("/app/lists/".length);
+    browseToMoveUrl(history.push, [url], false);
   }
   React.useEffect(() => {
     _loadRecentMove();

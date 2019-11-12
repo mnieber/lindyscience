@@ -19,15 +19,6 @@ type MovePropsT = {
 export function Move(props: MovePropsT) {
   const descriptionDiv = (
     <div>
-      <div className="flexrow">
-        Created by:
-        <Link
-          className="ml-2 mb-2"
-          to={"/app/people/" + props.move.ownerUsername}
-        >
-          {props.move.ownerUsername}
-        </Link>
-      </div>
       <div id="move__description" className={"move__description panel"}>
         <h2>Description</h2>
         <MoveDescriptionEditor
@@ -37,6 +28,15 @@ export function Move(props: MovePropsT) {
           autoFocus={false}
           videoPlayer={props.videoPlayer}
         />
+      </div>
+      <div className="flexrow">
+        Created by:
+        <Link
+          className="ml-2 mb-2"
+          to={"/app/people/" + props.move.ownerUsername}
+        >
+          {props.move.ownerUsername}
+        </Link>
       </div>
     </div>
   );

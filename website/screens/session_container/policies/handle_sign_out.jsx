@@ -1,5 +1,6 @@
 // @flow
 
+import { helpUrl } from "moves/utils";
 import { apiGetEmail, apiSignIn, apiSignOut } from "app/api";
 import { runInAction } from "utils/mobx_wrapper";
 import { Profiling } from "screens/session_container/facets/profiling";
@@ -18,9 +19,7 @@ export const handleSignIn = (ctr: any) => {
       profiling.signedInEmail = email;
     });
     const next = urlParam("next");
-    navigation.history.push(
-      next ? next : "/app/lists/lindyscience/help/welcome-to-lindy-science"
-    );
+    navigation.history.push(next ? next : helpUrl);
   });
 };
 

@@ -4,6 +4,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import classnames from "classnames";
 
+import { helpUrl } from "moves/utils";
 import { mergeDefaultProps } from "screens/default_props";
 import { createErrorHandler } from "app/utils";
 import { Profiling } from "screens/session_container/facets/profiling";
@@ -58,9 +59,7 @@ export const AccountMenu = observer((p: AccountMenuPropsT) => {
               href="#"
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
-                props.navigation.history.push(
-                  "/app/lists/lindyscience/help/welcome-to-lindy-science"
-                );
+                props.navigation.history.push(helpUrl);
               }}
             >
               Help

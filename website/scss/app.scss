@@ -201,12 +201,19 @@ $panGrey: #bbbbbb;
 }
 
 .moveListPanel__inner {
-  min-width: 20rem;
-  max-width: 20rem;
-
   // Style the keyboard event handler span
   > span {
     display: flex;
     min-height: 0;
   }
+}
+
+.moveListPanel__inner--expanded {
+  min-width: 20rem;
+  max-width: 20rem;
+}
+
+.moveListPanel__inner--collapsed {
+  min-width: 2rem;
+  max-width: 2rem;
 }

@@ -5,6 +5,8 @@ import { observer } from "mobx-react";
 import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
+import classnames from "classnames";
+import ReactResizeDetector from "react-resize-detector";
 
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { Navigation } from "screens/session_container/facets/navigation";
@@ -44,6 +46,9 @@ type MoveListFramePropsT = {
 };
 
 const _MoveListFrame = (p: MoveListFramePropsT) => {
+  const panelRef = React.useRef(null);
+  const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
+
   const props = mergeDefaultProps(p);
 
   const moveListPlayerBtns = (
@@ -106,9 +111,26 @@ const _MoveListFrame = (p: MoveListFramePropsT) => {
     />
   );
 
+  React.useEffect(() => {
+    if (panelRef.current) {
+      debugger;
+      panelRef.current.addEventListener("resize", e => {});
+    }
+  }, [panelRef.current]);
+
+  const onResize = x => {
+    setIsMenuCollapsed(x < 600);
+  };
+
   return (
     <div className="moveListPanel flexrow">
-      <div className="moveListPanel__inner flexcol">
+      <ReactResizeDetector handleWidth onResize={onResize} />
+      <div
+        className={classnames("moveListPanel__inner flexcol", {
+          "moveListPanel__inner--expanded": !isMenuCollapsed,
+          "moveListPanel__inner--collapsed": isMenuCollapsed,
+        })}
+      >
         {moveListPicker}
         {moveListFilter}
         <div className="flexrow w-full my-4">

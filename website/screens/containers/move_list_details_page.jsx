@@ -7,6 +7,7 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import { Display } from "screens/session_container/facets/display";
 import { createErrorHandler } from "app/utils";
 import type { CutPointT } from "video/types";
 import { Video } from "video/bvrs/use_video";
@@ -44,6 +45,7 @@ type MoveListDetailsPagePropsT = {
 } & {
   // default props
   isOwner: any => boolean,
+  display: Display,
   moveList: MoveListT,
   moveListsEditing: Editing,
   moveListsPreview: Array<MoveListT>,
@@ -165,6 +167,7 @@ export const _MoveListDetailsPage = (p: MoveListDetailsPagePropsT) => {
         videoBvr={props.videoBvr}
         cutPoints={props.cutPoints}
         cutPointBvrs={cutPointBvrs}
+        display={props.display}
       />
     </div>
   );

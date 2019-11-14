@@ -12,6 +12,7 @@ type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,
   videoBvr: Video,
   restartId: RestartIdT,
+  videoWidth: number,
   onReady?: Function,
 };
 
@@ -28,8 +29,8 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       : null;
 
   const opts = {
-    height: "390",
-    width: "640",
+    height: (props.videoWidth * 9) / 16,
+    width: props.videoWidth,
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1, // yes, we need this

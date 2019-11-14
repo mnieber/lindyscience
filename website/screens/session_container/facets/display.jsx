@@ -1,21 +1,26 @@
 // @flow
 
 import { createUUID } from "utils/utils";
-import { observable, runInAction } from "utils/mobx_wrapper";
+import { observable, computed, runInAction } from "utils/mobx_wrapper";
 import { type GetFacet, facetClass, operation } from "facet";
 
 // $FlowFixMe
 @facetClass
 export class Display {
-  @observable small: boolean = false;
+  @observable width: number;
+  // $FlowFixMe
+  @computed get small() {
+    return this.width < this.smallBreakPoint;
+  }
+
   @observable smallBreakPoint: number = 1200;
   @observable id: string;
 
   // $FlowFixMe
-  @operation showSmall(flag) {
-    if (flag !== this.small) {
+  @operation setWidth(x) {
+    if (x !== this.width) {
       runInAction(() => {
-        this.small = flag;
+        this.width = x;
       });
     }
   }

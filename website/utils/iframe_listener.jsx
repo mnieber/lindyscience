@@ -3,64 +3,63 @@
 import * as React from "react";
 import jQuery from "jquery";
 
-type DataT = {
-  iframeMouseOver: boolean,
-  iframe: any,
-};
+class VideoIFrame {
+  parentDivId: any;
+  iframe: any;
+  isMouseOver: boolean = false;
 
-var _iframes = {};
-var _dataStore = {};
+  constructor(parentDivId, iframe) {
+    this.parentDivId = parentDivId;
+    this.iframe = iframe;
 
-function createDataStore(parentDivId: string, iframe: any) {
-  _dataStore[parentDivId] = {
-    iframeMouseOver: false,
-    iframe: iframe,
-  };
+    window.addEventListener("blur", (e: any) => {
+      if (document.activeElement == this.iframe && this.isMouseOver) {
+        setTimeout(this.focusParentDiv, 100);
+      }
+    });
 
-  const focusParentDiv = () => {
-    const elm = document.getElementById(parentDivId);
+    iframe.addEventListener("mouseover", this.mouseOver);
+    iframe.addEventListener("mouseout", this.mouseOut);
+  }
+
+  focusParentDiv = () => {
+    const elm = document.getElementById(this.parentDivId);
     if (elm) {
+      // Store previous scroll position
       let x = window.scrollX,
         y = window.scrollY;
       elm.focus();
+      // Restore previous scroll position
       window.scrollTo(x, y);
     }
   };
 
-  window.addEventListener("blur", function(e: any) {
-    const data = _dataStore[parentDivId];
+  mouseOver = () => {
+    this.isMouseOver = true;
+  };
 
-    if (document.activeElement == data.iframe && data.iframeMouseOver) {
-      setTimeout(focusParentDiv, 100);
-    }
-  });
+  mouseOut = () => {
+    this.isMouseOver = false;
+  };
 
-  return focusParentDiv;
+  unregister = () => {
+    this.iframe.removeEventListener("mouseover", this.mouseOver);
+    this.iframe.removeEventListener("mouseout", this.mouseOut);
+  };
 }
 
-function updateDataStore(parentDivId: string, iframe: any) {
-  _dataStore[parentDivId].iframe = iframe;
-}
-
-function registerIframe(parentDivId: string, iframe: any) {
-  if (!_iframes[iframe]) {
-    _iframes[iframe] = true;
-    iframe.addEventListener("mouseover", function() {
-      _dataStore[parentDivId].iframeMouseOver = true;
-    });
-    iframe.addEventListener("mouseout", function() {
-      _dataStore[parentDivId].iframeMouseOver = false;
-    });
-  }
-}
+const _videoIFrames = {};
 
 export function listenToIFrame(parentDivId: string, iframe: any) {
-  if (!_dataStore[parentDivId]) {
-    const focusParentDiv = createDataStore(parentDivId, iframe);
-    focusParentDiv();
-  } else {
-    updateDataStore(parentDivId, iframe);
+  const videoIFrame = _videoIFrames[parentDivId];
+  if (videoIFrame && videoIFrame.iframe != iframe) {
+    videoIFrame.unregister();
+    delete _videoIFrames[parentDivId];
   }
 
-  registerIframe(parentDivId, iframe);
+  if (!_videoIFrames[parentDivId]) {
+    const videoIFrame = new VideoIFrame(parentDivId, iframe);
+    _videoIFrames[parentDivId] = videoIFrame;
+    videoIFrame.focusParentDiv();
+  }
 }

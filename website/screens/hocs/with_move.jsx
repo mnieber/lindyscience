@@ -68,23 +68,18 @@ export const withMoveDiv = compose(
         key="videoPlayerPanel"
         videoBvr={props.videoBvr}
         restartId={props.move ? props.move.id : ""}
+        display={props.display}
       />
     );
 
-    const space = <div key="space" className={classnames("flex flex-grow")} />;
-
-    const followMoveListButtons = props.userProfile
-      ? [
-          <FollowMoveListBtn
-            key="followMoveListBtn"
-            defaultProps={props.defaultProps}
-          />,
-        ]
-      : [];
-
-    const buttons = props.display.small
-      ? [editMoveBtn]
-      : [editMoveBtn, space, ...followMoveListButtons];
+    const followMoveListBtn = props.userProfile ? (
+      <FollowMoveListBtn
+        key="followMoveListBtn"
+        defaultProps={props.defaultProps}
+      />
+    ) : (
+      undefined
+    );
 
     const moveDiv = props.movesEditing.isEditing ? (
       <div>
@@ -104,7 +99,8 @@ export const withMoveDiv = compose(
           move={props.move}
           moveListTitle={moveListTitle}
           moveTags={moveTags}
-          buttons={buttons}
+          editMoveBtn={editMoveBtn}
+          followMoveListBtn={followMoveListBtn}
           small={props.display.small}
         />
         {videoPlayerPanel}

@@ -219,7 +219,11 @@ $panGrey: #bbbbbb;
 }
 
 .moveListPanel__ribbon {
-  @apply bg-blue;
+  @apply bg-blue mt-1;
   min-width: 0.5rem;
   max-width: 0.5rem;
+}
+
+.movePanel {
+  min-width: 0;
 }

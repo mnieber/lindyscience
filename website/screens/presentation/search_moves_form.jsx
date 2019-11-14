@@ -26,6 +26,10 @@ type InnerFormPropsT = {
 
 const InnerForm = (props: InnerFormPropsT) =>
   observer(formProps => {
+    const placeholder = props.display.small
+      ? "Search moves"
+      : "Search moves by :tags, keywords and user:me";
+
     const _onPickerTextChange = (tags, searchText) => {
       formProps.setFieldValue("tags", tags);
       formProps.setFieldValue("searchText", searchText);
@@ -35,7 +39,7 @@ const InnerForm = (props: InnerFormPropsT) =>
       <div className="moveForm__tags mt-2 ml-2 w-full">
         <TagsAndKeywordsPicker
           options={props.tagPickerOptions}
-          placeholder="Search moves by :tags, keywords and user:me"
+          placeholder={placeholder}
           onTextChange={_onPickerTextChange}
           zIndex={10}
           label="Tags"

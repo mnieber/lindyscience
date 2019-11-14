@@ -23,9 +23,18 @@ export class Video {
       if (this.isPlaying) {
         this.player.playVideo();
       } else {
+        // We are currently playing the video and we want to pause.
+        // However, we should wait a short while before pausing, becaise
+        // the player may be loading footage, and we want to pause it
+        // when it's actually showing an image.
+        const t = this.player.getCurrentTime();
         setTimeout(() => {
-          this.player.pauseVideo();
-          this.pauseTimeout = 100;
+          try {
+            this.player.seekTo(t);
+          } catch {}
+          try {
+            this.player.pauseVideo();
+          } catch {}
         }, this.pauseTimeout);
       }
     }

@@ -48,7 +48,7 @@ function AppFrame(p: AppFramePropsT) {
   );
 
   const onResize = x => {
-    props.display.showSmall(window.innerWidth < props.display.smallBreakPoint);
+    props.display.setWidth(window.innerWidth);
   };
 
   return (
@@ -61,7 +61,12 @@ function AppFrame(p: AppFramePropsT) {
       <ReactResizeDetector handleWidth onResize={debounce(onResize, 10)} />
       {cookieNotice}
       {createToastr()}
-      <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-4">
+      <div
+        className={classnames(
+          "appFrame__banner flexrow items-center justify-between h-16",
+          { "mt-4 mb-4": !props.display.small, "mb-1": props.display.small }
+        )}
+      >
         <div className="flexrow w-full">
           <div className="flexcol">
             <h1 className="appFrame__home" onClick={() => alert("TODO")}>

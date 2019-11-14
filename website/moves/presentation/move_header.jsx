@@ -14,12 +14,13 @@ type MoveHeaderPropsT = {
   move: MoveT,
   moveListTitle: any,
   moveTags: Array<TagT>,
-  buttons?: Array<React.Node>,
+  editMoveBtn: any,
+  followMoveListBtn: any,
   small: boolean,
 };
 
 export function MoveHeader(props: MoveHeaderPropsT) {
-  const smallButtons = <div className="flexrow">{props.buttons}</div>;
+  const space = <div key="space" className={classnames("flex flex-grow")} />;
 
   const nameDiv = (
     <div
@@ -29,8 +30,17 @@ export function MoveHeader(props: MoveHeaderPropsT) {
       })}
     >
       {props.moveListTitle}
-      <h1 className="flex-none ml-2">{props.move.name}</h1>
-      {props.small ? smallButtons : props.buttons}
+      <div
+        className={classnames("flexrow items-center", {
+          "flex-grow": true,
+        })}
+      >
+        {props.small && props.editMoveBtn}
+        <h1 className="flex-none ml-2">{props.move.name}</h1>
+        {!props.small && props.editMoveBtn}
+        {!props.small && space}
+        {!props.small && props.followMoveListBtn}
+      </div>
     </div>
   );
 

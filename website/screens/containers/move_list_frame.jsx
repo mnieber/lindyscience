@@ -149,7 +149,7 @@ const _MoveListFrame = (p: MoveListFramePropsT) => {
       {props.display.small ? shrunkContents : contents}
       {props.display.small && !isMenuOpen && ribbon}
       <div
-        className={classnames("movePanel w-full", {
+        className={classnames("movePanel flex-auto", {
           "pl-4": !props.display.small,
           "pl-1": props.display.small,
         })}

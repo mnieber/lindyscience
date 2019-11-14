@@ -59,6 +59,7 @@ export const AccountMenu = observer((p: AccountMenuPropsT) => {
               href="#"
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
+                setExpanded(false);
                 props.navigation.history.push(helpUrl);
               }}
             >

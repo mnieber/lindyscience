@@ -90,7 +90,7 @@
     "tap-spec": "^5.0.0",
     "tape": "^4.9.2",
     "tape-run": "^5.0.0",
-    "webpack-dev-server": "^3.1.4",
+    "webpack-dev-server": "^3.1.11",
     "webpack-tape-run": "^0.0.7"
   }
 }

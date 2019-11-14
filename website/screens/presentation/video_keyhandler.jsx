@@ -1,15 +1,20 @@
 // @flow
 
+import { Display } from "screens/session_container/facets/display";
 import { Video } from "video/bvrs/use_video";
 import { runInAction } from "utils/mobx_wrapper";
 import { splitKeyhandlerKeys } from "video/utils";
 import { isNone } from "utils/utils";
 
-export const createVideoKeyHandlers = (videoBvr: Video) => {
+export const createVideoKeyHandlers = (videoBvr: Video, display: Display) => {
   return splitKeyhandlerKeys({
     "ctrl+space": () =>
       runInAction(() => {
         videoBvr.isPlaying = !videoBvr.isPlaying;
+      }),
+    "ctrl+shift+space": () =>
+      runInAction(() => {
+        display.setFullVideoWidth(!display.fullVideoWidth);
       }),
     "ctrl+shift+1": () => videoBvr.player.setPlaybackRate(0.25),
     "ctrl+shift+2": () => videoBvr.player.setPlaybackRate(0.5),

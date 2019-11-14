@@ -30,9 +30,6 @@ export class Video {
         const t = this.player.getCurrentTime();
         setTimeout(() => {
           try {
-            this.player.seekTo(t);
-          } catch {}
-          try {
             this.player.pauseVideo();
           } catch {}
         }, this.pauseTimeout);

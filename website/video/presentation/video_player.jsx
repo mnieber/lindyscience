@@ -56,8 +56,16 @@ export const VideoPlayerPanel = observer((props: VideoPlayerPanelPropsT) => {
   const debouncedSetVideoWidth = debounce(setVideoWidth, 500);
 
   React.useEffect(() => {
-    debouncedSetVideoWidth(Math.min(1200, requestedVideoWidth - 10));
-  }, [props.display.width, requestedVideoWidth > 0]);
+    if (requestedVideoWidth > 0) {
+      debouncedSetVideoWidth(
+        Math.min(props.display.maxVideoWidth, requestedVideoWidth - 10)
+      );
+    }
+  }, [
+    props.display.width,
+    requestedVideoWidth > 0,
+    props.display.fullVideoWidth,
+  ]);
 
   const controlPanel = <VideoControlPanel videoBvr={props.videoBvr} />;
 

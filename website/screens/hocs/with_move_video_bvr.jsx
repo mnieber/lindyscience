@@ -5,9 +5,9 @@ import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { observer } from "mobx-react";
 
+import { Display } from "screens/session_container/facets/display";
 import type { MoveT } from "moves/types";
 import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
-import type { VideoT } from "video/types";
 import {
   createKeyDownHandler,
   createVideoKeyHandlers,
@@ -22,9 +22,11 @@ import Ctr from "screens/containers/index";
 
 type PropsT = {
   defaultProps: any,
-} & {
-  // default props
+};
+
+type DefaultPropsT = {
   move: MoveT,
+  display: Display,
 };
 
 // $FlowFixMe
@@ -33,7 +35,7 @@ export const withMoveVideoBvr = compose(
   withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: any) => {
-    const props = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
 
     const { ...passThroughProps }: PropsT = props;
 
@@ -59,7 +61,7 @@ export const withMoveVideoBvr = compose(
     );
 
     const videoKeyHandlers = {
-      ...createVideoKeyHandlers(videoBvr),
+      ...createVideoKeyHandlers(videoBvr, props.display),
       ...createVideoTimePointKeyHandlers(videoBvr, timePoints),
       ...(props.move
         ? createVideoStartEndKeyHandlers(

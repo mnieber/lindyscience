@@ -6,7 +6,9 @@ import jQuery from "jquery";
 import { compose } from "redux";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
-import type { CutPointT, VideoT } from "video/types";
+import type { CutPointT } from "video/types";
+import { Display } from "screens/session_container/facets/display";
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import {
   createKeyDownHandler,
   createVideoKeyHandlers,
@@ -19,6 +21,12 @@ import Ctr from "screens/containers/index";
 type PropsT = {
   cutVideoLink: string,
   cutPoints: Array<CutPointT>,
+  dispatch: Function,
+  defaultProps: any,
+};
+
+type DefaultPropsT = {
+  display: Display,
 };
 
 // $FlowFixMe
@@ -27,8 +35,10 @@ export const withCutVideoBvr = compose(
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
     cutPoints: Ctr.fromStore.getCutPoints(state),
   })),
+  withDefaultProps,
   observer,
-  (WrappedComponent: any) => (props: any) => {
+  (WrappedComponent: any) => (p: any) => {
+    const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
     const { cutVideoLink, cutPoints, ...passThroughProps }: PropsT = props;
     const parentDivId = "cutVideoDiv";
 
@@ -52,7 +62,7 @@ export const withCutVideoBvr = compose(
     );
 
     const videoKeyHandlers = {
-      ...createVideoKeyHandlers(videoBvr),
+      ...createVideoKeyHandlers(videoBvr, props.display),
       "ctrl+shift+insert": () => editCutPointBvr.add("start"),
       "ctrl+shift+alt+insert": () => editCutPointBvr.add("end"),
       "ctrl+shift+l": () => {

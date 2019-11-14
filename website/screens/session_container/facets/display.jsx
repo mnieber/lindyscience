@@ -8,6 +8,11 @@ import { type GetFacet, facetClass, operation } from "facet";
 @facetClass
 export class Display {
   @observable width: number;
+  @observable fullVideoWidth: boolean = false;
+  // $FlowFixMe
+  @computed get maxVideoWidth() {
+    return this.fullVideoWidth ? 1200 : 800;
+  }
   // $FlowFixMe
   @computed get small() {
     return this.width < this.smallBreakPoint;
@@ -23,6 +28,12 @@ export class Display {
         this.width = x;
       });
     }
+  }
+  // $FlowFixMe
+  @operation setFullVideoWidth(x: boolean) {
+    runInAction(() => {
+      this.fullVideoWidth = x;
+    });
   }
 
   static get: GetFacet<Display>;

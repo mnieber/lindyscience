@@ -25,7 +25,7 @@ export function MoveListTitle(props: MoveListTitlePropsT) {
         className=""
         to={`/app/lists/${props.moveList.ownerUsername}/${props.moveList.slug}`}
       >
-        <h2>{props.moveList.name}</h2>
+        <h2>{props.moveList.name + "/"}</h2>
       </Link>
     </div>
   );

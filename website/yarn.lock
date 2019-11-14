@@ -1538,6 +1538,15 @@ charenc@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
 
+cheeseburger-menu@^7000.0.0:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/cheeseburger-menu/-/cheeseburger-menu-0.0.13.tgz#733ccdfeb729c666c3fe0d18fd650c7d62fcfbdc"
+  integrity sha512-6kXrfUGmDpjPK5btog45+u2Pph6Hcdd4c+BqpJQIOCG95Odh9/n8TojlZ4O40Yjk7fpToGuOgh6i645RvoVmyw==
+  dependencies:
+    classnames "^2.2.6"
+    prop-types "^15.6.2"
+    react-easy-swipe "^0.0.17"
+
 chokidar@^2.0.0, chokidar@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.3.tgz#dcbd4f6cbb2a55b4799ba8a840ac527e5f4b1176"
@@ -6183,6 +6192,13 @@ react-dom@16.8.3:
     prop-types "^15.6.2"
     scheduler "^0.13.3"
 
+react-easy-swipe@^0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/react-easy-swipe/-/react-easy-swipe-0.0.17.tgz#029aae58c7f0ebe0056f19b8da3ee6e63c863055"
+  integrity sha512-+4486duR/1Gq16o4+eRkDLG/uKWur+aZ6TOLq4p8GvdHmQblZLbgEaN+Cr6U8P7Dcnou5gA3shMr9B3gq+AD7w==
+  dependencies:
+    prop-types "^15.5.8"
+
 react-fast-compare@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-1.0.0.tgz#813a039155e49b43ceffe99528fe5e9d97a6c938"
@@ -6247,7 +6263,7 @@ react-redux@^6.0.0:
     prop-types "^15.6.2"
     react-is "^16.6.3"
 
-react-resize-detector@^7000.4.4:
+react-resize-detector@^4.2.1:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-4.2.1.tgz#8982b74c3e1cf949afaa3c41050458c87b033982"
   integrity sha512-ZfPMBPxXi0o3xox42MIEtz84tPSVMW9GgwLHYvjVXlFM+OkNzbeEtpVSV+mSTJmk4Znwomolzt35zHN9LNBQMQ==

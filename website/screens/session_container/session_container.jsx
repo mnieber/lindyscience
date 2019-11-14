@@ -1,5 +1,6 @@
 // @flow
 
+import { Display, initDisplay } from "screens/session_container/facets/display";
 import type { MoveByIdT } from "moves/types";
 import { runInAction } from "utils/mobx_wrapper";
 import {
@@ -30,6 +31,7 @@ type SessionContainerPropsT = {
 export class SessionContainer {
   @facet(Inputs) inputs: Inputs;
   @facet(Navigation) navigation: Navigation;
+  @facet(Display) display: Display;
   @facet(Profiling) profiling: Profiling;
 
   @facet(MovesContainer) movesCtr: MovesContainer;
@@ -38,6 +40,7 @@ export class SessionContainer {
   _createFacets(props: SessionContainerPropsT) {
     this.inputs = initInputs(new Inputs(), props.dispatch);
     this.navigation = initNavigation(new Navigation(), props.history);
+    this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());
     this.movesCtr = props.movesCtr;
     this.moveListsCtr = props.moveListsCtr;

@@ -15,16 +15,22 @@ type MoveHeaderPropsT = {
   moveListTitle: any,
   moveTags: Array<TagT>,
   buttons?: Array<React.Node>,
-  className?: string,
+  small: boolean,
 };
 
 export function MoveHeader(props: MoveHeaderPropsT) {
+  const smallButtons = <div className="flexrow">{props.buttons}</div>;
+
   const nameDiv = (
-    <div className="flexrow items-center w-full">
+    <div
+      className={classnames("items-center w-full", {
+        flexrow: !props.small,
+        flexcol: props.small,
+      })}
+    >
       {props.moveListTitle}
-      <h2>:</h2>
       <h1 className="flex-none ml-2">{props.move.name}</h1>
-      {props.buttons}
+      {props.small ? smallButtons : props.buttons}
     </div>
   );
 
@@ -35,7 +41,7 @@ export function MoveHeader(props: MoveHeaderPropsT) {
   );
 
   return (
-    <div className={classnames("move__header", props.className || "")}>
+    <div className={classnames("move__header")}>
       {nameDiv}
       {tagsDiv}
     </div>

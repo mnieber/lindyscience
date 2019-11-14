@@ -3,13 +3,14 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 
+import type { VideoUrlPropsT, RestartIdT } from "video/types";
+import { Video } from "video/bvrs/use_video";
 import { runInAction } from "utils/mobx_wrapper";
-import type { VideoUrlPropsT, VideoBvrT, RestartIdT } from "video/types";
 import { isNone } from "utils/utils";
 
 type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   restartId: RestartIdT,
   onReady?: Function,
 };

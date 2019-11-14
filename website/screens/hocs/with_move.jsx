@@ -7,13 +7,14 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import { Video } from "video/bvrs/use_video";
+import { Display } from "screens/session_container/facets/display";
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
 import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { TagT } from "tags/types";
-import type { VideoBvrT } from "video/types";
 import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import { VideoPlayerPanel } from "video/presentation/video_player";
@@ -24,11 +25,13 @@ import Widgets from "screens/presentation/index";
 type PropsT = {
   moveTags: Array<TagT>,
   hostedMovePanels: any,
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   defaultProps: any,
-} & {
-  // default props
+};
+
+type DefaultPropsT = {
   movesEditing: Editing,
+  display: Display,
   userProfile: ?UserProfileT,
   isOwner: any => boolean,
   moveList: MoveListT,
@@ -44,7 +47,7 @@ export const withMoveDiv = compose(
   withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
-    const props = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
 
     const { moveTags, hostedMovePanels, ...passThroughProps }: PropsT = props;
     const isOwnMove = !!props.move && props.isOwner(props.move);
@@ -79,6 +82,10 @@ export const withMoveDiv = compose(
         ]
       : [];
 
+    const buttons = props.display.small
+      ? [editMoveBtn]
+      : [editMoveBtn, space, ...followMoveListButtons];
+
     const moveDiv = props.movesEditing.isEditing ? (
       <div>
         {videoPlayerPanel}
@@ -97,7 +104,8 @@ export const withMoveDiv = compose(
           move={props.move}
           moveListTitle={moveListTitle}
           moveTags={moveTags}
-          buttons={[editMoveBtn, space, ...followMoveListButtons]}
+          buttons={buttons}
+          small={props.display.small}
         />
         {videoPlayerPanel}
         <Widgets.Move move={props.move} videoPlayer={props.videoBvr.player} />

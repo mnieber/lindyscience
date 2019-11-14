@@ -15,7 +15,7 @@ $panGrey: #bbbbbb;
 }
 
 .move__header {
-  @apply flexcol;
+  @apply flex flex-row flex-wrap;
 }
 
 .flexrow {
@@ -68,7 +68,7 @@ $panGrey: #bbbbbb;
 }
 
 .moveList {
-  @apply flexcol overflow-y-scroll flex-grow;
+  @apply overflow-y-scroll flex-grow;
 }
 
 .moveList__item {
@@ -216,4 +216,10 @@ $panGrey: #bbbbbb;
 .moveListPanel__inner--collapsed {
   min-width: 2rem;
   max-width: 2rem;
+}
+
+.moveListPanel__ribbon {
+  @apply bg-blue;
+  min-width: 0.5rem;
+  max-width: 0.5rem;
 }

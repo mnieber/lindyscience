@@ -6,9 +6,9 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import classnames from "classnames";
-import ReactResizeDetector from "react-resize-detector";
+import CheeseburgerMenu from "cheeseburger-menu";
 
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
+import { Display } from "screens/session_container/facets/display";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { Filtering } from "facet-mobx/facets/filtering";
 import type { UserProfileT } from "profiles/types";
@@ -17,8 +17,6 @@ import { sayMove } from "screens/moves_container/handlers/say_move";
 import { isNone } from "utils/utils";
 import { MoveListFilter } from "move_lists/presentation/movelist_filter";
 import { Addition } from "facet-mobx/facets/addition";
-import { MovesContainer } from "screens/moves_container/moves_container";
-import { SessionContainer } from "screens/session_container/session_container";
 import { withMoveContextMenu } from "screens/hocs/with_move_context_menu";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
@@ -43,11 +41,11 @@ type MoveListFramePropsT = {
   movesFiltering: Filtering,
   movesAddition: Addition,
   navigation: Navigation,
+  display: Display,
 };
 
 const _MoveListFrame = (p: MoveListFramePropsT) => {
-  const panelRef = React.useRef(null);
-  const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const props = mergeDefaultProps(p);
 
@@ -111,37 +109,53 @@ const _MoveListFrame = (p: MoveListFramePropsT) => {
     />
   );
 
-  React.useEffect(() => {
-    if (panelRef.current) {
-      debugger;
-      panelRef.current.addEventListener("resize", e => {});
-    }
-  }, [panelRef.current]);
+  const contents = (
+    <div
+      className={classnames("moveListPanel__inner flexcol", {
+        "moveListPanel__inner--expanded": true,
+      })}
+    >
+      {moveListPicker}
+      {moveListFilter}
+      <div className="flexrow w-full my-4">
+        {moveListPlayerBtns}
+        {props.moveList && props.isOwner(props.moveList) && moveListHeaderBtns}
+      </div>
+      {moveListWidget}
+    </div>
+  );
 
-  const onResize = x => {
-    setIsMenuCollapsed(x < 600);
-  };
+  const shrunkContents = (
+    <CheeseburgerMenu
+      // width="20rem"
+      width={320}
+      isOpen={isMenuOpen}
+      closeCallback={() => setIsMenuOpen(false)}
+    >
+      {contents}
+    </CheeseburgerMenu>
+  );
 
+  const ribbon = (
+    <div
+      className="moveListPanel__ribbon"
+      onClick={() => {
+        setIsMenuOpen(true);
+      }}
+    />
+  );
   return (
     <div className="moveListPanel flexrow">
-      <ReactResizeDetector handleWidth onResize={onResize} />
+      {props.display.small ? shrunkContents : contents}
+      {props.display.small && !isMenuOpen && ribbon}
       <div
-        className={classnames("moveListPanel__inner flexcol", {
-          "moveListPanel__inner--expanded": !isMenuCollapsed,
-          "moveListPanel__inner--collapsed": isMenuCollapsed,
+        className={classnames("movePanel w-full", {
+          "pl-4": !props.display.small,
+          "pl-1": props.display.small,
         })}
       >
-        {moveListPicker}
-        {moveListFilter}
-        <div className="flexrow w-full my-4">
-          {moveListPlayerBtns}
-          {props.moveList &&
-            props.isOwner(props.moveList) &&
-            moveListHeaderBtns}
-        </div>
-        {moveListWidget}
+        {props.children}
       </div>
-      <div className="movePanel pl-4 w-full">{props.children}</div>
     </div>
   );
 };

@@ -34,7 +34,7 @@ export const AccountMenu = observer((p: AccountMenuPropsT) => {
         props.userProfile ? props.userProfile.username : "stranger!"
       } ⛛`}</button>
       {expanded && (
-        <ul className="list-reset bg-green">
+        <ul className="list-reset bg-white">
           <li className={classnames({ hidden: !props.userProfile })}>
             <a
               href="#"

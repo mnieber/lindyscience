@@ -20,6 +20,7 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "cheeseburger-menu": "^0.0.13",
     "react-router-dom": "^5.1.2",
     "babel-loader": "^8.0.6",
     "babel-plugin-rewire": "^1.2.0",

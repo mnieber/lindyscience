@@ -19,6 +19,7 @@ export function getSessionCtrDefaultProps(sessionCtr: SessionContainer) {
   return {
     userProfile: () => sessionCtr.inputs.userProfile,
     navigation: () => sessionCtr.navigation,
+    display: () => sessionCtr.display,
     profiling: () => sessionCtr.profiling,
     sessionCtr: () => sessionCtr,
     isOwner: () => (x: OwnedT) => {

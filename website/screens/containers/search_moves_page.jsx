@@ -61,6 +61,7 @@ const _SearchMovesPage = (p: SearchMovesPagePropsT) => {
       knownTags={props.moveTags}
       latestOptions={latestOptions}
       onSubmit={_findMoves}
+      defaultProps={props.defaultProps}
     />
   );
 };

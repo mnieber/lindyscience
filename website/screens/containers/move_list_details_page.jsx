@@ -7,6 +7,9 @@ import { compose } from "redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import { createErrorHandler } from "app/utils";
+import type { CutPointT } from "video/types";
+import { Video } from "video/bvrs/use_video";
 import type { MoveListT } from "move_lists/types";
 import { withDefaultProps, mergeDefaultProps } from "screens/default_props";
 import type { UserProfileT } from "profiles/types";
@@ -17,10 +20,8 @@ import {
   actRemoveCutPoints,
   actSetCutVideoLink,
 } from "video/actions";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { apiSaveMove } from "moves/api";
 import { apiSaveMoveOrdering } from "move_lists/api";
-import { createErrorHandler, isOwner } from "app/utils";
 import { isNone } from "utils/utils";
 import { actInsertMoveIds } from "move_lists/actions";
 import { actAddMoves } from "moves/actions";
@@ -28,7 +29,6 @@ import { createMoveFromCutPoint } from "screens/utils";
 import { withCutVideoBvr } from "screens/hocs/with_cut_video_bvr";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";
-import type { CutPointT, VideoBvrT } from "video/types";
 import type { TagT } from "tags/types";
 import type { EditCutPointBvrT } from "video/bvrs/cut_point_crud_behaviours";
 
@@ -36,7 +36,7 @@ type MoveListDetailsPagePropsT = {
   moveListTags: Array<TagT>,
   moveTags: Array<TagT>,
   cutVideoLink: string,
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   editCutPointBvr: EditCutPointBvrT,
   cutPoints: Array<CutPointT>,
   dispatch: Function,

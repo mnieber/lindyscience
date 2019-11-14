@@ -1,11 +1,11 @@
 // @flow
 
+import { Video } from "video/bvrs/use_video";
 import { runInAction } from "utils/mobx_wrapper";
 import { splitKeyhandlerKeys } from "video/utils";
 import { isNone } from "utils/utils";
-import type { VideoBvrT } from "video/types";
 
-export const createVideoKeyHandlers = (videoBvr: VideoBvrT) => {
+export const createVideoKeyHandlers = (videoBvr: Video) => {
   return splitKeyhandlerKeys({
     "ctrl+space": () =>
       runInAction(() => {
@@ -31,7 +31,7 @@ export const createVideoKeyHandlers = (videoBvr: VideoBvrT) => {
 };
 
 export const createVideoTimePointKeyHandlers = (
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   timePoints: Array<number>
 ) => {
   return splitKeyhandlerKeys({
@@ -53,7 +53,7 @@ export const createVideoTimePointKeyHandlers = (
 };
 
 export const createVideoStartEndKeyHandlers = (
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   startTime: ?number,
   endTime: ?number
 ) => {

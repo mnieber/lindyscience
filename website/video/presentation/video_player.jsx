@@ -4,14 +4,14 @@ import * as React from "react";
 import urlParser from "js-video-url-parser";
 import { observer } from "mobx-react";
 
-import type { RestartIdT, VideoBvrT } from "video/types";
+import type { RestartIdT } from "video/types";
 import { Video } from "video/bvrs/use_video";
 import YoutubePlayer from "video/presentation/youtube_player";
 import { VideoControlPanel } from "video/presentation/video_control_panel";
 import { listenToIFrame } from "utils/iframe_listener";
 
 type VideoPlayerPropsT = {
-  videoBvr: VideoBvrT,
+  videoBvr: Video,
   restartId: RestartIdT,
 };
 

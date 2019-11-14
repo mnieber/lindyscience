@@ -54,7 +54,7 @@ export const MoveContextMenu = observer((props: MoveContextMenuPropsT) => {
   ];
 
   return (
-    <Menu id="moveContextMenu">
+    <Menu id="moveContextMenu" classname="bg-white">
       <Submenu label="Export">{exportMenuItems}</Submenu>
       <Submenu label="Share to list">{shareToListMenuItems}</Submenu>
       {props.isOwnerOfMoveList && (

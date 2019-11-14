@@ -3,7 +3,11 @@
 import React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
+import classnames from "classnames";
+import { debounce } from "debounce";
+import ReactResizeDetector from "react-resize-detector";
 
+import { Display } from "screens/session_container/facets/display";
 import { Profiling } from "screens/session_container/facets/profiling";
 import { withRouter } from "utils/react_router_dom_wrapper";
 import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
@@ -20,6 +24,7 @@ type AppFramePropsT = {
 
 type DefaultPropsT = {
   profiling: Profiling,
+  display: Display,
 };
 
 function AppFrame(p: AppFramePropsT) {
@@ -42,18 +47,33 @@ function AppFrame(p: AppFramePropsT) {
     </div>
   );
 
+  const onResize = x => {
+    props.display.showSmall(window.innerWidth < props.display.smallBreakPoint);
+  };
+
   return (
-    <div className="appFrame px-4 flexcol">
+    <div
+      className={classnames("appFrame flexcol", {
+        "px-1": props.display.small,
+        "px-4": !props.display.small,
+      })}
+    >
+      <ReactResizeDetector handleWidth onResize={debounce(onResize, 10)} />
       {cookieNotice}
       {createToastr()}
       <div className="appFrame__banner flexrow items-center justify-between h-16 mt-4 mb-4">
         <div className="flexrow w-full">
-          <h1 className="appFrame__home" onClick={() => alert("TODO")}>
-            Lindy Science
-          </h1>
+          <div className="flexcol">
+            <h1 className="appFrame__home" onClick={() => alert("TODO")}>
+              Lindy
+            </h1>
+            <h2>Science</h2>
+          </div>
           <SearchMovesPage />
         </div>
-        <AccountMenu defaultProps={props.defaultProps} />
+        {!props.display.small && (
+          <AccountMenu defaultProps={props.defaultProps} />
+        )}
       </div>
       {props.children}
     </div>
@@ -64,8 +84,8 @@ function AppFrame(p: AppFramePropsT) {
 AppFrame = compose(
   withRouter,
   withDefaultProps,
-  observer,
-  Ctr.connect(state => ({}))
+  Ctr.connect(state => ({})),
+  observer
 )(AppFrame);
 
 export default AppFrame;

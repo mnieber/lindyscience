@@ -42,7 +42,7 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
       key="videoPlayerPanel"
       videoBvr={props.videoBvr}
       restartId={""}
-      small={props.display.small}
+      display={props.display}
     />
   );
 

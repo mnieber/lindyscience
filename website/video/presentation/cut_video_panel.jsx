@@ -5,7 +5,7 @@ import * as React from "react";
 import { Display } from "screens/session_container/facets/display";
 import type { CutPointT, CutPointBvrsT } from "video/types";
 import { Video } from "video/bvrs/use_video";
-import { VideoPlayerPanel } from "video/presentation/video_player";
+import { VideoPlayerPanel } from "video/presentation/video_player_panel";
 import { CutPointList } from "video/presentation/cut_point_list";
 import type { TagT } from "tags/types";
 

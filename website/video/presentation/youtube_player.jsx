@@ -13,7 +13,7 @@ type YoutubePlayerPropsT = {
   videoBvr: Video,
   restartId: RestartIdT,
   videoWidth: number,
-  onReady?: Function,
+  onReady: Function,
 };
 
 export default function YoutubePlayer(props: YoutubePlayerPropsT) {
@@ -44,7 +44,7 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       props.videoBvr.player = player;
     });
     if (props.onReady) {
-      (props.onReady: any)(player.getIframe());
+      props.onReady(player.getIframe());
     }
   };
 

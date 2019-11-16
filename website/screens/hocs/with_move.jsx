@@ -17,7 +17,7 @@ import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import type { TagT } from "tags/types";
 import { withHostedMovePanels } from "screens/hocs/with_hosted_move_panels";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
-import { VideoPlayerPanel } from "video/presentation/video_player";
+import { VideoPlayerPanel } from "video/presentation/video_player_panel";
 import { Editing } from "facet-mobx/facets/editing";
 import Ctr from "screens/containers/index";
 import Widgets from "screens/presentation/index";

@@ -1,5 +1,6 @@
 // @flow
 
+import { Navigation } from "screens/session_container/facets/navigation";
 import { createUUID, listToItemById, slugify } from "utils/utils";
 import { apiSaveMoveList, apiSaveMoveListOrdering } from "move_lists/api";
 import { actSetFollowedMoveListIds } from "profiles/actions";
@@ -11,8 +12,7 @@ import type { MoveListT } from "move_lists/types";
 
 export function moveListsContainerProps(
   dispatch: Function,
-  storeLocation: Function,
-  restoreLocation: Function
+  navigation: Navigation
 ) {
   function saveMoveList(moveList: MoveListT, values: any) {
     const slug =
@@ -66,7 +66,6 @@ export function moveListsContainerProps(
     setMoveLists,
     createNewMoveList,
     setFollowedMoveListIds,
-    storeLocation,
-    restoreLocation,
+    navigation,
   };
 }

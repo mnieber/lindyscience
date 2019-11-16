@@ -11,7 +11,6 @@ import type { UserProfileT } from "profiles/types";
 export class Inputs {
   @observable userProfile: ?UserProfileT;
   @observable dispatch: Function;
-  @observable moveById: MoveByIdT;
   @observable moveLists: Array<MoveListT>;
   static get: GetFacet<Inputs>;
 }

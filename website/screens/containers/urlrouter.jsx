@@ -4,10 +4,13 @@ import React from "react";
 import { compose } from "redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import { SessionCtrProvider } from "screens/session_container/session_container_provider";
+import { MoveListsCtrProvider } from "screens/movelists_container/movelists_container_provider";
+import { MovesCtrProvider } from "screens/moves_container/moves_container_provider";
+import { MoveCtrProvider } from "screens/move_container/move_container_provider";
 import { helpUrl } from "moves/utils";
-import ContainerProvider from "screens/containers/container_provider";
 import { makeSlugid } from "screens/utils";
-import { withSessionCtr } from "screens/session_container/session_container_context";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { useHistory } from "utils/react_router_dom_wrapper";
 import MovePage from "screens/containers/move_page";
@@ -44,8 +47,9 @@ function IndexPage(props: IndexPagePropsT) {
 }
 
 const withMoveTarget = compose(
-  withSessionCtr,
-  (WrappedComponent: any) => (props: any) => {
+  withDefaultProps,
+  (WrappedComponent: any) => (p: any) => {
+    const props = mergeDefaultProps(p);
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);
       const params = props.match.params;
@@ -59,8 +63,9 @@ const withMoveTarget = compose(
 );
 
 const withMoveListTarget = compose(
-  withSessionCtr,
-  (WrappedComponent: any) => (props: any) => {
+  withDefaultProps,
+  (WrappedComponent: any) => (p: any) => {
+    const props = mergeDefaultProps(p);
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);
       const params = props.match.params;
@@ -77,21 +82,22 @@ function ListsSwitch() {
     // $FlowFixMe
     <MoveListFrame>
       <Switch>
+        <Route exact path="/app/lists/:ownerUsername/:moveListSlug">
+          {compose(withMoveListTarget)(MoveListDetailsPage)}
+        </Route>
         <Route
           exact
-          path="/app/lists/:ownerUsername/:moveListSlug"
-          component={withMoveListTarget(MoveListDetailsPage)}
-        />
-        <Route
-          exact
-          path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug"
-          component={withMoveTarget(MovePage)}
-        />
-        <Route
-          exact
-          path="/app/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId"
-          component={withMoveTarget(MovePage)}
-        />
+          path={[
+            "/app/lists/:ownerUsername/:moveListSlug/:moveSlug",
+            "/app/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId",
+          ]}
+        >
+          {compose(withMoveTarget)(() => (
+            <MoveCtrProvider>
+              <MovePage />
+            </MoveCtrProvider>
+          ))}
+        </Route>
       </Switch>
     </MoveListFrame>
   );
@@ -126,27 +132,31 @@ type UrlRouterPropsT = {
 function UrlRouter(props: UrlRouterPropsT) {
   return (
     <Router>
-      <ContainerProvider>
-        <AppFrame>
-          <Switch>
-            <Route exact path="/app/">
-              <IndexPage userProfile={props.userProfile} />
-            </Route>
-            <Route exact path="/app/people/:username">
-              <ProfilePage />
-            </Route>
-            <Route exact path="/app/search">
-              <SearchResultsPage />
-            </Route>
-            <Route path="/app/lists/">
-              <ListsSwitch />
-            </Route>
-            <Route path="/">
-              <SignInSwitch />
-            </Route>
-          </Switch>
-        </AppFrame>
-      </ContainerProvider>
+      <SessionCtrProvider>
+        <MoveListsCtrProvider>
+          <MovesCtrProvider>
+            <AppFrame>
+              <Switch>
+                <Route exact path="/app/">
+                  <IndexPage userProfile={props.userProfile} />
+                </Route>
+                <Route exact path="/app/people/:username">
+                  <ProfilePage />
+                </Route>
+                <Route exact path="/app/search">
+                  <SearchResultsPage />
+                </Route>
+                <Route path="/app/lists/">
+                  <ListsSwitch />
+                </Route>
+                <Route path="/">
+                  <SignInSwitch />
+                </Route>
+              </Switch>
+            </AppFrame>
+          </MovesCtrProvider>
+        </MoveListsCtrProvider>
+      </SessionCtrProvider>
     </Router>
   );
 }

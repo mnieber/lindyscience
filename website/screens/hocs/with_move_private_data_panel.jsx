@@ -18,7 +18,7 @@ import type { TagT } from "tags/types";
 type PropsT = {
   moveTags: Array<TagT>,
   dispatch: Function,
-  videoBvr?: any,
+  videoCtr?: any,
   defaultProps: any,
 } & {
   // default props
@@ -28,16 +28,12 @@ type PropsT = {
 
 // $FlowFixMe
 export const withMovePrivateDataPanel = compose(
-  Ctr.connect(state => ({
-    moveTags: Ctr.fromStore.getMoveTags(state),
-  })),
   withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
     const props = mergeDefaultProps(p);
 
     const { moveTags, ...passThroughProps }: PropsT = props;
-    const videoPlayer = props.videoBvr ? props.videoBvr.player : undefined;
 
     const _onSave = values => {
       const movePrivateData = {
@@ -64,7 +60,7 @@ export const withMovePrivateDataPanel = compose(
         onSave={_onSave}
         moveTags={moveTags}
         moveId={getId(props.move)}
-        videoPlayer={videoPlayer}
+        videoCtr={props.videoCtr}
       />
     );
 

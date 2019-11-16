@@ -17,14 +17,15 @@ import type { MoveT } from "moves/types";
 
 // MoveList
 
-type MoveListPropsT = {
+type PropsT = {
   createHostedPanels: MoveT => any,
   moveContextMenu: any,
   navigateTo: MoveT => any,
   className?: string,
   defaultProps: any,
-} & {
-  // default props
+};
+
+type DefaultPropsT = {
   isOwner: any => boolean,
   moveList: MoveListT,
   moves: Array<MoveT>,
@@ -35,8 +36,8 @@ type MoveListPropsT = {
 };
 
 // $FlowFixMe
-export const MoveList = compose(observer)((p: MoveListPropsT) => {
-  const props = mergeDefaultProps(p);
+export const MoveList = compose(observer)((p: PropsT) => {
+  const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
 
   const dragPosition = props.movesDragging.position;
   const selectionIds = props.movesSelection.ids || [];

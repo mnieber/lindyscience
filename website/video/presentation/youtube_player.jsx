@@ -3,24 +3,23 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 
-import type { VideoUrlPropsT, RestartIdT } from "video/types";
-import { Video } from "video/bvrs/use_video";
-import { runInAction } from "utils/mobx_wrapper";
+import type { VideoUrlPropsT } from "video/types";
+import { VideoController } from "screens/move_container/facets/video_controller";
+import { runInAction, action } from "utils/mobx_wrapper";
 import { isNone } from "utils/utils";
 
 type YoutubePlayerPropsT = {
   videoUrlProps: VideoUrlPropsT,
-  videoBvr: Video,
-  restartId: RestartIdT,
+  videoCtr: VideoController,
   videoWidth: number,
-  onReady: Function,
+  setIFrame: Function,
 };
 
 export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   const params = props.videoUrlProps.params;
 
   const playerVars = {};
-  const video = props.videoBvr.video;
+  const video = props.videoCtr.video;
   const startTime =
     video && !isNone(video.startTimeMs)
       ? (video.startTimeMs || 0) / 1000
@@ -28,12 +27,19 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
       ? params.start
       : null;
 
+  const link = props.videoCtr.video ? props.videoCtr.video.link : "";
+  React.useEffect(() => {
+    if (link) {
+      props.videoCtr.pauseAt(startTime || 0);
+    }
+  }, [link, startTime]);
+
   const opts = {
     height: (props.videoWidth * 9) / 16,
     width: props.videoWidth,
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
-      autoplay: 1, // yes, we need this
+      autoplay: 0,
       rel: 0,
     },
   };
@@ -41,40 +47,32 @@ export default function YoutubePlayer(props: YoutubePlayerPropsT) {
   const _onReady = event => {
     const player = event.target;
     runInAction(() => {
-      props.videoBvr.player = player;
+      props.videoCtr.setPlayer(player);
+      props.videoCtr.pauseAt(startTime || 0);
     });
-    if (props.onReady) {
-      props.onReady(player.getIframe());
-    }
+    props.setIFrame(player.getIframe());
   };
 
   const _onPlay = () => {
     runInAction(() => {
-      props.videoBvr.isPlaying = true;
+      props.videoCtr.isPlaying = true;
     });
   };
   const _onPause = () => {
     runInAction(() => {
-      props.videoBvr.isPlaying = false;
+      props.videoCtr.isPlaying = false;
     });
   };
 
-  const youtubeRef = React.useRef(null);
-
-  // Seek to start time if there is a new video player or
-  // a new video id
-  React.useEffect(() => {
-    if (youtubeRef.current && !isNone(startTime)) {
-      youtubeRef.current.internalPlayer.seekTo(startTime);
-    }
-  }, [youtubeRef.current, props.restartId]);
-
   return (
     <YouTube
-      ref={youtubeRef}
       videoId={props.videoUrlProps.id}
       opts={opts}
       onReady={_onReady}
+      onStateChange={x => {
+        const state = x.target.getPlayerState();
+        props.videoCtr.setPlayerState(x.data);
+      }}
       onPlay={_onPlay}
       onPause={_onPause}
     />

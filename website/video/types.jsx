@@ -17,16 +17,6 @@ export type VideoUrlPropsT = {
   params: any,
 };
 
-export type VideoBvrT = {
-  video: ?VideoT,
-  player: any,
-  isPlaying: boolean,
-  parentDivId: string,
-};
-
-// When this id changes, the video must be reset to the start time
-export type RestartIdT = string;
-
 export type CutPointT = {
   id: UUID,
   t: number,

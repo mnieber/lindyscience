@@ -3,19 +3,18 @@
 import * as React from "react";
 import urlParser from "js-video-url-parser";
 
-import type { RestartIdT } from "video/types";
-import { Video } from "video/bvrs/use_video";
+import { VideoController } from "screens/move_container/facets/video_controller";
 import YoutubePlayer from "video/presentation/youtube_player";
 import { listenToIFrame } from "utils/iframe_listener";
 
 type VideoPlayerPropsT = {
-  videoBvr: Video,
-  restartId: RestartIdT,
+  videoCtr: VideoController,
   videoWidth: number,
+  parentDivId: string,
 };
 
 export function VideoPlayer(props: VideoPlayerPropsT) {
-  const video = props.videoBvr.video;
+  const video = props.videoCtr.video;
   const link = (video ? video.link : "") || "";
   const videoUrlProps = urlParser.parse(link);
 
@@ -24,11 +23,10 @@ export function VideoPlayer(props: VideoPlayerPropsT) {
       <YoutubePlayer
         key={link} // yes, we need this
         videoUrlProps={videoUrlProps}
-        videoBvr={props.videoBvr}
-        restartId={props.restartId}
+        videoCtr={props.videoCtr}
         videoWidth={props.videoWidth}
-        onReady={iframe => {
-          listenToIFrame(props.videoBvr.parentDivId, iframe);
+        setIFrame={iframe => {
+          listenToIFrame(props.parentDivId, iframe);
         }}
       />
     ) : (

@@ -1,35 +1,3 @@
-// @flow
-
-import * as React from "react";
-import { observer } from "mobx-react";
-import jQuery from "jquery";
-import { compose } from "redux";
-import KeyboardEventHandler from "react-keyboard-event-handler";
-
-import type { CutPointT } from "video/types";
-import { Display } from "screens/session_container/facets/display";
-import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
-import {
-  createKeyDownHandler,
-  createVideoKeyHandlers,
-} from "screens/presentation/video_keyhandler";
-import { actAddCutPoints } from "video/actions";
-import { useEditCutPoint } from "video/bvrs/cut_point_crud_behaviours";
-import { useVideo } from "video/bvrs/use_video";
-import Ctr from "screens/containers/index";
-
-type PropsT = {
-  cutVideoLink: string,
-  cutPoints: Array<CutPointT>,
-  dispatch: Function,
-  defaultProps: any,
-};
-
-type DefaultPropsT = {
-  display: Display,
-};
-
-// $FlowFixMe
 export const withCutVideoBvr = compose(
   Ctr.connect(state => ({
     cutVideoLink: Ctr.fromStore.getCutVideoLink(state),
@@ -42,27 +10,27 @@ export const withCutVideoBvr = compose(
     const { cutVideoLink, cutPoints, ...passThroughProps }: PropsT = props;
     const parentDivId = "cutVideoDiv";
 
-    const videoBvr = useVideo(parentDivId);
-    videoBvr.video = {
+    const videoCtr = useVideo(parentDivId);
+    videoCtr.video = {
       link: cutVideoLink,
       startTimeMs: null,
       endTimeMs: null,
     };
 
-    const editCutPointBvr = useEditCutPoint(cutPoints, videoBvr, cutPoint => {
+    const editCutPointBvr = useEditCutPoint(cutPoints, videoCtr, cutPoint => {
       props.dispatch(actAddCutPoints([cutPoint]));
     });
 
     const wrappedComponent = (
       <WrappedComponent
-        videoBvr={videoBvr}
+        videoCtr={videoCtr}
         editCutPointBvr={editCutPointBvr}
         {...passThroughProps}
       />
     );
 
     const videoKeyHandlers = {
-      ...createVideoKeyHandlers(videoBvr, props.display),
+      ...createVideoKeyHandlers(videoCtr, props.display),
       "ctrl+shift+insert": () => editCutPointBvr.add("start"),
       "ctrl+shift+alt+insert": () => editCutPointBvr.add("end"),
       "ctrl+shift+l": () => {

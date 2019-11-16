@@ -4,7 +4,7 @@ import { withFormik } from "formik";
 import React from "react";
 
 import { slugify, truncDecimals } from "utils/utils";
-import { Video } from "video/bvrs/use_video";
+import { VideoController } from "screens/move_container/facets/video_controller";
 import { FormField, FormFieldError, FormFieldLabel } from "utils/form_utils";
 import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
@@ -21,9 +21,9 @@ type InnerFormPropsT = {
   setTagsPickerValue: Function,
   onCancel: () => void,
   editorRef: any,
-  videoPlayer: any,
+  videoCtr: VideoController,
+  setAltLink: any => any,
   moveId: UUID,
-  setLink: Function,
 };
 
 const InnerForm = (props: InnerFormPropsT) => formProps => {
@@ -75,7 +75,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       fieldName="link"
       type="text"
       placeholder="Link"
-      onChange={props.setLink}
+      onChange={x => props.setAltLink(x.target.value)}
     />
   );
 
@@ -86,7 +86,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       onClick={() => {
         formProps.setFieldValue(
           "startTime",
-          truncDecimals(props.videoPlayer.getCurrentTime(), 2)
+          truncDecimals(props.videoCtr.getPlayer().getCurrentTime(), 2)
         );
       }}
     >
@@ -97,7 +97,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
   const goToTime = tAsString => {
     try {
       const t = parseFloat(tAsString);
-      props.videoPlayer.seekTo(t);
+      props.videoCtr.getPlayer().seekTo(t);
     } catch {}
   };
 
@@ -130,7 +130,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
       onClick={() => {
         formProps.setFieldValue(
           "endTime",
-          truncDecimals(props.videoPlayer.getCurrentTime(), 2)
+          truncDecimals(props.videoCtr.getPlayer().getCurrentTime(), 2)
         );
       }}
     >
@@ -169,7 +169,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         readOnly={false}
         editorRef={props.editorRef}
         description={formProps.values.description}
-        videoPlayer={props.videoPlayer}
+        videoCtr={props.videoCtr}
       />
       <FormFieldError
         formProps={formProps}
@@ -241,7 +241,8 @@ type MoveFormPropsT = {
   onSubmit: (id: UUID, values: any) => void,
   knownTags: Array<TagT>,
   move: MoveT,
-  videoBvr: Video,
+  videoCtr: VideoController,
+  setAltLink: any => any,
   autoFocus: boolean,
 };
 
@@ -289,22 +290,17 @@ export function MoveForm(props: MoveFormPropsT) {
 
       props.onSubmit({ ...values, id: props.move.id });
     },
+
     displayName: "BasicForm", // helps with React DevTools
   })(
     InnerForm({
       autoFocus: props.autoFocus,
       tagPickerOptions: props.knownTags.map(strToPickerValue),
       onCancel: props.onCancel,
-      videoPlayer: props.videoBvr.player,
-      setLink: link => {
-        props.videoBvr.video = {
-          link: link.target.value || "",
-          startTimeMs: undefined,
-          endTimeMs: undefined,
-        };
-      },
+      videoCtr: props.videoCtr,
       moveId: props.move.id,
       editorRef,
+      setAltLink: props.setAltLink,
       tagsPickerValue,
       setTagsPickerValue,
     })

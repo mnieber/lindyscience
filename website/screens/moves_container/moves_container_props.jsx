@@ -40,7 +40,7 @@ export function createNewMove(
 
 export function movesContainerProps(
   dispatch: Function,
-  getNavigation: () => Navigation
+  navigation: Navigation
 ) {
   const setMoves = (moveList: MoveListT, moves: Array<MoveT>) => {
     const moveIds = moves.map(x => x.id);
@@ -67,7 +67,7 @@ export function movesContainerProps(
     );
 
     if (isNewMove) {
-      getNavigation().navigateToMove(newMove);
+      navigation.navigateToMove(newMove);
     }
   }
 
@@ -102,6 +102,8 @@ export function movesContainerProps(
       apiSaveMoveOrdering(removeFromMoveListId, newMoveIds).catch(
         createErrorHandler("Could not update the move list")
       );
+
+      navigation.navigateToMoveList(removeFromMoveList);
     }
   }
 
@@ -115,7 +117,6 @@ export function movesContainerProps(
     setMoves,
     saveMove,
     shareMovesToList,
-    storeLocation: () => getNavigation().storeLocation(),
-    restoreLocation: () => getNavigation().restoreLocation(),
+    navigation,
   };
 }

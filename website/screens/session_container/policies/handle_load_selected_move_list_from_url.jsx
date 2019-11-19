@@ -11,7 +11,7 @@ import { actAddMoveLists } from "move_lists/actions";
 import { actAddTips } from "tips/actions";
 import { reaction } from "facet-mobx";
 
-export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
+export function handleLoadSelectedMoveListFromUrl(ctr: any) {
   const navigation = Navigation.get(ctr);
   const inputs = Inputs.get(ctr);
 
@@ -45,4 +45,4 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
     }),
     { name: "handleLoadSelectedMoveListFromUrl" }
   );
-};
+}

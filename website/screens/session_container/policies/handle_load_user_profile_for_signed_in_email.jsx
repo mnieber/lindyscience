@@ -13,7 +13,7 @@ import { apiLoadMovePrivateDatas } from "moves/api";
 import { apiFindMoveLists } from "screens/api";
 import { actAddMoveLists } from "move_lists/actions";
 
-export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
+export function handleLoadUserProfileForSignedInEmail(ctr: any) {
   const profiling = Profiling.get(ctr);
   const inputs = Inputs.get(ctr);
   const dispatch = inputs.dispatch;
@@ -49,4 +49,4 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
     },
     { name: "handleLoadUserProfileForSignedInEmail" }
   );
-};
+}

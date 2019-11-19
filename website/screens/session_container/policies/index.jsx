@@ -1,16 +1,6 @@
 // @flow
 
-import {
-  syncMoveWithCurrentUrl,
-  syncUrlWithNewMove,
-} from "screens/session_container/policies/select_the_move_that_matches_the_url";
-import { updateMoveListsCtrInputs } from "screens/session_container/policies/update_movelists_ctr_inputs";
-import { updateMovesCtrInputs } from "screens/session_container/policies/update_moves_ctr_inputs";
-import {
-  handleNavigateToMove,
-  handleNavigateToMoveList,
-} from "screens/session_container/policies/handle_navigate";
-import { selectTheMoveListThatMatchesTheUrl } from "screens/session_container/policies/select_the_movelist_that_matches_the_url";
+import { handleNavigateToMoveList } from "screens/session_container/policies/handle_navigate_to_movelist";
 import {
   handleSignOut,
   handleSignIn,
@@ -31,14 +21,7 @@ export const Policies = {
   },
   session: {},
   navigation: {
-    handleNavigateToMove,
     handleNavigateToMoveList,
-    selectTheMoveListThatMatchesTheUrl,
-    syncMoveWithCurrentUrl,
-    syncUrlWithNewMove,
   },
-  data: {
-    updateMovesCtrInputs,
-    updateMoveListsCtrInputs,
-  },
+  data: {},
 };

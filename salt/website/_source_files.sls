@@ -1,16 +1,33 @@
 ---
-Remove destination for copying source files:
+Remove bundles destination:
   file.absent:
     - name: {{ pillar['srv_dir'] }}/static/bundles
 
-Create destination for copying source files:
+Create bundles destination:
   file.directory:
     - name: {{ pillar['srv_dir'] }}/static/bundles
 
-Copy website source files:
+Copy bundles:
   file.recurse:
     - name: {{ pillar['srv_dir'] }}/static/bundles
     - source: salt://website/bundles
+    - user: root
+    - group: root
+    - file-mode: 0600
+    - exclude_pat: '*.pyc'
+
+Remove css destination:
+  file.absent:
+    - name: {{ pillar['srv_dir'] }}/static/css
+
+Create css destination:
+  file.directory:
+    - name: {{ pillar['srv_dir'] }}/static/css
+
+Copy css:
+  file.recurse:
+    - name: {{ pillar['srv_dir'] }}/static/css
+    - source: salt://website/css
     - user: root
     - group: root
     - file-mode: 0600

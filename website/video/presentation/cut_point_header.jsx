@@ -3,15 +3,15 @@
 import * as React from "react";
 import classnames from "classnames";
 
+import { VideoController } from "screens/move_container/facets/video_controller";
 import { secondsToTimeString } from "utils/utils";
-
 import type { CutPointT } from "video/types";
 import type { UUID } from "kernel/types";
 
 type CutPointHeaderPropsT = {
   cutPoint: CutPointT,
   removeCutPoints: (Array<UUID>) => void,
-  videoPlayer: any,
+  videoCtr: VideoController,
 };
 
 export function CutPointHeader(props: CutPointHeaderPropsT) {
@@ -29,7 +29,7 @@ export function CutPointHeader(props: CutPointHeaderPropsT) {
         "cutPointHeader--start": cutPoint.type == "start",
         "cutPointHeader--end": cutPoint.type == "end",
       })}
-      onClick={() => props.videoPlayer.seekTo(cutPoint.t)}
+      onClick={() => props.videoCtr.player.seekTo(cutPoint.t)}
     >
       <div />
       <div className="self-center">

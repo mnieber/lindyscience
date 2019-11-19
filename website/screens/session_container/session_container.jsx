@@ -1,15 +1,11 @@
 // @flow
 
 import { Display, initDisplay } from "screens/session_container/facets/display";
-import type { MoveByIdT } from "moves/types";
 import { runInAction } from "utils/mobx_wrapper";
 import {
   Navigation,
   initNavigation,
 } from "screens/session_container/facets/navigation";
-import type { MoveListT } from "move_lists/types";
-import { MovesContainer } from "screens/moves_container/moves_container";
-import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import {
   Profiling,
   initProfiling,
@@ -22,8 +18,6 @@ import { Policies } from "screens/session_container/policies";
 type SessionContainerPropsT = {
   dispatch: Function,
   history: any,
-  movesCtr: MovesContainer,
-  moveListsCtr: MoveListsContainer,
 };
 
 // $FlowFixMe
@@ -34,27 +28,18 @@ export class SessionContainer {
   @facet(Display) display: Display;
   @facet(Profiling) profiling: Profiling;
 
-  @facet(MovesContainer) movesCtr: MovesContainer;
-  @facet(MoveListsContainer) moveListsCtr: MoveListsContainer;
-
   _createFacets(props: SessionContainerPropsT) {
     this.inputs = initInputs(new Inputs(), props.dispatch);
     this.navigation = initNavigation(new Navigation(), props.history);
     this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());
-    this.movesCtr = props.movesCtr;
-    this.moveListsCtr = props.moveListsCtr;
 
     registerFacets(this);
   }
 
   _applyPolicies(props: SessionContainerPropsT) {
     const policies = [
-      Policies.navigation.handleNavigateToMove,
       Policies.navigation.handleNavigateToMoveList,
-      Policies.navigation.selectTheMoveListThatMatchesTheUrl,
-      Policies.navigation.syncMoveWithCurrentUrl,
-      Policies.navigation.syncUrlWithNewMove,
 
       Policies.profiling.handleLoadUserProfileForSignedInEmail,
       Policies.profiling.handleLoadEmail,
@@ -62,9 +47,6 @@ export class SessionContainer {
       Policies.profiling.handleSignOut,
 
       Policies.url.handleLoadSelectedMoveListFromUrl,
-
-      Policies.data.updateMovesCtrInputs,
-      Policies.data.updateMoveListsCtrInputs,
     ];
 
     installPolicies(policies, this);
@@ -75,15 +57,9 @@ export class SessionContainer {
     this._applyPolicies(props);
   }
 
-  setInputs(
-    userProfile: ?UserProfileT,
-    moveLists: Array<MoveListT>,
-    moveById: MoveByIdT
-  ) {
+  setInputs(userProfile: ?UserProfileT) {
     runInAction("sessionContainer.setInputs", () => {
       this.inputs.userProfile = userProfile;
-      this.inputs.moveById = moveById;
-      this.inputs.moveLists = moveLists;
     });
   }
 }

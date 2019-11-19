@@ -1,13 +1,13 @@
 // @flow
 
 import * as React from "react";
-
-import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
-import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
-import { Tags } from "tags/presentation/tags";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
+import { VideoController } from "screens/move_container/facets/video_controller";
+import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
+import { MovePrivateDataForm } from "moves/presentation/move_private_data_form";
+import { Tags } from "tags/presentation/tags";
 import type { UUID } from "kernel/types";
 import type { MovePrivateDataT } from "moves/types";
 import type { UserProfileT } from "profiles/types";
@@ -19,7 +19,7 @@ type MovePrivateDatasPanelPropsT = {
   onSave: (values: any) => void,
   moveTags: Array<TagT>,
   moveId: UUID,
-  videoPlayer?: any,
+  videoCtr?: VideoController,
 };
 
 export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
@@ -44,7 +44,7 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
         description={props.movePrivateData ? props.movePrivateData.notes : ""}
         readOnly={true}
         autoFocus={false}
-        videoPlayer={props.videoPlayer}
+        videoCtr={props.videoCtr}
       />
       {tags.length ? <Tags tags={tags} /> : undefined}
     </div>
@@ -63,7 +63,7 @@ export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
         setIsEditing(false);
       }}
       moveId={props.moveId}
-      videoPlayer={props.videoPlayer}
+      videoCtr={props.videoCtr}
       movePrivateData={props.movePrivateData}
       knownTags={props.moveTags}
     />

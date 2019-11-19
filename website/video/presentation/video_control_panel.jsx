@@ -3,11 +3,11 @@
 import * as React from "react";
 import classnames from "classnames";
 
-import { Video } from "video/bvrs/use_video";
+import { VideoController } from "screens/move_container/facets/video_controller";
 import { runInAction } from "utils/mobx_wrapper";
 
 type VideoControlPanelPropsT = {
-  videoBvr: Video,
+  videoCtr: VideoController,
 };
 
 export function VideoControlPanel(props: VideoControlPanelPropsT) {
@@ -17,11 +17,11 @@ export function VideoControlPanel(props: VideoControlPanelPropsT) {
     <div className="flexcol">
       <button
         className={classnames(
-          "videoControlPanel__button--" + _state(props.videoBvr.isPlaying)
+          "videoControlPanel__button--" + _state(props.videoCtr.isPlaying)
         )}
         onClick={() => {
           runInAction(() => {
-            props.videoBvr.isPlaying = !props.videoBvr.isPlaying;
+            props.videoCtr.isPlaying = !props.videoCtr.isPlaying;
           });
         }}
       >

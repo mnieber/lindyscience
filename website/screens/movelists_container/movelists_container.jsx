@@ -1,5 +1,6 @@
 // @flow
 
+import { Navigation } from "screens/session_container/facets/navigation";
 import { Inputs, initInputs } from "screens/movelists_container/facets/inputs";
 import {
   Outputs,
@@ -32,9 +33,8 @@ export type MoveListsContainerPropsT = {
   setMoveLists: (Array<MoveListT>) => any,
   saveMoveList: (MoveListT, values: any) => any,
   createNewMoveList: any => MoveListT,
-  storeLocation: () => void,
-  restoreLocation: () => void,
   setFollowedMoveListIds: (ids: Array<UUID>) => void,
+  navigation: Navigation,
 };
 
 // $FlowFixMe
@@ -97,13 +97,16 @@ export class MoveListsContainer {
 
     const policies = [
       Policies.selection.actsOnItems(itemById),
+      Policies.selection.selectTheMoveListThatMatchesTheUrl(props.navigation),
 
       Policies.highlight.actsOnItems(itemById),
       Policies.highlight.followsSelection,
 
-      Policies.navigation.locationIsStoredOnNewItem(props.storeLocation),
+      Policies.navigation.locationIsStoredOnNewItem(
+        props.navigation.storeLocation
+      ),
       Policies.navigation.locationIsRestoredOnCancelNewItem(
-        props.restoreLocation
+        props.navigation.restoreLocation
       ),
 
       Policies.insertion.actsOnItems(inputItems),

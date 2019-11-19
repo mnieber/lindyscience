@@ -9,6 +9,7 @@ import {
   // $FlowFixMe
 } from "draft-js";
 
+import { VideoController } from "screens/move_container/facets/video_controller";
 import { RichTextEditor } from "rich_text/presentation/rich_text_editor";
 import { roundDecimals } from "utils/utils";
 import {
@@ -16,7 +17,6 @@ import {
   toEditorState,
 } from "rich_text/utils/editor_state";
 import { createTimePointDecorator } from "video/presentation/timepoint_decorator";
-
 import type { MoveT } from "moves/types";
 import type { UUID } from "kernel/types";
 
@@ -38,14 +38,14 @@ type MoveDescriptionEditorPropsT = {
   description: string,
   readOnly: boolean,
   autoFocus?: boolean,
-  videoPlayer?: any,
+  videoCtr?: VideoController,
   editorRef?: any,
   placeholder?: string,
 };
 
 export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
-  const decorator = props.videoPlayer
-    ? createTimePointDecorator(props.videoPlayer)
+  const decorator = props.videoCtr
+    ? createTimePointDecorator(props.videoCtr)
     : null;
 
   const toEditorStateFunction = props.readOnly
@@ -57,13 +57,18 @@ export function MoveDescriptionEditor(props: MoveDescriptionEditorPropsT) {
     decorator
   );
 
-  const keyPostfix = props.videoPlayer ? props.videoPlayer.getVideoUrl() : "";
+  const keyPostfix =
+    props.videoCtr && props.videoCtr.player
+      ? props.videoCtr.player.getVideoUrl()
+      : "";
 
   const customHandleKeyCommand = (command, editorState) => {
-    if (command == "insert-timepoint" && props.videoPlayer) {
+    const player = props.videoCtr ? props.videoCtr.player : undefined;
+
+    if (command == "insert-timepoint" && player) {
       const contentState = editorState.getCurrentContent();
       const selectionState = editorState.getSelection();
-      const t = roundDecimals((props.videoPlayer: any).getCurrentTime(), 1);
+      const t = roundDecimals(player.getCurrentTime(), 1);
       const newContentState = Modifier.insertText(
         contentState,
         selectionState,

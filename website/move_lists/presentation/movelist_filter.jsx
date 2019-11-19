@@ -13,7 +13,6 @@ import { createTagsAndKeywordsFilter } from "screens/utils";
 import { Filtering } from "facet-mobx/facets/filtering";
 import { Selection } from "facet-mobx/facets/selection";
 import { Addition } from "facet-mobx/facets/addition";
-import { MovesContainer } from "screens/moves_container/moves_container";
 import { makeUnique } from "utils/utils";
 import {
   TagsAndKeywordsPicker,

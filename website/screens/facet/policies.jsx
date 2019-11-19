@@ -1,5 +1,11 @@
 // @flow
 
+import { handleNavigateToMove } from "screens/move_container/policies/handle_navigate_to_move";
+import {
+  syncMoveWithCurrentUrl,
+  syncUrlWithNewMove,
+} from "screens/session_container/policies/select_the_move_that_matches_the_url";
+import { selectTheMoveListThatMatchesTheUrl } from "screens/session_container/policies/select_the_movelist_that_matches_the_url";
 import {
   locationIsRestoredOnCancelNewItem,
   locationIsStoredOnNewItem,
@@ -27,6 +33,7 @@ import { filteringIsDisabledOnNewItem } from "facet-mobx/policies/filtering_is_d
 export const Policies = {
   selection: {
     actsOnItems: selectionActsOnItems,
+    selectTheMoveListThatMatchesTheUrl,
   },
   highlight: {
     actsOnItems: highlightActsOnItems,
@@ -34,8 +41,11 @@ export const Policies = {
     isCorrectedOnFilterChange: highlightIsCorrectedOnFilterChange,
   },
   navigation: {
-    locationIsStoredOnNewItem: locationIsStoredOnNewItem,
-    locationIsRestoredOnCancelNewItem: locationIsRestoredOnCancelNewItem,
+    locationIsStoredOnNewItem,
+    locationIsRestoredOnCancelNewItem,
+    handleNavigateToMove,
+    syncUrlWithNewMove,
+    syncMoveWithCurrentUrl,
   },
   insertion: {
     actsOnItems: insertionActsOnItems,

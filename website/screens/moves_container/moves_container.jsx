@@ -1,5 +1,6 @@
 // @flow
 
+import { Navigation } from "screens/session_container/facets/navigation";
 import type { UUID } from "kernel/types";
 import { Outputs, initOutputs } from "screens/moves_container/facets/outputs";
 import {
@@ -37,8 +38,7 @@ export type MovesContainerPropsT = {
   setMoves: (MoveListT, Array<MoveT>) => any,
   saveMove: (MoveT, values: any) => any,
   shareMovesToList: (Array<MoveT>, MoveListT, ?MoveListT) => any,
-  storeLocation: () => void,
-  restoreLocation: () => void,
+  navigation: Navigation,
 };
 
 // $FlowFixMe
@@ -108,10 +108,15 @@ export class MovesContainer {
       Policies.highlight.followsSelection,
       Policies.highlight.isCorrectedOnFilterChange,
 
-      Policies.navigation.locationIsStoredOnNewItem(props.storeLocation),
-      Policies.navigation.locationIsRestoredOnCancelNewItem(
-        props.restoreLocation
+      Policies.navigation.locationIsStoredOnNewItem(
+        props.navigation.storeLocation
       ),
+      Policies.navigation.locationIsRestoredOnCancelNewItem(
+        props.navigation.restoreLocation
+      ),
+      Policies.navigation.handleNavigateToMove(props.navigation),
+      Policies.navigation.syncUrlWithNewMove(props.navigation),
+      Policies.navigation.syncMoveWithCurrentUrl(props.navigation),
 
       Policies.insertion.actsOnItems(inputItems),
       Policies.insertion.createsThePreview({ preview }),

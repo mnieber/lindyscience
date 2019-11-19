@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { Display } from "screens/session_container/facets/display";
 import type { CutPointT, CutPointBvrsT } from "video/types";
-import { Video } from "video/bvrs/use_video";
-import { VideoPlayerPanel } from "video/presentation/video_player";
+import { VideoController } from "screens/move_container/facets/video_controller";
+import { VideoPlayerPanel } from "video/presentation/video_player_panel";
 import { CutPointList } from "video/presentation/cut_point_list";
 import type { TagT } from "tags/types";
 
@@ -13,7 +13,7 @@ type CutVideoPanelPropsT = {
   moveTags: Array<TagT>,
   cutVideoLink: string,
   actSetCutVideoLink: Function,
-  videoBvr: Video,
+  videoCtr: VideoController,
   cutPoints: Array<CutPointT>,
   cutPointBvrs: CutPointBvrsT,
   display: Display,
@@ -32,7 +32,7 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
         id="linkPanelInput"
         className="w-full"
         onKeyDown={onKeyDown}
-        placeholder="Video link"
+        placeholder="VideoController link"
       />
     </div>
   );
@@ -40,9 +40,8 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
   const videoPlayerPanel = (
     <VideoPlayerPanel
       key="videoPlayerPanel"
-      videoBvr={props.videoBvr}
-      restartId={""}
-      small={props.display.small}
+      videoCtr={props.videoCtr}
+      display={props.display}
     />
   );
 
@@ -54,7 +53,7 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
       cutPoints={props.cutPoints}
       highlightedCutPoint={null}
       selectCutPointById={selectCutPointById}
-      videoPlayer={props.videoBvr.player}
+      videoCtr={props.videoCtr}
       cutPointBvrs={props.cutPointBvrs}
     />
   );

@@ -13,7 +13,6 @@ import type { TagT } from "tags/types";
 type MoveHeaderPropsT = {
   move: MoveT,
   moveListTitle: any,
-  moveTags: Array<TagT>,
   editMoveBtn: any,
   followMoveListBtn: any,
   small: boolean,
@@ -36,7 +35,7 @@ export function MoveHeader(props: MoveHeaderPropsT) {
         })}
       >
         {props.small && props.editMoveBtn}
-        <h1 className="flex-none ml-2">{props.move.name}</h1>
+        <h1 className="ml-2 move__name text-center">{props.move.name}</h1>
         {!props.small && props.editMoveBtn}
         {!props.small && space}
         {!props.small && props.followMoveListBtn}

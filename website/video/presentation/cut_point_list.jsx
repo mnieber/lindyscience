@@ -4,6 +4,7 @@ import * as React from "react";
 import classnames from "classnames";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
+import { VideoController } from "screens/move_container/facets/video_controller";
 import { CutPointHeader } from "video/presentation/cut_point_header";
 import { CutPointForm } from "video/presentation/cut_point_form";
 import { handleSelectionKeys2, scrollIntoView, getId } from "app/utils";
@@ -69,7 +70,7 @@ type CutPointListPropsT = {|
   highlightedCutPoint: ?CutPointT,
   selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   cutPointBvrs: CutPointBvrsT,
-  videoPlayer: any,
+  videoCtr: VideoController,
   className?: string,
 |};
 
@@ -93,7 +94,7 @@ export function CutPointList(props: CutPointListPropsT) {
         cutPoint={cutPoint}
         onSubmit={props.cutPointBvrs.saveCutPoint}
         knownTags={props.moveTags}
-        videoPlayer={props.videoPlayer}
+        videoCtr={props.videoCtr}
         autoFocus={true}
       />
     );
@@ -111,7 +112,7 @@ export function CutPointList(props: CutPointListPropsT) {
       >
         <CutPointHeader
           cutPoint={cutPoint}
-          videoPlayer={props.videoPlayer}
+          videoCtr={props.videoCtr}
           removeCutPoints={props.cutPointBvrs.removeCutPoints}
         />
         {cutPoint.type == "start" && form}

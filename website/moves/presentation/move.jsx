@@ -3,6 +3,7 @@
 import * as React from "react";
 import classnames from "classnames";
 import { Link } from "react-router-dom";
+import { observer } from "mobx-react";
 
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 
@@ -13,10 +14,10 @@ import type { MoveT } from "moves/types";
 type MovePropsT = {
   move: MoveT,
   className?: string,
-  videoPlayer?: any,
+  videoCtr?: any,
 };
 
-export function Move(props: MovePropsT) {
+export const Move = observer((props: MovePropsT) => {
   const descriptionDiv = (
     <div>
       <div id="move__description" className={"move__description panel"}>
@@ -26,7 +27,7 @@ export function Move(props: MovePropsT) {
           description={props.move.description}
           readOnly={true}
           autoFocus={false}
-          videoPlayer={props.videoPlayer}
+          videoCtr={props.videoCtr}
         />
       </div>
       <div className="flexrow">
@@ -46,4 +47,4 @@ export function Move(props: MovePropsT) {
       {descriptionDiv}
     </div>
   );
-}
+});

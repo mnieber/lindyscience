@@ -7,6 +7,7 @@ import {
   // $FlowFixMe
 } from "draft-js";
 
+import { VideoController } from "screens/move_container/facets/video_controller";
 import {
   parseVideoTimePoint,
   timePointRegex,
@@ -26,15 +27,15 @@ function findWithRegex(regex, contentBlock, callback) {
   }
 }
 
-export const createTimePointDecorator = (videoPlayer: any) => {
+export const createTimePointDecorator = (videoCtr: VideoController) => {
   const TimePointSpan = props => {
     const r = timePointRegex();
     const matchArr = r.exec(props.decoratedText);
     const tpString = (matchArr: any)[1];
     const tp = parseVideoTimePoint(tpString);
     const onClick = () => {
-      if (tp != null && tp <= videoPlayer.getDuration()) {
-        videoPlayer.seekTo(tp);
+      if (tp != null && tp <= videoCtr.player.getDuration()) {
+        videoCtr.player.seekTo(tp);
       }
     };
 

@@ -8,6 +8,7 @@ import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import classnames from "classnames";
 import CheeseburgerMenu from "cheeseburger-menu";
 
+import { AccountMenu } from "app/presentation/accountmenu";
 import { Display } from "screens/session_container/facets/display";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { Filtering } from "facet-mobx/facets/filtering";
@@ -26,13 +27,15 @@ import type { TagT } from "tags/types";
 
 // MoveListFrame
 
-type MoveListFramePropsT = {
+type PropsT = {
   moveContextMenu: any,
   moveTags: Array<TagT>,
   children: any,
   dispatch: Function,
   defaultProps: any,
-} & {
+};
+
+type DefaultPropsT = {
   // default props
   isOwner: any => boolean,
   moveList: ?MoveListT,
@@ -44,10 +47,10 @@ type MoveListFramePropsT = {
   display: Display,
 };
 
-const _MoveListFrame = (p: MoveListFramePropsT) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+const _MoveListFrame = (p: PropsT) => {
+  const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
 
-  const props = mergeDefaultProps(p);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const moveListPlayerBtns = (
     <Widgets.MoveListPlayer
@@ -109,12 +112,19 @@ const _MoveListFrame = (p: MoveListFramePropsT) => {
     />
   );
 
+  const accountMenu = (
+    <div className="pt-4 pb-8 mx-auto">
+      <AccountMenu defaultProps={props.defaultProps} />
+    </div>
+  );
+
   const contents = (
     <div
       className={classnames("moveListPanel__inner flexcol", {
         "moveListPanel__inner--expanded": true,
       })}
     >
+      {props.display.small && accountMenu}
       {moveListPicker}
       {moveListFilter}
       <div className="flexrow w-full my-4">

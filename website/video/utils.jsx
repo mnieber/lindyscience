@@ -22,24 +22,6 @@ export function parseVideoTimePoint(x: string) {
   return null;
 }
 
-export function styleTimePoints(videoPlayer: any, timePoints: Array<number>) {
-  const currentTime = videoPlayer ? videoPlayer.getCurrentTime() : -1;
-  let hasScrolled = false;
-
-  timePoints.forEach(tp => {
-    const className = ".tp-" + (tp + "").replace(".", "-");
-    const elms = jQuery(className);
-    elms.removeClass("bg-yellow");
-    if (currentTime - 1 < tp && tp < currentTime + 1) {
-      elms.addClass("bg-yellow");
-      if (elms.length && !hasScrolled) {
-        hasScrolled = true;
-        scrollIntoView(elms[0], document.getElementById("move__description"));
-      }
-    }
-  });
-}
-
 export function extractTimePoints(text: string): Array<number> {
   const result = [];
   const r = timePointRegex();

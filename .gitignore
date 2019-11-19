@@ -18,3 +18,4 @@ website/webpack-test.js
 test_report.html
 django/assets/
 salt/website/bundles
+salt/website/css

@@ -3,12 +3,12 @@
 import React from "react";
 import { withFormik } from "formik";
 
+import { VideoController } from "screens/move_container/facets/video_controller";
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { createUUID } from "utils/utils";
 import { FormField, FormFieldError } from "utils/form_utils";
 import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
-
 import type { UUID } from "kernel/types";
 import type { MovePrivateDataT } from "moves/types";
 import type { TagT } from "tags/types";
@@ -21,7 +21,7 @@ type InnerFormPropsT = {
   onCancel: () => void,
   notesEditorRef: any,
   moveId: UUID,
-  videoPlayer?: any,
+  videoCtr?: VideoController,
   tagsPickerValue: any,
   setTagsPickerValue: Function,
 };
@@ -35,7 +35,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         readOnly={false}
         editorRef={props.notesEditorRef}
         description={formProps.values.notes}
-        videoPlayer={props.videoPlayer}
+        videoCtr={props.videoCtr}
       />
       <FormFieldError
         formProps={formProps}
@@ -99,7 +99,7 @@ type MovePrivateDataFormPropsT = {
   moveId: UUID,
   movePrivateData: ?MovePrivateDataT,
   autoFocus: boolean,
-  videoPlayer?: any,
+  videoCtr?: VideoController,
 };
 
 export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
@@ -135,7 +135,7 @@ export function MovePrivateDataForm(props: MovePrivateDataFormPropsT) {
       onCancel: props.onCancel,
       notesEditorRef,
       moveId: props.moveId,
-      videoPlayer: props.videoPlayer,
+      videoCtr: props.videoCtr,
       tagsPickerValue,
       setTagsPickerValue,
     })

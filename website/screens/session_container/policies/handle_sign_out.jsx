@@ -39,7 +39,7 @@ export const handleLoadEmail = (ctr: any) => {
 
   handle(profiling, "loadEmail", async () => {
     try {
-      const [email] = await apiGetEmail();
+      const email = await apiGetEmail();
       const signedInEmail = email ? email : "anonymous";
       runInAction("handleLoadEmail", () => {
         profiling.signedInEmail = signedInEmail;

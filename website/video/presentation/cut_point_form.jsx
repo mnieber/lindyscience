@@ -3,20 +3,19 @@
 import { Formik } from "formik";
 import React from "react";
 
+import { createUUID, isNone, truncDecimals } from "utils/utils";
+import { VideoController } from "screens/move_container/facets/video_controller";
 import { FormField, FormFieldError } from "utils/form_utils";
 import { ValuePicker, strToPickerValue } from "utils/value_picker";
 import { MoveDescriptionEditor } from "moves/presentation/move_description_editor";
 import { getContentFromEditor } from "rich_text/presentation/rich_text_editor";
-import { isNone, truncDecimals } from "utils/utils";
-import { createUUID } from "utils/utils";
-
 import type { CutPointT } from "video/types";
 import type { TagT } from "tags/types";
 import type { UUID } from "kernel/types";
 
 type InnerFormPropsT = {
   tagPickerOptions: Array<any>,
-  videoPlayer: any,
+  videoCtr: VideoController,
   cutPointId: UUID,
   autoFocus: boolean,
   editorRef: any,
@@ -44,7 +43,7 @@ const InnerForm = (props: InnerFormPropsT) => formProps => {
         readOnly={false}
         editorRef={props.editorRef}
         description={formProps.values.description}
-        videoPlayer={props.videoPlayer}
+        videoCtr={props.videoCtr}
       />
       <FormFieldError
         formProps={formProps}
@@ -98,7 +97,7 @@ type CutPointFormPropsT = {
   onSubmit: (values: any) => void,
   knownTags: Array<TagT>,
   cutPoint: CutPointT,
-  videoPlayer: any,
+  videoCtr: any,
   autoFocus: boolean,
 };
 
@@ -134,7 +133,7 @@ export function CutPointForm(props: CutPointFormPropsT) {
       displayName={"BasicForm"}
       render={InnerForm({
         tagPickerOptions: props.knownTags.map(strToPickerValue),
-        videoPlayer: props.videoPlayer,
+        videoCtr: props.videoCtr,
         cutPointId: props.cutPoint.id,
         autoFocus: props.autoFocus,
         editorRef,

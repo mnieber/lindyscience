@@ -56,10 +56,4 @@ export class SessionContainer {
     this._createFacets(props);
     this._applyPolicies(props);
   }
-
-  setInputs(userProfile: ?UserProfileT) {
-    runInAction("sessionContainer.setInputs", () => {
-      this.inputs.userProfile = userProfile;
-    });
-  }
 }

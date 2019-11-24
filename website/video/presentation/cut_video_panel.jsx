@@ -1,28 +1,26 @@
 // @flow
 
 import * as React from "react";
+import { observer } from "mobx-react";
 
-import { Display } from "screens/session_container/facets/display";
-import type { CutPointT, CutPointBvrsT } from "video/types";
-import { VideoController } from "screens/move_container/facets/video_controller";
-import { VideoPlayerPanel } from "video/presentation/video_player_panel";
 import { CutPointList } from "video/presentation/cut_point_list";
+import { CutPoints } from "screens/cut_video_container/facets/cut_points";
+import { Display } from "screens/session_container/facets/display";
+import { Display as MoveDisplay } from "screens/move_container/facets/display";
+import { VideoPlayerPanel } from "video/presentation/video_player_panel";
 import type { TagT } from "tags/types";
 
 type CutVideoPanelPropsT = {
   moveTags: Array<TagT>,
-  cutVideoLink: string,
-  actSetCutVideoLink: Function,
-  videoCtr: VideoController,
-  cutPoints: Array<CutPointT>,
-  cutPointBvrs: CutPointBvrsT,
+  cutPoints: CutPoints,
   display: Display,
+  moveDisplay: MoveDisplay,
 };
 
-export function CutVideoPanel(props: CutVideoPanelPropsT) {
+export const CutVideoPanel = observer((props: CutVideoPanelPropsT) => {
   const onKeyDown = e => {
     if (e.keyCode == 13) {
-      props.actSetCutVideoLink(e.target.value);
+      props.cutPoints.setVideoLink(e.target.value);
     }
   };
 
@@ -32,7 +30,7 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
         id="linkPanelInput"
         className="w-full"
         onKeyDown={onKeyDown}
-        placeholder="VideoController link"
+        placeholder="Video link"
       />
     </div>
   );
@@ -40,8 +38,9 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
   const videoPlayerPanel = (
     <VideoPlayerPanel
       key="videoPlayerPanel"
-      videoCtr={props.videoCtr}
+      videoCtr={props.cutPoints.videoCtr}
       display={props.display}
+      moveDisplay={props.moveDisplay}
     />
   );
 
@@ -53,24 +52,30 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
       cutPoints={props.cutPoints}
       highlightedCutPoint={null}
       selectCutPointById={selectCutPointById}
-      videoCtr={props.videoCtr}
-      cutPointBvrs={props.cutPointBvrs}
     />
   );
 
   const buttonCreateMoves = (
-    <button
-      onClick={() => {
-        props.cutPointBvrs.createMovesFromCutPoints();
-        props.cutPointBvrs.removeCutPoints(props.cutPoints.map(x => x.id));
-      }}
-    >
-      Create moves
-    </button>
+    <div className="mt-4">
+      <button
+        className="button"
+        onClick={() => {
+          props.cutPoints.createMoves();
+          props.cutPoints.remove(props.cutPoints.cutPoints.map(x => x.id));
+        }}
+      >
+        Create moves
+      </button>
+    </div>
   );
   return (
     <div>
+      <h2 className="mt-4">Cut videos</h2>
       <div className={"cutVideoPanel panel"}>
+        <p className="mb-2">
+          This section is used for creating one or more new moves from a single
+          video.
+        </p>
         {linkPanel}
         {videoPlayerPanel}
         {buttonCreateMoves}
@@ -78,4 +83,4 @@ export function CutVideoPanel(props: CutVideoPanelPropsT) {
       </div>
     </div>
   );
-}
+});

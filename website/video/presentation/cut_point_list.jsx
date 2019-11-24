@@ -1,14 +1,15 @@
 // @flow
 
 import * as React from "react";
+import { observer } from "mobx-react";
 import classnames from "classnames";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
-import { VideoController } from "screens/move_container/facets/video_controller";
+import { CutPoints } from "screens/cut_video_container/facets/cut_points";
 import { CutPointHeader } from "video/presentation/cut_point_header";
 import { CutPointForm } from "video/presentation/cut_point_form";
 import { handleSelectionKeys2, scrollIntoView, getId } from "app/utils";
-import type { CutPointBvrsT, CutPointT } from "video/types";
+import type { CutPointT } from "video/types";
 import type { TagT } from "tags/types";
 import type { UUID } from "kernel/types";
 
@@ -29,10 +30,8 @@ function createKeyHandlers(
         handleSelectionKeys2(
           key,
           e,
-          props.cutPoints.map(x => x.id),
+          props.cutPoints.cutPoints.map(x => x.id),
           highlightedCutPointId,
-          // TODO support shift selection with keyboard (e.shiftKey)
-          // Note: in that case, anchor != highlight
           id => selectCutPointById(id, false, false)
         );
     }
@@ -65,16 +64,14 @@ function createClickHandlers(
 }
 
 type CutPointListPropsT = {|
-  cutPoints: Array<CutPointT>,
+  cutPoints: CutPoints,
   moveTags: Array<TagT>,
   highlightedCutPoint: ?CutPointT,
   selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
-  cutPointBvrs: CutPointBvrsT,
-  videoCtr: VideoController,
   className?: string,
 |};
 
-export function CutPointList(props: CutPointListPropsT) {
+export const CutPointList = observer((props: CutPointListPropsT) => {
   const selectCutPointById = (
     cutPointId: UUID,
     isShift: boolean,
@@ -88,13 +85,13 @@ export function CutPointList(props: CutPointListPropsT) {
   const clickHandlers = createClickHandlers(selectCutPointById, props);
   const highlightedCutPointId = getId(props.highlightedCutPoint);
 
-  const cutPointNodes = props.cutPoints.map((cutPoint, idx) => {
+  const cutPointNodes = props.cutPoints.cutPoints.map((cutPoint, idx) => {
     const form = (
       <CutPointForm
         cutPoint={cutPoint}
-        onSubmit={props.cutPointBvrs.saveCutPoint}
+        onSubmit={props.cutPoints.save}
         knownTags={props.moveTags}
-        videoCtr={props.videoCtr}
+        videoCtr={props.cutPoints.videoCtr}
         autoFocus={true}
       />
     );
@@ -112,8 +109,8 @@ export function CutPointList(props: CutPointListPropsT) {
       >
         <CutPointHeader
           cutPoint={cutPoint}
-          videoCtr={props.videoCtr}
-          removeCutPoints={props.cutPointBvrs.removeCutPoints}
+          videoCtr={props.cutPoints.videoCtr}
+          removeCutPoints={props.cutPoints.remove}
         />
         {cutPoint.type == "start" && form}
       </div>
@@ -134,4 +131,4 @@ export function CutPointList(props: CutPointListPropsT) {
       </div>
     </KeyboardEventHandler>
   );
-}
+});

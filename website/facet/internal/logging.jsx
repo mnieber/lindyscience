@@ -66,10 +66,15 @@ export function containerState(ctr: any) {
       const facetDatas = facetClass[symbols.dataMembers];
       const facetState = facetDatas
         ? Object.keys(facetDatas).reduce((acc, dataMember) => {
-            return {
-              ...acc,
-              [dataMember]: options.formatObject(facet[dataMember]),
-            };
+            try {
+              const data = options.formatObject(facet[dataMember]);
+              return {
+                ...acc,
+                [dataMember]: data,
+              };
+            } catch {
+              return acc;
+            }
           }, {})
         : {};
 

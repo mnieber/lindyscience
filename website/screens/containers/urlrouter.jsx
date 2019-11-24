@@ -4,6 +4,7 @@ import React from "react";
 import { compose } from "redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { CutVideoCtrProvider } from "screens/cut_video_container/cut_video_container_provider";
 import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
 import { SessionCtrProvider } from "screens/session_container/session_container_provider";
 import { MoveListsCtrProvider } from "screens/movelists_container/movelists_container_provider";
@@ -83,7 +84,11 @@ function ListsSwitch() {
     <MoveListFrame>
       <Switch>
         <Route exact path="/app/lists/:ownerUsername/:moveListSlug">
-          {compose(withMoveListTarget)(MoveListDetailsPage)}
+          {compose(withMoveListTarget)(() => (
+            <CutVideoCtrProvider>
+              <MoveListDetailsPage />
+            </CutVideoCtrProvider>
+          ))}
         </Route>
         <Route
           exact

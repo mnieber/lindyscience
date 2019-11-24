@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { runInAction } from "utils/mobx_wrapper";
 import {
   DefaultPropsContext,
   mergeDefaultProps,
@@ -47,7 +48,10 @@ export const MoveListsCtrProvider = compose(
   const moveListsCtr = useMoveListsCtr(
     moveListsContainerProps(props.dispatch, props.navigation)
   );
-  moveListsCtr.setInputs(props.inputMoveLists, props.userProfile);
+  runInAction("moveListsContainer.setInputs", () => {
+    moveListsCtr.inputs.moveLists = props.inputMoveLists;
+    moveListsCtr.inputs.userProfile = props.userProfile;
+  });
 
   return (
     <DefaultPropsContext.Provider

@@ -1,12 +1,12 @@
 // @flow
 
+import { CutVideoContainer } from "screens/cut_video_container/cut_video_container";
 import { MoveContainer } from "screens/move_container/move_container";
 import { reaction } from "utils/mobx_wrapper";
 
-export function updateVideoWidth(ctr: MoveContainer) {
+export function updateVideoWidth(ctr: MoveContainer | CutVideoContainer) {
   reaction(
     () => {
-      console.log("WH", window.height);
       const maxVideoWidth = ctr.inputs.sessionDisplay
         ? ctr.inputs.sessionDisplay.maxVideoWidth
         : 100;

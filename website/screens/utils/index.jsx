@@ -79,8 +79,8 @@ export function createTagsAndKeywordsFilter(
 
 export function createMoveFromCutPoint(
   cutPoint: CutPointT,
-  userProfile: UserProfileT,
   cutVideoLink: string,
+  userProfile: UserProfileT,
   moveList: MoveListT
 ) {
   return {

@@ -58,12 +58,5 @@ export class MoveContainer {
     this._applyPolicies(props);
   }
 
-  setInputs(sessionDisplay: SessionDisplay, move: MoveT) {
-    runInAction("moveContainer.setInputs", () => {
-      this.inputs.move = move;
-      this.inputs.sessionDisplay = sessionDisplay;
-    });
-  }
-
   static get: GetFacet<MoveContainer>;
 }

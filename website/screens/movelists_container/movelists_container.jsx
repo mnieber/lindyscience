@@ -52,22 +52,18 @@ export class MoveListsContainer {
   _createFacets(props: MoveListsContainerPropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
-        const userProfile = this.inputs.userProfile;
-        return userProfile
-          ? props.createNewMoveList({
-              ...values,
-              ownerId: userProfile.userId,
-              ownerUsername: userProfile.username,
-            })
-          : undefined;
+        const userProfile = (this.inputs.userProfile: any);
+        return props.createNewMoveList({
+          ...values,
+          ownerId: userProfile.userId,
+          ownerUsername: userProfile.username,
+        });
       },
       isEqual: props.isEqual,
     });
     this.editing = initEditing(new Editing(), {
       saveItem: (values: any) => {
-        if (this.highlight.item) {
-          props.saveMoveList(this.highlight.item, values);
-        }
+        props.saveMoveList((this.highlight.item: any), values);
       },
     });
     this.highlight = initHighlight(new Highlight());
@@ -137,13 +133,6 @@ export class MoveListsContainer {
   constructor(props: MoveListsContainerPropsT) {
     this._createFacets(props);
     this._applyPolicies(props);
-  }
-
-  setInputs(moveLists: Array<MoveListT>, userProfile: ?UserProfileT) {
-    runInAction("moveListsContainer.setInputs", () => {
-      this.inputs.moveLists = moveLists;
-      this.inputs.userProfile = userProfile;
-    });
   }
 
   static get: GetFacet<MoveListsContainer>;

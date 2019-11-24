@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { runInAction } from "utils/mobx_wrapper";
 import {
   DefaultPropsContext,
   mergeDefaultProps,
@@ -43,7 +44,9 @@ export const SessionCtrProvider = compose(
   const history = useHistory();
 
   const sessionCtr = useSessionCtr(props.dispatch, history);
-  sessionCtr.setInputs(props.userProfile);
+  runInAction("sessionContainer.setInputs", () => {
+    sessionCtr.inputs.userProfile = props.userProfile;
+  });
 
   return (
     <DefaultPropsContext.Provider
@@ -62,7 +65,7 @@ export function useSessionCtr(dispatch: Function, history: any) {
     const result = new SessionContainer(
       sessionContainerProps(dispatch, history)
     );
-    result.profiling.loadEmail().catch(e => {});
+    result.profiling.loadEmail();
     return result;
   });
   return sessionCtr;

@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { runInAction } from "utils/mobx_wrapper";
 import { MoveListsContainer } from "screens/movelists_container/movelists_container";
 import { getMovesCtrDefaultProps } from "screens/moves_container/moves_container_default_props";
 import {
@@ -60,12 +61,12 @@ export const MovesCtrProvider = compose(
       )
     : [];
 
-  movesCtr.setInputs(
-    inputMoves,
-    props.moveList,
-    props.moveListsPreview,
-    props.userProfile
-  );
+  runInAction("movesContainer.setInputs", () => {
+    movesCtr.inputs.moves = inputMoves;
+    movesCtr.inputs.userProfile = props.userProfile;
+    movesCtr.inputs.moveList = props.moveList;
+    movesCtr.inputs.moveLists = props.moveListsPreview;
+  });
 
   return (
     <DefaultPropsContext.Provider

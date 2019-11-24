@@ -4,6 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
+import { runInAction } from "utils/mobx_wrapper";
 import {
   DefaultPropsContext,
   mergeDefaultProps,
@@ -11,12 +12,12 @@ import {
 } from "screens/default_props";
 import { getMoveCtrDefaultProps } from "screens/move_container/move_container_default_props";
 import { Display } from "screens/session_container/facets/display";
-import type { MoveT } from "moves/types";
 import { moveContainerProps } from "screens/move_container/move_container_props";
 import {
   MoveContainer,
   type MoveContainerPropsT,
 } from "screens/move_container/move_container";
+import type { MoveT } from "moves/types";
 
 type PropsT = {
   children: any,
@@ -36,7 +37,10 @@ export const MoveCtrProvider = compose(
   const { defaultProps, ...passThroughProps } = props;
 
   const moveCtr = useMoveCtr(moveContainerProps());
-  moveCtr.setInputs(props.display, props.move);
+  runInAction("moveContainer.setInputs", () => {
+    moveCtr.inputs.move = props.move;
+    moveCtr.inputs.sessionDisplay = props.display;
+  });
 
   return (
     <DefaultPropsContext.Provider

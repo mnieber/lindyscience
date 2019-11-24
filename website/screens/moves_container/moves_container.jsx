@@ -63,30 +63,24 @@ export class MovesContainer {
   _createFacets(props: MovesContainerPropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
-        return this.inputs.moveList && this.inputs.userProfile
-          ? props.createNewMove(
-              this.inputs.userProfile,
-              this.inputs.moveList.id
-            )
-          : undefined;
+        return props.createNewMove(
+          (this.inputs.userProfile: any),
+          (this.inputs.moveList: any).id
+        );
       },
       isEqual: props.isEqual,
     });
     this.dragging = initDragging(new Dragging());
     this.editing = initEditing(new Editing(), {
       saveItem: (values: any) => {
-        if (this.highlight.item) {
-          props.saveMove(this.highlight.item, values);
-        }
+        props.saveMove(this.highlight.item, values);
       },
     });
     this.filtering = initFiltering(new Filtering());
     this.highlight = initHighlight(new Highlight());
     this.insertion = initInsertion(new Insertion(), {
       insertItems: preview => {
-        if (this.inputs.moveList) {
-          props.setMoves(this.inputs.moveList, preview);
-        }
+        props.setMoves((this.inputs.moveList: any), preview);
       },
     });
     this.inputs = initInputs(new Inputs());
@@ -150,20 +144,6 @@ export class MovesContainer {
     this.clipboard = new Clipboard({
       ctr: this,
       shareMovesToList: props.shareMovesToList,
-    });
-  }
-
-  setInputs(
-    moves: Array<MoveT>,
-    moveList: ?MoveListT,
-    moveLists: Array<MoveListT>,
-    userProfile: ?UserProfileT
-  ) {
-    runInAction("movesContainer.setInputs", () => {
-      this.inputs.moves = moves;
-      this.inputs.userProfile = userProfile;
-      this.inputs.moveList = moveList;
-      this.inputs.moveLists = moveLists;
     });
   }
 

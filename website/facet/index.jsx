@@ -126,10 +126,7 @@ export function operation(
     descriptor.value = function(...args) {
       const facet = this;
 
-      const altArgs = f.bind(this)(...args);
-      if (altArgs != undefined) {
-        args = altArgs;
-      }
+      f.bind(this)(...args);
 
       if (options.logging) {
         const ctr = facet[symbols.parentContainer];
@@ -139,7 +136,7 @@ export function operation(
 
       const handlers = facet[symbols.operationHandlers];
       if (handlers && handlers[operationMember]) {
-        return handlers[operationMember](...args);
+        handlers[operationMember](...args);
       }
 
       const signals = facet[symbols.operationSignals];

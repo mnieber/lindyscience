@@ -12,7 +12,6 @@ import * as fromProfilesStore from "profiles/reducers";
 import * as fromTipsStore from "tips/reducers";
 import * as fromMovesStore from "moves/reducers";
 import * as fromMoveListsStore from "move_lists/reducers";
-import * as fromVideoStore from "video/reducers";
 
 import { apiUpdateProfile } from "profiles/api";
 
@@ -46,7 +45,6 @@ const Container: ContainerT = {
     ...fromTipsStore,
     ...fromMovesStore,
     ...fromMoveListsStore,
-    ...fromVideoStore,
   },
   browseToMoveUrl,
 };

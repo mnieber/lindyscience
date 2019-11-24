@@ -31,7 +31,7 @@ const configureStore = () => {
     traditional: true,
   });
 
-  const logFacet = false;
+  const logFacet = true;
   const logRedux = false;
   const logMobX = false;
   const logMobXBlackList = ["relayData"];

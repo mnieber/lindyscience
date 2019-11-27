@@ -8,7 +8,7 @@ import type { TagT } from "tags/types";
 import { VideoController } from "screens/move_container/facets/video_controller";
 import { Editing } from "facet-mobx/facets/editing";
 import type { MoveT } from "moves/types";
-import { mergeDefaultProps } from "screens/default_props";
+import { mergeDefaultProps } from "facet/default_props";
 import { action } from "utils/mobx_wrapper";
 import { MoveForm } from "moves/presentation/move_form";
 

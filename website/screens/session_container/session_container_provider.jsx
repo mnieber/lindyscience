@@ -9,7 +9,7 @@ import {
   DefaultPropsContext,
   mergeDefaultProps,
   withDefaultProps,
-} from "screens/default_props";
+} from "facet/default_props";
 import { useHistory } from "utils/react_router_dom_wrapper";
 import { getSessionCtrDefaultProps } from "screens/session_container/session_container_default_props";
 import { SessionContainer } from "screens/session_container/session_container";

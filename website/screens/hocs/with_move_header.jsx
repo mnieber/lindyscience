@@ -11,7 +11,7 @@ import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import { MoveHeader } from "moves/presentation/move_header";
 import { VideoController } from "screens/move_container/facets/video_controller";
 import { Editing } from "facet-mobx/facets/editing";
-import { mergeDefaultProps } from "screens/default_props";
+import { mergeDefaultProps } from "facet/default_props";
 import { MoveListTitle } from "move_lists/presentation/move_list_details";
 import type { UserProfileT } from "profiles/types";
 import type { MoveListT } from "move_lists/types";

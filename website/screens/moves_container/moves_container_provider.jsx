@@ -11,7 +11,7 @@ import {
   DefaultPropsContext,
   mergeDefaultProps,
   withDefaultProps,
-} from "screens/default_props";
+} from "facet/default_props";
 import { lookUp } from "utils/utils";
 import Ctr from "screens/containers/index";
 import { SessionContainer } from "screens/session_container/session_container";

@@ -7,7 +7,7 @@ import { Display } from "screens/session_container/facets/display";
 import { runInAction } from "utils/mobx_wrapper";
 import { TimePoints } from "screens/move_container/facets/time_points";
 import { VideoController } from "screens/move_container/facets/video_controller";
-import { mergeDefaultProps } from "screens/default_props";
+import { mergeDefaultProps } from "facet/default_props";
 import {
   createVideoKeyHandlers,
   createVideoStartEndKeyHandlers,

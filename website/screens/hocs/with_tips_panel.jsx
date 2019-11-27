@@ -8,7 +8,7 @@ import type { TipsByIdT, TipT } from "tips/types";
 import type { VoteByIdT, VoteT } from "votes/types";
 import type { MoveT } from "moves/types";
 import type { UserProfileT } from "profiles/types";
-import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
 import Ctr from "screens/containers/index";
 import { actCastVote } from "votes/actions";
 import { actAddTips, actRemoveTips } from "tips/actions";

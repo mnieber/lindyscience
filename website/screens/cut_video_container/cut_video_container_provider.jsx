@@ -11,7 +11,7 @@ import {
   DefaultPropsContext,
   mergeDefaultProps,
   withDefaultProps,
-} from "screens/default_props";
+} from "facet/default_props";
 import { getCutVideoCtrDefaultProps } from "screens/cut_video_container/cut_video_container_default_props";
 import { cutVideoContainerProps } from "screens/cut_video_container/cut_video_container_props";
 import {

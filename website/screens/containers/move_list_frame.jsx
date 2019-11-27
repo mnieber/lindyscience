@@ -13,7 +13,7 @@ import { Display } from "screens/session_container/facets/display";
 import { Navigation } from "screens/session_container/facets/navigation";
 import { Filtering } from "facet-mobx/facets/filtering";
 import type { UserProfileT } from "profiles/types";
-import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
 import { sayMove } from "screens/moves_container/handlers/say_move";
 import { isNone } from "utils/utils";
 import { MoveListFilter } from "move_lists/presentation/movelist_filter";

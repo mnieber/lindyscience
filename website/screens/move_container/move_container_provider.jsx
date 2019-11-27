@@ -9,7 +9,7 @@ import {
   DefaultPropsContext,
   mergeDefaultProps,
   withDefaultProps,
-} from "screens/default_props";
+} from "facet/default_props";
 import { getMoveCtrDefaultProps } from "screens/move_container/move_container_default_props";
 import { Display } from "screens/session_container/facets/display";
 import { moveContainerProps } from "screens/move_container/move_container_props";

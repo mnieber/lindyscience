@@ -9,7 +9,7 @@ import {
   DefaultPropsContext,
   mergeDefaultProps,
   withDefaultProps,
-} from "screens/default_props";
+} from "facet/default_props";
 import { Navigation } from "screens/session_container/facets/navigation";
 import Ctr from "screens/containers/index";
 import { Display } from "screens/session_container/facets/display";

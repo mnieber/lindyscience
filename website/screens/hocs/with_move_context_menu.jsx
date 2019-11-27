@@ -4,7 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
-import { mergeDefaultProps, withDefaultProps } from "screens/default_props";
+import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
 import type { MoveListT } from "move_lists/types";
 import { Clipboard } from "screens/moves_container/facets/clipboard";
 import { getId } from "app/utils";

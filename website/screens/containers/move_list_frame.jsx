@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import classnames from "classnames";
 import CheeseburgerMenu from "cheeseburger-menu";
+import { Selection } from "facet-mobx/facets/selection";
 
 import { AccountMenu } from "app/presentation/accountmenu";
 import { Display } from "screens/session_container/facets/display";
@@ -39,7 +40,7 @@ type DefaultPropsT = {
   // default props
   isOwner: any => boolean,
   moveList: ?MoveListT,
-  movesSelection: Array<MoveT>,
+  movesSelection: Selection,
   userProfile: ?UserProfileT,
   movesFiltering: Filtering,
   movesAddition: Addition,
@@ -54,7 +55,7 @@ const _MoveListFrame = (p: PropsT) => {
 
   const moveListPlayerBtns = (
     <Widgets.MoveListPlayer
-      moves={props.movesSelection}
+      moves={props.movesSelection.items}
       sayMove={sayMove}
       className=""
     />

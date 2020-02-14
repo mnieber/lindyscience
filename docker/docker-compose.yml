@@ -25,7 +25,6 @@ services :
       - /srv/linsci/.ipython:/srv/linsci/.ipython
       - /srv/linsci/.bashrc:/srv/linsci/.bashrc
       - /srv/linsci/.config:/srv/linsci/.config
-      - /srv/linsci/.bash_history:/root/.bash_history
     command: sleep 10000000
   db:
     image: linsci:base

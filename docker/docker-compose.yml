@@ -15,7 +15,7 @@ services :
     - container:dc_linsci_node_modules
     volumes:
       # map the src directory to opt/app-root/src
-      - /home/maarten/projects/linsci/src:/srv/linsci/src
+      - ..:/srv/linsci/src
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /srv/linsci/static:/srv/linsci/static

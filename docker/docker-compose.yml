@@ -8,6 +8,7 @@ services :
     ports:
       - "8000:8000"
     # tty: True
+    env_file: .env
     environment:
       DJANGO_SETTINGS_MODULE: app.settings.dev
     volumes_from:
@@ -15,16 +16,16 @@ services :
     - container:dc_linsci_node_modules
     volumes:
       # map the src directory to opt/app-root/src
-      - ..:/srv/linsci/src
+      - ..:$SRV_DIR/src
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
-      - /srv/linsci/static:/srv/linsci/static
-      - /srv/linsci/dumps:/srv/linsci/dumps
-      - /srv/linsci/log:/srv/linsci/log
-      - /srv/linsci/.pytest_report:/srv/linsci/.pytest_report
-      - /srv/linsci/.ipython:/srv/linsci/.ipython
-      - /srv/linsci/.bashrc:/srv/linsci/.bashrc
-      - /srv/linsci/.config:/srv/linsci/.config
+      - /srv/linsci/static:$SRV_DIR/static
+      - /srv/linsci/dumps:$SRV_DIR/dumps
+      - /srv/linsci/log:$SRV_DIR/log
+      - /srv/linsci/.pytest_report:$SRV_DIR/.pytest_report
+      - /srv/linsci/.ipython:$SRV_DIR/.ipython
+      - /srv/linsci/.bashrc:$SRV_DIR/.bashrc
+      - /srv/linsci/.config:$SRV_DIR/.config
     command: sleep 10000000
   db:
     image: linsci:base

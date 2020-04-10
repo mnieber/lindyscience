@@ -32,25 +32,15 @@ export function log(
 ) {
   const ctrName = ctr.constructor.name;
   const operationName = opName(operationMember);
-  const label =
-    ("%c" + ctrName + "/" + facetName(facet) + ".%c" + operationName,
-    "font-weight:bold; color: black",
-    "color: blue");
-  const labelAlt = ctrName + "/" + facetName(facet) + "." + operationName;
+  const label = ctrName + "/" + facetName(facet) + "." + operationName;
 
   if (start) {
-    (console: any).groupCollapsed(labelAlt);
+    (console: any).group(label);
     (console: any).log("%c           args: ", "color: gray", args);
-  }
-
-  (console: any).log(
-    "%c     " + (start ? "state" : "next"),
-    "color: gray",
-    containerState(ctr)
-  );
-
-  if (!start) {
-    (console: any).groupEnd(labelAlt);
+    (console: any).log("%c     state", "color: gray", containerState(ctr));
+  } else {
+    (console: any).log("%c     next", "color: gray", containerState(ctr));
+    (console: any).groupEnd(label);
   }
 }
 

@@ -10,9 +10,7 @@ class TipInline(admin.StackedInline):
 
 class MoveAdmin(admin.ModelAdmin):
     model = models.Move
-    inlines = (
-        TipInline,
-    )
+    inlines = (TipInline, )
 
 
 class MoveList2MoveInline(admin.TabularInline):

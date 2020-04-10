@@ -19,31 +19,51 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profiletomovelist',
             name='move_list',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='moves.MoveList'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='moves.MoveList'),
         ),
         migrations.AddField(
             model_name='profiletomovelist',
             name='profile',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.Profile'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='accounts.Profile'),
         ),
         migrations.AddField(
             model_name='profile',
             name='move_lists',
-            field=models.ManyToManyField(through='accounts.ProfileToMoveList', to='moves.MoveList'),
+            field=models.ManyToManyField(through='accounts.ProfileToMoveList',
+                                         to='moves.MoveList'),
         ),
         migrations.AddField(
             model_name='profile',
             name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='user',
             name='groups',
-            field=models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups'),
+            field=models.ManyToManyField(
+                blank=True,
+                help_text=
+                'The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+                related_name='user_set',
+                related_query_name='user',
+                to='auth.Group',
+                verbose_name='groups'),
         ),
         migrations.AddField(
             model_name='user',
             name='user_permissions',
-            field=models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions'),
+            field=models.ManyToManyField(
+                blank=True,
+                help_text='Specific permissions for this user.',
+                related_name='user_set',
+                related_query_name='user',
+                to='auth.Permission',
+                verbose_name='user permissions'),
         ),
     ]

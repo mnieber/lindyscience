@@ -13,10 +13,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='movelist',
             name='role',
-            field=models.CharField(
-                choices=[('', 'default'), ('drafts', 'drafts'), ('trash',
-                                                                 'trash')],
-                default='',
-                max_length=200),
+            field=models.CharField(choices=[('', 'default'),
+                                            ('drafts', 'drafts'),
+                                            ('trash', 'trash')],
+                                   default='',
+                                   max_length=200),
         ),
     ]

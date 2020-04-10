@@ -19,6 +19,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='movelist',
             name='role',
-            field=models.CharField(blank=True, choices=[('', 'default'), ('drafts', 'drafts'), ('trash', 'trash')], default='', max_length=200),
+            field=models.CharField(blank=True,
+                                   choices=[('', 'default'),
+                                            ('drafts', 'drafts'),
+                                            ('trash', 'trash')],
+                                   default='',
+                                   max_length=200),
         ),
     ]

@@ -16,28 +16,25 @@ class Command(BaseCommand):
     modules = None  # List of anonymizers modules. They can be placed in every app
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            "-a",
-            "--app",
-            dest="app",
-            help="Only anonymize the given app.",
-            metavar="APP"
-        ),
+        parser.add_argument("-a",
+                            "--app",
+                            dest="app",
+                            help="Only anonymize the given app.",
+                            metavar="APP"),
         parser.add_argument(
             "-m",
             "--model",
             "--models",
             dest="models",
             help="Models to anonymize. Separate multiples by comma.",
-            metavar="MODEL"
-        ),
+            metavar="MODEL"),
         parser.add_argument(
             "-b",
             "--batch-size",
             dest="batch_size",
-            help="batch size used in the bulk_update of the instances. Depends on the DB machine. Use 500 in vagrant.",
-            metavar="BATCH_SIZE"
-        )
+            help=
+            "batch size used in the bulk_update of the instances. Depends on the DB machine. Use 500 in vagrant.",
+            metavar="BATCH_SIZE")
 
     def handle(self, app, models, batch_size, *args, **options):
         models = None
@@ -53,26 +50,29 @@ class Command(BaseCommand):
             anonymizers = self._get_app_anonymizers(module, models=models)
 
             if len(anonymizers) == 0:
-                print("- No anonymizers or skipped by --app or --model arguments")
+                print(
+                    "- No anonymizers or skipped by --app or --model arguments"
+                )
                 continue
 
             for anonymizer_class_name in anonymizers:
                 anonymizer = getattr(module, anonymizer_class_name)()
                 print('- {}'.format(anonymizer.model.__name__))
-                number_of_replaced_fields = anonymizer.run(batch_size)  # Start the anonymizing process
-                print('-- {} fields, {} model instances, {} total replacements'.format(
-                    number_of_replaced_fields[0],
-                    number_of_replaced_fields[1],
-                    number_of_replaced_fields[2]))
+                number_of_replaced_fields = anonymizer.run(
+                    batch_size)  # Start the anonymizing process
+                print(
+                    '-- {} fields, {} model instances, {} total replacements'.
+                    format(number_of_replaced_fields[0],
+                           number_of_replaced_fields[1],
+                           number_of_replaced_fields[2]))
                 total_replacements_count += number_of_replaced_fields[2]
-        print("DONE. Replaced {} values in total".format(total_replacements_count))
+        print("DONE. Replaced {} values in total".format(
+            total_replacements_count))
 
     def _autodiscover_module(self, module_name, app=None):
-        apps_to_search = (
-            [app]
-            if app else
-            [x.split(".apps.")[0] for x in settings.INSTALLED_APPS]
-        )
+        apps_to_search = ([app] if app else [
+            x.split(".apps.")[0] for x in settings.INSTALLED_APPS
+        ])
 
         modules = []
         for app in apps_to_search:
@@ -94,7 +94,13 @@ class Command(BaseCommand):
 
     def _get_app_anonymizers(self, module, models=None):
         if models:
-            return [m[0] for m in inspect.getmembers(module, inspect.isclass)
-                    if BaseAnonymizer in m[1].__bases__ and m[1].model.__name__ in models]
+            return [
+                m[0] for m in inspect.getmembers(module, inspect.isclass)
+                if BaseAnonymizer in m[1].__bases__
+                and m[1].model.__name__ in models
+            ]
         else:
-            return [m[0] for m in inspect.getmembers(module, inspect.isclass) if BaseAnonymizer in m[1].__bases__]
+            return [
+                m[0] for m in inspect.getmembers(module, inspect.isclass)
+                if BaseAnonymizer in m[1].__bases__
+            ]

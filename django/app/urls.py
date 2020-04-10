@@ -19,10 +19,10 @@ if settings.DEBUG or getattr(settings, 'FORCE_SERVE_STATIC', False):
     # Serve static and media files from development server
     prev = settings.DEBUG
     settings.DEBUG = True
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(
-        settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
     settings.DEBUG = prev
 
 maybe_csrf_exempt = csrf_exempt if settings.DEBUG else lambda x: x

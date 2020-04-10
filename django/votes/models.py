@@ -10,5 +10,5 @@ class Vote(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     value = models.IntegerField(choices=[(-1, 'down'), (0, 'neutral'), (1,
                                                                         'up')])
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE)

@@ -23,7 +23,5 @@ class Migration(migrations.Migration):
             old_name='url',
             new_name='link',
         ),
-        migrations.DeleteModel(
-            name='VideoLink',
-        ),
+        migrations.DeleteModel(name='VideoLink', ),
     ]

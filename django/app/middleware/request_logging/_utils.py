@@ -16,8 +16,8 @@ def _chunked_to_max(msg):
 
 def _log(msg, logger, level):
     for line in str(msg).split('\n'):
-        line = (colorize(line, fg="magenta")
-                if (level >= logging.ERROR) else colorize(line, fg="cyan"))
+        line = (colorize(line, fg="magenta") if
+                (level >= logging.ERROR) else colorize(line, fg="cyan"))
         logger.log(level, line)
 
 
@@ -38,6 +38,6 @@ def log_response(context, request_method, url, response_body, status_code):
         socket.gethostname(), datetime.datetime.now(), context, request_method,
         url, status_code,
         hashlib.md5(chunked_response.encode('utf-8')).hexdigest())
-    _log(msg, logging.getLogger("django"), logging.ERROR
-         if status_code in range(400, 600) else logging.INFO)
+    _log(msg, logging.getLogger("django"),
+         logging.ERROR if status_code in range(400, 600) else logging.INFO)
     _log(chunked_response, logging.getLogger("django"), logging.INFO)

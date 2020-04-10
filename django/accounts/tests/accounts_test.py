@@ -83,8 +83,8 @@ class AccountTest(APITestCase):
             'password': '87654321'
         })
         assert res.status_code == status.HTTP_400_BAD_REQUEST
-        assert res.data['non_field_errors'][
-            0].lower() == 'unable to log in with provided credentials.'
+        assert res.data['non_field_errors'][0].lower(
+        ) == 'unable to log in with provided credentials.'
 
         # Log in the newly created user
         res = self.client.post('/auth/token/login/', {
@@ -115,8 +115,8 @@ class AccountTest(APITestCase):
                 'password': test_password,
                 'accepts_terms': 'true'
             })
-        assert res.data['email'][
-            0].lower() == 'user with this email already exists.'
+        assert res.data['email'][0].lower(
+        ) == 'user with this email already exists.'
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_djoser_settings(self):
@@ -138,8 +138,8 @@ class AccountTest(APITestCase):
                 'accepts_terms': 'false'
             })
 
-        assert res.data['accepts_terms'][
-            0].lower() == 'required_to_accept_terms'
+        assert res.data['accepts_terms'][0].lower(
+        ) == 'required_to_accept_terms'
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_register_with_empty_fields(self):
@@ -161,8 +161,8 @@ class AccountTest(APITestCase):
             'password': '',
             'accepts_terms': 'true'
         })
-        assert res.data['password'][
-            0].lower() == 'this field may not be blank.'
+        assert res.data['password'][0].lower(
+        ) == 'this field may not be blank.'
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_password_reset(self):

@@ -15,25 +15,44 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tagulous_MovePrivateData_tags',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
                 ('name', models.CharField(max_length=255, unique=True)),
                 ('slug', models.SlugField()),
-                ('count', models.IntegerField(default=0, help_text='Internal counter of how many times this tag is in use')),
-                ('protected', models.BooleanField(default=False, help_text='Will not be deleted when the count reaches 0')),
+                ('count',
+                 models.IntegerField(
+                     default=0,
+                     help_text=
+                     'Internal counter of how many times this tag is in use')),
+                ('protected',
+                 models.BooleanField(
+                     default=False,
+                     help_text='Will not be deleted when the count reaches 0')
+                 ),
             ],
             options={
                 'abstract': False,
-                'ordering': ('name',),
+                'ordering': ('name', ),
             },
             bases=(tagulous.models.models.BaseTagModel, models.Model),
         ),
         migrations.AlterUniqueTogether(
             name='tagulous_moveprivatedata_tags',
-            unique_together={('slug',)},
+            unique_together={('slug', )},
         ),
         migrations.AddField(
             model_name='moveprivatedata',
             name='tags',
-            field=tagulous.models.fields.TagField(_set_tag_meta=True, blank=True, force_lowercase=True, help_text='Enter a comma-separated tag string', max_count=10, space_delimiter=False, to='moves.Tagulous_MovePrivateData_tags'),
+            field=tagulous.models.fields.TagField(
+                _set_tag_meta=True,
+                blank=True,
+                force_lowercase=True,
+                help_text='Enter a comma-separated tag string',
+                max_count=10,
+                space_delimiter=False,
+                to='moves.Tagulous_MovePrivateData_tags'),
         ),
     ]

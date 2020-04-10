@@ -114,7 +114,8 @@ class MoveListQuery(object):
             result = result.filter(Q(owner__username=owner_username))
 
         if (followed_by_username):
-            profiles = Profile.objects.filter(owner__username=followed_by_username)
+            profiles = Profile.objects.filter(
+                owner__username=followed_by_username)
             if profiles.exists():
                 hits = ProfileToMoveList.objects.filter(profile=profiles[0])
                 result = result.filter(id__in=[x.move_list_id for x in hits])

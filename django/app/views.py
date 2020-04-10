@@ -1,9 +1,10 @@
-from django.middleware.csrf import get_token
-from django.views import View
-from django.utils.html import mark_safe
-from django.shortcuts import render
-from app.schema import schema
 import json
+
+from app.schema import schema
+from django.middleware.csrf import get_token
+from django.shortcuts import render
+from django.utils.html import mark_safe
+from django.views import View
 
 
 class AppView(View):
@@ -12,8 +13,7 @@ class AppView(View):
         csrf_token = get_token(request)
         assert csrf_token
 
-        user_profile = schema.execute(
-            '''
+        user_profile = schema.execute('''
             query queryUserProfile {
               userProfile {
                 owner {
@@ -24,7 +24,7 @@ class AppView(View):
               }
             }
             ''',
-            context_value=request)
+                                      context_value=request)
 
         user_profile_str = json.dumps(user_profile.data).replace(
             'None', 'undefined')

@@ -14,7 +14,8 @@ class Command(BaseCommand):
         with transaction.atomic():
             for move in models.Move.objects.all():
                 if move.id not in move_ids:
-                    x = models.MoveList2Move(
-                        move_list=move_list, move=move, order=0)
+                    x = models.MoveList2Move(move_list=move_list,
+                                             move=move,
+                                             order=0)
                     x.save()
             move_list.save()

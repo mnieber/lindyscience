@@ -6,7 +6,6 @@ import shutil
 import re
 import tempfile
 
-
 __doc__ = """
 Save this file as one django command
 {app_name}}/management/commands/resetmigration.py
@@ -55,7 +54,8 @@ class Command(BaseCommand):
 
     def delete_database_app(self, app):
         self.stdout.write("Deleting APP (%s) in database" % app)
-        self.cursor.execute("DELETE from django_migrations WHERE app = %s", [app])
+        self.cursor.execute("DELETE from django_migrations WHERE app = %s",
+                            [app])
 
     def delete_files_app(self, app):
         self.stdout.write("Deleting APP (%s) migrations files" % app)

@@ -12,8 +12,7 @@ class Command(BaseCommand):
         db = settings.DATABASES['default']['NAME']
 
         if not force and not query_yes_no(
-            "About to drop the current database: %s. Continue?" % db
-        ):
+                "About to drop the current database: %s. Continue?" % db):
             sys.exit(1)
 
         print(settings.DATABASES['default']['PASSWORD'])

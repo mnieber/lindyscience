@@ -17,23 +17,17 @@ def git_repo():
 
 def drop_db(db):
     try:
-        dropdb(
-            "-U", settings.DATABASES['default']['USER'],
-            "-h", settings.DATABASES['default']['HOST'],
-            "-p", settings.DATABASES['default']['PORT'],
-            db
-        )
+        dropdb("-U", settings.DATABASES['default']['USER'], "-h",
+               settings.DATABASES['default']['HOST'], "-p",
+               settings.DATABASES['default']['PORT'], db)
     except:
         pass
 
 
 def create_db(db):
-    createdb(
-        "-U", settings.DATABASES['default']['USER'],
-        "-h", settings.DATABASES['default']['HOST'],
-        "-p", settings.DATABASES['default']['PORT'],
-        db
-    )
+    createdb("-U", settings.DATABASES['default']['USER'], "-h",
+             settings.DATABASES['default']['HOST'], "-p",
+             settings.DATABASES['default']['PORT'], db)
 
 
 def query_yes_no(question, default="yes"):

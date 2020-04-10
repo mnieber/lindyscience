@@ -31,7 +31,8 @@ class Command(BaseCommand):
         except:
             return False
 
-    def handle(self, print_pw, list_dumps, dump_filename, force, *args, **options):
+    def handle(self, print_pw, list_dumps, dump_filename, force, *args,
+               **options):
         if list_dumps:
             for x in glob.glob(os.path.join(settings.DUMP_DB_DIR, '*')):
                 print(x)
@@ -47,16 +48,14 @@ class Command(BaseCommand):
         if repo:
             git_sha = self._get_git_sha(dump_filename)
             if not self._check_git_sha(repo, git_sha):
-                raise CommandError(
-                    ("The dump file was created for a revision that is not in the ") +
-                    ("history of your current branch: %s." % git_sha)
-                )
+                raise CommandError((
+                    "The dump file was created for a revision that is not in the "
+                ) + ("history of your current branch: %s." % git_sha))
 
         if print_pw:
             print(settings.DATABASES['default']['PASSWORD'])
         if not force and not query_yes_no(
-            "About to drop the current database: %s. Continue?" % db
-        ):
+                "About to drop the current database: %s. Continue?" % db):
             sys.exit(1)
 
         drop_db(db)

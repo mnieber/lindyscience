@@ -18,7 +18,10 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, username, password=None):
-        user = self.create_user(email, username, password=password, accepts_terms=True)
+        user = self.create_user(email,
+                                username,
+                                password=password,
+                                accepts_terms=True)
         user.is_superuser = True
         user.is_staff = True
         user.save()  # using=self._db
@@ -46,7 +49,8 @@ class ProfileToMoveList(models.Model):
     order = models.FloatField()
 
     def __str__(self):  # noqa
-        return "%s follows move list %s" % (self.profile.owner.username, self.move_list.name)
+        return "%s follows move list %s" % (self.profile.owner.username,
+                                            self.move_list.name)
 
     class Meta:
         ordering = ['order']
@@ -54,8 +58,8 @@ class ProfileToMoveList(models.Model):
 
 class Profile(Entity):
     recent_move_url = models.CharField(max_length=255, null=True, blank=True)
-    move_lists = models.ManyToManyField(
-        'moves.MoveList', through=ProfileToMoveList)
+    move_lists = models.ManyToManyField('moves.MoveList',
+                                        through=ProfileToMoveList)
 
     def __str__(self):  # noqa
         return "Profile of %s" % self.owner.username

@@ -12,7 +12,10 @@ def boolean(**kwargs):
 
 
 def full_name(**kwargs):
-    return "%s %s" % (first_name(**kwargs), last_name(**kwargs), )
+    return "%s %s" % (
+        first_name(**kwargs),
+        last_name(**kwargs),
+    )
 
 
 def first_name(**kwargs):
@@ -24,7 +27,8 @@ def last_name(**kwargs):
 
 
 def street(**kwargs):
-    return last_name(**kwargs) + random.choice(['-Straße', 'straße', '-Weg', 'weg'])
+    return last_name(**kwargs) + random.choice(
+        ['-Straße', 'straße', '-Weg', 'weg'])
 
 
 def city(**kwargs):
@@ -40,7 +44,8 @@ def phone(**kwargs):
 
 
 def email(**kwargs):
-    return '{}.{}@blueshoe-testdata.de'.format(first_name(**kwargs), last_name(**kwargs))
+    return '{}.{}@blueshoe-testdata.de'.format(first_name(**kwargs),
+                                               last_name(**kwargs))
 
 
 def date(**kwargs):
@@ -69,9 +74,12 @@ def random_string(length=5, length_range=None, capitalized=True, **kwargs):
     :return: Random string with the specified params
     """
     if length_range is not None:
-        result = ''.join(random.choice(string.ascii_lowercase) for _ in range(random.randrange(*length_range)))
+        result = ''.join(
+            random.choice(string.ascii_lowercase)
+            for _ in range(random.randrange(*length_range)))
     else:
-        result = ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
+        result = ''.join(
+            random.choice(string.ascii_lowercase) for _ in range(length))
     return result.capitalize() if capitalized else result
 
 

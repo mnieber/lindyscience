@@ -1,103 +1,42 @@
-DIAGNOSE:
-  src_dir: ${/ROOT/src_dir}/extra/dodo_commands/diagnose
-  output_dir: ${/ROOT/project_dir}/res/diagnose
-  filters:
-  - - ${/DIAGNOSE/src_dir}
-    - filters
-
-DJANGO:
-  src_dir: ${/SERVER/src_dir}/django
-  python: ${/SERVER/venv_dir}/bin/python
-  runserver_args:
-  - --nostatic
-
-DOCKER:
-  home: /root
-  containers:
-    static_data: dc_linsci_static_data
-    dumps: dc_linsci_dumps
-    packages: dc_linsci_packages
-    pg: dc_linsci_pg
-  options:
-    '*':
-      volumes_from_list:
-      - ${/DOCKER/containers/static_data}
-      - ${/DOCKER/containers/packages}
-      - ${/DOCKER/containers/dumps}
-      volume_map:
-        ${/ROOT/src_dir}: ${/SERVER/src_dir}
-      image: ${/DOCKER/images/base/image}
-      variable_map:
-        DJANGO_SETTINGS_MODULE: app.settings.dev
-    bash:
-      cwd: ${/SERVER/src_dir}
-    django-manage:
-      link_list:
-      - pg
-    django-runserver:
-      link_list:
-      - pg
-      publish_list:
-      - 8000
-    psql:
-      link_list:
-      - pg
-    run-postgres:
-      name: pg
-      volumes_from_list:
-      - ${/DOCKER/containers/pg}
-
-PYTEST:
-  pytest: ${/SERVER/venv_dir}/bin/pytest
-  src_dir: ${/DJANGO/src_dir}
-
 ROOT:
   src_dir: ${/ROOT/project_dir}/src
-  layers:
-  - ~/.dodo_commands/layers/*.yaml
-  - docker_images.yaml
-  - salt.local.yaml
-  - django.dev.yaml
-  - drops/dodo_deploy_commands/drop.on.yaml
-  decorators:
-    docker: [django-manage, django-runserver, docker, pytest, webpack, run-postgres,
-      install-packages, download_dump, yarn, psql, tape]
   shared_config_dir: ${/ROOT/src_dir}/extra/dodo_commands/res
   command_path:
-  - ~/.dodo_commands/default_commands/*
-  - ${/ROOT/src_dir}/extra/dodo_commands/linsci_commands
+  - ~/.dodo_commands/default_project/commands/*
+  - ${/ROOT/src_dir}/extra/dodo_commands/dodo_linsci_commands
   version: 1.0.0
 
-SALT:
-  src_dir: ${/ROOT/src_dir}
-  top_dir: salt
-  host_name: dev
+LAYERS:
+  - ~/.dodo_commands/layers/*.yaml
+  - django.dev.yaml
+  - docker.yaml
 
-SERVER:
-  install_dir: /srv/linsci
-  src_dir: ${/SERVER/install_dir}/src
-  node_modules_dir: ${/SERVER/src_dir}/website/node_modules
-  venv_dir: ${/SERVER/install_dir}/env
-  pip_requirements: ${/DJANGO/src_dir}/requirements.txt
+LAYER_GROUPS:
+  server:
+  - react:
+      inferred_by: [nps, node-install-packages, flow-install-types]
+  - django:
+      inferred_by: [django-manage, make, pip-install-packages]
+  salt:
+  - local: {}
+  - server: {}
+  deploy:
+  - deploy:
+      target_path: drops/dodo_deploy_commands/drop.on.yaml
 
-TMUX:
+MENU:
   commands:
-    server:
-    - dodo run-postgres
-    - dodo django-runserver
-    - dodo yarn run flow-watch
-    - dodo webpack --watch
+    react-server:
+    - dodo nps webpack.watch
+    - dodo nps flow.watch
+    - dodo nps test
+    django-server:
+    - dodo django.make runserver
     ssh:
     - dodo ssh-agent restart
     db:
     - dodo django-manage createsuperuser --email=mnieber@gmail.com --username=admin
     - dodo django-manage restore-db --list
+    - dodo django-manage dump-db --print-pw
     - dodo django-manage makemigrations moves
-
-WEBPACK:
-  webpack: ${/SERVER/node_modules_dir}/.bin/webpack
-  webpack_dir: ${/SERVER/src_dir}/website
-TAPE:
-  tape: ${/SERVER/node_modules_dir}/.bin/tape
-  bundle_file: ${/SERVER/install_dir}/static/bundles/test.js
 

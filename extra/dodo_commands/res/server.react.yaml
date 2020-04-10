@@ -1,0 +1,23 @@
+ROOT:
+  decorators:
+    docker: [install-packages, yarn, tape, flow-install-types, nps, node]
+  aliases:
+    node-install-packages: install-packages --node-modules default
+
+DOCKER_OPTIONS:
+  '*':
+    container: 'linsci_app_1'
+
+TAPE:
+  tape: ${/NODE/node_modules_dir}/.bin/tape
+  bundle_file: ${/SERVER/install_dir}/static/bundles/test.js
+
+SERVER:
+  install_dir: /srv/linsci
+  src_dir: ${/SERVER/install_dir}/src
+
+NODE:
+  cwd: ${/SERVER/src_dir}/website
+  node_modules_dir: ${/NODE/cwd}/node_modules
+  nps: ${/NODE/node_modules_dir}/.bin/nps
+

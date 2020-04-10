@@ -1,0 +1,38 @@
+ROOT:
+  decorators:
+    docker: [django-manage, make, pytest, install-packages, download_dump]
+  aliases:
+    pip-install-packages: install-packages --pip-requirements default
+
+DJANGO:
+  cwd: ${/SERVER/src_dir}/django
+  python: ${/SERVER/venv_dir}/bin/python
+
+MAKE:
+  cwd: ${/DJANGO/cwd}
+
+DOCKER_IMAGES:
+  base:
+    image: linsci:base
+    build_dir: ${/ROOT/src_dir}/docker
+    salt:
+      cwd: ${/SERVER/src_dir}/salt
+      extra_args: ['--simple-progress']
+
+DOCKER_OPTIONS:
+  '*':
+    container: 'linsci_app_1'
+
+PYTEST:
+  pytest: ${/SERVER/venv_dir}/bin/pytest
+  cwd: ${/DJANGO/cwd}
+  capture: false
+  html_report: ${/DJANGO/cwd}/test_report.html
+  maxfail: 10
+
+SERVER:
+  install_dir: /srv/linsci
+  src_dir: ${/SERVER/install_dir}/src
+  venv_dir: ${/SERVER/install_dir}/env
+  pip_requirements: ${/DJANGO/cwd}/requirements.txt
+  pip: ${/SERVER/venv_dir}/bin/pip3

@@ -1,0 +1,6 @@
+DOCKER:
+  default_shell: /bin/bash
+
+DOCKER_COMPOSE:
+  cwd: ${/ROOT/src_dir}/docker
+

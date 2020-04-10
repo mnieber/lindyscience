@@ -1,26 +1,27 @@
-DOCKER:
-  images:
-    ssh-agent:
-      build_dir: ${/ROOT/res_dir}/drops/dodo_deploy_commands/ssh-agent/docker
-      image: ssh-agent:base
-    deploy-tools:
-      build_dir: ${/ROOT/res_dir}/drops/dodo_deploy_commands/deploy-tools/docker
-      image: deploy-tools:base
+DOCKER_IMAGES:
+  ssh-agent:
+    build_dir: ${/ROOT/config_dir}/drops/dodo_deploy_commands/ssh-agent/docker
+    image: ssh-agent:base
+  deploy-tools:
+    build_dir: ${/ROOT/config_dir}/drops/dodo_deploy_commands/deploy-tools/docker
+    image: deploy-tools:base
 
-  options:
-    salt-deploy:
-      volume_map:
-        ${/SALT/src_dir}: '/srv/salt-deploy/src'
-      variable_map:
-        SSH_AUTH_SOCK: /.ssh-agent/socket
-      volumes_from_list:
-        - ssh-agent
-      image: ${/DOCKER/images/deploy-tools/image}
+DOCKER_OPTIONS:
+  salt-deploy:
+    volume_map:
+      ${/SALT/cwd}: '/srv/salt-deploy/src'
+      '/srv/linsci/static': '/srv/linsci/static'
+    variable_map:
+      SSH_AUTH_SOCK: /.ssh-agent/socket
+    volumes_from_list:
+      - ssh-agent
+    image: ${/DOCKER/images/deploy-tools/image}
+
+SALT:
+  cwd: ${/ROOT/src_dir}
+  top_dir: salt
 
 SSH_AGENT:
-  key_names: [id_rsa_hallomaarten, id_vegtech_rsa]
+  key_names: [id_docker_deploy_rsa, id_rsa_hallomaarten]
   docker_image: ${/DOCKER/images/ssh-agent/image}
-
-SSH:
-  key_name: id_vegtech_rsa
 

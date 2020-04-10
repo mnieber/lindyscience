@@ -1,0 +1,6 @@
+SALT:
+  host_name: lindyscience
+
+SSH:
+  key_name: id_rsa_hallomaarten
+

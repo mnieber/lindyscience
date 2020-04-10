@@ -1,0 +1,2 @@
+DJANGO:
+  settings_module: app.settings.dev

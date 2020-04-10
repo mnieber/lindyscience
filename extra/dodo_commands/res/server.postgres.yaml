@@ -1,0 +1,11 @@
+DOCKER:
+  options:
+    run-postgres:
+      name: pg
+      volumes_from_list:
+      - ${/DOCKER/containers/pg}
+  container_types:
+    pg:
+      image: ${/DOCKER/images/base/image}
+      dirs:
+      - /var/lib/postgresql

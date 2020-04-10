@@ -6,4 +6,3 @@ export function getOrCreate(obj: any, key: string | Symbol, fn: Function) {
   }
   return obj[key];
 }
-

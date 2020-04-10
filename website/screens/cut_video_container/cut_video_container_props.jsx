@@ -18,7 +18,12 @@ export function cutVideoContainerProps(dispatch: Function) {
 
     dispatch(actAddMoves(newMoves));
     const moveIdsInMoveList = dispatch(
-      actInsertMoveIds(newMoves.map(x => x.id), moveList.id, lastMoveId, false)
+      actInsertMoveIds(
+        newMoves.map(x => x.id),
+        moveList.id,
+        lastMoveId,
+        false
+      )
     );
 
     newMoves.forEach(newMove => {

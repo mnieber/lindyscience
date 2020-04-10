@@ -122,7 +122,10 @@ export function flatten(
       }
     }
 
-    _flatten(obj, path.split("/").filter(x => !!x));
+    _flatten(
+      obj,
+      path.split("/").filter(x => !!x)
+    );
   });
 
   return obj;

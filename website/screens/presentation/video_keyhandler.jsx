@@ -44,14 +44,20 @@ export const createVideoTimePointKeyHandlers = (
   return splitKeyhandlerKeys({
     "ctrl+shift+pageUp;ctrl+t": () => {
       const t = player.getCurrentTime();
-      const tp = Math.min.apply(Math, timePoints.filter(tp => tp > t));
+      const tp = Math.min.apply(
+        Math,
+        timePoints.filter(tp => tp > t)
+      );
       if (!isNone(tp) && isFinite(tp)) {
         player.seekTo(tp);
       }
     },
     "ctrl+shift+pageDown;ctrl+shift+t": () => {
       const t = player.getCurrentTime();
-      const tp = Math.max.apply(Math, timePoints.filter(tp => tp < t));
+      const tp = Math.max.apply(
+        Math,
+        timePoints.filter(tp => tp < t)
+      );
       if (!isNone(tp) && isFinite(tp)) {
         player.seekTo(tp);
       }

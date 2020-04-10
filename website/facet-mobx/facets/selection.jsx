@@ -75,7 +75,10 @@ export function initSelection(self: Selection): Selection {
 
 export const selectionActsOnItems = ([Collection, itemById]: ClassMemberT) =>
   mapDatas(
-    [[Collection, itemById], [Selection, "ids"]],
+    [
+      [Collection, itemById],
+      [Selection, "ids"],
+    ],
     [Selection, "items"],
     (itemById, ids) => lookUp(ids, itemById)
   );

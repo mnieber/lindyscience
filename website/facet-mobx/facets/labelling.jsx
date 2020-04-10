@@ -66,7 +66,10 @@ export const initLabelling = (
 
 export const labellingActsOnItems = ([Collection, itemById]: ClassMemberT) => {
   return mapDatas(
-    [[Collection, itemById], [Labelling, "idsByLabel"]],
+    [
+      [Collection, itemById],
+      [Labelling, "idsByLabel"],
+    ],
     [Labelling, "itemsByLabel"],
     (itemById, idsByLabel) =>
       // $FlowFixMe

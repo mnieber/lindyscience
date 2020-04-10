@@ -77,7 +77,12 @@ export function movesContainerProps(
     removeFromMoveList: ?MoveListT
   ) {
     const moveIdsInTargetMoveList = dispatch(
-      actInsertMoveIds(moves.map(x => x.id), moveList.id, "", false)
+      actInsertMoveIds(
+        moves.map(x => x.id),
+        moveList.id,
+        "",
+        false
+      )
     );
     apiSaveMoveOrdering(moveList.id, moveIdsInTargetMoveList).catch(
       createErrorHandler("Could not update the move list")

@@ -8,7 +8,10 @@ import { getVideoFromMove } from "moves/utils";
 import { MoveContainer } from "screens/move_container/move_container";
 
 export const initVideoCtrFromCurrentMove = mapDatas(
-  [[Inputs, "move"], [Inputs, "altLink"]],
+  [
+    [Inputs, "move"],
+    [Inputs, "altLink"],
+  ],
   [VideoController, "video"],
   (move: MoveT, altLink: string) => {
     return altLink

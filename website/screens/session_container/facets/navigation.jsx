@@ -87,13 +87,16 @@ export const ensureSelected = (selection: Selection, id: any) => {
 
 export const getStatus = (self: Navigation) => {
   const entries = Object.entries(self.dataRequest);
-  return entries.reduce((acc, [resourceName, url]) => {
-    return {
-      ...acc,
-      [resourceName]: {
-        hasLoaded: self.loadedData[resourceName].includes(url),
-        notFound: self.notFoundData[resourceName].includes(url),
-      },
-    };
-  }, createDataRequestMap(() => ({ hasLoaded: false, notFound: false })));
+  return entries.reduce(
+    (acc, [resourceName, url]) => {
+      return {
+        ...acc,
+        [resourceName]: {
+          hasLoaded: self.loadedData[resourceName].includes(url),
+          notFound: self.notFoundData[resourceName].includes(url),
+        },
+      };
+    },
+    createDataRequestMap(() => ({ hasLoaded: false, notFound: false }))
+  );
 };

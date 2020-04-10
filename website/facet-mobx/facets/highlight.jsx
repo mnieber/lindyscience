@@ -44,7 +44,10 @@ export const initHighlight = (highlight: Highlight): Highlight => {
 
 export const highlightActsOnItems = ([Collection, itemById]: ClassMemberT) =>
   mapDatas(
-    [[Collection, itemById], [Highlight, "id"]],
+    [
+      [Collection, itemById],
+      [Highlight, "id"],
+    ],
     [Highlight, "item"],
     (itemById, id) => itemById[id]
   );

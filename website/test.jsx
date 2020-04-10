@@ -6,4 +6,3 @@ import "move_lists/tests/reducers_test";
 import "tips/tests/reducers_test";
 import "votes/tests/reducers_test";
 import "votes/tests/actions_test";
-

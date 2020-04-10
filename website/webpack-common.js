@@ -4,11 +4,6 @@ var webpack = require("webpack");
 const config = {
   entry: {
     main: "./app/main.jsx",
-    app: "./app/css/app.jsx",
-  },
-
-  output: {
-    library: "App",
   },
 
   resolve: {

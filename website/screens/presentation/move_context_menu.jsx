@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Menu, Item, Submenu } from "react-contexify";
 import { observer } from "mobx-react";
+import jQuery from "jquery";
 
 import { getId } from "app/utils";
 import { Clipboard } from "screens/moves_container/facets/clipboard";
@@ -54,7 +55,12 @@ export const MoveContextMenu = observer((props: MoveContextMenuPropsT) => {
   ];
 
   return (
-    <Menu id="moveContextMenu" classname="bg-white">
+    <Menu
+      id="moveContextMenu"
+      classname="bg-white"
+      onShown={() => jQuery(".movePanel").toggleClass("zminus1", true)}
+      onHidden={() => jQuery(".movePanel").toggleClass("zminus1", false)}
+    >
       <Submenu label="Export">{exportMenuItems}</Submenu>
       <Submenu label="Share to list">{shareToListMenuItems}</Submenu>
       {props.isOwnerOfMoveList && (

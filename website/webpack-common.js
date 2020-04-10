@@ -1,6 +1,5 @@
 var path = require("path");
 var webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = {
   entry: {
@@ -40,29 +39,9 @@ const config = {
           ],
         },
       },
-      {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader",
-        ],
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
-      },
     ],
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "../css/[name].css",
-      chunkFilename: "../css/[id].css",
-    }),
-  ],
+  plugins: [],
 };
 
 module.exports = config;

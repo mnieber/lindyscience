@@ -1,8 +1,5 @@
 // @flow
 
-// $FlowFixMe
-import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
-
 import React from "react";
 import scrollIntoViewIfNeeded from "scroll-into-view-if-needed";
 import ReduxToastr, { toastr } from "react-redux-toastr";

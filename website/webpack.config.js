@@ -6,6 +6,17 @@ var WebpackCleanupPlugin = require("webpack-cleanup-plugin");
 var common = require("./webpack-common");
 var srvDir = require("./srv-dir");
 
+const css_rules = [
+  {
+    test: /\.scss$/,
+    use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
+  },
+  {
+    test: /\.css$/i,
+    use: ["style-loader", "css-loader"],
+  },
+];
+
 const development = merge(common, {
   mode: "development",
 
@@ -13,6 +24,10 @@ const development = merge(common, {
     path: srvDir + "/static/bundles",
     filename: "dev-[name]-[hash].js",
     chunkFilename: "[name].bundle.js",
+  },
+
+  module: {
+    rules: css_rules,
   },
 
   plugins: [
@@ -36,6 +51,9 @@ const test = merge(common, {
   output: {
     path: srvDir + "/static/bundles",
     filename: "test.js",
+  },
+  module: {
+    rules: css_rules,
   },
 });
 

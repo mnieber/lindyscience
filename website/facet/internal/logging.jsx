@@ -32,30 +32,26 @@ export function log(
 ) {
   const ctrName = ctr.constructor.name;
   const operationName = opName(operationMember);
+  const label =
+    ("%c" + ctrName + "/" + facetName(facet) + ".%c" + operationName,
+    "font-weight:bold; color: black",
+    "color: blue");
+  const labelAlt = ctrName + "/" + facetName(facet) + "." + operationName;
+
+  if (start) {
+    (console: any).groupCollapsed(labelAlt);
+    (console: any).log("%c           args: ", "color: gray", args);
+  }
 
   (console: any).log(
-    "%c " +
-      (start ? "Start " : "Finish") +
-      " %c" +
-      ctrName +
-      "/" +
-      facetName(facet) +
-      ".%c" +
-      operationName,
-    "color: gray",
-    "font-weight:bold; color: black",
-    "color: blue"
-  );
-  (console: any).log("%c           args: ", "color: gray", args);
-  const breadCrumb = ctr[symbols.breadcrumb];
-  if (breadCrumb && breadCrumb.length) {
-    (console: any).log("%c     breadcrumb: ", "color: gray", breadCrumb);
-  }
-  (console: any).log(
-    "%c     " + (start ? "prev" : "next") + " state: ",
+    "%c     " + (start ? "state" : "next"),
     "color: gray",
     containerState(ctr)
   );
+
+  if (!start) {
+    (console: any).groupEnd(labelAlt);
+  }
 }
 
 export function containerState(ctr: any) {
@@ -81,26 +77,4 @@ export function containerState(ctr: any) {
       return { ...acc, [facetMember]: facetState };
     }, {});
   }
-}
-
-export function pushCrumb(ctr: any, name: string) {
-  const breadCrumb = getOrCreate(ctr, symbols.breadcrumb, () => []);
-  breadCrumb.push(name);
-}
-
-export function popCrumb(ctr: any) {
-  ctr[symbols.breadcrumb].pop();
-}
-
-export function withCrumb(f: Function) {
-  const contextName = getContext().name;
-  const ctr = getContext().ctr;
-
-  return options.logging && contextName && ctr
-    ? (...args: any) => {
-        pushCrumb(ctr, contextName);
-        f(...args);
-        popCrumb(ctr);
-      }
-    : f;
 }

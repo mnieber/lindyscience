@@ -7,7 +7,6 @@ import {
   type ClassMemberT,
   facetClassName,
   facetName,
-  withCrumb,
   getContext,
   isDataMember,
 } from "facet";
@@ -45,7 +44,7 @@ export function reaction(dataFn: Function, effectFn: Function, options: any) {
   if (contextName) {
     return mobxReaction(
       dataFn,
-      withCrumb(effectFn),
+      effectFn,
       options && options.name
         ? options
         : { ...(options || {}), name: contextName }

@@ -7,7 +7,6 @@ export const symbols = {
   dataMembers: Symbol("facetDataMembers"),
   facetMembers: Symbol("facetFacetMembers"),
   parentContainer: Symbol("facetParentContainer"),
-  breadcrumb: Symbol("facetBreadCrumb"),
 };
 
 export function symbolName(symbol: Symbol) {

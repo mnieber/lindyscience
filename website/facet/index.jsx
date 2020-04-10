@@ -11,11 +11,8 @@ import {
 import {
   log,
   opName,
-  popCrumb,
-  pushCrumb,
   facetName as _facetName,
   facetClassName as _facetClassName,
-  withCrumb as _withCrumb,
 } from "facet/internal/logging";
 import { getOrCreate } from "facet/internal/utils";
 import { symbols } from "facet/internal/symbols";
@@ -30,7 +27,6 @@ export type AdapterT = {
 
 export const options = _options;
 export const getContext = _getContext;
-export const withCrumb = _withCrumb;
 export const facetName = _facetName;
 export const facetClassName = _facetClassName;
 
@@ -90,7 +86,7 @@ export function listen(
   const contextName = getContext().name;
   const ctr = getContext().ctr;
 
-  signal.add(withCrumb(args => callback(...args)));
+  signal.add(args => callback(...args));
 }
 
 export function handle(
@@ -131,7 +127,6 @@ export function operation(
       if (options.logging) {
         const ctr = facet[symbols.parentContainer];
         log(ctr, operationMember, facet, args, true);
-        pushCrumb(ctr, opName(operationMember));
       }
 
       const handlers = facet[symbols.operationHandlers];
@@ -146,7 +141,6 @@ export function operation(
 
       if (options.logging) {
         const ctr = facet[symbols.parentContainer];
-        popCrumb(ctr);
         log(ctr, operationMember, facet, args, false);
       }
     };

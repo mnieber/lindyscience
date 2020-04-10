@@ -7,6 +7,8 @@ ROOT:
 DOCKER_OPTIONS:
   '*':
     container: 'linsci_app_1'
+    inverse_volume_map:
+      ${/SERVER/src_dir}: ${/ROOT/src_dir}
 
 TAPE:
   tape: ${/NODE/node_modules_dir}/.bin/tape

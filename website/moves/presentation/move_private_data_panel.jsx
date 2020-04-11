@@ -13,7 +13,7 @@ import type { MovePrivateDataT } from "moves/types";
 import type { UserProfileT } from "profiles/types";
 import type { TagT } from "tags/types";
 
-type MovePrivateDatasPanelPropsT = {
+type MovePrivateDataPanelPropsT = {
   userProfile: UserProfileT,
   movePrivateData: ?MovePrivateDataT,
   onSave: (values: any) => void,
@@ -22,7 +22,7 @@ type MovePrivateDatasPanelPropsT = {
   videoCtr?: VideoController,
 };
 
-export function MovePrivateDataPanel(props: MovePrivateDatasPanelPropsT) {
+export function MovePrivateDataPanel(props: MovePrivateDataPanelPropsT) {
   const [isEditing, setIsEditing] = React.useState(false);
 
   const editBtn = (

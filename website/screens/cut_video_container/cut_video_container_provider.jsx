@@ -39,7 +39,7 @@ export const CutVideoCtrProvider = compose(
   observer
 )((p: PropsT) => {
   const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
-  const { defaultProps, ...passThroughProps } = props;
+  const { defaultProps } = props;
 
   const cutVideoCtr = useCutVideoCtr(cutVideoContainerProps(props.dispatch));
   runInAction("CutVideoContainer.setInputs", () => {

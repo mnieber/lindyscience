@@ -40,7 +40,7 @@ export const SessionCtrProvider = compose(
   observer
 )((p: PropsT) => {
   const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
-  const { defaultProps, ...passThroughProps } = props;
+  const { defaultProps } = props;
   const history = useHistory();
 
   const sessionCtr = useSessionCtr(props.dispatch, history);

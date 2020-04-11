@@ -34,7 +34,7 @@ export const MoveCtrProvider = compose(
   observer
 )((p: PropsT) => {
   const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
-  const { defaultProps, ...passThroughProps } = props;
+  const { defaultProps } = props;
 
   const moveCtr = useMoveCtr(moveContainerProps());
   runInAction("moveContainer.setInputs", () => {

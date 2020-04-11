@@ -43,7 +43,7 @@ export const MoveListsCtrProvider = compose(
   observer
 )((p: PropsT) => {
   const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
-  const { defaultProps, ...passThroughProps } = props;
+  const { defaultProps } = props;
 
   const moveListsCtr = useMoveListsCtr(
     moveListsContainerProps(props.dispatch, props.navigation)

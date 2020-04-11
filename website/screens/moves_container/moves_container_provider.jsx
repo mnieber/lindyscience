@@ -49,7 +49,7 @@ export const MovesCtrProvider = compose(
   observer
 )((p: PropsT) => {
   const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
-  const { defaultProps, ...passThroughProps } = props;
+  const { defaultProps } = props;
 
   const movesCtr = useMovesCtr(
     movesContainerProps(props.dispatch, props.navigation)

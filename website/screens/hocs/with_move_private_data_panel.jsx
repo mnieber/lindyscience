@@ -33,8 +33,6 @@ export const withMovePrivateDataPanel = compose(
   (WrappedComponent: any) => (p: PropsT) => {
     const props = mergeDefaultProps(p);
 
-    const { moveTags, ...passThroughProps }: PropsT = props;
-
     const _onSave = values => {
       const movePrivateData = {
         id: createUUID(),
@@ -58,7 +56,7 @@ export const withMovePrivateDataPanel = compose(
         userProfile={props.userProfile}
         movePrivateData={props.move ? props.move.privateData : undefined}
         onSave={_onSave}
-        moveTags={moveTags}
+        moveTags={props.moveTags}
         moveId={getId(props.move)}
         videoCtr={props.videoCtr}
       />
@@ -67,7 +65,7 @@ export const withMovePrivateDataPanel = compose(
     return (
       <WrappedComponent
         movePrivateDataPanel={movePrivateDataPanel}
-        {...passThroughProps}
+        {...props}
       />
     );
   }

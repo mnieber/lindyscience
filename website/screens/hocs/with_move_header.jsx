@@ -36,7 +36,6 @@ type DefaultPropsT = {
 export const withMoveHeader = (WrappedComponent: any) =>
   observer((p: PropsT) => {
     const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
-    const { moveTags, ...passThroughProps }: PropsT = props;
 
     const moveListTitle = <MoveListTitle moveList={props.moveList} />;
 
@@ -64,12 +63,12 @@ export const withMoveHeader = (WrappedComponent: any) =>
       <MoveHeader
         move={props.move}
         moveListTitle={moveListTitle}
-        moveTags={moveTags}
+        moveTags={props.moveTags}
         editMoveBtn={editMoveBtn}
         followMoveListBtn={followMoveListBtn}
         small={props.display.small}
       />
     );
 
-    return <WrappedComponent moveHeader={moveHeader} {...passThroughProps} />;
+    return <WrappedComponent moveHeader={moveHeader} {...props} />;
   });

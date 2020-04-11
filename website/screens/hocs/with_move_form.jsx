@@ -27,7 +27,6 @@ type DefaultPropsT = {
 export const withMoveForm = (WrappedComponent: any) =>
   observer((p: PropsT) => {
     const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
-    const { moveTags, ...passThroughProps }: PropsT = props;
 
     const _setAltLink = action(altLink => {
       props.videoCtr.setPlayer(undefined);
@@ -46,11 +45,11 @@ export const withMoveForm = (WrappedComponent: any) =>
           _setAltLink(undefined);
           props.movesEditing.cancel();
         }}
-        knownTags={moveTags}
+        knownTags={props.moveTags}
         videoCtr={props.videoCtr}
         setAltLink={_setAltLink}
       />
     );
 
-    return <WrappedComponent moveForm={moveForm} {...passThroughProps} />;
+    return <WrappedComponent moveForm={moveForm} {...props} />;
   });

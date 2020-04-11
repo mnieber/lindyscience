@@ -2,7 +2,8 @@
 
 import { Insertion, type PayloadSourceT } from "facet-mobx/facets/insertion";
 import { createPatch } from "facet-mobx";
-import { find } from "rambda";
+import { prop } from "rambda";
+import { findMap } from "utils/rambda";
 
 export const insertionPicksAPayloadsSource = ({
   payloadSources,
@@ -11,13 +12,13 @@ export const insertionPicksAPayloadsSource = ({
 }) =>
   createPatch(Insertion, [null], container => ({
     get _sourcedPayload() {
-      return find(payloadSource => payloadSource(container), payloadSources);
+      return findMap(plSrc => plSrc(container), payloadSources);
     },
     get payload() {
-      return this._sourcedPayload ? this._sourcedPayload.payload : undefined;
+      return prop("payload", this._sourcedPayload);
     },
     get position() {
-      return this._sourcedPayload ? this._sourcedPayload.position : undefined;
+      return prop("position", this._sourcedPayload);
     },
   }));
 

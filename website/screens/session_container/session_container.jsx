@@ -1,7 +1,6 @@
 // @flow
 
 import { Display, initDisplay } from "screens/session_container/facets/display";
-import { runInAction } from "utils/mobx_wrapper";
 import {
   Navigation,
   initNavigation,
@@ -10,10 +9,9 @@ import {
   Profiling,
   initProfiling,
 } from "screens/session_container/facets/profiling";
-import type { UserProfileT } from "profiles/types";
 import { Inputs, initInputs } from "screens/session_container/facets/inputs";
 import { facet, facetClass, registerFacets, installPolicies } from "facet";
-import { Policies } from "screens/session_container/policies";
+import * as SessionContainerPolicies from "screens/session_container/policies";
 
 type SessionContainerPropsT = {
   dispatch: Function,
@@ -39,14 +37,17 @@ export class SessionContainer {
 
   _applyPolicies(props: SessionContainerPropsT) {
     const policies = [
-      Policies.navigation.handleNavigateToMoveList,
+      // navigation
+      SessionContainerPolicies.handleNavigateToMoveList,
 
-      Policies.profiling.handleLoadUserProfileForSignedInEmail,
-      Policies.profiling.handleLoadEmail,
-      Policies.profiling.handleSignIn,
-      Policies.profiling.handleSignOut,
+      // profiling
+      SessionContainerPolicies.handleLoadUserProfileForSignedInEmail,
+      SessionContainerPolicies.handleLoadEmail,
+      SessionContainerPolicies.handleSignIn,
+      SessionContainerPolicies.handleSignOut,
 
-      Policies.url.handleLoadSelectedMoveListFromUrl,
+      // navigation
+      SessionContainerPolicies.handleLoadSelectedMoveListFromUrl,
     ];
 
     installPolicies(policies, this);

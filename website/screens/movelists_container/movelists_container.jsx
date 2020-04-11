@@ -14,19 +14,19 @@ import {
   installPolicies,
 } from "facet";
 import { mapData } from "facet-mobx";
-import type { UUID } from "kernel/types";
-import { Labelling, initLabelling } from "facet-mobx/facets/labelling";
 import { getIds } from "app/utils";
-import type { MoveListT } from "move_lists/types";
+import { Labelling, initLabelling } from "facet-mobx/facets/labelling";
 import { Addition, initAddition } from "facet-mobx/facets/addition";
 import { Editing, initEditing } from "facet-mobx/facets/editing";
 import { Highlight, initHighlight } from "facet-mobx/facets/highlight";
 import { Insertion, initInsertion } from "facet-mobx/facets/insertion";
 import { Selection, initSelection } from "facet-mobx/facets/selection";
-import type { UserProfileT } from "profiles/types";
-import { Policies } from "screens/facet/policies";
-import { insertByCreatingAnItem } from "facet-mobx/policies/insert_by_creating_a_new_item";
-import { runInAction } from "utils/mobx_wrapper";
+import * as MobXFacets from "facet-mobx/facets";
+import * as MobXPolicies from "facet-mobx/policies";
+import * as MoveListsContainerPolicies from "screens/movelists_container/policies";
+import * as SessionContainerPolicies from "screens/session_container/policies";
+import type { UUID } from "kernel/types";
+import type { MoveListT } from "move_lists/types";
 
 export type MoveListsContainerPropsT = {
   isEqual: (lhs: any, rhs: any) => boolean,
@@ -92,37 +92,47 @@ export class MoveListsContainer {
     const preview = [Outputs, "preview"];
 
     const policies = [
-      Policies.selection.actsOnItems(itemById),
-      Policies.selection.selectTheMoveListThatMatchesTheUrl(props.navigation),
-
-      Policies.highlight.actsOnItems(itemById),
-      Policies.highlight.followsSelection,
-
-      Policies.navigation.locationIsStoredOnNewItem(
-        props.navigation.storeLocation
+      // selection
+      MobXFacets.selectionActsOnItems(itemById),
+      SessionContainerPolicies.selectTheMoveListThatMatchesTheUrl(
+        props.navigation
       ),
-      Policies.navigation.locationIsRestoredOnCancelNewItem(
+
+      // highlight
+      MobXFacets.highlightActsOnItems(itemById),
+      MobXPolicies.highlightFollowsSelection,
+
+      // navigation
+      MobXPolicies.locationIsStoredOnNewItem(props.navigation.storeLocation),
+      MobXPolicies.locationIsRestoredOnCancelNewItem(
         props.navigation.restoreLocation
       ),
 
-      Policies.insertion.actsOnItems(inputItems),
-      Policies.insertion.createsThePreview({ preview }),
-      Policies.insertion.picksAPayloadsSource({
-        payloadSources: [insertByCreatingAnItem({ showPreview: true })],
+      // insertion
+      MobXFacets.insertionActsOnItems(inputItems),
+      MobXFacets.insertionCreatesThePreview({ preview }),
+      MobXPolicies.insertionPicksAPayloadsSource({
+        payloadSources: [
+          MobXPolicies.insertByCreatingAnItem({ showPreview: true }),
+        ],
       }),
 
-      Policies.newItems.areCreatedBelowTheHighlight,
-      Policies.newItems.areEdited,
-      Policies.newItems.areConfirmedWhenSaved,
-      Policies.newItems.areInsertedWhenConfirmed,
-      Policies.newItems.areFollowedWhenConfirmed,
-      Policies.newItems.areCanceledOnHighlightChange,
+      // creation
+      MobXPolicies.newItemsAreCreatedBelowTheHighlight,
+      MobXPolicies.newItemsAreEdited,
+      MobXPolicies.newItemsAreConfirmedWhenSaved,
+      MobXPolicies.newItemsAreInsertedWhenConfirmed,
+      MoveListsContainerPolicies.newItemsAreFollowedWhenConfirmed,
+      MobXPolicies.newItemsAreCanceledOnHighlightChange,
 
-      Policies.labelling.receivesIds(
+      // labelling
+      MobXFacets.labellingReceivesIds(
         [Inputs, "moveListsFollowing"],
         "following",
         getIds
       ),
+
+      // display
       mapData([Outputs, "preview"], [Outputs, "display"]),
       mapData([Outputs, "display"], [Selection, "selectableIds"], getIds),
     ];

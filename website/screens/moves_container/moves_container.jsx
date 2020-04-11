@@ -27,10 +27,10 @@ import { SelectWithKeys } from "screens/facet/handlers/select_with_keys";
 import { ClickToSelectItems } from "screens/facet/handlers/click_to_select_items";
 import { DragItems } from "screens/facet/handlers/drag_items";
 import type { UserProfileT } from "profiles/types";
-import { Policies } from "screens/facet/policies";
-import { insertByCreatingAnItem } from "facet-mobx/policies/insert_by_creating_a_new_item";
-import { insertByDraggingSelection } from "facet-mobx/policies/insert_by_dragging_selection";
-import { runInAction } from "utils/mobx_wrapper";
+import * as MobXFacets from "facet-mobx/facets";
+import * as MoveContainerPolicies from "screens/move_container/policies";
+import * as MobXPolicies from "facet-mobx/policies";
+import * as SessionContainerPolicies from "screens/session_container/policies";
 
 export type MovesContainerPropsT = {
   isEqual: (lhs: any, rhs: any) => boolean,
@@ -96,41 +96,46 @@ export class MovesContainer {
     const preview = [Outputs, "preview"];
 
     const policies = [
-      Policies.selection.actsOnItems(itemById),
+      // selection
+      MobXFacets.selectionActsOnItems(itemById),
 
-      Policies.highlight.actsOnItems(itemById),
-      Policies.highlight.followsSelection,
-      Policies.highlight.isCorrectedOnFilterChange,
+      // highlight
+      MobXFacets.highlightActsOnItems(itemById),
+      MobXPolicies.highlightFollowsSelection,
+      MobXPolicies.highlightIsCorrectedOnFilterChange,
 
-      Policies.navigation.locationIsStoredOnNewItem(
-        props.navigation.storeLocation
-      ),
-      Policies.navigation.locationIsRestoredOnCancelNewItem(
+      // navigation
+      MobXPolicies.locationIsStoredOnNewItem(props.navigation.storeLocation),
+      MobXPolicies.locationIsRestoredOnCancelNewItem(
         props.navigation.restoreLocation
       ),
-      Policies.navigation.handleNavigateToMove(props.navigation),
-      Policies.navigation.syncUrlWithNewMove(props.navigation),
-      Policies.navigation.syncMoveWithCurrentUrl(props.navigation),
+      MoveContainerPolicies.handleNavigateToMove(props.navigation),
+      SessionContainerPolicies.syncUrlWithNewMove(props.navigation),
+      SessionContainerPolicies.syncMoveWithCurrentUrl(props.navigation),
 
-      Policies.insertion.actsOnItems(inputItems),
-      Policies.insertion.createsThePreview({ preview }),
-      Policies.insertion.happensOnDrop,
-      Policies.insertion.picksAPayloadsSource({
+      // insertion
+      MobXFacets.insertionActsOnItems(inputItems),
+      MobXFacets.insertionCreatesThePreview({ preview }),
+      MobXPolicies.insertionHappensOnDrop,
+      MobXPolicies.insertionPicksAPayloadsSource({
         payloadSources: [
-          insertByCreatingAnItem({ showPreview: true }),
-          insertByDraggingSelection({ showPreview: false }),
+          MobXPolicies.insertByCreatingAnItem({ showPreview: true }),
+          MobXPolicies.insertByDraggingSelection({ showPreview: false }),
         ],
       }),
 
-      Policies.newItems.areCreatedBelowTheHighlight,
-      Policies.newItems.areEdited,
-      Policies.newItems.areInsertedWhenConfirmed,
-      Policies.newItems.areConfirmedWhenSaved,
-      Policies.newItems.areCanceledOnHighlightChange,
+      // creation
+      MobXPolicies.newItemsAreCreatedBelowTheHighlight,
+      MobXPolicies.newItemsAreEdited,
+      MobXPolicies.newItemsAreInsertedWhenConfirmed,
+      MobXPolicies.newItemsAreConfirmedWhenSaved,
+      MobXPolicies.newItemsAreCanceledOnHighlightChange,
 
-      Policies.filtering.actsOnItems(preview),
-      Policies.filtering.isDisabledOnNewItem,
+      // filtering
+      MobXFacets.filteringActsOnItems(preview),
+      MobXPolicies.filteringIsDisabledOnNewItem,
 
+      // display
       mapData([Filtering, "filteredItems"], [Outputs, "display"]),
       mapData([Outputs, "display"], [Selection, "selectableIds"], getIds),
     ];

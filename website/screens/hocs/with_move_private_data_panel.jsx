@@ -63,10 +63,7 @@ export const withMovePrivateDataPanel = compose(
     );
 
     return (
-      <WrappedComponent
-        movePrivateDataPanel={movePrivateDataPanel}
-        {...props}
-      />
+      <WrappedComponent movePrivateDataPanel={movePrivateDataPanel} {...p} />
     );
   }
 );

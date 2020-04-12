@@ -65,6 +65,6 @@ export const withCutVideoPanel = compose(
       </KeyboardEventHandler>
     );
 
-    return <WrappedComponent cutVideoPanel={cutVideoPanel} {...props} />;
+    return <WrappedComponent cutVideoPanel={cutVideoPanel} {...p} />;
   }
 );

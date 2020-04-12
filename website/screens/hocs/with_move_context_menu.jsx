@@ -49,6 +49,6 @@ export const withMoveContextMenu = compose(
       />
     );
 
-    return <WrappedComponent moveContextMenu={moveContextMenu} {...props} />;
+    return <WrappedComponent moveContextMenu={moveContextMenu} {...p} />;
   }
 );

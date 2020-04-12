@@ -50,5 +50,5 @@ export const withMoveKeyHandlers = (WrappedComponent: any) =>
         : {}),
     };
 
-    return <WrappedComponent moveKeyHandlers={moveKeyHandlers} {...props} />;
+    return <WrappedComponent moveKeyHandlers={moveKeyHandlers} {...p} />;
   });

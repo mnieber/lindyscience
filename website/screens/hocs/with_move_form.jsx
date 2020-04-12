@@ -51,5 +51,5 @@ export const withMoveForm = (WrappedComponent: any) =>
       />
     );
 
-    return <WrappedComponent moveForm={moveForm} {...props} />;
+    return <WrappedComponent moveForm={moveForm} {...p} />;
   });

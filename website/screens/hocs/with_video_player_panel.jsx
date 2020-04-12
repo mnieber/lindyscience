@@ -32,5 +32,5 @@ export const withVideoPlayerPanel = (WrappedComponent: any) =>
       />
     );
 
-    return <WrappedComponent videoPlayerPanel={videoPlayerPanel} {...props} />;
+    return <WrappedComponent videoPlayerPanel={videoPlayerPanel} {...p} />;
   });

@@ -59,7 +59,7 @@ const withMoveTarget = compose(
         moveListUrl: params.ownerUsername + "/" + params.moveListSlug,
       });
     });
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent {...p} />;
   }
 );
 
@@ -74,7 +74,7 @@ const withMoveListTarget = compose(
         moveListUrl: params.ownerUsername + "/" + params.moveListSlug,
       });
     });
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent {...p} />;
   }
 );
 

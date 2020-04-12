@@ -70,5 +70,5 @@ export const withMoveHeader = (WrappedComponent: any) =>
       />
     );
 
-    return <WrappedComponent moveHeader={moveHeader} {...props} />;
+    return <WrappedComponent moveHeader={moveHeader} {...p} />;
   });

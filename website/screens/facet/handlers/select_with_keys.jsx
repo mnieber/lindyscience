@@ -15,11 +15,17 @@ export class SelectWithKeys {
     this.props = props;
   }
 
-  handle(keyUp: string, keyDown: string, navigateTo: ?Function) {
+  handle(
+    keysUp: Array<string>,
+    keysDown: Array<string>,
+    navigateTo: ?Function
+  ) {
     return {
       onKeyDown: (key: string, e: any) => {
         const ctr = this.props.container;
-        if ([keyDown, keyUp].includes(key)) {
+        const isUp = keysUp.includes(key);
+        const isDown = keysDown.includes(key);
+        if (keysUp || keysDown) {
           e.preventDefault();
           e.stopPropagation();
           const highlight = Highlight.get(ctr);
@@ -37,7 +43,7 @@ export class SelectWithKeys {
             pickNeighbour2(
               Selection.get(ctr).selectableIds,
               highlight.id,
-              key == keyDown,
+              isDown,
               selectMoveById
             );
           }

@@ -75,24 +75,37 @@ export const MoveList = compose(observer)((p: PropsT) => {
   });
 
   return (
-    <KeyboardEventHandler
-      handleKeys={["up", "down"]}
-      onKeyEvent={
-        props.movesCtr.handlerSelectWithKeys.handle(
-          "up",
-          "down",
-          props.navigateTo
-        ).onKeyDown
-      }
-    >
-      <div
-        className={classnames(props.className, "moveList")}
-        tabIndex={123}
-        id="moveList"
+    <React.Fragment>
+      <KeyboardEventHandler
+        handleKeys={["ctrl+.", "ctrl+,"]}
+        handleFocusableElements={true}
+        onKeyEvent={
+          props.movesCtr.handlerSelectWithKeys.handle(
+            ["ctrl+,"],
+            ["ctrl+."],
+            props.navigateTo
+          ).onKeyDown
+        }
+      />
+      <KeyboardEventHandler
+        handleKeys={["up", "down"]}
+        onKeyEvent={
+          props.movesCtr.handlerSelectWithKeys.handle(
+            ["up"],
+            ["down"],
+            props.navigateTo
+          ).onKeyDown
+        }
       >
-        <MenuProvider id="moveContextMenu">{moveNodes}</MenuProvider>
-        {props.moveContextMenu}
-      </div>
-    </KeyboardEventHandler>
+        <div
+          className={classnames(props.className, "moveList")}
+          tabIndex={123}
+          id="moveList"
+        >
+          <MenuProvider id="moveContextMenu">{moveNodes}</MenuProvider>
+          {props.moveContextMenu}
+        </div>
+      </KeyboardEventHandler>
+    </React.Fragment>
   );
 });

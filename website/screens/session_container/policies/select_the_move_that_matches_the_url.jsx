@@ -2,7 +2,6 @@
 
 import { listen } from "facet";
 import { Addition } from "facet-mobx/facets/addition";
-import { SessionContainer } from "screens/session_container/session_container";
 import { Selection } from "facet-mobx/facets/selection";
 import { findMoveBySlugid } from "screens/utils";
 import { Outputs } from "screens/moves_container/facets/outputs";

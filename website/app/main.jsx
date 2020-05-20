@@ -15,7 +15,7 @@ import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 
 ReactDOM.render(
   <Provider store={getStore()}>
-    <UrlRouter />;
+    <UrlRouter />
   </Provider>,
   document.getElementById("root")
 );

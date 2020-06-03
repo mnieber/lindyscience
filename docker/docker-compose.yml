@@ -11,9 +11,6 @@ services :
     env_file: .env
     environment:
       DJANGO_SETTINGS_MODULE: app.settings.dev
-    volumes_from:
-    - container:dc_linsci_pip_packages
-    - container:dc_linsci_node_modules
     volumes:
       # map the src directory to opt/app-root/src
       - ..:$SRV_DIR/src

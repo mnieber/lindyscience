@@ -12,13 +12,16 @@ import { SignInDialog } from "app/presentation/signin_dialog";
 
 // SignInPage
 
-type SignInPagePropsT = {} & {
-  // default props
+type PropsT = {
+  defaultProps: any,
+};
+
+type DefaultPropsT = {
   profiling: Profiling,
 };
 
-function SignInPage(p: SignInPagePropsT) {
-  const props = mergeDefaultProps(p);
+function SignInPage(p: PropsT) {
+  const props = mergeDefaultProps<PropsT & DefaultPropsT>(p);
 
   return (
     <div className="signInPage flexrow">

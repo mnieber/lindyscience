@@ -11,7 +11,9 @@ import { Profiling } from "screens/session_container/facets/profiling";
 import { Navigation } from "screens/session_container/facets/navigation";
 import type { UserProfileT } from "profiles/types";
 
-type AccountMenuPropsT = {};
+type AccountMenuPropsT = {
+  defaultProps: any,
+};
 
 type DefaultPropsT = {
   userProfile: ?UserProfileT,

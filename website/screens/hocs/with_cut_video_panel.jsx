@@ -20,6 +20,7 @@ import type { TagT } from "tags/types";
 
 type PropsT = {
   moveTags: Array<TagT>,
+  defaultProps: any,
 };
 
 type DefaultPropsT = {

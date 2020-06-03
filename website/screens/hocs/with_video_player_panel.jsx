@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 import { Display } from "screens/session_container/facets/display";
 import { Display as MoveDisplay } from "screens/move_container/facets/display";
 import { VideoController } from "screens/move_container/facets/video_controller";
-import { mergeDefaultProps } from "facet/default_props";
+import { mergeDefaultProps } from "mergeDefaultProps";
 import { VideoPlayerPanel } from "video/presentation/video_player_panel";
 
 type PropsT = {

@@ -10,7 +10,7 @@ import ReactResizeDetector from "react-resize-detector";
 import { Display } from "screens/session_container/facets/display";
 import { Profiling } from "screens/session_container/facets/profiling";
 import { withRouter } from "utils/react_router_dom_wrapper";
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import { createToastr } from "app/utils";
 import SearchMovesPage from "screens/containers/search_moves_page";
 import { AccountMenu } from "app/presentation/accountmenu";

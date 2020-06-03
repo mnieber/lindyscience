@@ -1,8 +1,7 @@
-// @flow
-
 export const symbols = {
   symbol: Symbol("facetSymbol"),
-  operationSignals: Symbol("facetOperationSignals"),
+  operationSignalsBefore: Symbol("facetOperationSignalsBefore"),
+  operationSignalsAfter: Symbol("facetOperationSignalsAfter"),
   operationHandlers: Symbol("facetOperationHandlers"),
   dataMembers: Symbol("facetDataMembers"),
   facetMembers: Symbol("facetFacetMembers"),

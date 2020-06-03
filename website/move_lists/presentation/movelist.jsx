@@ -9,7 +9,7 @@ import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import { Dragging } from "facet-mobx/facets/dragging";
 import type { MoveListT } from "move_lists/types";
-import { mergeDefaultProps } from "facet/default_props";
+import { mergeDefaultProps } from "mergeDefaultProps";
 import { Highlight } from "facet-mobx/facets/highlight";
 import { Selection } from "facet-mobx/facets/selection";
 import { MovesContainer } from "screens/moves_container/moves_container";

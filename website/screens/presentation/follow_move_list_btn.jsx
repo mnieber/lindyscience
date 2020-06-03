@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { compose } from "redux";
 
 import type { MoveListT } from "move_lists/types";
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import { Labelling } from "facet-mobx/facets/labelling";
 
 type PropsT = {

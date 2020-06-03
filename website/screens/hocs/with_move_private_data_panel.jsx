@@ -4,7 +4,7 @@ import * as React from "react";
 import { compose } from "redux";
 import { observer } from "mobx-react";
 
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import type { MoveT } from "moves/types";
 import type { UserProfileT } from "profiles/types";
 import { createUUID } from "utils/utils";

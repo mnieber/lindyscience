@@ -11,7 +11,7 @@ import Ctr from "screens/containers/index";
 import { Display } from "screens/session_container/facets/display";
 import { Display as MoveDisplay } from "screens/move_container/facets/display";
 import { CutPoints } from "screens/cut_video_container/facets/cut_points";
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import {
   createKeyDownHandler,
   createVideoKeyHandlers,

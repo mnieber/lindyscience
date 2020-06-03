@@ -1,6 +1,4 @@
-// @flow
-
-export function getOrCreate(obj: any, key: string | Symbol, fn: Function) {
+export function getOrCreate(obj, key, fn) {
   if (!obj[key]) {
     obj[key] = fn();
   }

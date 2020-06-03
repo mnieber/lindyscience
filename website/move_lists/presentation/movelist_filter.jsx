@@ -7,7 +7,7 @@ import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 
-import { mergeDefaultProps } from "facet/default_props";
+import { mergeDefaultProps } from "mergeDefaultProps";
 import { Highlight } from "facet-mobx/facets/highlight";
 import { createTagsAndKeywordsFilter } from "screens/utils";
 import { Filtering } from "facet-mobx/facets/filtering";

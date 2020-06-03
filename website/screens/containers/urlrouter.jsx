@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { CutVideoCtrProvider } from "screens/cut_video_container/cut_video_container_provider";
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import { SessionCtrProvider } from "screens/session_container/session_container_provider";
 import { MoveListsCtrProvider } from "screens/movelists_container/movelists_container_provider";
 import { MovesCtrProvider } from "screens/moves_container/moves_container_provider";

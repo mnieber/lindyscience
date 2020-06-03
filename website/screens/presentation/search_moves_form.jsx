@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import { Display } from "screens/session_container/facets/display";
-import { mergeDefaultProps } from "facet/default_props";
+import { mergeDefaultProps } from "mergeDefaultProps";
 import { makeUnique } from "utils/utils";
 import { FormFieldError } from "utils/form_utils";
 import {

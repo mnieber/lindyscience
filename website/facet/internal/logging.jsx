@@ -1,14 +1,12 @@
-// @flow
-
 import { getOrCreate } from "facet/internal/utils";
-import { options, getContext } from "facet/internal/options";
+import { options } from "facet/internal/options";
 import { symbols, symbolName } from "facet/internal/symbols";
 
-export function facetClassName(facetClass: any) {
+export function facetClassName(facetClass) {
   return symbolName(facetClass[symbols.symbol]);
 }
 
-export function facetName(facet: any) {
+export function facetName(facet) {
   return symbolName(facet.constructor[symbols.symbol]);
 }
 
@@ -20,31 +18,25 @@ function camelToSnake(string) {
     .toLowerCase();
 }
 
-export const opName = (operationMember: string) =>
+export const opName = operationMember =>
   camelToSnake(operationMember).toUpperCase();
 
-export function log(
-  ctr: any,
-  operationMember: string,
-  facet: any,
-  args: any,
-  start: boolean
-) {
+export function log(ctr, operationMember, facet, args, start) {
   const ctrName = ctr.constructor.name;
   const operationName = opName(operationMember);
   const label = ctrName + "/" + facetName(facet) + "." + operationName;
 
   if (start) {
-    (console: any).group(label);
-    (console: any).log("%c           args: ", "color: gray", args);
-    (console: any).log("%c     state", "color: gray", containerState(ctr));
+    console.group(label);
+    console.log("%c           args: ", "color: gray", args);
+    console.log("%c     state", "color: gray", containerState(ctr));
   } else {
-    (console: any).log("%c     next", "color: gray", containerState(ctr));
-    (console: any).groupEnd(label);
+    console.log("%c     next", "color: gray", containerState(ctr));
+    console.groupEnd(label);
   }
 }
 
-export function containerState(ctr: any) {
+export function containerState(ctr) {
   if (ctr) {
     return ctr.constructor[symbols.facetMembers].reduce((acc, facetMember) => {
       const facet = ctr[facetMember];

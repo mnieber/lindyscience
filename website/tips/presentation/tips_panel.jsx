@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 import classnames from "classnames";
 
-import { mergeDefaultProps } from "facet/default_props";
+import { mergeDefaultProps } from "mergeDefaultProps";
 import {
   useInsertTip,
   useNewTip,

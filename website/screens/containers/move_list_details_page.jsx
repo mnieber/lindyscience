@@ -9,7 +9,7 @@ import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
 import type { UserProfileT } from "profiles/types";
 import { withCutVideoPanel } from "screens/hocs/with_cut_video_panel";
-import { withDefaultProps, mergeDefaultProps } from "facet/default_props";
+import { withDefaultProps, mergeDefaultProps } from "mergeDefaultProps";
 import { FollowMoveListBtn } from "screens/presentation/follow_move_list_btn";
 import { Editing } from "facet-mobx/facets/editing";
 import Ctr from "screens/containers/index";

@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import classnames from "classnames";
 
 import { helpUrl } from "moves/utils";
-import { mergeDefaultProps } from "facet/default_props";
+import { mergeDefaultProps } from "mergeDefaultProps";
 import { createErrorHandler } from "app/utils";
 import { Profiling } from "screens/session_container/facets/profiling";
 import { Navigation } from "screens/session_container/facets/navigation";

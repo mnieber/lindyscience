@@ -7,7 +7,6 @@ import {
   type ClassMemberT,
   facetClassName,
   facetName,
-  getContext,
   isDataMember,
 } from "facet";
 
@@ -39,20 +38,7 @@ export const relayData = (
   );
 
 export function reaction(dataFn: Function, effectFn: Function, options: any) {
-  const contextName = getContext().name;
-
-  if (contextName) {
-    return mobxReaction(
-      dataFn,
-      effectFn,
-      options && options.name
-        ? options
-        : { ...(options || {}), name: contextName }
-    );
-  } else {
-    console.warn("No context when calling reaction");
-    return mobxReaction(dataFn, effectFn, options);
-  }
+  return mobxReaction(dataFn, effectFn, options);
 }
 
 export function patchFacet(facet: any, members: any) {

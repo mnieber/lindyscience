@@ -22,7 +22,7 @@ import {
 } from "screens/session_container/facets/navigation";
 import type { MoveListT } from "move_lists/types";
 import type { MoveT } from "moves/types";
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import Ctr from "screens/containers/index";
 
 type PropsT = {

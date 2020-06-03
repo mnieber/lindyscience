@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import { compose } from "redux";
 
 import type { UserProfileT } from "profiles/types";
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import { useHistory } from "utils/react_router_dom_wrapper";
 import { actSetMoveSearchResults } from "screens/actions";
 import Ctr from "screens/containers/index";

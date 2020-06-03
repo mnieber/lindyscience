@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { observer } from "mobx-react";
 
 import { createErrorHandler } from "app/utils";
-import { mergeDefaultProps, withDefaultProps } from "facet/default_props";
+import { mergeDefaultProps, withDefaultProps } from "mergeDefaultProps";
 import { Profiling } from "screens/session_container/facets/profiling";
 import Ctr from "app/containers/index";
 import { SignInDialog } from "app/presentation/signin_dialog";

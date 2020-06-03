@@ -59,7 +59,6 @@ export class MoveListsContainer {
           ownerUsername: userProfile.username,
         });
       },
-      isEqual: props.isEqual,
     });
     this.editing = initEditing(new Editing(), {
       saveItem: (values: any) => {
@@ -120,7 +119,7 @@ export class MoveListsContainer {
       // creation
       MobXPolicies.newItemsAreCreatedBelowTheHighlight,
       MobXPolicies.newItemsAreEdited,
-      MobXPolicies.newItemsAreConfirmedWhenSaved,
+      MobXPolicies.newItemsAreConfirmedWhenSaved(props.isEqual),
       MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MoveListsContainerPolicies.newItemsAreFollowedWhenConfirmed,
       MobXPolicies.newItemsAreCanceledOnHighlightChange,

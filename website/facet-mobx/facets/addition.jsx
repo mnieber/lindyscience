@@ -18,9 +18,6 @@ export class Addition {
   @observable item: any;
   @observable parentId: any;
 
-  @input createItem: (values: any) => any;
-  @input isEqual: (lhs: any, rhs: any) => boolean;
-
   // $FlowFixMe
   @operation add(values: any) {}
   // $FlowFixMe
@@ -42,12 +39,14 @@ const handleCancelNewItem = (self: Addition) => {
   );
 };
 
-const handleAddNewItem = (self: Addition) => {
+type CreateItemT = (values: any) => any;
+
+const handleAddNewItem = (createItem: CreateItemT) => (self: Addition) => {
   listen(
     self,
     "add",
     action("addNewItem", function(values: any) {
-      self.item = self.createItem(values);
+      self.item = createItem(values);
     })
   );
 };
@@ -56,14 +55,10 @@ export const initAddition = (
   self: Addition,
   {
     createItem,
-    isEqual,
   }: {
-    createItem: (values: any) => any,
-    isEqual: (lhs: any, rhs: any) => boolean,
+    createItem: CreateItemT,
   }
 ): Addition => {
-  self.createItem = createItem;
-  self.isEqual = isEqual;
-  installHandlers([handleCancelNewItem, handleAddNewItem], self);
+  installHandlers([handleCancelNewItem, handleAddNewItem(createItem)], self);
   return self;
 };

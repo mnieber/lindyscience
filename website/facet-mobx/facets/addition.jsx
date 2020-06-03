@@ -1,16 +1,9 @@
 // @flow
 
 // $FlowFixMe
-import { action, observable } from "mobx";
+import { observable } from "mobx";
 
-import {
-  type GetFacet,
-  facetClass,
-  listen,
-  operation,
-  input,
-  installHandlers,
-} from "facet";
+import { type GetFacet, facetClass, operation, installHandlers } from "facet";
 
 // $FlowFixMe
 @facetClass
@@ -28,27 +21,17 @@ export class Addition {
   static get: GetFacet<Addition>;
 }
 
-const handleCancelNewItem = (self: Addition) => {
-  listen(
-    self,
-    "cancel",
-    action("cancelNewItem", function() {
-      self.item = undefined;
-      self.parentId = undefined;
-    })
-  );
+const handleCancelNewItem = (self: Addition) => () => {
+  self.item = undefined;
+  self.parentId = undefined;
 };
 
 type CreateItemT = (values: any) => any;
 
-const handleAddNewItem = (createItem: CreateItemT) => (self: Addition) => {
-  listen(
-    self,
-    "add",
-    action("addNewItem", function(values: any) {
-      self.item = createItem(values);
-    })
-  );
+const handleAddNewItem = (createItem: CreateItemT) => (self: Addition) => (
+  values: any
+) => {
+  self.item = createItem(values);
 };
 
 export const initAddition = (
@@ -59,6 +42,9 @@ export const initAddition = (
     createItem: CreateItemT,
   }
 ): Addition => {
-  installHandlers([handleCancelNewItem, handleAddNewItem(createItem)], self);
+  installHandlers({
+    add: handleAddNewItem(createItem),
+    cancel: handleCancelNewItem,
+  });
   return self;
 };

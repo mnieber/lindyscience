@@ -5,7 +5,7 @@ export function installPolicies(policies, ctr) {
 }
 
 export function installHandlers(handlers, facet) {
-  handlers.forEach(handler => {
-    handler(facet);
+  Object.entries(handlers).forEach((k, v) => {
+    handle(facet, k, action(v(facet)));
   });
 }

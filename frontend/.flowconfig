@@ -1,0 +1,23 @@
+[ignore]
+
+<PROJECT_ROOT>/node_modules/.*
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+
+module.name_mapper='^src/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
+module.name_mapper='^facet/\(.*\)$' -> '<PROJECT_ROOT>/facet/\1'
+module.name_mapper='^facet$' -> '<PROJECT_ROOT>/facet'
+module.name_mapper='^facet-mobx/\(.*\)$' -> '<PROJECT_ROOT>/facet-mobx/\1'
+module.name_mapper='^facet-mobx$' -> '<PROJECT_ROOT>/facet-mobx'
+module.name_mapper='^mergeDefaultProps/\(.*\)$' -> '<PROJECT_ROOT>/mergeDefaultProps/\1'
+
+esproposal.optional_chaining=enable
+esproposal.decorators=ignore
+
+[strict]

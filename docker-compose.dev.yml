@@ -1,0 +1,34 @@
+version: '3.7'
+
+services :
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.backend.dev
+    image: linsci_backend_dev
+
+    volumes:
+      # map the src directory to opt/app-root/src
+      - ./backend:/opt/linsci/src
+      # Preserve the following directories written by the docker container
+      # Note: first run `sudo python dev/configure.py` to create /srv/linsci
+      - /opt/linsci/static:/opt/linsci/static
+      - /opt/linsci/dumps:/opt/linsci/dumps
+      - /opt/linsci/log:/opt/linsci/log
+      - /opt/linsci/.pytest_report:/opt/linsci/.pytest_report
+      - /opt/linsci/.ipython:/opt/linsci/.ipython
+      - /opt/linsci/.bashrc:/opt/linsci/.bashrc
+      - /opt/linsci/.config:/opt/linsci/.config
+      - $HOME/.config/pudb:/root/.config/pudb
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.frontend.dev
+    image: linsci_frontend_dev
+    volumes:
+      # map the src directory to opt/app-root/src
+      - ./frontend:/opt/linsci/src
+      # Preserve the following directories written by the docker container
+      # Note: first run `sudo python dev/configure.py` to create /srv/linsci
+      - /opt/linsci/frontend/.bashrc:/opt/linsci/.bashrc

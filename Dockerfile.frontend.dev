@@ -1,0 +1,3 @@
+FROM linsci_frontend
+
+RUN apk add make mlocate nano fish curl

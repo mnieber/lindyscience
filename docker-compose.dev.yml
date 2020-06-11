@@ -12,6 +12,7 @@ services :
       - ./backend:/opt/linsci/src
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
+      - /opt/linsci/pypi:/opt/linsci/pypi
       - /opt/linsci/static:/opt/linsci/static
       - /opt/linsci/dumps:/opt/linsci/dumps
       - /opt/linsci/log:/opt/linsci/log

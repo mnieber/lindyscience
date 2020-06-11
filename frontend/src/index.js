@@ -10,12 +10,12 @@ import 'src/scss/react-table.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { MoveListsCtrProvider } from 'src/screens/movelists_container/movelists_container_provider';
-import { MovesCtrProvider } from 'src/screens/moves_container/moves_container_provider';
-import { AppFrame } from 'src/screens/containers/appframe';
-import { SessionCtrProvider } from 'src/screens/session_container/session_container_provider';
 import { configureStore } from 'src/app/store';
-import { UrlRouter } from 'src/screens/containers/urlrouter';
+import { SessionCtrProvider } from 'src/session/SessionCtrProvider';
+import { MoveListsCtrProvider } from 'src/move_lists/MovelistsCtrProvider';
+import { MovesCtrProvider } from 'src/moves/MovesCtr/MovesCtrProvider';
+import { AppFrame } from 'src/app/containers/AppFrame';
+import { UrlRouter } from 'src/app/containers/UrlRouter';
 
 configureStore();
 

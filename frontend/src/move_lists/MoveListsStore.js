@@ -1,11 +1,11 @@
 // @flow
 
-import { getObjectValues, insertIdsIntoList } from 'src/utils/utils';
+import { action, observable } from 'src/utils/mobx_wrapper';
 import type { MoveListByIdT, MoveListT } from 'src/move_lists/types';
 import type { TagMapT } from 'src/tags/types';
 import type { UUID } from 'src/kernel/types';
-import { action, observable } from 'src/utils/mobx_wrapper';
 import { addTags } from 'src/tags/utils';
+import { getObjectValues, insertIdsIntoList } from 'src/utils/utils';
 
 export class MoveListsStore {
   @observable moveListById: MoveListByIdT = {};

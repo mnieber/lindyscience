@@ -4,6 +4,7 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
+-e file:///opt/linsci/pypi/django-graphql-auth  # via -r requirements.in
 aniso8601==7.0.0          # via graphene
 attrs==19.3.0             # via pytest
 beautifulsoup4==4.7.1     # via -r requirements.in
@@ -16,11 +17,9 @@ django-environ==0.4.5     # via -r requirements.in
 django-extensions==2.0.7  # via -r requirements.in
 django-polymorphic==2.0.2  # via -r requirements.in
 django-tagulous==0.13.2   # via -r requirements.in
-django-templated-mail==1.1.1  # via djoser
 django-webpack-loader==0.6.0  # via -r requirements.in
 django==2.2.6             # via -r requirements.in, django-cors-headers, django-dbbackup, django-polymorphic, graphene-django
 djangorestframework==3.8.2  # via -r requirements.in
-djoser==1.7.0             # via -r requirements.in
 gitdb2==4.0.2             # via gitpython
 gitdb==4.0.5              # via gitdb2
 gitpython==2.1.10         # via -r requirements.in

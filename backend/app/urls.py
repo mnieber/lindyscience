@@ -27,7 +27,6 @@ if settings.DEBUG or getattr(settings, "FORCE_SERVE_STATIC", False):
 
 urlpatterns += i18n_patterns(
     path(r"admin/", admin.site.urls),
-    path(r"auth/", include("accounts.urls")),
     path(r"graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
     url(r"app/", AppView.as_view()),
     url(r"^$", RedirectView.as_view(url="app/")),

@@ -4,6 +4,7 @@
 #
 #    pip-compile --output-file=requirements.dev.txt requirements.dev.in
 #
+-e file:///opt/linsci/pypi/django-graphql-auth  # via -r requirements.txt
 aniso8601==7.0.0          # via -r requirements.txt, graphene
 appdirs==1.4.4            # via black
 attrs==19.3.0             # via -r requirements.txt, black, pytest
@@ -19,26 +20,27 @@ django-dbbackup==3.3.0    # via -r requirements.txt
 django-enumfields==0.10.1  # via -r requirements.txt
 django-environ==0.4.5     # via -r requirements.txt
 django-extensions==2.0.7  # via -r requirements.txt
+django-filter==2.3.0      # via django-graphql-auth
+django-graphql-jwt==0.3.0  # via django-graphql-auth
 django-polymorphic==2.0.2  # via -r requirements.txt
 django-tagulous==0.13.2   # via -r requirements.txt
-django-templated-mail==1.1.1  # via -r requirements.txt, djoser
 django-webpack-loader==0.6.0  # via -r requirements.txt
-django==2.2.6             # via -r requirements.txt, django-cors-headers, django-dbbackup, django-polymorphic, graphene-django
+django==2.2.6             # via -r requirements.txt, django-cors-headers, django-dbbackup, django-filter, django-graphql-auth, django-graphql-jwt, django-polymorphic, graphene-django
 djangorestframework==3.8.2  # via -r requirements.txt
-djoser==1.7.0             # via -r requirements.txt
 gitdb2==4.0.2             # via -r requirements.txt, gitpython
 gitdb==4.0.5              # via -r requirements.txt, gitdb2
 gitpython==2.1.10         # via -r requirements.txt
 graphene-django-optimizer==0.6.2  # via -r requirements.txt
-graphene-django==2.10.1   # via -r requirements.txt
-graphene==2.1.8           # via -r requirements.txt, graphene-django
-graphql-core==2.3.2       # via -r requirements.txt, graphene, graphene-django, graphql-relay
+graphene-django==2.10.1   # via -r requirements.txt, django-graphql-auth, django-graphql-jwt
+graphene==2.1.8           # via -r requirements.txt, django-graphql-auth, graphene-django
+graphql-core==2.3.2       # via -r requirements.txt, django-graphql-jwt, graphene, graphene-django, graphql-relay
 graphql-relay==2.0.1      # via -r requirements.txt, graphene
 gunicorn==19.8.1          # via -r requirements.txt
 idna==2.6                 # via -r requirements.txt, requests
 ipdb==0.10.1              # via -r requirements.dev.in
 ipython-genutils==0.2.0   # via traitlets
 ipython==7.15.0           # via -r requirements.dev.in, ipdb
+isort==4.3.21             # via -r requirements.dev.in
 jedi==0.17.0              # via ipython
 more-itertools==8.3.0     # via -r requirements.txt, pytest
 packaging==20.4           # via -r requirements.txt, pytest
@@ -55,6 +57,7 @@ ptyprocess==0.6.0         # via pexpect
 pudb==2018.1              # via -r requirements.dev.in
 py==1.8.1                 # via -r requirements.txt, pytest
 pygments==2.6.1           # via ipython, pudb
+pyjwt==1.7.1              # via django-graphql-jwt
 pyparsing==2.4.7          # via -r requirements.txt, packaging
 pytest-django==3.5.1      # via -r requirements.txt
 pytest-html==2.1.1        # via -r requirements.txt

@@ -7,4 +7,5 @@ declare module 'mergeDefaultProps' {
   }): any;
   declare export function withDefaultProps(WrappedComponent: any): any;
   declare export var DefaultPropsContext: any;
+  declare export type UseDefaultPropsT = { defaultProps?: any };
 }

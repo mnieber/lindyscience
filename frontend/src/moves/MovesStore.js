@@ -1,17 +1,17 @@
 // @flow
 
-import type { MoveSearchResultT } from 'src/screens/types';
-import { createUUID, listToItemById } from 'src/utils/utils';
+import { action, observable } from 'src/utils/mobx_wrapper';
 import type {
   MoveByIdT,
   MovePrivateDataByIdT,
   MovePrivateDataT,
   MoveT,
 } from 'src/moves/types';
-import type { UUID } from 'src/kernel/types';
 import type { TagMapT } from 'src/tags/types';
+import type { MoveSearchResultT } from 'src/search/types';
+import type { UUID } from 'src/kernel/types';
+import { createUUID, listToItemById } from 'src/utils/utils';
 import { addTags } from 'src/tags/utils';
-import { action, observable } from 'src/utils/mobx_wrapper';
 
 export class MovesStore {
   @observable privateDataByMoveId: MovePrivateDataByIdT = {};

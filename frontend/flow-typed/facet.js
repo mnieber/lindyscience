@@ -14,6 +14,7 @@ declare module 'facet' {
     facetClass: any
   ): (facetHost: any, facetMember: string, descriptor: any) => any;
   declare export function registerFacets(ctr: any): any;
+  declare export function getFacet(facetClass: any, ctr: any): any;
 
   declare export function handle(
     operationHost: any,

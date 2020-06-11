@@ -1,5 +1,6 @@
 django-enumfields==0.10.1
 django-extensions==2.0.7
+-e /opt/linsci/pypi/django-graphql-auth
 django-graphql-auth
 django-polymorphic==2.0.2
 django-tagulous==0.13.2

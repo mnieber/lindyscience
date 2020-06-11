@@ -224,23 +224,6 @@ LOGGING = {
     },
 }
 
-DJOSER = {
-    "ACTIVATION_URL": "app/register/activate/{uid}/{token}",
-    "EMAIL": {
-        "activation": "accounts.email.ActivationEmail",
-        "password_reset": "accounts.email.PasswordResetEmail",
-        "confirmation": "accounts.email.ConfirmationEmail",
-    },
-    "PASSWORD_RESET_CONFIRM_URL": "sign-in/reset-password/{uid}/{token}",
-    "PASSWORD_RESET_CONFIRM_RETYPE": False,
-    "SEND_ACTIVATION_EMAIL": True,
-    "SEND_CONFIRMATION_EMAIL": True,
-    "SERIALIZERS": {
-        "user_create": "accounts.serializers.UserCreateSerializer",
-        "current_user": "accounts.serializers.CurrentUserSerializer",
-    },
-}
-
 DOMAIN = "www.lindyscience.tk"
 
 DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
@@ -248,7 +231,11 @@ DBBACKUP_STORAGE_OPTIONS = {"location": "/opt/linsci/dumps"}
 
 GRAPHQL_AUTH = {
     "REGISTER_MUTATION_FIELDS": {"email": "String",},
+    "UPDATE_MUTATION_FIELDS": ["username"],
     "LOGIN_ALLOWED_FIELDS": ["email"],
+    "EMAIL_TEMPLATE_ACTIVATION": "accounts.email.ActivationEmail",
+    "EMAIL_TEMPLATE_ACTIVATION_RESEND": "accounts.email.ActivationEmail",
+    "EMAIL_TEMPLATE_PASSWORD_RESET": "accounts.email.PasswordResetEmail",
 }
 
 GRAPHQL_JWT = {

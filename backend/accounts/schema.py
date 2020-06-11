@@ -122,7 +122,7 @@ class Mutations(AuthMutation, graphene.ObjectType):
     pass
 
 
-class Query(graphene.ObjectType):
+class Query(MeQuery, graphene.ObjectType):
     user_profile = graphene.Field(ProfileType)
     users = graphene.List(UserType)
     user = graphene.Field(UserType, id=graphene.String())

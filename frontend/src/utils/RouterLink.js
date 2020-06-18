@@ -10,7 +10,7 @@ type PropsT = {
 
 export const RouterLink = ({ children, to }: PropsT) => {
   return (
-    <Link component={LinkComponent} className="ml-2" to={to}>
+    <Link className="ml-2" to={to}>
       {children}
     </Link>
   );

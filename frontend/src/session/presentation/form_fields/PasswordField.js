@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { labelProps } from 'src/session/presentation/labelProps';
 import { FormFieldLabel } from 'src/utils/form_utils';
 import { TextField } from '@material-ui/core';
 import { formFieldProps } from 'src/session/presentation/formFieldProps';
@@ -13,7 +14,7 @@ type PropsT = {
 
 export const PasswordField = (props: PropsT) => {
   return (
-    <FormFieldLabel label={props.label}>
+    <FormFieldLabel {...labelProps(props)}>
       <TextField type="password" {...formFieldProps(props)} />
     </FormFieldLabel>
   );

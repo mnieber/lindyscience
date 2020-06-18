@@ -2,24 +2,26 @@
 
 import React from 'react';
 import classnames from 'classnames';
+import { isEmpty, isNil } from 'rambda';
 
 type FormFieldLabelPropsT = {
   classNames?: any,
   fieldName: string,
   label: string,
   buttons?: any,
+  children?: any,
 };
 
 export function FormFieldLabel(props: FormFieldLabelPropsT) {
   const ColWrapper =
     isNil(props.children) || isEmpty(props.children)
       ? React.Fragment
-      : ({ children }) => <div className="flexcol">{children}</div>;
+      : ({ children }: any) => <div className="flexcol">{children}</div>;
 
   const RowWrapper =
     isNil(props.buttons) || isEmpty(props.buttons)
       ? React.Fragment
-      : ({ children }) => <div className="flexrow">{children}</div>;
+      : ({ children }: any) => <div className="flexrow">{children}</div>;
 
   return (
     <ColWrapper>

@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { labelProps } from 'src/session/presentation/labelProps';
+import { FormFieldLabel } from 'src/utils/form_utils';
 import { formFieldProps } from 'src/session/presentation/formFieldProps';
 
 type PropsT = {
@@ -11,7 +13,7 @@ type PropsT = {
 
 export const UsernameField = (props: PropsT) => {
   return (
-    <FormFieldLabel label={props.label}>
+    <FormFieldLabel {...labelProps(props)}>
       <input {...formFieldProps(props)} />
     </FormFieldLabel>
   );

@@ -1,9 +1,8 @@
 // @flow
 
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 
-import { formStateProps } from 'src/session/presentation/formStateProps';
+import { formFieldProps } from 'src/session/presentation/formFieldProps';
 
 type PropsT = {
   fieldName: string,
@@ -12,14 +11,8 @@ type PropsT = {
 
 export const UsernameField = (props: PropsT) => {
   return (
-    <TextField
-      autoComplete="username"
-      fullWidth
-      label={props.label}
-      margin="normal"
-      required
-      variant="outlined"
-      {...formStateProps(props)}
-    />
+    <FormFieldLabel label={props.label}>
+      <input {...formFieldProps(props)} />
+    </FormFieldLabel>
   );
 };

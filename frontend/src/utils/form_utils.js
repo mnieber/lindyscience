@@ -11,16 +11,28 @@ type FormFieldLabelPropsT = {
 };
 
 export function FormFieldLabel(props: FormFieldLabelPropsT) {
+  const ColWrapper =
+    isNil(props.children) || isEmpty(props.children)
+      ? React.Fragment
+      : ({ children }) => <div className="flexcol">{children}</div>;
+
+  const RowWrapper =
+    isNil(props.buttons) || isEmpty(props.buttons)
+      ? React.Fragment
+      : ({ children }) => <div className="flexrow">{children}</div>;
+
   return (
-    <div className="flexrow">
-      <label
-        className={classnames('mt-2 font-bold', props.classNames)}
-        htmlFor={props.fieldName}
-      >
-        {props.label}
-      </label>
-      {props.buttons}
-    </div>
+    <ColWrapper>
+      <RowWrapper>
+        <label
+          className={classnames('mt-2 font-bold', props.classNames)}
+          htmlFor={props.fieldName}
+        >
+          {props.label}
+        </label>
+        {props.buttons}
+      </RowWrapper>
+    </ColWrapper>
   );
 }
 

@@ -1,6 +1,5 @@
 // @flow
 
-import { Grid } from '@material-ui/core';
 import React from 'react';
 import { compose } from 'rambda';
 import { observer } from 'mobx-react';
@@ -38,18 +37,12 @@ export const SignInPage = compose(
           }
           errors={errors}
         />
-        <Grid container>
-          <Grid item xs>
-            <RouterLink to="/request-password-reset/" variant="body2">
-              Forgot password?
-            </RouterLink>
-          </Grid>
-          <Grid item>
-            <RouterLink to="/sign-up/" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </RouterLink>
-          </Grid>
-        </Grid>
+        <RouterLink to="/request-password-reset/" variant="body2">
+          Forgot password?
+        </RouterLink>
+        <RouterLink to="/sign-up/" variant="body2">
+          {"Don't have an account? Sign Up"}
+        </RouterLink>
       </div>
     </AuthenticationFrame>
   );

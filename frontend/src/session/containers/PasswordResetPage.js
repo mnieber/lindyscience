@@ -1,6 +1,5 @@
 // @flow
 
-import { Grid } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import React from 'react';
 import { observer } from 'mobx-react';
@@ -67,13 +66,9 @@ export const PasswordResetPage = compose(
             errors={props.authentication.errors}
           />
         )}
-        <Grid container>
-          <Grid item xs>
-            <RouterLink to="/sign-in/" variant="body2">
-              Sign in
-            </RouterLink>
-          </Grid>
-        </Grid>
+        <RouterLink to="/sign-in/" variant="body2">
+          Sign in
+        </RouterLink>
       </div>
     </AuthenticationFrame>
   );

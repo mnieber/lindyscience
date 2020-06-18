@@ -1,9 +1,10 @@
 // @flow
 
-import { TextField } from '@material-ui/core';
 import React from 'react';
 
-import { formStateProps } from 'src/session/presentation/formStateProps';
+import { FormFieldLabel } from 'src/utils/form_utils';
+import { TextField } from '@material-ui/core';
+import { formFieldProps } from 'src/session/presentation/formFieldProps';
 
 type PropsT = {
   fieldName: string,
@@ -12,15 +13,8 @@ type PropsT = {
 
 export const PasswordField = (props: PropsT) => {
   return (
-    <TextField
-      autoComplete="current-password"
-      fullWidth
-      label={props.label}
-      margin="normal"
-      required
-      type="password"
-      variant="outlined"
-      {...formStateProps(props)}
-    />
+    <FormFieldLabel label={props.label}>
+      <TextField type="password" {...formFieldProps(props)} />
+    </FormFieldLabel>
   );
 };

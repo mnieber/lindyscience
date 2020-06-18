@@ -2,7 +2,7 @@ import { useFormStateContext } from 'src/session/presentation/FormStateProvider'
 
 type FieldT = 'checkbox' | 'textfield';
 
-export const formStateProps = (
+export const formFieldProps = (
   { fieldName, ...otherProps }: any,
   fieldType: ?FieldT
 ) => {
@@ -13,6 +13,7 @@ export const formStateProps = (
     ...(fieldType === 'checkbox'
       ? {
           checked: formState.values[fieldName],
+          type: 'checkbox',
         }
       : {
           error: !!formState.errors[fieldName],

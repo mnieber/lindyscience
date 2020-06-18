@@ -1,6 +1,5 @@
 // @flow
 
-import { Container, Typography } from '@material-ui/core';
 import React from 'react';
 
 // PasswordResetPage
@@ -12,13 +11,9 @@ type PropsT = {
 
 export const AuthenticationFrame = (props: PropsT) => {
   return (
-    <Container component="main" maxWidth="xs">
-      <div className="">
-        <Typography component="h1" variant="h5">
-          {props.header}
-        </Typography>
-        {props.children}
-      </div>
-    </Container>
+    <div className="">
+      <h1 className="text-lg">{props.header}</h1>
+      {props.children}
+    </div>
   );
 };

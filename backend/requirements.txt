@@ -15,18 +15,20 @@ django-dbbackup==3.3.0    # via -r requirements.in
 django-enumfields==0.10.1  # via -r requirements.in
 django-environ==0.4.5     # via -r requirements.in
 django-extensions==2.0.7  # via -r requirements.in
+django-filter==2.4.0      # via django-graphql-auth
+django-graphql-jwt==0.3.0  # via django-graphql-auth
 django-polymorphic==2.0.2  # via -r requirements.in
 django-tagulous==0.13.2   # via -r requirements.in
 django-webpack-loader==0.6.0  # via -r requirements.in
-django==2.2.6             # via -r requirements.in, django-cors-headers, django-dbbackup, django-polymorphic, graphene-django
+django==2.2.6             # via -r requirements.in, django-cors-headers, django-dbbackup, django-filter, django-graphql-auth, django-graphql-jwt, django-polymorphic, graphene-django
 djangorestframework==3.8.2  # via -r requirements.in
 gitdb2==4.0.2             # via gitpython
 gitdb==4.0.5              # via gitdb2
 gitpython==2.1.10         # via -r requirements.in
 graphene-django-optimizer==0.6.2  # via -r requirements.in
-graphene-django==2.10.1   # via -r requirements.in
-graphene==2.1.8           # via graphene-django
-graphql-core==2.3.2       # via graphene, graphene-django, graphql-relay
+graphene-django==2.10.1   # via -r requirements.in, django-graphql-auth, django-graphql-jwt
+graphene==2.1.8           # via django-graphql-auth, graphene-django
+graphql-core==2.3.2       # via django-graphql-jwt, graphene, graphene-django, graphql-relay
 graphql-relay==2.0.1      # via graphene
 gunicorn==19.8.1          # via -r requirements.in
 idna==2.6                 # via requests
@@ -36,6 +38,7 @@ pluggy==0.13.1            # via pytest
 promise==2.3              # via graphene-django, graphql-core, graphql-relay
 psycopg2==2.8.5           # via -r requirements.in
 py==1.8.1                 # via pytest
+pyjwt==1.7.1              # via django-graphql-jwt
 pyparsing==2.4.7          # via packaging
 pytest-django==3.5.1      # via -r requirements.in
 pytest-html==2.1.1        # via -r requirements.in

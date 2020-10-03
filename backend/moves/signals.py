@@ -1,11 +1,13 @@
 from django.dispatch import receiver
-from djoser.signals import user_activated
 
 from accounts.models import Profile, ProfileToMoveList
 from moves import models
 
+# from djoser.signals import user_activated
 
-@receiver(user_activated)
+
+
+# @receiver(user_activated)
 def create_profile_on_activation(sender, user, request, **kwargs):
     trash = models.MoveList(
         role="trash",

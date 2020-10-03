@@ -1,11 +1,6 @@
 import { EditorState, CharacterMetadata, convertFromRaw } from 'draft-js';
 import { stateFromHTML } from 'draft-js-import-html';
 
-type MatchT = {
-  startPos: number;
-  startPos: number;
-};
-
 type CursorT = {
   charMap: Array<any>;
   pos: number;
@@ -92,7 +87,7 @@ export function createReadOnlyBlocks(contentState: any): Array<any> {
   const blockMap = contentState.getBlockMap();
 
   let allText = '';
-  blockMap.map((block, key) => {
+  blockMap.map((block: any, key: any) => {
     allText += block.getText();
   });
 
@@ -103,7 +98,7 @@ export function createReadOnlyBlocks(contentState: any): Array<any> {
   };
 
   allText = '';
-  let newBlocks = blockMap.map((block, key) => {
+  let newBlocks = blockMap.map((block: any, key: any) => {
     const newBlock = createBlockWithTimings(block, cursorTimings);
     allText += newBlock.getText();
     return newBlock;

@@ -30,13 +30,18 @@ function _moveUrl(moveSearchResult: MoveSearchResultT) {
 }
 
 export function MoveTable(props: PropsT) {
-  const _getTrProps = (state, rowInfo, column, instance) => {
+  const _getTrProps = (
+    state: any,
+    rowInfo: any,
+    column: any,
+    instance: any
+  ) => {
     const moveListId = rowInfo ? rowInfo.row.id : '';
     const className = '';
 
     return {
       id: 'row-' + moveListId,
-      onClick: (e, handleOriginal) => {},
+      onClick: () => {},
       className: className,
     };
   };
@@ -45,8 +50,8 @@ export function MoveTable(props: PropsT) {
     const columns = [
       {
         accessor: 'name',
-        Header: (props) => <span className="">Name</span>,
-        Cell: (props) => {
+        Header: (props: any) => <span className="">Name</span>,
+        Cell: (props: any) => {
           return (
             <RouterLink to={_moveUrl(props.original)}>
               {props.original.name}
@@ -60,8 +65,8 @@ export function MoveTable(props: PropsT) {
       },
       {
         accessor: 'moveList',
-        Header: (props) => <span className="">Move List</span>,
-        Cell: (props) => {
+        Header: (props: any) => <span className="">Move List</span>,
+        Cell: (props: any) => {
           return (
             <RouterLink to={_moveListUrl(props.original)}>
               {_moveListName(props.original)}

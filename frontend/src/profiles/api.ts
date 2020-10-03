@@ -18,10 +18,10 @@ export function apiLoadUserProfile() {
     }`;
   const response = doQuery(query, {});
 
-  return response.then((result) => {
+  return response.then((result: any) => {
     if (result.userProfile) {
       // put owner.username into the root as username
-      flatten(result.userProfile, ['/owner'], (pk, ck) => ck);
+      flatten(result.userProfile, ['/owner'], (pk: any, ck: any) => ck);
       // put user.id into the root as userId
       flatten(result.userProfile, ['/user']);
     }

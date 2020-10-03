@@ -26,7 +26,7 @@ function RichTextEditor_(props: PropsT) {
     props.initialEditorState
   );
 
-  const _setEditorState = (editorState) => {
+  const _setEditorState = (editorState: any) => {
     setEditorState(editorState);
   };
 
@@ -36,7 +36,7 @@ function RichTextEditor_(props: PropsT) {
     }
   }, [props.forwardedRef]);
 
-  const handleKeyCommand = (command, editorState) => {
+  const handleKeyCommand = (command: any, editorState: any) => {
     let newState = null;
 
     if (props.customHandleKeyCommand) {

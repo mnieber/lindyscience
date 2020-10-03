@@ -81,7 +81,7 @@ export function TagsAndKeywordsPicker(props: PropsT) {
     props.defaults.value = value;
   };
 
-  const onInputChange = (inputValue, { action }) => {
+  const onInputChange = (inputValue: any, { action }: any) => {
     setTextChanged(true);
     switch (action) {
       case 'input-change':
@@ -101,7 +101,7 @@ export function TagsAndKeywordsPicker(props: PropsT) {
     );
   };
 
-  const onKeyDown = (event) => {
+  const onKeyDown = (event: any) => {
     if (event.keyCode == 13) {
       setHasEnter(true);
     }

@@ -1,4 +1,3 @@
-import { values } from 'rambda';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { withFormik } from 'formik';
@@ -24,12 +23,12 @@ type InnerFormPropsT = {
 };
 
 const InnerForm = (props: InnerFormPropsT) =>
-  observer((formProps) => {
+  observer((formProps: any) => {
     const placeholder = props.display.small
       ? 'Search moves'
       : 'Search moves by :tags, keywords and user:me';
 
-    const _onPickerTextChange = (tags, searchText) => {
+    const _onPickerTextChange = (tags: any, searchText: any) => {
       formProps.setFieldValue('tags', tags);
       formProps.setFieldValue('searchText', searchText);
     };
@@ -41,8 +40,6 @@ const InnerForm = (props: InnerFormPropsT) =>
           placeholder={placeholder}
           onTextChange={_onPickerTextChange}
           zIndex={10}
-          label="Tags"
-          fieldName="tags"
           defaults={props.defaults}
         />
         <FormFieldError
@@ -54,7 +51,7 @@ const InnerForm = (props: InnerFormPropsT) =>
       </div>
     );
 
-    const hiddenSearchBtnRef = React.createRef();
+    const hiddenSearchBtnRef: any = React.createRef();
 
     const hiddenSearchBtn = (
       <button
@@ -115,7 +112,7 @@ type DefaultPropsT = {
 
 export const SearchMovesForm: React.FC<PropsT> = observer((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-  const [defaults, setDefaults] = React.useState({});
+  const [defaults] = React.useState({});
 
   const EnhancedForm = withFormik({
     mapPropsToValues: () => ({

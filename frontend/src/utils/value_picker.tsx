@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+// @ts-ignore
 import Creatable from 'react-select/lib/Creatable';
 import jQuery from 'jquery';
 
@@ -39,7 +40,7 @@ export function ValuePicker_(props: PropsT) {
     placeholder: props.placeholder,
     value: props.value,
     onChange: saveChanges,
-    onKeyDown: (e) => {
+    onKeyDown: (e: any) => {
       handleEnterAsTabToNext(e, false);
     },
     ref: props.forwardedRef,

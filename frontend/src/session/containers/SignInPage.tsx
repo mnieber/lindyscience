@@ -22,9 +22,7 @@ export const SignInPage = compose(
   observer
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-  const { errors, state, hasErrors } = useAuthenticationState(
-    props.authentication
-  );
+  const { errors } = useAuthenticationState(props.authentication);
 
   return (
     <AuthenticationFrame header="Sign in">
@@ -35,10 +33,8 @@ export const SignInPage = compose(
           }
           errors={errors}
         />
-        <RouterLink to="/request-password-reset/" variant="body2">
-          Forgot password?
-        </RouterLink>
-        <RouterLink to="/sign-up/" variant="body2">
+        <RouterLink to="/request-password-reset/">Forgot password?</RouterLink>
+        <RouterLink to="/sign-up/">
           {"Don't have an account? Sign Up"}
         </RouterLink>
       </div>

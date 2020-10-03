@@ -19,9 +19,9 @@ type PropsT = {
   parentObject: OwnedObjectT;
   tips: Array<TipT>;
   voteByObjectId: VoteByIdT;
-  saveTip: (TipT) => void;
-  deleteTip: (TipT) => void;
-  voteTip: (UUID, VoteT) => void;
+  saveTip: (tip: TipT) => void;
+  deleteTip: (tip: TipT) => void;
+  voteTip: (id: UUID, vote: VoteT) => void;
   defaultProps?: any;
 };
 

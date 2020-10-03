@@ -22,7 +22,8 @@ export const getInsertionIndex = (
     return itemsCount;
   }
 
-  const getMidPoint = (start, end) => Math.floor((end - start) / 2) + start;
+  const getMidPoint = (start: number, end: number) =>
+    Math.floor((end - start) / 2) + start;
   let start = 0;
   let end = itemsCount - 1;
   let index = getMidPoint(start, end);

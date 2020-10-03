@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'src/utils/mobx_wrapper';
-import { TipByIdT, TipsByIdT } from 'src/tips/types';
+import { TipT, TipByIdT, TipsByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import { isNone, reduceMapToMap } from 'src/utils/utils';
 import { keys } from 'lodash/fp';
@@ -17,7 +17,7 @@ export class TipsStore {
   @action removeTips(tipIds: Array<UUID>) {
     this.tipById = keys(this.tipById)
       .filter((x) => !tipIds.includes(x))
-      .reduce((acc, id) => {
+      .reduce((acc: any, id: any) => {
         acc[id] = this.tipById[id];
         return acc;
       }, {});
@@ -37,14 +37,17 @@ export class TipsStore {
   }
 
   @computed get tipsByMoveId() {
-    return reduceMapToMap<TipsByIdT>(this.tipById, (acc, tipId, tip) => {
-      if (isNone(acc[tip.moveId])) {
-        acc[tip.moveId] = [];
+    return reduceMapToMap<TipsByIdT>(
+      this.tipById,
+      (acc: any, tipId: UUID, tip: TipT) => {
+        if (isNone(acc[tip.moveId])) {
+          acc[tip.moveId] = [];
+        }
+        acc[tip.moveId].push(tip);
+        // TODO:
+        // acc[tip.moveId] = acc[tip.moveId]
+        //   .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
       }
-      acc[tip.moveId].push(tip);
-      // TODO:
-      // acc[tip.moveId] = acc[tip.moveId]
-      //   .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
-    });
+    );
   }
 }

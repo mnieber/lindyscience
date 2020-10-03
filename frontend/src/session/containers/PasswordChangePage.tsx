@@ -24,9 +24,7 @@ export const PasswordChangePage = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const params = useParams();
-  const { errors, state, hasErrors } = useAuthenticationState(
-    props.authentication
-  );
+  const { errors, state } = useAuthenticationState(props.authentication);
 
   const explanationDiv = <div>Please enter your new password.</div>;
   const confirmationDiv = (
@@ -49,7 +47,10 @@ export const PasswordChangePage = compose(
           <PasswordChangeForm
             errors={errors}
             changePassword={(password) =>
-              props.authentication.changePassword(password, params.token as any)
+              props.authentication.changePassword(
+                password,
+                (params as any).token
+              )
             }
           />
         )}

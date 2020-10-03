@@ -17,8 +17,8 @@ export type AuthenticationStateT =
 export class Authentication {
   @data @observable signedInUserId?: string;
   @data @observable acceptsCookies: boolean = false;
-  @data @observable errors: Array<string>;
-  @data @observable state: AuthenticationStateT;
+  @data @observable errors?: Array<string>;
+  @data @observable state?: AuthenticationStateT;
 
   @operation loadUserId() {}
   @operation signIn(userId: string, password: string, rememberMe: boolean) {}

@@ -38,10 +38,14 @@ export const CutVideoCtrProvider: React.FC<PropsT> = compose(
     );
   };
 
-  const updateCtr = (ctr) => {
+  const updateCtr = (ctr: CutVideoContainer) => {
     reaction(
-      () => [props.display, props.userProfile, props.moveList],
-      ([display, userProfile, moveList]) => {
+      () => ({
+        display: props.display,
+        userProfile: props.userProfile,
+        moveList: props.moveList,
+      }),
+      ({ display, userProfile, moveList }) => {
         ctr.inputs.sessionDisplay = display;
         ctr.inputs.userProfile = userProfile;
         ctr.inputs.moveList = moveList;
@@ -49,7 +53,7 @@ export const CutVideoCtrProvider: React.FC<PropsT> = compose(
     );
   };
 
-  const getDefaultProps = (ctr) => {
+  const getDefaultProps = (ctr: CutVideoContainer) => {
     return {
       videoController: () => ctr.cutPoints.videoController,
       cutPoints: () => ctr.cutPoints,

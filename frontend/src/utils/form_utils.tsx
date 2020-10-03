@@ -78,14 +78,14 @@ type FormFieldPropsT = {
 export function FormField(props: FormFieldPropsT) {
   const htmlElement = React.useRef(null);
 
-  const selectAllOnFocus = (event) => {
+  const selectAllOnFocus = (event: any) => {
     event.target.select();
   };
 
   const formFieldProps = {
     id: props.fieldName,
     value: props.formProps.values[props.fieldName],
-    onChange: (x) => {
+    onChange: (x: any) => {
       props.formProps.handleChange(x);
       if (props.onChange) {
         props.onChange(x);
@@ -122,7 +122,7 @@ export function FormField(props: FormFieldPropsT) {
       />
     );
 
-  const postfix = (x) => {
+  const postfix = (x: any) => {
     return props.postfix ? (
       <div className="flexrow items-center">
         {x}

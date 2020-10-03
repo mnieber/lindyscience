@@ -1,6 +1,5 @@
 import { CutPointT } from 'src/video/types';
 import { MoveT } from 'src/moves/types';
-import { moves } from 'src/tips/tests/data';
 import { action, observable } from 'src/utils/mobx_wrapper';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { UUID } from 'src/kernel/types';
@@ -9,10 +8,10 @@ import { getInsertionIndex } from 'src/utils/get_insertion_index';
 import { data, handle, input, operation } from 'src/npm/facet';
 
 export class CutPoints {
-  @input createMove: (cutPoint: CutPointT, videoLink: string) => MoveT;
-  @input saveMoves: (moves: Array<MoveT>) => any;
-  @observable @input videoController: VideoController;
-  @observable @data cutPoints: Array<CutPointT>;
+  @input createMove?: (cutPoint: CutPointT, videoLink: string) => MoveT;
+  @input saveMoves?: (moves: Array<MoveT>) => any;
+  @observable @input videoController?: VideoController;
+  @observable @data cutPoints?: Array<CutPointT>;
 
   @operation add(cutPointType: 'start' | 'end') {}
   @operation remove(cutPointIds: Array<UUID>) {}
@@ -45,10 +44,10 @@ function _createNewCutPoint(
 }
 
 function _addCutPoints(self: CutPoints, cutPoints: Array<CutPointT>) {
-  const cmp = (lhs, rhs) => lhs.t - rhs.t;
-  self.cutPoints = cutPoints.reduce((acc, cutPoint) => {
+  const cmp = (lhs: CutPointT, rhs: CutPointT) => lhs.t - rhs.t;
+  self.cutPoints = cutPoints.reduce((acc: any, cutPoint: CutPointT) => {
     const existingCutPoint = acc.find(
-      (x) => x.type == cutPoint.type && x.t == cutPoint.t
+      (x: CutPointT) => x.type == cutPoint.type && x.t == cutPoint.t
     );
 
     if (existingCutPoint && existingCutPoint.id != cutPoint.id) {
@@ -74,7 +73,7 @@ function handleAdd(self: CutPoints) {
     action((cutPointType: 'start' | 'end') => {
       const newCutPoint = _createNewCutPoint(
         cutPointType,
-        self.videoController.getPlayer().getCurrentTime()
+        (self.videoController as any).getPlayer().getCurrentTime()
       );
       _addCutPoints(self, [newCutPoint]);
     })
@@ -104,7 +103,9 @@ function handleSave(self: CutPoints) {
     self,
     'save',
     action((values: any) => {
-      const existingCutPoint = self.cutPoints.find((x) => x.id == values.id);
+      const existingCutPoint = (self.cutPoints as any).find(
+        (x: CutPointT) => x.id == values.id
+      );
       const cutPoint: CutPointT = {
         ...existingCutPoint,
         ...values,
@@ -120,30 +121,33 @@ function handleRemove(self: CutPoints) {
     self,
     'remove',
     action((cutPointIds: Array<UUID>) => {
-      self.cutPoints = self.cutPoints.filter(
-        (x) => !cutPointIds.includes(x.id)
+      self.cutPoints = (self.cutPoints as any).filter(
+        (x: CutPointT) => !cutPointIds.includes(x.id)
       );
     })
   );
 }
 
 function _createMovesFromCutPoints(self: CutPoints) {
-  const newMoves: Array<MoveT> = self.cutPoints.reduce((acc, cutPoint) => {
-    if (cutPoint.type == 'end') {
-      const lastMoveIdx = acc.length - 1;
-      const lastMove = acc.length ? acc[lastMoveIdx] : undefined;
-      return lastMove && isNone(lastMove.endTimeMs)
-        ? [
-            ...acc.slice(0, lastMoveIdx),
-            { ...lastMove, endTimeMs: cutPoint.t * 1000 },
-          ]
-        : acc;
-    } else {
-      const newMove = self.createMove(cutPoint, self.videoLink);
-      return [...acc, newMove];
-    }
-  }, []);
-  return self.saveMoves(newMoves);
+  const newMoves: Array<MoveT> = (self.cutPoints as any).reduce(
+    (acc: any, cutPoint: CutPointT) => {
+      if (cutPoint.type == 'end') {
+        const lastMoveIdx = acc.length - 1;
+        const lastMove = acc.length ? acc[lastMoveIdx] : undefined;
+        return lastMove && isNone(lastMove.endTimeMs)
+          ? [
+              ...acc.slice(0, lastMoveIdx),
+              { ...lastMove, endTimeMs: cutPoint.t * 1000 },
+            ]
+          : acc;
+      } else {
+        const newMove = (self.createMove as any)(cutPoint, self.videoLink);
+        return [...acc, newMove];
+      }
+    },
+    []
+  );
+  return (self.saveMoves as any)(newMoves);
 }
 
 export function initCutPoints(

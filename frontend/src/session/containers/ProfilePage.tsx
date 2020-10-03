@@ -9,7 +9,7 @@ import { values } from 'lodash/fp';
 type PropsT = {};
 
 export function ProfilePage(props: PropsT) {
-  const params = useParams();
+  const params: any = useParams();
 
   const [ownMoveLists, setOwnMoveLists]: [
     Array<MoveListT>,

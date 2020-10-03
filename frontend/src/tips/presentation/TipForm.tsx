@@ -13,7 +13,7 @@ export function TipForm({
   onCancel: () => void;
   values: any;
 }) {
-  function InnerForm(props) {
+  function InnerForm(props: any) {
     return (
       <form className="tipForm w-full" onSubmit={props.handleSubmit}>
         <div className={'flex flex-wrap'}>

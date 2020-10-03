@@ -35,6 +35,11 @@ export function splitTextIntoTagsAndKeywords(inputValue: string) {
   };
 }
 
+type PickerItem = {
+  value: string;
+  label: string;
+};
+
 type PropsT = {
   zIndex?: number;
   onChange?: Function;
@@ -56,7 +61,7 @@ export function TagsAndKeywordsPicker(props: PropsT) {
   if (hasEnter) {
     setHasEnter(false);
     if (props.onChange) {
-      const tags = value.map((x) => x.value);
+      const tags = value.map((x: PickerItem) => x.value);
       if (props.onChange) props.onChange(tags, inputValue);
     }
   }
@@ -64,7 +69,7 @@ export function TagsAndKeywordsPicker(props: PropsT) {
   if (textChanged) {
     setTextChanged(false);
     if (props.onTextChange) {
-      const tags = value.map((x) => x.value);
+      const tags = value.map((x: PickerItem) => x.value);
       if (props.onTextChange) props.onTextChange(tags, inputValue);
     }
   }
@@ -72,7 +77,7 @@ export function TagsAndKeywordsPicker(props: PropsT) {
   const saveChanges = (value: any) => {
     const newInputValue = inputValue
       .split(' ')
-      .filter((x) => !x.startsWith(':'))
+      .filter((x: string) => !x.startsWith(':'))
       .join(' ');
     setInputValue(newInputValue);
     props.defaults.inputValue = newInputValue;

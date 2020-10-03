@@ -1,5 +1,4 @@
 import { Data } from 'src/session/facets/Data';
-import { Inputs } from 'src/move_lists/facets/Inputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { action, reaction } from 'src/utils/mobx_wrapper';
 import { newMoveListSlug } from 'src/app/utils';
@@ -8,7 +7,6 @@ import { values } from 'lodash/fp';
 
 export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
   const navigation = Navigation.get(ctr);
-  const inputs = Inputs.get(ctr);
   const data = Data.get(ctr);
 
   reaction(
@@ -30,7 +28,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
 
           if (moveList) {
             data.movesStore.addMoves(values(moveList.entities.moves || {}));
-            data.moveListsStore.addMoveLists(moveList.entities.moveLists);
+            data.moveListsStore.addMoveLists(moveList.entities.moveLists ?? []);
             data.tipsStore.addTips(moveList.entities.tips || {});
             navigation.loadedData.moveListUrl.push(selectedMoveListUrl);
           }

@@ -18,7 +18,7 @@ const createDataRequestMap = (createValue: Function) => ({
 
 export class Navigation {
   @observable history: any;
-  @observable locationMemo: string;
+  @observable locationMemo?: string;
   // TODO: move data loading stuff out
   @observable dataRequest: DataRequestT = {};
   @observable loadedData = createDataRequestMap(() => []);
@@ -58,7 +58,7 @@ const _setHistory = (self: Navigation, history: any) => {
     self.pathname = window.location.pathname;
     self.history = history;
     self.history.listen(
-      action((location, action) => {
+      action((location: any, action: any) => {
         self.pathname = location.pathname;
       })
     );
@@ -95,8 +95,8 @@ export const getStatus = (self: Navigation) => {
       return {
         ...acc,
         [resourceName]: {
-          hasLoaded: self.loadedData[resourceName].includes(url),
-          notFound: self.notFoundData[resourceName].includes(url),
+          hasLoaded: (self.loadedData as any)[resourceName].includes(url),
+          notFound: (self.notFoundData as any)[resourceName].includes(url),
         },
       };
     },

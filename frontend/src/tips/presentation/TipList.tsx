@@ -11,14 +11,14 @@ type TipListPropsT = {
   parentObject: OwnedObjectT;
   items: Array<TipT>;
   voteByObjectId: VoteByIdT;
-  setVote: (UUID, VoteT) => void;
+  setVote: (id: UUID, vote: VoteT) => void;
   saveTip: Function;
   deleteTip: Function;
   cancelEditTip: Function;
 };
 
 export function TipList(props: TipListPropsT) {
-  const itemNodes: Array<React.Node> = props.items.map((item, idx) => {
+  const itemNodes: Array<any> = props.items.map((item, idx) => {
     const allowEdit =
       !!props.userProfile && item.ownerId == props.userProfile.userId;
     const allowDelete =
@@ -41,5 +41,5 @@ export function TipList(props: TipListPropsT) {
     );
   });
 
-  return itemNodes;
+  return <React.Fragment>{itemNodes}</React.Fragment>;
 }

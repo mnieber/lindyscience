@@ -1,4 +1,4 @@
-import {} from 'mobx';
+import { comparer } from 'mobx';
 
 export {
   observable,

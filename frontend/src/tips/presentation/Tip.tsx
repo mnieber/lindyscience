@@ -11,7 +11,7 @@ type PropsT = {
   allowDelete: boolean;
   item: TipT;
   vote: VoteT;
-  setVote: (UUID, VoteT) => void;
+  setVote: (id: UUID, vote: VoteT) => void;
   saveTip: Function;
   deleteTip: Function;
   cancelEditTip: Function;
@@ -22,15 +22,15 @@ export function Tip(props: PropsT) {
   const [armDelete, setArmDelete] = React.useState(false);
 
   if (isEditing) {
-    function _submitValues(values) {
+    const _submitValues = (values: any) => {
       props.saveTip(props.item.id, values);
       setIsEditing(false);
-    }
+    };
 
-    function _onCancel() {
+    const _onCancel = () => {
       props.cancelEditTip(props.item.id);
       setIsEditing(false);
-    }
+    };
 
     const form = (
       <TipForm
@@ -44,9 +44,9 @@ export function Tip(props: PropsT) {
 
     return <div className="tip">{form}</div>;
   } else {
-    function _setVote(value) {
+    const _setVote = (value: VoteT) => {
       props.setVote(props.item.id, value);
-    }
+    };
 
     const voteCount = (
       <VoteCount

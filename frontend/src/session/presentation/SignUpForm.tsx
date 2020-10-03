@@ -9,7 +9,7 @@ import { PasswordField } from 'src/session/presentation/form_fields/PasswordFiel
 import { SubmitButton } from 'src/session/presentation/form_fields/SubmitButton';
 
 const getExternalErrors = (errors: Array<string>) => {
-  const fieldErrors = {};
+  const fieldErrors: { [name: string]: string } = {};
   if (errors?.includes('signUp/password_too_short')) {
     fieldErrors['password'] = 'Sorry, that password is too short';
   }

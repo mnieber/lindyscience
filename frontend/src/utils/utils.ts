@@ -14,7 +14,7 @@ export function toSnakeCase(obj: {}) {
 }
 
 export function listToItemById(qsList: Array<any>, key: string = 'id') {
-  const result = {};
+  const result: any = {};
   qsList.forEach((item) => {
     result[item[key]] = item;
   });
@@ -65,7 +65,7 @@ export function deepEqual(lhs: any, rhs: any) {
 }
 
 export function reduceMapToMap<T>(obj: {}, f: Function): T {
-  return Object.entries(obj).reduce((acc, [k, v]) => {
+  return Object.entries(obj).reduce((acc: any, [k, v]: any) => {
     f(acc, k, v);
     return acc;
   }, {});
@@ -86,18 +86,17 @@ export function flatten(
 ) {
   const composeKeys = maybeComposeKeys
     ? maybeComposeKeys
-    : (pk, ck) => pk + toTitleCase(ck);
+    : (pk: any, ck: any) => pk + toTitleCase(ck);
 
-  function _flatObj(obj, key) {
-    return Object.entries(obj[key]).reduce((acc, [k, v]) => {
+  function _flatObj(obj: any, key: any) {
+    return Object.entries(obj[key]).reduce((acc: any, [k, v]: any) => {
       acc[composeKeys(key, k)] = v;
       return acc;
     }, {});
   }
 
-  paths.forEach((path) => {
-    const xpath = path.split('/');
-    function _flatten(obj, xpath) {
+  paths.forEach((path: string) => {
+    function _flatten(obj: any, xpath: any) {
       const key = xpath.shift();
       // TODO(mnr): use /foo/?bar if bar might not be present
       if (key != '*' && !(key in obj)) {
@@ -194,7 +193,7 @@ export function makeUnique(x: Array<any>) {
 }
 
 export function secondsToTimeString(x: number) {
-  const _format = (x) => (x + '').padStart(2, '0');
+  const _format = (x: number) => (x + '').padStart(2, '0');
 
   const hours = Math.trunc(x / 3600);
   x = x - hours * 3600;
@@ -215,8 +214,10 @@ export function notImplemented() {
   return Error('Not implemented');
 }
 
-export const zip = (arr, ...arrs) => {
-  return arr.map((val, i) => arrs.reduce((a, arr) => [...a, arr[i]], [val]));
+export const zip = (arr: any, ...arrs: any) => {
+  return arr.map((val: any, i: any) =>
+    arrs.reduce((a: any, arr: any) => [...a, arr[i]], [val])
+  );
 };
 
 export const lookUp = (keys: Array<any>, obj: any): Array<any> => {

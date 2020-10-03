@@ -2,19 +2,15 @@ import { doQuery, setToken } from 'src/app/client';
 import { post } from 'src/utils/api_utils';
 import * as R from 'rambda';
 
-function _hasError(e, fieldName, errorMsg) {
-  const errors = e.responseJSON[fieldName] || [];
-  return errors.includes(errorMsg);
-}
-
-const hasErrorCode = (path, code) =>
+const hasErrorCode = (path: any, code: any) =>
   R.pipe(
     R.pathOr([], path),
-    R.filter((x) => x.code == code),
+    R.filter((x: any) => x.code == code),
     R.complement(R.isEmpty)
   );
 
-const isError = (path) => R.pipe(R.pathOr([], path), R.complement(R.isEmpty));
+const isError = (path: any) =>
+  R.pipe(R.pathOr([], path), R.complement(R.isEmpty));
 
 // Api app
 
@@ -38,7 +34,7 @@ export async function apiSignIn(
         }
       }
     }`;
-  const response = await doQuery(query, {
+  const response: any = await doQuery(query, {
     userId,
     password,
   });
@@ -87,7 +83,7 @@ export async function apiLoadUserId() {
           verified
         }
       }`;
-  const response = await doQuery(query, {});
+  const response: any = await doQuery(query, {});
   return {
     userId: response.me?.username,
   };
@@ -102,7 +98,7 @@ export async function apiResetPassword(email: string) {
         errors,
       }
     }`;
-  const response = await doQuery(query, {
+  const response: any = await doQuery(query, {
     email,
   });
 
@@ -139,7 +135,7 @@ export async function apiChangePassword(newPassword: string, token: string) {
         errors,
       }
     }`;
-  const response = await doQuery(query, {
+  const response: any = await doQuery(query, {
     newPassword,
     token,
   });
@@ -197,7 +193,7 @@ export async function apiActivateAccount(token: string) {
         errors,
       }
     }`;
-  const response = await doQuery(query, {
+  const response: any = await doQuery(query, {
     token,
   });
 
@@ -238,7 +234,7 @@ export async function apiSignUp(
         errors,
       }
     }`;
-  const response = await doQuery(query, {
+  const response: any = await doQuery(query, {
     email,
     password,
   });

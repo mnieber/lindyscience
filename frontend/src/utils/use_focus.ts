@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function useFocus(element) {
+export function useFocus(element: any) {
   React.useEffect(() => {
     const hack = false;
     if (hack) {

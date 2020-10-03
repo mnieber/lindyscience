@@ -1,5 +1,5 @@
 export type TagT = string;
 
 export type TagMapT = {
-  [TagT]: boolean;
+  [tag: string]: boolean;
 };

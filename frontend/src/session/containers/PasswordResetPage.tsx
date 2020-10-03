@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { compose } from 'lodash/fp';
@@ -23,7 +22,6 @@ export const PasswordResetPage = compose(
   observer
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-  const params = useParams();
 
   const { errors, state, hasErrors } = useAuthenticationState(
     props.authentication
@@ -61,12 +59,10 @@ export const PasswordResetPage = compose(
         {state !== 'ResetPassword.Succeeded' && (
           <PasswordResetForm
             resetPassword={props.authentication.resetPassword}
-            errors={props.authentication.errors}
+            errors={props.authentication.errors ?? []}
           />
         )}
-        <RouterLink to="/sign-in/" variant="body2">
-          Sign in
-        </RouterLink>
+        <RouterLink to="/sign-in/">Sign in</RouterLink>
       </div>
     </AuthenticationFrame>
   );

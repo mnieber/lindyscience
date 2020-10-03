@@ -23,9 +23,7 @@ export const ActivateAccountPage: React.FC<PropsT> = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const params = useParams();
-  const { errors, state, hasErrors } = useAuthenticationState(
-    props.authentication
-  );
+  const { errors, state } = useAuthenticationState(props.authentication);
 
   const isAlreadyActivated = errors.includes(
     'activateAccount/already_activated'
@@ -56,8 +54,8 @@ export const ActivateAccountPage: React.FC<PropsT> = compose(
 
   React.useEffect(() => {
     // Don't inline, we need to swallow the return value of async
-    props.authentication.activateAccount(params.token as any);
-  }, [params.token]);
+    props.authentication.activateAccount((params as any).token);
+  }, [(params as any).token]);
 
   return (
     <AuthenticationFrame header="Activate your password">

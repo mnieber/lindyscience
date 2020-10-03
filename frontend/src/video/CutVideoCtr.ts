@@ -18,7 +18,13 @@ export class CutVideoContainer {
   display: Display;
   cutPoints: CutPoints;
 
-  _createFacets(props: PropsT) {
+  _applyPolicies(props: PropsT) {
+    const policies = [updateVideoWidth];
+
+    installPolicies(policies, this);
+  }
+
+  constructor(props: PropsT) {
     this.inputs = initInputs(new Inputs());
     this.cutPoints = initCutPoints(
       new CutPoints(),
@@ -35,16 +41,7 @@ export class CutVideoContainer {
       }
     );
     this.display = initDisplay(new Display(), props.rootDivId);
-  }
 
-  _applyPolicies(props: PropsT) {
-    const policies = [updateVideoWidth];
-
-    installPolicies(policies, this);
-  }
-
-  constructor(props: PropsT) {
-    this._createFacets(props);
     this._applyPolicies(props);
   }
 }

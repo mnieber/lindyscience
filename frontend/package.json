@@ -20,6 +20,10 @@
     "@types/react-resize-detector": "^5.0.0",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-select": "^3.0.21",
+    "@types/recase": "^1.0.1",
+    "@types/sinon": "^9.0.7",
+    "@types/uuid": "^8.3.0",
+    "@types/yup": "^0.29.7",
     "cheeseburger-menu": "^0.0.13",
     "classnames": "^2.2.5",
     "debounce": "1.2.0",
@@ -53,6 +57,7 @@
     "react-table": "^6.9.2",
     "react-youtube": "^7.9.0",
     "recase": "^1.0.4",
+    "redtape": "^1.0.0",
     "scroll-into-view-if-needed": "^2.2.20",
     "typescript": "^3.9.7",
     "yup": "^0.29.1"

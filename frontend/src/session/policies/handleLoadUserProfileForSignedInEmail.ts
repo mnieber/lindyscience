@@ -1,5 +1,4 @@
 import { Data } from 'src/session/facets/Data';
-import { Inputs } from 'src/session/facets/Inputs';
 import { Profiling } from 'src/session/facets/Profiling';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { apiLoadUserProfile } from 'src/profiles/api';
@@ -10,7 +9,6 @@ import { apiFindMoveLists } from 'src/search/api';
 
 export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
   const profiling = Profiling.get(ctr);
-  const inputs = Inputs.get(ctr);
   const data = Data.get(ctr);
 
   reaction(
@@ -21,7 +19,13 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
         data.votesStore.setVotes({});
         data.movesStore.setMovePrivateDatas({});
       } else {
-        const [profile, votes, tags, movePrivateDatas] = await Promise.all([
+        const [
+          profile,
+          votes,
+          // @ts-ignore
+          tags,
+          movePrivateDatas,
+        ]: any = await Promise.all([
           apiLoadUserProfile(),
           apiLoadUserVotes(),
           apiLoadUserTags(),

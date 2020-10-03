@@ -33,14 +33,14 @@ export const SessionCtrProvider: React.FC<PropsT> = compose(
     return ctr;
   };
 
-  const updateCtr = (ctr) => {
+  const updateCtr = (ctr: SessionContainer) => {
     reaction(
       () => [],
       () => {}
     );
   };
 
-  const getDefaultProps = (ctr) => {
+  const getDefaultProps = (ctr: SessionContainer) => {
     return {
       sessionCtr: () => ctr,
       authentication: () => ctr.authentication,

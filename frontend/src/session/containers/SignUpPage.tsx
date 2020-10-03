@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import React from 'react';
 import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
@@ -23,9 +22,7 @@ export const SignUpPage = compose(
   observer
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-  const { errors, state, hasErrors } = useAuthenticationState(
-    props.authentication
-  );
+  const { errors, state } = useAuthenticationState(props.authentication);
 
   const confirmationDiv = (
     <div>

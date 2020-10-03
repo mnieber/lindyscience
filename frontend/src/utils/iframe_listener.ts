@@ -3,7 +3,7 @@ class VideoIFrame {
   iframe: any;
   isMouseOver: boolean = false;
 
-  constructor(parentDivId, iframe) {
+  constructor(parentDivId: string, iframe: any) {
     this.parentDivId = parentDivId;
     this.iframe = iframe;
 
@@ -43,7 +43,7 @@ class VideoIFrame {
   };
 }
 
-const _videoIFrames = {};
+const _videoIFrames: { [id: string]: any } = {};
 
 export function listenToIFrame(parentDivId: string, iframe: any) {
   const videoIFrame = _videoIFrames[parentDivId];

@@ -32,17 +32,6 @@ export class SessionContainer {
   @facet authentication: Authentication;
   @facet data: Data;
 
-  _createFacets(props: PropsT) {
-    this.inputs = initInputs(new Inputs());
-    this.navigation = initNavigation(new Navigation(), props.history);
-    this.display = initDisplay(new Display());
-    this.profiling = initProfiling(new Profiling());
-    this.authentication = initAuthentication(new Authentication());
-    this.data = initData(new Data());
-
-    registerFacets(this);
-  }
-
   _applyPolicies(props: PropsT) {
     const policies = [
       // navigation
@@ -62,7 +51,14 @@ export class SessionContainer {
   }
 
   constructor(props: PropsT) {
-    this._createFacets(props);
+    this.inputs = initInputs(new Inputs());
+    this.navigation = initNavigation(new Navigation(), props.history);
+    this.display = initDisplay(new Display());
+    this.profiling = initProfiling(new Profiling());
+    this.authentication = initAuthentication(new Authentication());
+    this.data = initData(new Data());
+
+    registerFacets(this);
     this._applyPolicies(props);
   }
 }

@@ -1,5 +1,3 @@
-import { useFormStateContext } from 'src/session/presentation/FormStateProvider';
-
 type FieldT = 'checkbox' | 'textfield';
 
 export const formFieldProps = (

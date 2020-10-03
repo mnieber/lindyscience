@@ -13,14 +13,14 @@ type InsertTipBvrT = {
 };
 
 export function useInsertTip(tips: Array<TipT>): InsertTipBvrT {
-  const [sourceTip, setSourceTip] = React.useState(null);
+  const [sourceTip, setSourceTip] = React.useState<TipT>();
 
   function prepare(tip: TipT) {
     setSourceTip(tip);
   }
 
   function finalize(isCancel: boolean) {
-    setSourceTip(null);
+    setSourceTip(undefined);
   }
 
   const preview = !sourceTip ? tips : [...tips, sourceTip];
@@ -39,7 +39,7 @@ export function useNewTip(
   insertTipBvr: InsertTipBvrT,
   moveId: UUID
 ) {
-  const [newTip, setNewTip] = React.useState(null);
+  const [newTip, setNewTip] = React.useState<TipT>();
 
   function _createNewTip(): TipT {
     return {
@@ -62,7 +62,7 @@ export function useNewTip(
   // Remove new move from the function's state
   function finalize(isCancel: boolean) {
     insertTipBvr.finalize(isCancel);
-    setNewTip(null);
+    setNewTip(undefined);
   }
 
   return { newTip, add, finalize };
@@ -72,22 +72,17 @@ type IncompleteValuesT = {
   text: string;
 };
 
-type SaveTipBvr = {
-  save: Function;
-  discardChanges: Function;
-};
-
 export function useSaveTip(
   newTipBvr: NewTipBvrT,
   moveId: UUID,
   tips: Array<TipT>,
-  saveTip: (TipT) => void
+  saveTip: (tip: TipT) => void
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const tip: TipT = {
       ...tips.find((x) => x.id == id),
       ...incompleteValues,
-    };
+    } as TipT;
 
     saveTip(tip);
     newTipBvr.finalize(false);

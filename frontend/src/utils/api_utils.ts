@@ -1,6 +1,6 @@
 import jquery from 'jquery';
 
-export function post(url, data) {
+export function post(url: string, data: any) {
   return jquery.ajax({
     type: 'POST',
     url: url,
@@ -11,7 +11,7 @@ export function post(url, data) {
   });
 }
 
-export function patch(url, data) {
+export function patch(url: string, data: any) {
   return jquery.ajax({
     type: 'PATCH',
     url: url,
@@ -22,7 +22,7 @@ export function patch(url, data) {
   });
 }
 
-export function get(url) {
+export function get(url: string) {
   return jquery.ajax({
     type: 'GET',
     url: url,

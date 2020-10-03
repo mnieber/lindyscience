@@ -1,6 +1,7 @@
 import { symbols } from 'src/npm/facet/internal/symbols';
 import { getCtr } from 'src/npm/facet/internal/ctr';
 import { options } from 'src/npm/facet/internal/options';
+import { keys } from 'lodash/fp';
 
 export function facetClassName(facetClass) {
   return facetClass.name;
@@ -44,7 +45,7 @@ export function ctrState(ctr) {
       const facetClass = facet.constructor;
       const facetDatas = facetClass[symbols.dataMembers];
       const facetState = facetDatas
-        ? Object.keys(facetDatas).reduce((acc, dataMember) => {
+        ? keys(facetDatas).reduce((acc, dataMember) => {
             try {
               const data = options.formatObject(facet[dataMember]);
               return {

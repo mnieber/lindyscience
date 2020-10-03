@@ -1,3 +1,5 @@
 FROM linsci_frontend
 
+ENV CHOKIDAR_USEPOLLING=true
+
 RUN apk add make mlocate nano fish curl

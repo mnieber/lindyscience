@@ -1,5 +1,3 @@
-// @flow
-
 import { action, observable } from 'src/utils/mobx_wrapper';
 import { VoteByIdT } from 'src/votes/types';
 import { UUID } from 'src/kernel/types';

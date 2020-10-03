@@ -1,5 +1,3 @@
-// @flow
-
 import { values } from 'rambda';
 import { withFormik } from 'formik';
 import React from 'react';

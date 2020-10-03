@@ -1,15 +1,13 @@
-// @flow
-
 import { runInAction } from 'src/utils/mobx_wrapper';
 import { isBefore } from 'src/utils/ui_utils';
 import { Dragging } from 'src/npm/facet-mobx/facets/dragging';
 
 export type DragPosition2T = {
-  item: any,
+  item: any;
 };
 
 export type PropsT = {
-  container: any,
+  container: any;
 };
 
 export class DragItems {

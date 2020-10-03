@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
@@ -11,9 +9,9 @@ export function TipForm({
   onCancel,
   values,
 }: {
-  onSubmit: (values: any) => void,
-  onCancel: () => void,
-  values: any,
+  onSubmit: (values: any) => void;
+  onCancel: () => void;
+  values: any;
 }) {
   function InnerForm(props) {
     return (

@@ -1,5 +1,3 @@
-// @flow
-
 import { Authentication } from 'src/session/facets/Authentication';
 import React from 'react';
 // $FlowFixMe

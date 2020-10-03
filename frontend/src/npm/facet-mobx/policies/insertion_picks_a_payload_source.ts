@@ -1,5 +1,3 @@
-// @flow
-
 import { findMap } from 'src/npm/facet-mobx/internal/utils';
 import { Insertion, PayloadSourceT } from 'src/npm/facet-mobx/facets/insertion';
 import { createPatch } from 'src/npm/facet-mobx';

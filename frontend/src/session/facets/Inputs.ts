@@ -1,5 +1,3 @@
-// @flow
-
 import { observable, runInAction } from 'src/utils/mobx_wrapper';
 import { MoveListT } from 'src/move_lists/types';
 

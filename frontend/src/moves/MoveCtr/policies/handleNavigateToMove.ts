@@ -1,5 +1,3 @@
-// @flow
-
 import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';

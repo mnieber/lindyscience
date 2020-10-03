@@ -1,5 +1,3 @@
-// @flow
-
 // $FlowFixMe
 import { observable } from 'mobx';
 

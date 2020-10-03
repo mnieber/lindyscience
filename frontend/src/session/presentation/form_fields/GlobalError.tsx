@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 
 import { useFormStateContext } from 'src/session/presentation/FormStateProvider';

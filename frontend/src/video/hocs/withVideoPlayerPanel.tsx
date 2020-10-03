@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -10,13 +8,13 @@ import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  display: Display,
-  moveDisplay: MoveDisplay,
-  videoController: VideoController,
+  display: Display;
+  moveDisplay: MoveDisplay;
+  videoController: VideoController;
 };
 
 export const withVideoPlayerPanel = (WrappedComponent: any) =>

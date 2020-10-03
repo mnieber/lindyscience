@@ -1,11 +1,9 @@
-// @flow
-
 import React from 'react';
 
 import { useFormStateContext } from 'src/session/presentation/FormStateProvider';
 
 type PropsT = {
-  fieldName: string,
+  fieldName: string;
 };
 
 export const FieldError = (props: PropsT) => {

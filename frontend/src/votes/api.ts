@@ -1,5 +1,3 @@
-// @flow
-
 // Api votes
 
 import { UUID } from 'src/kernel/types';

@@ -1,18 +1,16 @@
-// @flow
-
 // $FlowFixMe
 import { EditorState, CharacterMetadata, convertFromRaw } from 'draft-js';
 // $FlowFixMe
 import { stateFromHTML } from 'draft-js-import-html';
 
 type MatchT = {
-  startPos: number,
-  startPos: number,
+  startPos: number;
+  startPos: number;
 };
 
 type CursorT = {
-  charMap: Array<any>,
-  pos: number,
+  charMap: Array<any>;
+  pos: number;
 };
 
 function createBlockWithTimings(block: any, cursor: CursorT): any {

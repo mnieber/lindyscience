@@ -1,5 +1,3 @@
-// @flow
-
 // $FlowFixMe
 import { observable } from 'mobx';
 
@@ -34,7 +32,7 @@ export const initAddition = (
   {
     createItem,
   }: {
-    createItem: CreateItemT,
+    createItem: CreateItemT;
   }
 ): Addition => {
   installHandlers(

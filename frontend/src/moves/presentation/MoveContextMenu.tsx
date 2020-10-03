@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import { Menu, Item, Submenu } from 'react-contexify';
 import { observer } from 'mobx-react';

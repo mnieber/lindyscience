@@ -1,5 +1,3 @@
-// @flow
-
 import { doQuery, setToken } from 'src/app/client';
 import { post } from 'src/utils/api_utils';
 import * as R from 'rambda';

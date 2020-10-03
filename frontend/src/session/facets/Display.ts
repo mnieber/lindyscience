@@ -1,5 +1,3 @@
-// @flow
-
 import { computed, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { createUUID } from 'src/utils/utils';
 import { operation } from 'src/npm/facet';

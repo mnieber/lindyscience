@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 
 import { FormStateProvider } from 'src/session/presentation/FormStateProvider';
@@ -24,8 +22,8 @@ const getExternalErrors = (errors: Array<string>) => {
 };
 
 type PasswordResetFormPropsT = {
-  changePassword: (password: string) => any,
-  errors: Array<string>,
+  changePassword: (password: string) => any;
+  errors: Array<string>;
 };
 
 export function PasswordChangeForm(props: PasswordResetFormPropsT) {

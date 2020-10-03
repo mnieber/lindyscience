@@ -1,5 +1,3 @@
-// @flow
-
 import { isNone, makeUnique } from 'src/utils/utils';
 import React from 'react';
 // $FlowFixMe

@@ -1,5 +1,3 @@
-// @flow
-
 // $FlowFixMe
 import { observable } from 'mobx';
 
@@ -37,7 +35,7 @@ export const initEditing = (
   {
     saveItem,
   }: {
-    saveItem: saveItemT,
+    saveItem: saveItemT;
   }
 ): Editing => {
   installHandlers(

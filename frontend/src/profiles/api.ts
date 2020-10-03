@@ -1,5 +1,3 @@
-// @flow
-
 // Api profile
 
 import { doQuery } from 'src/app/client';

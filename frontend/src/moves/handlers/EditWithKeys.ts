@@ -1,9 +1,7 @@
-// @flow
-
 import { Editing } from 'src/npm/facet-mobx/facets/editing';
 
 export type PropsT = {
-  container: any,
+  container: any;
 };
 
 export class EditWithKeys {

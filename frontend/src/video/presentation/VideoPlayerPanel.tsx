@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import ReactResizeDetector from 'react-resize-detector';
@@ -11,9 +9,9 @@ import { action } from 'src/utils/mobx_wrapper';
 import { VideoPlayer } from 'src/video/presentation/VideoPlayer';
 
 type PropsT = {
-  videoController: VideoController,
-  display: Display,
-  moveDisplay: MoveDisplay,
+  videoController: VideoController;
+  display: Display;
+  moveDisplay: MoveDisplay;
 };
 
 export const VideoPlayerPanel = observer((props: PropsT) => {

@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { compose } from 'rambda';
 import { observer } from 'mobx-react';
@@ -12,11 +10,11 @@ import { SignInForm } from 'src/session/presentation/SignInForm';
 import { RouterLink } from 'src/utils/RouterLink';
 
 type PropsT = {
-  defaultProps: any,
+  defaultProps: any;
 };
 
 type DefaultPropsT = {
-  authentication: Authentication,
+  authentication: Authentication;
 };
 
 export const SignInPage = compose(

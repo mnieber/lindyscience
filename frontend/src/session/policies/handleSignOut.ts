@@ -1,5 +1,3 @@
-// @flow
-
 import { AuthApiT } from 'src/session/SessionCtr';
 import { Authentication } from 'src/session/facets/Authentication';
 import { Navigation } from 'src/session/facets/Navigation';

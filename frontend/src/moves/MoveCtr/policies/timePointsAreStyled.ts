@@ -1,5 +1,3 @@
-// @flow
-
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { scrollIntoView } from 'src/app/utils';
 import jQuery from 'jquery';

@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 
 import { FormStateProvider } from 'src/session/presentation/FormStateProvider';
@@ -29,8 +27,8 @@ const getExternalErrors = (errors: Array<string>) => {
 };
 
 type PropsT = {
-  signUp: (email: string, username: string, password: string) => any,
-  errors: Array<string>,
+  signUp: (email: string, username: string, password: string) => any;
+  errors: Array<string>;
 };
 
 export function SignUpForm(props: PropsT) {

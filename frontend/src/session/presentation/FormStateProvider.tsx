@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { observer } from 'mobx-react';
 
@@ -47,9 +45,9 @@ const useFormState = (initialValues: any, externalErrors: any) => {
 };
 
 type PropsT = {
-  children: any,
-  initialValues?: any,
-  externalErrors?: {},
+  children: any;
+  initialValues?: any;
+  externalErrors?: {};
 };
 
 export const FormStateProvider = observer((props: PropsT) => {

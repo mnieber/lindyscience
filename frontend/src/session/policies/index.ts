@@ -1,5 +1,3 @@
-// @flow
-
 export { handleSignUp } from 'src/session/policies/handleSignUp';
 export { handleSignIn } from 'src/session/policies/handleSignIn';
 export { handleResetPassword } from 'src/session/policies/handleResetPassword';

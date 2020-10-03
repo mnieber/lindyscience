@@ -1,5 +1,3 @@
-// @flow
-
 import { observable } from 'src/utils/mobx_wrapper';
 
 export class Display {

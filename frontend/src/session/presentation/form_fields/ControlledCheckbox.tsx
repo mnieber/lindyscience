@@ -1,11 +1,9 @@
-// @flow
-
 import React from 'react';
 
 import { formFieldProps } from 'src/session/presentation/formFieldProps';
 
 type PropsT = {
-  fieldName: string,
+  fieldName: string;
 };
 
 export const ControlledCheckbox = (props: PropsT) => {

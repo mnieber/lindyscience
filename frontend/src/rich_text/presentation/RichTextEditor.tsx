@@ -1,5 +1,3 @@
-// @flow
-
 import {
   Editor,
   RichUtils,
@@ -12,14 +10,14 @@ import React from 'react';
 import { isNone } from 'src/utils/utils';
 
 type PropsT = {
-  initialEditorState: any,
-  autoFocus: boolean,
-  readOnly: boolean,
-  forwardedRef?: any,
-  customStyleMap?: any,
-  placeholder?: string,
-  customHandleKeyCommand?: Function,
-  customKeyBindingFn?: Function,
+  initialEditorState: any;
+  autoFocus: boolean;
+  readOnly: boolean;
+  forwardedRef?: any;
+  customStyleMap?: any;
+  placeholder?: string;
+  customHandleKeyCommand?: Function;
+  customKeyBindingFn?: Function;
 };
 
 // TODO: use Modifier.replaceText(selection, inlineStyle) to convert content to nicely styled readonly content

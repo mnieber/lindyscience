@@ -1,5 +1,3 @@
-// @flow
-
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
 import { reaction } from 'src/utils/mobx_wrapper';

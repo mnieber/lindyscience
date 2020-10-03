@@ -1,5 +1,3 @@
-// @flow
-
 import { Inputs } from 'src/video/facets/Inputs';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveT } from 'src/moves/types';

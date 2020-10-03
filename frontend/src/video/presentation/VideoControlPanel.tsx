@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -7,7 +5,7 @@ import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { runInAction } from 'src/utils/mobx_wrapper';
 
 type PropsT = {
-  videoController: VideoController,
+  videoController: VideoController;
 };
 
 export function VideoControlPanel(props: PropsT) {

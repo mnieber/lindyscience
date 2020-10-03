@@ -1,12 +1,10 @@
-// @flow
-
 import React from 'react';
 
 // PasswordResetPage
 
 type PropsT = {
-  header: string,
-  children: any,
+  header: string;
+  children: any;
 };
 
 export const AuthenticationFrame = (props: PropsT) => {

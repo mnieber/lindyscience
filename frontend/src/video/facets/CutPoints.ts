@@ -1,5 +1,3 @@
-// @flow
-
 import { CutPointT } from 'src/video/types';
 import { MoveT } from 'src/moves/types';
 import { moves } from 'src/tips/tests/data';

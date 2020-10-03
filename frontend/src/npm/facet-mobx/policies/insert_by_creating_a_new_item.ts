@@ -1,5 +1,3 @@
-// @flow
-
 import { InsertT } from 'src/npm/facet-mobx/facets/insertion';
 import { Addition } from 'src/npm/facet-mobx/facets/addition';
 

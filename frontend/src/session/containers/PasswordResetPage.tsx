@@ -1,5 +1,3 @@
-// @flow
-
 import { useParams } from 'react-router-dom';
 import React from 'react';
 import { observer } from 'mobx-react';
@@ -13,11 +11,11 @@ import { PasswordResetForm } from 'src/session/presentation/PasswordResetForm';
 import { RouterLink } from 'src/utils/RouterLink';
 
 type PropsT = {
-  defaultProps: any,
+  defaultProps: any;
 };
 
 type DefaultPropsT = {
-  authentication: Authentication,
+  authentication: Authentication;
 };
 
 export const PasswordResetPage = compose(

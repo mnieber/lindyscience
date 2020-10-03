@@ -1,12 +1,10 @@
-// @flow
-
 import React from 'react';
 
 import { useFormStateContext } from 'src/session/presentation/FormStateProvider';
 
 type PropsT = {
-  onClick: Function,
-  label: string,
+  onClick: Function;
+  label: string;
 };
 
 export const SubmitButton = (props: PropsT) => {

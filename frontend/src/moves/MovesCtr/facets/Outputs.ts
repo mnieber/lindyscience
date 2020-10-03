@@ -1,5 +1,3 @@
-// @flow
-
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { MoveT } from 'src/moves/types';
 import { UUID } from 'src/kernel/types';

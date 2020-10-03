@@ -1,5 +1,3 @@
-// @flow
-
 import { doQuery } from 'src/app/client';
 
 export function apiLoadUserTags() {

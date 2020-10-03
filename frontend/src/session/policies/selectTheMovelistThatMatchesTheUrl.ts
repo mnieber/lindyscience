@@ -1,5 +1,3 @@
-// @flow
-
 import { Outputs } from 'src/move_lists/facets/Outputs';
 import { Navigation, ensureSelected } from 'src/session/facets/Navigation';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';

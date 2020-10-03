@@ -1,5 +1,3 @@
-// @flow
-
 import { useParams } from 'react-router-dom';
 import React from 'react';
 import { compose } from 'rambda';
@@ -13,11 +11,11 @@ import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame'
 import { SignUpForm } from 'src/session/presentation/SignUpForm';
 
 type PropsT = {
-  defaultProps: any,
+  defaultProps: any;
 };
 
 type DefaultPropsT = {
-  authentication: Authentication,
+  authentication: Authentication;
 };
 
 export const SignUpPage = compose(

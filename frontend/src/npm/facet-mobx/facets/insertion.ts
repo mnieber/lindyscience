@@ -1,5 +1,3 @@
-// @flow
-
 import { input, installHandlers, operation, output } from 'src/npm/facet';
 import { AdapterT, ClassMemberT } from 'src/npm/facet';
 import { patchFacet, mapData, relayData } from 'src/npm/facet-mobx';

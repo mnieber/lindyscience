@@ -1,5 +1,3 @@
-// @flow
-
 import { listen } from 'src/npm/facet';
 import { Editing } from 'src/npm/facet-mobx/facets/editing';
 import { Addition } from 'src/npm/facet-mobx/facets/addition';

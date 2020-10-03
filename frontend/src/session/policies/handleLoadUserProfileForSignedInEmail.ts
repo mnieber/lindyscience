@@ -1,5 +1,3 @@
-// @flow
-
 import { Data } from 'src/session/facets/Data';
 import { Inputs } from 'src/session/facets/Inputs';
 import { Profiling } from 'src/session/facets/Profiling';

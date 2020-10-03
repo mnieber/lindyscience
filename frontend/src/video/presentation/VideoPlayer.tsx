@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import urlParser from 'js-video-url-parser';
 
@@ -8,9 +6,9 @@ import { YoutubePlayer } from 'src/video/presentation/YoutubePlayer';
 import { listenToIFrame } from 'src/utils/iframe_listener';
 
 type PropsT = {
-  videoController: VideoController,
-  videoWidth: number,
-  parentDivId: string,
+  videoController: VideoController;
+  videoWidth: number;
+  parentDivId: string;
 };
 
 export function VideoPlayer(props: PropsT) {

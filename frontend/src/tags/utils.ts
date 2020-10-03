@@ -11,11 +11,6 @@ export const createTagMap = (tags: Array<string>): TagMapT => {
   }, {});
 };
 
-type TagsStateT = {
-  moveTags: TagMapT;
-  moveListTags: TagMapT;
-};
-
 export function addTags(listOfTagLists: Array<Array<TagT>>, tagMap: TagMapT) {
   return listOfTagLists.reduce(
     (acc, tags) => {

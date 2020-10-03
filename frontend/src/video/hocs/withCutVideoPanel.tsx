@@ -2,6 +2,7 @@
 
 import { compose } from 'lodash/fp';
 import jQuery from 'jquery';
+import { keys } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
@@ -47,7 +48,7 @@ export const withCutVideoPanel: React.FC<PropsT> = compose(
         jQuery('#linkPanelInput').focus();
       },
     };
-    const videoKeys = Object.keys(videoKeyHandlers);
+    const videoKeys = keys(videoKeyHandlers);
     const onKeyDown = createKeyDownHandler(videoKeyHandlers);
     const cutVideoPanel = (
       <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>
@@ -55,7 +56,7 @@ export const withCutVideoPanel: React.FC<PropsT> = compose(
           <CutVideoPanel
             display={props.display}
             moveDisplay={props.moveDisplay}
-            moveTags={Object.keys(props.movesStore.tags)}
+            moveTags={keys(props.movesStore.tags)}
             cutPoints={props.cutPoints}
           />
         </div>

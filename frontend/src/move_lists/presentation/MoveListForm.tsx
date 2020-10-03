@@ -1,10 +1,8 @@
 // @flow
 
-import { values } from 'rambda';
 import React from 'react';
 import { withFormik } from 'formik';
 
-import { UUID } from 'src/kernel/types';
 import { TagT } from 'src/tags/types';
 import { MoveListT } from 'src/move_lists/types';
 import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
@@ -32,7 +30,7 @@ type InnerFormPropsT = {
   setTagsPickerValue: Function;
 };
 
-const InnerForm = (props: InnerFormPropsT) => (formProps) => {
+const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
   const nameField = (
     <FormField
       classNames="w-full"
@@ -128,7 +126,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
         {nameField}
         {formProps.values.slug != newMoveListSlug && slugField}
         {description}
-        {!formProps.values.role == 'trash' && isPrivateField}
+        {formProps.values.role !== 'trash' && isPrivateField}
         {tags}
         <div className={'moveListForm__buttonPanel flexrow mt-4'}>
           <button
@@ -155,7 +153,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 
 type MoveListFormPropsT = {
   onCancel: () => void;
-  onSubmit: (id: UUID, values: any) => void;
+  onSubmit: (values: any) => void;
   knownTags: Array<TagT>;
   moveList: MoveListT;
   moveListSlugs: Array<string>;
@@ -187,7 +185,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
       );
       values.tags = (tagsPickerValue || []).map((x) => x.value);
 
-      let errors = {};
+      let errors: { [name: string]: string } = {};
       if (!values.name) {
         errors.name = 'This field is required';
       }

@@ -19,9 +19,9 @@ import { Selection } from 'src/npm/facet-mobx/facets/selection';
 // MoveList
 
 type PropsT = {
-  createHostedPanels: (MoveT) => any;
+  createHostedPanels: (move: MoveT) => any;
   moveContextMenu: any;
-  navigateTo: (MoveT) => any;
+  navigateTo: (move: MoveT) => any;
   className?: string;
   defaultProps?: any;
 };

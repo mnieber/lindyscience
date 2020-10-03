@@ -13,7 +13,7 @@ type PropsT = {
   className: string;
 };
 
-export function MoveListPlayer(props: PropsT) {
+export const MoveListPlayer: React.FC<PropsT> = (props) => {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [moveIdx, setMoveIdx] = React.useState(0);
   const [moves, setMoves] = React.useState([]);
@@ -52,4 +52,4 @@ export function MoveListPlayer(props: PropsT) {
   );
 
   return [isPlaying ? stopBtn : playBtn];
-}
+};

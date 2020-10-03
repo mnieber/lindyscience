@@ -6,7 +6,7 @@ type PropsT = {
   to: string;
 };
 
-export const RouterLink = ({ children, to }: PropsT) => {
+export const RouterLink: React.FC<PropsT> = ({ children, to }) => {
   return (
     <Link className="ml-2" to={to}>
       {children}

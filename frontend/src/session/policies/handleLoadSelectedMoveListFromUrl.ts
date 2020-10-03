@@ -4,7 +4,7 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { action, reaction } from 'src/utils/mobx_wrapper';
 import { newMoveListSlug } from 'src/app/utils';
 import { apiLoadMoveList } from 'src/search/api';
-import { getObjectValues } from 'src/utils/utils';
+import { values } from 'lodash/fp';
 
 export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
   const navigation = Navigation.get(ctr);
@@ -29,9 +29,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
           }
 
           if (moveList) {
-            data.movesStore.addMoves(
-              getObjectValues(moveList.entities.moves || {})
-            );
+            data.movesStore.addMoves(values(moveList.entities.moves || {}));
             data.moveListsStore.addMoveLists(moveList.entities.moveLists);
             data.tipsStore.addTips(moveList.entities.tips || {});
             navigation.loadedData.moveListUrl.push(selectedMoveListUrl);

@@ -1,16 +1,17 @@
 // @flow
 
+import { keys } from 'lodash/fp';
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { UUID } from 'src/kernel/types';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT, MoveListByIdT } from 'src/move_lists/types';
 import { listToItemById } from 'src/utils/utils';
 import { output } from 'src/npm/facet';
 
 export class Outputs {
   @computed get moveListIds(): Array<UUID> {
-    return Object.keys(this.moveListById);
+    return keys(this.moveListById);
   }
-  @computed get moveListById(): { [UUID]: MoveListT } {
+  @computed get moveListById(): MoveListByIdT {
     return listToItemById(this.preview);
   }
   @observable preview: Array<MoveListT> = [];

@@ -25,7 +25,7 @@ type PropsT = {
 export const MoveListFilter: React.FC<PropsT> = observer((props: PropsT) => {
   const isFilterEnabled = props.movesFiltering.isEnabled;
 
-  function _onPickerChange(tags, text) {
+  function _onPickerChange(tags: string[], text: string) {
     const splitResult = splitTextIntoTagsAndKeywords(text);
     const allTags = makeUnique([...splitResult.tags, ...tags]);
     props.movesFiltering.apply(

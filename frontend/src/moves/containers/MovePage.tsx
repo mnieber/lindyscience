@@ -4,6 +4,7 @@ import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
+import { keys } from 'lodash/fp';
 
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { MoveT } from 'src/moves/types';
@@ -78,7 +79,7 @@ export const MovePage: React.FC<PropsT> = compose(
     </React.Fragment>
   );
 
-  const videoKeys = Object.keys(props.moveKeyHandlers);
+  const videoKeys = keys(props.moveKeyHandlers);
   const onKeyDown = createKeyDownHandler(props.moveKeyHandlers);
 
   return (

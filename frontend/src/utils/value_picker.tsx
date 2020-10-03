@@ -61,7 +61,7 @@ export function ValuePicker_(props: PropsT) {
   );
 }
 
-export const ValuePicker = React.forwardRef((props, ref) => {
+export const ValuePicker: React.FC<PropsT> = React.forwardRef((props, ref) => {
   return <ValuePicker_ {...props} forwardedRef={ref} />;
 });
 

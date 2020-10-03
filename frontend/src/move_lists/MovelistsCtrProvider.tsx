@@ -1,6 +1,7 @@
 import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { values } from 'lodash/fp';
 
 import { Profiling } from 'src/session/facets/Profiling';
 import { Navigation } from 'src/session/facets/Navigation';
@@ -40,17 +41,20 @@ export const MoveListsCtrProvider: React.FC<PropsT> = compose(
     );
   };
 
-  const updateCtr = (ctr) => {
+  const updateCtr = (ctr: MoveListsContainer) => {
     reaction(
-      () => [props.moveListsStore.moveListById, props.profiling.userProfile],
-      ([moveListById, userProfile]) => {
-        ctr.inputs.moveLists = Object.values(moveListById);
+      () => ({
+        moveListById: props.moveListsStore.moveListById,
+        userProfile: props.profiling.userProfile,
+      }),
+      ({ moveListById, userProfile }) => {
+        ctr.inputs.moveLists = values(moveListById);
         ctr.inputs.userProfile = userProfile;
       }
     );
   };
 
-  const getDefaultProps = (ctr) => {
+  const getDefaultProps = (ctr: MoveListsContainer) => {
     return {
       moveListsCtr: () => ctr,
       isEditingMoveList: () => Editing.get(ctr).isEditing,

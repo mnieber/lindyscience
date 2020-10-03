@@ -1,5 +1,3 @@
-import { values } from 'rambda';
-
 import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { MoveListT } from 'src/move_lists/types';
@@ -37,42 +35,6 @@ export class MoveListsContainer {
   @facet outputs: Outputs;
   @facet selection: Selection;
   @facet labelling: Labelling;
-
-  _createFacets(props: PropsT) {
-    this.addition = initAddition(new Addition(), {
-      createItem: (values: any) => {
-        const userProfile = this.inputs.userProfile as any;
-        return props.createNewMoveList({
-          ...values,
-          ownerId: userProfile.userId,
-          ownerUsername: userProfile.username,
-        });
-      },
-    });
-    this.editing = initEditing(new Editing(), {
-      saveItem: (values: any) => {
-        props.saveMoveList(this.highlight.item as any, values);
-      },
-    });
-    this.highlight = initHighlight(new Highlight());
-    this.insertion = initInsertion(new Insertion(), {
-      insertItems: (preview) => {
-        props.setMoveLists(preview);
-      },
-    });
-    this.inputs = initInputs(new Inputs());
-    this.outputs = initOutputs(new Outputs());
-    this.selection = initSelection(new Selection());
-    this.labelling = initLabelling(new Labelling(), {
-      saveIds: (label: string, ids: Array<UUID>) => {
-        if (label == 'following') {
-          props.setFollowedMoveListIds(ids);
-        }
-      },
-    });
-
-    registerFacets(this);
-  }
 
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'moveLists'];
@@ -127,7 +89,39 @@ export class MoveListsContainer {
   }
 
   constructor(props: PropsT) {
-    this._createFacets(props);
+    this.addition = initAddition(new Addition(), {
+      createItem: (values: any) => {
+        const userProfile = this.inputs.userProfile as any;
+        return props.createNewMoveList({
+          ...values,
+          ownerId: userProfile.userId,
+          ownerUsername: userProfile.username,
+        });
+      },
+    });
+    this.editing = initEditing(new Editing(), {
+      saveItem: (values: any) => {
+        props.saveMoveList(this.highlight.item as any, values);
+      },
+    });
+    this.highlight = initHighlight(new Highlight());
+    this.insertion = initInsertion(new Insertion(), {
+      insertItems: (preview) => {
+        props.setMoveLists(preview);
+      },
+    });
+    this.inputs = initInputs(new Inputs());
+    this.outputs = initOutputs(new Outputs());
+    this.selection = initSelection(new Selection());
+    this.labelling = initLabelling(new Labelling(), {
+      saveIds: (label: string, ids: Array<UUID>) => {
+        if (label == 'following') {
+          props.setFollowedMoveListIds(ids);
+        }
+      },
+    });
+
+    registerFacets(this);
     this._applyPolicies(props);
   }
 }

@@ -1,6 +1,7 @@
 import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { keys } from 'lodash/fp';
 
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
@@ -53,7 +54,7 @@ export const withMovePrivateDataPanel = compose(
         userProfile={props.userProfile}
         movePrivateData={movePrivateData}
         onSave={_onSave}
-        moveTags={Object.keys(props.movesStore.tags)}
+        moveTags={keys(props.movesStore.tags)}
         moveId={getId(props.move)}
         videoController={props.videoController}
       />

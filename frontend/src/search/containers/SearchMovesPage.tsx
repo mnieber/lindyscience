@@ -3,6 +3,7 @@
 import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
+import { keys } from 'lodash/fp';
 
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 import { SearchMovesForm } from 'src/search/presentation/SearchMovesForm';
@@ -60,7 +61,7 @@ export const SearchMovesPage: React.FC<PropsT> = compose(
   return (
     <SearchMovesForm
       autoFocus={false}
-      knownTags={Object.keys(props.movesStore.tags)}
+      knownTags={keys(props.movesStore.tags)}
       latestOptions={latestOptions}
       onSubmit={_findMoves}
       defaultProps={props.defaultProps}

@@ -1,9 +1,10 @@
 import { action, observable } from 'src/utils/mobx_wrapper';
-import { MoveListByIdT, MoveListT } from 'src/move_lists/types';
+import { MoveListByIdT } from 'src/move_lists/types';
 import { TagMapT } from 'src/tags/types';
 import { UUID } from 'src/kernel/types';
 import { addTags } from 'src/tags/utils';
-import { getObjectValues, insertIdsIntoList } from 'src/utils/utils';
+import { insertIdsIntoList } from 'src/utils/utils';
+import { always, flow, map, values } from 'lodash/fp';
 
 export class MoveListsStore {
   @observable moveListById: MoveListByIdT = {};
@@ -18,7 +19,11 @@ export class MoveListsStore {
     this.tags = {
       ...this.tags,
       ...addTags(
-        getObjectValues(moveListById).map((x: MoveListT) => x.tags),
+        flow(
+          always(moveListById),
+          values,
+          map((x) => x.tags)
+        )(),
         this.tags
       ),
     };

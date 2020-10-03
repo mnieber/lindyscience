@@ -4,7 +4,7 @@ import { MoveListTable } from 'src/move_lists/presentation/MoveListTable';
 import { useParams } from 'src/utils/react_router_dom_wrapper';
 import { MoveListT } from 'src/move_lists/types';
 import { apiFindMoveLists } from 'src/search/api';
-import { getObjectValues } from 'src/utils/utils';
+import { values } from 'lodash/fp';
 
 type PropsT = {};
 
@@ -19,7 +19,7 @@ export function ProfilePage(props: PropsT) {
     const moveLists = await apiFindMoveLists({
       ownerUsername: params.username || '',
     });
-    setOwnMoveLists(getObjectValues(moveLists.entities.moveLists));
+    setOwnMoveLists(values(moveLists.entities.moveLists));
   }
 
   React.useEffect(() => {

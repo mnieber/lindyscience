@@ -10,7 +10,7 @@ type PropsT = {
   className: string;
 };
 
-export function MoveListHeader(props: PropsT) {
+export const MoveListHeader: React.FC<PropsT> = (props: PropsT) => {
   const newMoveBtn = (
     <div
       key="newMoveBtn"
@@ -25,4 +25,4 @@ export function MoveListHeader(props: PropsT) {
   );
 
   return [newMoveBtn];
-}
+};

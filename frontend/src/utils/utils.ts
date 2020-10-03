@@ -1,5 +1,5 @@
-import { T } from 'rambda';
 import recase from 'recase';
+import { keys } from 'lodash/fp';
 
 import uuidv4 from 'uuid/v4';
 
@@ -71,10 +71,6 @@ export function reduceMapToMap<T>(obj: {}, f: Function): T {
   }, {});
 }
 
-export function getObjectValues(obj: {}): any {
-  return Object.keys(obj).map((x) => obj[x]);
-}
-
 export function addToSet(array: Array<any>, item: any) {
   if (!array.includes(item)) {
     array.push(item);
@@ -115,7 +111,7 @@ export function flatten(
           obj[k] = v;
         });
       } else {
-        const childKeys = key == '*' ? Object.keys(obj) : [key];
+        const childKeys = key == '*' ? keys(obj) : [key];
         childKeys.forEach((childKey) => _flatten(obj[childKey], [...xpath]));
       }
     }

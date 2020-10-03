@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
+import { keys } from 'lodash/fp';
 
 import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
@@ -69,7 +70,7 @@ export const MoveListDetailsPage: React.FC<PropsT> = compose(
     <MoveListForm
       moveList={props.moveList}
       autoFocus={true}
-      knownTags={Object.keys(props.moveListsStore.tags)}
+      knownTags={keys(props.moveListsStore.tags)}
       moveListSlugs={bannedMoveListSlugs}
       onSubmit={(values) => props.moveListsEditing.save(values)}
       onCancel={() => props.moveListsEditing.cancel()}

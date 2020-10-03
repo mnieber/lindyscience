@@ -17,6 +17,7 @@ type PropsT = {
   placeholder?: string;
   customHandleKeyCommand?: Function;
   customKeyBindingFn?: Function;
+  ref?: any;
 };
 
 // TODO: use Modifier.replaceText(selection, inlineStyle) to convert content to nicely styled readonly content
@@ -84,6 +85,8 @@ export function getContentFromEditor(editor: any, defaultValue: string) {
   );
 }
 
-export const RichTextEditor = React.forwardRef((props, ref) => {
-  return <RichTextEditor_ {...props} forwardedRef={ref} />;
-});
+export const RichTextEditor: React.FC<PropsT> = React.forwardRef(
+  (props, ref) => {
+    return <RichTextEditor_ {...props} forwardedRef={ref} />;
+  }
+);

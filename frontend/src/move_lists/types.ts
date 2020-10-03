@@ -12,5 +12,5 @@ export type MoveListT = OwnedObjectT & {
 };
 
 export type MoveListByIdT = {
-  [UUID]: MoveListT;
+  [uuid: string]: MoveListT;
 };

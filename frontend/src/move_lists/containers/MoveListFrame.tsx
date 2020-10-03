@@ -7,7 +7,9 @@ import classnames from 'classnames';
 import CheeseburgerMenu from 'cheeseburger-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
+import { keys } from 'lodash/fp';
 
+import { MoveT } from 'src/moves/types';
 import { Display } from 'src/session/facets/Display';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
@@ -65,7 +67,7 @@ export const MoveListFrame: React.FC<PropsT> = compose(
     />
   );
 
-  const isFollowing = (ml) =>
+  const isFollowing = (ml: MoveListT) =>
     !!props.userProfile && props.userProfile.moveListIds.includes(ml.id);
 
   const moveListPicker = (
@@ -90,12 +92,12 @@ export const MoveListFrame: React.FC<PropsT> = compose(
   const moveListFilter = (
     <MoveListFilter
       className=""
-      moveTags={Object.keys(props.movesStore.tags)}
+      moveTags={keys(props.movesStore.tags)}
       movesFiltering={props.movesFiltering}
     />
   );
 
-  const createHostedPanels = (move) => {
+  const createHostedPanels = (move: MoveT) => {
     const icon = (
       <FontAwesomeIcon
         className={'ml-2 opacity-50'}

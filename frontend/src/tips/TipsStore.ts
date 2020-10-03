@@ -2,6 +2,7 @@ import { action, computed, observable } from 'src/utils/mobx_wrapper';
 import { TipByIdT, TipsByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import { isNone, reduceMapToMap } from 'src/utils/utils';
+import { keys } from 'lodash/fp';
 
 export class TipsStore {
   @observable tipById: TipByIdT = {};
@@ -14,7 +15,7 @@ export class TipsStore {
   }
 
   @action removeTips(tipIds: Array<UUID>) {
-    this.tipById = Object.keys(this.tipById)
+    this.tipById = keys(this.tipById)
       .filter((x) => !tipIds.includes(x))
       .reduce((acc, id) => {
         acc[id] = this.tipById[id];

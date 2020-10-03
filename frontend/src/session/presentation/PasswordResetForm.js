@@ -1,6 +1,5 @@
 // @flow
 
-import { FormHelperText } from '@material-ui/core';
 import React from 'react';
 
 import { FormStateProvider } from 'src/session/presentation/FormStateProvider';
@@ -29,9 +28,7 @@ export function PasswordResetForm(props: PasswordResetFormPropsT) {
       <div>
         <EmailField fieldName="email" label="Email" />
         <FieldError fieldName="email" />
-        <FormHelperText>
-          Enter your email to reset your password.
-        </FormHelperText>
+        Enter your email to reset your password.
       </div>
       <SubmitButton
         onClick={(formState: any) => {

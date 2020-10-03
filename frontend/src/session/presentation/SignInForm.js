@@ -1,6 +1,5 @@
 // @flow
 
-import { FormControlLabel, FormGroup } from '@material-ui/core';
 import React from 'react';
 
 import { FormStateProvider } from 'src/session/presentation/FormStateProvider';

@@ -16,11 +16,13 @@ export function FormFieldLabel(props: FormFieldLabelPropsT) {
   const ColWrapper =
     isNil(props.children) || isEmpty(props.children)
       ? React.Fragment
-      : ({ children }: any) => <div className="flexcol">{children}</div>;
+      : ({ children }: any) => (
+          <div className="FormFieldLabel flexcol">{children}</div>
+        );
 
   const RowWrapper =
     isNil(props.buttons) || isEmpty(props.buttons)
-      ? React.Fragment
+      ? ({ children }: any) => <React.Fragment>{children}</React.Fragment>
       : ({ children }: any) => <div className="flexrow">{children}</div>;
 
   return (
@@ -34,6 +36,7 @@ export function FormFieldLabel(props: FormFieldLabelPropsT) {
         </label>
         {props.buttons}
       </RowWrapper>
+      {props.children}
     </ColWrapper>
   );
 }

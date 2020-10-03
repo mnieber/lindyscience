@@ -16,14 +16,7 @@ export const SubmitButton = (props: PropsT) => {
   };
 
   return (
-    <button
-      type="submit"
-      fullWidth
-      variant="contained"
-      color="primary"
-      className=""
-      onClick={onClick}
-    >
+    <button type="submit" className="" onClick={onClick}>
       {props.label}
     </button>
   );

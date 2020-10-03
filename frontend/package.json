@@ -45,6 +45,7 @@
     "react-youtube": "^7.9.0",
     "recase": "^1.0.4",
     "scroll-into-view-if-needed": "^2.2.20",
+    "typescript": "^3.9.7",
     "yup": "^0.29.1"
   },
   "scripts": {

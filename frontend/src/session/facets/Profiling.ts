@@ -3,8 +3,8 @@
 import Cookies from 'js-cookie';
 
 import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
-import type { UserProfileT } from 'src/profiles/types';
-import type { OwnedT, UUID } from 'src/kernel/types';
+import { UserProfileT } from 'src/profiles/types';
+import { OwnedT, UUID } from 'src/kernel/types';
 import { isOwner } from 'src/app/utils';
 import { data, installHandlers, operation } from 'src/npm/facet';
 

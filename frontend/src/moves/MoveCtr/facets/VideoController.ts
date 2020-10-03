@@ -2,11 +2,11 @@
 
 import { input } from 'src/npm/facet';
 import { autorun, observable, runInAction } from 'src/utils/mobx_wrapper';
-import type { VideoT } from 'src/video/types';
+import { VideoT } from 'src/video/types';
 import { isYoutubePlaying } from 'src/video/utils';
 
 export class VideoController {
-  @input @observable video: ?VideoT;
+  @input @observable video?: VideoT;
   @observable isPlaying: boolean = false;
   @observable player: any;
   // We use _player to allow non-observer access to the player via getPlayer

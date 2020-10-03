@@ -1,18 +1,18 @@
 // @flow
 
-import type { OwnedObjectT, UUID } from 'src/kernel/types';
-import type { TagT } from 'src/tags/types';
+import { OwnedObjectT, UUID } from 'src/kernel/types';
+import { TagT } from 'src/tags/types';
 
 export type MoveListT = OwnedObjectT & {
-  name: string,
-  slug: string,
-  description: string,
-  isPrivate: boolean,
-  role: string,
-  tags: Array<TagT>,
-  moves: Array<UUID>,
+  name: string;
+  slug: string;
+  description: string;
+  isPrivate: boolean;
+  role: string;
+  tags: Array<TagT>;
+  moves: Array<UUID>;
 };
 
 export type MoveListByIdT = {
-  [UUID]: MoveListT,
+  [UUID]: MoveListT;
 };

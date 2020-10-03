@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { Display } from 'src/session/facets/Display';
 import { TimePoints } from 'src/moves/MoveCtr/facets/TimePoints';
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
 import {
@@ -16,14 +16,14 @@ import {
 import { runInAction } from 'src/utils/mobx_wrapper';
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  timePoints: TimePoints,
-  move: MoveT,
-  display: Display,
-  videoController: VideoController,
+  timePoints: TimePoints;
+  move: MoveT;
+  display: Display;
+  videoController: VideoController;
 };
 
 export const withMoveKeyHandlers = (WrappedComponent: any) =>

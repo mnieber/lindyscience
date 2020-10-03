@@ -14,13 +14,13 @@ import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 export const SessionContainerContext = React.createContext({});
 
 type PropsT = {
-  children: any,
-  defaultProps?: any,
+  children: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {};
 
-export const SessionCtrProvider: (PropsT) => any = compose(
+export const SessionCtrProvider: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

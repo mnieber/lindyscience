@@ -1,14 +1,18 @@
 // @flow
 
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import type { MoveT } from 'src/moves/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveT } from 'src/moves/types';
+import { MoveListT } from 'src/move_lists/types';
 import { computed } from 'src/utils/mobx_wrapper';
 import { makeMoveListUrl } from 'src/app/utils';
 
 type PropsT = {
-  ctr: MovesContainer,
-  shareMovesToList: (Array<MoveT>, MoveListT, ?MoveListT) => any,
+  ctr: MovesContainer;
+  shareMovesToList: (
+    moves: Array<MoveT>,
+    toMoveList: MoveListT,
+    removeFromMoveList?: MoveListT
+  ) => any;
 };
 
 export class Clipboard {

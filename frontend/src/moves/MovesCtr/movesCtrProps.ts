@@ -1,14 +1,14 @@
 // @flow
 
-import type { UserProfileT } from 'src/profiles/types';
-import type { UUID } from 'src/kernel/types';
-import type { MoveT } from 'src/moves/types';
+import { UserProfileT } from 'src/profiles/types';
+import { UUID } from 'src/kernel/types';
+import { MoveT } from 'src/moves/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { createUUID, slugify } from 'src/utils/utils';
 import { newMoveSlug } from 'src/moves/utils';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { createErrorHandler, getId } from 'src/app/utils';
 import {
   apiSaveMoveOrdering,
@@ -73,7 +73,7 @@ export function movesContainerProps(
   function shareMovesToList(
     moves: Array<MoveT>,
     moveList: MoveListT,
-    removeFromMoveList: ?MoveListT
+    removeFromMoveList?: MoveListT
   ) {
     const moveIdsInTargetMoveList = moveListsStore.insertMoveIds(
       moveList.id,

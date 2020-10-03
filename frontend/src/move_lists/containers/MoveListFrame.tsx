@@ -10,8 +10,8 @@ import { faVideo } from '@fortawesome/free-solid-svg-icons';
 
 import { Display } from 'src/session/facets/Display';
 import { Profiling } from 'src/session/facets/Profiling';
-import type { MoveListT } from 'src/move_lists/types';
-import type { UserProfileT } from 'src/profiles/types';
+import { MoveListT } from 'src/move_lists/types';
+import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MovesStore } from 'src/moves/MovesStore';
 import { withMoveContextMenu } from 'src/moves/hocs/withMoveContextMenu';
@@ -31,24 +31,24 @@ import { Addition } from 'src/npm/facet-mobx/facets/addition';
 // MoveListFrame
 
 type PropsT = {
-  children: any,
-  defaultProps?: any,
+  children: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  profiling: Profiling,
-  moveList: ?MoveListT,
-  movesSelection: Selection,
-  userProfile: ?UserProfileT,
-  movesFiltering: Filtering,
-  movesAddition: Addition,
-  navigation: Navigation,
-  display: Display,
-  movesStore: MovesStore,
-  moveContextMenu: any,
+  profiling: Profiling;
+  moveList?: MoveListT;
+  movesSelection: Selection;
+  userProfile?: UserProfileT;
+  movesFiltering: Filtering;
+  movesAddition: Addition;
+  navigation: Navigation;
+  display: Display;
+  movesStore: MovesStore;
+  moveContextMenu: any;
 };
 
-export const MoveListFrame: (PropsT) => any = compose(
+export const MoveListFrame: React.FC<PropsT> = compose(
   withMoveContextMenu,
   withDefaultProps,
   observer

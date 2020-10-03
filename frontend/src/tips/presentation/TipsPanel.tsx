@@ -5,10 +5,10 @@ import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 
-import type { OwnedObjectT, UUID } from 'src/kernel/types';
-import type { TipT } from 'src/tips/types';
-import type { VoteByIdT, VoteT } from 'src/votes/types';
-import type { UserProfileT } from 'src/profiles/types';
+import { OwnedObjectT, UUID } from 'src/kernel/types';
+import { TipT } from 'src/tips/types';
+import { VoteByIdT, VoteT } from 'src/votes/types';
+import { UserProfileT } from 'src/profiles/types';
 import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
 import {
   useInsertTip,
@@ -18,20 +18,20 @@ import {
 import { TipList } from 'src/tips/presentation/TipList';
 
 type PropsT = {
-  parentObject: OwnedObjectT,
-  tips: Array<TipT>,
-  voteByObjectId: VoteByIdT,
-  saveTip: (TipT) => void,
-  deleteTip: (TipT) => void,
-  voteTip: (UUID, VoteT) => void,
-  defaultProps?: any,
+  parentObject: OwnedObjectT;
+  tips: Array<TipT>;
+  voteByObjectId: VoteByIdT;
+  saveTip: (TipT) => void;
+  deleteTip: (TipT) => void;
+  voteTip: (UUID, VoteT) => void;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  userProfile: ?UserProfileT,
+  userProfile: ?UserProfileT;
 };
 
-export const TipsPanel: (PropsT) => any = (p: PropsT) => {
+export const TipsPanel: React.FC<PropsT> = (p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
   const insertTipBvr = useInsertTip(props.tips);

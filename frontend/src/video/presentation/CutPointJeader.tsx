@@ -3,8 +3,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import type { CutPointT } from 'src/video/types';
-import type { UUID } from 'src/kernel/types';
+import { CutPointT } from 'src/video/types';
+import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { secondsToTimeString } from 'src/utils/utils';
 

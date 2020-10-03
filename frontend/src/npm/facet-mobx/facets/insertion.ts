@@ -1,21 +1,12 @@
 // @flow
 
-import {
-  facetName,
-  input,
-  installHandlers,
-  operation,
-  output,
-} from 'src/npm/facet';
+import { input, installHandlers, operation, output } from 'src/npm/facet';
 import { AdapterT, ClassMemberT } from 'src/npm/facet';
 import { patchFacet, mapData, relayData } from 'src/npm/facet-mobx';
-import {
-  InsertPositionT,
-  PayloadT,
-} from 'src/npm/facet-mobx/facets/dragging';
+import { InsertPositionT, PayloadT } from 'src/npm/facet-mobx/facets/dragging';
 
-export type InsertT = { payload: PayloadT, position: InsertPositionT };
-export type PayloadSourceT = (container: any) => ?InsertT;
+export type InsertT = { payload: PayloadT; position: InsertPositionT };
+export type PayloadSourceT = (container: any) => InsertT | undefined;
 
 function _getPreview(
   items: Array<any>,
@@ -97,7 +88,7 @@ export const initInsertion = (
   {
     insertItems,
   }: {
-    insertItems: insertItemsT,
+    insertItems: insertItemsT;
   }
 ) => {
   installHandlers({ insertPayload: _handleInsertPayload(insertItems) }, self);

@@ -4,9 +4,9 @@ import { values } from 'rambda';
 import React from 'react';
 import { withFormik } from 'formik';
 
-import type { UUID } from 'src/kernel/types';
-import type { TagT } from 'src/tags/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { UUID } from 'src/kernel/types';
+import { TagT } from 'src/tags/types';
+import { MoveListT } from 'src/move_lists/types';
 import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
 import {
   FormField,
@@ -24,12 +24,12 @@ import { slugify } from 'src/utils/utils';
 // MoveListForm
 
 type InnerFormPropsT = {
-  autoFocus: boolean,
-  tagPickerOptions: Array<any>,
-  onCancel: () => void,
-  descriptionEditorRef: any,
-  tagsPickerValue: any,
-  setTagsPickerValue: Function,
+  autoFocus: boolean;
+  tagPickerOptions: Array<any>;
+  onCancel: () => void;
+  descriptionEditorRef: any;
+  tagsPickerValue: any;
+  setTagsPickerValue: Function;
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
@@ -154,12 +154,12 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 };
 
 type MoveListFormPropsT = {
-  onCancel: () => void,
-  onSubmit: (id: UUID, values: any) => void,
-  knownTags: Array<TagT>,
-  moveList: MoveListT,
-  moveListSlugs: Array<string>,
-  autoFocus: boolean,
+  onCancel: () => void;
+  onSubmit: (id: UUID, values: any) => void;
+  knownTags: Array<TagT>;
+  moveList: MoveListT;
+  moveListSlugs: Array<string>;
+  autoFocus: boolean;
 };
 
 export function MoveListForm(props: MoveListFormPropsT) {

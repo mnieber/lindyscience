@@ -3,16 +3,16 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { RouterLink } from 'src/utils/RouterLink';
 import { RichTextEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { toReadOnlyEditorState } from 'src/rich_text/utils/EditorState';
 
 // MoveListDetails
 
-type MoveListTitlePropsT = {|
-  moveList: MoveListT,
-|};
+type MoveListTitlePropsT = {
+  moveList: MoveListT;
+};
 
 export function MoveListTitle(props: MoveListTitlePropsT) {
   return (
@@ -33,10 +33,10 @@ export function MoveListTitle(props: MoveListTitlePropsT) {
   );
 }
 
-type MoveListDetailsPropsT = {|
-  moveList: MoveListT,
-  buttons: Array<any>,
-|};
+type MoveListDetailsPropsT = {
+  moveList: MoveListT;
+  buttons: Array<any>;
+};
 
 export function MoveListDetails(props: MoveListDetailsPropsT) {
   return (

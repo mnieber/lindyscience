@@ -1,11 +1,11 @@
 // @flow
 
-import type { CutPointT } from 'src/video/types';
-import type { MoveT } from 'src/moves/types';
+import { CutPointT } from 'src/video/types';
+import { MoveT } from 'src/moves/types';
 import { moves } from 'src/tips/tests/data';
 import { action, observable } from 'src/utils/mobx_wrapper';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import type { UUID } from 'src/kernel/types';
+import { UUID } from 'src/kernel/types';
 import { createUUID, isNone } from 'src/utils/utils';
 import { getInsertionIndex } from 'src/utils/get_insertion_index';
 import { data, handle, input, operation } from 'src/npm/facet';

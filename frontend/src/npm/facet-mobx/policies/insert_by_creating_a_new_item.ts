@@ -1,6 +1,6 @@
 // @flow
 
-import type { InsertT } from 'src/npm/facet-mobx/facets/insertion';
+import { InsertT } from 'src/npm/facet-mobx/facets/insertion';
 import { Addition } from 'src/npm/facet-mobx/facets/addition';
 
 export const topOfTheList = '<topOfTheList>';
@@ -8,7 +8,7 @@ export const topOfTheList = '<topOfTheList>';
 export const insertByCreatingAnItem = ({
   showPreview,
 }: {
-  showPreview: boolean,
+  showPreview: boolean;
 }) => (ctr: any): ?InsertT => {
   const parentId = Addition.get(ctr).parentId;
   const item = Addition.get(ctr).item;

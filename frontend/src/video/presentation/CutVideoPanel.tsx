@@ -5,19 +5,19 @@ import { observer } from 'mobx-react';
 
 import { Display } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
-import type { TagT } from 'src/tags/types';
+import { TagT } from 'src/tags/types';
 import { CutPoints } from 'src/video/facets/CutPoints';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { CutPointList } from 'src/video/presentation/CutPointList';
 
 type PropsT = {
-  moveTags: Array<TagT>,
-  cutPoints: CutPoints,
-  display: Display,
-  moveDisplay: MoveDisplay,
+  moveTags: Array<TagT>;
+  cutPoints: CutPoints;
+  display: Display;
+  moveDisplay: MoveDisplay;
 };
 
-export const CutVideoPanel: (PropsT) => any = observer((props: PropsT) => {
+export const CutVideoPanel: React.FC<PropsT> = observer((props: PropsT) => {
   const onKeyDown = (e) => {
     if (e.keyCode == 13) {
       props.cutPoints.setVideoLink(e.target.value);

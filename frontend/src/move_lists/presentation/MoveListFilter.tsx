@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
-import type { TagT } from 'src/tags/types';
+import { TagT } from 'src/tags/types';
 import {
   TagsAndKeywordsPicker,
   splitTextIntoTagsAndKeywords,
@@ -16,13 +16,13 @@ import { makeUnique } from 'src/utils/utils';
 import { createTagsAndKeywordsFilter } from 'src/app/utils';
 import { Filtering } from 'src/npm/facet-mobx/facets/filtering';
 
-type PropsT = {|
-  moveTags: Array<TagT>,
-  movesFiltering: Filtering,
-  className?: string,
-|};
+type PropsT = {
+  moveTags: Array<TagT>;
+  movesFiltering: Filtering;
+  className?: string;
+};
 
-export const MoveListFilter: (PropsT) => any = observer((props: PropsT) => {
+export const MoveListFilter: React.FC<PropsT> = observer((props: PropsT) => {
   const isFilterEnabled = props.movesFiltering.isEnabled;
 
   function _onPickerChange(tags, text) {

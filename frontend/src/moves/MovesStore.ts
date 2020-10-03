@@ -1,15 +1,15 @@
 // @flow
 
 import { action, observable } from 'src/utils/mobx_wrapper';
-import type {
+import {
   MoveByIdT,
   MovePrivateDataByIdT,
   MovePrivateDataT,
   MoveT,
 } from 'src/moves/types';
-import type { TagMapT } from 'src/tags/types';
-import type { MoveSearchResultT } from 'src/search/types';
-import type { UUID } from 'src/kernel/types';
+import { TagMapT } from 'src/tags/types';
+import { MoveSearchResultT } from 'src/search/types';
+import { UUID } from 'src/kernel/types';
 import { createUUID, listToItemById } from 'src/utils/utils';
 import { addTags } from 'src/tags/utils';
 

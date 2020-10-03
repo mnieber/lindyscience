@@ -7,9 +7,9 @@ import * as React from 'react';
 import classnames from 'classnames';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { Profiling } from 'src/session/facets/Profiling';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { Dragging } from 'src/npm/facet-mobx/facets/dragging';
 import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
@@ -19,24 +19,24 @@ import { Selection } from 'src/npm/facet-mobx/facets/selection';
 // MoveList
 
 type PropsT = {
-  createHostedPanels: (MoveT) => any,
-  moveContextMenu: any,
-  navigateTo: (MoveT) => any,
-  className?: string,
-  defaultProps?: any,
+  createHostedPanels: (MoveT) => any;
+  moveContextMenu: any;
+  navigateTo: (MoveT) => any;
+  className?: string;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  profiling: Profiling,
-  moveList: MoveListT,
-  moves: Array<MoveT>,
-  movesCtr: MovesContainer,
-  movesDragging: Dragging,
-  movesHighlight: Highlight,
-  movesSelection: Selection,
+  profiling: Profiling;
+  moveList: MoveListT;
+  moves: Array<MoveT>;
+  movesCtr: MovesContainer;
+  movesDragging: Dragging;
+  movesHighlight: Highlight;
+  movesSelection: Selection;
 };
 
-export const MoveList: (PropsT) => any = compose(observer)((p: PropsT) => {
+export const MoveList: React.FC<PropsT> = compose(observer)((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
   const dragPosition = props.movesDragging.position;

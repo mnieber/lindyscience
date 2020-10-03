@@ -1,8 +1,8 @@
 // @flow
 
 import { computed, observable } from 'src/utils/mobx_wrapper';
-import type { UUID } from 'src/kernel/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { UUID } from 'src/kernel/types';
+import { MoveListT } from 'src/move_lists/types';
 import { listToItemById } from 'src/utils/utils';
 import { output } from 'src/npm/facet';
 

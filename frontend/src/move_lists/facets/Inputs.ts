@@ -1,12 +1,12 @@
 // @flow
 
 import { computed, observable } from 'src/utils/mobx_wrapper';
-import type { MoveListT } from 'src/move_lists/types';
-import type { UserProfileT } from 'src/profiles/types';
+import { MoveListT } from 'src/move_lists/types';
+import { UserProfileT } from 'src/profiles/types';
 
 export class Inputs {
   @observable moveLists: Array<MoveListT> = [];
-  @observable userProfile: ?UserProfileT;
+  @observable userProfile?: UserProfileT;
 
   @computed get moveListsFollowing(): Array<MoveListT> {
     const userProfile = this.userProfile;

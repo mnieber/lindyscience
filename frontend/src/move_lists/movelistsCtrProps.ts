@@ -3,8 +3,8 @@
 import { Navigation } from 'src/session/facets/Navigation';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
-import type { MoveListT } from 'src/move_lists/types';
-import type { UUID } from 'src/kernel/types';
+import { MoveListT } from 'src/move_lists/types';
+import { UUID } from 'src/kernel/types';
 import { newMoveListSlug } from 'src/app/utils';
 import { createUUID, listToItemById, slugify } from 'src/utils/utils';
 import { apiSaveMoveList, apiSaveMoveListOrdering } from 'src/move_lists/api';

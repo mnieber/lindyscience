@@ -5,15 +5,15 @@ import { Menu, Item, Submenu } from 'react-contexify';
 import { observer } from 'mobx-react';
 import jQuery from 'jquery';
 
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { getId } from 'src/app/utils';
 
 type PropsT = {
-  targetMoveLists: Array<MoveListT>,
-  targetMoveListsForMoving: Array<MoveListT>,
-  movesClipboard: Clipboard,
-  isOwnerOfMoveList: boolean,
+  targetMoveLists: Array<MoveListT>;
+  targetMoveListsForMoving: Array<MoveListT>;
+  movesClipboard: Clipboard;
+  isOwnerOfMoveList: boolean;
 };
 
 export const MoveContextMenu = observer((props: PropsT) => {

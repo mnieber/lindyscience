@@ -1,6 +1,6 @@
 // @flow
 
-import type { MovePrivateDataT, MoveT } from 'src/moves/types';
+import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { doQuery } from 'src/app/client';
 import { flatten } from 'src/utils/utils';
 import { normalize, schema } from 'normalizr';

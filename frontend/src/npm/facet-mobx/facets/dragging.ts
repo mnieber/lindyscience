@@ -16,7 +16,7 @@ export type PayloadT = {
 };
 
 export class Dragging {
-  @observable position: ?InsertPositionT;
+  @observable position?: InsertPositionT;
 
   @operation drop() {}
   @operation cancel() {}

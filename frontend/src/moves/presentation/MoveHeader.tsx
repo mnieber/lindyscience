@@ -3,17 +3,17 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { Tags } from 'src/tags/presentation/Tags';
 
 // MoveHeader
 
 type PropsT = {
-  move: MoveT,
-  moveListTitle: any,
-  editMoveBtn: any,
-  followMoveListBtn: any,
-  small: boolean,
+  move: MoveT;
+  moveListTitle: any;
+  editMoveBtn: any;
+  followMoveListBtn: any;
+  small: boolean;
 };
 
 export function MoveHeader(props: PropsT) {

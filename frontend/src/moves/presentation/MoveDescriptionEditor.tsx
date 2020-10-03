@@ -8,7 +8,7 @@ import {
   // $FlowFixMe
 } from 'draft-js';
 
-import type { UUID } from 'src/kernel/types';
+import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { createTimePointDecorator } from 'src/video/presentation/TimepointDecorator';
 import {
@@ -32,13 +32,13 @@ const styleMap = {
 // Move
 
 type PropsT = {
-  editorId: UUID,
-  description: string,
-  readOnly: boolean,
-  autoFocus?: boolean,
-  videoController?: VideoController,
-  editorRef?: any,
-  placeholder?: string,
+  editorId: UUID;
+  description: string;
+  readOnly: boolean;
+  autoFocus?: boolean;
+  videoController?: VideoController;
+  editorRef?: any;
+  placeholder?: string;
 };
 
 export function MoveDescriptionEditor(props: PropsT) {

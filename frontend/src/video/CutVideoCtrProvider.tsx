@@ -6,8 +6,8 @@ import { observer } from 'mobx-react';
 
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 import { Display } from 'src/session/facets/Display';
-import type { MoveListT } from 'src/move_lists/types';
-import type { UserProfileT } from 'src/profiles/types';
+import { MoveListT } from 'src/move_lists/types';
+import { UserProfileT } from 'src/profiles/types';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
@@ -16,19 +16,19 @@ import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/npm/facet-mobx';
 
 type PropsT = {
-  children: any,
-  defaultProps?: any,
+  children: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  display: Display,
-  moveList: MoveListT,
-  userProfile: UserProfileT,
-  moveListsStore: MoveListsStore,
-  movesStore: MovesStore,
+  display: Display;
+  moveList: MoveListT;
+  userProfile: UserProfileT;
+  moveListsStore: MoveListsStore;
+  movesStore: MovesStore;
 };
 
-export const CutVideoCtrProvider: (PropsT) => any = compose(
+export const CutVideoCtrProvider: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

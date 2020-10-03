@@ -5,7 +5,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { Display } from 'src/moves/MoveCtr/facets/Display';
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { moveContainerProps } from 'src/moves/MoveCtr/moveCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
@@ -13,16 +13,16 @@ import { CtrProvider } from 'src/npm/facet-mobx';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 
 type PropsT = {
-  children: any,
-  defaultProps?: any,
+  children: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  display: Display,
-  move: MoveT,
+  display: Display;
+  move: MoveT;
 };
 
-export const MoveCtrProvider: (PropsT) => any = compose(
+export const MoveCtrProvider: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

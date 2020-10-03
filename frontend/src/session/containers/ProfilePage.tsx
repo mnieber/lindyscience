@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { MoveListTable } from 'src/move_lists/presentation/MoveListTable';
 import { useParams } from 'src/utils/react_router_dom_wrapper';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { apiFindMoveLists } from 'src/search/api';
 import { getObjectValues } from 'src/utils/utils';
 

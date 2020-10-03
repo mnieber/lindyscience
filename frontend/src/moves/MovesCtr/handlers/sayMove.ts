@@ -1,4 +1,4 @@
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 
 export function sayMove(move: MoveT) {
   const maxLength = 200;

@@ -2,13 +2,13 @@
 
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 
-import type { ObjectT, OwnedObjectT, SlugidT, UUID } from 'src/kernel/types';
+import { ObjectT, OwnedObjectT, SlugidT, UUID } from 'src/kernel/types';
 import { slugify, splitIntoKeywords, stripQuotes } from 'src/utils/utils';
-import type { MoveListT } from 'src/move_lists/types';
-import type { MoveT } from 'src/moves/types';
-import type { CutPointT } from 'src/video/types';
-import type { UserProfileT } from 'src/profiles/types';
-import type { TagT } from 'src/tags/types';
+import { MoveListT } from 'src/move_lists/types';
+import { MoveT } from 'src/moves/types';
+import { CutPointT } from 'src/video/types';
+import { UserProfileT } from 'src/profiles/types';
+import { TagT } from 'src/tags/types';
 
 export function isOwner(userProfile: UserProfileT, ownerId: number) {
   return userProfile && userProfile.userId == ownerId;
@@ -83,7 +83,7 @@ export function createErrorHandler(msg: string) {
   };
 }
 
-export function getId(x: ?ObjectT) {
+export function getId(x?: ObjectT) {
   return x ? x.id : '';
 }
 
@@ -95,7 +95,7 @@ export function idTable(items: Array<any>): Function {
   return (id) => items.find((x) => x.id == id);
 }
 
-export function getOwnerId(x: ?OwnedObjectT): number {
+export function getOwnerId(x?: OwnedObjectT): number {
   return x ? x.ownerId : -1;
 }
 
@@ -103,7 +103,7 @@ export function last(x: Array<any>): any {
   return x[x.length - 1];
 }
 
-export function makeSlugid(slug: string, id: ?UUID) {
+export function makeSlugid(slug: string, id?: UUID) {
   return slug + (id ? '/' + id : '');
 }
 

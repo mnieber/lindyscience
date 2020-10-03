@@ -4,10 +4,10 @@ import { values } from 'rambda';
 
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
-import type { UserProfileT } from 'src/profiles/types';
-import type { UUID } from 'src/kernel/types';
-import type { MoveT } from 'src/moves/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { UserProfileT } from 'src/profiles/types';
+import { UUID } from 'src/kernel/types';
+import { MoveT } from 'src/moves/types';
+import { MoveListT } from 'src/move_lists/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
@@ -29,12 +29,16 @@ import * as SessionCtrPolicies from 'src/session/policies';
 import * as MoveCtrPolicies from 'src/moves/MoveCtr/policies';
 
 type PropsT = {
-  isEqual: (lhs: any, rhs: any) => boolean,
-  createNewMove: (userProfile: UserProfileT, sourceMoveListId: UUID) => MoveT,
-  setMoves: (MoveListT, Array<MoveT>) => any,
-  saveMove: (MoveT, values: any) => any,
-  shareMovesToList: (Array<MoveT>, MoveListT, ?MoveListT) => any,
-  navigation: Navigation,
+  isEqual: (lhs: any, rhs: any) => boolean;
+  createNewMove: (userProfile: UserProfileT, sourceMoveListId: UUID) => MoveT;
+  setMoves: (moveList: MoveListT, moves: Array<MoveT>) => any;
+  saveMove: (move: MoveT, values: any) => any;
+  shareMovesToList: (
+    moves: Array<MoveT>,
+    toMoveList: MoveListT,
+    removeFromMoveList?: MoveListT
+  ) => any;
+  navigation: Navigation;
 };
 
 export class MovesContainer {
@@ -58,8 +62,8 @@ export class MovesContainer {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
         return props.createNewMove(
-          (this.inputs.userProfile: any),
-          (this.inputs.moveList: any).id
+          this.inputs.userProfile as any,
+          (this.inputs.moveList as any).id
         );
       },
       isEqual: props.isEqual,
@@ -74,7 +78,7 @@ export class MovesContainer {
     this.highlight = initHighlight(new Highlight());
     this.insertion = initInsertion(new Insertion(), {
       insertItems: (preview) => {
-        props.setMoves((this.inputs.moveList: any), preview);
+        props.setMoves(this.inputs.moveList as any, preview);
       },
     });
     this.inputs = initInputs(new Inputs());

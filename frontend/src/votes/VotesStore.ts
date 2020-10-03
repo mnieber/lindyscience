@@ -1,8 +1,8 @@
 // @flow
 
 import { action, observable } from 'src/utils/mobx_wrapper';
-import type { VoteByIdT } from 'src/votes/types';
-import type { UUID } from 'src/kernel/types';
+import { VoteByIdT } from 'src/votes/types';
+import { UUID } from 'src/kernel/types';
 
 export class VotesStore {
   @observable voteByObjectId: VoteByIdT = {};

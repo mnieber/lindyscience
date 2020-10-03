@@ -1,7 +1,7 @@
 // @flow
 
-import type { UUID } from 'src/kernel/types';
-import type { TagT } from 'src/tags/types';
+import { UUID } from 'src/kernel/types';
+import { TagT } from 'src/tags/types';
 
 export type VideoT = {
   link: string,

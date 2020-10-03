@@ -5,19 +5,19 @@ import { observer } from 'mobx-react';
 import classnames from 'classnames';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
-import type { UUID } from 'src/kernel/types';
+import { UUID } from 'src/kernel/types';
 import { CutPoints } from 'src/video/facets/CutPoints';
-import type { TagT } from 'src/tags/types';
-import type { CutPointT } from 'src/video/types';
+import { TagT } from 'src/tags/types';
+import { CutPointT } from 'src/video/types';
 import { getId, handleSelectionKeys2, scrollIntoView } from 'src/app/utils';
 import { CutPointForm } from 'src/video/presentation/CutPointForm';
 import { CutPointHeader } from 'src/video/presentation/CutPointJeader';
 
 // CutPointList
 
-type KeyHandlersT = {|
-  handleKeyDown: Function,
-|};
+type KeyHandlersT = {
+  handleKeyDown: Function;
+};
 
 function createKeyHandlers(
   selectCutPointById: (UUID, boolean, boolean) => void,
@@ -42,10 +42,10 @@ function createKeyHandlers(
   };
 }
 
-type ClickHandlersT = {|
-  handleMouseDown: Function,
-  handleMouseUp: Function,
-|};
+type ClickHandlersT = {
+  handleMouseDown: Function;
+  handleMouseUp: Function;
+};
 
 function createClickHandlers(
   selectCutPointById: (UUID, boolean, boolean) => void,
@@ -63,15 +63,15 @@ function createClickHandlers(
   };
 }
 
-type PropsT = {|
-  cutPoints: CutPoints,
-  moveTags: Array<TagT>,
-  highlightedCutPoint: ?CutPointT,
-  selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
-  className?: string,
-|};
+type PropsT = {
+  cutPoints: CutPoints;
+  moveTags: Array<TagT>;
+  highlightedCutPoint?: CutPointT;
+  selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void;
+  className?: string;
+};
 
-export const CutPointList: (PropsT) => any = observer((props: PropsT) => {
+export const CutPointList: React.FC<PropsT> = observer((props: PropsT) => {
   const selectCutPointById = (
     cutPointId: UUID,
     isShift: boolean,

@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 
 import { lookUp } from 'src/utils/utils';
 import { Navigation } from 'src/session/facets/Navigation';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
@@ -19,20 +19,20 @@ import { Editing } from 'src/npm/facet-mobx/facets/editing';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 
 type PropsT = {
-  children: any,
-  defaultProps?: any,
+  children: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  navigation: Navigation,
-  moveList: MoveListT,
-  profiling: Profiling,
-  movesStore: MovesStore,
-  moveListsStore: MoveListsStore,
-  moveListsPreview: Array<MoveListT>,
+  navigation: Navigation;
+  moveList: MoveListT;
+  profiling: Profiling;
+  movesStore: MovesStore;
+  moveListsStore: MoveListsStore;
+  moveListsPreview: Array<MoveListT>;
 };
 
-export const MovesCtrProvider: (PropsT) => any = compose(
+export const MovesCtrProvider: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

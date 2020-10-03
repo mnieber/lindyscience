@@ -9,18 +9,18 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { AuthSwitch } from 'src/app/containers/AuthSwitch';
 import { ListsSwitch } from 'src/app/containers/ListsSwitch';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
-import type { UserProfileT } from 'src/profiles/types';
+import { UserProfileT } from 'src/profiles/types';
 import { IndexPage } from 'src/app/containers/IndexPage';
 import { ProfilePage } from 'src/session/containers/ProfilePage';
 import { SearchResultsPage } from 'src/search/containers/SearchResultsPage';
 
 type PropsT = {
-  defaultProps: any,
+  defaultProps: any;
 };
 
 type DefaultPropsT = {
-  userProfile: UserProfileT,
-  navigation: Navigation,
+  userProfile: UserProfileT;
+  navigation: Navigation;
 };
 
 export const UrlRouter = compose(

@@ -21,8 +21,8 @@ const zip = (arr, ...arrs) => {
 export const relayData = (
   [fromFacetClass, fromMember]: ClassMemberT,
   [toFacetClass, toMember]: ClassMemberT,
-  transform: ?Function,
-  setter: ?Function
+  transform?: Function,
+  setter?: Function
 ) => (ctr: any) =>
   reaction(
     () => getFacet(fromFacetClass, ctr)[fromMember],
@@ -66,7 +66,7 @@ export function patchFacet(facet: any, members: any) {
 }
 
 export function createPatch(
-  patchedFacetClass: ?any,
+  patchedFacetClass?: any,
   otherFacetClasses: Array<any>,
   callback: (...any) => any
 ) {
@@ -107,7 +107,7 @@ export function createPatches(
 export const mapData = (
   [fromFacetClass, fromMember]: ClassMemberT,
   [toFacetClass, toMember]: ClassMemberT,
-  transform: ?Function
+  transform?: Function
 ) =>
   createPatch(toFacetClass, [fromFacetClass], (fromFacet: any) => ({
     // $FlowFixMe

@@ -11,28 +11,28 @@ import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 import { Profiling } from 'src/session/facets/Profiling';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { Editing } from 'src/npm/facet-mobx/facets/editing';
-import type { UserProfileT } from 'src/profiles/types';
+import { UserProfileT } from 'src/profiles/types';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { withCutVideoPanel } from 'src/video/hocs/withCutVideoPanel';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  profiling: Profiling,
-  moveList: MoveListT,
-  moveListsEditing: Editing,
-  moveListsPreview: Array<MoveListT>,
-  userProfile: UserProfileT,
-  moveListsStore: MoveListsStore,
-  cutVideoPanel: any,
+  profiling: Profiling;
+  moveList: MoveListT;
+  moveListsEditing: Editing;
+  moveListsPreview: Array<MoveListT>;
+  userProfile: UserProfileT;
+  moveListsStore: MoveListsStore;
+  cutVideoPanel: any;
 };
 
-export const MoveListDetailsPage: (PropsT) => any = compose(
+export const MoveListDetailsPage: React.FC<PropsT> = compose(
   withDefaultProps,
   withCutVideoPanel,
   observer

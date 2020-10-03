@@ -2,7 +2,7 @@
 
 import { Inputs } from 'src/video/facets/Inputs';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { getVideoFromMove } from 'src/moves/utils';
 import { mapDatas } from 'src/npm/facet-mobx';
 

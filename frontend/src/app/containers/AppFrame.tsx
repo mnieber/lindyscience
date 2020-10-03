@@ -15,16 +15,16 @@ import { AccountMenu } from 'src/app/presentation/AccountMenu';
 
 // AppFrame
 type PropsT = {
-  children: any,
-  defaultProps?: any,
+  children: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  profiling: Profiling,
-  display: Display,
+  profiling: Profiling;
+  display: Display;
 };
 
-export const AppFrame: (PropsT) => any = compose(
+export const AppFrame: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

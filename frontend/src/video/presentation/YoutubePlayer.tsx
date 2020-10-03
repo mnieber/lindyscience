@@ -3,16 +3,16 @@
 import * as React from 'react';
 import YouTube from 'react-youtube';
 
-import type { VideoUrlPropsT } from 'src/video/types';
+import { VideoUrlPropsT } from 'src/video/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { isNone } from 'src/utils/utils';
 import { runInAction } from 'src/utils/mobx_wrapper';
 
 type PropsT = {
-  videoUrlProps: VideoUrlPropsT,
-  videoController: VideoController,
-  videoWidth: number,
-  setIFrame: Function,
+  videoUrlProps: VideoUrlPropsT;
+  videoController: VideoController;
+  videoWidth: number;
+  setIFrame: Function;
 };
 
 export function YoutubePlayer(props: PropsT) {

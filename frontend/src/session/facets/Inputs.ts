@@ -1,7 +1,7 @@
 // @flow
 
 import { observable, runInAction } from 'src/utils/mobx_wrapper';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 
 export class Inputs {
   @observable moveLists: Array<MoveListT>;

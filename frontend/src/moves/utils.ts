@@ -1,7 +1,7 @@
 // @flow
 
-import type { MoveT } from 'src/moves/types';
-import type { VideoT } from 'src/video/types';
+import { MoveT } from 'src/moves/types';
+import { VideoT } from 'src/video/types';
 
 export const newMoveSlug = 'new-move';
 export const helpUrl = '/lists/lindyscience/help/welcome-to-lindy-science';

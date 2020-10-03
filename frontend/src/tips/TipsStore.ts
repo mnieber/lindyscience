@@ -1,8 +1,8 @@
 // @flow
 
 import { action, computed, observable } from 'src/utils/mobx_wrapper';
-import type { TipByIdT, TipsByIdT } from 'src/tips/types';
-import type { UUID } from 'src/kernel/types';
+import { TipByIdT, TipsByIdT } from 'src/tips/types';
+import { UUID } from 'src/kernel/types';
 import { isNone, reduceMapToMap } from 'src/utils/utils';
 
 export class TipsStore {

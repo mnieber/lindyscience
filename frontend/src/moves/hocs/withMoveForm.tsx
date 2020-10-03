@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import type { TagT } from 'src/tags/types';
-import type { MoveT } from 'src/moves/types';
+import { TagT } from 'src/tags/types';
+import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { action } from 'src/utils/mobx_wrapper';
@@ -13,15 +13,15 @@ import { Editing } from 'src/npm/facet-mobx/facets/editing';
 import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
 
 type PropsT = {
-  moveTags: Array<TagT>,
-  defaultProps?: any,
+  moveTags: Array<TagT>;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  movesEditing: Editing,
-  move: MoveT,
-  moveCtr: MoveContainer,
-  videoController: VideoController,
+  movesEditing: Editing;
+  move: MoveT;
+  moveCtr: MoveContainer;
+  videoController: VideoController;
 };
 
 export const withMoveForm = (WrappedComponent: any) =>

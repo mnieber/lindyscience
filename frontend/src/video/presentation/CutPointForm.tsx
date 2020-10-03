@@ -5,22 +5,22 @@ import { Formik } from 'formik';
 import React from 'react';
 
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import type { UUID } from 'src/kernel/types';
-import type { TagT } from 'src/tags/types';
-import type { CutPointT } from 'src/video/types';
+import { UUID } from 'src/kernel/types';
+import { TagT } from 'src/tags/types';
+import { CutPointT } from 'src/video/types';
 import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
 import { FormField, FormFieldError } from 'src/utils/form_utils';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 
 type InnerFormPropsT = {
-  tagPickerOptions: Array<any>,
-  videoController: VideoController,
-  cutPointId: UUID,
-  autoFocus: boolean,
-  editorRef: any,
-  tagsPickerValue: any,
-  setTagsPickerValue: Function,
+  tagPickerOptions: Array<any>;
+  videoController: VideoController;
+  cutPointId: UUID;
+  autoFocus: boolean;
+  editorRef: any;
+  tagsPickerValue: any;
+  setTagsPickerValue: Function;
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
@@ -94,11 +94,11 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 // CutPointForm
 
 type PropsT = {
-  onSubmit: (values: any) => void,
-  knownTags: Array<TagT>,
-  cutPoint: CutPointT,
-  videoController: any,
-  autoFocus: boolean,
+  onSubmit: (values: any) => void;
+  knownTags: Array<TagT>;
+  cutPoint: CutPointT;
+  videoController: any;
+  autoFocus: boolean;
 };
 
 export function CutPointForm(props: PropsT) {

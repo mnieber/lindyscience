@@ -2,8 +2,8 @@
 
 import { Display } from 'src/session/facets/Display';
 import { observable, runInAction } from 'src/utils/mobx_wrapper';
-import type { UserProfileT } from 'src/profiles/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { UserProfileT } from 'src/profiles/types';
+import { MoveListT } from 'src/move_lists/types';
 
 export class Inputs {
   @observable sessionDisplay: ?Display;

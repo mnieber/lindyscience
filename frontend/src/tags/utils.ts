@@ -4,7 +4,7 @@
 // Tags
 ///////////////////////////////////////////////////////////////////////
 
-import type { TagMapT, TagT } from 'src/tags/types';
+import { TagMapT, TagT } from 'src/tags/types';
 
 export const createTagMap = (tags: Array<string>): TagMapT => {
   return tags.reduce((acc, tag) => {

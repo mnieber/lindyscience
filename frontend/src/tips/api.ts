@@ -1,5 +1,5 @@
-import type { UUID } from 'src/kernel/types';
-import type { TipT } from 'src/tips/types';
+import { UUID } from 'src/kernel/types';
+import { TipT } from 'src/tips/types';
 import { doQuery } from 'src/app/client';
 
 export function apiSaveTip(moveId: UUID, values: TipT) {

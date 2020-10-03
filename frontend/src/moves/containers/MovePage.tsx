@@ -6,9 +6,9 @@ import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { Navigation, getStatus } from 'src/session/facets/Navigation';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { withMoveForm } from 'src/moves/hocs/withMoveForm';
 import { withMovePrivateDataPanel } from 'src/moves/hocs/withMovePrivateDataPanel';
@@ -22,25 +22,25 @@ import { Editing } from 'src/npm/facet-mobx/facets/editing';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  navigation: Navigation,
-  moveList: MoveListT,
-  move: MoveT,
-  moveDisplay: MoveDisplay,
-  movesEditing: Editing,
-  videoController: VideoController,
-  moveForm: any,
-  movePrivateDataPanel: any,
-  tipsPanel: any,
-  moveHeader: any,
-  videoPlayerPanel: any,
-  moveKeyHandlers: any,
+  navigation: Navigation;
+  moveList: MoveListT;
+  move: MoveT;
+  moveDisplay: MoveDisplay;
+  movesEditing: Editing;
+  videoController: VideoController;
+  moveForm: any;
+  movePrivateDataPanel: any;
+  tipsPanel: any;
+  moveHeader: any;
+  videoPlayerPanel: any;
+  moveKeyHandlers: any;
 };
 
-export const MovePage: (PropsT) => any = compose(
+export const MovePage: React.FC<PropsT> = compose(
   withDefaultProps,
   withMoveForm,
   withMovePrivateDataPanel,

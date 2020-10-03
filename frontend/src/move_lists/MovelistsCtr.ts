@@ -4,8 +4,8 @@ import { values } from 'rambda';
 
 import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
-import type { MoveListT } from 'src/move_lists/types';
-import type { UUID } from 'src/kernel/types';
+import { MoveListT } from 'src/move_lists/types';
+import { UUID } from 'src/kernel/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'src/npm/facet';
@@ -22,12 +22,12 @@ import * as MoveListsCtrPolicies from 'src/move_lists/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
 
 type PropsT = {
-  isEqual: (lhs: any, rhs: any) => boolean,
-  setMoveLists: (Array<MoveListT>) => any,
-  saveMoveList: (MoveListT, values: any) => any,
-  createNewMoveList: (any) => MoveListT,
-  setFollowedMoveListIds: (ids: Array<UUID>) => void,
-  navigation: Navigation,
+  isEqual: (lhs: any, rhs: any) => boolean;
+  setMoveLists: (moveLists: Array<MoveListT>) => any;
+  saveMoveList: (moveList: MoveListT, values: any) => any;
+  createNewMoveList: (values: any) => MoveListT;
+  setFollowedMoveListIds: (ids: Array<UUID>) => void;
+  navigation: Navigation;
 };
 
 export class MoveListsContainer {
@@ -43,7 +43,7 @@ export class MoveListsContainer {
   _createFacets(props: PropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: (values: any) => {
-        const userProfile = (this.inputs.userProfile: any);
+        const userProfile = this.inputs.userProfile as any;
         return props.createNewMoveList({
           ...values,
           ownerId: userProfile.userId,
@@ -53,7 +53,7 @@ export class MoveListsContainer {
     });
     this.editing = initEditing(new Editing(), {
       saveItem: (values: any) => {
-        props.saveMoveList((this.highlight.item: any), values);
+        props.saveMoveList(this.highlight.item as any, values);
       },
     });
     this.highlight = initHighlight(new Highlight());

@@ -1,15 +1,15 @@
 // @flow
 
 import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
-import type { MoveT } from 'src/moves/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveT } from 'src/moves/types';
+import { MoveListT } from 'src/move_lists/types';
 import { data, installHandlers, operation } from 'src/npm/facet';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
 
 export type DataRequestT = {
-  moveSlugid?: string,
-  moveListUrl?: string,
-  profileUrl?: string,
+  moveSlugid?: string;
+  moveListUrl?: string;
+  profileUrl?: string;
 };
 
 const createDataRequestMap = (createValue: Function) => ({

@@ -6,21 +6,21 @@ import { observer } from 'mobx-react';
 
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
-import type { MoveT } from 'src/moves/types';
-import type { UserProfileT } from 'src/profiles/types';
+import { MoveT } from 'src/moves/types';
+import { UserProfileT } from 'src/profiles/types';
 import { MovesStore } from 'src/moves/MovesStore';
 import { createErrorHandler, getId } from 'src/app/utils';
 import { apiSaveMovePrivateData } from 'src/moves/api';
 
 type PropsT = {
-  videoController?: any,
-  defaultProps?: any,
+  videoController?: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  move: MoveT,
-  userProfile: UserProfileT,
-  movesStore: MovesStore,
+  move: MoveT;
+  userProfile: UserProfileT;
+  movesStore: MovesStore;
 };
 
 export const withMovePrivateDataPanel = compose(

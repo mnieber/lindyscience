@@ -5,22 +5,22 @@ import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 
-import type { UserProfileT } from 'src/profiles/types';
-import type { MovePrivateDataT } from 'src/moves/types';
-import type { TagT } from 'src/tags/types';
-import type { UUID } from 'src/kernel/types';
+import { UserProfileT } from 'src/profiles/types';
+import { MovePrivateDataT } from 'src/moves/types';
+import { TagT } from 'src/tags/types';
+import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { Tags } from 'src/tags/presentation/Tags';
 import { MovePrivateDataForm } from 'src/moves/presentation/MovePrivateDataForm';
 
 type PropsT = {
-  userProfile: UserProfileT,
-  movePrivateData: ?MovePrivateDataT,
-  onSave: (values: any) => void,
-  moveTags: Array<TagT>,
-  moveId: UUID,
-  videoController?: VideoController,
+  userProfile: UserProfileT;
+  movePrivateData?: MovePrivateDataT;
+  onSave: (values: any) => void;
+  moveTags: Array<TagT>;
+  moveId: UUID;
+  videoController?: VideoController;
 };
 
 export const MovePrivateDataPanel = (props: PropsT) => {

@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 
 import { MoveContextMenu } from 'src/moves/presentation/MoveContextMenu';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { getId } from 'src/app/utils';
 
@@ -15,14 +15,14 @@ import { getId } from 'src/app/utils';
 ///////////////////////////////////////////////////////////////////////
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  moveLists: Array<MoveListT>,
-  movesClipboard: Clipboard,
-  moveList: MoveListT,
-  isOwner: (any) => boolean,
+  moveLists: Array<MoveListT>;
+  movesClipboard: Clipboard;
+  moveList: MoveListT;
+  isOwner: (any) => boolean;
 };
 
 export const withMoveContextMenu = compose(

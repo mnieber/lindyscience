@@ -2,16 +2,16 @@
 
 import * as React from 'react';
 
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { deepCopy } from 'src/utils/utils';
 
 // MoveListPlayer
 
-type PropsT = {|
-  moves: Array<MoveT>,
-  sayMove: (MoveT) => void,
-  className: string,
-|};
+type PropsT = {
+  moves: Array<MoveT>;
+  sayMove: (MoveT) => void;
+  className: string;
+};
 
 export function MoveListPlayer(props: PropsT) {
   const [isPlaying, setIsPlaying] = React.useState(false);

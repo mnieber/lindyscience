@@ -2,21 +2,21 @@
 
 import * as React from 'react';
 
-import type { TipT } from 'src/tips/types';
-import type { VoteT } from 'src/votes/types';
-import type { UUID } from 'src/kernel/types';
+import { TipT } from 'src/tips/types';
+import { VoteT } from 'src/votes/types';
+import { UUID } from 'src/kernel/types';
 import { TipForm } from 'src/tips/presentation/TipForm';
 import { VoteCount } from 'src/votes/presentation/VoteCount';
 
 type PropsT = {
-  allowEdit: boolean,
-  allowDelete: boolean,
-  item: TipT,
-  vote: VoteT,
-  setVote: (UUID, VoteT) => void,
-  saveTip: Function,
-  deleteTip: Function,
-  cancelEditTip: Function,
+  allowEdit: boolean;
+  allowDelete: boolean;
+  item: TipT;
+  vote: VoteT;
+  setVote: (UUID, VoteT) => void;
+  saveTip: Function;
+  deleteTip: Function;
+  cancelEditTip: Function;
 };
 
 export function Tip(props: PropsT) {

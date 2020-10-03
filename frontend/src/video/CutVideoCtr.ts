@@ -3,10 +3,10 @@
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { installPolicies } from 'src/npm/facet';
 import { moves } from 'src/tips/tests/data';
-import type { MoveT } from 'src/moves/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveT } from 'src/moves/types';
+import { MoveListT } from 'src/move_lists/types';
 import { CutPoints, initCutPoints } from 'src/video/facets/CutPoints';
-import type { CutPointT } from 'src/video/types';
+import { CutPointT } from 'src/video/types';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { createMoveFromCutPoint } from 'src/app/utils';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';

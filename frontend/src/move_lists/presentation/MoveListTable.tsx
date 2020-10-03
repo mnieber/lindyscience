@@ -4,7 +4,7 @@ import React from 'react';
 import ReactTable from 'react-table';
 import classnames from 'classnames';
 
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { RouterLink } from 'src/utils/RouterLink';
 import { makeMoveListUrl } from 'src/app/utils';
 
@@ -18,7 +18,7 @@ const LoadingComponent = ({ className, loading, loadingText, ...rest }) => (
 );
 
 type PropsT = {
-  moveLists: Array<MoveListT>,
+  moveLists: Array<MoveListT>;
 };
 
 export function MoveListTable(props: PropsT) {

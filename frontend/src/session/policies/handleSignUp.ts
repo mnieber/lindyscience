@@ -3,7 +3,7 @@
 // $FlowFixMe
 import { runInAction } from 'mobx';
 
-import type { AuthApiT } from 'src/session/SessionCtr';
+import { AuthApiT } from 'src/session/SessionCtr';
 import { Authentication } from 'src/session/facets/Authentication';
 import { Navigation } from 'src/session/facets/Navigation';
 import { handle } from 'src/npm/facet';

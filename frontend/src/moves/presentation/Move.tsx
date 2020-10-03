@@ -4,19 +4,19 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react';
 
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { RouterLink } from 'src/utils/RouterLink';
 
 // Move
 
 type PropsT = {
-  move: MoveT,
-  className?: string,
-  videoController?: any,
+  move: MoveT;
+  className?: string;
+  videoController?: any;
 };
 
-export const Move: (PropsT) => any = observer((props: PropsT) => {
+export const Move: React.FC<PropsT> = observer((props: PropsT) => {
   const descriptionDiv = (
     <div>
       <div id="move__description" className={'move__description panel'}>

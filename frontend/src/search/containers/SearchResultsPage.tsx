@@ -9,14 +9,14 @@ import { MoveTable } from 'src/search/presentation/MoveTable';
 import { MovesStore } from 'src/moves/MovesStore';
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  movesStore: MovesStore,
+  movesStore: MovesStore;
 };
 
-export const SearchResultsPage: (PropsT) => any = compose(
+export const SearchResultsPage: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

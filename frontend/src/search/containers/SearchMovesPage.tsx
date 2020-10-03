@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 import { SearchMovesForm } from 'src/search/presentation/SearchMovesForm';
-import type { UserProfileT } from 'src/profiles/types';
+import { UserProfileT } from 'src/profiles/types';
 import { MovesStore } from 'src/moves/MovesStore';
 import { apiFindMoves } from 'src/search/api';
 import { Navigation } from 'src/session/facets/Navigation';
@@ -14,16 +14,16 @@ import { Navigation } from 'src/session/facets/Navigation';
 // SearchMovesPage
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  userProfile: UserProfileT,
-  movesStore: MovesStore,
-  navigation: Navigation,
+  userProfile: UserProfileT;
+  movesStore: MovesStore;
+  navigation: Navigation;
 };
 
-export const SearchMovesPage: (PropsT) => any = compose(
+export const SearchMovesPage: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

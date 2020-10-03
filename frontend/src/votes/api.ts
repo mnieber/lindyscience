@@ -2,8 +2,8 @@
 
 // Api votes
 
-import type { UUID } from 'src/kernel/types';
-import type { VoteT } from 'src/votes/types';
+import { UUID } from 'src/kernel/types';
+import { VoteT } from 'src/votes/types';
 import { doQuery } from 'src/app/client';
 
 export function apiLoadUserVotes() {

@@ -16,17 +16,17 @@ import { Editing } from 'src/npm/facet-mobx/facets/editing';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 
 type PropsT = {
-  children: any,
-  defaultProps?: any,
+  children: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  profiling: Profiling,
-  navigation: Navigation,
-  moveListsStore: MoveListsStore,
+  profiling: Profiling;
+  navigation: Navigation;
+  moveListsStore: MoveListsStore;
 };
 
-export const MoveListsCtrProvider: (PropsT) => any = compose(
+export const MoveListsCtrProvider: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {

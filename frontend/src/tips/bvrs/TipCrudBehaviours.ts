@@ -2,16 +2,16 @@
 
 import * as React from 'react';
 
-import type { TipT } from 'src/tips/types';
-import type { UUID } from 'src/kernel/types';
+import { TipT } from 'src/tips/types';
+import { UUID } from 'src/kernel/types';
 import { createUUID } from 'src/utils/utils';
 
 // Behaviours
 
 type InsertTipBvrT = {
-  preview: Array<TipT>,
-  prepare: Function,
-  finalize: Function,
+  preview: Array<TipT>;
+  prepare: Function;
+  finalize: Function;
 };
 
 export function useInsertTip(tips: Array<TipT>): InsertTipBvrT {
@@ -31,9 +31,9 @@ export function useInsertTip(tips: Array<TipT>): InsertTipBvrT {
 }
 
 type NewTipBvrT = {
-  newTip: ?TipT,
-  add: Function,
-  finalize: Function,
+  newTip: ?TipT;
+  add: Function;
+  finalize: Function;
 };
 
 export function useNewTip(
@@ -71,12 +71,12 @@ export function useNewTip(
 }
 
 type IncompleteValuesT = {
-  text: string,
+  text: string;
 };
 
 type SaveTipBvr = {
-  save: Function,
-  discardChanges: Function,
+  save: Function;
+  discardChanges: Function;
 };
 
 export function useSaveTip(

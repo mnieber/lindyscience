@@ -5,9 +5,9 @@ import { withFormik } from 'formik';
 import React from 'react';
 
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import type { UUID } from 'src/kernel/types';
-import type { TagT } from 'src/tags/types';
-import type { MoveT } from 'src/moves/types';
+import { UUID } from 'src/kernel/types';
+import { TagT } from 'src/tags/types';
+import { MoveT } from 'src/moves/types';
 import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
 import {
   FormField,
@@ -20,15 +20,15 @@ import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor'
 import { slugify, truncDecimals } from 'src/utils/utils';
 
 type InnerFormPropsT = {
-  autoFocus: boolean,
-  tagPickerOptions: Array<any>,
-  tagsPickerValue: any,
-  setTagsPickerValue: Function,
-  onCancel: () => void,
-  editorRef: any,
-  videoController: VideoController,
-  setAltLink: (any) => any,
-  moveId: UUID,
+  autoFocus: boolean;
+  tagPickerOptions: Array<any>;
+  tagsPickerValue: any;
+  setTagsPickerValue: Function;
+  onCancel: () => void;
+  editorRef: any;
+  videoController: VideoController;
+  setAltLink: (any) => any;
+  moveId: UUID;
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
@@ -242,13 +242,13 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 // MoveForm
 
 type MoveFormPropsT = {
-  onCancel: () => void,
-  onSubmit: (id: UUID, values: any) => void,
-  knownTags: Array<TagT>,
-  move: MoveT,
-  videoController: VideoController,
-  setAltLink: (any) => any,
-  autoFocus: boolean,
+  onCancel: () => void;
+  onSubmit: (id: UUID, values: any) => void;
+  knownTags: Array<TagT>;
+  move: MoveT;
+  videoController: VideoController;
+  setAltLink: (any) => any;
+  autoFocus: boolean;
 };
 
 export function MoveForm(props: MoveFormPropsT) {

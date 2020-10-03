@@ -2,8 +2,8 @@
 
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
-import type { MoveT } from 'src/moves/types';
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveT } from 'src/moves/types';
+import { MoveListT } from 'src/move_lists/types';
 import { apiSaveMove } from 'src/moves/api';
 import { createErrorHandler } from 'src/app/utils';
 import { apiSaveMoveOrdering } from 'src/move_lists/api';

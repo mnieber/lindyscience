@@ -4,7 +4,7 @@ import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { makeSlugid, makeSlugidMatcher } from 'src/app/utils';
 import { getId } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/containers';

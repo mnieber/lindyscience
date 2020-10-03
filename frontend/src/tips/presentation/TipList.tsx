@@ -1,20 +1,20 @@
 import React from 'react';
 
-import type { UserProfileT } from 'src/profiles/types';
-import type { OwnedObjectT, UUID } from 'src/kernel/types';
-import type { TipT } from 'src/tips/types';
-import type { VoteByIdT, VoteT } from 'src/votes/types';
+import { UserProfileT } from 'src/profiles/types';
+import { OwnedObjectT, UUID } from 'src/kernel/types';
+import { TipT } from 'src/tips/types';
+import { VoteByIdT, VoteT } from 'src/votes/types';
 import { Tip } from 'src/tips/presentation/Tip';
 
 type TipListPropsT = {
-  userProfile: ?UserProfileT,
-  parentObject: OwnedObjectT,
-  items: Array<TipT>,
-  voteByObjectId: VoteByIdT,
-  setVote: (UUID, VoteT) => void,
-  saveTip: Function,
-  deleteTip: Function,
-  cancelEditTip: Function,
+  userProfile: ?UserProfileT;
+  parentObject: OwnedObjectT;
+  items: Array<TipT>;
+  voteByObjectId: VoteByIdT;
+  setVote: (UUID, VoteT) => void;
+  saveTip: Function;
+  deleteTip: Function;
+  cancelEditTip: Function;
 };
 
 export function TipList(props: TipListPropsT) {

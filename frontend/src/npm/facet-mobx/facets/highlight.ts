@@ -4,7 +4,7 @@
 import { observable } from 'mobx';
 
 import { data, installHandlers, operation, output } from 'src/npm/facet';
-import { type ClassMemberT } from 'src/npm/facet';
+import { ClassMemberT } from 'src/npm/facet';
 import { mapDatas } from 'src/npm/facet-mobx';
 
 export class Highlight {

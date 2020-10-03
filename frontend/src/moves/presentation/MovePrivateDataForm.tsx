@@ -4,10 +4,10 @@ import { values } from 'rambda';
 import React from 'react';
 import { withFormik } from 'formik';
 
-import type { UUID } from 'src/kernel/types';
+import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import type { TagT } from 'src/tags/types';
-import type { MovePrivateDataT } from 'src/moves/types';
+import { TagT } from 'src/tags/types';
+import { MovePrivateDataT } from 'src/moves/types';
 import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { FormFieldError } from 'src/utils/form_utils';
@@ -16,14 +16,14 @@ import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor'
 // MovePrivateDataForm
 
 type InnerFormPropsT = {
-  autoFocus: boolean,
-  tagPickerOptions: Array<any>,
-  onCancel: () => void,
-  notesEditorRef: any,
-  moveId: UUID,
-  videoController?: VideoController,
-  tagsPickerValue: any,
-  setTagsPickerValue: Function,
+  autoFocus: boolean;
+  tagPickerOptions: Array<any>;
+  onCancel: () => void;
+  notesEditorRef: any;
+  moveId: UUID;
+  videoController?: VideoController;
+  tagsPickerValue: any;
+  setTagsPickerValue: Function;
 };
 
 const InnerForm = (props: InnerFormPropsT) => (formProps) => {
@@ -93,13 +93,13 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 };
 
 type PropsT = {
-  onCancel: () => void,
-  onSubmit: (values: any) => void,
-  knownTags: Array<TagT>,
-  moveId: UUID,
-  movePrivateData: ?MovePrivateDataT,
-  autoFocus: boolean,
-  videoController?: VideoController,
+  onCancel: () => void;
+  onSubmit: (values: any) => void;
+  knownTags: Array<TagT>;
+  moveId: UUID;
+  movePrivateData?: MovePrivateDataT;
+  autoFocus: boolean;
+  videoController?: VideoController;
 };
 
 export function MovePrivateDataForm(props: PropsT) {

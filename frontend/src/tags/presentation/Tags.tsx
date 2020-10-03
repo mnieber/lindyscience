@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import type { TagT } from 'src/tags/types';
+import { TagT } from 'src/tags/types';
 
 export function Tags({ tags }: { tags: Array<TagT> }) {
   const items = tags.map((tagName, idx) => {

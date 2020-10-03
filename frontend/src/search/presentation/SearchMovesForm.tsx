@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { Display } from 'src/session/facets/Display';
-import type { TagT } from 'src/tags/types';
+import { TagT } from 'src/tags/types';
 import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
 import { strToPickerValue } from 'src/utils/value_picker';
 import {
@@ -19,10 +19,10 @@ import { FormFieldError } from 'src/utils/form_utils';
 import { makeUnique } from 'src/utils/utils';
 
 type InnerFormPropsT = {
-  autoFocus: boolean,
-  tagPickerOptions: Array<any>,
-  defaults: any,
-  display: Display,
+  autoFocus: boolean;
+  tagPickerOptions: Array<any>;
+  defaults: any;
+  display: Display;
 };
 
 const InnerForm = (props: InnerFormPropsT) =>
@@ -104,18 +104,18 @@ const InnerForm = (props: InnerFormPropsT) =>
 // SearchMovesForm
 
 type PropsT = {
-  onSubmit: (values: any) => any,
-  knownTags: Array<TagT>,
-  autoFocus: boolean,
-  latestOptions: any,
-  defaultProps?: any,
+  onSubmit: (values: any) => any;
+  knownTags: Array<TagT>;
+  autoFocus: boolean;
+  latestOptions: any;
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  display: Display,
+  display: Display;
 };
 
-export const SearchMovesForm: (PropsT) => any = observer((p: PropsT) => {
+export const SearchMovesForm: React.FC<PropsT> = observer((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const [defaults, setDefaults] = React.useState({});
 

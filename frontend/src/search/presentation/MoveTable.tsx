@@ -3,11 +3,11 @@
 import React from 'react';
 import ReactTable from 'react-table';
 
-import type { MoveSearchResultT } from 'src/search/types';
+import { MoveSearchResultT } from 'src/search/types';
 import { RouterLink } from 'src/utils/RouterLink';
 
 type PropsT = {
-  moveSearchResults: Array<MoveSearchResultT>,
+  moveSearchResults: Array<MoveSearchResultT>;
 };
 
 function _moveListUrl(moveSearchResult: MoveSearchResultT) {

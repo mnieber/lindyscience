@@ -6,24 +6,24 @@ import { observer } from 'mobx-react';
 
 import { TipsPanel } from 'src/tips/presentation/TipsPanel';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
-import type { MoveT } from 'src/moves/types';
+import { MoveT } from 'src/moves/types';
 import { TipsStore } from 'src/tips/TipsStore';
 import { VotesStore } from 'src/votes/VotesStore';
-import type { TipT } from 'src/tips/types';
-import type { UUID } from 'src/kernel/types';
-import type { VoteT } from 'src/votes/types';
+import { TipT } from 'src/tips/types';
+import { UUID } from 'src/kernel/types';
+import { VoteT } from 'src/votes/types';
 import { createErrorHandler, getId } from 'src/app/utils';
 import { apiDeleteTip, apiSaveTip } from 'src/tips/api';
 import { apiVoteTip } from 'src/votes/api';
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  move: MoveT,
-  tipsStore: TipsStore,
-  votesStore: VotesStore,
+  move: MoveT;
+  tipsStore: TipsStore;
+  votesStore: VotesStore;
 };
 
 export const withTipsPanel = compose(

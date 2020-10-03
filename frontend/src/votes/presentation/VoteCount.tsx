@@ -3,7 +3,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import type { VoteT } from 'src/votes/types';
+import { VoteT } from 'src/votes/types';
 
 // VoteCount
 
@@ -12,9 +12,9 @@ export function VoteCount({
   count,
   setVote,
 }: {
-  vote: VoteT,
-  count: number,
-  setVote: (vote: VoteT) => void,
+  vote: VoteT;
+  count: number;
+  setVote: (vote: VoteT) => void;
 }) {
   function _toggleUpVote() {
     setVote(vote == 1 ? 0 : 1);

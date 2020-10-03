@@ -2,28 +2,28 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react';
 
-import type { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/move_lists/types';
 import { ValuePicker } from 'src/utils/value_picker';
 import { Addition } from 'src/npm/facet-mobx/facets/addition';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
 import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
 
-type PropsT = {|
-  filter: (MoveListT) => boolean,
-  className?: string,
-  navigateTo: (MoveListT) => any,
-  defaultProps?: any,
-|};
-
-type DefaultPropsT = {
-  moveListsAddition: Addition,
-  moveListsHighlight: Highlight,
-  moveListsSelection: Selection,
-  moveLists: Array<MoveListT>,
+type PropsT = {
+  filter: (MoveListT) => boolean;
+  className?: string;
+  navigateTo: (MoveListT) => any;
+  defaultProps?: any;
 };
 
-export const MoveListPicker: (PropsT) => any = observer((p: PropsT) => {
+type DefaultPropsT = {
+  moveListsAddition: Addition;
+  moveListsHighlight: Highlight;
+  moveListsSelection: Selection;
+  moveLists: Array<MoveListT>;
+};
+
+export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
   function _onChange(pickedItem) {

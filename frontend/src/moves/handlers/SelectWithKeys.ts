@@ -5,7 +5,7 @@ import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
 
 export type PropsT = {
-  container: any,
+  container: any;
 };
 
 export class SelectWithKeys {
@@ -18,7 +18,7 @@ export class SelectWithKeys {
   handle(
     keysUp: Array<string>,
     keysDown: Array<string>,
-    navigateTo: ?Function
+    navigateTo?: Function
   ) {
     return {
       onKeyDown: (key: string, e: any) => {

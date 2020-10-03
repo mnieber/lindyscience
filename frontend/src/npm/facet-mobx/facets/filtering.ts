@@ -4,7 +4,7 @@
 import { observable } from 'mobx';
 
 import { input, installHandlers, operation, output } from 'src/npm/facet';
-import { type ClassMemberT } from 'src/npm/facet';
+import { ClassMemberT } from 'src/npm/facet';
 import { patchFacet, mapData } from 'src/npm/facet-mobx';
 
 export class Filtering {

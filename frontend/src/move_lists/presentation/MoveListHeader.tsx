@@ -5,10 +5,10 @@ import classnames from 'classnames';
 
 // MoveListHeader
 
-type PropsT = {|
-  addNewMove: Function,
-  className: string,
-|};
+type PropsT = {
+  addNewMove: Function;
+  className: string;
+};
 
 export function MoveListHeader(props: PropsT) {
   const newMoveBtn = (

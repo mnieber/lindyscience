@@ -1,6 +1,6 @@
 // @flow
 
-import type { TagT } from 'src/tags/types';
+import { TagT } from 'src/tags/types';
 import { doQuery } from 'src/app/client';
 import { flatten } from 'src/utils/utils';
 import { normalize, schema } from 'normalizr';
@@ -19,8 +19,8 @@ export function apiFindMoveLists({
   ownerUsername,
   followedByUsername,
 }: {
-  ownerUsername?: string,
-  followedByUsername?: string,
+  ownerUsername?: string;
+  followedByUsername?: string;
 }) {
   return doQuery(
     `query queryMoveLists(

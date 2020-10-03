@@ -3,7 +3,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
-import type { UserProfileT } from 'src/profiles/types';
+import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { helpUrl } from 'src/moves/utils';
 import { browseToMoveUrl } from 'src/app/containers';
@@ -11,8 +11,8 @@ import { browseToMoveUrl } from 'src/app/containers';
 type PropsT = {};
 
 type DefaultPropsT = {
-  userProfile: UserProfileT,
-  navigation: Navigation,
+  userProfile: UserProfileT;
+  navigation: Navigation;
 };
 
 export const IndexPage = compose(

@@ -4,14 +4,14 @@
 import { observable } from 'mobx';
 
 import { data, input, installHandlers, operation, output } from 'src/npm/facet';
-import { type ClassMemberT } from 'src/npm/facet';
+import { ClassMemberT } from 'src/npm/facet';
 import { lookUp, range } from 'src/npm/facet-mobx/internal/utils';
 import { mapDatas } from 'src/npm/facet-mobx';
 
 export type ItemSelectedPropsT = {
-  itemId: any,
-  isShift: boolean,
-  isCtrl: boolean,
+  itemId: any;
+  isShift: boolean;
+  isCtrl: boolean;
 };
 
 export class Selection {

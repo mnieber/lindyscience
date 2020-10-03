@@ -19,17 +19,17 @@ import { CutVideoPanel } from 'src/video/presentation/CutVideoPanel';
 import { runInAction } from 'src/utils/mobx_wrapper';
 
 type PropsT = {
-  defaultProps?: any,
+  defaultProps?: any;
 };
 
 type DefaultPropsT = {
-  cutPoints: CutPoints,
-  display: Display,
-  moveDisplay: MoveDisplay,
-  movesStore: MovesStore,
+  cutPoints: CutPoints;
+  display: Display;
+  moveDisplay: MoveDisplay;
+  movesStore: MovesStore;
 };
 
-export const withCutVideoPanel: (PropsT) => any = compose(
+export const withCutVideoPanel: React.FC<PropsT> = compose(
   withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {

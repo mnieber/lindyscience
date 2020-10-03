@@ -3,8 +3,7 @@ import { TipT } from 'src/tips/types';
 import { doQuery } from 'src/app/client';
 
 export function apiSaveTip(moveId: UUID, values: TipT) {
-  return doQuery(
-    `mutation saveTip(
+  const query = `mutation saveTip(
       $id: String!,
       $moveId: String!,
       $text: String!,
@@ -14,25 +13,22 @@ export function apiSaveTip(moveId: UUID, values: TipT) {
         moveId: $moveId,
         text: $text,
       ) { ok }
-    }`,
-    {
-      ...values,
-      moveId,
-    }
-  );
+    }`;
+  return doQuery(query, {
+    ...values,
+    moveId,
+  });
 }
 
 export function apiDeleteTip(id: UUID) {
-  return doQuery(
-    `mutation deleteTip(
+  const query = `mutation deleteTip(
       $id: String!,
     ) {
       deleteTip(
         pk: $id,
       ) { ok }
-    }`,
-    {
-      id,
-    }
-  );
+    }`;
+  return doQuery(query, {
+    id,
+  });
 }

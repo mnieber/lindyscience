@@ -20,8 +20,7 @@ export function apiFindMoveLists({
   ownerUsername?: string;
   followedByUsername?: string;
 }) {
-  return doQuery(
-    `query queryMoveLists(
+  const query = `query queryMoveLists(
       $ownerUsername: String,
       $followedByUsername: String
     ) {
@@ -44,9 +43,8 @@ export function apiFindMoveLists({
           id
         }
       }
-    }`,
-    { ownerUsername, followedByUsername }
-  )
+    }`;
+  return doQuery(query, { ownerUsername, followedByUsername })
     .then((result) => flatten(result, ['/findMoveLists/*/owner']))
     .then((result) => normalize(result.findMoveLists, [moveList]));
 }
@@ -56,8 +54,7 @@ export function apiFindMoves(
   keywords: Array<string>,
   tags: Array<TagT>
 ) {
-  return doQuery(
-    `query queryFindMoves($ownerUsername: String, $keywords: [String]!, $tags: [String]!) {
+  const query = `query queryFindMoves($ownerUsername: String, $keywords: [String]!, $tags: [String]!) {
       findMoves(ownerUsername: $ownerUsername, keywords: $keywords, tags: $tags) {
         id
         name
@@ -72,9 +69,8 @@ export function apiFindMoves(
           }
         }
       }
-    }`,
-    { ownerUsername, keywords, tags }
-  ).then(
+    }`;
+  return doQuery(query, { ownerUsername, keywords, tags }).then(
     (result) => flatten(result, ['/findMoves/*/sourceMoveList/owner']).findMoves
   );
 }

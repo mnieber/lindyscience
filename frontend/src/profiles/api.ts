@@ -4,8 +4,7 @@ import { doQuery } from 'src/app/client';
 import { flatten } from 'src/utils/utils';
 
 export function apiLoadUserProfile() {
-  const response = doQuery(
-    `query queryUserProfile {
+  const query = `query queryUserProfile {
       userProfile {
         owner {
           username
@@ -16,8 +15,8 @@ export function apiLoadUserProfile() {
         recentMoveUrl
         moveListIds
       }
-    }`
-  );
+    }`;
+  const response = doQuery(query, {});
 
   return response.then((result) => {
     if (result.userProfile) {
@@ -31,8 +30,7 @@ export function apiLoadUserProfile() {
 }
 
 export function apiUpdateProfile(moveUrl: string) {
-  return doQuery(
-    `mutation updateProfile(
+  const query = `mutation updateProfile(
       $moveUrl: String!,
     ) {
       updateProfile(
@@ -40,7 +38,6 @@ export function apiUpdateProfile(moveUrl: string) {
       ) {
         ok
       }
-    }`,
-    { moveUrl }
-  );
+    }`;
+  return doQuery(query, { moveUrl });
 }

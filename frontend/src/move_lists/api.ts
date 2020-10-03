@@ -3,8 +3,7 @@ import { UUID } from 'src/kernel/types';
 import { doQuery } from 'src/app/client';
 
 export function apiSaveMoveList(values: MoveListT) {
-  return doQuery(
-    `mutation saveMoveList(
+  const query = `mutation saveMoveList(
       $id: String!,
       $name: String!,
       $slug: String!,
@@ -20,19 +19,17 @@ export function apiSaveMoveList(values: MoveListT) {
         isPrivate: $isPrivate,
         tags: $tags
       ) { ok }
-    }`,
-    {
-      ...values,
-    }
-  );
+    }`;
+  return doQuery(query, {
+    ...values,
+  });
 }
 
 export function apiUpdateSourceMoveListId(
   moveIds: Array<UUID>,
   sourceMoveListId: UUID
 ) {
-  return doQuery(
-    `mutation updateSourceMoveListId(
+  const query = `mutation updateSourceMoveListId(
       $moveIds: [String]!,
       $sourceMoveListId: String!
     ) {
@@ -40,17 +37,15 @@ export function apiUpdateSourceMoveListId(
         moveIds: $moveIds,
         sourceMoveListId: $sourceMoveListId
       ) { ok }
-    }`,
-    {
-      moveIds,
-      sourceMoveListId,
-    }
-  );
+    }`;
+  return doQuery(query, {
+    moveIds,
+    sourceMoveListId,
+  });
 }
 
 export function apiSaveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
-  return doQuery(
-    `mutation saveMoveOrdering(
+  const query = `mutation saveMoveOrdering(
       $moveListId: String!,
       $moveIds: [String]!,
     ) {
@@ -58,25 +53,22 @@ export function apiSaveMoveOrdering(moveListId: UUID, moveIds: Array<UUID>) {
         moveListId: $moveListId,
         moveIds: $moveIds
       ) { ok }
-    }`,
-    {
-      moveListId,
-      moveIds,
-    }
-  );
+    }`;
+  return doQuery(query, {
+    moveListId,
+    moveIds,
+  });
 }
 
 export function apiSaveMoveListOrdering(moveListIds: Array<UUID>) {
-  return doQuery(
-    `mutation saveMoveListOrdering(
+  const query = `mutation saveMoveListOrdering(
       $moveListIds: [String]!,
     ) {
       saveMoveListOrdering(
         moveListIds: $moveListIds
       ) { ok }
-    }`,
-    {
-      moveListIds,
-    }
-  );
+    }`;
+  return doQuery(query, {
+    moveListIds,
+  });
 }

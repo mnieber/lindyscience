@@ -23,8 +23,7 @@ export async function apiSignIn(
   password: string,
   rememberMe: boolean
 ) {
-  const response = await doQuery(
-    `mutation ($userId: String!, $password: String!) {
+  const query = `mutation ($userId: String!, $password: String!) {
       tokenAuth(
         email: $userId,
         password: $password
@@ -38,12 +37,11 @@ export async function apiSignIn(
           username,
         }
       }
-    }`,
-    {
-      userId,
-      password,
-    }
-  );
+    }`;
+  const response = await doQuery(query, {
+    userId,
+    password,
+  });
 
   if (
     hasErrorCode(
@@ -83,33 +81,30 @@ export async function apiSignOut() {
 }
 
 export async function apiLoadUserId() {
-  const response = await doQuery(
-    `query {
+  const query = `query {
         me {
           username,
           verified
         }
-      }`
-  );
+      }`;
+  const response = await doQuery(query, {});
   return {
     userId: response.me?.username,
   };
 }
 
 export async function apiResetPassword(email: string) {
-  const response = await doQuery(
-    `mutation ($email: String!) {
+  const query = `mutation ($email: String!) {
       sendPasswordResetEmail(
         email: $email,
       ) {
         success,
         errors,
       }
-    }`,
-    {
-      email,
-    }
-  );
+    }`;
+  const response = await doQuery(query, {
+    email,
+  });
 
   if (
     hasErrorCode(
@@ -134,8 +129,7 @@ export async function apiResetPassword(email: string) {
 }
 
 export async function apiChangePassword(newPassword: string, token: string) {
-  const response = await doQuery(
-    `mutation ($newPassword: String!, $token: String!) {
+  const query = `mutation ($newPassword: String!, $token: String!) {
       passwordReset(
         token: $token,
         newPassword1: $newPassword,
@@ -144,12 +138,11 @@ export async function apiChangePassword(newPassword: string, token: string) {
         success,
         errors,
       }
-    }`,
-    {
-      newPassword,
-      token,
-    }
-  );
+    }`;
+  const response = await doQuery(query, {
+    newPassword,
+    token,
+  });
 
   if (
     hasErrorCode(
@@ -196,19 +189,17 @@ export async function apiChangePassword(newPassword: string, token: string) {
 }
 
 export async function apiActivateAccount(token: string) {
-  const response = await doQuery(
-    `mutation ($token: String!) {
+  const query = `mutation ($token: String!) {
       verifyAccount(
         token: $token,
       ) {
         success,
         errors,
       }
-    }`,
-    {
-      token,
-    }
-  );
+    }`;
+  const response = await doQuery(query, {
+    token,
+  });
 
   if (
     hasErrorCode(
@@ -237,8 +228,7 @@ export async function apiSignUp(
   username: string,
   password: string
 ) {
-  const response = await doQuery(
-    `mutation ($email: String!, $password: String!) {
+  const query = `mutation ($email: String!, $password: String!) {
       register(
         email: $email,
         password1: $password,
@@ -247,12 +237,11 @@ export async function apiSignUp(
         success,
         errors,
       }
-    }`,
-    {
-      email,
-      password,
-    }
-  );
+    }`;
+  const response = await doQuery(query, {
+    email,
+    password,
+  });
 
   if (hasErrorCode('signUp.errors.password2', 'password_too_short')(response))
     return {

@@ -5,14 +5,13 @@ import { VoteT } from 'src/votes/types';
 import { doQuery } from 'src/app/client';
 
 export function apiLoadUserVotes() {
-  return doQuery(
-    `query queryUserVotes {
+  const query = `query queryUserVotes {
       userVotes {
         objectId
         value
       }
-    }`
-  ).then((result) =>
+    }`;
+  return doQuery(query, {}).then((result) =>
     result.userVotes.reduce((acc, vote) => {
       acc[vote.objectId] = vote.value;
       return acc;
@@ -26,8 +25,7 @@ function _castVote(
   objectId: UUID,
   value: VoteT
 ) {
-  return doQuery(
-    `mutation castVote(
+  const query = `mutation castVote(
       $appLabel: String!,
       $model: String!,
       $objectId: String!,
@@ -44,9 +42,8 @@ function _castVote(
           value
         }
       }
-    }`,
-    { appLabel, model, objectId, value }
-  );
+    }`;
+  return doQuery(query, { appLabel, model, objectId, value });
 }
 
 export const apiVoteTip = (objectId: UUID, value: VoteT) =>

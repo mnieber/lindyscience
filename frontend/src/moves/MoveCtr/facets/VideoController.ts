@@ -1,5 +1,3 @@
-// @flow
-
 import { input } from 'src/npm/facet';
 import { autorun, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { VideoT } from 'src/video/types';

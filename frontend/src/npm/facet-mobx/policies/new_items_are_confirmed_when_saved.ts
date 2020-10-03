@@ -10,7 +10,7 @@ export const newItemsAreConfirmedWhenSaved = (isEqual: IsEqualT) => (
   listen(Editing.get(ctr), 'save', function (item: any) {
     const addition = Addition.get(ctr);
     if (addition.item && isEqual(item, addition.item)) {
-      Addition.get(ctr).confirm();
+      Addition.get(ctr).confirm({});
     }
   });
   listen(Editing.get(ctr), 'cancel', function () {

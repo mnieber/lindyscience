@@ -1,5 +1,4 @@
 import { input, installHandlers, operation, output } from 'src/npm/facet';
-import { AdapterT, ClassMemberT } from 'src/npm/facet';
 import { patchFacet, mapData, relayData } from 'src/npm/facet-mobx';
 import { InsertPositionT, PayloadT } from 'src/npm/facet-mobx/facets/dragging';
 
@@ -51,8 +50,8 @@ type insertItemsT = (items: Array<any>) => any;
 export class Insertion {
   @input payload?: PayloadT;
   @input position?: InsertPositionT;
-  @input inputItems: Array<any>;
-  @output preview: Array<any>;
+  @input inputItems?: Array<any>;
+  @output preview?: Array<any>;
 
   @operation insertPayload() {}
 
@@ -63,7 +62,11 @@ const _handleInsertPayload = (insertItems: insertItemsT) => (
   self: Insertion
 ) => () => {
   if (self.position && self.payload) {
-    const preview = getPreview(self.inputItems, self.position, self.payload);
+    const preview = getPreview(
+      self.inputItems ?? [],
+      self.position,
+      self.payload
+    );
     insertItems(preview);
   }
 };
@@ -94,9 +97,9 @@ export const initInsertion = (
   return self;
 };
 
-export const insertionActsOnItems = ([Collection, items]: ClassMemberT) =>
+export const insertionActsOnItems = ([Collection, items]: any) =>
   mapData([Collection, items], [Insertion, 'inputItems']);
 
 export const insertionCreatesThePreview = ({
   preview: [Collection, previewMember],
-}: AdapterT) => relayData([Insertion, 'preview'], [Collection, previewMember]);
+}: any) => relayData([Insertion, 'preview'], [Collection, previewMember]);

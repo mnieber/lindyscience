@@ -1,4 +1,3 @@
-import { values } from 'rambda';
 import { withFormik } from 'formik';
 import React from 'react';
 
@@ -25,11 +24,11 @@ type InnerFormPropsT = {
   onCancel: () => void;
   editorRef: any;
   videoController: VideoController;
-  setAltLink: (any) => any;
+  setAltLink: (link: string) => any;
   moveId: UUID;
 };
 
-const InnerForm = (props: InnerFormPropsT) => (formProps) => {
+const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
   const nameField = (
     <FormField
       classNames="w-full"
@@ -78,7 +77,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
       fieldName="link"
       type="text"
       placeholder="Link"
-      onChange={(x) => props.setAltLink(x.target.value)}
+      onChange={(x: any) => props.setAltLink(x.target.value)}
     />
   );
 
@@ -97,7 +96,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
     </div>
   );
 
-  const goToTime = (tAsString) => {
+  const goToTime = (tAsString: string) => {
     try {
       const t = parseFloat(tAsString);
       props.videoController.getPlayer().seekTo(t);
@@ -116,7 +115,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 
   const startField = (
     <FormField
-      classStarts="w-full"
+      classNames="w-full"
       label="Start time"
       formProps={formProps}
       fieldName="startTime"
@@ -153,7 +152,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 
   const endField = (
     <FormField
-      classEnds="w-full"
+      classNames="w-full"
       label="End time"
       formProps={formProps}
       fieldName="endTime"
@@ -241,11 +240,11 @@ const InnerForm = (props: InnerFormPropsT) => (formProps) => {
 
 type MoveFormPropsT = {
   onCancel: () => void;
-  onSubmit: (id: UUID, values: any) => void;
+  onSubmit: (values: any) => void;
   knownTags: Array<TagT>;
   move: MoveT;
   videoController: VideoController;
-  setAltLink: (any) => any;
+  setAltLink: (link: string) => any;
   autoFocus: boolean;
 };
 
@@ -274,7 +273,7 @@ export function MoveForm(props: MoveFormPropsT) {
       values.description = getContentFromEditor(editorRef.current, '');
       values.tags = (tagsPickerValue || []).map((x) => x.value);
 
-      let errors = {};
+      let errors: { [name: string]: string } = {};
       if (!values.name) {
         errors.name = 'This field is required';
       }
@@ -285,13 +284,14 @@ export function MoveForm(props: MoveFormPropsT) {
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-      values.startTimeMs = Math.trunc(values.startTime * 1000);
-      delete values.startTime;
-
-      values.endTimeMs = Math.trunc(values.endTime * 1000);
-      delete values.endTime;
-
-      props.onSubmit({ ...values, id: props.move.id });
+      props.onSubmit({
+        ...values,
+        id: props.move.id,
+        startTimeMs: Math.trunc((values.startTime as number) * 1000),
+        endTimeMs: Math.trunc((values.endTime as number) * 1000),
+        startTime: undefined,
+        endTime: undefined,
+      });
     },
 
     displayName: 'BasicForm', // helps with React DevTools

@@ -15,11 +15,11 @@ type PropsT = {
 };
 
 export const MoveContextMenu = observer((props: PropsT) => {
-  function _shareToList(e) {
+  function _shareToList(e: any) {
     props.movesClipboard.shareToList(e.props);
   }
 
-  function _moveToList(e) {
+  function _moveToList(e: any) {
     props.movesClipboard.moveToList(e.props);
   }
 
@@ -55,7 +55,7 @@ export const MoveContextMenu = observer((props: PropsT) => {
   return (
     <Menu
       id="moveContextMenu"
-      classname="bg-white"
+      className="bg-white"
       onShown={() => jQuery('.movePanel').toggleClass('zminus1', true)}
       onHidden={() => jQuery('.movePanel').toggleClass('zminus1', false)}
     >

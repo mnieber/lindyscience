@@ -2,17 +2,15 @@ import { extendObservable, reaction } from 'mobx';
 
 import { getFacet } from 'src/npm/facet';
 
-import {
-  ClassMemberT,
-  facetClassName,
-  facetName,
-  isDataMember,
-} from 'src/npm/facet';
+import { ClassMemberT } from 'src/npm/facet/types';
+import { facetClassName, facetName, isDataMember } from 'src/npm/facet';
 
 export { CtrProvider } from 'src/npm/facet-mobx/lib/CtrProvider';
 
-const zip = (arr, ...arrs) => {
-  return arr.map((val, i) => arrs.reduce((a, arr) => [...a, arr[i]], [val]));
+const zip = (arr: any, ...arrs: any) => {
+  return arr.map((val: any, i: any) =>
+    arrs.reduce((a: any, arr: any) => [...a, arr[i]], [val])
+  );
 };
 
 export const relayData = (
@@ -63,14 +61,15 @@ export function patchFacet(facet: any, members: any) {
 }
 
 export function createPatch(
-  patchedFacetClass?: any,
+  patchedFacetClass: any,
   otherFacetClasses: Array<any>,
-  callback: (...any) => any
+  callback: (...x: any) => any
 ) {
   return (ctr: any) => {
     const otherFacets = otherFacetClasses.map((facetClass) =>
       facetClass ? getFacet(facetClass, ctr) : ctr
     );
+    // @ts-ignore
     const patch = callback.bind(this)(...otherFacets);
 
     if (patch && patchedFacetClass) {
@@ -82,7 +81,7 @@ export function createPatch(
 export function createPatches(
   patchedFacetClasses: Array<any>,
   otherFacetClasses: Array<any>,
-  callback: (...any) => Array<any>
+  callback: (...x: any) => Array<any>
 ) {
   return (ctr: any) => {
     const patchedFacets = patchedFacetClasses.map((facetClass) =>
@@ -95,7 +94,7 @@ export function createPatches(
 
     console.assert(patchedFacets.length == patches.length);
 
-    zip(patchedFacets, patches).forEach(([facet, patch]) => {
+    zip(patchedFacets, patches).forEach(([facet, patch]: any) => {
       patchFacet(facet, patch);
     });
   };
@@ -127,10 +126,12 @@ export const mapDatas = (
     fromFacetClasses,
     (...fromFacets: Array<any>) => ({
       get [toMember]() {
-        const datas = zip(fromFacets, fromMembers).map(([facet, member]) => {
-          // TODO: check that fromMember is found
-          return facet[member];
-        });
+        const datas = zip(fromFacets, fromMembers).map(
+          ([facet, member]: any) => {
+            // TODO: check that fromMember is found
+            return facet[member];
+          }
+        );
         return transform(...datas);
       },
     })

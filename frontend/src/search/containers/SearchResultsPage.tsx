@@ -1,5 +1,3 @@
-// @flow
-
 import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';

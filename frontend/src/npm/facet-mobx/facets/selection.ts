@@ -1,7 +1,6 @@
 import { observable } from 'mobx';
 
 import { data, input, installHandlers, operation, output } from 'src/npm/facet';
-import { ClassMemberT } from 'src/npm/facet';
 import { lookUp, range } from 'src/npm/facet-mobx/internal/utils';
 import { mapDatas } from 'src/npm/facet-mobx';
 
@@ -12,10 +11,10 @@ export type ItemSelectedPropsT = {
 };
 
 export class Selection {
-  @input selectableIds: Array<any>;
+  @input selectableIds?: Array<any>;
   @data @observable ids: Array<any> = [];
   @data @observable anchorId: any;
-  @output items: Array<any>;
+  @output items?: Array<any>;
 
   @operation selectItem({ itemId, isShift, isCtrl }: ItemSelectedPropsT) {}
 
@@ -28,16 +27,21 @@ const _handleSelectItem = (self: Selection) => ({
   isCtrl,
 }: ItemSelectedPropsT) => {
   const hasItem = self.ids.includes(itemId);
+  const selectableIds = self.selectableIds;
+
+  if (!selectableIds) {
+    throw 'logical error';
+  }
 
   if (isShift) {
     const startItemId = self.anchorId || itemId;
-    const startIdx = self.selectableIds.indexOf(startItemId);
-    const stopIdx = self.selectableIds.indexOf(itemId);
+    const startIdx = selectableIds.indexOf(startItemId);
+    const stopIdx = selectableIds.indexOf(itemId);
     const idxRange = range(
       Math.min(startIdx, stopIdx),
       1 + Math.max(startIdx, stopIdx)
     );
-    self.ids = idxRange.map((idx) => self.selectableIds[idx]);
+    self.ids = idxRange.map((idx) => selectableIds[idx]);
   } else if (isCtrl) {
     self.ids = hasItem
       ? self.ids.filter((x) => x !== itemId)
@@ -57,12 +61,12 @@ export function initSelection(self: Selection): Selection {
   return self;
 }
 
-export const selectionActsOnItems = ([Collection, itemById]: ClassMemberT) =>
+export const selectionActsOnItems = ([Collection, itemById]: any) =>
   mapDatas(
     [
       [Collection, itemById],
       [Selection, 'ids'],
     ],
     [Selection, 'items'],
-    (itemById, ids) => lookUp(ids, itemById)
+    (itemById: any, ids: any) => lookUp(ids, itemById)
   );

@@ -1,5 +1,3 @@
-// @flow
-
 import { values } from 'rambda';
 import React from 'react';
 import { observer } from 'mobx-react';

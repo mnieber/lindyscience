@@ -1,5 +1,3 @@
-// @flow
-
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
 
 export type PropsT = {

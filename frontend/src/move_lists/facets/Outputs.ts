@@ -1,5 +1,3 @@
-// @flow
-
 import { keys } from 'lodash/fp';
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { UUID } from 'src/kernel/types';

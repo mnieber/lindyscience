@@ -1,5 +1,3 @@
-// @flow
-
 import { compose } from 'lodash/fp';
 import jQuery from 'jquery';
 import { keys } from 'lodash/fp';

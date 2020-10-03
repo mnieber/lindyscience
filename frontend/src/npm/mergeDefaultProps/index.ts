@@ -4,7 +4,7 @@ export {
 } from 'src/npm/mergeDefaultProps/withDefaultProps';
 export { NestedDefaultPropsProvider } from 'src/npm/mergeDefaultProps/NestedDefaultPropsProvider';
 
-export const mergeDefaultProps = (props) => {
+export const mergeDefaultProps = (props: any) => {
   if (!props.defaultProps) {
     console.error('No default props: ', props);
   }

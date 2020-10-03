@@ -1,7 +1,6 @@
 import { observable } from 'mobx';
 
 import { data, installHandlers, operation, output } from 'src/npm/facet';
-import { ClassMemberT } from 'src/npm/facet';
 import { mapDatas } from 'src/npm/facet-mobx';
 
 export class Highlight {
@@ -14,7 +13,7 @@ export class Highlight {
   static get = (ctr: any): Highlight => ctr.highlight;
 }
 
-const _handleHighlight = (self: Highlight) => (id) => {
+const _handleHighlight = (self: Highlight) => (id: any) => {
   self.id = id;
 };
 
@@ -28,12 +27,12 @@ export const initHighlight = (self: Highlight): Highlight => {
   return self;
 };
 
-export const highlightActsOnItems = ([Collection, itemById]: ClassMemberT) =>
+export const highlightActsOnItems = ([Collection, itemById]: any) =>
   mapDatas(
     [
       [Collection, itemById],
       [Highlight, 'id'],
     ],
     [Highlight, 'item'],
-    (itemById, id) => itemById[id]
+    (itemById: any, id: any) => itemById[id]
   );

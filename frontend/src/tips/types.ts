@@ -14,9 +14,9 @@ export type TipT = {
 };
 
 export type TipByIdT = {
-  [UUID]: TipT;
+  [id: string]: TipT;
 };
 
 export type TipsByIdT = {
-  [UUID]: Array<TipT>;
+  [id: string]: Array<TipT>;
 };

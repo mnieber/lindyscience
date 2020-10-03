@@ -17,11 +17,11 @@ export type MoveT = OwnedObjectT & {
 };
 
 export type MoveByIdT = {
-  [UUID]: MoveT;
+  [id: string]: MoveT;
 };
 
 export type MoveBySlugT = {
-  [string]: MoveT;
+  [id: string]: MoveT;
 };
 
 export type MovePrivateDataT = {
@@ -31,4 +31,4 @@ export type MovePrivateDataT = {
   tags: Array<TagT>;
 };
 
-export type MovePrivateDataByIdT = { [UUID]: MovePrivateDataT };
+export type MovePrivateDataByIdT = { [id: string]: MovePrivateDataT };

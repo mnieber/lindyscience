@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^7.1.2",
     "@types/classnames": "^2.2.10",
     "@types/debounce": "^1.2.0",
+    "@types/draft-js": "^0.10.44",
     "@types/jquery": "^3.5.1",
     "@types/js-cookie": "^2.2.6",
     "@types/lodash": "^4.14.161",

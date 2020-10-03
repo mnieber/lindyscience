@@ -10,7 +10,7 @@ export function range(start: number, stop: number) {
   return ans;
 }
 
-export const findMap = (f, items) => {
+export const findMap = (f: Function, items: any[]) => {
   for (var item of items) {
     const mapped = f(item);
     if (mapped) {

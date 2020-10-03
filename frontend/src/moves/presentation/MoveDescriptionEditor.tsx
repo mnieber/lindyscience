@@ -53,7 +53,7 @@ export function MoveDescriptionEditor(props: PropsT) {
       ? props.videoController.player.getVideoUrl()
       : '';
 
-  const customHandleKeyCommand = (command, editorState) => {
+  const customHandleKeyCommand = (command: any, editorState: any) => {
     const player = props.videoController?.player;
 
     if (command == 'insert-timepoint' && player) {
@@ -70,7 +70,7 @@ export function MoveDescriptionEditor(props: PropsT) {
     return null;
   };
 
-  const customKeyBindingFn = (e) => {
+  const customKeyBindingFn = (e: any) => {
     if (
       e.keyCode === 83 /* `S` key */ &&
       KeyBindingUtil.hasCommandModifier(e)

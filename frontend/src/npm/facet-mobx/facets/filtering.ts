@@ -1,17 +1,16 @@
 import { observable } from 'mobx';
 
 import { input, installHandlers, operation, output } from 'src/npm/facet';
-import { ClassMemberT } from 'src/npm/facet';
 import { patchFacet, mapData } from 'src/npm/facet-mobx';
 
 export class Filtering {
-  @observable isEnabled: boolean;
-  @observable filter: (any) => Array<any>;
+  @observable isEnabled?: boolean;
+  @observable filter?: (x: any) => Array<any>;
 
-  @input inputItems: Array<any>;
-  @output filteredItems: Array<any>;
+  @input inputItems?: Array<any>;
+  @output filteredItems?: Array<any>;
 
-  @operation apply(filter: (any) => Array<any>) {}
+  @operation apply(filter: (x: any) => Array<any>) {}
   @operation setEnabled(flag: boolean) {}
 
   static get = (ctr: any): Filtering => ctr.filtering;
@@ -51,5 +50,5 @@ export const initFiltering = (self: Filtering): Filtering => {
   return self;
 };
 
-export const filteringActsOnItems = ([Collection, items]: ClassMemberT) =>
+export const filteringActsOnItems = ([Collection, items]: any) =>
   mapData([Collection, items], [Filtering, 'inputItems']);

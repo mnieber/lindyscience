@@ -1,6 +1,3 @@
-// @flow
-
-import { values } from 'rambda';
 import React from 'react';
 import { withFormik } from 'formik';
 
@@ -26,7 +23,7 @@ type InnerFormPropsT = {
   setTagsPickerValue: Function;
 };
 
-const InnerForm = (props: InnerFormPropsT) => (formProps) => {
+const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
   const notesDiv = (
     <div className="movePrivateDataForm__notes mt-4">
       <MoveDescriptionEditor

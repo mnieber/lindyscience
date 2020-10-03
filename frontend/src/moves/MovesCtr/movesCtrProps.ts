@@ -1,5 +1,3 @@
-// @flow
-
 import { UserProfileT } from 'src/profiles/types';
 import { UUID } from 'src/kernel/types';
 import { MoveT } from 'src/moves/types';

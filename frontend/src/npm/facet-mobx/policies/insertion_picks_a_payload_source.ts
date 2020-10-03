@@ -9,7 +9,7 @@ export const insertionPicksAPayloadsSource = ({
 }) =>
   createPatch(Insertion, [null], (container) => ({
     get _sourcedPayload() {
-      return findMap((plSrc) => plSrc(container), payloadSources);
+      return findMap((plSrc: any) => plSrc(container), payloadSources);
     },
     get payload() {
       return this._sourcedPayload?.payload;

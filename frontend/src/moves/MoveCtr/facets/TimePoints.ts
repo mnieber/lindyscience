@@ -1,5 +1,3 @@
-// @flow
-
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { extractTimePoints } from 'src/video/utils';

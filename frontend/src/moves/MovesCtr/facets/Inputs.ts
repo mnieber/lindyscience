@@ -1,5 +1,3 @@
-// @flow
-
 import { observable } from 'src/utils/mobx_wrapper';
 import { MoveT } from 'src/moves/types';
 import { UserProfileT } from 'src/profiles/types';

@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 
 import { NestedDefaultPropsProvider } from 'src/npm/mergeDefaultProps';
 
-export const CtrProvider = observer((props) => {
-  const [ctr, setCtr] = React.useState(props.createCtr);
+export const CtrProvider: React.FC<any> = observer((props: any) => {
+  const [ctr] = React.useState(props.createCtr);
 
   React.useEffect(() => {
     if (props.updateCtr) {

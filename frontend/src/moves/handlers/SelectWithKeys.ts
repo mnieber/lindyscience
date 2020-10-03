@@ -1,5 +1,3 @@
-// @flow
-
 import { pickNeighbour2, scrollIntoView } from 'src/app/utils';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
@@ -41,7 +39,7 @@ export class SelectWithKeys {
             };
 
             pickNeighbour2(
-              Selection.get(ctr).selectableIds,
+              Selection.get(ctr).selectableIds || [],
               highlight.id,
               isDown,
               selectMoveById

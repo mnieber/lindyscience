@@ -1,5 +1,3 @@
-// @flow
-
 import { compose } from 'lodash/fp';
 import { MenuProvider } from 'react-contexify';
 import { observer } from 'mobx-react';

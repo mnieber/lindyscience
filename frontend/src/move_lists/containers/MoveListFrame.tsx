@@ -1,5 +1,3 @@
-// @flow
-
 import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
@@ -61,7 +59,7 @@ export const MoveListFrame: React.FC<PropsT> = compose(
 
   const moveListPlayerBtns = (
     <MoveListPlayer
-      moves={props.movesSelection.items}
+      moves={props.movesSelection.items ?? []}
       sayMove={sayMove}
       className=""
     />

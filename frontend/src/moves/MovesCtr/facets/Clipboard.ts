@@ -1,5 +1,3 @@
-// @flow
-
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
@@ -31,7 +29,7 @@ export class Clipboard {
 
   shareToList(moveList: MoveListT) {
     this.props.shareMovesToList(
-      this.props.ctr.selection.items,
+      this.props.ctr.selection.items ?? [],
       moveList,
       undefined
     );
@@ -39,7 +37,7 @@ export class Clipboard {
 
   moveToList(moveList: MoveListT) {
     this.props.shareMovesToList(
-      this.props.ctr.selection.items,
+      this.props.ctr.selection.items ?? [],
       moveList,
       this.props.ctr.inputs.moveList
     );
@@ -51,7 +49,7 @@ export class Clipboard {
     );
     if (trashList) {
       this.props.shareMovesToList(
-        this.props.ctr.selection.items,
+        this.props.ctr.selection.items ?? [],
         trashList,
         this.props.ctr.inputs.moveList
       );
@@ -59,7 +57,7 @@ export class Clipboard {
   }
 
   copyNames() {
-    const selection = this.props.ctr.selection.items;
+    const selection = this.props.ctr.selection.items ?? [];
     const text = selection
       .map((move: MoveT) => {
         return move.name;
@@ -70,7 +68,7 @@ export class Clipboard {
 
   copyLinks() {
     const moveList = this.props.ctr.inputs.moveList;
-    const selection = this.props.ctr.selection.items;
+    const selection = this.props.ctr.selection.items ?? [];
 
     if (moveList && selection.length) {
       const text = selection

@@ -2,10 +2,8 @@
 // Types
 ///////////////////////////////////////////////////////////////////////
 
-import { UUID } from 'src/kernel/types';
-
 export type VoteT = -1 | 0 | 1;
 
 export type VoteByIdT = {
-  [UUID]: VoteT;
+  [id: string]: VoteT;
 };

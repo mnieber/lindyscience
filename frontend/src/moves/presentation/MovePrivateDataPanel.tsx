@@ -1,6 +1,3 @@
-// @flow
-
-import { values } from 'rambda';
 import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
@@ -36,7 +33,6 @@ export const MovePrivateDataPanel = (props: PropsT) => {
   );
 
   const tags = (props.movePrivateData && props.movePrivateData.tags) || [];
-  const id = (props.movePrivateData && props.movePrivateData.id) || undefined;
 
   const staticDiv = (
     <div>

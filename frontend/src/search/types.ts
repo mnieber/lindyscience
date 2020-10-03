@@ -12,7 +12,7 @@ export type MoveSearchResultT = {
 };
 
 export type FunctionByIdT = {
-  [UUID]: Function;
+  [id: string]: Function;
 };
 
 export type VotableT = {};

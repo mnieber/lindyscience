@@ -1,5 +1,3 @@
-// @flow
-
 import { Display } from 'src/session/facets/Display';
 import { observable, runInAction } from 'src/utils/mobx_wrapper';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';

@@ -9,7 +9,7 @@ import { deepCopy } from 'src/utils/utils';
 
 type PropsT = {
   moves: Array<MoveT>;
-  sayMove: (MoveT) => void;
+  sayMove: (move: MoveT) => void;
   className: string;
 };
 
@@ -51,5 +51,5 @@ export const MoveListPlayer: React.FC<PropsT> = (props) => {
     </div>
   );
 
-  return [isPlaying ? stopBtn : playBtn];
+  return <React.Fragment>{isPlaying ? stopBtn : playBtn}</React.Fragment>;
 };

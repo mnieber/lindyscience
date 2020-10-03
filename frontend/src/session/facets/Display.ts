@@ -3,17 +3,17 @@ import { createUUID } from 'src/utils/utils';
 import { operation } from 'src/npm/facet';
 
 export class Display {
-  @observable width: number;
+  @observable width?: number;
   @observable fullVideoWidth: boolean = false;
   @computed get maxVideoWidth() {
     return this.fullVideoWidth ? 1200 : 800;
   }
   @computed get small() {
-    return this.width < this.smallBreakPoint;
+    return !!this.width && this.width < this.smallBreakPoint;
   }
 
   @observable smallBreakPoint: number = 1200;
-  @observable id: string;
+  @observable id: string = createUUID();
 
   @operation setWidth(x: number) {
     if (x !== this.width) {

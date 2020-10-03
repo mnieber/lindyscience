@@ -1,7 +1,3 @@
-// @flow
-
-import { values } from 'rambda';
-
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
 import { UserProfileT } from 'src/profiles/types';
@@ -29,7 +25,6 @@ import * as SessionCtrPolicies from 'src/session/policies';
 import * as MoveCtrPolicies from 'src/moves/MoveCtr/policies';
 
 type PropsT = {
-  isEqual: (lhs: any, rhs: any) => boolean;
   createNewMove: (userProfile: UserProfileT, sourceMoveListId: UUID) => MoveT;
   setMoves: (moveList: MoveListT, moves: Array<MoveT>) => any;
   saveMove: (move: MoveT, values: any) => any;
@@ -57,36 +52,6 @@ export class MovesContainer {
   handlerSelectWithKeys = new SelectWithKeys({ container: this });
   handlerClick = new ClickToSelectItems({ container: this });
   handlerDrag = new DragItems({ container: this });
-
-  _createFacets(props: PropsT) {
-    this.addition = initAddition(new Addition(), {
-      createItem: (values: any) => {
-        return props.createNewMove(
-          this.inputs.userProfile as any,
-          (this.inputs.moveList as any).id
-        );
-      },
-      isEqual: props.isEqual,
-    });
-    this.dragging = initDragging(new Dragging());
-    this.editing = initEditing(new Editing(), {
-      saveItem: (values: any) => {
-        props.saveMove(this.highlight.item, values);
-      },
-    });
-    this.filtering = initFiltering(new Filtering());
-    this.highlight = initHighlight(new Highlight());
-    this.insertion = initInsertion(new Insertion(), {
-      insertItems: (preview) => {
-        props.setMoves(this.inputs.moveList as any, preview);
-      },
-    });
-    this.inputs = initInputs(new Inputs());
-    this.outputs = initOutputs(new Outputs());
-    this.selection = initSelection(new Selection());
-
-    registerFacets(this);
-  }
 
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'moves'];
@@ -142,7 +107,33 @@ export class MovesContainer {
   }
 
   constructor(props: PropsT) {
-    this._createFacets(props);
+    this.addition = initAddition(new Addition(), {
+      createItem: (values: any) => {
+        return props.createNewMove(
+          this.inputs.userProfile as any,
+          (this.inputs.moveList as any).id
+        );
+      },
+    });
+    this.dragging = initDragging(new Dragging());
+    this.editing = initEditing(new Editing(), {
+      saveItem: (values: any) => {
+        props.saveMove(this.highlight.item, values);
+      },
+    });
+    this.filtering = initFiltering(new Filtering());
+    this.highlight = initHighlight(new Highlight());
+    this.insertion = initInsertion(new Insertion(), {
+      insertItems: (preview) => {
+        props.setMoves(this.inputs.moveList as any, preview);
+      },
+    });
+    this.inputs = initInputs(new Inputs());
+    this.outputs = initOutputs(new Outputs());
+    this.selection = initSelection(new Selection());
+
+    registerFacets(this);
+
     this._applyPolicies(props);
     this.clipboard = new Clipboard({
       ctr: this,

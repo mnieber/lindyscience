@@ -6,7 +6,7 @@ import { extractTimePoints } from 'src/video/utils';
 import { input } from 'src/npm/facet';
 
 export class TimePoints {
-  @input @observable textWithTimePoints: string;
+  @input @observable textWithTimePoints: string | undefined;
 
   updateFrom(move?: MoveT, movePrivateData?: MovePrivateDataT) {
     const description = move ? move.description : '';
@@ -16,7 +16,7 @@ export class TimePoints {
   }
 
   @computed get timePoints() {
-    return extractTimePoints(this.textWithTimePoints);
+    return extractTimePoints(this.textWithTimePoints ?? '');
   }
 
   static get = (ctr: any): TimePoints => ctr.timepoints;

@@ -21,15 +21,6 @@ export class MoveContainer {
   @facet timePoints: TimePoints;
   @facet videoController: VideoController;
 
-  _createFacets(props: PropsT) {
-    this.inputs = initInputs(new Inputs());
-    this.display = initDisplay(new Display(), props.rootDivId);
-    this.timePoints = initTimePoints(new TimePoints());
-    this.videoController = initVideoController(new VideoController());
-
-    registerFacets(this);
-  }
-
   _applyPolicies(props: PropsT) {
     const policies = [
       timePointsAreStyled,
@@ -41,7 +32,12 @@ export class MoveContainer {
   }
 
   constructor(props: PropsT) {
-    this._createFacets(props);
+    this.inputs = initInputs(new Inputs());
+    this.display = initDisplay(new Display(), props.rootDivId);
+    this.timePoints = initTimePoints(new TimePoints());
+    this.videoController = initVideoController(new VideoController());
+
+    registerFacets(this);
     this._applyPolicies(props);
   }
 }

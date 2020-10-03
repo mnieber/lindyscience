@@ -57,7 +57,7 @@ export function handleSelectionKeys2(
   return false;
 }
 
-export function scrollIntoView(elm: any, boundary: any) {
+export function scrollIntoView(elm: any, boundary?: any) {
   if (elm) {
     return scrollIntoViewIfNeeded(elm, {
       block: 'nearest',

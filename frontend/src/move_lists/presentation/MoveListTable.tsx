@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import ReactTable from 'react-table';
 import classnames from 'classnames';
@@ -8,7 +6,18 @@ import { MoveListT } from 'src/move_lists/types';
 import { RouterLink } from 'src/utils/RouterLink';
 import { makeMoveListUrl } from 'src/app/utils';
 
-const LoadingComponent = ({ className, loading, loadingText, ...rest }) => (
+type LoadingComponentPropsT = {
+  className: any;
+  loading: boolean;
+  loadingText: string;
+};
+
+const LoadingComponent: React.FC<LoadingComponentPropsT> = ({
+  className,
+  loading,
+  loadingText,
+  ...rest
+}) => (
   <div
     className={classnames('-loading', { '-active': loading }, className)}
     {...rest}
@@ -22,13 +31,18 @@ type PropsT = {
 };
 
 export function MoveListTable(props: PropsT) {
-  const _getTrProps = (state, rowInfo, column, instance) => {
+  const _getTrProps = (
+    state: any,
+    rowInfo: any,
+    column: any,
+    instance: any
+  ) => {
     const moveListId = rowInfo ? rowInfo.row.id : '';
     const className = '';
 
     return {
       id: 'row-' + moveListId,
-      onClick: (e, handleOriginal) => {},
+      onClick: () => {},
       className: className,
     };
   };
@@ -37,8 +51,8 @@ export function MoveListTable(props: PropsT) {
     const columns = [
       {
         accessor: 'name',
-        Header: (props) => <span className="number">Name</span>,
-        Cell: (props) => {
+        Header: () => <span className="number">Name</span>,
+        Cell: (props: any) => {
           return (
             <RouterLink to={'/lists/' + makeMoveListUrl(props.original)}>
               {props.original.name}

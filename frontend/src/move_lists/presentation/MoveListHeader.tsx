@@ -10,7 +10,7 @@ type PropsT = {
   className: string;
 };
 
-export const MoveListHeader: React.FC<PropsT> = (props: PropsT) => {
+export const MoveListHeader: React.FC<PropsT> = (props) => {
   const newMoveBtn = (
     <div
       key="newMoveBtn"
@@ -18,11 +18,11 @@ export const MoveListHeader: React.FC<PropsT> = (props: PropsT) => {
         props.className,
         'moveListHeader__addButton button button--wide'
       )}
-      onClick={props.addNewMove}
+      onClick={() => props.addNewMove}
     >
       New move
     </div>
   );
 
-  return [newMoveBtn];
+  return <React.Fragment>{newMoveBtn}</React.Fragment>;
 };

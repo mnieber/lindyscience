@@ -10,7 +10,7 @@ export const initVideoCtrFromCurrentMove = mapDatas(
     [Inputs, 'altLink'],
   ],
   [VideoController, 'video'],
-  (move: MoveT, altLink: string) => {
+  (move: MoveT, altLink: string | undefined) => {
     return altLink
       ? {
           link: altLink,

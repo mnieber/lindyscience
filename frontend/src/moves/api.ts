@@ -4,8 +4,7 @@ import { flatten } from 'src/utils/utils';
 import { normalize, schema } from 'normalizr';
 
 export function apiSaveMove(values: MoveT) {
-  return doQuery(
-    `mutation saveMove(
+  const query = `mutation saveMove(
       $id: String!,
       $name: String!,
       $slug: String!,
@@ -27,16 +26,12 @@ export function apiSaveMove(values: MoveT) {
         tags: $tags,
         sourceMoveListId: $sourceMoveListId
       ) { ok }
-    }`,
-    {
-      ...values,
-    }
-  );
+    }`;
+  return doQuery(query, { ...values });
 }
 
 export function apiSaveMovePrivateData(values: MovePrivateDataT) {
-  return doQuery(
-    `mutation saveMovePrivateData(
+  const query = `mutation saveMovePrivateData(
       $id: String!,
       $moveId: String!,
       $notes: String!,
@@ -48,18 +43,16 @@ export function apiSaveMovePrivateData(values: MovePrivateDataT) {
         notes: $notes,
         tags: $tags
       ) { ok }
-    }`,
-    {
-      ...values,
-    }
-  );
+    }`;
+  return doQuery(query, {
+    ...values,
+  });
 }
 
 const movePrivateData = new schema.Entity('movePrivateDatas');
 
 export function apiLoadMovePrivateDatas() {
-  return doQuery(
-    `query queryMovePrivateDatas {
+  const query = `query queryMovePrivateDatas {
       movePrivateDatas {
         id
         notes
@@ -68,8 +61,8 @@ export function apiLoadMovePrivateDatas() {
           id
         }
       }
-    }`
-  )
+    }`;
+  return doQuery(query, {})
     .then((result) => flatten(result, ['/movePrivateDatas/*/move']))
     .then((result) => normalize(result.movePrivateDatas, [movePrivateData]));
 }

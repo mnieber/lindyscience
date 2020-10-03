@@ -23,7 +23,7 @@ export class SelectWithKeys {
     return {
       onKeyDown: (key: string, e: any) => {
         const ctr = this.props.container;
-        const isUp = keysUp.includes(key);
+        // const isUp = keysUp.includes(key);
         const isDown = keysDown.includes(key);
         if (keysUp || keysDown) {
           e.preventDefault();

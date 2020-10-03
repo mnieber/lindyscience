@@ -10,9 +10,9 @@ import { Selection } from 'src/npm/facet-mobx/facets/selection';
 import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
 
 type PropsT = {
-  filter: (MoveListT) => boolean;
+  filter: (moveList: MoveListT) => boolean;
   className?: string;
-  navigateTo: (MoveListT) => any;
+  navigateTo: (moveList: MoveListT) => any;
   defaultProps?: any;
 };
 
@@ -23,10 +23,15 @@ type DefaultPropsT = {
   moveLists: Array<MoveListT>;
 };
 
+type PickerItem = {
+  value: string;
+  label: string;
+};
+
 export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  function _onChange(pickedItem) {
+  function _onChange(pickedItem: PickerItem) {
     if (!props.moveLists.some((x) => x.id === pickedItem.value)) {
       props.moveListsAddition.add({ name: pickedItem.label });
       props.navigateTo(props.moveListsAddition.item);
@@ -46,13 +51,14 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
   return (
     <div className={classnames('moveListPicker mt-2', props.className)}>
       <ValuePicker
+        fieldName="moveList"
         isMulti={false}
         isCreatable={true}
         options={options}
         placeholder="Select a move list"
         onChange={_onChange}
         value={option}
-        setValue={(x) => {
+        setValue={(x: PickerItem) => {
           if (options.includes(x)) {
             props.moveListsSelection.selectItem({
               itemId: x.value,

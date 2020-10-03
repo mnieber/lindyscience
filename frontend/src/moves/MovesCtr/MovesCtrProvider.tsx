@@ -47,20 +47,20 @@ export const MovesCtrProvider: React.FC<PropsT> = compose(
     );
   };
 
-  const updateCtr = (ctr) => {
+  const updateCtr = (ctr: MovesContainer) => {
     reaction(
-      () => [
-        props.moveList
+      () => ({
+        inputMoves: props.moveList
           ? lookUp(
               props.moveList ? props.moveList.moves : [],
               props.movesStore.moveById
             ).filter((x) => !!x)
           : [],
-        props.profiling.userProfile,
-        props.moveList,
-        props.moveListsPreview,
-      ],
-      ([inputMoves, userProfile, moveList, moveListsPreview]) => {
+        userProfile: props.profiling.userProfile,
+        moveList: props.moveList,
+        moveListsPreview: props.moveListsPreview,
+      }),
+      ({ inputMoves, userProfile, moveList, moveListsPreview }) => {
         ctr.inputs.moves = inputMoves;
         ctr.inputs.userProfile = userProfile;
         ctr.inputs.moveList = moveList;
@@ -69,7 +69,7 @@ export const MovesCtrProvider: React.FC<PropsT> = compose(
     );
   };
 
-  const getDefaultProps = (ctr) => {
+  const getDefaultProps = (ctr: MovesContainer) => {
     return {
       movesCtr: () => ctr,
       isEditingMove: () => Editing.get(ctr).isEditing,

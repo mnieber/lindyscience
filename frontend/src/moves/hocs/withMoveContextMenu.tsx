@@ -20,7 +20,7 @@ type DefaultPropsT = {
   moveLists: Array<MoveListT>;
   movesClipboard: Clipboard;
   moveList: MoveListT;
-  isOwner: (any) => boolean;
+  isOwner: (obj: any) => boolean;
 };
 
 export const withMoveContextMenu = compose(

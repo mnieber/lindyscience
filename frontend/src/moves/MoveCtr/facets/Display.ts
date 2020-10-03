@@ -1,9 +1,9 @@
 import { observable } from 'src/utils/mobx_wrapper';
 
 export class Display {
-  @observable videoPanelWidth: number;
-  @observable videoWidth: number;
-  @observable rootDivId: string;
+  @observable videoPanelWidth: number | undefined;
+  @observable videoWidth: number | undefined;
+  @observable rootDivId: string | undefined;
 
   static get = (ctr: any): Display => ctr.display;
 }

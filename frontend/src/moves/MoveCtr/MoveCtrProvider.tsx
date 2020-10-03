@@ -4,7 +4,7 @@ import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import { Display } from 'src/moves/MoveCtr/facets/Display';
+import { Display } from 'src/session/facets/Display';
 import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { moveContainerProps } from 'src/moves/MoveCtr/moveCtrProps';
@@ -32,17 +32,17 @@ export const MoveCtrProvider: React.FC<PropsT> = compose(
     return new MoveContainer(moveContainerProps());
   };
 
-  const updateCtr = (ctr) => {
+  const updateCtr = (ctr: MoveContainer) => {
     reaction(
-      () => [props.move, props.display],
-      ([move, display]) => {
+      () => ({ move: props.move, display: props.display }),
+      ({ move, display }) => {
         ctr.inputs.move = move;
         ctr.inputs.sessionDisplay = display;
       }
     );
   };
 
-  const getDefaultProps = (ctr) => {
+  const getDefaultProps = (ctr: MoveContainer) => {
     return {
       moveCtr: () => ctr,
       moveDisplay: () => ctr.display,

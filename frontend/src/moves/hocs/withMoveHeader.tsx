@@ -26,7 +26,7 @@ type PropsT = {
 
 type DefaultPropsT = {
   userProfile?: UserProfileT;
-  isOwner: (any) => boolean;
+  isOwner: (move: MoveT) => boolean;
   display: Display;
   movesEditing: Editing;
   moveList: MoveListT;
@@ -62,7 +62,7 @@ export const withMoveHeader = (WrappedComponent: any) =>
       <MoveHeader
         move={props.move}
         moveListTitle={moveListTitle}
-        moveTags={props.moveTags}
+        // moveTags={props.moveTags}
         editMoveBtn={editMoveBtn}
         followMoveListBtn={followMoveListBtn}
         small={props.display.small}

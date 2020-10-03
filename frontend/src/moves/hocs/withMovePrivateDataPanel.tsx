@@ -31,7 +31,7 @@ export const withMovePrivateDataPanel = compose(
       ? props.movesStore.getOrCreatePrivateData(props.move.id)
       : undefined;
 
-    const _onSave = (values) => {
+    const _onSave = (values: any) => {
       if (!movePrivateData) return;
 
       const mpd = {

@@ -29,7 +29,6 @@ export class VideoController {
   }
 
   pauseAt(t: number) {
-    const paused = 2;
     if (this.player) {
       this._pauseAt = t;
       this.player.seekTo(t);

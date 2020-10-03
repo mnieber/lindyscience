@@ -1,8 +1,6 @@
-
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
@@ -12,14 +10,14 @@ import { RouterLink } from 'src/utils/RouterLink';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 
 type PropsT = {
-  defaultProps: any,
+  defaultProps: any;
 };
 
 type DefaultPropsT = {
-  authentication: Authentication,
+  authentication: Authentication;
 };
 
-export const ActivateAccountPage = compose(
+export const ActivateAccountPage: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
@@ -58,7 +56,7 @@ export const ActivateAccountPage = compose(
 
   React.useEffect(() => {
     // Don't inline, we need to swallow the return value of async
-    props.authentication.activateAccount((params.token: any));
+    props.authentication.activateAccount(params.token as any);
   }, [params.token]);
 
   return (

@@ -1,4 +1,3 @@
-// $FlowFixMe
 import { runInAction } from 'mobx';
 
 import { AuthApiT } from 'src/session/SessionCtr';

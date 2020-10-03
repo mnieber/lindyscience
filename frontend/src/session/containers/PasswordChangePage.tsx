@@ -1,8 +1,6 @@
-
-
 import { useParams } from 'react-router-dom';
 import React from 'react';
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
@@ -13,11 +11,11 @@ import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame'
 import { PasswordChangeForm } from 'src/session/presentation/PasswordChangeForm';
 
 type PropsT = {
-  defaultProps: any,
+  defaultProps: any;
 };
 
 type DefaultPropsT = {
-  authentication: Authentication,
+  authentication: Authentication;
 };
 
 export const PasswordChangePage = compose(
@@ -51,7 +49,7 @@ export const PasswordChangePage = compose(
           <PasswordChangeForm
             errors={errors}
             changePassword={(password) =>
-              props.authentication.changePassword(password, (params.token: any))
+              props.authentication.changePassword(password, params.token as any)
             }
           />
         )}

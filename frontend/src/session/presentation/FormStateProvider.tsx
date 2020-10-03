@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-// $FlowFixMe
 export const FormStateContext = React.createContext({
   values: {},
   errors: {},

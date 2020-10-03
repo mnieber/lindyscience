@@ -1,4 +1,3 @@
-// $FlowFixMe
 import { action } from 'mobx';
 
 import { listen } from 'src/npm/facet';

@@ -1,4 +1,3 @@
-// $FlowFixMe
 import { observable } from 'mobx';
 
 import { data, input, installHandlers, operation, output } from 'src/npm/facet';

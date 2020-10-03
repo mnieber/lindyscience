@@ -49,6 +49,5 @@ export const withMoveForm = (WrappedComponent: any) =>
       />
     );
 
-    // $FlowFixMe
     return <WrappedComponent moveForm={moveForm} {...p} />;
   });

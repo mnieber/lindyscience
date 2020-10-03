@@ -3,11 +3,10 @@ import { useFormStateContext } from 'src/session/presentation/FormStateProvider'
 type FieldT = 'checkbox' | 'textfield';
 
 export const formFieldProps = (
+  formState: any,
   { fieldName, ...otherProps }: any,
   fieldType?: FieldT
 ) => {
-  const formState = useFormStateContext();
-
   return {
     ...otherProps,
     ...(fieldType === 'checkbox'

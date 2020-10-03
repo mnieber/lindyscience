@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import React from 'react';
 import { observer } from 'mobx-react';
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 import { Authentication } from 'src/session/facets/Authentication';

@@ -84,7 +84,6 @@ export function useSaveTip(
   saveTip: (TipT) => void
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
-    // $FlowFixMe
     const tip: TipT = {
       ...tips.find((x) => x.id == id),
       ...incompleteValues,

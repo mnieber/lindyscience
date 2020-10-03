@@ -1,4 +1,4 @@
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import React from 'react';
 
 import { withDefaultProps, mergeDefaultProps } from 'src/npm/mergeDefaultProps';

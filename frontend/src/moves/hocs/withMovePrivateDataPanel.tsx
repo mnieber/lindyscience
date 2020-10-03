@@ -1,4 +1,4 @@
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -60,7 +60,6 @@ export const withMovePrivateDataPanel = compose(
     );
 
     return (
-      // $FlowFixMe
       <WrappedComponent movePrivateDataPanel={movePrivateDataPanel} {...p} />
     );
   }

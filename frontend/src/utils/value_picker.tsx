@@ -1,7 +1,5 @@
 import React from 'react';
-// $FlowFixMe
 import Select from 'react-select';
-// $FlowFixMe
 import Creatable from 'react-select/lib/Creatable';
 import jQuery from 'jquery';
 
@@ -63,7 +61,6 @@ export function ValuePicker_(props: PropsT) {
   );
 }
 
-// $FlowFixMe
 export const ValuePicker = React.forwardRef((props, ref) => {
   return <ValuePicker_ {...props} forwardedRef={ref} />;
 });

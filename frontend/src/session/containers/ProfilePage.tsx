@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 
 import { MoveListTable } from 'src/move_lists/presentation/MoveListTable';
@@ -13,9 +11,9 @@ type PropsT = {};
 export function ProfilePage(props: PropsT) {
   const params = useParams();
 
-  const [
-    ownMoveLists: Array<MoveListT>,
-    setOwnMoveLists: Function,
+  const [ownMoveLists, setOwnMoveLists]: [
+    Array<MoveListT>,
+    Function
   ] = React.useState([]);
   async function _loadOwnMoveLists() {
     const moveLists = await apiFindMoveLists({

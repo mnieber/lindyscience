@@ -24,7 +24,6 @@ export class Clipboard {
 
   @computed get targetMoveLists() {
     const ids = this.props.ctr.selection.ids;
-    // $FlowFixMe
     return this.props.ctr.inputs.moveLists.filter((moveList) => {
       return ids.some((moveId) => !moveList.moves.includes(moveId));
     });

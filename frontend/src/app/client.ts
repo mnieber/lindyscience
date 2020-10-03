@@ -1,18 +1,15 @@
 import Cookies from 'js-cookie';
-import { request, GraphQLClient } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 
 function _createClient() {
   const authToken = Cookies.get('authToken');
-  const authHeader = authToken
-    ? {
-        Authorization: 'Token ' + authToken,
-      }
-    : {};
 
   return new GraphQLClient(`http://localhost:8000/graphql/`, {
-    headers: {
-      ...authHeader,
-    },
+    headers: authToken
+      ? {
+          Authorization: 'Token ' + authToken,
+        }
+      : {},
   });
 }
 

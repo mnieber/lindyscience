@@ -1,6 +1,6 @@
 // @flow
 
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import jQuery from 'jquery';
 import * as React from 'react';
 import { observer } from 'mobx-react';
@@ -62,7 +62,6 @@ export const withCutVideoPanel: React.FC<PropsT> = compose(
       </KeyboardEventHandler>
     );
 
-    // $FlowFixMe
     return <WrappedComponent cutVideoPanel={cutVideoPanel} {...p} />;
   }
 );

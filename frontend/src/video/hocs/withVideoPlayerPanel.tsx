@@ -30,6 +30,5 @@ export const withVideoPlayerPanel = (WrappedComponent: any) =>
       />
     );
 
-    // $FlowFixMe
     return <WrappedComponent videoPlayerPanel={videoPlayerPanel} {...p} />;
   });

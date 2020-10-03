@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-  EditorState,
-  Modifier,
-  KeyBindingUtil,
-  // $FlowFixMe
-} from 'draft-js';
+import { EditorState, Modifier, KeyBindingUtil } from 'draft-js';
 
 import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';

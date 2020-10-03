@@ -1,6 +1,4 @@
-import {
-  comparer, // $FlowFixMe
-} from 'mobx';
+import {} from 'mobx';
 
 export {
   observable,
@@ -14,7 +12,7 @@ export {
   spy,
   intercept,
   reaction,
-  toJS, // $FlowFixMe
+  toJS,
 } from 'mobx';
 
 export const compareIfNotNull = (lhs: any, rhs: any) => {

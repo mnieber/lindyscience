@@ -48,6 +48,5 @@ export const withMoveKeyHandlers = (WrappedComponent: any) =>
         : {}),
     };
 
-    // $FlowFixMe
     return <WrappedComponent moveKeyHandlers={moveKeyHandlers} {...p} />;
   });

@@ -1,31 +1,29 @@
-
-
 import { UUID } from 'src/kernel/types';
 import { TagT } from 'src/tags/types';
 
 export type VideoT = {
-  link: string,
-  startTimeMs?: number,
-  endTimeMs?: number,
+  link: string;
+  startTimeMs?: number;
+  endTimeMs?: number;
 };
 
 export type VideoUrlPropsT = {
-  id: string,
-  provider: string,
-  params: any,
+  id: string;
+  provider: string;
+  params: any;
 };
 
 export type CutPointT = {
-  id: UUID,
-  t: number,
-  type: 'start' | 'end',
-  name: string,
-  description: string,
-  tags: Array<TagT>,
+  id: UUID;
+  t: number;
+  type: 'start' | 'end';
+  name: string;
+  description: string;
+  tags: Array<TagT>;
 };
 
 export type CutPointBvrsT = {
-  removeCutPoints: (Array<UUID>) => void,
-  saveCutPoint: (any) => void,
-  createMovesFromCutPoints: () => void,
+  removeCutPoints: (uuids: Array<UUID>) => void;
+  saveCutPoint: (values: any) => void;
+  createMovesFromCutPoints: () => void;
 };

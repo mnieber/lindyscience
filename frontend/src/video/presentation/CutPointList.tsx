@@ -11,7 +11,7 @@ import { TagT } from 'src/tags/types';
 import { CutPointT } from 'src/video/types';
 import { getId, handleSelectionKeys2, scrollIntoView } from 'src/app/utils';
 import { CutPointForm } from 'src/video/presentation/CutPointForm';
-import { CutPointHeader } from 'src/video/presentation/CutPointJeader';
+import { CutPointHeader } from 'src/video/presentation/CutPointHeader';
 
 // CutPointList
 

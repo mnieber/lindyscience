@@ -1,4 +1,3 @@
-// $FlowFixMe
 import { action } from 'mobx';
 
 import { handle } from 'src/npm/facet/lib/handle';

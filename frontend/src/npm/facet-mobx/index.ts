@@ -1,9 +1,6 @@
-// $FlowFixMe
 import { extendObservable, reaction } from 'mobx';
 
 import { getFacet } from 'src/npm/facet';
-
-export { CtrProvider } from 'src/npm/facet-mobx/lib/CtrProvider';
 
 import {
   ClassMemberT,
@@ -11,6 +8,8 @@ import {
   facetName,
   isDataMember,
 } from 'src/npm/facet';
+
+export { CtrProvider } from 'src/npm/facet-mobx/lib/CtrProvider';
 
 const zip = (arr, ...arrs) => {
   return arr.map((val, i) => arrs.reduce((a, arr) => [...a, arr[i]], [val]));
@@ -108,7 +107,6 @@ export const mapData = (
   transform?: Function
 ) =>
   createPatch(toFacetClass, [fromFacetClass], (fromFacet: any) => ({
-    // $FlowFixMe
     get [toMember]() {
       // TODO: check that fromMember is found
       const data = fromFacet[fromMember];
@@ -128,7 +126,6 @@ export const mapDatas = (
     toFacetClass,
     fromFacetClasses,
     (...fromFacets: Array<any>) => ({
-      // $FlowFixMe
       get [toMember]() {
         const datas = zip(fromFacets, fromMembers).map(([facet, member]) => {
           // TODO: check that fromMember is found

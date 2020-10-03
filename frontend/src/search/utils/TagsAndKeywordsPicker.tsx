@@ -1,6 +1,5 @@
 import { isNone, makeUnique } from 'src/utils/utils';
 import React from 'react';
-// $FlowFixMe
 import Select from 'react-select';
 
 const _cache: { [input: string]: any } = {};

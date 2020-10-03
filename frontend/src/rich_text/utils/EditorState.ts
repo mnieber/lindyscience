@@ -1,6 +1,4 @@
-// $FlowFixMe
 import { EditorState, CharacterMetadata, convertFromRaw } from 'draft-js';
-// $FlowFixMe
 import { stateFromHTML } from 'draft-js-import-html';
 
 type MatchT = {

@@ -1,11 +1,7 @@
 import {
-  // $FlowFixMe
   useHistory as _useHistory,
-  // $FlowFixMe
   useParams as _useParams,
-  // $FlowFixMe
   useRouteMatch as _useRouteMatch,
-  // $FlowFixMe
   withRouter as _withRouter,
 } from 'react-router-dom';
 

@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 import classnames from 'classnames';
 
@@ -9,9 +7,9 @@ import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { secondsToTimeString } from 'src/utils/utils';
 
 type PropsT = {
-  cutPoint: CutPointT,
-  removeCutPoints: (Array<UUID>) => void,
-  videoController: VideoController,
+  cutPoint: CutPointT;
+  removeCutPoints: (uuids: Array<UUID>) => void;
+  videoController: VideoController;
 };
 
 export function CutPointHeader(props: PropsT) {

@@ -1,4 +1,4 @@
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { createBrowserHistory } from 'history';
@@ -8,7 +8,6 @@ import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/npm/facet-mobx';
 import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
 
-// $FlowFixMe
 export const SessionContainerContext = React.createContext({});
 
 type PropsT = {

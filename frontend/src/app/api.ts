@@ -2,7 +2,7 @@ import { toCamelCase } from 'src/utils/utils';
 import { get, post } from 'src/utils/api_utils';
 import { setToken } from 'src/app/client';
 
-function _hasError(e, fieldName, errorMsg) {
+function _hasError(e: any, fieldName: string, errorMsg: string) {
   const errors = e.responseJSON[fieldName] || [];
   return errors.includes(errorMsg);
 }
@@ -51,7 +51,7 @@ export async function apiGetEmail() {
 
 export async function apiResetPassword(email: string) {
   try {
-    const response = toCamelCase(
+    toCamelCase(
       await post('/auth/password/reset/', {
         email: email,
       })
@@ -70,7 +70,7 @@ export async function apiChangePassword(
   token: string
 ) {
   try {
-    const response = toCamelCase(
+    toCamelCase(
       await post('/auth/password/reset/confirm', {
         uid,
         token,
@@ -86,7 +86,7 @@ export async function apiChangePassword(
 
 export async function apiActivateAccount(uid: string, token: string) {
   try {
-    const response = toCamelCase(
+    toCamelCase(
       await post('/auth/users/confirm/', {
         uid,
         token,
@@ -105,7 +105,7 @@ export async function apiRegister(
   password: string
 ) {
   try {
-    const response = toCamelCase(
+    toCamelCase(
       await post('/auth/users/create/', {
         email,
         username,

@@ -1,4 +1,3 @@
-// $FlowFixMe
 import { reaction } from 'mobx';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 import { Addition } from 'src/npm/facet-mobx/facets/addition';

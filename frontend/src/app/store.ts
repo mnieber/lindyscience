@@ -6,7 +6,7 @@ import jQuery from 'jquery';
 import { spy, toJS } from 'src/utils/mobx_wrapper';
 import { options as facetOptions } from 'src/npm/facet';
 
-function csrfSafeMethod(method) {
+function csrfSafeMethod(method: string) {
   // these HTTP methods do not require CSRF protection
   return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
 }
@@ -14,8 +14,8 @@ function csrfSafeMethod(method) {
 export const configureStore = () => {
   jQuery.ajaxSetup({
     beforeSend: function (xhr, settings) {
-      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-        xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
+      if (!csrfSafeMethod(settings.type ?? '') && !this.crossDomain) {
+        xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken') ?? '');
       }
       if (Cookies.get('authToken') && settings.url !== '/auth/token/login') {
         xhr.setRequestHeader(

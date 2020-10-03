@@ -11,7 +11,7 @@ export function updateVideoWidth(ctr: MoveContainer | CutVideoContainer) {
       const videoPanelWidth = ctr.display.videoPanelWidth
         ? ctr.display.videoPanelWidth
         : 100;
-      const maxWidthDictatedByScreen = (screen.height * 16) / 9;
+      const maxWidthDictatedByScreen = (window.screen.height * 16) / 9;
       return [maxVideoWidth, videoPanelWidth, maxWidthDictatedByScreen];
     },
     ([maxVideoWidth, videoPanelWidth, maxWidthDictatedByScreen]) => {

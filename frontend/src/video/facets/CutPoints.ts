@@ -135,7 +135,6 @@ function _createMovesFromCutPoints(self: CutPoints) {
       return lastMove && isNone(lastMove.endTimeMs)
         ? [
             ...acc.slice(0, lastMoveIdx),
-            // $FlowFixMe
             { ...lastMove, endTimeMs: cutPoint.t * 1000 },
           ]
         : acc;

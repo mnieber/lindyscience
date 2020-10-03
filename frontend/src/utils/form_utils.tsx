@@ -112,7 +112,6 @@ export function FormField(props: FormFieldPropsT) {
       />
     ) : (
       <input
-        // $FlowFixMe
         ref={htmlElement}
         type={props.type}
         placeholder={props.placeholder}

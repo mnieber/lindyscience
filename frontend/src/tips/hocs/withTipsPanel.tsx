@@ -1,4 +1,4 @@
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -63,7 +63,6 @@ export const withTipsPanel = compose(
       />
     );
 
-    // $FlowFixMe
     return <WrappedComponent tipsPanel={tipsPanel} {...p} />;
   }
 );

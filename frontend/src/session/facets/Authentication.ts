@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-// $FlowFixMe
 import { observable, runInAction } from 'mobx';
 
 import { data, operation } from 'src/npm/facet';

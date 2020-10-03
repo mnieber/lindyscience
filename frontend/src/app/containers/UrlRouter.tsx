@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 
 import { Navigation } from 'src/session/facets/Navigation';
 import { AuthSwitch } from 'src/app/containers/AuthSwitch';

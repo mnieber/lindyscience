@@ -3,7 +3,6 @@ import {
   RichUtils,
   getDefaultKeyBinding,
   convertToRaw,
-  // $FlowFixMe
 } from 'draft-js';
 import React from 'react';
 
@@ -85,7 +84,6 @@ export function getContentFromEditor(editor: any, defaultValue: string) {
   );
 }
 
-// $FlowFixMe
 export const RichTextEditor = React.forwardRef((props, ref) => {
   return <RichTextEditor_ {...props} forwardedRef={ref} />;
 });

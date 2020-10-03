@@ -1,6 +1,5 @@
 import { Authentication } from 'src/session/facets/Authentication';
 import React from 'react';
-// $FlowFixMe
 import { runInAction } from 'mobx';
 import * as R from 'rambda';
 

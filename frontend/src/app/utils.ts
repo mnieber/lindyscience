@@ -1,7 +1,7 @@
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 
 import { ObjectT, OwnedObjectT, SlugidT, UUID } from 'src/kernel/types';
-import { slugify, splitIntoKeywords, stripQuotes } from 'src/utils/utils';
+import { slugify, stripQuotes } from 'src/utils/utils';
 import { MoveListT } from 'src/move_lists/types';
 import { MoveT } from 'src/moves/types';
 import { CutPointT } from 'src/video/types';
@@ -90,7 +90,7 @@ export function getIds(x: Array<ObjectT>): Array<UUID> {
 }
 
 export function idTable(items: Array<any>): Function {
-  return (id) => items.find((x) => x.id == id);
+  return (id: any) => items.find((x) => x.id == id);
 }
 
 export function getOwnerId(x?: OwnedObjectT): number {
@@ -149,8 +149,7 @@ export function createTagsAndKeywordsFilter(
   keywords: Array<string>
 ) {
   function _filter(moves: Array<MoveT>) {
-    function match(move) {
-      const moveKeywords = splitIntoKeywords(move.name);
+    function match(move: MoveT) {
       return (
         (!tags.length || tags.every((tag) => move.tags.includes(tag))) &&
         (!keywords.length ||
@@ -160,7 +159,6 @@ export function createTagsAndKeywordsFilter(
       );
     }
 
-    // $FlowFixMe
     return tags.length || keywords.length ? moves.filter(match) : moves;
   }
   return _filter;

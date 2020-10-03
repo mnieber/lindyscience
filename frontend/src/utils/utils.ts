@@ -1,7 +1,6 @@
 import { T } from 'rambda';
 import recase from 'recase';
 
-// $FlowFixMe
 import uuidv4 from 'uuid/v4';
 
 export function toCamelCase(obj: {}) {
@@ -160,8 +159,7 @@ export function insertIdsIntoList(
   );
 }
 
-export function splitIntoKeywords(x: string) {
-  // $FlowFixMe
+export function splitIntoKeywords(x: string): string[] {
   return x
     .toLowerCase()
     .replace(',', ' ')
@@ -196,7 +194,6 @@ export function createUUID() {
 }
 
 export function makeUnique(x: Array<any>) {
-  // $FlowFixMe
   return Array.from(new Set(x));
 }
 
@@ -222,7 +219,6 @@ export function notImplemented() {
   return Error('Not implemented');
 }
 
-// $FlowFixMe
 export const zip = (arr, ...arrs) => {
   return arr.map((val, i) => arrs.reduce((a, arr) => [...a, arr[i]], [val]));
 };

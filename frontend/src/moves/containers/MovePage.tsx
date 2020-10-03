@@ -1,6 +1,6 @@
 // @flow
 
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';

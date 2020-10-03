@@ -1,4 +1,4 @@
-import { compose } from 'rambda';
+import { compose } from 'lodash/fp';
 import React from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
@@ -43,7 +43,7 @@ export const AppFrame: React.FC<PropsT> = compose(
     </div>
   );
 
-  const onResize = (x) => {
+  const onResize = () => {
     props.display.setWidth(window.innerWidth);
   };
 

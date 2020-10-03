@@ -69,6 +69,5 @@ export const withMoveHeader = (WrappedComponent: any) =>
       />
     );
 
-    // $FlowFixMe
     return <WrappedComponent moveHeader={moveHeader} {...p} />;
   });

@@ -20,8 +20,8 @@ django-dbbackup==3.3.0    # via -r requirements.txt
 django-enumfields==0.10.1  # via -r requirements.txt
 django-environ==0.4.5     # via -r requirements.txt
 django-extensions==2.0.7  # via -r requirements.txt
-django-filter==2.3.0      # via django-graphql-auth
-django-graphql-jwt==0.3.0  # via django-graphql-auth
+django-filter==2.4.0      # via -r requirements.txt, django-graphql-auth
+django-graphql-jwt==0.3.0  # via -r requirements.txt, django-graphql-auth
 django-polymorphic==2.0.2  # via -r requirements.txt
 django-tagulous==0.13.2   # via -r requirements.txt
 django-webpack-loader==0.6.0  # via -r requirements.txt
@@ -57,7 +57,7 @@ ptyprocess==0.6.0         # via pexpect
 pudb==2018.1              # via -r requirements.dev.in
 py==1.8.1                 # via -r requirements.txt, pytest
 pygments==2.6.1           # via ipython, pudb
-pyjwt==1.7.1              # via django-graphql-jwt
+pyjwt==1.7.1              # via -r requirements.txt, django-graphql-jwt
 pyparsing==2.4.7          # via -r requirements.txt, packaging
 pytest-django==3.5.1      # via -r requirements.txt
 pytest-html==2.1.1        # via -r requirements.txt

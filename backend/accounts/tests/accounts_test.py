@@ -128,20 +128,6 @@ class AccountTest(APITestCase):
         assert res.data["email"][0].lower() == "user with this email already exists."
         assert res.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_djoser_settings(self):
-        assert (
-            settings.DJOSER["EMAIL"].get("activation")
-            == "accounts.email.ActivationEmail"
-        )
-        assert (
-            settings.DJOSER["EMAIL"].get("password_reset")
-            == "accounts.email.PasswordResetEmail"
-        )
-        assert (
-            settings.DJOSER["EMAIL"].get("confirmation")
-            == "accounts.email.ConfirmationEmail"
-        )
-
     def test_create_user_account_no_tos(self):
         """
         Ensure a user account can't be created without accepting TOS

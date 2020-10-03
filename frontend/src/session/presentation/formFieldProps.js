@@ -16,7 +16,6 @@ export const formFieldProps = (
           type: 'checkbox',
         }
       : {
-          error: !!formState.errors[fieldName],
           defaultValue: formState.values[fieldName],
         }),
     name: fieldName,

@@ -14,7 +14,12 @@ type PropsT = {
 export const PasswordField = (props: PropsT) => {
   return (
     <FormFieldLabel {...labelProps(props)}>
-      <input type="password" {...formFieldProps(props)} />
+      <input
+        className="w-16"
+        placeholder="Enter your password"
+        type="password"
+        {...formFieldProps(props)}
+      />
     </FormFieldLabel>
   );
 };

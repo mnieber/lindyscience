@@ -1,6 +1,5 @@
 // @flow
 
-import { Button } from '@material-ui/core';
 import React from 'react';
 
 import { useFormStateContext } from 'src/session/presentation/FormStateProvider';
@@ -17,7 +16,7 @@ export const SubmitButton = (props: PropsT) => {
   };
 
   return (
-    <Button
+    <button
       type="submit"
       fullWidth
       variant="contained"
@@ -26,6 +25,6 @@ export const SubmitButton = (props: PropsT) => {
       onClick={onClick}
     >
       {props.label}
-    </Button>
+    </button>
   );
 };

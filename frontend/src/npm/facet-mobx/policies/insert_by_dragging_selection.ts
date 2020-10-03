@@ -8,7 +8,7 @@ export const insertByDraggingSelection = ({
   showPreview,
 }: {
   showPreview: boolean;
-}) => (ctr: any): ?InsertT => {
+}) => (ctr: any): InsertT | undefined => {
   const position = Dragging.get(ctr).position;
   const items = Selection.get(ctr).items;
 

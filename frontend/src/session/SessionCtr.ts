@@ -1,5 +1,3 @@
-// @flow
-
 import {
   Authentication,
   initAuthentication,
@@ -13,17 +11,17 @@ import { Profiling, initProfiling } from 'src/session/facets/Profiling';
 import { facet, installPolicies, registerFacets } from 'src/npm/facet';
 
 export type AuthApiT = {
-  loadUserId: Function,
-  signUp: Function,
-  resetPassword: Function,
-  changePassword: Function,
-  signIn: Function,
-  signOut: Function,
-  activateAccount: Function,
+  loadUserId: Function;
+  signUp: Function;
+  resetPassword: Function;
+  changePassword: Function;
+  signIn: Function;
+  signOut: Function;
+  activateAccount: Function;
 };
 
 type PropsT = {
-  history: any,
+  history: any;
 };
 
 export class SessionContainer {

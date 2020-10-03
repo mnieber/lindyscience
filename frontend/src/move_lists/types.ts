@@ -1,5 +1,3 @@
-// @flow
-
 import { OwnedObjectT, UUID } from 'src/kernel/types';
 import { TagT } from 'src/tags/types';
 

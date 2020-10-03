@@ -7,7 +7,7 @@ import { VoteByIdT, VoteT } from 'src/votes/types';
 import { Tip } from 'src/tips/presentation/Tip';
 
 type TipListPropsT = {
-  userProfile: ?UserProfileT;
+  userProfile?: UserProfileT;
   parentObject: OwnedObjectT;
   items: Array<TipT>;
   voteByObjectId: VoteByIdT;

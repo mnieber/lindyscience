@@ -1,5 +1,3 @@
-// @flow
-
 import { T } from 'rambda';
 import recase from 'recase';
 
@@ -71,7 +69,7 @@ export function reduceMapToMap<T>(obj: {}, f: Function): T {
   return Object.entries(obj).reduce((acc, [k, v]) => {
     f(acc, k, v);
     return acc;
-  }, (({}: any): T));
+  }, {});
 }
 
 export function getObjectValues(obj: {}): any {
@@ -89,7 +87,7 @@ export function addToSet(array: Array<any>, item: any) {
 export function flatten(
   obj: any,
   paths: Array<string>,
-  maybeComposeKeys: ?Function
+  maybeComposeKeys?: Function
 ) {
   const composeKeys = maybeComposeKeys
     ? maybeComposeKeys

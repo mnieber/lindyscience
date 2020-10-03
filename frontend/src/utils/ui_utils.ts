@@ -1,5 +1,3 @@
-// @flow
-
 export function isBefore(e: any): boolean {
   const boundingRect = e.target.getBoundingClientRect();
   const height = boundingRect.bottom - boundingRect.top;

@@ -1,5 +1,3 @@
-// @flow
-
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MoveT } from 'src/moves/types';

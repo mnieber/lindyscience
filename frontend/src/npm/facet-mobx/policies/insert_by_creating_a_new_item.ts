@@ -9,7 +9,7 @@ export const insertByCreatingAnItem = ({
   showPreview,
 }: {
   showPreview: boolean;
-}) => (ctr: any): ?InsertT => {
+}) => (ctr: any): InsertT | undefined => {
   const parentId = Addition.get(ctr).parentId;
   const item = Addition.get(ctr).item;
 

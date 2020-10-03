@@ -1,5 +1,3 @@
-// @flow
-
 import { apiUpdateProfile } from 'src/profiles/api';
 
 export function browseToMoveUrl(

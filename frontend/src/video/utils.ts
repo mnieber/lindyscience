@@ -1,4 +1,4 @@
-// @flow
+
 
 export function timePointRegex() {
   return /\<([\d\.\:]+)\>/g;
@@ -42,6 +42,6 @@ export function splitKeyhandlerKeys(keyHandlers: { [string]: Function }) {
   }, {});
 }
 
-export function timePointToClassName(tp: ?number) {
+export function timePointToClassName(tp?: number) {
   return 'tp-' + ((tp || '') + '').replace('.', '-');
 }

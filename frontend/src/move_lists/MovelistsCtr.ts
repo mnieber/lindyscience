@@ -1,5 +1,3 @@
-// @flow
-
 import { values } from 'rambda';
 
 import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';

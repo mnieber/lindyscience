@@ -1,18 +1,16 @@
-// @flow
-
 // $FlowFixMe
 import { observable } from 'mobx';
 
 import { installHandlers, operation } from 'src/npm/facet';
 
 export type InsertPositionT = {
-  targetItemId: any,
-  isBefore: boolean,
+  targetItemId: any;
+  isBefore: boolean;
 };
 
 export type PayloadT = {
-  showPreview: boolean,
-  data: any,
+  showPreview: boolean;
+  data: any;
 };
 
 export class Dragging {

@@ -1,5 +1,3 @@
-// @flow
-
 class VideoIFrame {
   parentDivId: any;
   iframe: any;

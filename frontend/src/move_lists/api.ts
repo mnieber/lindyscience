@@ -1,5 +1,3 @@
-// @flow
-
 import { MoveListT } from 'src/move_lists/types';
 import { UUID } from 'src/kernel/types';
 import { doQuery } from 'src/app/client';

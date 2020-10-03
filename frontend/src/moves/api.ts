@@ -1,5 +1,3 @@
-// @flow
-
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { doQuery } from 'src/app/client';
 import { flatten } from 'src/utils/utils';

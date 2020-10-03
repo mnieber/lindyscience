@@ -1,5 +1,3 @@
-// @flow
-
 import { compose } from 'rambda';
 import * as React from 'react';
 import { observer } from 'mobx-react';

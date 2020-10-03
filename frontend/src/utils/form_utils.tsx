@@ -1,15 +1,13 @@
-// @flow
-
 import React from 'react';
 import classnames from 'classnames';
 import { isEmpty, isNil } from 'rambda';
 
 type FormFieldLabelPropsT = {
-  classNames?: any,
-  fieldName: string,
-  label: string,
-  buttons?: any,
-  children?: any,
+  classNames?: any;
+  fieldName: string;
+  label: string;
+  buttons?: any;
+  children?: any;
 };
 
 export function FormFieldLabel(props: FormFieldLabelPropsT) {
@@ -42,10 +40,10 @@ export function FormFieldLabel(props: FormFieldLabelPropsT) {
 }
 
 export type FormFieldErrorPropsT = {
-  formProps: any,
-  fieldName: string,
-  classNames?: any,
-  key?: any,
+  formProps: any;
+  fieldName: string;
+  classNames?: any;
+  key?: any;
 };
 
 export function FormFieldError(props: FormFieldErrorPropsT) {
@@ -64,17 +62,17 @@ export function FormFieldError(props: FormFieldErrorPropsT) {
 }
 
 type FormFieldPropsT = {
-  type?: string,
-  postfix?: string,
-  fieldName: string,
-  formProps: any,
-  buttons?: any,
-  classNames?: any,
-  label?: string,
-  placeholder?: string,
-  autoFocus?: boolean,
-  disabled?: boolean,
-  onChange?: Function,
+  type?: string;
+  postfix?: string;
+  fieldName: string;
+  formProps: any;
+  buttons?: any;
+  classNames?: any;
+  label?: string;
+  placeholder?: string;
+  autoFocus?: boolean;
+  disabled?: boolean;
+  onChange?: Function;
 };
 
 export function FormField(props: FormFieldPropsT) {

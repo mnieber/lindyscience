@@ -1,5 +1,3 @@
-// @flow
-
 // $FlowFixMe
 import { extendObservable, reaction } from 'mobx';
 
@@ -8,7 +6,7 @@ import { getFacet } from 'src/npm/facet';
 export { CtrProvider } from 'src/npm/facet-mobx/lib/CtrProvider';
 
 import {
-  type ClassMemberT,
+  ClassMemberT,
   facetClassName,
   facetName,
   isDataMember,

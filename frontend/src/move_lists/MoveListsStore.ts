@@ -1,5 +1,3 @@
-// @flow
-
 import { action, observable } from 'src/utils/mobx_wrapper';
 import { MoveListByIdT, MoveListT } from 'src/move_lists/types';
 import { TagMapT } from 'src/tags/types';

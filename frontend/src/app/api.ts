@@ -1,5 +1,3 @@
-// @flow
-
 import { toCamelCase } from 'src/utils/utils';
 import { get, post } from 'src/utils/api_utils';
 import { setToken } from 'src/app/client';

@@ -1,5 +1,3 @@
-// @flow
-
 import { TagT } from 'src/tags/types';
 import { doQuery } from 'src/app/client';
 import { flatten } from 'src/utils/utils';

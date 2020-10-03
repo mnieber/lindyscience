@@ -1,5 +1,3 @@
-// @flow
-
 import {
   // $FlowFixMe
   useHistory as _useHistory,

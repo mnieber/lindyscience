@@ -4,7 +4,7 @@ type FieldT = 'checkbox' | 'textfield';
 
 export const formFieldProps = (
   { fieldName, ...otherProps }: any,
-  fieldType: ?FieldT
+  fieldType?: FieldT
 ) => {
   const formState = useFormStateContext();
 

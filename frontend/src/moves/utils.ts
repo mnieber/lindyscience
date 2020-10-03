@@ -1,5 +1,3 @@
-// @flow
-
 import { MoveT } from 'src/moves/types';
 import { VideoT } from 'src/video/types';
 

@@ -1,5 +1,3 @@
-// @flow
-
 import { action, computed, observable } from 'src/utils/mobx_wrapper';
 import { TipByIdT, TipsByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';

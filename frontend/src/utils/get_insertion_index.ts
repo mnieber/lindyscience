@@ -1,5 +1,3 @@
-// @flow
-
 // Finds the insertion index for an item in an array.
 // Uses compareFn (similar to that provided to array.sort())
 export const getInsertionIndex = (

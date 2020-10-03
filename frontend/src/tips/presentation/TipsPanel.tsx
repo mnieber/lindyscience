@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,7 +26,7 @@ type PropsT = {
 };
 
 type DefaultPropsT = {
-  userProfile: ?UserProfileT;
+  userProfile?: UserProfileT;
 };
 
 export const TipsPanel: React.FC<PropsT> = (p: PropsT) => {

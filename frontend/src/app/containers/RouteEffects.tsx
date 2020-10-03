@@ -1,5 +1,3 @@
-// @flow
-
 import { compose } from 'rambda';
 import React from 'react';
 

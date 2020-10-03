@@ -1,5 +1,3 @@
-// @flow
-
 import Cookies from 'js-cookie';
 
 import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
@@ -9,8 +7,8 @@ import { isOwner } from 'src/app/utils';
 import { data, installHandlers, operation } from 'src/npm/facet';
 
 export class Profiling {
-  @data @observable userProfile: ?UserProfileT;
-  @data @observable signedInEmail: ?string;
+  @data @observable userProfile?: UserProfileT;
+  @data @observable signedInEmail?: string;
   @data @observable acceptsCookies: boolean = false;
 
   @action setFollowedMoveListIds(moveListIds: Array<UUID>) {
@@ -22,7 +20,7 @@ export class Profiling {
     }
   }
 
-  @action setUserProfile(userProfile: ?UserProfileT) {
+  @action setUserProfile(userProfile?: UserProfileT) {
     this.userProfile = userProfile;
   }
 

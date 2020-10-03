@@ -1,5 +1,3 @@
-// @flow
-
 import * as React from 'react';
 
 import { TipT } from 'src/tips/types';
@@ -31,7 +29,7 @@ export function useInsertTip(tips: Array<TipT>): InsertTipBvrT {
 }
 
 type NewTipBvrT = {
-  newTip: ?TipT;
+  newTip?: TipT;
   add: Function;
   finalize: Function;
 };

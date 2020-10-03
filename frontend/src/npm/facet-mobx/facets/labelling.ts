@@ -1,5 +1,3 @@
-// @flow
-
 // $FlowFixMe
 import { observable } from 'mobx';
 
@@ -10,7 +8,7 @@ import { mapDatas, relayData } from 'src/npm/facet-mobx';
 
 export type IdsByLabelT = { [string]: Array<any> };
 export type ItemsByLabelT = { [string]: Array<any> };
-export type LabelValueT = { label: string, id: any, flag: boolean };
+export type LabelValueT = { label: string; id: any; flag: boolean };
 
 type saveIdsT = (label: string, ids: Array<any>) => any;
 
@@ -46,7 +44,7 @@ export const initLabelling = (
   {
     saveIds,
   }: {
-    saveIds: saveIdsT,
+    saveIds: saveIdsT;
   }
 ): Labelling => {
   installHandlers({ setLabel: _handleSetLabel(saveIds) }, self);
@@ -63,7 +61,7 @@ export const labellingActsOnItems = ([Collection, itemById]: ClassMemberT) => {
     (itemById, idsByLabel) =>
       Object.fromEntries(
         Object.entries(idsByLabel).map(([label, ids]) =>
-          lookUp((ids: any), itemById)
+          lookUp(ids as any, itemById)
         )
       )
   );

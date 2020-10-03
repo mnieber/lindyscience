@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 // $FlowFixMe
 import Select from 'react-select';
@@ -11,17 +9,17 @@ import { FormFieldLabel, handleEnterAsTabToNext } from 'src/utils/form_utils';
 import { stripQuotes } from 'src/utils/utils';
 
 type PropsT = {
-  isMulti: boolean,
-  isCreatable: boolean,
-  zIndex?: number,
-  onChange?: Function,
-  fieldName: string,
-  options?: any,
-  placeholder?: string,
-  label?: string,
-  forwardedRef?: any,
-  value: any,
-  setValue: Function,
+  isMulti: boolean;
+  isCreatable: boolean;
+  zIndex?: number;
+  onChange?: Function;
+  fieldName: string;
+  options?: any;
+  placeholder?: string;
+  label?: string;
+  forwardedRef?: any;
+  value: any;
+  setValue: Function;
 };
 
 export function ValuePicker_(props: PropsT) {

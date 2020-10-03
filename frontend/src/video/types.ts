@@ -1,12 +1,12 @@
-// @flow
+
 
 import { UUID } from 'src/kernel/types';
 import { TagT } from 'src/tags/types';
 
 export type VideoT = {
   link: string,
-  startTimeMs: ?number,
-  endTimeMs: ?number,
+  startTimeMs?: number,
+  endTimeMs?: number,
 };
 
 export type VideoUrlPropsT = {

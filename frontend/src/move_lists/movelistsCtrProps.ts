@@ -1,5 +1,3 @@
-// @flow
-
 import { Navigation } from 'src/session/facets/Navigation';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';

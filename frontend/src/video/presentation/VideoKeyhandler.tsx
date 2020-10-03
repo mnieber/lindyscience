@@ -1,5 +1,3 @@
-// @flow
-
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { splitKeyhandlerKeys } from 'src/video/utils';
 import { runInAction } from 'src/utils/mobx_wrapper';
@@ -66,8 +64,8 @@ export const createVideoTimePointKeyHandlers = (
 
 export const createVideoStartEndKeyHandlers = (
   videoController: VideoController,
-  startTime: ?number,
-  endTime: ?number
+  startTime?: number,
+  endTime?: number
 ) => {
   const player = videoController.player;
   if (!player) {

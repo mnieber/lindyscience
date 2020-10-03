@@ -1,5 +1,3 @@
-// @flow
-
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 
 import { ObjectT, OwnedObjectT, SlugidT, UUID } from 'src/kernel/types';

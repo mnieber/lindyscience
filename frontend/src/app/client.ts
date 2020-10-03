@@ -1,5 +1,3 @@
-// @flow
-
 import Cookies from 'js-cookie';
 import { request, GraphQLClient } from 'graphql-request';
 

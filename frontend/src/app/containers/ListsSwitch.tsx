@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { compose } from 'rambda';
 import { Route, Switch } from 'react-router-dom';

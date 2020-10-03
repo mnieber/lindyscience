@@ -1,5 +1,3 @@
-// @flow
-
 import Cookies from 'js-cookie';
 // $FlowFixMe
 import { observable, runInAction } from 'mobx';
@@ -18,7 +16,7 @@ export type AuthenticationStateT =
   | 'ActivateAccount.Failed';
 
 export class Authentication {
-  @data @observable signedInUserId: ?string;
+  @data @observable signedInUserId?: string;
   @data @observable acceptsCookies: boolean = false;
   @data @observable errors: Array<string>;
   @data @observable state: AuthenticationStateT;

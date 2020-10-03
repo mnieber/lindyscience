@@ -5,9 +5,9 @@ import React from 'react';
 // $FlowFixMe
 import Select from 'react-select';
 
-const _cache = {};
+const _cache: { [input: string]: any } = {};
 
-function _getSearchInput(input) {
+function _getSearchInput(input: string) {
   let result = _cache[input];
   if (!isNone(result)) {
     return result;
@@ -26,7 +26,7 @@ function _getSearchInput(input) {
 
 export function splitTextIntoTagsAndKeywords(inputValue: string) {
   const words = inputValue.split(' ');
-  const chop = (x) => (x.endsWith(':') ? x.slice(0, x.length - 1) : x);
+  const chop = (x: string) => (x.endsWith(':') ? x.slice(0, x.length - 1) : x);
   return {
     keywords: makeUnique(words.filter((x) => !!x && !x.startsWith(':'))),
     tags: makeUnique(
@@ -39,13 +39,13 @@ export function splitTextIntoTagsAndKeywords(inputValue: string) {
 }
 
 type PropsT = {
-  zIndex?: number,
-  onChange?: Function,
-  onTextChange?: Function,
-  options?: any,
-  placeholder?: string,
-  forwardedRef?: any,
-  defaults: any,
+  zIndex?: number;
+  onChange?: Function;
+  onTextChange?: Function;
+  options?: any;
+  placeholder?: string;
+  forwardedRef?: any;
+  defaults: any;
 };
 
 export function TagsAndKeywordsPicker(props: PropsT) {

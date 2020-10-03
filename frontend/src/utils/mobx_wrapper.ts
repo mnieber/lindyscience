@@ -1,5 +1,3 @@
-// @flow
-
 import {
   comparer, // $FlowFixMe
 } from 'mobx';

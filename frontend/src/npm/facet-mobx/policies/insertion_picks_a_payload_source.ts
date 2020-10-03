@@ -1,16 +1,13 @@
 // @flow
 
 import { findMap } from 'src/npm/facet-mobx/internal/utils';
-import {
-  Insertion,
-  type PayloadSourceT,
-} from 'src/npm/facet-mobx/facets/insertion';
+import { Insertion, PayloadSourceT } from 'src/npm/facet-mobx/facets/insertion';
 import { createPatch } from 'src/npm/facet-mobx';
 
 export const insertionPicksAPayloadsSource = ({
   payloadSources,
 }: {
-  payloadSources: Array<PayloadSourceT>,
+  payloadSources: Array<PayloadSourceT>;
 }) =>
   createPatch(Insertion, [null], (container) => ({
     get _sourcedPayload() {

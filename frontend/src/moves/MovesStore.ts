@@ -1,5 +1,3 @@
-// @flow
-
 import { action, observable } from 'src/utils/mobx_wrapper';
 import {
   MoveByIdT,

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
+import { UUID } from 'src/kernel/types';
 import { Display } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { TagT } from 'src/tags/types';
@@ -16,8 +17,8 @@ type PropsT = {
 };
 
 export const CutVideoPanel: React.FC<PropsT> = observer((props: PropsT) => {
-  const onKeyDown = (e) => {
-    if (e.keyCode == 13) {
+  const onKeyDown = (e: any) => {
+    if (e.keyCode === 13) {
       props.cutPoints.setVideoLink(e.target.value);
     }
   };
@@ -36,19 +37,20 @@ export const CutVideoPanel: React.FC<PropsT> = observer((props: PropsT) => {
   const videoPlayerPanel = (
     <VideoPlayerPanel
       key="videoPlayerPanel"
-      videoController={props.cutPoints.videoController}
+      videoController={props.cutPoints.videoController as any}
       display={props.display}
       moveDisplay={props.moveDisplay}
     />
   );
 
-  const selectCutPointById = (id, isShift, isCtrl) => undefined;
+  const selectCutPointById = (id: UUID, isShift: boolean, isCtrl: boolean) =>
+    undefined;
 
   const cutPointList = (
     <CutPointList
       moveTags={props.moveTags}
       cutPoints={props.cutPoints}
-      highlightedCutPoint={null}
+      highlightedCutPoint={undefined}
       selectCutPointById={selectCutPointById}
     />
   );
@@ -59,7 +61,9 @@ export const CutVideoPanel: React.FC<PropsT> = observer((props: PropsT) => {
         className="button"
         onClick={() => {
           props.cutPoints.createMoves();
-          props.cutPoints.remove(props.cutPoints.cutPoints.map((x) => x.id));
+          props.cutPoints.remove(
+            (props.cutPoints.cutPoints ?? []).map((x) => x.id)
+          );
         }}
       >
         Create moves

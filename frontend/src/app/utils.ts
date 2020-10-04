@@ -9,7 +9,7 @@ import { UserProfileT } from 'src/profiles/types';
 import { TagT } from 'src/tags/types';
 
 export function isOwner(userProfile: UserProfileT, ownerId: number) {
-  return userProfile && userProfile.userId == ownerId;
+  return userProfile && userProfile.userId === ownerId;
 }
 
 export function pickNeighbour2(
@@ -40,7 +40,7 @@ export function handleSelectionKeys2(
 ) {
   if (['up', 'down'].includes(key)) {
     e.stopPropagation();
-    if (pickNeighbour2(allItems, selectedItem, key == 'down', selectItem)) {
+    if (pickNeighbour2(allItems, selectedItem, key === 'down', selectItem)) {
       e.preventDefault();
     }
     return true;
@@ -90,7 +90,7 @@ export function getIds(x: Array<ObjectT>): Array<UUID> {
 }
 
 export function idTable(items: Array<any>): Function {
-  return (id: any) => items.find((x) => x.id == id);
+  return (id: any) => items.find((x) => x.id === id);
 }
 
 export function getOwnerId(x?: OwnedObjectT): number {
@@ -112,11 +112,11 @@ export function makeMoveListUrl(moveList: MoveListT) {
 export function makeSlugidMatcher(slugid: SlugidT) {
   const parts = slugid.split('/');
   return (move: MoveT) =>
-    parts.length == 2 ? move.id == parts[1] : move.slug == parts[0];
+    parts.length === 2 ? move.id === parts[1] : move.slug === parts[0];
 }
 
 export function makeIdMatcher(id: UUID) {
-  return (obj: ObjectT) => obj.id == id;
+  return (obj: ObjectT) => obj.id === id;
 }
 
 export function findMoveBySlugid(moves: Array<MoveT>, slugid: string) {
@@ -124,7 +124,7 @@ export function findMoveBySlugid(moves: Array<MoveT>, slugid: string) {
 }
 
 export function findMoveListByUrl(moveLists: Array<MoveListT>, url: string) {
-  return moveLists.find((x) => makeMoveListUrl(x) == url);
+  return moveLists.find((x) => makeMoveListUrl(x) === url);
 }
 
 export const newMoveListSlug = 'new-move-list';
@@ -136,7 +136,7 @@ export function findNeighbourIdx(
   endIndex: number,
   step: number
 ) {
-  for (var idx = beginIndex; idx != endIndex; idx += step) {
+  for (var idx = beginIndex; idx !== endIndex; idx += step) {
     if (filteredIds.includes(allIds[idx])) {
       return { result: idx };
     }

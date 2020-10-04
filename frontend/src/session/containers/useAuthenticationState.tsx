@@ -9,7 +9,7 @@ export const useAuthenticationState = (authentication: Authentication) => {
       authentication.state = '';
       authentication.errors = [];
     });
-  }, []);
+  }, [authentication]);
 
   return {
     errors: authentication.errors || [],

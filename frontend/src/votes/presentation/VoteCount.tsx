@@ -15,18 +15,18 @@ export function VoteCount({
   setVote: (vote: VoteT) => void;
 }) {
   function _toggleUpVote() {
-    setVote(vote == 1 ? 0 : 1);
+    setVote(vote === 1 ? 0 : 1);
   }
 
   function _toggleDownVote() {
-    setVote(vote == -1 ? 0 : -1);
+    setVote(vote === -1 ? 0 : -1);
   }
 
   const voteCount = (
     <div
       className={classnames('voteCount', {
-        'voteCount--voted': vote != 0,
-        'voteCount--notVoted': vote == 0,
+        'voteCount--voted': vote !== 0,
+        'voteCount--notVoted': vote === 0,
       })}
     >
       {count}
@@ -36,8 +36,8 @@ export function VoteCount({
   const upVote = (
     <div
       className={classnames('upVoteBtn', {
-        'upVoteBtn--voted': vote == 1,
-        'upVoteBtn--notVoted': vote != 1,
+        'upVoteBtn--voted': vote === 1,
+        'upVoteBtn--notVoted': vote !== 1,
       })}
       onClick={_toggleUpVote}
     />
@@ -46,8 +46,8 @@ export function VoteCount({
   const downVote = (
     <div
       className={classnames('downVoteBtn', {
-        'downVoteBtn--voted': vote == -1,
-        'downVoteBtn--notVoted': vote != -1,
+        'downVoteBtn--voted': vote === -1,
+        'downVoteBtn--notVoted': vote !== -1,
       })}
       onClick={_toggleDownVote}
     />

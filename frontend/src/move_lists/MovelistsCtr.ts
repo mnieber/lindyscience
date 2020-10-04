@@ -115,7 +115,7 @@ export class MoveListsContainer {
     this.selection = initSelection(new Selection());
     this.labelling = initLabelling(new Labelling(), {
       saveIds: (label: string, ids: Array<UUID>) => {
-        if (label == 'following') {
+        if (label === 'following') {
           props.setFollowedMoveListIds(ids);
         }
       },

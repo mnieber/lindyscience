@@ -18,17 +18,17 @@ type KeyHandlersT = {
 };
 
 function createKeyHandlers(
-  selectCutPointById: (UUID, boolean, boolean) => void,
+  selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   props: PropsT
 ): KeyHandlersT {
-  function handleKeyDown(key, e) {
+  function handleKeyDown(key: any, e: any) {
     if (props.highlightedCutPoint) {
       const highlightedCutPointId = props.highlightedCutPoint.id;
-      e.target.id == 'cutPointList' &&
+      e.target.id === 'cutPointList' &&
         handleSelectionKeys2(
           key,
           e,
-          props.cutPoints.cutPoints.map((x) => x.id),
+          (props.cutPoints.cutPoints ?? []).map((x) => x.id),
           highlightedCutPointId,
           (id) => selectCutPointById(id, false, false)
         );
@@ -46,14 +46,14 @@ type ClickHandlersT = {
 };
 
 function createClickHandlers(
-  selectCutPointById: (UUID, boolean, boolean) => void,
+  selectCutPointById: (id: UUID, isShift: boolean, isCtrl: boolean) => void,
   props: PropsT
 ): ClickHandlersT {
-  function handleMouseDown(e, cutPointId) {
+  function handleMouseDown(e: any, cutPointId: UUID) {
     selectCutPointById(cutPointId, e.shiftKey, e.ctrlKey);
   }
 
-  function handleMouseUp(e, cutPointId) {}
+  function handleMouseUp(e: any, cutPointId: UUID) {}
 
   return {
     handleMouseUp,
@@ -83,37 +83,39 @@ export const CutPointList: React.FC<PropsT> = observer((props: PropsT) => {
   const clickHandlers = createClickHandlers(selectCutPointById, props);
   const highlightedCutPointId = getId(props.highlightedCutPoint);
 
-  const cutPointNodes = props.cutPoints.cutPoints.map((cutPoint, idx) => {
-    const form = (
-      <CutPointForm
-        cutPoint={cutPoint}
-        onSubmit={props.cutPoints.save}
-        knownTags={props.moveTags}
-        videoController={props.cutPoints.videoController}
-        autoFocus={true}
-      />
-    );
-    return (
-      <div
-        className={classnames({
-          cutPointList__item: true,
-          'cutPointList__item--highlighted':
-            cutPoint.id == highlightedCutPointId,
-        })}
-        id={cutPoint.id}
-        key={idx}
-        onMouseDown={(e) => clickHandlers.handleMouseDown(e, cutPoint.id)}
-        onMouseUp={(e) => clickHandlers.handleMouseUp(e, cutPoint.id)}
-      >
-        <CutPointHeader
+  const cutPointNodes = (props.cutPoints.cutPoints ?? []).map(
+    (cutPoint, idx) => {
+      const form = (
+        <CutPointForm
           cutPoint={cutPoint}
+          onSubmit={props.cutPoints.save}
+          knownTags={props.moveTags}
           videoController={props.cutPoints.videoController}
-          removeCutPoints={props.cutPoints.remove}
+          autoFocus={true}
         />
-        {cutPoint.type == 'start' && form}
-      </div>
-    );
-  });
+      );
+      return (
+        <div
+          className={classnames({
+            cutPointList__item: true,
+            'cutPointList__item--highlighted':
+              cutPoint.id === highlightedCutPointId,
+          })}
+          id={cutPoint.id}
+          key={idx}
+          onMouseDown={(e) => clickHandlers.handleMouseDown(e, cutPoint.id)}
+          onMouseUp={(e) => clickHandlers.handleMouseUp(e, cutPoint.id)}
+        >
+          <CutPointHeader
+            cutPoint={cutPoint}
+            videoController={props.cutPoints.videoController as any}
+            removeCutPoints={props.cutPoints.remove}
+          />
+          {cutPoint.type === 'start' && form}
+        </div>
+      );
+    }
+  );
 
   return (
     <KeyboardEventHandler

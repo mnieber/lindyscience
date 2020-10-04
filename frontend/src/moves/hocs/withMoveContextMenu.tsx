@@ -33,7 +33,7 @@ export const withMoveContextMenu = compose(
     const targetMoveLists = props.movesClipboard.targetMoveLists;
 
     const targetMoveListsForMoving = props.moveLists.filter(
-      (x) => moveListId != getId(x)
+      (x) => moveListId !== getId(x)
     );
 
     const moveContextMenu = (

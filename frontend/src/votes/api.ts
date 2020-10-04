@@ -11,8 +11,8 @@ export function apiLoadUserVotes() {
         value
       }
     }`;
-  return doQuery(query, {}).then((result) =>
-    result.userVotes.reduce((acc, vote) => {
+  return doQuery(query, {}).then((result: any) =>
+    result.userVotes.reduce((acc: any, vote: any) => {
       acc[vote.objectId] = vote.value;
       return acc;
     }, {})

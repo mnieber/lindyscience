@@ -45,7 +45,7 @@ export class Clipboard {
 
   moveToTrash() {
     const trashList = this.props.ctr.inputs.moveLists.find(
-      (x) => x.role == 'TRASH'
+      (x) => x.role === 'TRASH'
     );
     if (trashList) {
       this.props.shareMovesToList(

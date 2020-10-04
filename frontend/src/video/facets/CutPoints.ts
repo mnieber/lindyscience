@@ -37,7 +37,7 @@ function _createNewCutPoint(
     id: createUUID(),
     t: time,
     type: cutPointType,
-    name: cutPointType == 'start' ? 'New move' : '',
+    name: cutPointType === 'start' ? 'New move' : '',
     description: '',
     tags: [],
   };
@@ -47,10 +47,10 @@ function _addCutPoints(self: CutPoints, cutPoints: Array<CutPointT>) {
   const cmp = (lhs: CutPointT, rhs: CutPointT) => lhs.t - rhs.t;
   self.cutPoints = cutPoints.reduce((acc: any, cutPoint: CutPointT) => {
     const existingCutPoint = acc.find(
-      (x: CutPointT) => x.type == cutPoint.type && x.t == cutPoint.t
+      (x: CutPointT) => x.type === cutPoint.type && x.t === cutPoint.t
     );
 
-    if (existingCutPoint && existingCutPoint.id != cutPoint.id) {
+    if (existingCutPoint && existingCutPoint.id !== cutPoint.id) {
       return acc;
     } else if (existingCutPoint) {
       const idx = acc.indexOf(existingCutPoint);
@@ -85,7 +85,7 @@ function handleSetVideoLink(self: CutPoints) {
     self,
     'setVideoLink',
     action((videoLink: string) => {
-      if (self.videoLink != videoLink) {
+      if (self.videoLink !== videoLink) {
         self.cutPoints = [];
         self.videoController = new VideoController();
         self.videoController.video = {
@@ -104,7 +104,7 @@ function handleSave(self: CutPoints) {
     'save',
     action((values: any) => {
       const existingCutPoint = (self.cutPoints as any).find(
-        (x: CutPointT) => x.id == values.id
+        (x: CutPointT) => x.id === values.id
       );
       const cutPoint: CutPointT = {
         ...existingCutPoint,
@@ -131,7 +131,7 @@ function handleRemove(self: CutPoints) {
 function _createMovesFromCutPoints(self: CutPoints) {
   const newMoves: Array<MoveT> = (self.cutPoints as any).reduce(
     (acc: any, cutPoint: CutPointT) => {
-      if (cutPoint.type == 'end') {
+      if (cutPoint.type === 'end') {
         const lastMoveIdx = acc.length - 1;
         const lastMove = acc.length ? acc[lastMoveIdx] : undefined;
         return lastMove && isNone(lastMove.endTimeMs)

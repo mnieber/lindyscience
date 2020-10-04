@@ -22,23 +22,23 @@ function createBlockWithTimings(block: any, cursor: CursorT): any {
     const mapValue = cursor.charMap[cursor.pos];
     cursor.pos += 1;
 
-    if (mapValue == 'D') {
+    if (mapValue === 'D') {
       newText += text[idx];
       newChars = newChars.set(
         newChars.size,
         CharacterMetadata.applyStyle(chars.get(idx), 'TIMED')
       );
-    } else if (mapValue == 'T') {
+    } else if (mapValue === 'T') {
       newText += text[idx];
       newChars = newChars.set(newChars.size, timingStyle);
-    } else if (mapValue == 't') {
+    } else if (mapValue === 't') {
       newText += text[idx];
       newChars = newChars.set(newChars.size, chars.get(idx));
-    } else if (mapValue == 'sep2') {
+    } else if (mapValue === 'sep2') {
       newText += ' [';
       newChars = newChars.set(newChars.size, timingStyle);
       newChars = newChars.set(newChars.size, timingStyle);
-    } else if (mapValue == 'sep3') {
+    } else if (mapValue === 'sep3') {
       newText += ']';
       newChars = newChars.set(newChars.size, timingStyle);
     }
@@ -54,22 +54,22 @@ function createCharMapTimings(allText: string) {
   for (var pos = 0; pos < allText.length; ++pos) {
     const c = allText[pos];
 
-    if (state == 'none') {
-      if (c == '|') {
+    if (state === 'none') {
+      if (c === '|') {
         state = 'description';
         charMap[pos] = 'sep1';
       } else {
         charMap[pos] = 't';
       }
-    } else if (state == 'description') {
-      if (c == '|') {
+    } else if (state === 'description') {
+      if (c === '|') {
         state = 'timing';
         charMap[pos] = 'sep2';
       } else {
         charMap[pos] = 'D';
       }
-    } else if (state == 'timing') {
-      if (c == '|') {
+    } else if (state === 'timing') {
+      if (c === '|') {
         state = 'none';
         charMap[pos] = 'sep3';
       } else {
@@ -87,7 +87,7 @@ export function createReadOnlyBlocks(contentState: any): Array<any> {
   const blockMap = contentState.getBlockMap();
 
   let allText = '';
-  blockMap.map((block: any, key: any) => {
+  blockMap.forEach((block: any) => {
     allText += block.getText();
   });
 

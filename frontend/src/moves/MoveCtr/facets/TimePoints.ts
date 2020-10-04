@@ -10,7 +10,7 @@ export class TimePoints {
     const description = move ? move.description : '';
     const privateNotes = movePrivateData ? movePrivateData.notes : '';
     const newText = description + privateNotes;
-    if (this.textWithTimePoints != newText) this.textWithTimePoints = newText;
+    if (this.textWithTimePoints !== newText) this.textWithTimePoints = newText;
   }
 
   @computed get timePoints() {

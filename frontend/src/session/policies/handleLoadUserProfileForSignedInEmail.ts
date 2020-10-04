@@ -3,7 +3,6 @@ import { Profiling } from 'src/session/facets/Profiling';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { apiLoadUserProfile } from 'src/profiles/api';
 import { apiLoadUserVotes } from 'src/votes/api';
-import { apiLoadUserTags } from 'src/tags/api';
 import { apiLoadMovePrivateDatas } from 'src/moves/api';
 import { apiFindMoveLists } from 'src/search/api';
 
@@ -22,13 +21,12 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
         const [
           profile,
           votes,
-          // @ts-ignore
-          tags,
+          // tags,
           movePrivateDatas,
         ]: any = await Promise.all([
           apiLoadUserProfile(),
           apiLoadUserVotes(),
-          apiLoadUserTags(),
+          // apiLoadUserTags(),
           apiLoadMovePrivateDatas(),
         ]);
 

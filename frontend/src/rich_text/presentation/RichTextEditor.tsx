@@ -21,7 +21,7 @@ type PropsT = {
 };
 
 // TODO: use Modifier.replaceText(selection, inlineStyle) to convert content to nicely styled readonly content
-function RichTextEditor_(props: PropsT) {
+function RichTextEditorImpl(props: PropsT) {
   const [editorState, setEditorState] = React.useState(
     props.initialEditorState
   );
@@ -30,11 +30,12 @@ function RichTextEditor_(props: PropsT) {
     setEditorState(editorState);
   };
 
+  const { autoFocus, forwardedRef } = props;
   React.useEffect(() => {
-    if (props.autoFocus && props.forwardedRef && props.forwardedRef.current) {
-      props.forwardedRef.current.focus();
+    if (autoFocus && forwardedRef && forwardedRef.current) {
+      forwardedRef.current.focus();
     }
-  }, [props.forwardedRef]);
+  }, [forwardedRef, autoFocus]);
 
   const handleKeyCommand = (command: any, editorState: any) => {
     let newState = null;
@@ -87,6 +88,6 @@ export function getContentFromEditor(editor: any, defaultValue: string) {
 
 export const RichTextEditor: React.FC<PropsT> = React.forwardRef(
   (props, ref) => {
-    return <RichTextEditor_ {...props} forwardedRef={ref} />;
+    return <RichTextEditorImpl {...props} forwardedRef={ref} />;
   }
 );

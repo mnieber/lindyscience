@@ -36,27 +36,20 @@ export const AccountMenu: React.FC<PropsT> = observer((p: PropsT) => {
       {expanded && (
         <ul className="list-reset bg-white">
           <li className={classnames({ hidden: !props.userProfile })}>
-            <a
-              href="#"
-              className="px-4 py-2 block text-black hover:bg-grey-light"
-            >
+            <div className="px-4 py-2 block text-black hover:bg-grey-light">
               My account
-            </a>
+            </div>
           </li>
           <li className={classnames({ hidden: !props.userProfile })}>
-            <a
-              href="#"
-              className="px-4 py-2 block text-black hover:bg-grey-light"
-            >
+            <div className="px-4 py-2 block text-black hover:bg-grey-light">
               Notifications
-            </a>
+            </div>
           </li>
           <li>
             <hr className="border-t mx-2 border-grey-ligght" />
           </li>
           <li>
-            <a
-              href="#"
+            <div
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
                 setExpanded(false);
@@ -64,11 +57,10 @@ export const AccountMenu: React.FC<PropsT> = observer((p: PropsT) => {
               }}
             >
               Help
-            </a>
+            </div>
           </li>
           <li className={classnames({ hidden: !props.userProfile })}>
-            <a
-              href="#"
+            <div
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
                 setExpanded(false);
@@ -78,11 +70,10 @@ export const AccountMenu: React.FC<PropsT> = observer((p: PropsT) => {
               }}
             >
               Sign out
-            </a>
+            </div>
           </li>
           <li className={classnames({ hidden: !!props.userProfile })}>
-            <a
-              href="#"
+            <div
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
                 setExpanded(false);
@@ -93,7 +84,7 @@ export const AccountMenu: React.FC<PropsT> = observer((p: PropsT) => {
               }}
             >
               Sign in
-            </a>
+            </div>
           </li>
         </ul>
       )}

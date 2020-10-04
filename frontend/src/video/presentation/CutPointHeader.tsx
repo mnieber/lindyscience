@@ -12,20 +12,20 @@ type PropsT = {
   videoController: VideoController;
 };
 
-export function CutPointHeader(props: PropsT) {
-  const onClickRemoveButton = (e) => {
+export const CutPointHeader: React.FC<PropsT> = (props: PropsT) => {
+  const onClickRemoveButton = (e: any) => {
     props.removeCutPoints([cutPoint.id]);
     e.preventDefault();
     e.stopPropagation();
   };
 
   const cutPoint = props.cutPoint;
-  const label = cutPoint.type == 'start' ? 'Start at' : 'End at';
+  const label = cutPoint.type === 'start' ? 'Start at' : 'End at';
   return (
     <div
       className={classnames('cutPointHeader', {
-        'cutPointHeader--start': cutPoint.type == 'start',
-        'cutPointHeader--end': cutPoint.type == 'end',
+        'cutPointHeader--start': cutPoint.type === 'start',
+        'cutPointHeader--end': cutPoint.type === 'end',
       })}
       onClick={() => props.videoController.player.seekTo(cutPoint.t)}
     >
@@ -38,4 +38,4 @@ export function CutPointHeader(props: PropsT) {
       </div>
     </div>
   );
-}
+};

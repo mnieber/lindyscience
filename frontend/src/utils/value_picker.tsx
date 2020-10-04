@@ -21,7 +21,7 @@ type PropsT = {
   setValue: Function;
 };
 
-export function ValuePicker_(props: PropsT) {
+export function ValuePickerImpl(props: PropsT) {
   const saveChanges = (value: any) => {
     if (!props.isMulti && jQuery.isArray(value)) {
       props.setValue({ value: null, label: '' });
@@ -63,7 +63,7 @@ export function ValuePicker_(props: PropsT) {
 }
 
 export const ValuePicker: React.FC<PropsT> = React.forwardRef((props, ref) => {
-  return <ValuePicker_ {...props} forwardedRef={ref} />;
+  return <ValuePickerImpl {...props} forwardedRef={ref} />;
 });
 
 export function strToPickerValue(value: string) {

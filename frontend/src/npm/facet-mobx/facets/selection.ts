@@ -30,7 +30,7 @@ const _handleSelectItem = (self: Selection) => ({
   const selectableIds = self.selectableIds;
 
   if (!selectableIds) {
-    throw 'logical error';
+    throw Error('logical error');
   }
 
   if (isShift) {

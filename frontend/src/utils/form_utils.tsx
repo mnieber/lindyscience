@@ -93,7 +93,7 @@ export function FormField(props: FormFieldPropsT) {
     },
     onBlur: props.formProps.handleBlur,
     className: classnames({
-      formField__field: props.type != 'checkbox',
+      formField__field: props.type !== 'checkbox',
       error:
         props.formProps.errors &&
         props.formProps.errors[props.fieldName] &&
@@ -102,7 +102,7 @@ export function FormField(props: FormFieldPropsT) {
   };
 
   const textField =
-    (props.type || '').toLowerCase() == 'textarea' ? (
+    (props.type || '').toLowerCase() === 'textarea' ? (
       <textarea
         ref={htmlElement}
         placeholder={props.placeholder}

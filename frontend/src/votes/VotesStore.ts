@@ -1,5 +1,5 @@
+import { VoteByIdT, VoteT } from 'src/votes/types';
 import { action, observable } from 'src/utils/mobx_wrapper';
-import { VoteByIdT } from 'src/votes/types';
 import { UUID } from 'src/kernel/types';
 
 export class VotesStore {
@@ -9,7 +9,7 @@ export class VotesStore {
     this.voteByObjectId = voteByObjectId;
   }
 
-  @action castVote(id: UUID, vote: number) {
+  @action castVote(id: UUID, vote: VoteT) {
     this.voteByObjectId = {
       ...this.voteByObjectId,
       [id]: vote,

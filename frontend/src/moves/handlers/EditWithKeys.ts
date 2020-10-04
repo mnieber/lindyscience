@@ -15,7 +15,7 @@ export class EditWithKeys {
     return {
       onKeyDown: (key: string, e: any) => {
         const ctr = this.props.container;
-        if (key == keyEdit) {
+        if (key === keyEdit) {
           e.preventDefault();
           e.stopPropagation();
           Editing.get(ctr).setIsEditing(!Editing.get(ctr).isEditing);

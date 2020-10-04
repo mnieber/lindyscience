@@ -80,7 +80,7 @@ export function useSaveTip(
 ) {
   function save(id: UUID, incompleteValues: IncompleteValuesT) {
     const tip: TipT = {
-      ...tips.find((x) => x.id == id),
+      ...tips.find((x) => x.id === id),
       ...incompleteValues,
     } as TipT;
 

@@ -15,14 +15,15 @@ export function ProfilePage(props: PropsT) {
     Array<MoveListT>,
     Function
   ] = React.useState([]);
-  async function _loadOwnMoveLists() {
-    const moveLists = await apiFindMoveLists({
-      ownerUsername: params.username || '',
-    });
-    setOwnMoveLists(values(moveLists.entities.moveLists));
-  }
 
   React.useEffect(() => {
+    async function _loadOwnMoveLists() {
+      const moveLists = await apiFindMoveLists({
+        ownerUsername: params.username || '',
+      });
+      setOwnMoveLists(values(moveLists.entities.moveLists));
+    }
+
     if (params.username) {
       _loadOwnMoveLists();
     }

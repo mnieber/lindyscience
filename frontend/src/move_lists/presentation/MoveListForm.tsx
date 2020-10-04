@@ -122,7 +122,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
     <form className="moveListForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={'moveListForm flexcol'}>
         {nameField}
-        {formProps.values.slug != newMoveListSlug && slugField}
+        {formProps.values.slug !== newMoveListSlug && slugField}
         {description}
         {formProps.values.role !== 'trash' && isPrivateField}
         {tags}
@@ -190,7 +190,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
       if (!values.tags) {
         errors.tags = 'This field is required';
       }
-      if (props.moveListSlugs.some((x) => x == values.slug)) {
+      if (props.moveListSlugs.some((x) => x === values.slug)) {
         errors.slug = 'A move list with this slug already exists';
       }
       return errors;

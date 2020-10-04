@@ -56,7 +56,7 @@ export function MoveDescriptionEditor(props: PropsT) {
   const customHandleKeyCommand = (command: any, editorState: any) => {
     const player = props.videoController?.player;
 
-    if (command == 'insert-timepoint' && player) {
+    if (command === 'insert-timepoint' && player) {
       const contentState = editorState.getCurrentContent();
       const selectionState = editorState.getSelection();
       const t = roundDecimals(player.getCurrentTime(), 1);

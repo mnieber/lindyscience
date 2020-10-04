@@ -9,7 +9,7 @@ type PropsT = {
 };
 
 export function VideoControlPanel(props: PropsT) {
-  const _state = (x) => (x ? 'enabled' : 'disabled');
+  const _state = (x: boolean) => (x ? 'enabled' : 'disabled');
 
   return (
     <div className="flexcol">

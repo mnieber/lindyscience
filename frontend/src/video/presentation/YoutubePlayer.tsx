@@ -16,7 +16,6 @@ type PropsT = {
 export function YoutubePlayer(props: PropsT) {
   const params = props.videoUrlProps.params;
 
-  const playerVars = {};
   const video = props.videoController.video;
   const startTime =
     video && !isNone(video.startTimeMs)
@@ -28,11 +27,14 @@ export function YoutubePlayer(props: PropsT) {
   const link = props.videoController.video
     ? props.videoController.video.link
     : '';
+
+  const { videoController } = props;
+
   React.useEffect(() => {
     if (link) {
-      props.videoController.pauseAt(startTime || 0);
+      videoController.pauseAt(startTime || 0);
     }
-  }, [link, startTime]);
+  }, [link, startTime, videoController]);
 
   const opts = {
     height: (props.videoWidth * 9) / 16,
@@ -44,7 +46,7 @@ export function YoutubePlayer(props: PropsT) {
     },
   };
 
-  const _onReady = (event) => {
+  const _onReady = (event: any) => {
     const player = event.target;
     runInAction(() => {
       props.videoController.setPlayer(player);
@@ -67,10 +69,11 @@ export function YoutubePlayer(props: PropsT) {
   return (
     <YouTube
       videoId={props.videoUrlProps.id}
+      // @ts-ignore
       opts={opts}
       onReady={_onReady}
       onStateChange={(x) => {
-        const state = x.target.getPlayerState();
+        // const state: any = x.target.getPlayerState();
         props.videoController.setPlayerState(x.data);
       }}
       onPlay={_onPlay}

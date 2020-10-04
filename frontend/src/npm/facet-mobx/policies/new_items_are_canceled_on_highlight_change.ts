@@ -8,7 +8,7 @@ export function newItemsAreCanceledOnHighlightChange(ctr: any) {
     () => Highlight.get(ctr).id,
     (highlightedItemId) => {
       const addedItemId = Addition.get(ctr).item?.id;
-      if (addedItemId && addedItemId != highlightedItemId) {
+      if (addedItemId && addedItemId !== highlightedItemId) {
         Addition.get(ctr).cancel();
         Editing.get(ctr).setIsEditing(false);
       }

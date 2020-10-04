@@ -21,18 +21,20 @@ export const IndexPage = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  function _loadRecentMove() {
-    const url =
-      props.userProfile && props.userProfile.recentMoveUrl
-        ? props.userProfile.recentMoveUrl
-        : helpUrl.substr('/lists/'.length);
-    if (props.navigation?.history) {
-      browseToMoveUrl(props.navigation.history.push, [url], false);
-    }
-  }
+  const { userProfile, navigation } = props;
+
   React.useEffect(() => {
+    function _loadRecentMove() {
+      const url =
+        userProfile && userProfile.recentMoveUrl
+          ? userProfile.recentMoveUrl
+          : helpUrl.substr('/lists/'.length);
+      if (navigation?.history) {
+        browseToMoveUrl(navigation.history.push, [url], false);
+      }
+    }
     _loadRecentMove();
-  }, [props.userProfile, props.navigation]);
+  }, [userProfile, navigation]);
 
   return <div className="h-full" />;
 });

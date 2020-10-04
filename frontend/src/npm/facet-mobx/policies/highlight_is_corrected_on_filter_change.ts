@@ -9,7 +9,7 @@ function findNeighbourIdx(
   endIndex: number,
   step: number
 ) {
-  for (var idx = beginIndex; idx != endIndex; idx += step) {
+  for (var idx = beginIndex; idx !== endIndex; idx += step) {
     if (filteredItems.includes(allItems[idx])) {
       return { result: idx };
     }

@@ -42,7 +42,7 @@ export const SignUpPage = compose(
   return (
     <AuthenticationFrame header="Sign Up">
       <div>
-        {state == 'SignUp.Succeeded' && confirmationDiv}
+        {state === 'SignUp.Succeeded' && confirmationDiv}
         {state !== 'SignUp.Succeeded' && (
           <React.Fragment>
             <SignUpForm signUp={props.authentication.signUp} errors={errors} />

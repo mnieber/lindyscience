@@ -25,8 +25,8 @@ export const VideoPlayerPanel = observer((props: PropsT) => {
       />
       <VideoPlayer
         videoController={props.videoController}
-        videoWidth={props.moveDisplay.videoWidth}
-        parentDivId={props.moveDisplay.rootDivId}
+        videoWidth={props.moveDisplay.videoWidth ?? 0}
+        parentDivId={props.moveDisplay.rootDivId ?? ''}
       />
     </div>
   ) : (

@@ -104,7 +104,7 @@ export const MoveListFrame: React.FC<PropsT> = compose(
         size="xs"
       />
     );
-    return isNone(move.link) || move.link == '' ? undefined : icon;
+    return isNone(move.link) || move.link === '' ? undefined : icon;
   };
 
   const moveListWidget = (

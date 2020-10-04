@@ -10,7 +10,7 @@ export function browseToMoveUrl(
     apiUpdateProfile(moveUrl);
   }
   const fullUrl = `/lists/${moveUrl}`;
-  if (window.location.pathname != fullUrl) {
+  if (window.location.pathname !== fullUrl) {
     setUrl(fullUrl);
   }
 }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+// @ts-ignore
 import urlParser from 'js-video-url-parser';
 
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
@@ -17,13 +18,13 @@ export function VideoPlayer(props: PropsT) {
   const videoUrlProps = urlParser.parse(link);
 
   const internalPlayer =
-    videoUrlProps && videoUrlProps.provider == 'youtube' ? (
+    videoUrlProps && videoUrlProps.provider === 'youtube' ? (
       <YoutubePlayer
         key={link} // yes, we need this
         videoUrlProps={videoUrlProps}
         videoController={props.videoController}
         videoWidth={props.videoWidth}
-        setIFrame={(iframe) => {
+        setIFrame={(iframe: any) => {
           listenToIFrame(props.parentDivId, iframe);
         }}
       />

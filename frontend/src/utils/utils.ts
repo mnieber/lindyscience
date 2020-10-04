@@ -26,7 +26,7 @@ export function toTitleCase(str: string) {
 }
 
 export function isNone(x: any) {
-  return typeof x == 'undefined' || x === null;
+  return typeof x === 'undefined' || x === null;
 }
 
 export function stripTags(html: string) {
@@ -40,8 +40,8 @@ export function slugify(text: string) {
     .toString()
     .toLowerCase()
     .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/[^\w-]+/g, '') // Remove all non-word chars
+    .replace(/--+/g, '-') // Replace multiple - with single -
     .replace(/^-+/, '') // Trim - from start of text
     .replace(/-+$/, ''); // Trim - from end of text
 }
@@ -99,18 +99,18 @@ export function flatten(
     function _flatten(obj: any, xpath: any) {
       const key = xpath.shift();
       // TODO(mnr): use /foo/?bar if bar might not be present
-      if (key != '*' && !(key in obj)) {
+      if (key !== '*' && !(key in obj)) {
         return;
       }
 
-      if (xpath.length == 0) {
+      if (xpath.length === 0) {
         const flatObj = _flatObj(obj, key);
         delete obj[key];
         Object.entries(flatObj).forEach(([k, v]) => {
           obj[k] = v;
         });
       } else {
-        const childKeys = key == '*' ? keys(obj) : [key];
+        const childKeys = key === '*' ? keys(obj) : [key];
         childKeys.forEach((childKey) => _flatten(obj[childKey], [...xpath]));
       }
     }
@@ -140,11 +140,11 @@ export function insertIdsIntoList(
   return idList.reduce(
     (acc: Array<any>, id: any) => {
       if (!ids.includes(id)) {
-        if (id == targetId && isBefore) {
+        if (id === targetId && isBefore) {
           acc.push(...ids);
         }
         acc.push(id);
-        if (id == targetId && !isBefore) {
+        if (id === targetId && !isBefore) {
           acc.push(...ids);
         }
       }

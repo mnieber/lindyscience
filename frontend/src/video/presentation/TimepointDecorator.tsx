@@ -9,11 +9,15 @@ import {
   timePointToClassName,
 } from 'src/video/utils';
 
-function timePointStrategy(contentBlock, callback, contentState) {
+function timePointStrategy(
+  contentBlock: any,
+  callback: any,
+  contentState: any
+) {
   findWithRegex(timePointRegex(), contentBlock, callback);
 }
 
-function findWithRegex(regex, contentBlock: any, callback: Function) {
+function findWithRegex(regex: any, contentBlock: any, callback: Function) {
   const text = contentBlock.getText();
   let matchArr, start;
   while ((matchArr = regex.exec(text)) !== null) {
@@ -23,13 +27,13 @@ function findWithRegex(regex, contentBlock: any, callback: Function) {
 }
 
 export const createTimePointDecorator = (videoController: VideoController) => {
-  const TimePointSpan = (props) => {
+  const TimePointSpan = (props: any) => {
     const r = timePointRegex();
     const matchArr = r.exec(props.decoratedText);
     const tpString = (matchArr as any)[1];
-    const tp = parseVideoTimePoint(tpString);
+    const tp: number | null = parseVideoTimePoint(tpString);
     const onClick = () => {
-      if (tp != null && tp <= videoController.player.getDuration()) {
+      if (tp !== null && tp <= videoController.player.getDuration()) {
         videoController.player.seekTo(tp);
       }
     };

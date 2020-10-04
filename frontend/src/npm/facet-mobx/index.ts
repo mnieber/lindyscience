@@ -92,7 +92,7 @@ export function createPatches(
     );
     const patches = callback(...otherFacets);
 
-    console.assert(patchedFacets.length == patches.length);
+    console.assert(patchedFacets.length === patches.length);
 
     zip(patchedFacets, patches).forEach(([facet, patch]: any) => {
       patchFacet(facet, patch);

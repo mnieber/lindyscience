@@ -5,7 +5,7 @@ import * as R from 'rambda';
 const hasErrorCode = (path: any, code: any) =>
   R.pipe(
     R.pathOr([], path),
-    R.filter((x: any) => x.code == code),
+    R.filter((x: any) => x.code === code),
     R.complement(R.isEmpty)
   );
 

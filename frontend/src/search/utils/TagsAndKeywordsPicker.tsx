@@ -102,12 +102,12 @@ export function TagsAndKeywordsPicker(props: PropsT) {
     const searchInput = _getSearchInput(input);
     return (
       !isNone(searchInput) &&
-      (searchInput == '' || candidate.label.includes(searchInput))
+      (searchInput === '' || candidate.label.includes(searchInput))
     );
   };
 
   const onKeyDown = (event: any) => {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       setHasEnter(true);
     }
   };

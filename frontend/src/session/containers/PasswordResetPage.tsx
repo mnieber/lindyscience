@@ -53,7 +53,7 @@ export const PasswordResetPage = compose(
   return (
     <AuthenticationFrame header="Reset your password">
       <div id="passwordResetDialog" className="">
-        {state == 'ResetPassword.Succeeded' && confirmationDiv}
+        {state === 'ResetPassword.Succeeded' && confirmationDiv}
         {isNotActivated && notActivatedDiv}
         {hasErrors && !isNotActivated && generalErrorDiv}
         {state !== 'ResetPassword.Succeeded' && (

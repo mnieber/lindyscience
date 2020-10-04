@@ -18,7 +18,7 @@ export const handleLoadSelectedMoveListFromUrl = (ctr: any) => {
       ) {
         const [ownerUsername, slug] = selectedMoveListUrl.split('/');
 
-        if (slug != newMoveListSlug) {
+        if (slug !== newMoveListSlug) {
           var moveList = undefined;
           try {
             moveList = await apiLoadMoveList(ownerUsername, slug);

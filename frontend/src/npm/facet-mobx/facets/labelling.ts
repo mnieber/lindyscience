@@ -33,7 +33,7 @@ const _handleSetLabel = (saveIds: saveIdsT) => (self: Labelling) => ({
     saveIds(label, self.idsByLabel[label]);
   }
   if (!flag && self.idsByLabel[label].includes(id)) {
-    self.idsByLabel[label] = self.idsByLabel[label].filter((x) => x != id);
+    self.idsByLabel[label] = self.idsByLabel[label].filter((x) => x !== id);
     saveIds(label, self.idsByLabel[label]);
   }
 };

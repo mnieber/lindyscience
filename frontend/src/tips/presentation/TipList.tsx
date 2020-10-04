@@ -20,11 +20,11 @@ type TipListPropsT = {
 export function TipList(props: TipListPropsT) {
   const itemNodes: Array<any> = props.items.map((item, idx) => {
     const allowEdit =
-      !!props.userProfile && item.ownerId == props.userProfile.userId;
+      !!props.userProfile && item.ownerId === props.userProfile.userId;
     const allowDelete =
       allowEdit ||
       (!!props.userProfile &&
-        props.parentObject.ownerId == props.userProfile.userId);
+        props.parentObject.ownerId === props.userProfile.userId);
 
     return (
       <Tip

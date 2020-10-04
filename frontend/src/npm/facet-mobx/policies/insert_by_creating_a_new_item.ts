@@ -18,7 +18,7 @@ export const insertByCreatingAnItem = ({
           showPreview,
         },
         position: {
-          targetItemId: parentId == topOfTheList ? undefined : parentId,
+          targetItemId: parentId === topOfTheList ? undefined : parentId,
           isBefore: false,
         },
       }

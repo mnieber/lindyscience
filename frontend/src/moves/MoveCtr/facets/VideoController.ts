@@ -37,7 +37,7 @@ export class VideoController {
     const notPlaying = -1;
     if (
       this.player &&
-      this.player.getPlayerState() == notPlaying &&
+      this.player.getPlayerState() === notPlaying &&
       this._pauseAt >= 0
     ) {
       setTimeout(() => this.player.pauseVideo(), 500);
@@ -45,7 +45,7 @@ export class VideoController {
   }
 
   _updatePlayer() {
-    if (this.player && this.isPlaying != isYoutubePlaying(this.player)) {
+    if (this.player && this.isPlaying !== isYoutubePlaying(this.player)) {
       if (this.isPlaying) {
         this.player.playVideo();
       } else {

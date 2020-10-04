@@ -18,7 +18,7 @@ type PropsT = {
 };
 
 export function Tip(props: PropsT) {
-  const [isEditing, setIsEditing] = React.useState(props.item.text == '');
+  const [isEditing, setIsEditing] = React.useState(props.item.text === '');
   const [armDelete, setArmDelete] = React.useState(false);
 
   if (isEditing) {

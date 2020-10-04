@@ -46,7 +46,7 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
   }
 
   const options = props.moveLists.filter(props.filter).map(toPickerValue);
-  const option = options.find((x) => x.value == props.moveListsHighlight.id);
+  const option = options.find((x) => x.value === props.moveListsHighlight.id);
 
   return (
     <div className={classnames('moveListPicker mt-2', props.className)}>

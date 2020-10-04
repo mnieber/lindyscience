@@ -16,12 +16,14 @@ export const MoveListPlayer: React.FC<PropsT> = (props) => {
   const [moveIdx, setMoveIdx] = React.useState(0);
   const [moves, setMoves] = React.useState([]);
 
+  const { sayMove } = props;
+
   React.useEffect(() => {
     if (isPlaying && moves.length) {
-      props.sayMove(moves[moveIdx % moves.length]);
+      sayMove(moves[moveIdx % moves.length]);
       setTimeout(() => setMoveIdx((moveIdx + 1) % moves.length), 12000);
     }
-  }, [isPlaying, moveIdx]);
+  }, [isPlaying, moveIdx, moves, sayMove]);
 
   const playBtn = (
     <div

@@ -15,7 +15,7 @@ export function moveListsContainerProps(
 ) {
   function saveMoveList(moveList: MoveListT, values: any) {
     const slug =
-      values.slug == newMoveListSlug ? slugify(values.name) : values.slug;
+      values.slug === newMoveListSlug ? slugify(values.name) : values.slug;
 
     const newMoveList = {
       ...moveList,
@@ -56,7 +56,7 @@ export function moveListsContainerProps(
   }
 
   function isEqual(lhs: any, rhs: any): boolean {
-    return lhs.id == rhs.id;
+    return lhs.id === rhs.id;
   }
 
   return {

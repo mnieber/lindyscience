@@ -8,7 +8,7 @@ class VideoIFrame {
     this.iframe = iframe;
 
     window.addEventListener('blur', (e: any) => {
-      if (document.activeElement == this.iframe && this.isMouseOver) {
+      if (document.activeElement === this.iframe && this.isMouseOver) {
         setTimeout(this.focusParentDiv, 100);
       }
     });
@@ -47,7 +47,7 @@ const _videoIFrames: { [id: string]: any } = {};
 
 export function listenToIFrame(parentDivId: string, iframe: any) {
   const videoIFrame = _videoIFrames[parentDivId];
-  if (videoIFrame && videoIFrame.iframe != iframe) {
+  if (videoIFrame && videoIFrame.iframe !== iframe) {
     videoIFrame.unregister();
     delete _videoIFrames[parentDivId];
   }

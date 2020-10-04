@@ -7,7 +7,7 @@ import { listen } from 'src/npm/facet';
 export const handleNavigateToMoveList = (ctr: any) => {
   const navigation = Navigation.get(ctr);
   listen(navigation, 'navigateToMoveList', (moveList: MoveListT) => {
-    const updateProfile = moveList.slug != newMoveListSlug;
+    const updateProfile = moveList.slug !== newMoveListSlug;
     const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
 
     // We need this to prevent a stale value of

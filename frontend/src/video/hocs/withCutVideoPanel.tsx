@@ -35,7 +35,7 @@ export const withCutVideoPanel: React.FC<PropsT> = compose(
     const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
     const videoKeyHandlers = {
-      ...createVideoKeyHandlers(props.cutPoints.videoController),
+      ...createVideoKeyHandlers(props.cutPoints.videoController as any),
       'ctrl+shift+space': () =>
         runInAction(() => {
           props.display.setFullVideoWidth(!props.display.fullVideoWidth);

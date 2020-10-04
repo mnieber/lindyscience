@@ -48,7 +48,7 @@ export function movesContainerProps(
   };
 
   function saveMove(move: MoveT, values: any) {
-    const isNewMove = values.slug == newMoveSlug;
+    const isNewMove = values.slug === newMoveSlug;
     const slug = isNewMove ? slugify(values.name) : values.slug;
 
     const newMove = {
@@ -89,7 +89,7 @@ export function movesContainerProps(
       const selectedMoveIds: Array<UUID> = moves.map((x) => x.id);
 
       const idsOfMovesWithNewSourceMoveList = moves
-        .filter((x) => x.sourceMoveListId == removeFromMoveListId)
+        .filter((x) => x.sourceMoveListId === removeFromMoveListId)
         .map((x) => x.id);
 
       apiUpdateSourceMoveListId(
@@ -110,7 +110,7 @@ export function movesContainerProps(
   }
 
   function isEqual(lhs: any, rhs: any): boolean {
-    return lhs.id == rhs.id;
+    return lhs.id === rhs.id;
   }
 
   return {

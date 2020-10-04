@@ -207,7 +207,7 @@ const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
     <form className="moveForm w-full" onSubmit={formProps.handleSubmit}>
       <div className={'moveForm flexcol'}>
         {nameField}
-        {formProps.values.slug != newMoveSlug && slugField}
+        {formProps.values.slug !== newMoveSlug && slugField}
         {linkField}
         {startField}
         {endField}

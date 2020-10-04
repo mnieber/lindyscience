@@ -60,13 +60,13 @@ export const ActivateAccountPage: React.FC<PropsT> = compose(
   return (
     <AuthenticationFrame header="Activate your password">
       <div id="passwordResetDialog" className="">
-        {state == 'ActivateAccount.Failed' &&
+        {state === 'ActivateAccount.Failed' &&
           !isAlreadyActivated &&
           activationFailedDiv}
-        {state == 'ActivateAccount.Failed' &&
+        {state === 'ActivateAccount.Failed' &&
           isAlreadyActivated &&
           alreadyActivatedDiv}
-        {state == 'ActivateAccount.Succeeded' && confirmationDiv}
+        {state === 'ActivateAccount.Succeeded' && confirmationDiv}
       </div>
     </AuthenticationFrame>
   );

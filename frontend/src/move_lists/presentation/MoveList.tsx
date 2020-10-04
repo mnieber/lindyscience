@@ -49,15 +49,15 @@ export const MoveList: React.FC<PropsT> = compose(observer)((p: PropsT) => {
         className={classnames({
           moveList__item: true,
           'moveList__item--selected': move && selectionIds.includes(move.id),
-          'moveList__item--highlighted': move && move.id == highlightId,
+          'moveList__item--highlighted': move && move.id === highlightId,
           'moveList__item--drag_before':
             dragPosition &&
             dragPosition.isBefore &&
-            dragPosition.targetItemId == move.id,
+            dragPosition.targetItemId === move.id,
           'moveList__item--drag_after':
             dragPosition &&
             !dragPosition.isBefore &&
-            dragPosition.targetItemId == move.id,
+            dragPosition.targetItemId === move.id,
         })}
         id={move.id}
         key={idx}

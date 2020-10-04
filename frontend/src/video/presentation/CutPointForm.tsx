@@ -1,4 +1,3 @@
-import { values } from 'rambda';
 import { Formik } from 'formik';
 import React from 'react';
 
@@ -21,7 +20,7 @@ type InnerFormPropsT = {
   setTagsPickerValue: Function;
 };
 
-const InnerForm = (props: InnerFormPropsT) => (formProps) => {
+const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
   const nameField = (
     <FormField
       classNames="w-full"
@@ -112,11 +111,11 @@ export function CutPointForm(props: PropsT) {
         description: props.cutPoint.description,
         tags: props.cutPoint.tags,
       }}
-      validate={(values, formProps) => {
+      validate={(values) => {
         values.description = getContentFromEditor(editorRef.current, '');
         values.tags = (tagsPickerValue || []).map((x) => x.value);
 
-        let errors = {};
+        let errors: { [name: string]: string } = {};
         if (!values.name) {
           errors.name = 'This field is required';
         }
@@ -128,7 +127,6 @@ export function CutPointForm(props: PropsT) {
       onSubmit={(values, { setSubmitting }) => {
         props.onSubmit({ ...values, id: props.cutPoint.id });
       }}
-      displayName={'BasicForm'}
       render={InnerForm({
         tagPickerOptions: props.knownTags.map(strToPickerValue),
         videoController: props.videoController,

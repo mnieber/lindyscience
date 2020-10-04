@@ -15,13 +15,13 @@ function _getPreview(
     ? items
     : items.reduce(
         (acc, item) => {
-          if (item.id == targetItemId && isBefore) {
+          if (item.id === targetItemId && isBefore) {
             acc.push(...payload);
           }
           if (!payload.find((x) => x.id === item.id)) {
             acc.push(item);
           }
-          if (item.id == targetItemId && !isBefore) {
+          if (item.id === targetItemId && !isBefore) {
             acc.push(...payload);
           }
           return acc;

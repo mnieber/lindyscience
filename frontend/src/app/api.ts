@@ -10,7 +10,7 @@ function _hasError(e: any, fieldName: string, errorMsg: string) {
 // Api app
 
 export async function apiSignIn(email: string, password: string) {
-  if (email == 'guest@guest.com') {
+  if (email === 'guest@guest.com') {
     email = 'lindyscience' + '@';
     password = 'trickeration';
     email += 'gmail' + '.com';

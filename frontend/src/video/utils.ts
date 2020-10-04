@@ -1,10 +1,9 @@
 export function timePointRegex() {
-  return /\<([\d\.\:]+)\>/g;
+  return /<([\d.:]+)>/g;
 }
 
-export function parseVideoTimePoint(x: string) {
+export function parseVideoTimePoint(x: string): number | null {
   const parts = x.split(':');
-  const n = parts.length;
   const secs = parts.pop() || '0';
   const mins = parts.pop() || '0';
   const hours = parts.pop() || '0';
@@ -33,13 +32,13 @@ export function isYoutubePlaying(player: any) {
   return [1, 3].includes(player.getPlayerState());
 }
 
-export function splitKeyhandlerKeys(keyHandlers: { [string]: Function }) {
-  return Object.entries(keyHandlers).reduce((acc, [keys, f]) => {
+export function splitKeyhandlerKeys(keyHandlers: { [key: string]: Function }) {
+  return Object.entries(keyHandlers).reduce((acc: any, [keys, f]) => {
     keys.split(';').forEach((key) => (acc[key] = f));
     return acc;
   }, {});
 }
 
-export function timePointToClassName(tp?: number) {
+export function timePointToClassName(tp: number | null) {
   return 'tp-' + ((tp || '') + '').replace('.', '-');
 }

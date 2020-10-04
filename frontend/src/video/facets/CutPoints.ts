@@ -8,10 +8,10 @@ import { getInsertionIndex } from 'src/utils/get_insertion_index';
 import { data, handle, input, operation } from 'src/npm/facet';
 
 export class CutPoints {
-  @input createMove?: (cutPoint: CutPointT, videoLink: string) => MoveT;
-  @input saveMoves?: (moves: Array<MoveT>) => any;
-  @observable @input videoController?: VideoController;
-  @observable @data cutPoints?: Array<CutPointT>;
+  @input createMove: (cutPoint: CutPointT, videoLink: string) => MoveT;
+  @input saveMoves: (moves: Array<MoveT>) => any;
+  @observable @input videoController: VideoController;
+  @observable @data cutPoints: Array<CutPointT>;
 
   @operation add(cutPointType: 'start' | 'end') {}
   @operation remove(cutPointIds: Array<UUID>) {}
@@ -24,6 +24,16 @@ export class CutPoints {
 
   createMoves() {
     return _createMovesFromCutPoints(this);
+  }
+
+  constructor(
+    createMove: (cutPoint: CutPointT, videoLink: string) => MoveT,
+    saveMoves: (moves: Array<MoveT>) => any
+  ) {
+    this.createMove = createMove;
+    this.saveMoves = saveMoves;
+    this.videoController = new VideoController();
+    this.cutPoints = [];
   }
 
   static get = (ctr: any): CutPoints => ctr.cutpoints;
@@ -73,7 +83,7 @@ function handleAdd(self: CutPoints) {
     action((cutPointType: 'start' | 'end') => {
       const newCutPoint = _createNewCutPoint(
         cutPointType,
-        (self.videoController as any).getPlayer().getCurrentTime()
+        self.videoController.getPlayer().getCurrentTime()
       );
       _addCutPoints(self, [newCutPoint]);
     })
@@ -103,7 +113,7 @@ function handleSave(self: CutPoints) {
     self,
     'save',
     action((values: any) => {
-      const existingCutPoint = (self.cutPoints as any).find(
+      const existingCutPoint = self.cutPoints.find(
         (x: CutPointT) => x.id === values.id
       );
       const cutPoint: CutPointT = {
@@ -121,7 +131,7 @@ function handleRemove(self: CutPoints) {
     self,
     'remove',
     action((cutPointIds: Array<UUID>) => {
-      self.cutPoints = (self.cutPoints as any).filter(
+      self.cutPoints = self.cutPoints.filter(
         (x: CutPointT) => !cutPointIds.includes(x.id)
       );
     })
@@ -129,7 +139,7 @@ function handleRemove(self: CutPoints) {
 }
 
 function _createMovesFromCutPoints(self: CutPoints) {
-  const newMoves: Array<MoveT> = (self.cutPoints as any).reduce(
+  const newMoves: Array<MoveT> = self.cutPoints.reduce(
     (acc: any, cutPoint: CutPointT) => {
       if (cutPoint.type === 'end') {
         const lastMoveIdx = acc.length - 1;
@@ -141,24 +151,16 @@ function _createMovesFromCutPoints(self: CutPoints) {
             ]
           : acc;
       } else {
-        const newMove = (self.createMove as any)(cutPoint, self.videoLink);
+        const newMove = self.createMove(cutPoint, self.videoLink);
         return [...acc, newMove];
       }
     },
     []
   );
-  return (self.saveMoves as any)(newMoves);
+  return self.saveMoves(newMoves);
 }
 
-export function initCutPoints(
-  self: CutPoints,
-  createMove: (cutPoint: CutPointT, videoLink: string) => MoveT,
-  saveMoves: (moves: Array<MoveT>) => any
-) {
-  self.createMove = createMove;
-  self.saveMoves = saveMoves;
-  self.videoController = new VideoController();
-  self.cutPoints = [];
+export function initCutPoints(self: CutPoints) {
   handleSetVideoLink(self);
   handleAdd(self);
   handleRemove(self);

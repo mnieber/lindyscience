@@ -5,7 +5,7 @@ import { installHandlers, operation } from 'src/npm/facet';
 type saveItemT = (values: any) => any;
 
 export class Editing {
-  @observable isEditing?: boolean;
+  @observable isEditing: boolean = false;
 
   @operation save(values: any) {}
   @operation cancel() {}

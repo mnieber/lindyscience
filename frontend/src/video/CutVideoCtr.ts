@@ -27,18 +27,19 @@ export class CutVideoContainer {
   constructor(props: PropsT) {
     this.inputs = initInputs(new Inputs());
     this.cutPoints = initCutPoints(
-      new CutPoints(),
-      (cutPoint: CutPointT, videoLink: string) => {
-        return createMoveFromCutPoint(
-          cutPoint,
-          videoLink,
-          this.inputs.userProfile as any,
-          this.inputs.moveList as any
-        );
-      },
-      (moves: Array<MoveT>) => {
-        props.saveMoves(moves, this.inputs.moveList as any);
-      }
+      new CutPoints(
+        (cutPoint: CutPointT, videoLink: string) => {
+          return createMoveFromCutPoint(
+            cutPoint,
+            videoLink,
+            this.inputs.userProfile as any,
+            this.inputs.moveList as any
+          );
+        },
+        (moves: Array<MoveT>) => {
+          props.saveMoves(moves, this.inputs.moveList as any);
+        }
+      )
     );
     this.display = initDisplay(new Display(), props.rootDivId);
 

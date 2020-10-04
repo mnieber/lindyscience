@@ -4,8 +4,8 @@ import { input, installHandlers, operation, output } from 'src/npm/facet';
 import { patchFacet, mapData } from 'src/npm/facet-mobx';
 
 export class Filtering {
-  @observable isEnabled?: boolean;
-  @observable filter?: (x: any) => Array<any>;
+  @observable isEnabled: boolean = false;
+  @observable filter: (x: any) => Array<any> = () => [];
 
   @input inputItems?: Array<any>;
   @output filteredItems?: Array<any>;

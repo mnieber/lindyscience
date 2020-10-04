@@ -37,7 +37,7 @@ export const CutVideoPanel: React.FC<PropsT> = observer((props: PropsT) => {
   const videoPlayerPanel = (
     <VideoPlayerPanel
       key="videoPlayerPanel"
-      videoController={props.cutPoints.videoController as any}
+      videoController={props.cutPoints.videoController}
       display={props.display}
       moveDisplay={props.moveDisplay}
     />

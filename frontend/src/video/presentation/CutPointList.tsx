@@ -83,39 +83,37 @@ export const CutPointList: React.FC<PropsT> = observer((props: PropsT) => {
   const clickHandlers = createClickHandlers(selectCutPointById, props);
   const highlightedCutPointId = getId(props.highlightedCutPoint);
 
-  const cutPointNodes = (props.cutPoints.cutPoints ?? []).map(
-    (cutPoint, idx) => {
-      const form = (
-        <CutPointForm
+  const cutPointNodes = props.cutPoints.cutPoints.map((cutPoint, idx) => {
+    const form = (
+      <CutPointForm
+        cutPoint={cutPoint}
+        onSubmit={props.cutPoints.save}
+        knownTags={props.moveTags}
+        videoController={props.cutPoints.videoController}
+        autoFocus={true}
+      />
+    );
+    return (
+      <div
+        className={classnames({
+          cutPointList__item: true,
+          'cutPointList__item--highlighted':
+            cutPoint.id === highlightedCutPointId,
+        })}
+        id={cutPoint.id}
+        key={idx}
+        onMouseDown={(e) => clickHandlers.handleMouseDown(e, cutPoint.id)}
+        onMouseUp={(e) => clickHandlers.handleMouseUp(e, cutPoint.id)}
+      >
+        <CutPointHeader
           cutPoint={cutPoint}
-          onSubmit={props.cutPoints.save}
-          knownTags={props.moveTags}
           videoController={props.cutPoints.videoController}
-          autoFocus={true}
+          removeCutPoints={props.cutPoints.remove}
         />
-      );
-      return (
-        <div
-          className={classnames({
-            cutPointList__item: true,
-            'cutPointList__item--highlighted':
-              cutPoint.id === highlightedCutPointId,
-          })}
-          id={cutPoint.id}
-          key={idx}
-          onMouseDown={(e) => clickHandlers.handleMouseDown(e, cutPoint.id)}
-          onMouseUp={(e) => clickHandlers.handleMouseUp(e, cutPoint.id)}
-        >
-          <CutPointHeader
-            cutPoint={cutPoint}
-            videoController={props.cutPoints.videoController as any}
-            removeCutPoints={props.cutPoints.remove}
-          />
-          {cutPoint.type === 'start' && form}
-        </div>
-      );
-    }
-  );
+        {cutPoint.type === 'start' && form}
+      </div>
+    );
+  });
 
   return (
     <KeyboardEventHandler

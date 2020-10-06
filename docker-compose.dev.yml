@@ -30,8 +30,18 @@ services:
     volumes:
       # map the src directory to opt/app-root/src
       - ./frontend:/opt/linsci/src
-      - /home/maarten/projects/react-form-state-context:/opt/linsci/react-form-state-context
-      - /home/maarten/projects/merge-default-props:/opt/linsci/merge-default-props
+      - /home/maarten/projects/react-form-state-context:/opt/linsci/npm/react-form-state-context
+      - /home/maarten/projects/react-default-props-context:/opt/linsci/npm/react-default-props-context
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /opt/linsci/frontend/fish_history:/root/.local/share/fish/fish_history
+
+  verdaccio:
+    image: verdaccio/verdaccio
+    ports:
+      - "4873:4873"
+    volumes:
+      - verdaccio_data:/verdaccio
+
+volumes:
+  verdaccio_data:

@@ -36,10 +36,6 @@ services:
       - ./.env/postgres.env
     ports:
       - "5432:5432"
-  verdaccio:
-    image: verdaccio/verdaccio
-    ports:
-      - "4873:4873"
 
 volumes:
   backend_site_packages:

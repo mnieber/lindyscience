@@ -6,7 +6,7 @@ services:
       - db
     build:
       context: .
-      dockerfile: ./Dockerfile.backend
+      dockerfile: ./backend/Dockerfile
     image: linsci_backend
     ports:
       - "8000:8000"
@@ -21,7 +21,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: ./Dockerfile.frontend
+      dockerfile: ./frontend/Dockerfile
     image: linsci_frontend
     ports:
       - "3000:3000"
@@ -36,10 +36,6 @@ services:
       - ./.env/postgres.env
     ports:
       - "5432:5432"
-  verdaccio:
-    image: verdaccio/verdaccio
-    ports:
-      - "4873:4873"
 
 volumes:
   backend_site_packages:

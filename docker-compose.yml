@@ -1,9 +1,9 @@
-version: '3.7'
+version: "3.7"
 
-services :
+services:
   backend:
     depends_on:
-    - db
+      - db
     build:
       context: .
       dockerfile: ./Dockerfile.backend
@@ -36,6 +36,10 @@ services :
       - ./.env/postgres.env
     ports:
       - "5432:5432"
+  verdaccio:
+    image: verdaccio/verdaccio
+    ports:
+      - "4873:4873"
 
 volumes:
   backend_site_packages:

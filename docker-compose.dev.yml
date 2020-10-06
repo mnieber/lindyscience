@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: ./Dockerfile.backend.dev
+      dockerfile: ./backend/Dockerfile.dev
     image: linsci_backend_dev
 
     volumes:
@@ -25,7 +25,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: ./Dockerfile.frontend.dev
+      dockerfile: ./frontend/Dockerfile.dev
     image: linsci_frontend_dev
     volumes:
       # map the src directory to opt/app-root/src

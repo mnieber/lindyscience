@@ -1,6 +1,6 @@
-version: '3.7'
+version: "3.7"
 
-services :
+services:
   backend:
     build:
       context: .
@@ -30,6 +30,8 @@ services :
     volumes:
       # map the src directory to opt/app-root/src
       - ./frontend:/opt/linsci/src
+      - /home/maarten/projects/react-form-state-context:/opt/linsci/react-form-state-context
+      - /home/maarten/projects/merge-default-props:/opt/linsci/merge-default-props
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
-      - /opt/linsci/frontend/.bashrc:/opt/linsci/.bashrc
+      - /opt/linsci/frontend/fish_history:/root/.local/share/fish/fish_history

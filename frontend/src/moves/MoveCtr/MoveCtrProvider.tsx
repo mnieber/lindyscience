@@ -8,7 +8,10 @@ import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { moveContainerProps } from 'src/moves/MoveCtr/moveCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/npm/facet-mobx';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 
 type PropsT = {
   children: any;

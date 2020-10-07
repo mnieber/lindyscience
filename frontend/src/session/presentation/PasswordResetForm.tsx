@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormStateProvider } from 'src/session/presentation/FormStateProvider';
+import { FormStateProvider, IFormState } from 'react-form-state-context';
 import { GlobalError } from 'src/session/presentation/form_fields/GlobalError';
 import { EmailField } from 'src/session/presentation/form_fields/EmailField';
 import { FieldError } from 'src/session/presentation/form_fields/FieldError';
@@ -17,10 +17,28 @@ type PasswordResetFormPropsT = {
 };
 
 export function PasswordResetForm(props: PasswordResetFormPropsT) {
+  const handleValidate = ({
+    values,
+    setError,
+  }: {
+    values: IFormState['values'];
+    setError: IFormState['setError'];
+  }) => {
+    if (!values.password) {
+      setError('password', 'Please provide a new password');
+    }
+  };
+
+  const handleSubmit = ({ values }: { values: IFormState['values'] }) => {
+    console.log(values);
+  };
+
   return (
     <FormStateProvider
       initialValues={{}}
-      externalErrors={getExternalErrors(props.errors)}
+      initialErrors={getExternalErrors(props.errors)}
+      handleValidate={handleValidate}
+      handleSubmit={handleSubmit}
     >
       <GlobalError />
       <div>

@@ -3,7 +3,10 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { MoveContextMenu } from 'src/moves/presentation/MoveContextMenu';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { MoveListT } from 'src/move_lists/types';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { getId } from 'src/app/utils';

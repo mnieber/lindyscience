@@ -5,7 +5,7 @@ import { Display } from 'src/session/facets/Display';
 import { TimePoints } from 'src/moves/MoveCtr/facets/TimePoints';
 import { MoveT } from 'src/moves/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 import {
   createVideoKeyHandlers,
   createVideoStartEndKeyHandlers,

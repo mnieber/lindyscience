@@ -6,7 +6,10 @@ import { compose } from 'lodash/fp';
 import { Navigation } from 'src/session/facets/Navigation';
 import { AuthSwitch } from 'src/app/containers/AuthSwitch';
 import { ListsSwitch } from 'src/app/containers/ListsSwitch';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { IndexPage } from 'src/app/containers/IndexPage';
 import { ProfilePage } from 'src/session/containers/ProfilePage';

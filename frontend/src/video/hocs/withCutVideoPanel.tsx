@@ -5,7 +5,10 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { CutPoints } from 'src/video/facets/CutPoints';

@@ -8,7 +8,7 @@ import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { action } from 'src/utils/mobx_wrapper';
 import { MoveForm } from 'src/moves/presentation/MoveForm';
 import { Editing } from 'src/npm/facet-mobx/facets/editing';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 
 type PropsT = {
   moveTags: Array<TagT>;

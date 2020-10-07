@@ -7,7 +7,7 @@ import { ValuePicker } from 'src/utils/value_picker';
 import { Addition } from 'src/npm/facet-mobx/facets/addition';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 
 type PropsT = {
   filter: (moveList: MoveListT) => boolean;

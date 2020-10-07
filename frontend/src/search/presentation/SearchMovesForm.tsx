@@ -6,7 +6,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { Display } from 'src/session/facets/Display';
 import { TagT } from 'src/tags/types';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 import { strToPickerValue } from 'src/utils/value_picker';
 import {
   TagsAndKeywordsPicker,

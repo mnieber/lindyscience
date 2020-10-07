@@ -1,13 +1,25 @@
 import React from 'react';
 
-import { formFieldProps } from 'src/session/presentation/formFieldProps';
+import {
+  createFormFieldProps,
+  useFormStateContext,
+} from 'react-form-state-context';
 
 type PropsT = {
   fieldName: string;
 };
 
 export const ControlledCheckbox = (props: PropsT) => {
+  const formState = useFormStateContext();
+
   return (
-    <input className="text-primary" {...formFieldProps(props, 'checkbox')} />
+    <input
+      className="text-primary"
+      {...createFormFieldProps({
+        formState,
+        fieldName: props.fieldName,
+        fieldType: 'checkbox',
+      })}
+    />
   );
 };

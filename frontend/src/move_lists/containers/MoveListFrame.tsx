@@ -25,7 +25,10 @@ import { AccountMenu } from 'src/app/presentation/AccountMenu';
 import { isNone } from 'src/utils/utils';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
 import { Filtering } from 'src/npm/facet-mobx/facets/filtering';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Addition } from 'src/npm/facet-mobx/facets/addition';
 
 // MoveListFrame

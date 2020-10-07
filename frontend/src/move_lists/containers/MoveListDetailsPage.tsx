@@ -8,7 +8,10 @@ import { keys } from 'lodash/fp';
 
 import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { Editing } from 'src/npm/facet-mobx/facets/editing';

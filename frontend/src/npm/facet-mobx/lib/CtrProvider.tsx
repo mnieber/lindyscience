@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import { NestedDefaultPropsProvider } from 'src/npm/mergeDefaultProps';
+import { NestedDefaultPropsProvider } from 'react-default-props-context';
 
 export const CtrProvider: React.FC<any> = observer((props: any) => {
   const [ctr] = React.useState(props.createCtr);

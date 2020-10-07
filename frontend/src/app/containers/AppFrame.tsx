@@ -5,7 +5,10 @@ import classnames from 'classnames';
 import { debounce } from 'debounce';
 import ReactResizeDetector from 'react-resize-detector';
 
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
 import { Profiling } from 'src/session/facets/Profiling';
 import { SearchMovesPage } from 'src/search/containers/SearchMovesPage';

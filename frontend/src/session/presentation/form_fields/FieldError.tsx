@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useFormStateContext } from 'src/session/presentation/FormStateProvider';
+import { useFormStateContext } from 'react-form-state-context';
 
 type PropsT = {
   fieldName: string;

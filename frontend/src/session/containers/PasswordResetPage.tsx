@@ -2,7 +2,10 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { compose } from 'lodash/fp';
 
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
 import { useAuthenticationState } from 'src/session/containers/useAuthenticationState';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';

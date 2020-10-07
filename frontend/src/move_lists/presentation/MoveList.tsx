@@ -10,7 +10,7 @@ import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { Dragging } from 'src/npm/facet-mobx/facets/dragging';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
 

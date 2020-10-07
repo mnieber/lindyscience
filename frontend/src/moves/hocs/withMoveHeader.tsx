@@ -14,7 +14,7 @@ import { MoveListTitle } from 'src/move_lists/presentation/MoveListDetails';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 import { MoveHeader } from 'src/moves/presentation/MoveHeader';
 import { Editing } from 'src/npm/facet-mobx/facets/editing';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 
 type PropsT = {
   moveTags: Array<TagT>;

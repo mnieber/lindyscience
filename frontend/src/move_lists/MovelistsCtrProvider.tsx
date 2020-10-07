@@ -10,7 +10,10 @@ import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
 import { moveListsContainerProps } from 'src/move_lists/movelistsCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/npm/facet-mobx';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Editing } from 'src/npm/facet-mobx/facets/editing';
 import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
 

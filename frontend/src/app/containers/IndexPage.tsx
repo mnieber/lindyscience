@@ -2,7 +2,10 @@ import { compose } from 'lodash/fp';
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { helpUrl } from 'src/moves/utils';

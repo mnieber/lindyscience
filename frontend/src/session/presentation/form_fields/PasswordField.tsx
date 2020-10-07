@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useFormStateContext } from 'src/session/presentation/FormStateProvider';
+import { useFormStateContext } from 'react-form-state-context';
 import { labelProps } from 'src/session/presentation/labelProps';
 import { FormFieldLabel } from 'src/utils/form_utils';
-import { formFieldProps } from 'src/session/presentation/formFieldProps';
+import { createFormFieldProps } from 'react-form-state-context';
 
 type PropsT = {
   fieldName: string;
@@ -18,7 +18,11 @@ export const PasswordField = (props: PropsT) => {
         className="w-16"
         placeholder="Enter your password"
         type="password"
-        {...formFieldProps(formState, props)}
+        {...createFormFieldProps({
+          formState,
+          fieldName: props.fieldName,
+          fieldType: 'password',
+        })}
       />
     </FormFieldLabel>
   );

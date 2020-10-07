@@ -3,7 +3,10 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { keys } from 'lodash/fp';
 
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { SearchMovesForm } from 'src/search/presentation/SearchMovesForm';
 import { UserProfileT } from 'src/profiles/types';
 import { MovesStore } from 'src/moves/MovesStore';

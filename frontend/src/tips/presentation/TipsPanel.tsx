@@ -7,7 +7,7 @@ import { OwnedObjectT, UUID } from 'src/kernel/types';
 import { TipT } from 'src/tips/types';
 import { VoteByIdT, VoteT } from 'src/votes/types';
 import { UserProfileT } from 'src/profiles/types';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 import {
   useInsertTip,
   useNewTip,

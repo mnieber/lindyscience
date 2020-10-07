@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { Profiling } from 'src/session/facets/Profiling';
-import { mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import { mergeDefaultProps } from 'react-default-props-context';
 import { helpUrl } from 'src/moves/utils';
 import { createErrorHandler } from 'src/app/utils';
 

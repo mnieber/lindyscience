@@ -3,7 +3,10 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { TipsPanel } from 'src/tips/presentation/TipsPanel';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { MoveT } from 'src/moves/types';
 import { TipsStore } from 'src/tips/TipsStore';
 import { VotesStore } from 'src/votes/VotesStore';

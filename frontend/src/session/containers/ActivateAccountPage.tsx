@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom';
 import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
 import { useAuthenticationState } from 'src/session/containers/useAuthenticationState';
 import { RouterLink } from 'src/utils/RouterLink';

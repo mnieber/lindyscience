@@ -4,7 +4,10 @@ import { observer } from 'mobx-react';
 import { keys } from 'lodash/fp';
 
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { MoveT } from 'src/moves/types';
 import { UserProfileT } from 'src/profiles/types';
 import { MovesStore } from 'src/moves/MovesStore';

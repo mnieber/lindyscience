@@ -1,7 +1,10 @@
 import { compose } from 'lodash/fp';
 import React from 'react';
 
-import { withDefaultProps, mergeDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  withDefaultProps,
+  mergeDefaultProps,
+} from 'react-default-props-context';
 import { Navigation } from 'src/session/facets/Navigation';
 import { makeSlugid } from 'src/app/utils';
 

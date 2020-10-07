@@ -3,7 +3,10 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { MoveListT } from 'src/move_lists/types';
-import { mergeDefaultProps, withDefaultProps } from 'src/npm/mergeDefaultProps';
+import {
+  mergeDefaultProps,
+  withDefaultProps,
+} from 'react-default-props-context';
 import { Labelling } from 'src/npm/facet-mobx/facets/labelling';
 
 type PropsT = {

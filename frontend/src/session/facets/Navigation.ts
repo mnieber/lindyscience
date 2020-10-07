@@ -1,7 +1,8 @@
 import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { data, installHandlers, operation } from 'src/npm/facet';
+import { data, operation } from 'src/npm/facet';
+import { installHandlers } from 'src/npm/facet-mobx';
 import { Selection } from 'src/npm/facet-mobx/facets/selection';
 
 export type DataRequestT = {

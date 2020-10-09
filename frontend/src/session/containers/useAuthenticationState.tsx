@@ -1,7 +1,7 @@
 import { Authentication } from 'src/session/facets/Authentication';
 import React from 'react';
 import { runInAction } from 'mobx';
-import * as R from 'rambda';
+import * as _ from 'lodash/fp';
 
 export const useAuthenticationState = (authentication: Authentication) => {
   React.useEffect(() => {
@@ -14,6 +14,6 @@ export const useAuthenticationState = (authentication: Authentication) => {
   return {
     errors: authentication.errors || [],
     state: authentication.state,
-    hasErrors: !R.isEmpty(authentication.errors || []),
+    hasErrors: !_.isEmpty(authentication.errors || []),
   };
 };

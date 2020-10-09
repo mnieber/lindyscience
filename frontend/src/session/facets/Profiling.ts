@@ -4,8 +4,8 @@ import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { UserProfileT } from 'src/profiles/types';
 import { OwnedT, UUID } from 'src/kernel/types';
 import { isOwner } from 'src/app/utils';
-import { data, operation } from 'src/npm/facet';
-import { installHandlers } from 'src/npm/facet-mobx';
+import { data, operation } from 'facet';
+import { installHandlers } from 'facet-mobx';
 
 export class Profiling {
   @data @observable userProfile?: UserProfileT;

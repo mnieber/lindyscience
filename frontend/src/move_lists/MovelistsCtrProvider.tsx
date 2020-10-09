@@ -9,13 +9,13 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
 import { moveListsContainerProps } from 'src/move_lists/movelistsCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/npm/facet-mobx';
+import { CtrProvider } from 'src/app/CtrProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
 } from 'react-default-props-context';
-import { Editing } from 'src/npm/facet-mobx/facets/editing';
-import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
+import { Editing } from 'facet-mobx/facets/editing';
+import { Highlight } from 'facet-mobx/facets/highlight';
 
 type PropsT = {
   children: any;

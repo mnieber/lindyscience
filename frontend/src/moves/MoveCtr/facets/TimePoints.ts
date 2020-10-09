@@ -1,7 +1,7 @@
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { extractTimePoints } from 'src/video/utils';
-import { input } from 'src/npm/facet';
+import { input } from 'facet';
 
 export class TimePoints {
   @input @observable textWithTimePoints: string | undefined;

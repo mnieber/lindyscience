@@ -4,7 +4,7 @@ import { AuthApiT } from 'src/session/SessionCtr';
 import { Authentication } from 'src/session/facets/Authentication';
 import { Navigation } from 'src/session/facets/Navigation';
 import { urlParam } from 'src/utils/utils';
-import { handle } from 'src/npm/facet';
+import { handle } from 'facet';
 
 export const handleSignIn = (authApi: AuthApiT) => (ctr: any) => {
   const authentication = Authentication.get(ctr);

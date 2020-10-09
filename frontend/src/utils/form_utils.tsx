@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'rambda';
+import { isEmpty, isNil } from 'lodash/fp';
 
 type FormFieldLabelPropsT = {
   classNames?: any;

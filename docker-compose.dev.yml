@@ -30,8 +30,10 @@ services:
     volumes:
       # map the src directory to opt/app-root/src
       - ./frontend:/opt/linsci/src
-      - /home/maarten/projects/react-form-state-context:/opt/linsci/npm/react-form-state-context
-      - /home/maarten/projects/react-default-props-context:/opt/linsci/npm/react-default-props-context
+      - /home/maarten/projects/react-form-state-context/src:/opt/linsci/npm/react-form-state-context
+      - /home/maarten/projects/react-default-props-context/src:/opt/linsci/npm/react-default-props-context
+      - /home/maarten/projects/facet/src:/opt/linsci/npm/facet
+      - /home/maarten/projects/facet-mobx/src:/opt/linsci/npm/facet-mobx
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /opt/linsci/frontend/fish_history:/root/.local/share/fish/fish_history

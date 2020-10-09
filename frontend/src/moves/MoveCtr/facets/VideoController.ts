@@ -1,4 +1,4 @@
-import { input } from 'src/npm/facet';
+import { input } from 'facet';
 import { autorun, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { VideoT } from 'src/video/types';
 import { isYoutubePlaying } from 'src/video/utils';

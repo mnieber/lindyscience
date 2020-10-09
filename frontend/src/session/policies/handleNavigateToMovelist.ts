@@ -2,7 +2,7 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { MoveListT } from 'src/move_lists/types';
 import { newMoveListSlug } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/containers';
-import { listen } from 'src/npm/facet';
+import { listen } from 'facet';
 
 export const handleNavigateToMoveList = (ctr: any) => {
   const navigation = Navigation.get(ctr);

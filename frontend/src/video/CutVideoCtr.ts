@@ -1,5 +1,5 @@
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
-import { installPolicies } from 'src/npm/facet';
+import { installPolicies } from 'facet';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { CutPoints, initCutPoints } from 'src/video/facets/CutPoints';

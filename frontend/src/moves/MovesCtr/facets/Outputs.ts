@@ -2,7 +2,7 @@ import { computed, observable } from 'src/utils/mobx_wrapper';
 import { MoveT, MoveByIdT } from 'src/moves/types';
 import { UUID } from 'src/kernel/types';
 import { listToItemById } from 'src/utils/utils';
-import { output } from 'src/npm/facet';
+import { output } from 'facet';
 import { keys } from 'lodash/fp';
 
 export class Outputs {

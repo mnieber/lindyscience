@@ -4,9 +4,9 @@ import { observer } from 'mobx-react';
 
 import { MoveListT } from 'src/move_lists/types';
 import { ValuePicker } from 'src/utils/value_picker';
-import { Addition } from 'src/npm/facet-mobx/facets/addition';
-import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
-import { Selection } from 'src/npm/facet-mobx/facets/selection';
+import { Addition } from 'facet-mobx/facets/addition';
+import { Highlight } from 'facet-mobx/facets/highlight';
+import { Selection } from 'facet-mobx/facets/selection';
 import { mergeDefaultProps } from 'react-default-props-context';
 
 type PropsT = {

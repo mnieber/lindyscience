@@ -3,3 +3,5 @@ export const clearObject = (obj: any) => {
     delete obj[prop];
   }
 };
+
+export type GenericObjectT = { [name: string]: any };

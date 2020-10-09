@@ -1,16 +1,16 @@
 import { doQuery, setToken } from 'src/app/client';
 import { post } from 'src/utils/api_utils';
-import * as R from 'rambda';
+import * as _ from 'lodash/fp';
 
 const hasErrorCode = (path: any, code: any) =>
-  R.pipe(
-    R.pathOr([], path),
-    R.filter((x: any) => x.code === code),
-    R.complement(R.isEmpty)
+  _.flow(
+    _.pathOr([], path),
+    _.filter((x: any) => x.code === code),
+    _.complement(_.isEmpty)
   );
 
 const isError = (path: any) =>
-  R.pipe(R.pathOr([], path), R.complement(R.isEmpty));
+  _.flow(_.pathOr([], path), _.complement(_.isEmpty));
 
 // Api app
 

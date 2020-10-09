@@ -12,7 +12,7 @@ import {
 import { strToPickerValue } from 'src/utils/value_picker';
 import { makeUnique } from 'src/utils/utils';
 import { createTagsAndKeywordsFilter } from 'src/app/utils';
-import { Filtering } from 'src/npm/facet-mobx/facets/filtering';
+import { Filtering } from 'facet-mobx/facets/filtering';
 
 type PropsT = {
   moveTags: Array<TagT>;

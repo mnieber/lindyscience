@@ -9,10 +9,10 @@ import { MoveT } from 'src/moves/types';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { Dragging } from 'src/npm/facet-mobx/facets/dragging';
+import { Dragging } from 'facet-mobx/facets/dragging';
 import { mergeDefaultProps } from 'react-default-props-context';
-import { Highlight } from 'src/npm/facet-mobx/facets/highlight';
-import { Selection } from 'src/npm/facet-mobx/facets/selection';
+import { Highlight } from 'facet-mobx/facets/highlight';
+import { Selection } from 'facet-mobx/facets/selection';
 
 // MoveList
 

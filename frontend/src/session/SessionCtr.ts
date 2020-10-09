@@ -8,7 +8,7 @@ import { Display, initDisplay } from 'src/session/facets/Display';
 import { Inputs, initInputs } from 'src/session/facets/Inputs';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import { facet, installPolicies, registerFacets } from 'src/npm/facet';
+import { facet, installPolicies, registerFacets } from 'facet';
 
 export type AuthApiT = {
   loadUserId: Function;

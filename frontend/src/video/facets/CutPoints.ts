@@ -5,7 +5,7 @@ import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { UUID } from 'src/kernel/types';
 import { createUUID, isNone } from 'src/utils/utils';
 import { getInsertionIndex } from 'src/utils/get_insertion_index';
-import { data, handle, input, operation } from 'src/npm/facet';
+import { data, handle, input, operation } from 'facet';
 
 export class CutPoints {
   @input createMove: (cutPoint: CutPointT, videoLink: string) => MoveT;

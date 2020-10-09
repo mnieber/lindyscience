@@ -3,9 +3,9 @@ import { Navigation, ensureSelected } from 'src/session/facets/Navigation';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { findMoveBySlugid } from 'src/app/utils';
-import { listen } from 'src/npm/facet';
-import { Addition } from 'src/npm/facet-mobx/facets/addition';
-import { Selection } from 'src/npm/facet-mobx/facets/selection';
+import { listen } from 'facet';
+import { Addition } from 'facet-mobx/facets/addition';
+import { Selection } from 'facet-mobx/facets/selection';
 
 export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
   function syncMoveWithCurrentUrl(movesCtr: MovesContainer) {

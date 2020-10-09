@@ -17,7 +17,7 @@ import { withVideoPlayerPanel } from 'src/video/hocs/withVideoPlayerPanel';
 import { withMoveKeyHandlers } from 'src/moves/hocs/withMoveKeyHandlers';
 import { Move } from 'src/moves/presentation/Move';
 import { createKeyDownHandler } from 'src/video/presentation/VideoKeyhandler';
-import { Editing } from 'src/npm/facet-mobx/facets/editing';
+import { Editing } from 'facet-mobx/facets/editing';
 import {
   mergeDefaultProps,
   withDefaultProps,

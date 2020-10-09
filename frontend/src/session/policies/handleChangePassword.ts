@@ -2,7 +2,7 @@ import { runInAction } from 'mobx';
 
 import { AuthApiT } from 'src/session/SessionCtr';
 import { Authentication } from 'src/session/facets/Authentication';
-import { handle } from 'src/npm/facet';
+import { handle } from 'facet';
 
 export const handleChangePassword = (authApi: AuthApiT) => (ctr: any) => {
   const authentication = Authentication.get(ctr);

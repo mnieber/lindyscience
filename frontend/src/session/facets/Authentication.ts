@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { observable, runInAction } from 'mobx';
 
-import { data, operation } from 'src/npm/facet';
+import { data, operation } from 'facet';
 
 export type AuthenticationStateT =
   | ''

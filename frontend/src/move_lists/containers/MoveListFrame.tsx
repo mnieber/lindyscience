@@ -23,13 +23,13 @@ import { MoveListFilter } from 'src/move_lists/presentation/MoveListFilter';
 import { MoveList } from 'src/move_lists/presentation/MoveList';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
 import { isNone } from 'src/utils/utils';
-import { Selection } from 'src/npm/facet-mobx/facets/selection';
-import { Filtering } from 'src/npm/facet-mobx/facets/filtering';
+import { Selection } from 'facet-mobx/facets/selection';
+import { Filtering } from 'facet-mobx/facets/filtering';
 import {
   mergeDefaultProps,
   withDefaultProps,
 } from 'react-default-props-context';
-import { Addition } from 'src/npm/facet-mobx/facets/addition';
+import { Addition } from 'facet-mobx/facets/addition';
 
 // MoveListFrame
 

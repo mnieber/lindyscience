@@ -7,7 +7,7 @@ import {
   mergeDefaultProps,
   withDefaultProps,
 } from 'react-default-props-context';
-import { Labelling } from 'src/npm/facet-mobx/facets/labelling';
+import { Labelling } from 'facet-mobx/facets/labelling';
 
 type PropsT = {
   defaultProps?: any;

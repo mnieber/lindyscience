@@ -1,6 +1,6 @@
 import { runInAction } from 'src/utils/mobx_wrapper';
 import { isBefore } from 'src/utils/ui_utils';
-import { Dragging } from 'src/npm/facet-mobx/facets/dragging';
+import { Dragging } from 'facet-mobx/facets/dragging';
 
 export type DragPosition2T = {
   item: any;

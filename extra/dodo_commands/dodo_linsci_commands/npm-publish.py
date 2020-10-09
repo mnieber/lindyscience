@@ -26,7 +26,12 @@ def _args():
 if Dodo.is_main(__name__, safe=True):
     args = _args()
 
-    src_sub_dirs = ["react-form-state-context", "react-default-props-context"]
+    src_sub_dirs = [
+        "react-form-state-context",
+        "react-default-props-context",
+        "facet",
+        "facet-mobx",
+    ]
     Dodo.run(["npm", "adduser", "--registry", "http://verdaccio:4873"])
     for src_sub_dir in src_sub_dirs:
         src_dir = os.path.join(args.npm_dir, src_sub_dir)

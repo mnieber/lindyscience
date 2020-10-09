@@ -7,7 +7,7 @@ import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { moveContainerProps } from 'src/moves/MoveCtr/moveCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/npm/facet-mobx';
+import { CtrProvider } from 'src/app/CtrProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,

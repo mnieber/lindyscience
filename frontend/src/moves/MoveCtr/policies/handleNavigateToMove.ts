@@ -6,7 +6,7 @@ import { MoveT } from 'src/moves/types';
 import { makeSlugid, makeSlugidMatcher } from 'src/app/utils';
 import { getId } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/containers';
-import { listen } from 'src/npm/facet';
+import { listen } from 'facet';
 
 export const handleNavigateToMove = (navigation: Navigation) => (
   movesCtr: MovesContainer

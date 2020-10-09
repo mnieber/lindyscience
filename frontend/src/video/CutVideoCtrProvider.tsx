@@ -14,7 +14,7 @@ import { MovesStore } from 'src/moves/MovesStore';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
 import { cutVideoContainerProps } from 'src/video/CutVideoCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/npm/facet-mobx';
+import { CtrProvider } from 'src/app/CtrProvider';
 
 type PropsT = {
   children: any;

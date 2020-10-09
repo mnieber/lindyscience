@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 
 import { SessionContainer } from 'src/session/SessionCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/npm/facet-mobx';
+import { CtrProvider } from 'src/app/CtrProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,

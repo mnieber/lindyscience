@@ -12,7 +12,7 @@ const getNullFormFieldContext = (): FormFieldContextT => {
   };
 };
 
-const FormFieldContext_ = React.createContext(getNullFormFieldContext());
+const Context = React.createContext(getNullFormFieldContext());
 
 export const FormFieldContext: React.FC<FormFieldContextT> = ({
   fieldName,
@@ -20,12 +20,10 @@ export const FormFieldContext: React.FC<FormFieldContextT> = ({
   children,
 }) => {
   return (
-    <FormFieldContext_.Provider value={{ fieldName, label }}>
-      {children}
-    </FormFieldContext_.Provider>
+    <Context.Provider value={{ fieldName, label }}>{children}</Context.Provider>
   );
 };
 
 export const useFormFieldContext = (): FormFieldContextT => {
-  return React.useContext(FormFieldContext_);
+  return React.useContext(Context);
 };

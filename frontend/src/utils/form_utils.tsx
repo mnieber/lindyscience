@@ -97,12 +97,7 @@ export function FormField(props: FormFieldPropsT) {
   };
 
   const formFieldLabel = (
-    <FormFieldLabel
-      fieldName={props.fieldName}
-      label={props.label || ''}
-      buttons={props.buttons}
-      classNames={['formField__label']}
-    />
+    <FormFieldLabel buttons={props.buttons} classNames={['formField__label']} />
   );
 
   return (

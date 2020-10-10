@@ -55,9 +55,7 @@ export function ValuePickerImpl(props: PropsT) {
 
   return (
     <div style={{ zIndex: props.zIndex }}>
-      {props.label && (
-        <FormFieldLabel fieldName={props.fieldName} label={props.label} />
-      )}
+      {props.label && <FormFieldLabel />}
       {picker}
     </div>
   );

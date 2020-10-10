@@ -19,8 +19,29 @@ import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEdi
 import { newMoveSlug } from 'src/moves/utils';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { SlugField } from 'src/move_lists/presentation/SlugField';
+import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 
 // MoveForm
+
+const Decorated = ({
+  component,
+  fieldName,
+  label,
+}: {
+  component: any;
+  fieldName: string;
+  label: string;
+}) => {
+  return (
+    <FormFieldContext fieldName={fieldName} label={label}>
+      <div className="flex flex-col">
+        <FormFieldLabel />
+        {component}
+        <FormFieldError />
+      </div>
+    </FormFieldContext>
+  );
+};
 
 type PropsT = {
   onCancel: () => void;
@@ -77,44 +98,74 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
   };
 
   const nameField = (
-    <FormFieldLabel label="Name" fieldName="name">
-      <TextField
-        fieldName="name"
-        classNames="w-full"
-        placeholder="Name"
-        autoFocus={props.autoFocus}
-      />
-    </FormFieldLabel>
+    <Decorated
+      label="Name"
+      fieldName="name"
+      component={<TextField classNames="w-full" autoFocus={props.autoFocus} />}
+    />
   );
 
   const linkField = (
-    <FormFieldLabel label="Link" fieldName="link">
-      <TextField
-        fieldName="link"
-        classNames="w-full"
-        type="text"
-        placeholder="Link"
-        onChange={(x: any) => props.setAltLink(x.target.value)}
-      />
-    </FormFieldLabel>
+    <Decorated
+      label="Link"
+      fieldName="link"
+      component={
+        <TextField
+          classNames="w-full"
+          type="text"
+          onChange={(x: any) => props.setAltLink(x.target.value)}
+        />
+      }
+    />
   );
 
   const description = (
-    <div className="moveForm__description mt-4">
-      <FormFieldLabel label="Description" fieldName="description" />
-      <MoveDescriptionEditor
-        editorId={'move_' + props.move.id}
-        autoFocus={false}
-        readOnly={false}
-        editorRef={editorRef}
-        description={initialValues.description}
-        videoController={props.videoController}
-      />
-      <FormFieldError
-        fieldName="description"
-        extraClassOnError={'formField__error'}
-      />
-    </div>
+    <Decorated
+      label="Description"
+      fieldName="description"
+      component={
+        <div className="moveForm__description mt-4">
+          <MoveDescriptionEditor
+            editorId={'move_' + props.move.id}
+            autoFocus={false}
+            readOnly={false}
+            editorRef={editorRef}
+            description={initialValues.description}
+            videoController={props.videoController}
+          />
+        </div>
+      }
+    />
+  );
+
+  const SaveButton = () => (
+    <button className="button button--wide ml-2" type="submit" disabled={false}>
+      save
+    </button>
+  );
+
+  const CancelButton = () => (
+    <button
+      className="button button--wide ml-2"
+      onClick={(e) => {
+        e.preventDefault();
+        props.onCancel();
+      }}
+    >
+      cancel
+    </button>
+  );
+
+  const tagsField = (
+    <TagsField
+      value={tagsPickerValue}
+      setValue={setTagsPickerValue}
+      knownTags={props.knownTags.map(strToPickerValue)}
+    />
+  );
+
+  const slugField = (
+    <Decorated component={<SlugField />} label="Slug" fieldName="slug" />
   );
 
   return (
@@ -127,33 +178,15 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
       <form className="moveForm w-full">
         <div className={'moveForm flexcol'}>
           {nameField}
-          {initialValues.slug !== newMoveSlug && <SlugField />}
+          {initialValues.slug !== newMoveSlug && slugField}
           {linkField}
           <StartField videoController={props.videoController} />
           <EndField videoController={props.videoController} />
           {description}
-          <TagsField
-            value={tagsPickerValue}
-            setValue={setTagsPickerValue}
-            knownTags={props.knownTags.map(strToPickerValue)}
-          />
+          {tagsField}
           <div className={'moveForm__buttonPanel flexrow mt-4'}>
-            <button
-              className="button button--wide ml-2"
-              type="submit"
-              disabled={false}
-            >
-              save
-            </button>
-            <button
-              className="button button--wide ml-2"
-              onClick={(e) => {
-                e.preventDefault();
-                props.onCancel();
-              }}
-            >
-              cancel
-            </button>
+            <SaveButton />
+            <CancelButton />
           </div>
         </div>
       </form>

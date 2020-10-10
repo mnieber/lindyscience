@@ -1,13 +1,13 @@
 import React from 'react';
 
 interface FormFieldContextT {
-  name: string | undefined;
+  fieldName: string;
   label: string | undefined;
 }
 
 const getNullFormFieldContext = (): FormFieldContextT => {
   return {
-    name: undefined,
+    fieldName: '',
     label: undefined,
   };
 };
@@ -15,12 +15,12 @@ const getNullFormFieldContext = (): FormFieldContextT => {
 const FormFieldContext_ = React.createContext(getNullFormFieldContext());
 
 export const FormFieldContext: React.FC<FormFieldContextT> = ({
-  name,
+  fieldName,
   label,
   children,
 }) => {
   return (
-    <FormFieldContext_.Provider value={{ name, label }}>
+    <FormFieldContext_.Provider value={{ fieldName, label }}>
       {children}
     </FormFieldContext_.Provider>
   );

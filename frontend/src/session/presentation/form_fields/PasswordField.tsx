@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useFormStateContext } from 'react-form-state-context';
 import { labelProps } from 'src/session/presentation/labelProps';
-import { FormFieldLabel } from 'src/utils/form_utils';
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { createFormFieldProps } from 'react-form-state-context';
 
 type PropsT = {

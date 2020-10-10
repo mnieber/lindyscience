@@ -14,7 +14,7 @@ import { TagsField } from 'src/move_lists/presentation/TagsField';
 import { StartField } from 'src/moves/presentation/StartField';
 import { EndField } from 'src/moves/presentation/EndField';
 import { strToPickerValue } from 'src/utils/value_picker';
-import { FormFieldLabel } from 'src/utils/form_utils';
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { newMoveSlug } from 'src/moves/utils';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';

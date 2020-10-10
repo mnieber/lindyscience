@@ -2,9 +2,9 @@ import classNames from 'classnames';
 import React from 'react';
 
 import { useFormStateContext } from 'react-form-state-context';
+import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
 
 interface IProps {
-  fieldName: string;
   extraClass?: string;
   extraClassOnError?: string;
 }
@@ -12,12 +12,13 @@ interface IProps {
 // Generic component that shows the error in fieldName for the current
 // form state.
 export const FormFieldError: React.FC<IProps> = ({
-  fieldName,
   extraClass,
   extraClassOnError,
 }) => {
   const formState = useFormStateContext();
-  const error = formState.getError(fieldName);
+  const fieldContext = useFormFieldContext();
+
+  const error = formState.getError(fieldContext.fieldName);
 
   return (
     <p

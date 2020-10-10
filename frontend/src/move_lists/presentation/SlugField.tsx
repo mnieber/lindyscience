@@ -1,6 +1,5 @@
 import React from 'react';
 import { TextField } from 'src/forms/components/TextField';
-import { FormFieldLabel } from 'src/utils/form_utils';
 import { useFormStateContext } from 'react-form-state-context';
 import { slugify } from 'src/utils/utils';
 
@@ -22,12 +21,12 @@ const UpdateSlugBtn = ({ className }: { className: any }) => {
   );
 };
 
-export const SlugField = () => (
-  <FormFieldLabel label="Slug" fieldName="slug">
+export const SlugField = () => {
+  return (
     <TextField
       classNames="flex-1"
       disabled={true}
       buttons={[<UpdateSlugBtn className="button ml-2 flex-none" />]}
     />
-  </FormFieldLabel>
-);
+  );
+};

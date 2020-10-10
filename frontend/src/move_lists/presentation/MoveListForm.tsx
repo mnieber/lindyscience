@@ -1,11 +1,11 @@
 import React from 'react';
 import {
   FormStateProvider,
-  useFormStateContext,
-  HandleValidateT,
-  HandleSubmitT,
+  HandleValidateArgsT,
+  HandleSubmitArgsT,
 } from 'react-form-state-context';
 
+import { UpdateSlugBtn } from 'src/move_lists/presentation/UpdateSlugBtn';
 import { TextField } from 'src/forms/components/TextField';
 import { FormFieldError } from 'src/forms/components/FormFieldError';
 import { TagT } from 'src/tags/types';
@@ -18,7 +18,6 @@ import {
 } from 'src/rich_text/presentation/RichTextEditor';
 import { toEditorState } from 'src/rich_text/utils/EditorState';
 import { newMoveListSlug } from 'src/app/utils';
-import { slugify } from 'src/utils/utils';
 import { ControlledCheckbox } from 'src/session/presentation/form_fields/ControlledCheckbox';
 
 // MoveListForm
@@ -50,7 +49,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
 
   const initialErrors = {};
 
-  const handleValidate: HandleValidateT = ({ values, setError }) => {
+  const handleValidate = ({ values, setError }: HandleValidateArgsT) => {
     values.description = getContentFromEditor(descriptionEditorRef.current, '');
     values.tags = (tagsPickerValue || []).map((x) => x.value);
 
@@ -65,7 +64,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
     }
   };
 
-  const handleSubmit: HandleSubmitT = ({ values }) => {
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
     props.onSubmit({
       ...values,
       description: getContentFromEditor(descriptionEditorRef.current, ''),
@@ -85,24 +84,6 @@ export function MoveListForm(props: MoveListFormPropsT) {
     </FormFieldLabel>
   );
 
-  const UpdateSlugBtn = () => {
-    const formState = useFormStateContext();
-    return (
-      <div
-        key="updateSlugBtn"
-        className={'button ml-2 flex-none'}
-        onClick={() => {
-          const newSlug = slugify(formState.values.name);
-          if (newSlug) {
-            formState.setValue('slug', newSlug);
-          }
-        }}
-      >
-        Update
-      </div>
-    );
-  };
-
   const slugField = (
     <FormFieldLabel label="Slug" fieldName="slug">
       <TextField
@@ -110,7 +91,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
         classNames="flex-1"
         placeholder="Slug"
         disabled={true}
-        buttons={[<UpdateSlugBtn />]}
+        buttons={[<UpdateSlugBtn className="button ml-2 flex-none" />]}
       />
     </FormFieldLabel>
   );

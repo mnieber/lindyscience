@@ -15,19 +15,18 @@ interface PropsT {
 
 export const TagsField: React.FC<PropsT> = (props: PropsT) => {
   return (
-    <div className="moveListForm__tags mt-4">
-      <ValuePicker
-        zIndex={10}
-        isCreatable={true}
-        label="Tags"
-        fieldName="tags"
-        isMulti={true}
-        options={props.knownTags}
-        placeholder="Tags"
-        value={props.value}
-        setValue={props.setValue}
-      />
-      <FormFieldError fieldName="tags" extraClass={'formField__error'} />
-    </div>
+    <FormFieldContext name="tags" label="Tags">
+      <div className="moveListForm__tags mt-4">
+        <ValuePicker
+          zIndex={10}
+          isCreatable={true}
+          isMulti={true}
+          options={props.knownTags}
+          value={props.value}
+          setValue={props.setValue}
+        />
+        <FormFieldError fieldName="tags" extraClass={'formField__error'} />
+      </div>
+    </FormFieldContext>
   );
 };

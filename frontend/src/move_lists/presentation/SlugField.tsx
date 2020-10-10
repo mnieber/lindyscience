@@ -1,14 +1,31 @@
 import React from 'react';
 import { TextField } from 'src/forms/components/TextField';
 import { FormFieldLabel } from 'src/utils/form_utils';
-import { UpdateSlugBtn } from 'src/move_lists/presentation/UpdateSlugBtn';
+import { useFormStateContext } from 'react-form-state-context';
+import { slugify } from 'src/utils/utils';
+
+const UpdateSlugBtn = ({ className }: { className: any }) => {
+  const formState = useFormStateContext();
+  return (
+    <div
+      key="updateSlugBtn"
+      className={className}
+      onClick={() => {
+        const newSlug = slugify(formState.values.name);
+        if (newSlug) {
+          formState.setValue('slug', newSlug);
+        }
+      }}
+    >
+      Update
+    </div>
+  );
+};
 
 export const SlugField = () => (
   <FormFieldLabel label="Slug" fieldName="slug">
     <TextField
-      fieldName="name"
       classNames="flex-1"
-      placeholder="Slug"
       disabled={true}
       buttons={[<UpdateSlugBtn className="button ml-2 flex-none" />]}
     />

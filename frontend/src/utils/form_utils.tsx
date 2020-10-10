@@ -1,43 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash/fp';
-
-type FormFieldLabelPropsT = {
-  classNames?: any;
-  fieldName: string;
-  label: string;
-  buttons?: any;
-  children?: any;
-};
-
-export function FormFieldLabel(props: FormFieldLabelPropsT) {
-  const ColWrapper =
-    isNil(props.children) || isEmpty(props.children)
-      ? React.Fragment
-      : ({ children }: any) => (
-          <div className="FormFieldLabel flexcol">{children}</div>
-        );
-
-  const RowWrapper =
-    isNil(props.buttons) || isEmpty(props.buttons)
-      ? ({ children }: any) => <React.Fragment>{children}</React.Fragment>
-      : ({ children }: any) => <div className="flexrow">{children}</div>;
-
-  return (
-    <ColWrapper>
-      <RowWrapper>
-        <label
-          className={classnames('mt-2 font-bold', props.classNames)}
-          htmlFor={props.fieldName}
-        >
-          {props.label}
-        </label>
-        {props.buttons}
-      </RowWrapper>
-      {props.children}
-    </ColWrapper>
-  );
-}
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 
 export type FormFieldErrorPropsT = {
   formProps: any;
@@ -134,12 +97,7 @@ export function FormField(props: FormFieldPropsT) {
   };
 
   const formFieldLabel = (
-    <FormFieldLabel
-      fieldName={props.fieldName}
-      label={props.label || ''}
-      buttons={props.buttons}
-      classNames={['formField__label']}
-    />
+    <FormFieldLabel buttons={props.buttons} classNames={['formField__label']} />
   );
 
   return (

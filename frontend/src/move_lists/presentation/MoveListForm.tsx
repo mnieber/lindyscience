@@ -1,29 +1,50 @@
 import React from 'react';
 import {
   FormStateProvider,
-  useFormStateContext,
-  HandleValidateT,
-  HandleSubmitT,
+  HandleValidateArgsT,
+  HandleSubmitArgsT,
 } from 'react-form-state-context';
 
+import { strToPickerValue } from 'src/utils/value_picker';
+import { SlugField } from 'src/move_lists/presentation/SlugField';
+import { TagsField } from 'src/move_lists/presentation/TagsField';
 import { TextField } from 'src/forms/components/TextField';
+import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 import { FormFieldError } from 'src/forms/components/FormFieldError';
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { TagT } from 'src/tags/types';
 import { MoveListT } from 'src/move_lists/types';
-import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
-import { FormFieldLabel } from 'src/utils/form_utils';
 import {
   RichTextEditor,
   getContentFromEditor,
 } from 'src/rich_text/presentation/RichTextEditor';
 import { toEditorState } from 'src/rich_text/utils/EditorState';
 import { newMoveListSlug } from 'src/app/utils';
-import { slugify } from 'src/utils/utils';
 import { ControlledCheckbox } from 'src/session/presentation/form_fields/ControlledCheckbox';
 
 // MoveListForm
 
-type MoveListFormPropsT = {
+const Decorated = ({
+  component,
+  fieldName,
+  label,
+}: {
+  component: any;
+  fieldName: string;
+  label: string;
+}) => {
+  return (
+    <FormFieldContext fieldName={fieldName} label={label}>
+      <div className="flex flex-col">
+        <FormFieldLabel />
+        {component}
+        <FormFieldError />
+      </div>
+    </FormFieldContext>
+  );
+};
+
+type PropsT = {
   onCancel: () => void;
   onSubmit: (values: any) => void;
   knownTags: Array<TagT>;
@@ -32,7 +53,7 @@ type MoveListFormPropsT = {
   autoFocus: boolean;
 };
 
-export function MoveListForm(props: MoveListFormPropsT) {
+export function MoveListForm(props: PropsT) {
   const descriptionEditorRef = React.useRef(null);
   const [tagsPickerValue, setTagsPickerValue] = React.useState(
     props.moveList.tags.map(strToPickerValue)
@@ -44,13 +65,11 @@ export function MoveListForm(props: MoveListFormPropsT) {
     isPrivate: props.moveList.isPrivate,
     role: props.moveList.role,
     tags: props.moveList.tags,
-    tagsPickerValue,
-    setTagsPickerValue,
   };
 
   const initialErrors = {};
 
-  const handleValidate: HandleValidateT = ({ values, setError }) => {
+  const handleValidate = ({ values, setError }: HandleValidateArgsT) => {
     values.description = getContentFromEditor(descriptionEditorRef.current, '');
     values.tags = (tagsPickerValue || []).map((x) => x.value);
 
@@ -65,7 +84,7 @@ export function MoveListForm(props: MoveListFormPropsT) {
     }
   };
 
-  const handleSubmit: HandleSubmitT = ({ values }) => {
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
     props.onSubmit({
       ...values,
       description: getContentFromEditor(descriptionEditorRef.current, ''),
@@ -74,81 +93,73 @@ export function MoveListForm(props: MoveListFormPropsT) {
     });
   };
 
-  const nameField = (
-    <FormFieldLabel label="Name" fieldName="name">
-      <TextField
-        fieldName="name"
-        classNames="w-full"
-        placeholder="Name"
-        autoFocus={props.autoFocus}
-      />
-    </FormFieldLabel>
+  const SaveButton = () => (
+    <button className="button button--wide ml-2" type="submit" disabled={false}>
+      save
+    </button>
   );
 
-  const UpdateSlugBtn = () => {
-    const formState = useFormStateContext();
-    return (
-      <div
-        key="updateSlugBtn"
-        className={'button ml-2 flex-none'}
-        onClick={() => {
-          const newSlug = slugify(formState.values.name);
-          if (newSlug) {
-            formState.setValue('slug', newSlug);
-          }
-        }}
-      >
-        Update
-      </div>
-    );
-  };
+  const CancelButton = () => (
+    <button
+      className="button button--wide ml-2"
+      onClick={(e) => {
+        e.preventDefault();
+        props.onCancel();
+      }}
+    >
+      cancel
+    </button>
+  );
+
+  const tagsField = (
+    <Decorated
+      component={
+        <TagsField
+          value={tagsPickerValue}
+          setValue={setTagsPickerValue}
+          knownTags={props.knownTags.map(strToPickerValue)}
+        />
+      }
+      fieldName="tags"
+      label="Tags"
+    />
+  );
 
   const slugField = (
-    <FormFieldLabel label="Slug" fieldName="slug">
-      <TextField
-        fieldName="name"
-        classNames="flex-1"
-        placeholder="Slug"
-        disabled={true}
-        buttons={[<UpdateSlugBtn />]}
-      />
-    </FormFieldLabel>
+    <Decorated component={<SlugField />} label="Slug" fieldName="slug" />
   );
 
-  const description = (
-    <div className="moveListForm__description mt-4">
-      <FormFieldLabel label="Description" fieldName="description" />
-      <RichTextEditor
-        autoFocus={false}
-        readOnly={false}
-        ref={descriptionEditorRef}
-        initialEditorState={toEditorState(props.moveList.description)}
-      />
-      <FormFieldError fieldName="description" extraClass={'formField__error'} />
-    </div>
+  const descriptionField = (
+    <Decorated
+      component={
+        <div className="moveListForm__description mt-4">
+          <RichTextEditor
+            autoFocus={false}
+            readOnly={false}
+            ref={descriptionEditorRef}
+            initialEditorState={toEditorState(props.moveList.description)}
+          />
+        </div>
+      }
+      fieldName="description"
+      label="Description"
+    />
+  );
+
+  const nameField = (
+    <Decorated
+      component={<TextField classNames="w-full" autoFocus={props.autoFocus} />}
+      fieldName="name"
+      label="Name"
+    />
   );
 
   const isPrivateField = (
-    <FormFieldLabel label="Is private" fieldName="isPrivate">
-      <ControlledCheckbox fieldName="isPrivate" />
-    </FormFieldLabel>
-  );
-
-  const tags = (
-    <div className="moveListForm__tags mt-4">
-      <ValuePicker
-        zIndex={10}
-        isCreatable={true}
-        label="Tags"
-        fieldName="tags"
-        isMulti={true}
-        options={props.knownTags.map(strToPickerValue)}
-        placeholder="Tags"
-        value={tagsPickerValue}
-        setValue={setTagsPickerValue}
-      />
-      <FormFieldError fieldName="tags" extraClass={'formField__error'} />
-    </div>
+    <Decorated
+      component={<ControlledCheckbox />}
+      label="Is private"
+      fieldName="isPrivate"
+    />
   );
 
   return (
@@ -162,26 +173,12 @@ export function MoveListForm(props: MoveListFormPropsT) {
         <div className={'moveListForm flexcol'}>
           {nameField}
           {initialValues.slug !== newMoveListSlug && slugField}
-          {description}
+          {descriptionField}
           {initialValues.role !== 'trash' && isPrivateField}
-          {tags}
+          {tagsField}
           <div className={'moveListForm__buttonPanel flexrow mt-4'}>
-            <button
-              className="button button--wide ml-2"
-              type="submit"
-              disabled={false}
-            >
-              save
-            </button>
-            <button
-              className="button button--wide ml-2"
-              onClick={(e) => {
-                e.preventDefault();
-                props.onCancel();
-              }}
-            >
-              cancel
-            </button>
+            <SaveButton />
+            <CancelButton />
           </div>
         </div>
       </form>

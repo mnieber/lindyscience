@@ -4,7 +4,8 @@ import Select from 'react-select';
 import Creatable from 'react-select/lib/Creatable';
 import jQuery from 'jquery';
 
-import { FormFieldLabel, handleEnterAsTabToNext } from 'src/utils/form_utils';
+import { handleEnterAsTabToNext } from 'src/utils/form_utils';
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { stripQuotes } from 'src/utils/utils';
 
 type PropsT = {
@@ -54,9 +55,7 @@ export function ValuePickerImpl(props: PropsT) {
 
   return (
     <div style={{ zIndex: props.zIndex }}>
-      {props.label && (
-        <FormFieldLabel fieldName={props.fieldName} label={props.label} />
-      )}
+      {props.label && <FormFieldLabel />}
       {picker}
     </div>
   );

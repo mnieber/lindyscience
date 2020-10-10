@@ -5,12 +5,13 @@ import {
   HandleSubmitArgsT,
 } from 'react-form-state-context';
 
-import { UpdateSlugBtn } from 'src/move_lists/presentation/UpdateSlugBtn';
+import { strToPickerValue } from 'src/utils/value_picker';
+import { SlugField } from 'src/move_lists/presentation/SlugField';
+import { TagsField } from 'src/move_lists/presentation/TagsField';
 import { TextField } from 'src/forms/components/TextField';
 import { FormFieldError } from 'src/forms/components/FormFieldError';
 import { TagT } from 'src/tags/types';
 import { MoveListT } from 'src/move_lists/types';
-import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
 import { FormFieldLabel } from 'src/utils/form_utils';
 import {
   RichTextEditor,
@@ -84,18 +85,6 @@ export function MoveListForm(props: MoveListFormPropsT) {
     </FormFieldLabel>
   );
 
-  const slugField = (
-    <FormFieldLabel label="Slug" fieldName="slug">
-      <TextField
-        fieldName="name"
-        classNames="flex-1"
-        placeholder="Slug"
-        disabled={true}
-        buttons={[<UpdateSlugBtn className="button ml-2 flex-none" />]}
-      />
-    </FormFieldLabel>
-  );
-
   const description = (
     <div className="moveListForm__description mt-4">
       <FormFieldLabel label="Description" fieldName="description" />
@@ -115,23 +104,6 @@ export function MoveListForm(props: MoveListFormPropsT) {
     </FormFieldLabel>
   );
 
-  const tags = (
-    <div className="moveListForm__tags mt-4">
-      <ValuePicker
-        zIndex={10}
-        isCreatable={true}
-        label="Tags"
-        fieldName="tags"
-        isMulti={true}
-        options={props.knownTags.map(strToPickerValue)}
-        placeholder="Tags"
-        value={tagsPickerValue}
-        setValue={setTagsPickerValue}
-      />
-      <FormFieldError fieldName="tags" extraClass={'formField__error'} />
-    </div>
-  );
-
   return (
     <FormStateProvider
       initialValues={initialValues}
@@ -142,10 +114,14 @@ export function MoveListForm(props: MoveListFormPropsT) {
       <form className="moveListForm w-full">
         <div className={'moveListForm flexcol'}>
           {nameField}
-          {initialValues.slug !== newMoveListSlug && slugField}
+          {initialValues.slug !== newMoveListSlug && <SlugField />}
           {description}
           {initialValues.role !== 'trash' && isPrivateField}
-          {tags}
+          <TagsField
+            value={tagsPickerValue}
+            setValue={setTagsPickerValue}
+            knownTags={props.knownTags.map(strToPickerValue)}
+          />
           <div className={'moveListForm__buttonPanel flexrow mt-4'}>
             <button
               className="button button--wide ml-2"

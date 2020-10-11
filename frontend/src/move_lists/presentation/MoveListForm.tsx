@@ -5,22 +5,19 @@ import {
   HandleSubmitArgsT,
 } from 'react-form-state-context';
 
-import { strToPickerValue } from 'src/utils/value_picker';
 import { SlugField } from 'src/move_lists/presentation/SlugField';
-import { TagsField } from 'src/move_lists/presentation/TagsField';
 import { TextField } from 'src/forms/components/TextField';
 import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 import { FormFieldError } from 'src/forms/components/FormFieldError';
 import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { TagT } from 'src/tags/types';
 import { MoveListT } from 'src/move_lists/types';
-import {
-  RichTextEditor,
-  getContentFromEditor,
-} from 'src/rich_text/presentation/RichTextEditor';
+import { RichTextEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { toEditorState } from 'src/rich_text/utils/EditorState';
 import { newMoveListSlug } from 'src/app/utils';
 import { ControlledCheckbox } from 'src/session/presentation/form_fields/ControlledCheckbox';
+import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
+import { strToPickerValue } from 'src/utils/value_picker';
 
 // MoveListForm
 
@@ -55,24 +52,18 @@ type PropsT = {
 
 export function MoveListForm(props: PropsT) {
   const descriptionEditorRef = React.useRef(null);
-  const [tagsPickerValue, setTagsPickerValue] = React.useState(
-    props.moveList.tags.map(strToPickerValue)
-  );
 
   const initialValues = {
     name: props.moveList.name,
     slug: props.moveList.slug,
     isPrivate: props.moveList.isPrivate,
     role: props.moveList.role,
-    tags: props.moveList.tags,
+    tagPVs: props.moveList.tags.map(strToPickerValue),
   };
 
   const initialErrors = {};
 
   const handleValidate = ({ values, setError }: HandleValidateArgsT) => {
-    values.description = getContentFromEditor(descriptionEditorRef.current, '');
-    values.tags = (tagsPickerValue || []).map((x) => x.value);
-
     if (!values.name) {
       setError('name', 'This field is required');
     }
@@ -87,9 +78,8 @@ export function MoveListForm(props: PropsT) {
   const handleSubmit = ({ values }: HandleSubmitArgsT) => {
     props.onSubmit({
       ...values,
-      description: getContentFromEditor(descriptionEditorRef.current, ''),
-      tags: tagsPickerValue,
       id: props.moveList.id,
+      tags: values.tagPVs.map((x: PickerValueT) => x.value),
     });
   };
 
@@ -114,13 +104,16 @@ export function MoveListForm(props: PropsT) {
   const tagsField = (
     <Decorated
       component={
-        <TagsField
-          value={tagsPickerValue}
-          setValue={setTagsPickerValue}
-          knownTags={props.knownTags.map(strToPickerValue)}
-        />
+        <div className="moveListForm__tags mt-4">
+          <ValuePicker
+            zIndex={10}
+            isCreatable={true}
+            isMulti={true}
+            options={props.knownTags.map(strToPickerValue)}
+          />
+        </div>
       }
-      fieldName="tags"
+      fieldName="tagPVs"
       label="Tags"
     />
   );

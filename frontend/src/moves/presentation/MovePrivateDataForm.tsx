@@ -7,12 +7,12 @@ import { MovePrivateDataT } from 'src/moves/types';
 import { strToPickerValue } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
-import { TagsField } from 'src/move_lists/presentation/TagsField';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 
 import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 import { FormFieldError } from 'src/forms/components/FormFieldError';
 import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
+import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
 
 const Decorated = ({
   component,
@@ -48,13 +48,11 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
   const notesEditorRef = React.useRef(null);
   const notes = props.movePrivateData ? props.movePrivateData.notes || '' : '';
   const tags = props.movePrivateData ? props.movePrivateData.tags || [] : [];
-  const [tagsPickerValue, setTagsPickerValue] = React.useState(
-    tags.map(strToPickerValue)
-  );
 
   const initialValues = {
     notes: notes,
     tags: tags,
+    tagPVs: tags.map(strToPickerValue),
   };
 
   const initialErrors = {};
@@ -65,7 +63,7 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
     props.onSubmit({
       values,
       notes: getContentFromEditor(notesEditorRef.current, ''),
-      tags: (tagsPickerValue || []).map((x) => x.value),
+      tags: values.tagPVs.map((x: PickerValueT) => x.value),
     });
   };
 
@@ -91,13 +89,16 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
   const tagsField = (
     <Decorated
       component={
-        <TagsField
-          value={tagsPickerValue}
-          setValue={setTagsPickerValue}
-          knownTags={props.knownTags.map(strToPickerValue)}
-        />
+        <div className="moveListForm__tags mt-4">
+          <ValuePicker
+            zIndex={10}
+            isCreatable={true}
+            isMulti={true}
+            options={props.knownTags.map(strToPickerValue)}
+          />
+        </div>
       }
-      fieldName="tags"
+      fieldName="tagPVs"
       label="Tags"
     />
   );

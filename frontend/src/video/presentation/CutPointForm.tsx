@@ -1,94 +1,44 @@
-import { Formik } from 'formik';
 import React from 'react';
 
-import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { UUID } from 'src/kernel/types';
+import {
+  FormStateProvider,
+  HandleValidateArgsT,
+  HandleSubmitArgsT,
+} from 'react-form-state-context';
+
+import { TextField } from 'src/forms/components/TextField';
+import { FormFieldContext } from 'src/forms/components/FormFieldContext';
+import { FormFieldError } from 'src/forms/components/FormFieldError';
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { TagT } from 'src/tags/types';
 import { CutPointT } from 'src/video/types';
-import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
-import { FormField, FormFieldError } from 'src/utils/form_utils';
+import {
+  ValuePicker,
+  strToPickerValue,
+  PickerValueT,
+} from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 
-type InnerFormPropsT = {
-  tagPickerOptions: Array<any>;
-  videoController: VideoController;
-  cutPointId: UUID;
-  autoFocus: boolean;
-  editorRef: any;
-  tagsPickerValue: any;
-  setTagsPickerValue: Function;
-};
-
-const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
-  const nameField = (
-    <FormField
-      classNames="w-full"
-      formProps={formProps}
-      fieldName="name"
-      type="text"
-      placeholder="Name"
-      autoFocus={props.autoFocus}
-    />
-  );
-
-  const description = (
-    <div className="cutPointForm__description mt-4">
-      <MoveDescriptionEditor
-        editorId={'cutPoint_' + props.cutPointId}
-        placeholder="Description"
-        readOnly={false}
-        editorRef={props.editorRef}
-        description={formProps.values.description}
-        videoController={props.videoController}
-      />
-      <FormFieldError
-        formProps={formProps}
-        fieldName="description"
-        classNames={['formField__error']}
-      />
-    </div>
-  );
-
-  const tags = (
-    <div className="cutPointForm__tags mt-4">
-      <ValuePicker
-        zIndex={10}
-        isCreatable={true}
-        fieldName="tags"
-        isMulti={true}
-        options={props.tagPickerOptions}
-        placeholder="Tags"
-        value={props.tagsPickerValue}
-        setValue={props.setTagsPickerValue}
-      />
-      <FormFieldError
-        formProps={formProps}
-        fieldName="tags"
-        classNames={['formField__error']}
-        key="error"
-      />
-    </div>
-  );
-
+const Decorated = ({
+  component,
+  fieldName,
+  label,
+}: {
+  component: any;
+  fieldName: string;
+  label: string;
+}) => {
   return (
-    <form
-      onBlur={() => {
-        formProps.submitForm();
-      }}
-      className="cutPointForm w-full"
-      onSubmit={formProps.handleSubmit}
-    >
-      <div className={'cutPointForm flexcol'}>
-        {nameField}
-        {description}
-        {tags}
+    <FormFieldContext fieldName={fieldName} label={label}>
+      <div className="flex flex-col">
+        <FormFieldLabel />
+        {component}
+        <FormFieldError />
       </div>
-    </form>
+    </FormFieldContext>
   );
 };
-
-// CutPointForm
 
 type PropsT = {
   onSubmit: (values: any) => void;
@@ -100,42 +50,90 @@ type PropsT = {
 
 export function CutPointForm(props: PropsT) {
   const editorRef = React.useRef(null);
-  const [tagsPickerValue, setTagsPickerValue] = React.useState(
-    props.cutPoint.tags.map(strToPickerValue)
+
+  const initialValues = {
+    name: props.cutPoint.name,
+    description: props.cutPoint.description,
+    tagPVs: props.cutPoint.tags.map(strToPickerValue),
+  };
+
+  const initialErrors = {};
+
+  const handleValidate = ({ values, setError }: HandleValidateArgsT) => {
+    if (!values.name) {
+      setError('name', 'This field is required');
+    }
+    if (!values.tags) {
+      setError('tags', 'This field is required');
+    }
+  };
+
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
+    props.onSubmit({
+      ...values,
+      id: props.cutPoint.id,
+      description: getContentFromEditor(editorRef.current, ''),
+      tags: values.tagPVs.map((x: PickerValueT) => x.value),
+    });
+  };
+
+  const nameField = (
+    <Decorated
+      fieldName="name"
+      label="Name"
+      component={<TextField classNames="w-full" autoFocus={props.autoFocus} />}
+    />
+  );
+
+  const description = (
+    <Decorated
+      fieldName="description"
+      label="Description"
+      component={
+        <div className="cutPointForm__description mt-4">
+          <MoveDescriptionEditor
+            editorId={'cutPoint_' + props.cutPoint.id}
+            readOnly={false}
+            editorRef={editorRef}
+            description={initialValues.description}
+            videoController={props.videoController}
+          />
+        </div>
+      }
+    />
+  );
+
+  const tags = (
+    <Decorated
+      fieldName="tagPVs"
+      label="Tags"
+      component={
+        <div className="cutPointForm__tags mt-4">
+          <ValuePicker
+            zIndex={10}
+            isCreatable={true}
+            isMulti={true}
+            options={props.knownTags.map(strToPickerValue)}
+          />
+        </div>
+      }
+    />
   );
 
   return (
-    <Formik
-      initialValues={{
-        name: props.cutPoint.name,
-        description: props.cutPoint.description,
-        tags: props.cutPoint.tags,
-      }}
-      validate={(values) => {
-        values.description = getContentFromEditor(editorRef.current, '');
-        values.tags = (tagsPickerValue || []).map((x) => x.value);
-
-        let errors: { [name: string]: string } = {};
-        if (!values.name) {
-          errors.name = 'This field is required';
-        }
-        if (!values.tags) {
-          errors.tags = 'This field is required';
-        }
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        props.onSubmit({ ...values, id: props.cutPoint.id });
-      }}
-      render={InnerForm({
-        tagPickerOptions: props.knownTags.map(strToPickerValue),
-        videoController: props.videoController,
-        cutPointId: props.cutPoint.id,
-        autoFocus: props.autoFocus,
-        editorRef,
-        tagsPickerValue,
-        setTagsPickerValue,
-      })}
-    />
+    <FormStateProvider
+      initialValues={initialValues}
+      initialErrors={initialErrors}
+      handleValidate={handleValidate}
+      handleSubmit={handleSubmit}
+    >
+      <form className="cutPointForm w-full">
+        <div className={'cutPointForm flexcol'}>
+          {nameField}
+          {description}
+          {tags}
+        </div>
+      </form>
+    </FormStateProvider>
   );
 }

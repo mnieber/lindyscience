@@ -14,20 +14,17 @@ import { FormFieldError } from 'src/forms/components/FormFieldError';
 import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
 
-const Decorated = ({
-  component,
-  fieldName,
-  label,
-}: {
-  component: any;
+interface FieldT {
   fieldName: string;
   label: string;
-}) => {
+}
+
+const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
   return (
     <FormFieldContext fieldName={fieldName} label={label}>
       <div className="flex flex-col">
         <FormFieldLabel />
-        {component}
+        {children}
         <FormFieldError />
       </div>
     </FormFieldContext>
@@ -68,39 +65,31 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
   };
 
   const notesDiv = (
-    <div className="movePrivateDataForm__notes mt-4">
-      <Decorated
-        fieldName="notes"
-        label="Notes"
-        component={
-          <MoveDescriptionEditor
-            editorId={'privateData_' + props.moveId}
-            autoFocus={props.autoFocus}
-            readOnly={false}
-            editorRef={notesEditorRef}
-            description={initialValues.notes}
-            videoController={props.videoController}
-          />
-        }
-      />
-    </div>
+    <Field fieldName="notes" label="Notes">
+      <div className="movePrivateDataForm__notes mt-4">
+        <MoveDescriptionEditor
+          editorId={'privateData_' + props.moveId}
+          autoFocus={props.autoFocus}
+          readOnly={false}
+          editorRef={notesEditorRef}
+          description={initialValues.notes}
+          videoController={props.videoController}
+        />
+      </div>
+    </Field>
   );
 
   const tagsField = (
-    <Decorated
-      component={
-        <div className="moveListForm__tags mt-4">
-          <ValuePicker
-            zIndex={10}
-            isCreatable={true}
-            isMulti={true}
-            options={props.knownTags.map(strToPickerValue)}
-          />
-        </div>
-      }
-      fieldName="tagPVs"
-      label="Tags"
-    />
+    <Field fieldName="tagPVs" label="Tags">
+      <div className="moveListForm__tags mt-4">
+        <ValuePicker
+          zIndex={10}
+          isCreatable={true}
+          isMulti={true}
+          options={props.knownTags.map(strToPickerValue)}
+        />
+      </div>
+    </Field>
   );
 
   const SaveButton = () => (

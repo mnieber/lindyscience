@@ -21,20 +21,17 @@ import { strToPickerValue } from 'src/utils/value_picker';
 
 // MoveListForm
 
-const Decorated = ({
-  component,
-  fieldName,
-  label,
-}: {
-  component: any;
+interface FieldT {
   fieldName: string;
   label: string;
-}) => {
+}
+
+const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
   return (
     <FormFieldContext fieldName={fieldName} label={label}>
       <div className="flex flex-col">
         <FormFieldLabel />
-        {component}
+        {children}
         <FormFieldError />
       </div>
     </FormFieldContext>
@@ -102,57 +99,47 @@ export function MoveListForm(props: PropsT) {
   );
 
   const tagsField = (
-    <Decorated
-      component={
-        <div className="moveListForm__tags mt-4">
-          <ValuePicker
-            zIndex={10}
-            isCreatable={true}
-            isMulti={true}
-            options={props.knownTags.map(strToPickerValue)}
-          />
-        </div>
-      }
-      fieldName="tagPVs"
-      label="Tags"
-    />
+    <Field fieldName="tagPVs" label="Tags">
+      <div className="moveListForm__tags mt-4">
+        <ValuePicker
+          zIndex={10}
+          isCreatable={true}
+          isMulti={true}
+          options={props.knownTags.map(strToPickerValue)}
+        />
+      </div>
+    </Field>
   );
 
   const slugField = (
-    <Decorated component={<SlugField />} label="Slug" fieldName="slug" />
+    <Field label="Slug" fieldName="slug">
+      <SlugField />
+    </Field>
   );
 
   const descriptionField = (
-    <Decorated
-      component={
-        <div className="moveListForm__description mt-4">
-          <RichTextEditor
-            autoFocus={false}
-            readOnly={false}
-            ref={descriptionEditorRef}
-            initialEditorState={toEditorState(props.moveList.description)}
-          />
-        </div>
-      }
-      fieldName="description"
-      label="Description"
-    />
+    <Field fieldName="description" label="Description">
+      <div className="moveListForm__description mt-4">
+        <RichTextEditor
+          autoFocus={false}
+          readOnly={false}
+          ref={descriptionEditorRef}
+          initialEditorState={toEditorState(props.moveList.description)}
+        />
+      </div>
+    </Field>
   );
 
   const nameField = (
-    <Decorated
-      component={<TextField classNames="w-full" autoFocus={props.autoFocus} />}
-      fieldName="name"
-      label="Name"
-    />
+    <Field fieldName="name" label="Name">
+      <TextField classNames="w-full" autoFocus={props.autoFocus} />
+    </Field>
   );
 
   const isPrivateField = (
-    <Decorated
-      component={<ControlledCheckbox />}
-      label="Is private"
-      fieldName="isPrivate"
-    />
+    <Field label="Is private" fieldName="isPrivate">
+      <ControlledCheckbox />
+    </Field>
   );
 
   return (

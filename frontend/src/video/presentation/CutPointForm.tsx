@@ -20,20 +20,17 @@ import {
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 
-const Decorated = ({
-  component,
-  fieldName,
-  label,
-}: {
-  component: any;
+interface FieldT {
   fieldName: string;
   label: string;
-}) => {
+}
+
+const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
   return (
     <FormFieldContext fieldName={fieldName} label={label}>
       <div className="flex flex-col">
         <FormFieldLabel />
-        {component}
+        {children}
         <FormFieldError />
       </div>
     </FormFieldContext>
@@ -78,46 +75,36 @@ export function CutPointForm(props: PropsT) {
   };
 
   const nameField = (
-    <Decorated
-      fieldName="name"
-      label="Name"
-      component={<TextField classNames="w-full" autoFocus={props.autoFocus} />}
-    />
+    <Field fieldName="name" label="Name">
+      <TextField classNames="w-full" autoFocus={props.autoFocus} />
+    </Field>
   );
 
   const description = (
-    <Decorated
-      fieldName="description"
-      label="Description"
-      component={
-        <div className="cutPointForm__description mt-4">
-          <MoveDescriptionEditor
-            editorId={'cutPoint_' + props.cutPoint.id}
-            readOnly={false}
-            editorRef={editorRef}
-            description={initialValues.description}
-            videoController={props.videoController}
-          />
-        </div>
-      }
-    />
+    <Field fieldName="description" label="Description">
+      <div className="cutPointForm__description mt-4">
+        <MoveDescriptionEditor
+          editorId={'cutPoint_' + props.cutPoint.id}
+          readOnly={false}
+          editorRef={editorRef}
+          description={initialValues.description}
+          videoController={props.videoController}
+        />
+      </div>
+    </Field>
   );
 
   const tags = (
-    <Decorated
-      fieldName="tagPVs"
-      label="Tags"
-      component={
-        <div className="cutPointForm__tags mt-4">
-          <ValuePicker
-            zIndex={10}
-            isCreatable={true}
-            isMulti={true}
-            options={props.knownTags.map(strToPickerValue)}
-          />
-        </div>
-      }
-    />
+    <Field fieldName="tagPVs" label="Tags">
+      <div className="cutPointForm__tags mt-4">
+        <ValuePicker
+          zIndex={10}
+          isCreatable={true}
+          isMulti={true}
+          options={props.knownTags.map(strToPickerValue)}
+        />
+      </div>
+    </Field>
   );
 
   return (

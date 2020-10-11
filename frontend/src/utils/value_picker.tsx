@@ -24,7 +24,7 @@ type PropsT = {
   forwardedRef?: any;
 };
 
-export function ValuePickerImpl(props: PropsT) {
+export const ValuePickerImpl: React.FC<PropsT> = (props: PropsT) => {
   const formState = useFormStateContext();
   const fieldContext = useFormFieldContext();
 
@@ -64,7 +64,7 @@ export function ValuePickerImpl(props: PropsT) {
       {picker}
     </div>
   );
-}
+};
 
 export const ValuePicker: React.FC<PropsT> = React.forwardRef((props, ref) => {
   return <ValuePickerImpl {...props} forwardedRef={ref} />;

@@ -66,18 +66,20 @@ export const SearchMovesForm: React.FC<PropsT> = observer((p: PropsT) => {
     </div>
   );
 
-  const searchBtn = (
-    <FontAwesomeIcon
-      key={1}
-      className="ml-4"
-      icon={faSearch}
-      size="lg"
-      onClick={() => {
-        const formState = useFormStateContext();
-        formState.submit();
-      }}
-    />
-  );
+  const SearchBtn = () => {
+    const formState = useFormStateContext();
+    return (
+      <FontAwesomeIcon
+        key={1}
+        className="ml-4"
+        icon={faSearch}
+        size="lg"
+        onClick={() => {
+          formState.submit();
+        }}
+      />
+    );
+  };
 
   return (
     <FormStateProvider
@@ -91,8 +93,7 @@ export const SearchMovesForm: React.FC<PropsT> = observer((p: PropsT) => {
           <div className={'flexrow items-center'}>
             {tagsAndKeywordsField}
             <div className={'moveForm__buttonPanel flexrow mt-4'}>
-              {!props.display.small && searchBtn}
-              {searchBtn}
+              <SearchBtn />
             </div>
           </div>
         </div>

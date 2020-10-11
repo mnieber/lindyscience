@@ -1,8 +1,34 @@
 import * as React from 'react';
-import { withFormik } from 'formik';
-import * as yup from 'yup';
+import {
+  FormStateProvider,
+  HandleValidateArgsT,
+  HandleSubmitArgsT,
+} from 'react-form-state-context';
 
-import { FormField } from 'src/utils/form_utils';
+import { TextField } from 'src/forms/components/TextField';
+import { FormFieldContext } from 'src/forms/components/FormFieldContext';
+import { FormFieldError } from 'src/forms/components/FormFieldError';
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
+
+const Decorated = ({
+  component,
+  fieldName,
+  label,
+}: {
+  component: any;
+  fieldName: string;
+  label: string;
+}) => {
+  return (
+    <FormFieldContext fieldName={fieldName} label={label}>
+      <div className="flex flex-col">
+        <FormFieldLabel />
+        {component}
+        <FormFieldError />
+      </div>
+    </FormFieldContext>
+  );
+};
 
 export function TipForm({
   onSubmit,
@@ -13,54 +39,66 @@ export function TipForm({
   onCancel: () => void;
   values: any;
 }) {
-  function InnerForm(props: any) {
-    return (
-      <form className="tipForm w-full" onSubmit={props.handleSubmit}>
+  const initialValues = {
+    text: values.text,
+  };
+
+  const initialErrors = {};
+
+  const handleValidate = ({ values, setError }: HandleValidateArgsT) => {
+    if (values.text === undefined) {
+      setError('text', 'This field is required');
+    }
+  };
+
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
+    onSubmit(values);
+  };
+
+  const SaveButton = () => (
+    <button
+      className="tipForm__submitButton ml-2"
+      type="submit"
+      disabled={false}
+    >
+      save
+    </button>
+  );
+
+  const CancelButton = () => (
+    <button
+      className="tipForm__cancelButton ml-2"
+      onClick={(e) => {
+        e.preventDefault();
+        onCancel();
+      }}
+    >
+      cancel
+    </button>
+  );
+
+  const textField = (
+    <Decorated
+      fieldName="text"
+      label="Text"
+      component={<TextField classNames="tipForm__text w-64" />}
+    />
+  );
+
+  return (
+    <FormStateProvider
+      initialValues={initialValues}
+      initialErrors={initialErrors}
+      handleValidate={handleValidate}
+      handleSubmit={handleSubmit}
+    >
+      <form className="tipForm w-full">
         <div className={'flex flex-wrap'}>
-          <FormField
-            classNames="tipForm__text w-64"
-            formProps={props}
-            fieldName="text"
-            type="text"
-            placeholder="Text"
-          />
-          <button
-            className="tipForm__submitButton ml-2"
-            type="submit"
-            disabled={false}
-          >
-            save
-          </button>
-          <button
-            className="tipForm__cancelButton ml-2"
-            onClick={(e) => {
-              e.preventDefault();
-              onCancel();
-            }}
-          >
-            cancel
-          </button>
+          {textField}
+          <SaveButton />
+          <CancelButton />
         </div>
       </form>
-    );
-  }
-
-  const EnhancedForm = withFormik({
-    mapPropsToValues: () => ({
-      text: values.text,
-    }),
-    validationSchema: yup.object().shape({
-      text: yup.string().required('This field is required'),
-    }),
-    validate: (values, props) => {
-      let errors = {};
-      return errors;
-    },
-    handleSubmit: (values, { setSubmitting }) => {
-      onSubmit(values);
-    },
-    displayName: 'BasicForm', // helps with React DevTools
-  })(InnerForm);
-
-  return <EnhancedForm />;
+    </FormStateProvider>
+  );
 }

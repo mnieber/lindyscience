@@ -4,7 +4,7 @@ import { VideoT } from 'src/video/types';
 import { isYoutubePlaying } from 'src/video/utils';
 
 export class VideoController {
-  @input @observable video?: VideoT = undefined;
+  @input @observable video?: VideoT;
   @observable isPlaying: boolean = false;
   @observable player: any;
   // We use _player to allow non-observer access to the player via getPlayer

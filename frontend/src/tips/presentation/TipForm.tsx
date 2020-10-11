@@ -10,20 +10,17 @@ import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 import { FormFieldError } from 'src/forms/components/FormFieldError';
 import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 
-const Decorated = ({
-  component,
-  fieldName,
-  label,
-}: {
-  component: any;
+interface FieldT {
   fieldName: string;
   label: string;
-}) => {
+}
+
+const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
   return (
     <FormFieldContext fieldName={fieldName} label={label}>
       <div className="flex flex-col">
         <FormFieldLabel />
-        {component}
+        {children}
         <FormFieldError />
       </div>
     </FormFieldContext>
@@ -78,11 +75,9 @@ export function TipForm({
   );
 
   const textField = (
-    <Decorated
-      fieldName="text"
-      label="Text"
-      component={<TextField classNames="tipForm__text w-64" />}
-    />
+    <Field fieldName="text" label="Text">
+      <TextField classNames="tipForm__text w-64" />
+    </Field>
   );
 
   return (

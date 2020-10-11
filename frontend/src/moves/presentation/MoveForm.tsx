@@ -23,20 +23,17 @@ import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
 
 // MoveForm
 
-const Decorated = ({
-  component,
-  fieldName,
-  label,
-}: {
-  component: any;
+interface FieldT {
   fieldName: string;
   label: string;
-}) => {
+}
+
+const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
   return (
     <FormFieldContext fieldName={fieldName} label={label}>
       <div className="flex flex-col">
         <FormFieldLabel />
-        {component}
+        {children}
         <FormFieldError />
       </div>
     </FormFieldContext>
@@ -96,44 +93,34 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
   };
 
   const nameField = (
-    <Decorated
-      label="Name"
-      fieldName="name"
-      component={<TextField classNames="w-full" autoFocus={props.autoFocus} />}
-    />
+    <Field label="Name" fieldName="name">
+      <TextField classNames="w-full" autoFocus={props.autoFocus} />
+    </Field>
   );
 
   const linkField = (
-    <Decorated
-      label="Link"
-      fieldName="link"
-      component={
-        <TextField
-          classNames="w-full"
-          type="text"
-          onChange={(x: any) => props.setAltLink(x.target.value)}
-        />
-      }
-    />
+    <Field label="Link" fieldName="link">
+      <TextField
+        classNames="w-full"
+        type="text"
+        onChange={(x: any) => props.setAltLink(x.target.value)}
+      />
+    </Field>
   );
 
   const description = (
-    <Decorated
-      label="Description"
-      fieldName="description"
-      component={
-        <div className="moveForm__description mt-4">
-          <MoveDescriptionEditor
-            editorId={'move_' + props.move.id}
-            autoFocus={false}
-            readOnly={false}
-            editorRef={editorRef}
-            description={initialValues.description}
-            videoController={props.videoController}
-          />
-        </div>
-      }
-    />
+    <Field label="Description" fieldName="description">
+      <div className="moveForm__description mt-4">
+        <MoveDescriptionEditor
+          editorId={'move_' + props.move.id}
+          autoFocus={false}
+          readOnly={false}
+          editorRef={editorRef}
+          description={initialValues.description}
+          videoController={props.videoController}
+        />
+      </div>
+    </Field>
   );
 
   const SaveButton = () => (
@@ -155,24 +142,22 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
   );
 
   const tagsField = (
-    <Decorated
-      label="Tags"
-      fieldName="tagPVs"
-      component={
-        <div className="moveListForm__tags mt-4">
-          <ValuePicker
-            zIndex={10}
-            isCreatable={true}
-            isMulti={true}
-            options={props.knownTags.map(strToPickerValue)}
-          />
-        </div>
-      }
-    />
+    <Field label="Tags" fieldName="tagPVs">
+      <div className="moveListForm__tags mt-4">
+        <ValuePicker
+          zIndex={10}
+          isCreatable={true}
+          isMulti={true}
+          options={props.knownTags.map(strToPickerValue)}
+        />
+      </div>
+    </Field>
   );
 
   const slugField = (
-    <Decorated component={<SlugField />} label="Slug" fieldName="slug" />
+    <Field label="Slug" fieldName="slug">
+      <SlugField />
+    </Field>
   );
 
   return (

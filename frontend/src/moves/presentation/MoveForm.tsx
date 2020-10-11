@@ -10,7 +10,6 @@ import { TextField } from 'src/forms/components/TextField';
 import { FormFieldError } from 'src/forms/components/FormFieldError';
 import { TagT } from 'src/tags/types';
 import { MoveT } from 'src/moves/types';
-import { TagsField } from 'src/move_lists/presentation/TagsField';
 import { StartField } from 'src/moves/presentation/StartField';
 import { EndField } from 'src/moves/presentation/EndField';
 import { strToPickerValue } from 'src/utils/value_picker';
@@ -20,6 +19,7 @@ import { newMoveSlug } from 'src/moves/utils';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { SlugField } from 'src/move_lists/presentation/SlugField';
 import { FormFieldContext } from 'src/forms/components/FormFieldContext';
+import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
 
 // MoveForm
 
@@ -54,9 +54,6 @@ type PropsT = {
 };
 
 export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
-  const [tagsPickerValue, setTagsPickerValue] = React.useState(
-    props.move.tags.map(strToPickerValue)
-  );
   const editorRef = React.useRef(null);
 
   const startTime = props.move.startTimeMs
@@ -71,6 +68,7 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
     tags: props.move.tags,
     startTime: startTime,
     endTime: props.move.endTimeMs ? props.move.endTimeMs / 1000.0 : '',
+    tagPVs: props.move.tags.map(strToPickerValue),
   };
 
   const initialErrors = {};
@@ -93,7 +91,7 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
       startTime: undefined,
       endTime: undefined,
       description: getContentFromEditor(editorRef.current, ''),
-      tags: (tagsPickerValue || []).map((x) => x.value),
+      tags: values.tagPVs.map((x: PickerValueT) => x.value),
     });
   };
 
@@ -157,10 +155,19 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
   );
 
   const tagsField = (
-    <TagsField
-      value={tagsPickerValue}
-      setValue={setTagsPickerValue}
-      knownTags={props.knownTags.map(strToPickerValue)}
+    <Decorated
+      label="Tags"
+      fieldName="tagPVs"
+      component={
+        <div className="moveListForm__tags mt-4">
+          <ValuePicker
+            zIndex={10}
+            isCreatable={true}
+            isMulti={true}
+            options={props.knownTags.map(strToPickerValue)}
+          />
+        </div>
+      }
     />
   );
 

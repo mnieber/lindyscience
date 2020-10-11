@@ -35,6 +35,10 @@ if Dodo.is_main(__name__, safe=True):
     Dodo.run(["npm", "adduser", "--registry", "http://verdaccio:4873"])
     for src_sub_dir in src_sub_dirs:
         src_dir = os.path.join(args.npm_dir, src_sub_dir)
-        Dodo.run(["./node_modules/.bin/tsc"], cwd=src_dir)
+        dist_dir = os.path.join(args.npm_dir, src_sub_dir, "dist")
+        Dodo.run(["./node_modules/.bin/tsc", "--outDir", "dist"], cwd=src_dir)
         Dodo.run(["yarn", "version", "--patch"], cwd=src_dir)
-        Dodo.run(["npm", "publish", "--registry", "http://verdaccio:4873"], cwd=src_dir)
+        Dodo.run(["cp", "package.json", "dist"], cwd=src_dir)
+        Dodo.run(
+            ["npm", "publish", "--registry", "http://verdaccio:4873"], cwd=dist_dir
+        )

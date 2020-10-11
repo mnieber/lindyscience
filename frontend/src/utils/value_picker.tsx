@@ -7,27 +7,32 @@ import jQuery from 'jquery';
 import { handleEnterAsTabToNext } from 'src/utils/form_utils';
 import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { stripQuotes } from 'src/utils/utils';
+import { useFormStateContext } from 'react-form-state-context';
+import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
+
+export interface PickerValueT {
+  value: any;
+  label: string;
+}
 
 type PropsT = {
   isMulti: boolean;
   isCreatable: boolean;
   zIndex?: number;
   onChange?: Function;
-  fieldName: string;
-  options?: any;
-  placeholder?: string;
-  label?: string;
+  options?: PickerValueT[];
   forwardedRef?: any;
-  value: any;
-  setValue: Function;
 };
 
-export function ValuePickerImpl(props: PropsT) {
+export const ValuePickerImpl: React.FC<PropsT> = (props: PropsT) => {
+  const formState = useFormStateContext();
+  const fieldContext = useFormFieldContext();
+
   const saveChanges = (value: any) => {
     if (!props.isMulti && jQuery.isArray(value)) {
-      props.setValue({ value: null, label: '' });
+      formState.setValue(fieldContext.fieldName, null);
     } else {
-      props.setValue(value);
+      formState.setValue(fieldContext.fieldName, value);
     }
     if (props.onChange) {
       props.onChange(value);
@@ -36,10 +41,10 @@ export function ValuePickerImpl(props: PropsT) {
 
   const pickerProps = {
     isMulti: props.isMulti,
-    name: props.fieldName,
+    name: fieldContext.fieldName,
     options: props.options,
-    placeholder: props.placeholder,
-    value: props.value,
+    placeholder: fieldContext.label,
+    value: formState.values[fieldContext.fieldName],
     onChange: saveChanges,
     onKeyDown: (e: any) => {
       handleEnterAsTabToNext(e, false);
@@ -55,11 +60,11 @@ export function ValuePickerImpl(props: PropsT) {
 
   return (
     <div style={{ zIndex: props.zIndex }}>
-      {props.label && <FormFieldLabel />}
+      {fieldContext.label && <FormFieldLabel />}
       {picker}
     </div>
   );
-}
+};
 
 export const ValuePicker: React.FC<PropsT> = React.forwardRef((props, ref) => {
   return <ValuePickerImpl {...props} forwardedRef={ref} />;

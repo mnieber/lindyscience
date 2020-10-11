@@ -1,91 +1,36 @@
 import React from 'react';
-import { withFormik } from 'formik';
 
 import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { TagT } from 'src/tags/types';
 import { MovePrivateDataT } from 'src/moves/types';
-import { ValuePicker, strToPickerValue } from 'src/utils/value_picker';
+import { strToPickerValue } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
-import { FormFieldError } from 'src/utils/form_utils';
+import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 
-// MovePrivateDataForm
+import { FormFieldContext } from 'src/forms/components/FormFieldContext';
+import { FormFieldError } from 'src/forms/components/FormFieldError';
+import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
+import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
 
-type InnerFormPropsT = {
-  autoFocus: boolean;
-  tagPickerOptions: Array<any>;
-  onCancel: () => void;
-  notesEditorRef: any;
-  moveId: UUID;
-  videoController?: VideoController;
-  tagsPickerValue: any;
-  setTagsPickerValue: Function;
-};
-
-const InnerForm = (props: InnerFormPropsT) => (formProps: any) => {
-  const notesDiv = (
-    <div className="movePrivateDataForm__notes mt-4">
-      <MoveDescriptionEditor
-        editorId={'privateData_' + props.moveId}
-        autoFocus={true}
-        readOnly={false}
-        editorRef={props.notesEditorRef}
-        description={formProps.values.notes}
-        videoController={props.videoController}
-      />
-      <FormFieldError
-        formProps={formProps}
-        fieldName="notes"
-        classNames={['formField__error']}
-      />
-    </div>
-  );
-
-  const tags = (
-    <div className="movePrivateDataForm__tags mt-4">
-      <ValuePicker
-        zIndex={10}
-        isCreatable={true}
-        label="Tags"
-        fieldName="tags"
-        isMulti={true}
-        options={props.tagPickerOptions}
-        placeholder="Tags"
-        value={props.tagsPickerValue}
-        setValue={props.setTagsPickerValue}
-      />
-      <FormFieldError
-        formProps={formProps}
-        fieldName="tags"
-        classNames={['formField__error']}
-        key="error"
-      />
-    </div>
-  );
-
+const Decorated = ({
+  component,
+  fieldName,
+  label,
+}: {
+  component: any;
+  fieldName: string;
+  label: string;
+}) => {
   return (
-    <form
-      className="movePrivateDataForm w-full"
-      onSubmit={formProps.handleSubmit}
-    >
-      <div className={'flexcol'}>
-        {notesDiv}
-        {tags}
-        <div className={'movePrivateDataForm__buttonPanel flexrow mt-4'}>
-          <button
-            className="button button--wide ml-2"
-            type="submit"
-            disabled={formProps.isSubmitting}
-          >
-            save
-          </button>
-          <button className="button button--wide ml-2" onClick={props.onCancel}>
-            cancel
-          </button>
-        </div>
+    <FormFieldContext fieldName={fieldName} label={label}>
+      <div className="flex flex-col">
+        <FormFieldLabel />
+        {component}
+        <FormFieldError />
       </div>
-    </form>
+    </FormFieldContext>
   );
 };
 
@@ -99,44 +44,94 @@ type PropsT = {
   videoController?: VideoController;
 };
 
-export function MovePrivateDataForm(props: PropsT) {
+export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
   const notesEditorRef = React.useRef(null);
   const notes = props.movePrivateData ? props.movePrivateData.notes || '' : '';
   const tags = props.movePrivateData ? props.movePrivateData.tags || [] : [];
-  const [tagsPickerValue, setTagsPickerValue] = React.useState(
-    tags.map(strToPickerValue)
+
+  const initialValues = {
+    notes: notes,
+    tags: tags,
+    tagPVs: tags.map(strToPickerValue),
+  };
+
+  const initialErrors = {};
+
+  const handleValidate = () => {};
+
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
+    props.onSubmit({
+      values,
+      notes: getContentFromEditor(notesEditorRef.current, ''),
+      tags: values.tagPVs.map((x: PickerValueT) => x.value),
+    });
+  };
+
+  const notesDiv = (
+    <div className="movePrivateDataForm__notes mt-4">
+      <Decorated
+        fieldName="notes"
+        label="Notes"
+        component={
+          <MoveDescriptionEditor
+            editorId={'privateData_' + props.moveId}
+            autoFocus={props.autoFocus}
+            readOnly={false}
+            editorRef={notesEditorRef}
+            description={initialValues.notes}
+            videoController={props.videoController}
+          />
+        }
+      />
+    </div>
   );
 
-  const EnhancedForm = withFormik({
-    mapPropsToValues: () => ({
-      notes: notes,
-      tags: tags,
-    }),
-
-    validate: (values, formProps) => {
-      // HACK: add values from non-input fields
-      values.notes = getContentFromEditor(notesEditorRef.current, '');
-      values.tags = (tagsPickerValue || []).map((x) => x.value);
-      let errors = {};
-      return errors;
-    },
-
-    handleSubmit: (values, { setSubmitting }) => {
-      props.onSubmit(values);
-    },
-    displayName: 'BasicForm', // helps with React DevTools
-  })(
-    InnerForm({
-      autoFocus: props.autoFocus,
-      tagPickerOptions: props.knownTags.map(strToPickerValue),
-      onCancel: props.onCancel,
-      notesEditorRef,
-      moveId: props.moveId,
-      videoController: props.videoController,
-      tagsPickerValue,
-      setTagsPickerValue,
-    })
+  const tagsField = (
+    <Decorated
+      component={
+        <div className="moveListForm__tags mt-4">
+          <ValuePicker
+            zIndex={10}
+            isCreatable={true}
+            isMulti={true}
+            options={props.knownTags.map(strToPickerValue)}
+          />
+        </div>
+      }
+      fieldName="tagPVs"
+      label="Tags"
+    />
   );
 
-  return <EnhancedForm />;
-}
+  const SaveButton = () => (
+    <button className="button button--wide ml-2" type="submit">
+      save
+    </button>
+  );
+
+  const CancelButton = () => (
+    <button className="button button--wide ml-2" onClick={props.onCancel}>
+      cancel
+    </button>
+  );
+
+  return (
+    <FormStateProvider
+      initialValues={initialValues}
+      initialErrors={initialErrors}
+      handleValidate={handleValidate}
+      handleSubmit={handleSubmit}
+    >
+      <form className="movePrivateDataForm w-full">
+        <div className={'flexcol'}>
+          {notesDiv}
+          {tagsField}
+          <div className={'movePrivateDataForm__buttonPanel flexrow mt-4'}>
+            <SaveButton />
+            <CancelButton />
+          </div>
+        </div>
+      </form>
+    </FormStateProvider>
+  );
+};

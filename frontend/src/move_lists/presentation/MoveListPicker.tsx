@@ -8,6 +8,8 @@ import { Addition } from 'facet-mobx/facets/addition';
 import { Highlight } from 'facet-mobx/facets/highlight';
 import { Selection } from 'facet-mobx/facets/selection';
 import { mergeDefaultProps } from 'react-default-props-context';
+import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
+import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 
 type PropsT = {
   filter: (moveList: MoveListT) => boolean;
@@ -46,29 +48,40 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
   }
 
   const options = props.moveLists.filter(props.filter).map(toPickerValue);
-  const option = options.find((x) => x.value === props.moveListsHighlight.id);
+  const initialValues = {
+    moveListPV: options.find((x) => x.value === props.moveListsHighlight.id),
+  };
+
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
+    if (options.includes(values.moveListPV)) {
+      props.moveListsSelection.selectItem({
+        itemId: values.moveListPV.value,
+        isShift: false,
+        isCtrl: false,
+      });
+      props.navigateTo(props.moveListsHighlight.item);
+    }
+  };
 
   return (
-    <div className={classnames('moveListPicker mt-2', props.className)}>
-      <ValuePicker
-        fieldName="moveList"
-        isMulti={false}
-        isCreatable={true}
-        options={options}
+    <FormStateProvider
+      initialValues={initialValues}
+      handleSubmit={handleSubmit}
+    >
+      <FormFieldContext
+        fieldName="moveListPV"
+        label=""
         placeholder="Select a move list"
-        onChange={_onChange}
-        value={option}
-        setValue={(x: PickerItem) => {
-          if (options.includes(x)) {
-            props.moveListsSelection.selectItem({
-              itemId: x.value,
-              isShift: false,
-              isCtrl: false,
-            });
-            props.navigateTo(props.moveListsHighlight.item);
-          }
-        }}
-      />
-    </div>
+      >
+        <div className={classnames('moveListPicker mt-2', props.className)}>
+          <ValuePicker
+            isMulti={false}
+            isCreatable={true}
+            options={options}
+            onChange={_onChange}
+          />
+        </div>
+      </FormFieldContext>
+    </FormStateProvider>
   );
 });

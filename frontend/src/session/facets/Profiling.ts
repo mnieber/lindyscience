@@ -8,8 +8,8 @@ import { data, operation } from 'facet';
 import { installHandlers } from 'facet-mobx';
 
 export class Profiling {
-  @data @observable userProfile?: UserProfileT;
-  @data @observable signedInEmail?: string;
+  @data @observable userProfile?: UserProfileT = undefined;
+  @data @observable signedInEmail?: string = undefined;
   @data @observable acceptsCookies: boolean = false;
 
   @action setFollowedMoveListIds(moveListIds: Array<UUID>) {

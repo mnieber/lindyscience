@@ -15,10 +15,10 @@ export type AuthenticationStateT =
   | 'ActivateAccount.Failed';
 
 export class Authentication {
-  @data @observable signedInUserId?: string;
+  @data @observable signedInUserId?: string = undefined;
   @data @observable acceptsCookies: boolean = false;
-  @data @observable errors?: Array<string>;
-  @data @observable state?: AuthenticationStateT;
+  @data @observable errors?: Array<string> = undefined;
+  @data @observable state?: AuthenticationStateT = undefined;
 
   @operation loadUserId() {}
   @operation signIn(userId: string, password: string, rememberMe: boolean) {}

@@ -4,7 +4,7 @@ import { extractTimePoints } from 'src/video/utils';
 import { input } from 'facet';
 
 export class TimePoints {
-  @input @observable textWithTimePoints: string | undefined;
+  @input @observable textWithTimePoints: string | undefined = undefined;
 
   updateFrom(move?: MoveT, movePrivateData?: MovePrivateDataT) {
     const description = move ? move.description : '';

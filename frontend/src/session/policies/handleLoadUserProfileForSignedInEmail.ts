@@ -1,5 +1,6 @@
 import { Data } from 'src/session/facets/Data';
 import { Profiling } from 'src/session/facets/Profiling';
+import { Authentication } from 'src/session/facets/Authentication';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { apiLoadUserProfile } from 'src/profiles/api';
 import { apiLoadUserVotes } from 'src/votes/api';
@@ -8,12 +9,13 @@ import { apiFindMoveLists } from 'src/search/api';
 
 export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
   const profiling = Profiling.get(ctr);
+  const authentiation = Authentication.get(ctr);
   const data = Data.get(ctr);
 
   reaction(
-    () => profiling.signedInEmail,
-    async (signedInEmail) => {
-      if (signedInEmail === 'anonymous') {
+    () => authentiation.signedInUserId,
+    async (signedInUserId) => {
+      if (signedInUserId === 'anonymous') {
         profiling.setUserProfile(undefined);
         data.votesStore.setVotes({});
         data.movesStore.setMovePrivateDatas({});
@@ -42,6 +44,6 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
         data.moveListsStore.addMoveLists(moveLists.entities.moveLists || {});
       }
     },
-    { name: 'handleLoadUserProfileForSignedInEmail' }
+    { name: 'handleLoadUserProfileForSignedInUserId' }
   );
 };

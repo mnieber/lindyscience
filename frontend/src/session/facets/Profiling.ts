@@ -9,7 +9,6 @@ import { installHandlers } from 'facet-mobx';
 
 export class Profiling {
   @data @observable userProfile?: UserProfileT;
-  @data @observable signedInEmail?: string;
   @data @observable acceptsCookies: boolean = false;
 
   @action setFollowedMoveListIds(moveListIds: Array<UUID>) {
@@ -29,13 +28,6 @@ export class Profiling {
     return this.userProfile && isOwner(this.userProfile, x.ownerId);
   }
 
-  @operation loadEmail() {}
-  @operation signIn(userName: string, password: string): Promise<any> {
-    return Promise.resolve();
-  }
-  @operation signOut(): Promise<any> {
-    return Promise.resolve();
-  }
   @operation acceptCookies() {}
 
   static get = (ctr: any): Profiling => ctr.profiling;

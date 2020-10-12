@@ -34,6 +34,7 @@ export async function signIn(
         }
       }
     }`;
+
   const response: any = await doQuery(query, {
     userId,
     password,
@@ -57,7 +58,7 @@ export async function signIn(
     };
 
   const token = response.tokenAuth.token;
-  setToken(response.token);
+  setToken(token);
 
   return {
     success: true,

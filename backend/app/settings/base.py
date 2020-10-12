@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "dbbackup",
     "graphene_django",
+    "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     "graphql_auth",
 ]
 
@@ -82,7 +83,9 @@ CORS_URLS_REGEX = r"^/(graphql|auth)/.*$"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(PROJECT_DIR, "templates"),],
+        "DIRS": [
+            os.path.join(PROJECT_DIR, "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -187,7 +190,17 @@ REST_FRAMEWORK = {
     ),
 }
 
-GRAPHENE = {"SCHEMA": "app.schema.schema"}  # Where your Graphene schema lives
+GRAPHENE = {
+    "SCHEMA": "app.schema.schema",
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
+}
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+}
 
 LOGGING = {
     "version": 1,
@@ -230,7 +243,9 @@ DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
 DBBACKUP_STORAGE_OPTIONS = {"location": "/opt/linsci/dumps"}
 
 GRAPHQL_AUTH = {
-    "REGISTER_MUTATION_FIELDS": {"email": "String",},
+    "REGISTER_MUTATION_FIELDS": {
+        "email": "String",
+    },
     "UPDATE_MUTATION_FIELDS": ["username"],
     "LOGIN_ALLOWED_FIELDS": ["email"],
     "EMAIL_TEMPLATE_ACTIVATION": "accounts.email.ActivationEmail",

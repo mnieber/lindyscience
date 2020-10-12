@@ -1,28 +1,24 @@
 import React from 'react';
 
 import { useFormStateContext } from 'react-form-state-context';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
-import { labelProps } from 'src/session/presentation/labelProps';
 import { createFormFieldProps } from 'react-form-state-context';
+import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
 
-type PropsT = {
-  fieldName: string;
-  label: string;
-};
+type PropsT = {};
 
 export const EmailField = (props: PropsT) => {
   const formState = useFormStateContext();
+  const fieldContext = useFormFieldContext();
 
   return (
-    <FormFieldLabel {...labelProps(props)}>
-      <input
-        autoFocus
-        {...createFormFieldProps({
-          formState,
-          fieldName: props.fieldName,
-          fieldType: 'text',
-        })}
-      />
-    </FormFieldLabel>
+    <input
+      autoFocus
+      placeholder={fieldContext.label}
+      {...createFormFieldProps({
+        formState,
+        fieldName: fieldContext.fieldName,
+        fieldType: 'text',
+      })}
+    />
   );
 };

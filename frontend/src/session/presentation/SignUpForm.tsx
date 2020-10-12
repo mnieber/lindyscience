@@ -3,10 +3,10 @@ import React from 'react';
 import { FormStateProvider, IFormState } from 'react-form-state-context';
 import { GlobalError } from 'src/session/presentation/form_fields/GlobalError';
 import { EmailField } from 'src/session/presentation/form_fields/EmailField';
-import { FieldError } from 'src/session/presentation/form_fields/FieldError';
 import { UsernameField } from 'src/session/presentation/form_fields/UsernameField';
 import { PasswordField } from 'src/session/presentation/form_fields/PasswordField';
 import { SubmitButton } from 'src/session/presentation/form_fields/SubmitButton';
+import { Field } from 'src/forms/components/Field';
 
 const getExternalErrors = (errors: Array<string>) => {
   const fieldErrors: { [name: string]: string } = {};
@@ -45,7 +45,7 @@ export function SignUpForm(props: PropsT) {
   };
 
   const handleSubmit = ({ values }: { values: IFormState['values'] }) => {
-    console.log(values);
+    props.signUp(values.email, values.username, values.password);
   };
 
   return (
@@ -56,28 +56,16 @@ export function SignUpForm(props: PropsT) {
       handleSubmit={handleSubmit}
     >
       <GlobalError />
-      <div>
-        <EmailField fieldName="email" label="Email" />
-        <FieldError fieldName="email" />
-      </div>
-      <div>
-        <UsernameField fieldName="username" label="Username" />
-        <FieldError fieldName="username" />
-      </div>
-      <div>
-        <PasswordField fieldName="password" label="Password" />
-        <FieldError fieldName="password" />
-      </div>
-      <SubmitButton
-        onClick={(formState: any) => {
-          props.signUp(
-            formState.values.email,
-            formState.values.username,
-            formState.values.password
-          );
-        }}
-        label="Sign Up"
-      />
+      <Field fieldName="email" label="Email">
+        <EmailField />
+      </Field>
+      <Field fieldName="username" label="Username">
+        <UsernameField />
+      </Field>
+      <Field fieldName="password" label="Password">
+        <PasswordField />
+      </Field>
+      <SubmitButton label="Sign Up" />
     </FormStateProvider>
   );
 }

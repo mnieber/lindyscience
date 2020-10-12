@@ -1,26 +1,23 @@
 import React from 'react';
 
 import { useFormStateContext } from 'react-form-state-context';
-import { labelProps } from 'src/session/presentation/labelProps';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { createFormFieldProps } from 'react-form-state-context';
+import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
 
-type PropsT = {
-  fieldName: string;
-  label: string;
-};
+type PropsT = {};
 
 export const UsernameField = (props: PropsT) => {
   const formState = useFormStateContext();
+  const fieldContext = useFormFieldContext();
+
   return (
-    <FormFieldLabel {...labelProps(props)}>
-      <input
-        {...createFormFieldProps({
-          formState,
-          fieldName: props.fieldName,
-          fieldType: 'text',
-        })}
-      />
-    </FormFieldLabel>
+    <input
+      placeholder={fieldContext.label}
+      {...createFormFieldProps({
+        formState,
+        fieldName: fieldContext.fieldName,
+        fieldType: 'text',
+      })}
+    />
   );
 };

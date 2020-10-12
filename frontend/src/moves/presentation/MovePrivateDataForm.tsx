@@ -8,28 +8,8 @@ import { strToPickerValue } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
-
-import { FormFieldContext } from 'src/forms/components/FormFieldContext';
-import { FormFieldError } from 'src/forms/components/FormFieldError';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
+import { Field } from 'src/forms/components/Field';
 import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
-
-interface FieldT {
-  fieldName: string;
-  label: string;
-}
-
-const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
-  return (
-    <FormFieldContext fieldName={fieldName} label={label}>
-      <div className="flex flex-col">
-        <FormFieldLabel />
-        {children}
-        <FormFieldError />
-      </div>
-    </FormFieldContext>
-  );
-};
 
 type PropsT = {
   onCancel: () => void;

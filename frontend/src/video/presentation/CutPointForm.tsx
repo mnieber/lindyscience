@@ -7,9 +7,7 @@ import {
 } from 'react-form-state-context';
 
 import { TextField } from 'src/forms/components/TextField';
-import { FormFieldContext } from 'src/forms/components/FormFieldContext';
-import { FormFieldError } from 'src/forms/components/FormFieldError';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
+import { Field } from 'src/forms/components/Field';
 import { TagT } from 'src/tags/types';
 import { CutPointT } from 'src/video/types';
 import {
@@ -19,23 +17,6 @@ import {
 } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
-
-interface FieldT {
-  fieldName: string;
-  label: string;
-}
-
-const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
-  return (
-    <FormFieldContext fieldName={fieldName} label={label}>
-      <div className="flex flex-col">
-        <FormFieldLabel />
-        {children}
-        <FormFieldError />
-      </div>
-    </FormFieldContext>
-  );
-};
 
 type PropsT = {
   onSubmit: (values: any) => void;

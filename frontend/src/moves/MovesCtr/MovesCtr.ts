@@ -25,6 +25,7 @@ import * as SessionCtrPolicies from 'src/session/policies';
 import * as MoveCtrPolicies from 'src/moves/MoveCtr/policies';
 
 type PropsT = {
+  isEqual: (lhs: any, rhs: any) => boolean;
   createNewMove: (userProfile: UserProfileT, sourceMoveListId: UUID) => MoveT;
   setMoves: (moveList: MoveListT, moves: Array<MoveT>) => any;
   saveMove: (move: MoveT, values: any) => any;
@@ -61,12 +62,10 @@ export class MovesContainer {
     const policies = [
       // selection
       MobXFacets.selectionActsOnItems(itemById),
-
       // highlight
       MobXFacets.highlightActsOnItems(itemById),
       MobXPolicies.highlightFollowsSelection,
       MobXPolicies.highlightIsCorrectedOnFilterChange,
-
       // navigation
       MobXPolicies.locationIsStoredOnNewItem(props.navigation.storeLocation),
       MobXPolicies.locationIsRestoredOnCancelNewItem(
@@ -75,7 +74,6 @@ export class MovesContainer {
       MoveCtrPolicies.handleNavigateToMove(props.navigation),
       SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
       SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
-
       // insertion
       MobXFacets.insertionActsOnItems(inputItems),
       MobXFacets.insertionCreatesThePreview({ preview }),
@@ -86,24 +84,21 @@ export class MovesContainer {
           MobXPolicies.insertByDraggingSelection({ showPreview: false }),
         ],
       }),
-
       // creation
       MobXPolicies.newItemsAreCreatedBelowTheHighlight,
       MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreInsertedWhenConfirmed,
-      MobXPolicies.newItemsAreConfirmedWhenSaved,
+      MobXPolicies.newItemsAreConfirmedWhenSaved(props.isEqual),
       MobXPolicies.newItemsAreCanceledOnHighlightChange,
-
       // filtering
       MobXFacets.filteringActsOnItems(preview),
       MobXPolicies.filteringIsDisabledOnNewItem,
-
       // display
       mapData([Filtering, 'filteredItems'], [Outputs, 'display']),
       mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
     ];
 
-    installPolicies(policies, this);
+    installPolicies<MovesContainer>(policies, this);
   }
 
   constructor(props: PropsT) {
@@ -124,7 +119,7 @@ export class MovesContainer {
     this.filtering = initFiltering(new Filtering());
     this.highlight = initHighlight(new Highlight());
     this.insertion = initInsertion(new Insertion(), {
-      insertItems: (preview) => {
+      insertItems: (preview: MoveT[]) => {
         props.setMoves(this.inputs.moveList as any, preview);
       },
     });

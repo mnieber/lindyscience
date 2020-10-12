@@ -9,6 +9,7 @@ import { Inputs, initInputs } from 'src/session/facets/Inputs';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
 import { facet, installPolicies, registerFacets } from 'facet';
+import * as authApi from 'src/session/apis/authApi';
 
 export type AuthApiT = {
   loadUserId: Function;
@@ -39,15 +40,15 @@ export class SessionContainer {
 
       // profiling
       SessionCtrPolicies.handleLoadUserProfileForSignedInEmail,
-      SessionCtrPolicies.handleLoadUserId,
-      SessionCtrPolicies.handleSignIn,
-      SessionCtrPolicies.handleSignOut,
+      SessionCtrPolicies.handleLoadUserId(authApi),
+      SessionCtrPolicies.handleSignIn(authApi),
+      SessionCtrPolicies.handleSignOut(authApi),
 
       // navigation
       SessionCtrPolicies.handleLoadSelectedMoveListFromUrl,
     ];
 
-    installPolicies(policies, this);
+    installPolicies<SessionContainer>(policies, this);
   }
 
   constructor(props: PropsT) {

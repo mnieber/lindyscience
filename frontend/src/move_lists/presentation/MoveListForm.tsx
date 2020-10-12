@@ -7,9 +7,6 @@ import {
 
 import { SlugField } from 'src/move_lists/presentation/SlugField';
 import { TextField } from 'src/forms/components/TextField';
-import { FormFieldContext } from 'src/forms/components/FormFieldContext';
-import { FormFieldError } from 'src/forms/components/FormFieldError';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { TagT } from 'src/tags/types';
 import { MoveListT } from 'src/move_lists/types';
 import { RichTextEditor } from 'src/rich_text/presentation/RichTextEditor';
@@ -18,25 +15,9 @@ import { newMoveListSlug } from 'src/app/utils';
 import { ControlledCheckbox } from 'src/session/presentation/form_fields/ControlledCheckbox';
 import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
 import { strToPickerValue } from 'src/utils/value_picker';
+import { Field } from 'src/forms/components/Field';
 
 // MoveListForm
-
-interface FieldT {
-  fieldName: string;
-  label: string;
-}
-
-const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
-  return (
-    <FormFieldContext fieldName={fieldName} label={label}>
-      <div className="flex flex-col">
-        <FormFieldLabel />
-        {children}
-        <FormFieldError />
-      </div>
-    </FormFieldContext>
-  );
-};
 
 type PropsT = {
   onCancel: () => void;

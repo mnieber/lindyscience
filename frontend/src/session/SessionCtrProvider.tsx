@@ -32,7 +32,7 @@ export const SessionCtrProvider: React.FC<PropsT> = compose(
     });
 
     const ctr = new SessionContainer({ history });
-    ctr.profiling.loadEmail();
+    ctr.authentication.loadUserId();
     return ctr;
   };
 

@@ -7,7 +7,7 @@ function _createClient() {
   return new GraphQLClient(`http://localhost:8000/graphql/`, {
     headers: authToken
       ? {
-          Authorization: 'Token ' + authToken,
+          Authorization: 'JWT ' + authToken,
         }
       : {},
   });

@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 // @ts-ignore
-import Creatable from 'react-select/lib/Creatable';
+import Creatable from 'react-select';
 import jQuery from 'jquery';
 
 import { handleEnterAsTabToNext } from 'src/utils/form_utils';

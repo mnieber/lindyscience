@@ -6,6 +6,7 @@ from dodo_commands import CommandError, ConfigArg, Dodo
 
 def _args():
     parser = ArgumentParser(description="Publish own npm packages")
+    parser.add_argument("--login", action="store_true")
 
     # Add arguments to the parser here
 
@@ -32,11 +33,16 @@ if Dodo.is_main(__name__, safe=True):
         "facet",
         "facet-mobx",
     ]
-    Dodo.run(["npm", "adduser", "--registry", "http://verdaccio:4873"])
+
+    if args.login:
+        Dodo.run(["npm", "adduser", "--registry", "http://verdaccio:4873"])
+
     for src_sub_dir in src_sub_dirs:
         src_dir = os.path.join(args.npm_dir, src_sub_dir)
         dist_dir = os.path.join(args.npm_dir, src_sub_dir, "dist")
         Dodo.run(["./node_modules/.bin/tsc", "--outDir", "dist"], cwd=src_dir)
+        Dodo.run(["yarn", "link"], cwd=dist_dir)
+        Dodo.run(["yarn", "link", src_sub_dir], cwd="/opt/linsci/src")
         Dodo.run(["yarn", "version", "--patch"], cwd=src_dir)
         Dodo.run(["cp", "package.json", "dist"], cwd=src_dir)
         Dodo.run(

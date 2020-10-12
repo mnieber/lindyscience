@@ -4,10 +4,9 @@ import classnames from 'classnames';
 
 import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
-import { Profiling } from 'src/session/facets/Profiling';
+import { Authentication } from 'src/session/facets/Authentication';
 import { mergeDefaultProps } from 'react-default-props-context';
 import { helpUrl } from 'src/moves/utils';
-import { createErrorHandler } from 'src/app/utils';
 
 type PropsT = {
   defaultProps?: any;
@@ -16,7 +15,7 @@ type PropsT = {
 type DefaultPropsT = {
   userProfile?: UserProfileT;
   navigation: Navigation;
-  profiling: Profiling;
+  authentication: Authentication;
 };
 
 export const AccountMenu: React.FC<PropsT> = observer((p: PropsT) => {
@@ -64,9 +63,7 @@ export const AccountMenu: React.FC<PropsT> = observer((p: PropsT) => {
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
                 setExpanded(false);
-                props.profiling
-                  .signOut()
-                  .catch(createErrorHandler('Could not sign out'));
+                props.authentication.signOut();
               }}
             >
               Sign out

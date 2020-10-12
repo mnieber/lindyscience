@@ -1,29 +1,24 @@
 import React from 'react';
 
 import { useFormStateContext } from 'react-form-state-context';
-import { labelProps } from 'src/session/presentation/labelProps';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { createFormFieldProps } from 'react-form-state-context';
+import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
 
-type PropsT = {
-  fieldName: string;
-  label: string;
-};
+type PropsT = {};
 
 export const PasswordField = (props: PropsT) => {
   const formState = useFormStateContext();
+  const fieldContext = useFormFieldContext();
+
   return (
-    <FormFieldLabel {...labelProps(props)}>
-      <input
-        className="w-16"
-        placeholder="Enter your password"
-        type="password"
-        {...createFormFieldProps({
-          formState,
-          fieldName: props.fieldName,
-          fieldType: 'password',
-        })}
-      />
-    </FormFieldLabel>
+    <input
+      placeholder="Enter your password"
+      type="password"
+      {...createFormFieldProps({
+        formState,
+        fieldName: fieldContext.fieldName,
+        fieldType: 'password',
+      })}
+    />
   );
 };

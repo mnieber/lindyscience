@@ -28,7 +28,7 @@ export class MoveContainer {
       updateVideoWidth,
     ];
 
-    installPolicies(policies, this);
+    installPolicies<MoveContainer>(policies, this);
   }
 
   constructor(props: PropsT) {

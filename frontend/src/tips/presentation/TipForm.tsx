@@ -6,26 +6,7 @@ import {
 } from 'react-form-state-context';
 
 import { TextField } from 'src/forms/components/TextField';
-import { FormFieldContext } from 'src/forms/components/FormFieldContext';
-import { FormFieldError } from 'src/forms/components/FormFieldError';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
-
-interface FieldT {
-  fieldName: string;
-  label: string;
-}
-
-const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
-  return (
-    <FormFieldContext fieldName={fieldName} label={label}>
-      <div className="flex flex-col">
-        <FormFieldLabel />
-        {children}
-        <FormFieldError />
-      </div>
-    </FormFieldContext>
-  );
-};
+import { Field } from 'src/forms/components/Field';
 
 export function TipForm({
   onSubmit,

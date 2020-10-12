@@ -3,9 +3,9 @@ import React from 'react';
 import { FormStateProvider, IFormState } from 'react-form-state-context';
 import { GlobalError } from 'src/session/presentation/form_fields/GlobalError';
 import { EmailField } from 'src/session/presentation/form_fields/EmailField';
-import { FieldError } from 'src/session/presentation/form_fields/FieldError';
 import { PasswordField } from 'src/session/presentation/form_fields/PasswordField';
 import { SubmitButton } from 'src/session/presentation/form_fields/SubmitButton';
+import { Field } from 'src/forms/components/Field';
 
 const getExternalErrors = (errors: Array<string>) => {
   const fieldErrors: { [name: string]: string } = {};
@@ -40,35 +40,28 @@ export function SignInForm(props: SignInFormPropsT) {
   };
 
   const handleSubmit = ({ values }: { values: IFormState['values'] }) => {
-    console.log(values);
+    props.signIn(values.email, values.password, values.rememberMe);
   };
 
   return (
     <FormStateProvider
-      initialValues={{ rememberMe: true }}
+      initialValues={{
+        rememberMe: true,
+        email: null,
+        password: null,
+      }}
       initialErrors={getExternalErrors(props.errors)}
       handleValidate={handleValidate}
       handleSubmit={handleSubmit}
     >
       <GlobalError />
-      <div>
-        <EmailField fieldName="email" label="Email" />
-        <FieldError fieldName="email" />
-      </div>
-      <div>
-        <PasswordField fieldName="password" label="Password" />
-        <FieldError fieldName="password" />
-      </div>
-      <SubmitButton
-        onClick={(formState: any) => {
-          props.signIn(
-            formState.values.email,
-            formState.values.password,
-            formState.values.rememberMe
-          );
-        }}
-        label="Sign in"
-      />
+      <Field fieldName="email" label="Email">
+        <EmailField />
+      </Field>
+      <Field fieldName="password" label="Password">
+        <PasswordField />
+      </Field>
+      <SubmitButton label="Sign in" />
     </FormStateProvider>
   );
 }

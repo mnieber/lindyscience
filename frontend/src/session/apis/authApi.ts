@@ -14,7 +14,7 @@ const isError = (path: any) =>
 
 // Api app
 
-export async function apiSignIn(
+export async function signIn(
   userId: string,
   password: string,
   rememberMe: boolean
@@ -66,17 +66,17 @@ export async function apiSignIn(
   };
 }
 
-export async function apiSignOut() {
+export async function signOut() {
   try {
     await post('/auth/token/logout', {});
     setToken('');
     return '';
   } catch (e) {
-    throw 'Could not sign out';
+    throw Error('Could not sign out');
   }
 }
 
-export async function apiLoadUserId() {
+export async function loadUserId() {
   const query = `query {
         me {
           username,
@@ -89,7 +89,7 @@ export async function apiLoadUserId() {
   };
 }
 
-export async function apiResetPassword(email: string) {
+export async function resetPassword(email: string) {
   const query = `mutation ($email: String!) {
       sendPasswordResetEmail(
         email: $email,
@@ -124,7 +124,7 @@ export async function apiResetPassword(email: string) {
   };
 }
 
-export async function apiChangePassword(newPassword: string, token: string) {
+export async function changePassword(newPassword: string, token: string) {
   const query = `mutation ($newPassword: String!, $token: String!) {
       passwordReset(
         token: $token,
@@ -184,7 +184,7 @@ export async function apiChangePassword(newPassword: string, token: string) {
   };
 }
 
-export async function apiActivateAccount(token: string) {
+export async function activateAccount(token: string) {
   const query = `mutation ($token: String!) {
       verifyAccount(
         token: $token,
@@ -219,7 +219,7 @@ export async function apiActivateAccount(token: string) {
   };
 }
 
-export async function apiSignUp(
+export async function signUp(
   email: string,
   username: string,
   password: string

@@ -3,7 +3,7 @@ import React from 'react';
 import { FormStateProvider, IFormState } from 'react-form-state-context';
 import { GlobalError } from 'src/session/presentation/form_fields/GlobalError';
 import { EmailField } from 'src/session/presentation/form_fields/EmailField';
-import { FieldError } from 'src/session/presentation/form_fields/FieldError';
+import { Field } from 'src/forms/components/Field';
 import { SubmitButton } from 'src/session/presentation/form_fields/SubmitButton';
 
 const getExternalErrors = (errors: Array<string>) => {
@@ -30,7 +30,7 @@ export function PasswordResetForm(props: PasswordResetFormPropsT) {
   };
 
   const handleSubmit = ({ values }: { values: IFormState['values'] }) => {
-    console.log(values);
+    props.resetPassword(values.email);
   };
 
   return (
@@ -42,16 +42,12 @@ export function PasswordResetForm(props: PasswordResetFormPropsT) {
     >
       <GlobalError />
       <div>
-        <EmailField fieldName="email" label="Email" />
-        <FieldError fieldName="email" />
+        <Field fieldName="email" label="Email">
+          <EmailField />
+        </Field>
         Enter your email to reset your password.
       </div>
-      <SubmitButton
-        onClick={(formState: any) => {
-          props.resetPassword(formState.values.email);
-        }}
-        label="Request password reset"
-      />
+      <SubmitButton label="Request password reset" />
     </FormStateProvider>
   );
 }

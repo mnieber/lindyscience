@@ -21,7 +21,7 @@ export class CutVideoContainer {
   _applyPolicies(props: PropsT) {
     const policies = [updateVideoWidth];
 
-    installPolicies(policies, this);
+    installPolicies<CutVideoContainer>(policies, this);
   }
 
   constructor(props: PropsT) {

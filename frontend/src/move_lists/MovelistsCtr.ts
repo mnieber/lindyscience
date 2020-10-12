@@ -85,7 +85,7 @@ export class MoveListsContainer {
       mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
     ];
 
-    installPolicies(policies, this);
+    installPolicies<MoveListsContainer>(policies, this);
   }
 
   constructor(props: PropsT) {

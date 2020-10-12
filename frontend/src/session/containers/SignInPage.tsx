@@ -31,9 +31,9 @@ export const SignInPage = compose(
     <AuthenticationFrame header="Sign in">
       <div className="">
         <SignInForm
-          signIn={(email, password, rememberMe) =>
-            props.authentication.signIn(email, password, rememberMe)
-          }
+          signIn={(email, password, rememberMe) => {
+            props.authentication.signIn(email, password, rememberMe);
+          }}
           errors={errors}
         />
         <RouterLink to="/request-password-reset/">Forgot password?</RouterLink>

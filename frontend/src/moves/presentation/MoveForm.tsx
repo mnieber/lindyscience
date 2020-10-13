@@ -141,6 +141,18 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
     </Field>
   );
 
+  const startField = (
+    <Field label="Start time" fieldName="startTime">
+      <StartField videoController={props.videoController} />
+    </Field>
+  );
+
+  const endField = (
+    <Field label="End time" fieldName="endTime">
+      <EndField videoController={props.videoController} />
+    </Field>
+  );
+
   return (
     <FormStateProvider
       initialValues={initialValues}
@@ -153,8 +165,8 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
           {nameField}
           {initialValues.slug !== newMoveSlug && slugField}
           {linkField}
-          <StartField videoController={props.videoController} />
-          <EndField videoController={props.videoController} />
+          {startField}
+          {endField}
           {description}
           {tagsField}
           <div className={'moveForm__buttonPanel flexrow mt-4'}>

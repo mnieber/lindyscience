@@ -19,12 +19,11 @@ type PropsT = {
   isMulti: boolean;
   isCreatable: boolean;
   zIndex?: number;
-  onChange?: Function;
+  submitOnChange?: boolean;
   options?: PickerValueT[];
-  forwardedRef?: any;
 };
 
-export const ValuePickerImpl: React.FC<PropsT> = (props: PropsT) => {
+export const ValuePicker: React.FC<PropsT> = (props: PropsT) => {
   const formState = useFormStateContext();
   const fieldContext = useFormFieldContext();
 
@@ -34,8 +33,8 @@ export const ValuePickerImpl: React.FC<PropsT> = (props: PropsT) => {
     } else {
       formState.setValue(fieldContext.fieldName, value);
     }
-    if (props.onChange) {
-      props.onChange(value);
+    if (!!props.submitOnChange) {
+      formState.submit();
     }
   };
 
@@ -49,7 +48,6 @@ export const ValuePickerImpl: React.FC<PropsT> = (props: PropsT) => {
     onKeyDown: (e: any) => {
       handleEnterAsTabToNext(e, false);
     },
-    ref: props.forwardedRef,
   };
 
   const picker = props.isCreatable ? (
@@ -65,10 +63,6 @@ export const ValuePickerImpl: React.FC<PropsT> = (props: PropsT) => {
     </div>
   );
 };
-
-export const ValuePicker: React.FC<PropsT> = React.forwardRef((props, ref) => {
-  return <ValuePickerImpl {...props} forwardedRef={ref} />;
-});
 
 export function strToPickerValue(value: string) {
   return {

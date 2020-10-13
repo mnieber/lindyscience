@@ -25,20 +25,8 @@ type DefaultPropsT = {
   moveLists: Array<MoveListT>;
 };
 
-type PickerItem = {
-  value: string;
-  label: string;
-};
-
 export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-
-  function _onChange(pickedItem: PickerItem) {
-    if (!props.moveLists.some((x) => x.id === pickedItem.value)) {
-      props.moveListsAddition.add({ name: pickedItem.label });
-      props.navigateTo(props.moveListsAddition.item);
-    }
-  }
 
   function toPickerValue(moveList: MoveListT) {
     return {
@@ -49,7 +37,7 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
 
   const options = props.moveLists.filter(props.filter).map(toPickerValue);
   const initialValues = {
-    moveListPV: options.find((x) => x.value === props.moveListsHighlight.id),
+    moveListPV: options.find((x) => x.value === props.moveListsHighlight.id) ?? null,
   };
 
   const handleSubmit = ({ values }: HandleSubmitArgsT) => {
@@ -60,6 +48,10 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
         isCtrl: false,
       });
       props.navigateTo(props.moveListsHighlight.item);
+    }
+    else if (values.moveListPV) {
+      props.moveListsAddition.add({ name: values.moveListPV.label });
+      props.navigateTo(props.moveListsAddition.item);
     }
   };
 
@@ -78,7 +70,7 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
             isMulti={false}
             isCreatable={true}
             options={options}
-            onChange={_onChange}
+            submitOnChange={true}
           />
         </div>
       </FormFieldContext>

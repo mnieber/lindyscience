@@ -46,8 +46,6 @@ export const EndField = (props: PropsT) => {
   return (
     <TextField
       classNames="w-full"
-      label="End time"
-      fieldName="endTime"
       type="text"
       placeholder="End time in seconds"
       buttons={[updateEndBtn, gotoEndBtn]}

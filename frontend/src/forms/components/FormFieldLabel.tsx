@@ -3,13 +3,13 @@ import { isEmpty, isNil } from 'lodash/fp';
 import classnames from 'classnames';
 import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
 
-type FormFieldLabelPropsT = {
+type PropsT = {
   classNames?: any;
-  buttons?: any;
+  buttons?: any[];
   children?: any;
 };
 
-export function FormFieldLabel(props: FormFieldLabelPropsT) {
+export const FormFieldLabel: React.FC<PropsT> = (props: PropsT) => {
   const fieldContext = useFormFieldContext();
 
   const ColWrapper =
@@ -38,4 +38,4 @@ export function FormFieldLabel(props: FormFieldLabelPropsT) {
       {props.children}
     </ColWrapper>
   );
-}
+};

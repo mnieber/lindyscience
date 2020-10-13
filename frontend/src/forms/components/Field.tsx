@@ -6,13 +6,19 @@ import { FormFieldError } from 'src/forms/components/FormFieldError';
 interface FieldT {
   fieldName: string;
   label: string;
+  buttons?: any[];
 }
 
-export const Field: React.FC<FieldT> = ({ fieldName, label, children }) => {
+export const Field: React.FC<FieldT> = ({
+  fieldName,
+  label,
+  buttons,
+  children,
+}) => {
   return (
     <FormFieldContext fieldName={fieldName} label={label}>
       <div className="flex flex-col">
-        <FormFieldLabel />
+        <FormFieldLabel buttons={buttons} />
         {children}
         <FormFieldError />
       </div>

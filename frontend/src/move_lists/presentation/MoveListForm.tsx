@@ -92,12 +92,6 @@ export function MoveListForm(props: PropsT) {
     </Field>
   );
 
-  const slugField = (
-    <Field label="Slug" fieldName="slug">
-      <SlugField />
-    </Field>
-  );
-
   const descriptionField = (
     <Field fieldName="description" label="Description">
       <div className="moveListForm__description mt-4">
@@ -133,7 +127,7 @@ export function MoveListForm(props: PropsT) {
       <form className="moveListForm w-full">
         <div className={'moveListForm flexcol'}>
           {nameField}
-          {initialValues.slug !== newMoveListSlug && slugField}
+          {initialValues.slug !== newMoveListSlug && <SlugField />}
           {descriptionField}
           {initialValues.role !== 'trash' && isPrivateField}
           {tagsField}

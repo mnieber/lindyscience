@@ -3,6 +3,7 @@ import { useFormStateContext } from 'react-form-state-context';
 import { truncDecimals } from 'src/utils/utils';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { TextField } from 'src/forms/components/TextField';
+import { Field } from 'src/forms/components/Field';
 
 interface PropsT {
   videoController: VideoController;
@@ -44,11 +45,12 @@ export const EndField = (props: PropsT) => {
   );
 
   return (
-    <TextField
-      classNames="w-full"
-      type="text"
-      placeholder="End time in seconds"
+    <Field
+      label="End time"
+      fieldName="endTime"
       buttons={[updateEndBtn, gotoEndBtn]}
-    />
+    >
+      <TextField classNames="w-full" placeholder="End time in seconds" />
+    </Field>
   );
 };

@@ -50,7 +50,7 @@ export const EndField = (props: PropsT) => {
       fieldName="endTime"
       buttons={[updateEndBtn, gotoEndBtn]}
     >
-      <TextField classNames="w-full" placeholder="End time in seconds" />
+      <TextField className="w-full" placeholder="End time in seconds" />
     </Field>
   );
 };

@@ -57,7 +57,7 @@ export function CutPointForm(props: PropsT) {
 
   const nameField = (
     <Field fieldName="name" label="Name">
-      <TextField classNames="w-full" autoFocus={props.autoFocus} />
+      <TextField className="w-full" autoFocus={props.autoFocus} />
     </Field>
   );
 

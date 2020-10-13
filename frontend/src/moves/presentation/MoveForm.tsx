@@ -75,14 +75,14 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
 
   const nameField = (
     <Field label="Name" fieldName="name">
-      <TextField classNames="w-full" autoFocus={props.autoFocus} />
+      <TextField className="w-full" autoFocus={props.autoFocus} />
     </Field>
   );
 
   const linkField = (
     <Field label="Link" fieldName="link">
       <TextField
-        classNames="w-full"
+        className="w-full"
         type="text"
         onChange={(x: any) => props.setAltLink(x.target.value)}
       />

@@ -54,7 +54,7 @@ export const StartField = (props: PropsT) => {
       fieldName="startTime"
       buttons={[<UpdateStartBtn />, <GotoStartBtn />]}
     >
-      <TextField classNames="w-full" placeholder="Start time in seconds" />
+      <TextField className="w-full" placeholder="Start time in seconds" />
     </Field>
   );
 };

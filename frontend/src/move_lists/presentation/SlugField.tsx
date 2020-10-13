@@ -6,9 +6,9 @@ import { Field } from 'src/forms/components/Field';
 
 const UpdateSlugBtn = ({ className }: { className: any }) => {
   const formState = useFormStateContext();
+
   return (
     <div
-      key="updateSlugBtn"
       className={className}
       onClick={() => {
         const newSlug = slugify(formState.values.name);
@@ -27,9 +27,11 @@ export const SlugField = () => {
     <Field
       label="Slug"
       fieldName="slug"
-      buttons={[<UpdateSlugBtn className="button ml-2 flex-none" />]}
+      buttons={[
+        <UpdateSlugBtn key="updateSlugBtn" className="button ml-2 flex-none" />,
+      ]}
     >
-      <TextField classNames="flex-1" disabled={true} />
+      <TextField className="flex-1" disabled={true} controlled={true} />
     </Field>
   );
 };

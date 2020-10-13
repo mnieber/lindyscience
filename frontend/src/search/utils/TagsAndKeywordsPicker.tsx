@@ -46,7 +46,6 @@ type PropsT = {
   onTextChange?: Function;
   options?: any;
   placeholder?: string;
-  forwardedRef?: any;
   defaults: any;
 };
 
@@ -123,7 +122,6 @@ export function TagsAndKeywordsPicker(props: PropsT) {
     inputValue,
     onInputChange,
     filterOption,
-    ref: props.forwardedRef,
   };
 
   const picker = <Select {...pickerProps} />;

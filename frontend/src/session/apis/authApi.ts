@@ -1,5 +1,4 @@
 import { doQuery, setToken } from 'src/app/client';
-import { post } from 'src/utils/api_utils';
 import * as _ from 'lodash/fp';
 
 const hasErrorCode = (path: any, code: any) =>
@@ -69,7 +68,6 @@ export async function signIn(
 
 export async function signOut() {
   try {
-    await post('/auth/token/logout', {});
     setToken('');
     return '';
   } catch (e) {

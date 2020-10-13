@@ -57,7 +57,7 @@ export function TipForm({
 
   const textField = (
     <Field fieldName="text" label="Text">
-      <TextField classNames="tipForm__text w-64" />
+      <TextField className="tipForm__text w-64" />
     </Field>
   );
 

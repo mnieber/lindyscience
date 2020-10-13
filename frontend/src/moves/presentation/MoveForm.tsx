@@ -75,14 +75,14 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
 
   const nameField = (
     <Field label="Name" fieldName="name">
-      <TextField classNames="w-full" autoFocus={props.autoFocus} />
+      <TextField className="w-full" autoFocus={props.autoFocus} />
     </Field>
   );
 
   const linkField = (
     <Field label="Link" fieldName="link">
       <TextField
-        classNames="w-full"
+        className="w-full"
         type="text"
         onChange={(x: any) => props.setAltLink(x.target.value)}
       />
@@ -135,12 +135,6 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
     </Field>
   );
 
-  const slugField = (
-    <Field label="Slug" fieldName="slug">
-      <SlugField />
-    </Field>
-  );
-
   return (
     <FormStateProvider
       initialValues={initialValues}
@@ -151,7 +145,7 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
       <form className="moveForm w-full">
         <div className={'moveForm flexcol'}>
           {nameField}
-          {initialValues.slug !== newMoveSlug && slugField}
+          {initialValues.slug !== newMoveSlug && <SlugField />}
           {linkField}
           <StartField videoController={props.videoController} />
           <EndField videoController={props.videoController} />

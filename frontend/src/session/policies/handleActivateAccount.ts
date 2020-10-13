@@ -18,7 +18,7 @@ export const handleActivateAccount = (authApi: AuthApiT) => (ctr: any) => {
         authentication.state = 'ActivateAccount.Failed';
       } else {
         authentication.state = 'ActivateAccount.Succeeded';
-        navigation.history.push('/home');
+        navigation.history.push('/');
       }
     });
   });

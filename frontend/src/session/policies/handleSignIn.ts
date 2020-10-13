@@ -21,7 +21,7 @@ export const handleSignIn = (authApi: AuthApiT) => (ctr: any) => {
         if (!response.errors) {
           authentication.signedInUserId = response.userId;
           const next = urlParam('next');
-          navigation.history.push(next ? next : '/home');
+          navigation.history.push(next ? next : '/');
         }
       });
     }

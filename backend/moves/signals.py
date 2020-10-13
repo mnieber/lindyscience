@@ -1,13 +1,11 @@
 from django.dispatch import receiver
+from graphql_auth.signals import user_verified
 
 from accounts.models import Profile, ProfileToMoveList
 from moves import models
 
-# from djoser.signals import user_activated
 
-
-
-# @receiver(user_activated)
+@receiver(user_verified)
 def create_profile_on_activation(sender, user, request, **kwargs):
     trash = models.MoveList(
         role="trash",

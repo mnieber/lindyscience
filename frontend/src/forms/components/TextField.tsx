@@ -4,19 +4,26 @@ import {
   useFormStateContext,
   createFormFieldProps,
 } from 'react-form-state-context';
+import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
 
 // Generic component that shows a text input initialized with the value
 // for `fieldName` in the current form state.
-export const TextField: React.FC<any> = (
-  { fieldName }: { fieldName: string },
+export const TextField: React.FC<any> = ({
+  controlled,
   ...otherProps
-) => {
+}: any) => {
   const formState = useFormStateContext();
+  const fieldContext = useFormFieldContext();
 
   return (
     <input
       type="text"
-      {...createFormFieldProps({ formState, fieldName, fieldType: 'text' })}
+      {...createFormFieldProps({
+        formState,
+        controlled,
+        fieldName: fieldContext.fieldName,
+        fieldType: 'text',
+      })}
       {...otherProps}
     />
   );

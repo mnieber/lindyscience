@@ -2,8 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react';
 
-import { MoveListT } from 'src/move_lists/types';
 import { ValuePicker } from 'src/utils/value_picker';
+import { MoveListT } from 'src/move_lists/types';
 import { Addition } from 'facet-mobx/facets/addition';
 import { Highlight } from 'facet-mobx/facets/highlight';
 import { Selection } from 'facet-mobx/facets/selection';

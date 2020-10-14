@@ -1,22 +1,24 @@
 import React from 'react';
+
 import {
   FormStateProvider,
-  HandleValidateArgsT,
   HandleSubmitArgsT,
+  HandleValidateArgsT,
+  useFormStateContext,
 } from 'react-form-state-context';
-
+import {
+  RichTextEditor,
+  getContentFromEditor,
+} from 'src/rich_text/presentation/RichTextEditor';
 import { SlugField } from 'src/move_lists/presentation/SlugField';
 import { TextField } from 'src/forms/components/TextField';
 import { TagT } from 'src/tags/types';
 import { MoveListT } from 'src/move_lists/types';
-import { RichTextEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { toEditorState } from 'src/rich_text/utils/EditorState';
 import { newMoveListSlug } from 'src/app/utils';
 import { ControlledCheckbox } from 'src/session/presentation/form_fields/ControlledCheckbox';
 import { ValuePicker } from 'src/utils/value_picker';
 import { Field } from 'src/forms/components/Field';
-
-// MoveListForm
 
 type PropsT = {
   onCancel: () => void;
@@ -56,14 +58,25 @@ export function MoveListForm(props: PropsT) {
     props.onSubmit({
       ...values,
       id: props.moveList.id,
+      description: getContentFromEditor(descriptionEditorRef.current, ''),
     });
   };
 
-  const SaveButton = () => (
-    <button className="button button--wide ml-2" type="submit" disabled={false}>
-      save
-    </button>
-  );
+  const SaveButton = () => {
+    const formState = useFormStateContext();
+    return (
+      <button
+        className="button button--wide ml-2"
+        onClick={(e) => {
+          e.preventDefault();
+          formState.submit();
+        }}
+        disabled={false}
+      >
+        save
+      </button>
+    );
+  };
 
   const CancelButton = () => (
     <button
@@ -79,13 +92,13 @@ export function MoveListForm(props: PropsT) {
 
   const tagsField = (
     <Field fieldName="tags" label="Tags">
-      <div className="moveListForm__tags mt-4">
+      <div className="moveListForm__tags">
         <ValuePicker
           zIndex={10}
           isCreatable={true}
           isMulti={true}
           pickableValues={props.knownTags}
-          labelFromValue={x => x}
+          labelFromValue={(x) => x}
         />
       </div>
     </Field>
@@ -93,7 +106,7 @@ export function MoveListForm(props: PropsT) {
 
   const descriptionField = (
     <Field fieldName="description" label="Description">
-      <div className="moveListForm__description mt-4">
+      <div className="moveListForm__description">
         <RichTextEditor
           autoFocus={false}
           readOnly={false}

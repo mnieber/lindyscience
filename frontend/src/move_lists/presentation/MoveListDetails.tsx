@@ -17,6 +17,7 @@ export const MoveListTitle: React.FC<MoveListTitlePropsT> = (
 ) => {
   return (
     <div className="flexrow items-center">
+      {!props.moveList.isPrivate ? 'private' : ''}
       <RouterLink to={`/people/${props.moveList.ownerUsername}`}>
         <h2 className="text-xl font-semibold">
           {props.moveList.ownerUsername}

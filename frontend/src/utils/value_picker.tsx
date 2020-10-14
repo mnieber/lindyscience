@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import Creatable from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { isNil } from 'lodash/fp';
 
 import { handleEnterAsTabToNext } from 'src/utils/form_utils';
@@ -31,14 +31,6 @@ type PropsT<ValueT> = {
 };
 
 export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
-  const formState = useFormStateContext();
-  const fieldContext = useFormFieldContext();
-  const formValue = formState.values[fieldContext.fieldName];
-
-  const toFormValue = (value: PickerValueT) => {
-    return isNil(value.value) ? new NewPickerValue(value.label) : value.value;
-  };
-
   const toPickerValue = (formValue: ValueT) => {
     return {
       value: formValue,
@@ -46,11 +38,21 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
     };
   };
 
+  const formState = useFormStateContext();
+  const fieldContext = useFormFieldContext();
+  const formValue = formState.values[fieldContext.fieldName];
+  const [options] = React.useState(props.pickableValues.map(toPickerValue));
+
+  const toFormValue = (value: PickerValueT) => {
+    return isNil(value.value) ? new NewPickerValue(value.label) : value.value;
+  };
+
   const saveChanges = (value: any) => {
     const formValue = props.isMulti
       ? value.map(toFormValue)
       : toFormValue(value);
     formState.setValue(fieldContext.fieldName, formValue);
+
     if (!!props.submitOnChange) {
       formState.values[fieldContext.fieldName] = formValue;
       formState.submit();
@@ -60,7 +62,7 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   const pickerProps = {
     isMulti: props.isMulti,
     name: fieldContext.fieldName,
-    options: props.pickableValues.map(toPickerValue),
+    options,
     placeholder: fieldContext.label,
     value: isNil(formValue)
       ? undefined
@@ -74,7 +76,7 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   };
 
   const picker = props.isCreatable ? (
-    <Creatable {...pickerProps} />
+    <CreatableSelect {...pickerProps} />
   ) : (
     <Select {...pickerProps} />
   );

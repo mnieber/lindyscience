@@ -10,10 +10,7 @@ import { TextField } from 'src/forms/components/TextField';
 import { Field } from 'src/forms/components/Field';
 import { TagT } from 'src/tags/types';
 import { CutPointT } from 'src/video/types';
-import {
-  ValuePicker,
-  strToPickerValue,
-} from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 
@@ -31,7 +28,7 @@ export function CutPointForm(props: PropsT) {
   const initialValues = {
     name: props.cutPoint.name,
     description: props.cutPoint.description,
-    tags: props.cutPoint.tags.map(strToPickerValue),
+    tags: props.cutPoint.tags,
   };
 
   const initialErrors = {};
@@ -81,7 +78,7 @@ export function CutPointForm(props: PropsT) {
           isCreatable={true}
           isMulti={true}
           pickableValues={props.knownTags}
-          labelFromValue={x => x}
+          labelFromValue={(x) => x}
         />
       </div>
     </Field>

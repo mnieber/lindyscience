@@ -31,11 +31,11 @@
 }
 
 .upVoteBtn--voted {
-  background-image: url("/static/img/upvote_1.png");
+  background-image: url('/static/img/upvote_1.png');
 }
 
 .upVoteBtn--notVoted {
-  background-image: url("/static/img/upvote_0.png");
+  background-image: url('/static/img/upvote_0.png');
 }
 
 .downVoteBtn {
@@ -43,11 +43,11 @@
 }
 
 .downVoteBtn--voted {
-  background-image: url("/static/img/downvote_1.png");
+  background-image: url('/static/img/downvote_1.png');
 }
 
 .downVoteBtn--notVoted {
-  background-image: url("/static/img/downvote_0.png");
+  background-image: url('/static/img/downvote_0.png');
 }
 
 .appFrame {
@@ -118,6 +118,12 @@
 
 .button--wide {
   @apply w-32;
+}
+
+.FieldButton {
+  @apply ml-2 p-1 my-auto cursor-pointer;
+  @apply bg-blue-300 text-white;
+  @apply rounded text-center text-xs;
 }
 
 .tip__editButton {

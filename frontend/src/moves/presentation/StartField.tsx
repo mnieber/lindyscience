@@ -16,7 +16,7 @@ export const StartField = (props: PropsT) => {
     return (
       <div
         key="updateStartBtn"
-        className={'button ml-2 flex-none'}
+        className={'UpdateStartBtn FieldButton'}
         onClick={() => {
           formState.setValue(
             'startTime',
@@ -40,7 +40,7 @@ export const StartField = (props: PropsT) => {
     return (
       <div
         key="gotoStartBtn"
-        className={'button ml-2 flex-none'}
+        className={'GotoStartBtn FieldButton'}
         onClick={() => goToTime(formState.values.startTime)}
       >
         Go

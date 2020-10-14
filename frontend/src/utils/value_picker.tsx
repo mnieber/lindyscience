@@ -1,11 +1,9 @@
 import React from 'react';
 import Select from 'react-select';
-// @ts-ignore
 import Creatable from 'react-select';
-import jQuery from 'jquery';
+import { isNil } from 'lodash/fp';
 
 import { handleEnterAsTabToNext } from 'src/utils/form_utils';
-import { FormFieldLabel } from 'src/forms/components/FormFieldLabel';
 import { stripQuotes } from 'src/utils/utils';
 import { useFormStateContext } from 'react-form-state-context';
 import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
@@ -15,25 +13,46 @@ export interface PickerValueT {
   label: string;
 }
 
-type PropsT = {
+export class NewPickerValue {
+  label: string;
+
+  constructor(label: string) {
+    this.label = label;
+  }
+}
+
+type PropsT<ValueT> = {
   isMulti: boolean;
   isCreatable: boolean;
   zIndex?: number;
   submitOnChange?: boolean;
-  options?: PickerValueT[];
+  pickableValues: ValueT[];
+  labelFromValue: (value: ValueT) => string;
 };
 
-export const ValuePicker: React.FC<PropsT> = (props: PropsT) => {
+export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   const formState = useFormStateContext();
   const fieldContext = useFormFieldContext();
+  const formValue = formState.values[fieldContext.fieldName];
+
+  const toFormValue = (value: PickerValueT) => {
+    return isNil(value.value) ? new NewPickerValue(value.label) : value.value;
+  };
+
+  const toPickerValue = (formValue: ValueT) => {
+    return {
+      value: formValue,
+      label: props.labelFromValue(formValue),
+    };
+  };
 
   const saveChanges = (value: any) => {
-    if (!props.isMulti && jQuery.isArray(value)) {
-      formState.setValue(fieldContext.fieldName, null);
-    } else {
-      formState.setValue(fieldContext.fieldName, value);
-    }
+    const formValue = props.isMulti
+      ? value.map(toFormValue)
+      : toFormValue(value);
+    formState.setValue(fieldContext.fieldName, formValue);
     if (!!props.submitOnChange) {
+      formState.values[fieldContext.fieldName] = formValue;
       formState.submit();
     }
   };
@@ -41,9 +60,13 @@ export const ValuePicker: React.FC<PropsT> = (props: PropsT) => {
   const pickerProps = {
     isMulti: props.isMulti,
     name: fieldContext.fieldName,
-    options: props.options,
+    options: props.pickableValues.map(toPickerValue),
     placeholder: fieldContext.label,
-    value: formState.values[fieldContext.fieldName],
+    value: isNil(formValue)
+      ? undefined
+      : props.isMulti
+      ? formValue.map(toPickerValue)
+      : toPickerValue(formValue),
     onChange: saveChanges,
     onKeyDown: (e: any) => {
       handleEnterAsTabToNext(e, false);
@@ -56,12 +79,7 @@ export const ValuePicker: React.FC<PropsT> = (props: PropsT) => {
     <Select {...pickerProps} />
   );
 
-  return (
-    <div style={{ zIndex: props.zIndex }}>
-      {fieldContext.label && <FormFieldLabel />}
-      {picker}
-    </div>
-  );
+  return <div style={{ zIndex: props.zIndex }}>{picker}</div>;
 };
 
 export function strToPickerValue(value: string) {

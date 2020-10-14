@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import { TagT } from 'src/tags/types';
 import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
@@ -11,7 +10,6 @@ import { Editing } from 'facet-mobx/facets/editing';
 import { mergeDefaultProps } from 'react-default-props-context';
 
 type PropsT = {
-  moveTags: Array<TagT>;
   defaultProps?: any;
 };
 
@@ -43,7 +41,7 @@ export const withMoveForm = (WrappedComponent: any) =>
           _setAltLink(undefined);
           props.movesEditing.cancel();
         }}
-        knownTags={props.moveTags}
+        knownTags={props.move?.tags ?? []}
         videoController={props.videoController}
         setAltLink={_setAltLink}
       />

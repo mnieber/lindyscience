@@ -13,7 +13,6 @@ import { CutPointT } from 'src/video/types';
 import {
   ValuePicker,
   strToPickerValue,
-  PickerValueT,
 } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
@@ -32,7 +31,7 @@ export function CutPointForm(props: PropsT) {
   const initialValues = {
     name: props.cutPoint.name,
     description: props.cutPoint.description,
-    tagPVs: props.cutPoint.tags.map(strToPickerValue),
+    tags: props.cutPoint.tags.map(strToPickerValue),
   };
 
   const initialErrors = {};
@@ -51,7 +50,6 @@ export function CutPointForm(props: PropsT) {
       ...values,
       id: props.cutPoint.id,
       description: getContentFromEditor(editorRef.current, ''),
-      tags: values.tagPVs.map((x: PickerValueT) => x.value),
     });
   };
 
@@ -76,13 +74,14 @@ export function CutPointForm(props: PropsT) {
   );
 
   const tags = (
-    <Field fieldName="tagPVs" label="Tags">
+    <Field fieldName="tags" label="Tags">
       <div className="cutPointForm__tags mt-4">
         <ValuePicker
           zIndex={10}
           isCreatable={true}
           isMulti={true}
-          options={props.knownTags.map(strToPickerValue)}
+          pickableValues={props.knownTags}
+          labelFromValue={x => x}
         />
       </div>
     </Field>

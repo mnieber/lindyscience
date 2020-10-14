@@ -17,7 +17,7 @@ export const Field: React.FC<FieldT> = ({
 }) => {
   return (
     <FormFieldContext fieldName={fieldName} label={label}>
-      <div className="flex flex-col">
+      <div className="flexcol">
         <FormFieldLabel buttons={buttons} />
         {children}
         <FormFieldError />

@@ -13,8 +13,7 @@ import { RichTextEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { toEditorState } from 'src/rich_text/utils/EditorState';
 import { newMoveListSlug } from 'src/app/utils';
 import { ControlledCheckbox } from 'src/session/presentation/form_fields/ControlledCheckbox';
-import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
-import { strToPickerValue } from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/value_picker';
 import { Field } from 'src/forms/components/Field';
 
 // MoveListForm
@@ -36,7 +35,7 @@ export function MoveListForm(props: PropsT) {
     slug: props.moveList.slug,
     isPrivate: props.moveList.isPrivate,
     role: props.moveList.role,
-    tagPVs: props.moveList.tags.map(strToPickerValue),
+    tags: props.moveList.tags,
   };
 
   const initialErrors = {};
@@ -57,7 +56,6 @@ export function MoveListForm(props: PropsT) {
     props.onSubmit({
       ...values,
       id: props.moveList.id,
-      tags: values.tagPVs.map((x: PickerValueT) => x.value),
     });
   };
 
@@ -80,13 +78,14 @@ export function MoveListForm(props: PropsT) {
   );
 
   const tagsField = (
-    <Field fieldName="tagPVs" label="Tags">
+    <Field fieldName="tags" label="Tags">
       <div className="moveListForm__tags mt-4">
         <ValuePicker
           zIndex={10}
           isCreatable={true}
           isMulti={true}
-          options={props.knownTags.map(strToPickerValue)}
+          pickableValues={props.knownTags}
+          labelFromValue={x => x}
         />
       </div>
     </Field>

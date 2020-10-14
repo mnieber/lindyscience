@@ -22,7 +22,9 @@ export const FormFieldLabel: React.FC<PropsT> = (props: PropsT) => {
   const RowWrapper =
     isNil(props.buttons) || isEmpty(props.buttons)
       ? ({ children }: any) => <React.Fragment>{children}</React.Fragment>
-      : ({ children }: any) => <div className="flexrow">{children}</div>;
+      : ({ children }: any) => (
+          <div className="flexrow items-center">{children}</div>
+        );
 
   return (
     <ColWrapper>
@@ -33,7 +35,7 @@ export const FormFieldLabel: React.FC<PropsT> = (props: PropsT) => {
         >
           {fieldContext.label}
         </label>
-        {props.buttons}
+        <div className="flexrow">{props.buttons}</div>
       </RowWrapper>
       {props.children}
     </ColWrapper>

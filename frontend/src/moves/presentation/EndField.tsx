@@ -15,7 +15,7 @@ export const EndField = (props: PropsT) => {
   const updateEndBtn = (
     <div
       key="updateEndBtn"
-      className={'button ml-2 flex-none'}
+      className={'FieldButton'}
       onClick={() => {
         formState.setValue(
           'endTime',
@@ -37,7 +37,7 @@ export const EndField = (props: PropsT) => {
   const gotoEndBtn = (
     <div
       key="gotoEndBtn"
-      className={'button ml-2 flex-none'}
+      className={'FieldButton'}
       onClick={() => goToTime(formState.values.endTime)}
     >
       Go

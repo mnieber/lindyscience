@@ -30,7 +30,7 @@ export const FollowMoveListBtn: React.FC<PropsT> = compose(
 
   return (
     <div
-      className={'button button--wide ml-2'}
+      className={'FieldButton button--wide ml-2'}
       onClick={() =>
         props.moveListsLabelling.setLabel({
           label: 'following',

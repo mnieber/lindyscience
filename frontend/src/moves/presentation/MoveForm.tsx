@@ -11,15 +11,12 @@ import { TagT } from 'src/tags/types';
 import { MoveT } from 'src/moves/types';
 import { StartField } from 'src/moves/presentation/StartField';
 import { EndField } from 'src/moves/presentation/EndField';
-import { strToPickerValue } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { newMoveSlug } from 'src/moves/utils';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { SlugField } from 'src/move_lists/presentation/SlugField';
-import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/value_picker';
 import { Field } from 'src/forms/components/Field';
-
-// MoveForm
 
 type PropsT = {
   onCancel: () => void;
@@ -46,7 +43,6 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
     tags: props.move.tags,
     startTime: startTime,
     endTime: props.move.endTimeMs ? props.move.endTimeMs / 1000.0 : '',
-    tagPVs: props.move.tags.map(strToPickerValue),
   };
 
   const initialErrors = {};
@@ -69,7 +65,6 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
       startTime: undefined,
       endTime: undefined,
       description: getContentFromEditor(editorRef.current, ''),
-      tags: values.tagPVs.map((x: PickerValueT) => x.value),
     });
   };
 
@@ -123,13 +118,14 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
   );
 
   const tagsField = (
-    <Field label="Tags" fieldName="tagPVs">
+    <Field label="Tags" fieldName="tags">
       <div className="moveListForm__tags mt-4">
         <ValuePicker
           zIndex={10}
           isCreatable={true}
           isMulti={true}
-          options={props.knownTags.map(strToPickerValue)}
+          pickableValues={props.knownTags}
+          labelFromValue={(x) => x}
         />
       </div>
     </Field>

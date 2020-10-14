@@ -1,15 +1,14 @@
 import React from 'react';
 
+import { ValuePicker } from 'src/utils/value_picker';
 import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { TagT } from 'src/tags/types';
 import { MovePrivateDataT } from 'src/moves/types';
-import { strToPickerValue } from 'src/utils/value_picker';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { Field } from 'src/forms/components/Field';
-import { ValuePicker, PickerValueT } from 'src/utils/value_picker';
 
 type PropsT = {
   onCancel: () => void;
@@ -29,7 +28,6 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
   const initialValues = {
     notes: notes,
     tags: tags,
-    tagPVs: tags.map(strToPickerValue),
   };
 
   const initialErrors = {};
@@ -38,9 +36,8 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
 
   const handleSubmit = ({ values }: HandleSubmitArgsT) => {
     props.onSubmit({
-      values,
+      ...values,
       notes: getContentFromEditor(notesEditorRef.current, ''),
-      tags: values.tagPVs.map((x: PickerValueT) => x.value),
     });
   };
 
@@ -60,13 +57,14 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
   );
 
   const tagsField = (
-    <Field fieldName="tagPVs" label="Tags">
+    <Field fieldName="tags" label="Tags">
       <div className="moveListForm__tags mt-4">
         <ValuePicker
           zIndex={10}
           isCreatable={true}
           isMulti={true}
-          options={props.knownTags.map(strToPickerValue)}
+          pickableValues={props.knownTags}
+          labelFromValue={(x) => x}
         />
       </div>
     </Field>

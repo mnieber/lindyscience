@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react';
 
-import { ValuePicker } from 'src/utils/value_picker';
+import { ValuePicker, NewPickerValue } from 'src/utils/value_picker';
 import { MoveListT } from 'src/move_lists/types';
 import { Addition } from 'facet-mobx/facets/addition';
 import { Highlight } from 'facet-mobx/facets/highlight';
@@ -28,30 +28,23 @@ type DefaultPropsT = {
 export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  function toPickerValue(moveList: MoveListT) {
-    return {
-      value: moveList.id,
-      label: moveList.name,
-    };
-  }
-
-  const options = props.moveLists.filter(props.filter).map(toPickerValue);
+  const pickableValues = props.moveLists.filter(props.filter);
   const initialValues = {
-    moveListPV: options.find((x) => x.value === props.moveListsHighlight.id) ?? null,
+    moveList:
+      pickableValues.find((x) => x.id === props.moveListsHighlight.id) ?? null,
   };
 
   const handleSubmit = ({ values }: HandleSubmitArgsT) => {
-    if (options.includes(values.moveListPV)) {
+    if (values.moveList instanceof NewPickerValue) {
+      props.moveListsAddition.add({ name: values.moveList.label });
+      props.navigateTo(props.moveListsAddition.item);
+    } else if (!!values.moveList) {
       props.moveListsSelection.selectItem({
-        itemId: values.moveListPV.value,
+        itemId: values.moveList.id,
         isShift: false,
         isCtrl: false,
       });
       props.navigateTo(props.moveListsHighlight.item);
-    }
-    else if (values.moveListPV) {
-      props.moveListsAddition.add({ name: values.moveListPV.label });
-      props.navigateTo(props.moveListsAddition.item);
     }
   };
 
@@ -61,7 +54,7 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
       handleSubmit={handleSubmit}
     >
       <FormFieldContext
-        fieldName="moveListPV"
+        fieldName="moveList"
         label=""
         placeholder="Select a move list"
       >
@@ -69,7 +62,8 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
           <ValuePicker
             isMulti={false}
             isCreatable={true}
-            options={options}
+            pickableValues={props.moveLists.filter(props.filter)}
+            labelFromValue={(x) => x.name}
             submitOnChange={true}
           />
         </div>

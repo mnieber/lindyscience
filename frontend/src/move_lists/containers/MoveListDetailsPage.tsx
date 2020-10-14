@@ -53,7 +53,7 @@ export const MoveListDetailsPage: React.FC<PropsT> = compose(
   const editBtn = (
     <FontAwesomeIcon
       key={1}
-      className={classnames('FieldButton', {
+      className={classnames('ml-2 text-lg', {
         hidden: !props.profiling.isOwner(props.moveList),
       })}
       icon={faEdit}

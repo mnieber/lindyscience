@@ -26,7 +26,7 @@ export const MovePrivateDataPanel = (props: PropsT) => {
   const editBtn = (
     <FontAwesomeIcon
       key={'edit'}
-      className="FieldButton"
+      className="ml-2 text-lg"
       icon={faEdit}
       onClick={() => setIsEditing(true)}
     />

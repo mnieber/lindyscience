@@ -62,7 +62,7 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
           <ValuePicker
             isMulti={false}
             isCreatable={true}
-            pickableValues={props.moveLists.filter(props.filter)}
+            pickableValues={pickableValues}
             labelFromValue={(x) => x.name}
             submitOnChange={true}
           />

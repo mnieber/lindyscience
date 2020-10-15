@@ -41,7 +41,7 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   const formState = useFormStateContext();
   const fieldContext = useFormFieldContext();
   const formValue = formState.values[fieldContext.fieldName];
-  const [options] = React.useState(props.pickableValues.map(toPickerValue));
+  const options = props.pickableValues.map(toPickerValue);
 
   const toFormValue = (value: PickerValueT) => {
     return isNil(value.value) ? new NewPickerValue(value.label) : value.value;

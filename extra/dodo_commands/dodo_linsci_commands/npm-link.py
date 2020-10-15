@@ -6,20 +6,11 @@ from dodo_commands import CommandError, ConfigArg, Dodo
 
 def _args():
     parser = ArgumentParser(description="Publish own npm packages")
-    parser.add_argument("--login", action="store_true")
-
-    # Add arguments to the parser here
+    parser.add_argument("--unlink", action="store_true")
 
     # Parse the arguments.
     args = Dodo.parse_args(parser, config_args=[])
-
-    args.cwd = Dodo.get("/ROOT/project_dir")
     args.npm_dir = "/opt/linsci/npm"
-
-    # Raise an error if something is not right
-    if False:
-        raise CommandError("Oops")
-
     return args
 
 
@@ -34,15 +25,9 @@ if Dodo.is_main(__name__, safe=True):
         "facet-mobx",
     ]
 
-    if args.login:
-        Dodo.run(["npm", "adduser", "--registry", "http://verdaccio:4873"])
-
+    action = "unlink" if args.unlink else "link"
     for src_sub_dir in src_sub_dirs:
         src_dir = os.path.join(args.npm_dir, src_sub_dir)
         dist_dir = os.path.join(args.npm_dir, src_sub_dir, "dist")
-        Dodo.run(["./node_modules/.bin/tsc", "--outDir", "dist"], cwd=src_dir)
-        Dodo.run(["yarn", "version", "--patch"], cwd=src_dir)
-        Dodo.run(["cp", "package.json", "dist"], cwd=src_dir)
-        Dodo.run(
-            ["npm", "publish", "--registry", "http://verdaccio:4873"], cwd=dist_dir
-        )
+        Dodo.run(["yarn", action], cwd=dist_dir)
+        Dodo.run(["yarn", action, src_sub_dir], cwd="/opt/linsci/src")

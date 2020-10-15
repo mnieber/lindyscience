@@ -51,8 +51,8 @@ export const MoveListsCtrProvider: React.FC<PropsT> = compose(
         userProfile: props.profiling.userProfile,
       }),
       ({ moveListById, userProfile }) => {
-        ctr.inputs.moveLists = values(moveListById);
-        ctr.inputs.userProfile = userProfile;
+        ctr.inputs.setMoveLists(values(moveListById));
+        ctr.inputs.setUserProfile(userProfile);
       }
     );
   };

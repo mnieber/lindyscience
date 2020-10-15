@@ -1,6 +1,7 @@
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
+import { operation } from 'facet';
 
 export class Inputs {
   @observable moveLists: Array<MoveListT> = [];
@@ -11,6 +12,14 @@ export class Inputs {
     return userProfile
       ? this.moveLists.filter((x) => userProfile.moveListIds.includes(x.id))
       : [];
+  }
+
+  @operation setMoveLists(moveLists: Inputs["moveLists"]) {
+    this.moveLists = moveLists;
+  }
+
+  @operation setUserProfile(userProfile: Inputs["userProfile"]) {
+    this.userProfile = userProfile;
   }
 
   static get = (ctr: any): Inputs => ctr.inputs;

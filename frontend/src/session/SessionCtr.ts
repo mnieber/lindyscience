@@ -44,13 +44,8 @@ export class SessionContainer {
     const policies = [
       // profiling
       SessionCtrPolicies.handleLoadUserProfileForSignedInEmail,
-      SessionCtrPolicies.handleLoadUserId(authApi),
-      SessionCtrPolicies.handleSignIn(authApi),
-      SessionCtrPolicies.handleSignOut(authApi),
-
       // navigation
       SessionCtrPolicies.handleLoadSelectedMoveListFromUrl,
-
       // tips
       SessionCtrPolicies.handleVoteOnTip,
     ];
@@ -66,7 +61,11 @@ export class SessionContainer {
     });
     this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());
-    this.authentication = initAuthentication(new Authentication());
+    this.authentication = initAuthentication(new Authentication(), {
+      signIn: SessionCtrPolicies.handleSignIn(authApi)(this),
+      signOut: SessionCtrPolicies.handleSignOut(authApi)(this),
+      loadUserId: SessionCtrPolicies.handleLoadUserId(authApi)(this),
+    });
     this.moveListsStore = new MoveListsStore();
     this.movesStore = new MovesStore();
     this.tipsStore = new TipsStore();

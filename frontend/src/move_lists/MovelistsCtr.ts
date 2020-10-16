@@ -1,7 +1,6 @@
+import { Profiling } from 'src/session/facets/Profiling';
 import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
-import { MoveListT } from 'src/move_lists/types';
-import { UUID } from 'src/kernel/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facet';
@@ -12,18 +11,19 @@ import { Editing, initEditing } from 'facet-mobx/facets/editing';
 import { Highlight, initHighlight } from 'facet-mobx/facets/highlight';
 import { Insertion, initInsertion } from 'facet-mobx/facets/insertion';
 import { Selection, initSelection } from 'facet-mobx/facets/selection';
+import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';
+import * as MoveListsCtrHandlers from 'src/move_lists/handlers';
 import * as SessionCtrPolicies from 'src/session/policies';
 
+const compareById = (lhs: any, rhs: any) => lhs.id === rhs.id;
+
 type PropsT = {
-  isEqual: (lhs: any, rhs: any) => boolean;
-  setMoveLists: (moveLists: Array<MoveListT>) => any;
-  saveMoveList: (moveList: MoveListT, values: any) => any;
-  createNewMoveList: (values: any) => MoveListT;
-  setFollowedMoveListIds: (ids: Array<UUID>) => void;
   navigation: Navigation;
+  profiling: Profiling;
+  moveListsStore: MoveListsStore;
 };
 
 export class MoveListsContainer {
@@ -68,7 +68,7 @@ export class MoveListsContainer {
       // creation
       MobXPolicies.newItemsAreCreatedBelowTheHighlight,
       MobXPolicies.newItemsAreEdited,
-      MobXPolicies.newItemsAreConfirmedWhenSaved(props.isEqual),
+      MobXPolicies.newItemsAreConfirmedWhenSaved(compareById),
       MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed,
       MobXPolicies.newItemsAreCanceledOnHighlightChange,
@@ -90,35 +90,24 @@ export class MoveListsContainer {
 
   constructor(props: PropsT) {
     this.addition = initAddition(new Addition(), {
-      createItem: (values: any) => {
-        const userProfile = this.inputs.userProfile as any;
-        return props.createNewMoveList({
-          ...values,
-          ownerId: userProfile.userId,
-          ownerUsername: userProfile.username,
-        });
-      },
+      createItem: MoveListsCtrHandlers.handleCreateMoveList(this),
     });
     this.editing = initEditing(new Editing(), {
-      saveItem: (values: any) => {
-        props.saveMoveList(this.highlight.item as any, values);
-      },
+      saveItem: MoveListsCtrHandlers.handleSaveMoveList(props.moveListsStore)(
+        this
+      ),
     });
     this.highlight = initHighlight(new Highlight());
     this.insertion = initInsertion(new Insertion(), {
-      insertItems: (preview) => {
-        props.setMoveLists(preview);
+      insertItems: () => {
+        // nothing to do
       },
     });
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());
     this.labelling = initLabelling(new Labelling(), {
-      saveIds: (label: string, ids: Array<UUID>) => {
-        if (label === 'following') {
-          props.setFollowedMoveListIds(ids);
-        }
-      },
+      saveIds: MoveListsCtrHandlers.handleSaveLabels(props.profiling)(this),
     });
 
     registerFacets(this);

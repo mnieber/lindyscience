@@ -5,7 +5,6 @@ import { observer } from 'mobx-react';
 import { Display } from 'src/session/facets/Display';
 import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
-import { moveContainerProps } from 'src/moves/MoveCtr/moveCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 import {
@@ -30,7 +29,7 @@ export const MoveCtrProvider: React.FC<PropsT> = compose(
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
   const createCtr = () => {
-    return new MoveContainer(moveContainerProps());
+    return new MoveContainer({ rootDivId: 'moveDiv' });
   };
 
   const updateCtr = (ctr: MoveContainer) => {

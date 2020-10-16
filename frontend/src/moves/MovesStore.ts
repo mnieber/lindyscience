@@ -39,7 +39,7 @@ export class MovesStore {
     };
   }
 
-  @action setMovePrivateDatas(privateDataByMoveId: MovePrivateDataByIdT) {
+  @action setPrivateDataByMoveId(privateDataByMoveId: MovePrivateDataByIdT) {
     this.privateDataByMoveId = privateDataByMoveId;
   }
 

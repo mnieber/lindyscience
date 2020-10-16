@@ -37,6 +37,7 @@ export const MovePrivateDataPanel = (props: PropsT) => {
   const staticDiv = (
     <div>
       <MoveDescriptionEditor
+        key={props?.movePrivateData?.notes}
         editorId={'privateData_' + props.moveId}
         description={props.movePrivateData ? props.movePrivateData.notes : ''}
         readOnly={true}

@@ -1,3 +1,4 @@
+import * as _ from 'lodash/fp';
 import { Data } from 'src/session/facets/Data';
 import { Profiling } from 'src/session/facets/Profiling';
 import { Authentication } from 'src/session/facets/Authentication';
@@ -18,7 +19,7 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
       if (signedInUserId === 'anonymous') {
         profiling.setUserProfile(undefined);
         data.votesStore.setVotes({});
-        data.movesStore.setMovePrivateDatas({});
+        data.movesStore.setPrivateDataByMoveId({});
       } else {
         const [
           profile,
@@ -34,8 +35,12 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
 
         profiling.setUserProfile(profile);
         data.votesStore.setVotes(votes);
-        data.movesStore.setMovePrivateDatas(
-          movePrivateDatas.entities.movePrivateDatas || {}
+        data.movesStore.setPrivateDataByMoveId(
+          _.flow(
+            _.always(movePrivateDatas.entities.movePrivateDatas || {}),
+            _.values,
+            _.keyBy(_.property("moveId"))
+          )()
         );
 
         const moveLists = await apiFindMoveLists({

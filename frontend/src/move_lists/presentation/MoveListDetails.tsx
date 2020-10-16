@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
+import { Tags } from 'src/tags/presentation/Tags';
 import { MoveListT } from 'src/move_lists/types';
 import { RouterLink } from 'src/utils/RouterLink';
 import { RichTextEditor } from 'src/rich_text/presentation/RichTextEditor';
@@ -39,12 +40,17 @@ type MoveListDetailsPropsT = {
 };
 
 export function MoveListDetails(props: MoveListDetailsPropsT) {
+  const tagsDiv = props.moveList.tags.length ? (
+    <Tags tags={props.moveList.tags} />
+  ) : undefined;
+
   return (
     <div className={classnames('moveListDetails flexcol')}>
       <div className="flexrow items-center">
         <MoveListTitle moveList={props.moveList} />
         {props.buttons}
       </div>
+      {tagsDiv}
       <RichTextEditor
         key={props.moveList.id}
         initialEditorState={toReadOnlyEditorState(props.moveList.description)}

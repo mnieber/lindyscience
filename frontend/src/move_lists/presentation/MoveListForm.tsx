@@ -4,7 +4,6 @@ import {
   FormStateProvider,
   HandleSubmitArgsT,
   HandleValidateArgsT,
-  useFormStateContext,
 } from 'react-form-state-context';
 import {
   RichTextEditor,
@@ -17,8 +16,12 @@ import { MoveListT } from 'src/move_lists/types';
 import { toEditorState } from 'src/rich_text/utils/EditorState';
 import { newMoveListSlug } from 'src/app/utils';
 import { ControlledCheckbox } from 'src/session/presentation/form_fields/ControlledCheckbox';
-import { ValuePicker } from 'src/utils/value_picker';
-import { Field } from 'src/forms/components/Field';
+import {
+  Field,
+  SaveButton,
+  CancelButton,
+  TagsField,
+} from 'src/forms/components';
 
 type PropsT = {
   onCancel: () => void;
@@ -62,48 +65,6 @@ export function MoveListForm(props: PropsT) {
     });
   };
 
-  const SaveButton = () => {
-    const formState = useFormStateContext();
-    return (
-      <button
-        className="button button--wide ml-2"
-        onClick={(e) => {
-          e.preventDefault();
-          formState.submit();
-        }}
-        disabled={false}
-      >
-        save
-      </button>
-    );
-  };
-
-  const CancelButton = () => (
-    <button
-      className="button button--wide ml-2"
-      onClick={(e) => {
-        e.preventDefault();
-        props.onCancel();
-      }}
-    >
-      cancel
-    </button>
-  );
-
-  const tagsField = (
-    <Field fieldName="tags" label="Tags">
-      <div className="moveListForm__tags">
-        <ValuePicker
-          zIndex={10}
-          isCreatable={true}
-          isMulti={true}
-          pickableValues={props.knownTags}
-          labelFromValue={(x) => x}
-        />
-      </div>
-    </Field>
-  );
-
   const descriptionField = (
     <Field fieldName="description" label="Description">
       <div className="moveListForm__description">
@@ -142,10 +103,10 @@ export function MoveListForm(props: PropsT) {
           {initialValues.slug !== newMoveListSlug && <SlugField />}
           {descriptionField}
           {initialValues.role !== 'trash' && isPrivateField}
-          {tagsField}
+          <TagsField knownTags={props.knownTags} />
           <div className={'moveListForm__buttonPanel flexrow mt-4'}>
             <SaveButton />
-            <CancelButton />
+            <CancelButton onCancel={props.onCancel} />
           </div>
         </div>
       </form>

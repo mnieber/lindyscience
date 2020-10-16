@@ -15,8 +15,12 @@ import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEdi
 import { newMoveSlug } from 'src/moves/utils';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
 import { SlugField } from 'src/move_lists/presentation/SlugField';
-import { ValuePicker } from 'src/utils/value_picker';
-import { Field } from 'src/forms/components/Field';
+import {
+  Field,
+  SaveButton,
+  CancelButton,
+  TagsField,
+} from 'src/forms/components';
 
 type PropsT = {
   onCancel: () => void;
@@ -99,38 +103,6 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
     </Field>
   );
 
-  const SaveButton = () => (
-    <button className="button button--wide ml-2" type="submit" disabled={false}>
-      save
-    </button>
-  );
-
-  const CancelButton = () => (
-    <button
-      className="button button--wide ml-2"
-      onClick={(e) => {
-        e.preventDefault();
-        props.onCancel();
-      }}
-    >
-      cancel
-    </button>
-  );
-
-  const tagsField = (
-    <Field label="Tags" fieldName="tags">
-      <div className="moveListForm__tags mt-4">
-        <ValuePicker
-          zIndex={10}
-          isCreatable={true}
-          isMulti={true}
-          pickableValues={props.knownTags}
-          labelFromValue={(x) => x}
-        />
-      </div>
-    </Field>
-  );
-
   return (
     <FormStateProvider
       initialValues={initialValues}
@@ -146,10 +118,10 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
           <StartField videoController={props.videoController} />
           <EndField videoController={props.videoController} />
           {description}
-          {tagsField}
+          <TagsField knownTags={props.knownTags} />
           <div className={'moveForm__buttonPanel flexrow mt-4'}>
             <SaveButton />
-            <CancelButton />
+            <CancelButton onCancel={props.onCancel} />
           </div>
         </div>
       </form>

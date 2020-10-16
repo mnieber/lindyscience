@@ -31,8 +31,6 @@ import {
 } from 'react-default-props-context';
 import { Addition } from 'facet-mobx/facets/addition';
 
-// MoveListFrame
-
 type PropsT = {
   children: any;
   defaultProps?: any;
@@ -164,12 +162,13 @@ export const MoveListFrame: React.FC<PropsT> = compose(
       }}
     />
   );
+
   return (
-    <div className="moveListPanel flexrow">
+    <div className="MoveListFrame flexrow">
       {props.display.small ? shrunkContents : contents}
       {props.display.small && !isMenuOpen && ribbon}
       <div
-        className={classnames('movePanel flex-auto', {
+        className={classnames('MoveListFrame__panel flex-auto', {
           'pl-4': !props.display.small,
           'pl-1': props.display.small,
         })}

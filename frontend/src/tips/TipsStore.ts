@@ -1,8 +1,10 @@
+import { keys } from 'lodash/fp';
+
+import { VoteT } from 'src/votes/types';
 import { action, computed, observable } from 'src/utils/mobx_wrapper';
 import { TipT, TipByIdT, TipsByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import { isNone, reduceMapToMap } from 'src/utils/utils';
-import { keys } from 'lodash/fp';
 
 export class TipsStore {
   @observable tipById: TipByIdT = {};
@@ -23,7 +25,7 @@ export class TipsStore {
       }, {});
   }
 
-  @action castVote(tipId: UUID, vote: number, prevVote: number) {
+  @action castVote(tipId: UUID, vote: VoteT, prevVote: VoteT) {
     const tip = this.tipById[tipId];
     if (tip) {
       this.tipById = {
@@ -44,9 +46,6 @@ export class TipsStore {
           acc[tip.moveId] = [];
         }
         acc[tip.moveId].push(tip);
-        // TODO:
-        // acc[tip.moveId] = acc[tip.moveId]
-        //   .sort((lhs, rhs) => rhs.initialVoteCount - lhs.initialVoteCount);
       }
     );
   }

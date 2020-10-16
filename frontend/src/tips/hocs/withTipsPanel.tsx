@@ -15,7 +15,6 @@ import { UUID } from 'src/kernel/types';
 import { VoteT } from 'src/votes/types';
 import { createErrorHandler, getId } from 'src/app/utils';
 import { apiDeleteTip, apiSaveTip } from 'src/tips/api';
-import { apiVoteTip } from 'src/votes/api';
 
 type PropsT = {
   defaultProps?: any;
@@ -49,9 +48,6 @@ export const withTipsPanel = compose(
 
     const voteTip = (id: UUID, vote: VoteT) => {
       props.votesStore.castVote(id, vote);
-      apiVoteTip(id, vote).catch(
-        createErrorHandler('We could not save your vote')
-      );
     };
 
     const tipsPanel = (

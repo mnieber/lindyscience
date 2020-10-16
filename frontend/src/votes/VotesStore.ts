@@ -1,15 +1,16 @@
 import { VoteByIdT, VoteT } from 'src/votes/types';
-import { action, observable } from 'src/utils/mobx_wrapper';
+import { observable } from 'src/utils/mobx_wrapper';
+import { operation, data } from 'facet';
 import { UUID } from 'src/kernel/types';
 
 export class VotesStore {
-  @observable voteByObjectId: VoteByIdT = {};
+  @observable @data voteByObjectId: VoteByIdT = {};
 
-  @action setVotes(voteByObjectId: VoteByIdT) {
+  @operation setVotes(voteByObjectId: VoteByIdT) {
     this.voteByObjectId = voteByObjectId;
   }
 
-  @action castVote(id: UUID, vote: VoteT) {
+  @operation castVote(id: UUID, vote: VoteT) {
     this.voteByObjectId = {
       ...this.voteByObjectId,
       [id]: vote,

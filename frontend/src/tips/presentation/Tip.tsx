@@ -44,15 +44,11 @@ export function Tip(props: PropsT) {
 
     return <div className="tip">{form}</div>;
   } else {
-    const _setVote = (value: VoteT) => {
-      props.setVote(props.item.id, value);
-    };
-
     const voteCount = (
       <VoteCount
         vote={props.vote}
         count={props.item.voteCount}
-        setVote={_setVote}
+        setVote={(value: VoteT) => props.setVote(props.item.id, value)}
       />
     );
 

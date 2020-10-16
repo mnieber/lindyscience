@@ -39,11 +39,11 @@
 }
 
 .upVoteBtn--voted {
-  background-image: url('/static/img/upvote_1.png');
+  background-image: url('http://localhost:8000/static/img/upvote_1.png');
 }
 
 .upVoteBtn--notVoted {
-  background-image: url('/static/img/upvote_0.png');
+  background-image: url('http://localhost:8000/static/img/upvote_0.png');
 }
 
 .downVoteBtn {
@@ -51,11 +51,11 @@
 }
 
 .downVoteBtn--voted {
-  background-image: url('/static/img/downvote_1.png');
+  background-image: url('http://localhost:8000/static/img/downvote_1.png');
 }
 
 .downVoteBtn--notVoted {
-  background-image: url('/static/img/downvote_0.png');
+  background-image: url('http://localhost:8000/static/img/downvote_0.png');
 }
 
 .appFrame {

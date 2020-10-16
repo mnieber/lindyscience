@@ -13,3 +13,4 @@ export {
   syncUrlWithNewMove,
 } from 'src/session/policies/selectTheMoveThatMatchesTheUrl';
 export { selectTheMoveListThatMatchesTheUrl } from 'src/session/policies/selectTheMovelistThatMatchesTheUrl';
+export { handleVoteOnTip } from 'src/session/policies/handleVoteOnTip';

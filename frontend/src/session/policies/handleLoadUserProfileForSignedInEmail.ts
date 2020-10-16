@@ -1,5 +1,4 @@
 import * as _ from 'lodash/fp';
-import { Data } from 'src/session/facets/Data';
 import { Profiling } from 'src/session/facets/Profiling';
 import { Authentication } from 'src/session/facets/Authentication';
 import { reaction } from 'src/utils/mobx_wrapper';
@@ -11,15 +10,14 @@ import { apiFindMoveLists } from 'src/search/api';
 export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
   const profiling = Profiling.get(ctr);
   const authentiation = Authentication.get(ctr);
-  const data = Data.get(ctr);
 
   reaction(
     () => authentiation.signedInUserId,
     async (signedInUserId) => {
       if (signedInUserId === 'anonymous') {
         profiling.setUserProfile(undefined);
-        data.votesStore.setVotes({});
-        data.movesStore.setPrivateDataByMoveId({});
+        ctr.votesStore.setVotes({});
+        ctr.movesStore.setPrivateDataByMoveId({});
       } else {
         const [
           profile,
@@ -34,8 +32,8 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
         ]);
 
         profiling.setUserProfile(profile);
-        data.votesStore.setVotes(votes);
-        data.movesStore.setPrivateDataByMoveId(
+        ctr.votesStore.setVotes(votes);
+        ctr.movesStore.setPrivateDataByMoveId(
           _.flow(
             _.always(movePrivateDatas.entities.movePrivateDatas || {}),
             _.values,
@@ -46,7 +44,7 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
         const moveLists = await apiFindMoveLists({
           followedByUsername: profile.username,
         });
-        data.moveListsStore.addMoveLists(moveLists.entities.moveLists || {});
+        ctr.moveListsStore.addMoveLists(moveLists.entities.moveLists || {});
       }
     },
     { name: 'handleLoadUserProfileForSignedInUserId' }

@@ -52,10 +52,10 @@ export const SessionCtrProvider: React.FC<PropsT> = compose(
       profiling: () => ctr.profiling,
       userProfile: () => ctr.profiling.userProfile,
       isOwner: () => ctr.profiling.isOwner,
-      movesStore: () => ctr.data.movesStore,
-      moveListsStore: () => ctr.data.moveListsStore,
-      tipsStore: () => ctr.data.tipsStore,
-      votesStore: () => ctr.data.votesStore,
+      movesStore: () => ctr.movesStore,
+      moveListsStore: () => ctr.moveListsStore,
+      tipsStore: () => ctr.tipsStore,
+      votesStore: () => ctr.votesStore,
     };
   };
 

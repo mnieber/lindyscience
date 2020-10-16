@@ -3,7 +3,10 @@ import {
   initAuthentication,
 } from 'src/session/facets/Authentication';
 import * as SessionCtrPolicies from 'src/session/policies';
-import { Data, initData } from 'src/session/facets/Data';
+import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MovesStore } from 'src/moves/MovesStore';
+import { TipsStore } from 'src/tips/TipsStore';
+import { VotesStore } from 'src/votes/VotesStore';
 import { Display, initDisplay } from 'src/session/facets/Display';
 import { Inputs, initInputs } from 'src/session/facets/Inputs';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
@@ -31,7 +34,10 @@ export class SessionContainer {
   @facet display: Display;
   @facet profiling: Profiling;
   @facet authentication: Authentication;
-  @facet data: Data;
+  @facet moveListsStore: MoveListsStore;
+  @facet movesStore: MovesStore;
+  @facet tipsStore: TipsStore;
+  @facet votesStore: VotesStore;
 
   _applyPolicies(props: PropsT) {
     const policies = [
@@ -46,6 +52,9 @@ export class SessionContainer {
 
       // navigation
       SessionCtrPolicies.handleLoadSelectedMoveListFromUrl,
+
+      // tips
+      SessionCtrPolicies.handleVoteOnTip,
     ];
 
     installPolicies<SessionContainer>(policies, this);
@@ -57,7 +66,10 @@ export class SessionContainer {
     this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());
     this.authentication = initAuthentication(new Authentication());
-    this.data = initData(new Data());
+    this.moveListsStore = new MoveListsStore();
+    this.movesStore = new MovesStore();
+    this.tipsStore = new TipsStore();
+    this.votesStore = new VotesStore();
 
     registerFacets(this);
     this._applyPolicies(props);

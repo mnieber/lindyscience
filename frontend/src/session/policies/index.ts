@@ -5,7 +5,6 @@ export { handleChangePassword } from 'src/session/policies/handleChangePassword'
 export { handleSignOut } from 'src/session/policies/handleSignOut';
 export { handleActivateAccount } from 'src/session/policies/handleActivateAccount';
 export { handleLoadUserId } from 'src/session/policies/handleLoadUserId';
-export { handleNavigateToMoveList } from 'src/session/policies/handleNavigateToMovelist';
 export { handleLoadSelectedMoveListFromUrl } from 'src/session/policies/handleLoadSelectedMoveListFromUrl';
 export { handleLoadUserProfileForSignedInEmail } from 'src/session/policies/handleLoadUserProfileForSignedInEmail';
 export {

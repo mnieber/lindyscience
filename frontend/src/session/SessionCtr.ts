@@ -3,6 +3,7 @@ import {
   initAuthentication,
 } from 'src/session/facets/Authentication';
 import * as SessionCtrPolicies from 'src/session/policies';
+import * as SessionCtrHandlers from 'src/session/handlers';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { TipsStore } from 'src/tips/TipsStore';
@@ -41,9 +42,6 @@ export class SessionContainer {
 
   _applyPolicies(props: PropsT) {
     const policies = [
-      // navigation
-      SessionCtrPolicies.handleNavigateToMoveList,
-
       // profiling
       SessionCtrPolicies.handleLoadUserProfileForSignedInEmail,
       SessionCtrPolicies.handleLoadUserId(authApi),
@@ -62,7 +60,10 @@ export class SessionContainer {
 
   constructor(props: PropsT) {
     this.inputs = initInputs(new Inputs());
-    this.navigation = initNavigation(new Navigation(), props.history);
+    this.navigation = initNavigation(new Navigation(), {
+      history: props.history,
+      navigateToMoveList: SessionCtrHandlers.handleNavigateToMoveList(this),
+    });
     this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());
     this.authentication = initAuthentication(new Authentication());

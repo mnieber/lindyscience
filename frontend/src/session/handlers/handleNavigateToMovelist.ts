@@ -2,11 +2,10 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { MoveListT } from 'src/move_lists/types';
 import { newMoveListSlug } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/containers';
-import { listen } from 'facet';
 
 export const handleNavigateToMoveList = (ctr: any) => {
-  const navigation = Navigation.get(ctr);
-  listen(navigation, 'navigateToMoveList', (moveList: MoveListT) => {
+  return (moveList: MoveListT) => {
+    const navigation = Navigation.get(ctr);
     const updateProfile = moveList.slug !== newMoveListSlug;
     const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
 
@@ -18,5 +17,5 @@ export const handleNavigateToMoveList = (ctr: any) => {
     });
 
     browseToMoveUrl(navigation.history.push, [moveListUrl], updateProfile);
-  });
+  };
 };

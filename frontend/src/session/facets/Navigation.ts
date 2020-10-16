@@ -66,13 +66,19 @@ const _setHistory = (self: Navigation, history: any) => {
   });
 };
 
-export function initNavigation(self: Navigation, history: any): Navigation {
-  _setHistory(self, history);
+interface PropsT {
+  history: any;
+  navigateToMoveList: (moveList: MoveListT) => void;
+}
+
+export function initNavigation(self: Navigation, props: PropsT): Navigation {
+  _setHistory(self, props.history);
   installHandlers(
     {
       requestData: _handleRequestData,
       storeLocation: _handleStoreLocation,
       restoreLocation: _handleRestoreLocation,
+      navigateToMoveList: props.navigateToMoveList,
     },
     self
   );

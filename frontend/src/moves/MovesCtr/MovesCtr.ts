@@ -1,9 +1,7 @@
+import { MovesStore } from 'src/moves/MovesStore';
+import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
-import { UserProfileT } from 'src/profiles/types';
-import { UUID } from 'src/kernel/types';
-import { MoveT } from 'src/moves/types';
-import { MoveListT } from 'src/move_lists/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
@@ -23,17 +21,13 @@ import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
 import * as MoveCtrPolicies from 'src/moves/MoveCtr/policies';
+import * as MovesCtrHandlers from 'src/moves/MovesCtr/handlers';
+
+const compareById = (lhs: any, rhs: any) => lhs.id === rhs.id;
 
 type PropsT = {
-  isEqual: (lhs: any, rhs: any) => boolean;
-  createNewMove: (userProfile: UserProfileT, sourceMoveListId: UUID) => MoveT;
-  setMoves: (moveList: MoveListT, moves: Array<MoveT>) => any;
-  saveMove: (move: MoveT, values: any) => any;
-  shareMovesToList: (
-    moves: Array<MoveT>,
-    toMoveList: MoveListT,
-    removeFromMoveList?: MoveListT
-  ) => any;
+  moveListsStore: MoveListsStore;
+  movesStore: MovesStore;
   navigation: Navigation;
 };
 
@@ -88,7 +82,7 @@ export class MovesContainer {
       MobXPolicies.newItemsAreCreatedBelowTheHighlight,
       MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreInsertedWhenConfirmed,
-      MobXPolicies.newItemsAreConfirmedWhenSaved(props.isEqual),
+      MobXPolicies.newItemsAreConfirmedWhenSaved(compareById),
       MobXPolicies.newItemsAreCanceledOnHighlightChange,
       // filtering
       MobXFacets.filteringActsOnItems(preview),
@@ -103,25 +97,23 @@ export class MovesContainer {
 
   constructor(props: PropsT) {
     this.addition = initAddition(new Addition(), {
-      createItem: (values: any) => {
-        return props.createNewMove(
-          this.inputs.userProfile as any,
-          (this.inputs.moveList as any).id
-        );
-      },
+      createItem: MovesCtrHandlers.handleCreateMove(this),
     });
     this.dragging = initDragging(new Dragging());
     this.editing = initEditing(new Editing(), {
-      saveItem: (values: any) => {
-        props.saveMove(this.highlight.item, values);
-      },
+      saveItem: MovesCtrHandlers.handleSaveMove(
+        this,
+        props.navigation,
+        props.movesStore
+      ),
     });
     this.filtering = initFiltering(new Filtering());
     this.highlight = initHighlight(new Highlight());
     this.insertion = initInsertion(new Insertion(), {
-      insertItems: (preview: MoveT[]) => {
-        props.setMoves(this.inputs.moveList as any, preview);
-      },
+      insertItems: MovesCtrHandlers.handleInsertMoves(
+        this,
+        props.moveListsStore
+      ),
     });
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
@@ -132,7 +124,11 @@ export class MovesContainer {
     this._applyPolicies(props);
     this.clipboard = new Clipboard({
       ctr: this,
-      shareMovesToList: props.shareMovesToList,
+      shareMovesToList: MovesCtrHandlers.handleShareMovesToList(
+        this,
+        props.navigation,
+        props.moveListsStore
+      ),
     });
   }
 }

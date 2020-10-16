@@ -9,7 +9,6 @@ import { Profiling } from 'src/session/facets/Profiling';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { movesContainerProps } from 'src/moves/MovesCtr/movesCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 import {
@@ -39,13 +38,11 @@ export const MovesCtrProvider: React.FC<PropsT> = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const createCtr = () => {
-    return new MovesContainer(
-      movesContainerProps(
-        props.navigation,
-        props.moveListsStore,
-        props.movesStore
-      )
-    );
+    return new MovesContainer({
+      navigation: props.navigation,
+      moveListsStore: props.moveListsStore,
+      movesStore: props.movesStore,
+    });
   };
 
   const updateCtr = (ctr: MovesContainer) => {

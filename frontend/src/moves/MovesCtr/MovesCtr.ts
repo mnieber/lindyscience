@@ -20,7 +20,7 @@ import { Selection, initSelection } from 'facet-mobx/facets/selection';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
-import * as MoveCtrPolicies from 'src/moves/MoveCtr/policies';
+import * as MovesCtrPolicies from 'src/moves/MovesCtr/policies';
 import * as MovesCtrHandlers from 'src/moves/MovesCtr/handlers';
 
 const compareById = (lhs: any, rhs: any) => lhs.id === rhs.id;
@@ -65,7 +65,7 @@ export class MovesContainer {
       MobXPolicies.locationIsRestoredOnCancelNewItem(
         props.navigation.restoreLocation
       ),
-      MoveCtrPolicies.handleNavigateToMove(props.navigation),
+      MovesCtrPolicies.handleNavigateToMove(props.navigation),
       SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
       SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
       // insertion

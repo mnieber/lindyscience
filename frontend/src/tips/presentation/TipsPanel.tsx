@@ -55,8 +55,8 @@ export const TipsPanel: React.FC<PropsT> = (p: PropsT) => {
   );
 
   return (
-    <div className={'tipsPanel panel'}>
-      <div className={'flexrow items-center flex-wrap mb-4'}>
+    <div className={'TipsPanel panel'}>
+      <div className={'TipsPanel__header mb-4'}>
         <h2 className="text-xl font-semibold">Tips</h2>
         {addTipBtn}
       </div>

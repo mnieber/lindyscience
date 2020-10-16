@@ -1,12 +1,12 @@
 import * as React from 'react';
+
 import {
   FormStateProvider,
   HandleValidateArgsT,
   HandleSubmitArgsT,
 } from 'react-form-state-context';
-
 import { TextField } from 'src/forms/components/TextField';
-import { Field } from 'src/forms/components/Field';
+import { Field, CancelButton, SaveButton } from 'src/forms/components';
 
 export function TipForm({
   onSubmit,
@@ -33,30 +33,8 @@ export function TipForm({
     onSubmit(values);
   };
 
-  const SaveButton = () => (
-    <button
-      className="tipForm__submitButton ml-2"
-      type="submit"
-      disabled={false}
-    >
-      save
-    </button>
-  );
-
-  const CancelButton = () => (
-    <button
-      className="tipForm__cancelButton ml-2"
-      onClick={(e) => {
-        e.preventDefault();
-        onCancel();
-      }}
-    >
-      cancel
-    </button>
-  );
-
   const textField = (
-    <Field fieldName="text" label="Text">
+    <Field fieldName="text" label="">
       <TextField className="tipForm__text w-64" />
     </Field>
   );
@@ -71,8 +49,8 @@ export function TipForm({
       <form className="tipForm w-full">
         <div className={'flex flex-wrap'}>
           {textField}
-          <SaveButton />
-          <CancelButton />
+          <SaveButton className="tipForm__submitButton" />
+          <CancelButton className="tipForm__cancelButton" onCancel={onCancel} />
         </div>
       </form>
     </FormStateProvider>

@@ -22,7 +22,15 @@
   @apply flex flex-col;
 }
 
-.tip {
+.TipsPanel {
+  @apply flex flex-col;
+}
+
+.TipsPanel__header {
+  @apply flex flex-row items-center flex-wrap;
+}
+
+.Tip {
   @apply flex h-8;
 }
 

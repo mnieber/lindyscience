@@ -41,5 +41,5 @@ export function TipList(props: TipListPropsT) {
     );
   });
 
-  return <React.Fragment>{itemNodes}</React.Fragment>;
+  return <div className="TipList">{itemNodes}</div>;
 }

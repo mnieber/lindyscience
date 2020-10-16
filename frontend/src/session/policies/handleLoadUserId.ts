@@ -2,12 +2,11 @@ import { runInAction } from 'mobx';
 
 import { AuthApiT } from 'src/session/SessionCtr';
 import { Authentication } from 'src/session/facets/Authentication';
-import { handle } from 'facet';
 
 export const handleLoadUserId = (authApi: AuthApiT) => (ctr: any) => {
   const authentication = Authentication.get(ctr);
 
-  handle(authentication, 'loadUserId', async () => {
+  return async () => {
     const response = await authApi.loadUserId();
     if (response.error) {
     } else {
@@ -16,5 +15,5 @@ export const handleLoadUserId = (authApi: AuthApiT) => (ctr: any) => {
         authentication.signedInUserId = signedInUserId;
       });
     }
-  });
+  };
 };

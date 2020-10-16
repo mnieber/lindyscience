@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-
+import { installHandlers } from 'facet-mobx';
 import { data, operation } from 'facet';
 
 export type AuthenticationStateT =
@@ -29,6 +29,24 @@ export class Authentication {
   static get = (ctr: any): Authentication => ctr.authentication;
 }
 
-export function initAuthentication(self: Authentication): Authentication {
+interface PropsT {
+  signIn: Authentication['signIn'];
+  signOut: Authentication['signOut'];
+  loadUserId: Authentication['loadUserId'];
+}
+
+export function initAuthentication(
+  self: Authentication,
+  props: PropsT
+): Authentication {
+  installHandlers(
+    {
+      signIn: props.signIn,
+      signOut: props.signOut,
+      loadUserId: props.loadUserId,
+    },
+    self
+  );
+
   return self;
 }

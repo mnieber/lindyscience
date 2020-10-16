@@ -96,7 +96,7 @@ export function Tip(props: PropsT) {
     );
 
     return (
-      <div className="tip">
+      <div className="Tip">
         {voteCount}
         {text}
         {props.allowEdit && editBtn}

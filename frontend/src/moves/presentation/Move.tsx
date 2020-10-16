@@ -16,7 +16,7 @@ type PropsT = {
 
 export const Move: React.FC<PropsT> = observer((props: PropsT) => {
   const descriptionDiv = (
-    <div>
+    <React.Fragment>
       <div id="move__description" className={'move__description panel'}>
         <h2 className="text-xl font-semibold">Description</h2>
         <MoveDescriptionEditor
@@ -36,11 +36,11 @@ export const Move: React.FC<PropsT> = observer((props: PropsT) => {
           {props.move.ownerUsername}
         </RouterLink>
       </div>
-    </div>
+    </React.Fragment>
   );
 
   return (
-    <div className={classnames('move', props.className || '')}>
+    <div className={classnames('Move', props.className || '')}>
       {descriptionDiv}
     </div>
   );

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { ValuePicker } from 'src/utils/value_picker';
 import { UUID } from 'src/kernel/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { TagT } from 'src/tags/types';
@@ -8,7 +7,12 @@ import { MovePrivateDataT } from 'src/moves/types';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
 import { getContentFromEditor } from 'src/rich_text/presentation/RichTextEditor';
-import { Field } from 'src/forms/components/Field';
+import {
+  Field,
+  CancelButton,
+  SaveButton,
+  TagsField,
+} from 'src/forms/components';
 
 type PropsT = {
   onCancel: () => void;
@@ -56,32 +60,6 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
     </Field>
   );
 
-  const tagsField = (
-    <Field fieldName="tags" label="Tags">
-      <div className="moveListForm__tags mt-4">
-        <ValuePicker
-          zIndex={10}
-          isCreatable={true}
-          isMulti={true}
-          pickableValues={props.knownTags}
-          labelFromValue={(x) => x}
-        />
-      </div>
-    </Field>
-  );
-
-  const SaveButton = () => (
-    <button className="button button--wide ml-2" type="submit">
-      save
-    </button>
-  );
-
-  const CancelButton = () => (
-    <button className="button button--wide ml-2" onClick={props.onCancel}>
-      cancel
-    </button>
-  );
-
   return (
     <FormStateProvider
       initialValues={initialValues}
@@ -92,10 +70,10 @@ export const MovePrivateDataForm: React.FC<PropsT> = (props: PropsT) => {
       <form className="movePrivateDataForm w-full">
         <div className={'flexcol'}>
           {notesDiv}
-          {tagsField}
+          <TagsField knownTags={props.knownTags} />
           <div className={'movePrivateDataForm__buttonPanel flexrow mt-4'}>
             <SaveButton />
-            <CancelButton />
+            <CancelButton onCancel={props.onCancel} />
           </div>
         </div>
       </form>

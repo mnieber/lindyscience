@@ -58,7 +58,7 @@
   min-height: 4rem;
 }
 
-.moveListPanel {
+.MoveListFrame {
   flex: 1;
   min-height: 0; /* new */
 }
@@ -226,7 +226,7 @@
   max-width: 0.5rem;
 }
 
-.movePanel {
+.MoveListFrame__panel {
   min-width: 0;
 }
 

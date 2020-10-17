@@ -38,12 +38,7 @@ export const TipsPanel: React.FC<PropsT> = (p: PropsT) => {
     insertTipBvr,
     props.parentObject.id
   );
-  const saveTipBvr = useSaveTip(
-    newTipBvr,
-    props.parentObject.id,
-    insertTipBvr.preview,
-    props.saveTip
-  );
+  const saveTipBvr = useSaveTip(newTipBvr, insertTipBvr.preview, props.saveTip);
 
   const addTipBtn = (
     <FontAwesomeIcon

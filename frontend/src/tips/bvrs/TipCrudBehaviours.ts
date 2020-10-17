@@ -74,7 +74,6 @@ type IncompleteValuesT = {
 
 export function useSaveTip(
   newTipBvr: NewTipBvrT,
-  moveId: UUID,
   tips: Array<TipT>,
   saveTip: (tip: TipT) => void
 ) {

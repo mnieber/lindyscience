@@ -93,8 +93,9 @@ export class MoveListsContainer {
       createItem: MoveListsCtrHandlers.handleCreateMoveList(this),
     });
     this.editing = initEditing(new Editing(), {
-      saveItem: MoveListsCtrHandlers.handleSaveMoveList(props.moveListsStore)(
-        this
+      saveItem: MoveListsCtrHandlers.handleSaveMoveList(
+        this,
+        props.moveListsStore
       ),
     });
     this.highlight = initHighlight(new Highlight());
@@ -107,7 +108,7 @@ export class MoveListsContainer {
     this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());
     this.labelling = initLabelling(new Labelling(), {
-      saveIds: MoveListsCtrHandlers.handleSaveLabels(props.profiling)(this),
+      saveIds: MoveListsCtrHandlers.handleSaveLabels(this, props.profiling),
     });
 
     registerFacets(this);

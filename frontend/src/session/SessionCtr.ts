@@ -62,9 +62,10 @@ export class SessionContainer {
     this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());
     this.authentication = initAuthentication(new Authentication(), {
-      signIn: SessionCtrPolicies.handleSignIn(authApi)(this),
-      signOut: SessionCtrPolicies.handleSignOut(authApi)(this),
-      loadUserId: SessionCtrPolicies.handleLoadUserId(authApi)(this),
+      signIn: SessionCtrHandlers.handleSignIn(this, authApi),
+      signOut: SessionCtrHandlers.handleSignOut(this, authApi),
+      signUp: SessionCtrHandlers.handleSignUp(this, authApi),
+      loadUserId: SessionCtrHandlers.handleLoadUserId(this, authApi),
     });
     this.moveListsStore = new MoveListsStore();
     this.movesStore = new MovesStore();

@@ -4,8 +4,9 @@ import { apiSaveMoveList } from 'src/move_lists/api';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { listToItemById, slugify } from 'src/utils/utils';
 
-export const handleSaveMoveList = (moveListsStore: MoveListsStore) => (
-  ctr: MoveListsContainer
+export const handleSaveMoveList = (
+  ctr: MoveListsContainer,
+  moveListsStore: MoveListsStore
 ) => {
   return (values: any) => {
     const slug =

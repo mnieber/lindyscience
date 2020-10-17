@@ -4,8 +4,9 @@ import { UUID } from 'src/kernel/types';
 import { apiSaveMoveListOrdering } from 'src/move_lists/api';
 import { createErrorHandler } from 'src/app/utils';
 
-export const handleSaveLabels = (profiling: Profiling) => (
-  ctr: MoveListsContainer
+export const handleSaveLabels = (
+  ctr: MoveListsContainer,
+  profiling: Profiling
 ) => {
   return (label: string, ids: Array<UUID>) => {
     if (label === 'following') {

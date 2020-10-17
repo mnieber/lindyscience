@@ -1,11 +1,12 @@
+import { observable } from 'src/utils/mobx_wrapper';
+import { data, input, operation } from 'facet';
+import { installHandlers } from 'facet-mobx';
 import { CutPointT } from 'src/video/types';
 import { MoveT } from 'src/moves/types';
-import { action, observable } from 'src/utils/mobx_wrapper';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { UUID } from 'src/kernel/types';
 import { createUUID, isNone } from 'src/utils/utils';
 import { getInsertionIndex } from 'src/utils/get_insertion_index';
-import { data, handle, input, operation } from 'facet';
 
 export class CutPoints {
   @input createMove: (cutPoint: CutPointT, videoLink: string) => MoveT;
@@ -76,67 +77,43 @@ function _addCutPoints(self: CutPoints, cutPoints: Array<CutPointT>) {
   }, self.cutPoints);
 }
 
-function handleAdd(self: CutPoints) {
-  handle(
-    self,
-    'add',
-    action((cutPointType: 'start' | 'end') => {
-      const newCutPoint = _createNewCutPoint(
-        cutPointType,
-        self.videoController.getPlayer().getCurrentTime()
-      );
-      _addCutPoints(self, [newCutPoint]);
-    })
+const handleAdd = (self: CutPoints) => (cutPointType: 'start' | 'end') => {
+  const newCutPoint = _createNewCutPoint(
+    cutPointType,
+    self.videoController.getPlayer().getCurrentTime()
   );
-}
+  _addCutPoints(self, [newCutPoint]);
+};
 
-function handleSetVideoLink(self: CutPoints) {
-  handle(
-    self,
-    'setVideoLink',
-    action((videoLink: string) => {
-      if (self.videoLink !== videoLink) {
-        self.cutPoints = [];
-        self.videoController = new VideoController();
-        self.videoController.video = {
-          link: videoLink,
-          startTimeMs: undefined,
-          endTimeMs: undefined,
-        };
-      }
-    })
+const handleSetVideoLink = (self: CutPoints) => (videoLink: string) => {
+  if (self.videoLink !== videoLink) {
+    self.cutPoints = [];
+    self.videoController = new VideoController();
+    self.videoController.video = {
+      link: videoLink,
+      startTimeMs: undefined,
+      endTimeMs: undefined,
+    };
+  }
+};
+
+const handleSave = (self: CutPoints) => (values: any) => {
+  const existingCutPoint = self.cutPoints.find(
+    (x: CutPointT) => x.id === values.id
   );
-}
+  const cutPoint: CutPointT = {
+    ...existingCutPoint,
+    ...values,
+  };
 
-function handleSave(self: CutPoints) {
-  handle(
-    self,
-    'save',
-    action((values: any) => {
-      const existingCutPoint = self.cutPoints.find(
-        (x: CutPointT) => x.id === values.id
-      );
-      const cutPoint: CutPointT = {
-        ...existingCutPoint,
-        ...values,
-      };
+  _addCutPoints(self, [cutPoint]);
+};
 
-      _addCutPoints(self, [cutPoint]);
-    })
+const handleRemove = (self: CutPoints) => (cutPointIds: Array<UUID>) => {
+  self.cutPoints = self.cutPoints.filter(
+    (x: CutPointT) => !cutPointIds.includes(x.id)
   );
-}
-
-function handleRemove(self: CutPoints) {
-  handle(
-    self,
-    'remove',
-    action((cutPointIds: Array<UUID>) => {
-      self.cutPoints = self.cutPoints.filter(
-        (x: CutPointT) => !cutPointIds.includes(x.id)
-      );
-    })
-  );
-}
+};
 
 function _createMovesFromCutPoints(self: CutPoints) {
   const newMoves: Array<MoveT> = self.cutPoints.reduce(
@@ -161,9 +138,14 @@ function _createMovesFromCutPoints(self: CutPoints) {
 }
 
 export function initCutPoints(self: CutPoints) {
-  handleSetVideoLink(self);
-  handleAdd(self);
-  handleRemove(self);
-  handleSave(self);
+  installHandlers(
+    {
+      remove: handleRemove,
+      save: handleSave,
+      add: handleAdd,
+      setVideoLink: handleSetVideoLink,
+    },
+    self
+  );
   return self;
 }

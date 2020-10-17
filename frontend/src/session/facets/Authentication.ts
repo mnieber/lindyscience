@@ -32,6 +32,7 @@ export class Authentication {
 interface PropsT {
   signIn: Authentication['signIn'];
   signOut: Authentication['signOut'];
+  signUp: Authentication['signUp'];
   loadUserId: Authentication['loadUserId'];
 }
 
@@ -41,9 +42,10 @@ export function initAuthentication(
 ): Authentication {
   installHandlers(
     {
-      signIn: props.signIn,
-      signOut: props.signOut,
-      loadUserId: props.loadUserId,
+      signIn: (self: Authentication) => props.signIn,
+      signOut: (self: Authentication) => props.signOut,
+      signUp: (self: Authentication) => props.signUp,
+      loadUserId: (self: Authentication) => props.loadUserId,
     },
     self
   );

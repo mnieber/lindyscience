@@ -5,7 +5,7 @@ import { Authentication } from 'src/session/facets/Authentication';
 import { Navigation } from 'src/session/facets/Navigation';
 import { urlParam } from 'src/utils/utils';
 
-export const handleSignIn = (authApi: AuthApiT) => (ctr: any) => {
+export const handleSignIn = (ctr: any, authApi: AuthApiT) => {
   const authentication = Authentication.get(ctr);
   const navigation = Navigation.get(ctr);
 

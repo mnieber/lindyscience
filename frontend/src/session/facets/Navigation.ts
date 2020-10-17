@@ -78,7 +78,7 @@ export function initNavigation(self: Navigation, props: PropsT): Navigation {
       requestData: _handleRequestData,
       storeLocation: _handleStoreLocation,
       restoreLocation: _handleRestoreLocation,
-      navigateToMoveList: props.navigateToMoveList,
+      navigateToMoveList: (self: Navigation) => props.navigateToMoveList,
     },
     self
   );

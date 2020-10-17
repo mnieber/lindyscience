@@ -2,9 +2,9 @@ import { keys } from 'lodash/fp';
 
 import { VoteT } from 'src/votes/types';
 import { action, computed, observable } from 'src/utils/mobx_wrapper';
-import { TipT, TipByIdT, TipsByIdT } from 'src/tips/types';
+import { TipT, TipByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
-import { isNone, reduceMapToMap } from 'src/utils/utils';
+import * as _ from 'lodash/fp';
 
 export class TipsStore {
   @observable tipById: TipByIdT = {};
@@ -39,14 +39,17 @@ export class TipsStore {
   }
 
   @computed get tipsByMoveId() {
-    return reduceMapToMap<TipsByIdT>(
-      this.tipById,
-      (acc: any, tipId: UUID, tip: TipT) => {
-        if (isNone(acc[tip.moveId])) {
-          acc[tip.moveId] = [];
-        }
-        acc[tip.moveId].push(tip);
-      }
-    );
+    return _.flow(
+      _.always(this.tipById),
+      _.toPairs,
+      _.reduce((acc: any, [tipId, tip]: [UUID, TipT]) => {
+        return _.flow(
+          _.always(acc),
+          _.set(tip.moveId, acc[tip.moveId] ?? []),
+          _.update(tip.moveId, (tips) => [...tips, tip])
+        )();
+      }, {}),
+      _.mapValues(_.sortBy((x: TipT) => -1 * x.initialVoteCount))
+    )();
   }
 }

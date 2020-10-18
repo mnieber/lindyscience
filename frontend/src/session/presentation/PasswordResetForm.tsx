@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { FormStateProvider, IFormState } from 'react-form-state-context';
+import { useAuthStateContext } from 'src/session/AuthStateProvider';
+import {
+  FormStateProvider,
+  HandleSubmitArgsT,
+  HandleValidateArgsT,
+} from 'react-form-state-context';
 import { GlobalError } from 'src/session/presentation/form_fields/GlobalError';
 import { EmailField } from 'src/session/presentation/form_fields/EmailField';
 import { Field } from 'src/forms/components/Field';
@@ -13,30 +18,24 @@ const getExternalErrors = (errors: Array<string>) => {
 
 type PasswordResetFormPropsT = {
   resetPassword: (email: string) => any;
-  errors: Array<string>;
 };
 
 export function PasswordResetForm(props: PasswordResetFormPropsT) {
-  const handleValidate = ({
-    values,
-    setError,
-  }: {
-    values: IFormState['values'];
-    setError: IFormState['setError'];
-  }) => {
+  const authState = useAuthStateContext();
+  const handleValidate = ({ values, setError }: HandleValidateArgsT) => {
     if (!values.password) {
       setError('password', 'Please provide a new password');
     }
   };
 
-  const handleSubmit = ({ values }: { values: IFormState['values'] }) => {
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
     props.resetPassword(values.email);
   };
 
   return (
     <FormStateProvider
       initialValues={{}}
-      initialErrors={getExternalErrors(props.errors)}
+      initialErrors={getExternalErrors(authState.errors)}
       handleValidate={handleValidate}
       handleSubmit={handleSubmit}
     >

@@ -2,12 +2,12 @@ import React from 'react';
 import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
+import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
 } from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
-import { useAuthenticationState } from 'src/session/containers/useAuthenticationState';
 import { RouterLink } from 'src/utils/RouterLink';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { SignUpForm } from 'src/session/presentation/SignUpForm';
@@ -25,7 +25,7 @@ export const SignUpPage = compose(
   observer
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-  const { errors, state } = useAuthenticationState(props.authentication);
+  const { errors, state } = useAuthStateContext();
 
   const confirmationDiv = (
     <div>

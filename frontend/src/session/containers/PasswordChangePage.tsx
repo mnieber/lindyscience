@@ -3,12 +3,12 @@ import React from 'react';
 import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
+import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
 } from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
-import { useAuthenticationState } from 'src/session/containers/useAuthenticationState';
 import { RouterLink } from 'src/utils/RouterLink';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { PasswordChangeForm } from 'src/session/presentation/PasswordChangeForm';
@@ -27,7 +27,7 @@ export const PasswordChangePage = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const params = useParams();
-  const { errors, state } = useAuthenticationState(props.authentication);
+  const { errors, state } = useAuthStateContext();
 
   const explanationDiv = <div>Please enter your new password.</div>;
   const confirmationDiv = (

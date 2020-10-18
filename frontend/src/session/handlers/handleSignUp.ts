@@ -1,4 +1,5 @@
 import { runInAction } from 'mobx';
+import { sendMsg } from 'facet';
 
 import { AuthApiT } from 'src/session/SessionCtr';
 import { Authentication } from 'src/session/facets/Authentication';
@@ -9,11 +10,10 @@ export const handleSignUp = (ctr: any, authApi: AuthApiT) => {
     const response = await authApi.signUp(email, username, password);
 
     runInAction(() => {
-      authentication.errors = response.errors;
       if (response.errors) {
-        authentication.state = 'SignUp.Failed';
+        sendMsg(authentication, 'SignUp.Failed', { errors: response.errors });
       } else {
-        authentication.state = 'SignUp.Succeeded';
+        sendMsg(authentication, 'SignUp.Success');
       }
     });
   };

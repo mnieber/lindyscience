@@ -18,7 +18,7 @@ import * as authApi from 'src/session/apis/authApi';
 export type AuthApiT = {
   loadUserId: Function;
   signUp: Function;
-  resetPassword: Function;
+  resetPassword: (email: string) => any;
   changePassword: Function;
   signIn: Function;
   signOut: Function;
@@ -66,6 +66,9 @@ export class SessionContainer {
       signOut: SessionCtrHandlers.handleSignOut(this, authApi),
       signUp: SessionCtrHandlers.handleSignUp(this, authApi),
       loadUserId: SessionCtrHandlers.handleLoadUserId(this, authApi),
+      resetPassword: SessionCtrHandlers.handleResetPassword(this, authApi),
+      changePassword: SessionCtrHandlers.handleChangePassword(this, authApi),
+      activateAccount: SessionCtrHandlers.handleActivateAccount(this, authApi),
     });
     this.moveListsStore = new MoveListsStore();
     this.movesStore = new MovesStore();

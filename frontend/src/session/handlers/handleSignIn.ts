@@ -7,10 +7,9 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { urlParam } from 'src/utils/utils';
 
 export const handleSignIn = (ctr: any, authApi: AuthApiT) => {
-  const authentication = Authentication.get(ctr);
-  const navigation = Navigation.get(ctr);
-
   return async (email: string, password: string, rememberMe: boolean) => {
+    const authentication = Authentication.get(ctr);
+    const navigation = Navigation.get(ctr);
     const response = await authApi.signIn(email, password, rememberMe);
 
     runInAction(() => {

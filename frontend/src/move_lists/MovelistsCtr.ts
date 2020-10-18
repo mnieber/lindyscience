@@ -4,6 +4,7 @@ import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facet';
+import { ClassMemberT } from 'facet/types';
 import { mapData } from 'facet-mobx';
 import { Labelling, initLabelling } from 'facet-mobx/facets/labelling';
 import { Addition, initAddition } from 'facet-mobx/facets/addition';
@@ -12,6 +13,7 @@ import { Highlight, initHighlight } from 'facet-mobx/facets/highlight';
 import { Insertion, initInsertion } from 'facet-mobx/facets/insertion';
 import { Selection, initSelection } from 'facet-mobx/facets/selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';
@@ -40,6 +42,7 @@ export class MoveListsContainer {
     const inputItems = [Inputs, 'moveLists'];
     const itemById = [Outputs, 'moveListById'];
     const preview = [Outputs, 'preview'];
+    const moveListsFollowing: ClassMemberT = [Inputs, 'moveListsFollowing'];
 
     const policies = [
       // selection
@@ -74,11 +77,7 @@ export class MoveListsContainer {
       MobXPolicies.newItemsAreCanceledOnHighlightChange,
 
       // labelling
-      MobXFacets.labellingReceivesIds(
-        [Inputs, 'moveListsFollowing'],
-        'following',
-        getIds
-      ),
+      MobXFacets.labellingReceivesIds(moveListsFollowing, 'following', getIds),
 
       // display
       mapData([Outputs, 'preview'], [Outputs, 'display']),

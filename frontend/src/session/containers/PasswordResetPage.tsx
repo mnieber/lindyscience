@@ -26,7 +26,7 @@ export const PasswordResetPage = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  const { errors, state, hasErrors } = useAuthStateContext();
+  const { errors, state, hasErrors } = useAuthStateContext(true);
   const isNotActivated = errors.includes('passwordReset/not_activated');
 
   const confirmationDiv = (

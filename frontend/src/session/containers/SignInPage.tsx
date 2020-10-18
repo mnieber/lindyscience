@@ -25,7 +25,7 @@ export const SignInPage = compose(
   observer
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-  const { errors } = useAuthStateContext();
+  const { errors } = useAuthStateContext(true);
 
   return (
     <AuthenticationFrame header="Sign in">

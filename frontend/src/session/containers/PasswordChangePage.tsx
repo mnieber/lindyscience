@@ -27,7 +27,7 @@ export const PasswordChangePage = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const params = useParams();
-  const { errors, state } = useAuthStateContext();
+  const { errors, state } = useAuthStateContext(true);
 
   const explanationDiv = <div>Please enter your new password.</div>;
   const confirmationDiv = (

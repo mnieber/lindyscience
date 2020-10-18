@@ -25,7 +25,7 @@ export const SignUpPage = compose(
   observer
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-  const { errors, state } = useAuthStateContext();
+  const { errors, state } = useAuthStateContext(true);
 
   const confirmationDiv = (
     <div>

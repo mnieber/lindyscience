@@ -26,7 +26,7 @@ export const ActivateAccountPage: React.FC<PropsT> = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const params = useParams();
-  const { errors, state } = useAuthStateContext();
+  const { errors, state } = useAuthStateContext(true);
 
   const isAlreadyActivated = errors.includes(
     'activateAccount/already_activated'

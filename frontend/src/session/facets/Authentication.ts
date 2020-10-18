@@ -2,21 +2,8 @@ import { observable } from 'mobx';
 import { installHandlers } from 'facet-mobx';
 import { data, operation } from 'facet';
 
-export type AuthenticationStateT =
-  | ''
-  | 'SignUp.Failed'
-  | 'SignUp.Succeeded'
-  | 'ResetPassword.Succeeded'
-  | 'ResetPassword.Failed'
-  | 'ChangePassword.Succeeded'
-  | 'ChangePassword.Failed'
-  | 'ActivateAccount.Succeeded'
-  | 'ActivateAccount.Failed';
-
 export class Authentication {
   @data @observable signedInUserId?: string;
-  @data @observable errors?: Array<string>;
-  @data @observable state?: AuthenticationStateT;
 
   @operation loadUserId() {}
   @operation signIn(userId: string, password: string, rememberMe: boolean) {}
@@ -34,6 +21,9 @@ interface PropsT {
   signOut: Authentication['signOut'];
   signUp: Authentication['signUp'];
   loadUserId: Authentication['loadUserId'];
+  resetPassword: Authentication['resetPassword'];
+  changePassword: Authentication['changePassword'];
+  activateAccount: Authentication['activateAccount'];
 }
 
 export function initAuthentication(
@@ -46,6 +36,9 @@ export function initAuthentication(
       signOut: (self: Authentication) => props.signOut,
       signUp: (self: Authentication) => props.signUp,
       loadUserId: (self: Authentication) => props.loadUserId,
+      resetPassword: (self: Authentication) => props.resetPassword,
+      changePassword: (self: Authentication) => props.changePassword,
+      activateAccount: (self: Authentication) => props.activateAccount,
     },
     self
   );

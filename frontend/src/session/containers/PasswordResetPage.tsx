@@ -2,12 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { compose } from 'lodash/fp';
 
+import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
 } from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
-import { useAuthenticationState } from 'src/session/containers/useAuthenticationState';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { PasswordResetForm } from 'src/session/presentation/PasswordResetForm';
 import { RouterLink } from 'src/utils/RouterLink';
@@ -26,9 +26,7 @@ export const PasswordResetPage = compose(
 )((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  const { errors, state, hasErrors } = useAuthenticationState(
-    props.authentication
-  );
+  const { errors, state, hasErrors } = useAuthStateContext();
   const isNotActivated = errors.includes('passwordReset/not_activated');
 
   const confirmationDiv = (
@@ -62,7 +60,6 @@ export const PasswordResetPage = compose(
         {state !== 'ResetPassword.Succeeded' && (
           <PasswordResetForm
             resetPassword={props.authentication.resetPassword}
-            errors={props.authentication.errors ?? []}
           />
         )}
         <RouterLink to="/sign-in/">Sign in</RouterLink>

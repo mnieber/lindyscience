@@ -9,10 +9,10 @@ import { MoveT } from 'src/moves/types';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { Dragging } from 'facet-mobx/facets/dragging';
 import { mergeDefaultProps } from 'react-default-props-context';
 import { Highlight } from 'facet-mobx/facets/highlight';
 import { Selection } from 'facet-mobx/facets/selection';
+import { DragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 
 // MoveList
 
@@ -29,7 +29,7 @@ type DefaultPropsT = {
   moveList: MoveListT;
   moves: Array<MoveT>;
   movesCtr: MovesContainer;
-  movesDragging: Dragging;
+  movesDragAndDrop: DragAndDrop;
   movesHighlight: Highlight;
   movesSelection: Selection;
 };
@@ -37,7 +37,7 @@ type DefaultPropsT = {
 export const MoveList: React.FC<PropsT> = compose(observer)((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  const dragPosition = props.movesDragging.position;
+  const dragPosition = props.movesDragAndDrop.position;
   const selectionIds = props.movesSelection.ids || [];
   const highlightId = props.movesHighlight.id;
 

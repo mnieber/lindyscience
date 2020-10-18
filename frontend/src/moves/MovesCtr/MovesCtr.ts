@@ -11,11 +11,10 @@ import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facet';
 import { mapData } from 'facet-mobx';
 import { Addition, initAddition } from 'facet-mobx/facets/addition';
-import { Dragging, initDragging } from 'facet-mobx/facets/dragging';
 import { Editing, initEditing } from 'facet-mobx/facets/editing';
 import { Filtering, initFiltering } from 'facet-mobx/facets/filtering';
 import { Highlight, initHighlight } from 'facet-mobx/facets/highlight';
-import { Insertion, initInsertion } from 'facet-mobx/facets/insertion';
+import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { Selection, initSelection } from 'facet-mobx/facets/selection';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
@@ -33,11 +32,10 @@ type PropsT = {
 
 export class MovesContainer {
   @facet addition: Addition;
-  @facet dragging: Dragging;
   @facet editing: Editing;
   @facet filtering: Filtering;
   @facet highlight: Highlight;
-  @facet insertion: Insertion;
+  @facet dragAndDrop: DragAndDrop;
   @facet inputs: Inputs;
   @facet outputs: Outputs;
   @facet selection: Selection;
@@ -68,14 +66,13 @@ export class MovesContainer {
       MovesCtrPolicies.handleNavigateToMove(props.navigation),
       SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
       SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
-      // insertion
-      MobXFacets.insertionActsOnItems(inputItems),
-      MobXFacets.insertionCreatesThePreview({ preview }),
-      MobXPolicies.insertionHappensOnDrop,
-      MobXPolicies.insertionPicksAPayloadsSource({
-        payloadSources: [
-          MobXPolicies.insertByCreatingAnItem({ showPreview: true }),
-          MobXPolicies.insertByDraggingSelection({ showPreview: false }),
+      // dragAndDrop
+      MobXFacets.dragAndDropActsOnItems(inputItems),
+      MobXFacets.draggingCreatesThePreview({ preview }),
+      MobXPolicies.dragAndDropRequiresADragSource({
+        dragSources: [
+          MobXPolicies.dragSourceFromNewItem({ showPreview: true }),
+          MobXPolicies.dragSourceFromSelection({ showPreview: false }),
         ],
       }),
       // creation
@@ -99,7 +96,6 @@ export class MovesContainer {
     this.addition = initAddition(new Addition(), {
       createItem: MovesCtrHandlers.handleCreateMove(this),
     });
-    this.dragging = initDragging(new Dragging());
     this.editing = initEditing(new Editing(), {
       saveItem: MovesCtrHandlers.handleSaveMove(
         this,
@@ -109,11 +105,8 @@ export class MovesContainer {
     });
     this.filtering = initFiltering(new Filtering());
     this.highlight = initHighlight(new Highlight());
-    this.insertion = initInsertion(new Insertion(), {
-      insertItems: MovesCtrHandlers.handleInsertMoves(
-        this,
-        props.moveListsStore
-      ),
+    this.dragAndDrop = initDragAndDrop(new DragAndDrop(), {
+      onDrop: MovesCtrHandlers.handleSaveMoveOrder(this, props.moveListsStore),
     });
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());

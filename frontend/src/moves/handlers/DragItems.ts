@@ -1,6 +1,6 @@
 import { runInAction } from 'src/utils/mobx_wrapper';
 import { isBefore } from 'src/utils/ui_utils';
-import { Dragging } from 'facet-mobx/facets/dragging';
+import { DragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 
 export type DragPosition2T = {
   item: any;
@@ -24,14 +24,14 @@ export class DragItems {
       onDragOver: (e: any) => {
         e.preventDefault();
         runInAction('onDragOver', () => {
-          Dragging.get(this.props.container).position = {
+          DragAndDrop.get(this.props.container).position = {
             targetItemId: itemId,
             isBefore: isBefore(e),
           };
         });
       },
-      onDragEnd: () => Dragging.get(this.props.container).cancel(),
-      onDrop: () => Dragging.get(this.props.container).drop(),
+      onDragEnd: () => DragAndDrop.get(this.props.container).cancel(),
+      onDrop: () => DragAndDrop.get(this.props.container).drop(),
     };
   }
 }

@@ -75,7 +75,6 @@ export const MovesCtrProvider: React.FC<PropsT> = compose(
       moves: () => ctr.outputs.display,
       movesPreview: () => ctr.outputs.preview,
       movesEditing: () => ctr.editing,
-      movesDragging: () => ctr.dragging,
       movesHighlight: () => ctr.highlight,
       movesSelection: () => ctr.selection,
       movesClipboard: () => ctr.clipboard,

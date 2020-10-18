@@ -10,7 +10,7 @@ import { Labelling, initLabelling } from 'facet-mobx/facets/labelling';
 import { Addition, initAddition } from 'facet-mobx/facets/addition';
 import { Editing, initEditing } from 'facet-mobx/facets/editing';
 import { Highlight, initHighlight } from 'facet-mobx/facets/highlight';
-import { Insertion, initInsertion } from 'facet-mobx/facets/insertion';
+import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { Selection, initSelection } from 'facet-mobx/facets/selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 
@@ -32,7 +32,7 @@ export class MoveListsContainer {
   @facet addition: Addition;
   @facet editing: Editing;
   @facet highlight: Highlight;
-  @facet insertion: Insertion;
+  @facet dragAndDrop: DragAndDrop;
   @facet inputs: Inputs;
   @facet outputs: Outputs;
   @facet selection: Selection;
@@ -59,12 +59,12 @@ export class MoveListsContainer {
         props.navigation.restoreLocation
       ),
 
-      // insertion
-      MobXFacets.insertionActsOnItems(inputItems),
-      MobXFacets.insertionCreatesThePreview({ preview }),
-      MobXPolicies.insertionPicksAPayloadsSource({
-        payloadSources: [
-          MobXPolicies.insertByCreatingAnItem({ showPreview: true }),
+      // dragAndDrop
+      MobXFacets.dragAndDropActsOnItems(inputItems),
+      MobXFacets.draggingCreatesThePreview({ preview }),
+      MobXPolicies.dragAndDropRequiresADragSource({
+        dragSources: [
+          MobXPolicies.dragSourceFromNewItem({ showPreview: true }),
         ],
       }),
 
@@ -98,8 +98,8 @@ export class MoveListsContainer {
       ),
     });
     this.highlight = initHighlight(new Highlight());
-    this.insertion = initInsertion(new Insertion(), {
-      insertItems: () => {
+    this.dragAndDrop = initDragAndDrop(new DragAndDrop(), {
+      onDrop: () => {
         // nothing to do
       },
     });

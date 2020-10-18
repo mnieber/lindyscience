@@ -4,7 +4,7 @@ import { MoveT } from 'src/moves/types';
 import { createErrorHandler, getId } from 'src/app/utils';
 import { apiSaveMoveOrdering } from 'src/move_lists/api';
 
-export const handleInsertMoves = (
+export const handleSaveMoveOrder = (
   ctr: MovesContainer,
   moveListsStore: MoveListsStore
 ) => {

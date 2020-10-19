@@ -24,7 +24,7 @@ export class DragItems {
       onDragOver: (e: any) => {
         e.preventDefault();
         runInAction('onDragOver', () => {
-          DragAndDrop.get(this.props.container).position = {
+          DragAndDrop.get(this.props.container).hoverPosition = {
             targetItemId: itemId,
             isBefore: isBefore(e),
           };

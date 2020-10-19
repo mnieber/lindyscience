@@ -54,27 +54,28 @@ export class MoveListsContainer {
       MobXPolicies.highlightFollowsSelection,
 
       // navigation
-      MobXPolicies.locationIsStoredOnNewItem(props.navigation.storeLocation),
       MobXPolicies.locationIsRestoredOnCancelNewItem(
+        props.navigation.storeLocation,
         props.navigation.restoreLocation
       ),
 
       // dragAndDrop
       MobXFacets.dragAndDropActsOnItems(inputItems),
       MobXFacets.draggingCreatesThePreview({ preview }),
-      MobXPolicies.dragAndDropRequiresADragSource({
-        dragSources: [
-          MobXPolicies.dragSourceFromNewItem({ showPreview: true }),
-        ],
-      }),
+      MobXPolicies.useDragSources([
+        new MobXPolicies.DragSourceFromNewItem({
+          showPreview: true,
+          performDropOnConfirmNewItem: true,
+        }),
+      ]),
 
       // creation
-      MobXPolicies.newItemsAreCreatedBelowTheHighlight,
+      MobXPolicies.newItemsAreCreatedBelowTheHighlight({
+        cancelOnHighlightChange: true,
+      }),
       MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved(compareById),
-      MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed,
-      MobXPolicies.newItemsAreCanceledOnHighlightChange,
 
       // labelling
       MobXFacets.labellingReceivesIds(moveListsFollowing, 'following', getIds),
@@ -98,11 +99,7 @@ export class MoveListsContainer {
       ),
     });
     this.highlight = initHighlight(new Highlight());
-    this.dragAndDrop = initDragAndDrop(new DragAndDrop(), {
-      onDrop: () => {
-        // nothing to do
-      },
-    });
+    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());

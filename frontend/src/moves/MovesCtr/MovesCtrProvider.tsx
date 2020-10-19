@@ -80,6 +80,7 @@ export const MovesCtrProvider: React.FC<PropsT> = compose(
       movesClipboard: () => ctr.clipboard,
       movesFiltering: () => ctr.filtering,
       movesAddition: () => ctr.addition,
+      movesDragAndDrop: () => ctr.dragAndDrop,
     };
   };
 

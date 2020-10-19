@@ -54,36 +54,44 @@ export class MovesContainer {
     const policies = [
       // selection
       MobXFacets.selectionActsOnItems(itemById),
+
       // highlight
       MobXFacets.highlightActsOnItems(itemById),
       MobXPolicies.highlightFollowsSelection,
       MobXPolicies.highlightIsCorrectedOnFilterChange,
+
       // navigation
-      MobXPolicies.locationIsStoredOnNewItem(props.navigation.storeLocation),
       MobXPolicies.locationIsRestoredOnCancelNewItem(
+        props.navigation.storeLocation,
         props.navigation.restoreLocation
       ),
       MovesCtrPolicies.handleNavigateToMove(props.navigation),
       SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
       SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
+
       // dragAndDrop
       MobXFacets.dragAndDropActsOnItems(inputItems),
       MobXFacets.draggingCreatesThePreview({ preview }),
-      MobXPolicies.dragAndDropRequiresADragSource({
-        dragSources: [
-          MobXPolicies.dragSourceFromNewItem({ showPreview: true }),
-          MobXPolicies.dragSourceFromSelection({ showPreview: false }),
-        ],
-      }),
+      MovesCtrPolicies.handleSaveMoveOrderOnDrop(props.moveListsStore),
+      MobXPolicies.useDragSources([
+        new MobXPolicies.DragSourceFromNewItem({
+          showPreview: true,
+          performDropOnConfirmNewItem: true,
+        }),
+        new MobXPolicies.DragSourceFromSelection({ showPreview: false }),
+      ]),
+
       // creation
-      MobXPolicies.newItemsAreCreatedBelowTheHighlight,
+      MobXPolicies.newItemsAreCreatedBelowTheHighlight({
+        cancelOnHighlightChange: true,
+      }),
       MobXPolicies.newItemsAreEdited,
-      MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MobXPolicies.newItemsAreConfirmedWhenSaved(compareById),
-      MobXPolicies.newItemsAreCanceledOnHighlightChange,
+
       // filtering
       MobXFacets.filteringActsOnItems(preview),
       MobXPolicies.filteringIsDisabledOnNewItem,
+
       // display
       mapData([Filtering, 'filteredItems'], [Outputs, 'display']),
       mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
@@ -105,16 +113,14 @@ export class MovesContainer {
     });
     this.filtering = initFiltering(new Filtering());
     this.highlight = initHighlight(new Highlight());
-    this.dragAndDrop = initDragAndDrop(new DragAndDrop(), {
-      onDrop: MovesCtrHandlers.handleSaveMoveOrder(this, props.moveListsStore),
-    });
+    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());
 
     registerFacets(this);
-
     this._applyPolicies(props);
+
     this.clipboard = new Clipboard({
       ctr: this,
       shareMovesToList: MovesCtrHandlers.handleShareMovesToList(

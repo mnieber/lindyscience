@@ -16,7 +16,7 @@ export const MoveListHeader: React.FC<PropsT> = (props) => {
         props.className,
         'moveListHeader__addButton button button--wide'
       )}
-      onClick={() => props.addNewMove}
+      onClick={() => props.addNewMove()}
     >
       New move
     </div>

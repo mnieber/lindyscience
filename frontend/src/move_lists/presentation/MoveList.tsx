@@ -37,7 +37,7 @@ type DefaultPropsT = {
 export const MoveList: React.FC<PropsT> = compose(observer)((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  const dragPosition = props.movesDragAndDrop.position;
+  const dragPosition = props.movesDragAndDrop.hoverPosition;
   const selectionIds = props.movesSelection.ids || [];
   const highlightId = props.movesHighlight.id;
 

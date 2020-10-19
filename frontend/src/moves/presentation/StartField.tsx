@@ -15,7 +15,6 @@ export const StartField = (props: PropsT) => {
   const UpdateStartBtn = () => {
     return (
       <div
-        key="updateStartBtn"
         className={'UpdateStartBtn FieldButton'}
         onClick={() => {
           formState.setValue(
@@ -39,7 +38,6 @@ export const StartField = (props: PropsT) => {
   const GotoStartBtn = () => {
     return (
       <div
-        key="gotoStartBtn"
         className={'GotoStartBtn FieldButton'}
         onClick={() => goToTime(formState.values.startTime)}
       >
@@ -52,7 +50,10 @@ export const StartField = (props: PropsT) => {
     <Field
       label="Start time"
       fieldName="startTime"
-      buttons={[<UpdateStartBtn />, <GotoStartBtn />]}
+      buttons={[
+        <UpdateStartBtn key="updateStartBtn" />,
+        <GotoStartBtn key="gotoStartBtn" />,
+      ]}
     >
       <TextField className="w-full" placeholder="Start time in seconds" />
     </Field>

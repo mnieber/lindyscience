@@ -12,9 +12,8 @@ interface PropsT {
 export const EndField = (props: PropsT) => {
   const formState = useFormStateContext();
 
-  const updateEndBtn = (
+  const UpdateEndBtn = () => (
     <div
-      key="updateEndBtn"
       className={'FieldButton'}
       onClick={() => {
         formState.setValue(
@@ -34,9 +33,8 @@ export const EndField = (props: PropsT) => {
     } catch {}
   };
 
-  const gotoEndBtn = (
+  const GotoEndBtn = () => (
     <div
-      key="gotoEndBtn"
       className={'FieldButton'}
       onClick={() => goToTime(formState.values.endTime)}
     >
@@ -48,7 +46,10 @@ export const EndField = (props: PropsT) => {
     <Field
       label="End time"
       fieldName="endTime"
-      buttons={[updateEndBtn, gotoEndBtn]}
+      buttons={[
+        <UpdateEndBtn key="updateEndBtn" />,
+        <GotoEndBtn key="gotoEndBtn" />,
+      ]}
     >
       <TextField className="w-full" placeholder="End time in seconds" />
     </Field>

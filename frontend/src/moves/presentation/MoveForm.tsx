@@ -82,7 +82,6 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
     <Field label="Link" fieldName="link">
       <TextField
         className="w-full"
-        type="text"
         onChange={(x: any) => props.setAltLink(x.target.value)}
       />
     </Field>

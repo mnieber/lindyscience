@@ -2,10 +2,6 @@ import { runInAction } from 'src/utils/mobx_wrapper';
 import { isBefore } from 'src/utils/ui_utils';
 import { DragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 
-export type DragPosition2T = {
-  item: any;
-};
-
 export type PropsT = {
   container: any;
 };

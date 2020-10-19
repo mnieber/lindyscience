@@ -17,14 +17,15 @@ export const TextField: React.FC<any> = ({
 
   return (
     <input
+      {...otherProps}
       type="text"
       {...createFormFieldProps({
         formState,
         controlled,
         fieldName: fieldContext.fieldName,
         fieldType: 'text',
+        onChange: otherProps.onChange,
       })}
-      {...otherProps}
     />
   );
 };

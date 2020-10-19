@@ -37,7 +37,7 @@ type DefaultPropsT = {
 export const MoveList: React.FC<PropsT> = compose(observer)((p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
 
-  const dragPosition = props.movesDragAndDrop.hoverPosition;
+  const hoverPosition = props.movesDragAndDrop.hoverPosition;
   const selectionIds = props.movesSelection.ids || [];
   const highlightId = props.movesHighlight.id;
 
@@ -51,13 +51,13 @@ export const MoveList: React.FC<PropsT> = compose(observer)((p: PropsT) => {
           'moveList__item--selected': move && selectionIds.includes(move.id),
           'moveList__item--highlighted': move && move.id === highlightId,
           'moveList__item--drag_before':
-            dragPosition &&
-            dragPosition.isBefore &&
-            dragPosition.targetItemId === move.id,
+            hoverPosition &&
+            hoverPosition.isBefore &&
+            hoverPosition.targetItemId === move.id,
           'moveList__item--drag_after':
-            dragPosition &&
-            !dragPosition.isBefore &&
-            dragPosition.targetItemId === move.id,
+            hoverPosition &&
+            !hoverPosition.isBefore &&
+            hoverPosition.targetItemId === move.id,
         })}
         id={move.id}
         key={idx}

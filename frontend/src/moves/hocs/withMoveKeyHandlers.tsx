@@ -5,7 +5,7 @@ import { Display } from 'src/session/facets/Display';
 import { TimePoints } from 'src/moves/MoveCtr/facets/TimePoints';
 import { MoveT } from 'src/moves/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { mergeDefaultProps } from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 import {
   createVideoKeyHandlers,
   createVideoStartEndKeyHandlers,
@@ -24,7 +24,7 @@ type DefaultPropsT = {
 
 export const withMoveKeyHandlers = (WrappedComponent: any) =>
   observer((p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const timePoints = props.timePoints.timePoints;
     const move = props.move;

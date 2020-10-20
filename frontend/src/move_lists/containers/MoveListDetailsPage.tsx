@@ -8,11 +8,7 @@ import { keys } from 'lodash/fp';
 
 import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { Editing } from 'facet-mobx/facets/editing';
@@ -34,20 +30,19 @@ type DefaultPropsT = {
 };
 
 export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
   withCutVideoPanel,
   observer
 )((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   if (!props.moveList) {
     return <React.Fragment />;
   }
 
   const bannedMoveListSlugs = props.moveListsPreview
-    .filter((x) => props.profiling.isOwner(x))
-    .filter((x) => x.id !== props.moveList.id)
-    .map((x) => x.slug);
+    .filter((x: MoveListT) => props.profiling.isOwner(x))
+    .filter((x: MoveListT) => x.id !== props.moveList.id)
+    .map((x: MoveListT) => x.slug);
 
   const editBtn = (
     <FontAwesomeIcon

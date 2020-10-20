@@ -3,10 +3,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { MoveContextMenu } from 'src/moves/presentation/MoveContextMenu';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-} from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 import { MoveListT } from 'src/move_lists/types';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { getId } from 'src/app/utils';
@@ -25,16 +22,15 @@ type DefaultPropsT = {
 };
 
 export const withMoveContextMenu = compose(
-  withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const moveListId = getId(props.moveList);
     const targetMoveLists = props.movesClipboard.targetMoveLists;
 
     const targetMoveListsForMoving = props.moveLists.filter(
-      (x) => moveListId !== getId(x)
+      (x: MoveListT) => moveListId !== getId(x)
     );
 
     const moveContextMenu = (

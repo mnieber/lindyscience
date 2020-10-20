@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { Display } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { mergeDefaultProps } from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 
 type PropsT = {};
@@ -17,7 +17,7 @@ type DefaultPropsT = {
 
 export const withVideoPlayerPanel = (WrappedComponent: any) =>
   observer((p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const videoPlayerPanel = (
       <VideoPlayerPanel

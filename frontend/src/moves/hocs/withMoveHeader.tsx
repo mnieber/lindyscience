@@ -14,7 +14,7 @@ import { MoveListTitle } from 'src/move_lists/presentation/MoveListDetails';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 import { MoveHeader } from 'src/moves/presentation/MoveHeader';
 import { Editing } from 'facet-mobx/facets/editing';
-import { mergeDefaultProps } from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 
 type PropsT = {
   moveTags: Array<TagT>;
@@ -32,7 +32,7 @@ type DefaultPropsT = {
 
 export const withMoveHeader = (WrappedComponent: any) =>
   observer((p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const moveListTitle = <MoveListTitle moveList={props.moveList} />;
 

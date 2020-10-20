@@ -7,7 +7,7 @@ import { useFormStateContext } from 'react-form-state-context';
 import { strToPickerValue } from 'src/utils/value_picker';
 import { Display } from 'src/session/facets/Display';
 import { TagT } from 'src/tags/types';
-import { mergeDefaultProps, FC } from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import {
   TagsAndKeywordsPicker,
   splitTextIntoTagsAndKeywords,
@@ -28,7 +28,7 @@ type DefaultPropsT = {
 
 export const SearchMovesForm: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
     const [defaults] = React.useState({});
 
     const initialValues = {

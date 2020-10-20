@@ -7,10 +7,7 @@ import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-} from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 
 type PropsT = {};
 
@@ -19,41 +16,40 @@ type DefaultPropsT = {
   move: MoveT;
 };
 
-export const MoveCtrProvider: React.FC<PropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const MoveCtrProvider: React.FC<PropsT> = compose(observer)(
+  (p: PropsT) => {
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  const createCtr = () => {
-    return new MoveContainer({ rootDivId: 'moveDiv' });
-  };
-
-  const updateCtr = (ctr: MoveContainer) => {
-    reaction(
-      () => ({ move: props.move, display: props.display }),
-      ({ move, display }) => {
-        ctr.inputs.move = move;
-        ctr.inputs.sessionDisplay = display;
-      }
-    );
-  };
-
-  const getDefaultProps = (ctr: MoveContainer) => {
-    return {
-      moveCtr: () => ctr,
-      moveDisplay: () => ctr.display,
-      videoController: () => ctr.videoController,
-      timePoints: () => ctr.timePoints,
+    const createCtr = () => {
+      return new MoveContainer({ rootDivId: 'moveDiv' });
     };
-  };
 
-  return (
-    <CtrProvider
-      createCtr={createCtr}
-      updateCtr={updateCtr}
-      getDefaultProps={getDefaultProps}
-      children={props.children}
-    />
-  );
-});
+    const updateCtr = (ctr: MoveContainer) => {
+      reaction(
+        () => ({ move: props.move, display: props.display }),
+        ({ move, display }) => {
+          ctr.inputs.move = move;
+          ctr.inputs.sessionDisplay = display;
+        }
+      );
+    };
+
+    const getDefaultProps = (ctr: MoveContainer) => {
+      return {
+        moveCtr: () => ctr,
+        moveDisplay: () => ctr.display,
+        videoController: () => ctr.videoController,
+        timePoints: () => ctr.timePoints,
+      };
+    };
+
+    return (
+      <CtrProvider
+        createCtr={createCtr}
+        updateCtr={updateCtr}
+        getDefaultProps={getDefaultProps}
+        children={props.children}
+      />
+    );
+  }
+);

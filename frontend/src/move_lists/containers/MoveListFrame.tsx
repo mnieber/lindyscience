@@ -25,11 +25,7 @@ import { AccountMenu } from 'src/app/presentation/AccountMenu';
 import { isNone } from 'src/utils/utils';
 import { Selection } from 'facet-mobx/facets/selection';
 import { Filtering } from 'facet-mobx/facets/filtering';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Addition } from 'facet-mobx/facets/addition';
 
 type PropsT = {};
@@ -49,10 +45,9 @@ type DefaultPropsT = {
 
 export const MoveListFrame: FC<PropsT, DefaultPropsT> = compose(
   withMoveContextMenu,
-  withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -72,7 +67,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = compose(
       key={props.moveList ? props.moveList.id : ''}
       className=""
       filter={isFollowing}
-      navigateTo={(x) => props.navigation.navigateToMoveList(x)}
+      navigateTo={(x: MoveListT) => props.navigation.navigateToMoveList(x)}
       defaultProps={props.defaultProps}
     />
   );
@@ -111,7 +106,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = compose(
       className=""
       createHostedPanels={createHostedPanels}
       moveContextMenu={props.moveContextMenu}
-      navigateTo={(x) => props.navigation.navigateToMove(x)}
+      navigateTo={(x: MoveT) => props.navigation.navigateToMove(x)}
       defaultProps={props.defaultProps}
     />
   );

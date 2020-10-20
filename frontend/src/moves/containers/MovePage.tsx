@@ -17,11 +17,7 @@ import { withMoveKeyHandlers } from 'src/moves/hocs/withMoveKeyHandlers';
 import { Move } from 'src/moves/presentation/Move';
 import { createKeyDownHandler } from 'src/video/presentation/VideoKeyhandler';
 import { Editing } from 'facet-mobx/facets/editing';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 
 type PropsT = {};
 
@@ -40,7 +36,6 @@ type DefaultPropsT = {
 };
 
 export const MovePage: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
   withMoveForm,
   withMovePrivateDataPanel,
   withMoveHeader,
@@ -48,7 +43,7 @@ export const MovePage: FC<PropsT, DefaultPropsT> = compose(
   withMoveKeyHandlers,
   observer
 )((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   if (!props.moveList) {
     const status = getStatus(props.navigation);

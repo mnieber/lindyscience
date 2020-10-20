@@ -7,7 +7,7 @@ import { Editing } from 'facet-mobx/facets/editing';
 import { UserProfileT } from 'src/profiles/types';
 import { TipT } from 'src/tips/types';
 import { Tip } from 'src/tips/presentation/Tip';
-import { mergeDefaultProps, FC } from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 
 type PropsT = {};
 
@@ -20,9 +20,9 @@ type DefaultPropsT = {
 };
 
 export const TipList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  const itemNodes: Array<any> = props.tips.map((tip, idx) => {
+  const itemNodes: Array<any> = props.tips.map((tip: TipT, idx: number) => {
     const allowEdit =
       !!props.userProfile && tip.ownerId === props.userProfile.userId;
     const allowDelete =

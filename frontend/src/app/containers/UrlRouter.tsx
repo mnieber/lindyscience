@@ -6,11 +6,7 @@ import { compose } from 'lodash/fp';
 import { Navigation } from 'src/session/facets/Navigation';
 import { AuthSwitch } from 'src/app/containers/AuthSwitch';
 import { ListsSwitch } from 'src/app/containers/ListsSwitch';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { IndexPage } from 'src/app/containers/IndexPage';
 import { ProfilePage } from 'src/session/containers/ProfilePage';
@@ -23,31 +19,30 @@ type DefaultPropsT = {
   navigation: Navigation;
 };
 
-export const UrlRouter: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const UrlRouter: FC<PropsT, DefaultPropsT> = compose(observer)(
+  (p: PropsT) => {
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  return (
-    <Router history={props.navigation.history}>
-      <Switch>
-        <Route exact path="/">
-          <IndexPage userProfile={props.userProfile} />
-        </Route>
-        <Route exact path="/people/:username">
-          <ProfilePage />
-        </Route>
-        <Route exact path="/search">
-          <SearchResultsPage />
-        </Route>
-        <Route path="/lists/">
-          <ListsSwitch />
-        </Route>
-        <Route path="/">
-          <AuthSwitch />
-        </Route>
-      </Switch>
-    </Router>
-  );
-});
+    return (
+      <Router history={props.navigation.history}>
+        <Switch>
+          <Route exact path="/">
+            <IndexPage userProfile={props.userProfile} />
+          </Route>
+          <Route exact path="/people/:username">
+            <ProfilePage />
+          </Route>
+          <Route exact path="/search">
+            <SearchResultsPage />
+          </Route>
+          <Route path="/lists/">
+            <ListsSwitch />
+          </Route>
+          <Route path="/">
+            <AuthSwitch />
+          </Route>
+        </Switch>
+      </Router>
+    );
+  }
+);

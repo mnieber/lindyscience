@@ -9,7 +9,7 @@ import { MoveT } from 'src/moves/types';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { mergeDefaultProps, FC } from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Highlight } from 'facet-mobx/facets/highlight';
 import { Selection } from 'facet-mobx/facets/selection';
 import { DragAndDrop } from 'facet-mobx/facets/DragAndDrop';
@@ -35,13 +35,13 @@ type DefaultPropsT = {
 
 export const MoveList: FC<PropsT, DefaultPropsT> = compose(observer)(
   (p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const hoverPosition = props.movesDragAndDrop.hoverPosition;
     const selectionIds = props.movesSelection.ids || [];
     const highlightId = props.movesHighlight.id;
 
-    const moveNodes = (props.moves || []).map((move, idx) => {
+    const moveNodes = (props.moves || []).map((move: MoveT, idx: number) => {
       const hostedPanels = props.createHostedPanels(move);
 
       return (

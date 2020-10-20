@@ -2,11 +2,7 @@ import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
@@ -27,47 +23,46 @@ type DefaultPropsT = {
   movesStore: MovesStore;
 };
 
-export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = compose(observer)(
+  (p: PropsT) => {
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  const createCtr = () => {
-    return new CutVideoContainer(
-      cutVideoContainerProps(props.moveListsStore, props.movesStore)
-    );
-  };
-
-  const updateCtr = (ctr: CutVideoContainer) => {
-    reaction(
-      () => ({
-        display: props.display,
-        userProfile: props.userProfile,
-        moveList: props.moveList,
-      }),
-      ({ display, userProfile, moveList }) => {
-        ctr.inputs.sessionDisplay = display;
-        ctr.inputs.userProfile = userProfile;
-        ctr.inputs.moveList = moveList;
-      }
-    );
-  };
-
-  const getDefaultProps = (ctr: CutVideoContainer) => {
-    return {
-      videoController: () => ctr.cutPoints.videoController,
-      cutPoints: () => ctr.cutPoints,
-      moveDisplay: () => ctr.display,
+    const createCtr = () => {
+      return new CutVideoContainer(
+        cutVideoContainerProps(props.moveListsStore, props.movesStore)
+      );
     };
-  };
 
-  return (
-    <CtrProvider
-      createCtr={createCtr}
-      updateCtr={updateCtr}
-      getDefaultProps={getDefaultProps}
-      children={props.children}
-    />
-  );
-});
+    const updateCtr = (ctr: CutVideoContainer) => {
+      reaction(
+        () => ({
+          display: props.display,
+          userProfile: props.userProfile,
+          moveList: props.moveList,
+        }),
+        ({ display, userProfile, moveList }) => {
+          ctr.inputs.sessionDisplay = display;
+          ctr.inputs.userProfile = userProfile;
+          ctr.inputs.moveList = moveList;
+        }
+      );
+    };
+
+    const getDefaultProps = (ctr: CutVideoContainer) => {
+      return {
+        videoController: () => ctr.cutPoints.videoController,
+        cutPoints: () => ctr.cutPoints,
+        moveDisplay: () => ctr.display,
+      };
+    };
+
+    return (
+      <CtrProvider
+        createCtr={createCtr}
+        updateCtr={updateCtr}
+        getDefaultProps={getDefaultProps}
+        children={props.children}
+      />
+    );
+  }
+);

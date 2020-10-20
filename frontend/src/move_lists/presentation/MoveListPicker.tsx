@@ -41,8 +41,6 @@ export const MoveListPicker: React.FC<PropsT> = observer((p: PropsT) => {
     } else if (!!values.moveList) {
       props.moveListsSelection.selectItem({
         itemId: values.moveList.id,
-        isShift: false,
-        isCtrl: false,
       });
       props.navigateTo(props.moveListsHighlight.item);
     }

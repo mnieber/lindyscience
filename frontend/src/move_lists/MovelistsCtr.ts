@@ -20,8 +20,6 @@ import * as MoveListsCtrPolicies from 'src/move_lists/policies';
 import * as MoveListsCtrHandlers from 'src/move_lists/handlers';
 import * as SessionCtrPolicies from 'src/session/policies';
 
-const compareById = (lhs: any, rhs: any) => lhs.id === rhs.id;
-
 type PropsT = {
   navigation: Navigation;
   profiling: Profiling;
@@ -70,11 +68,10 @@ export class MoveListsContainer {
       ]),
 
       // creation
-      MobXPolicies.newItemsAreCreatedBelowTheHighlight({
-        cancelOnHighlightChange: true,
-      }),
-      MobXPolicies.newItemsAreEdited,
-      MobXPolicies.newItemsAreConfirmedWhenSaved(compareById),
+      MobXPolicies.newItemsAreCreatedBelowTheHighlight,
+      MobXPolicies.cancelNewItemOnHighlightChange,
+      MobXPolicies.newItemsAreSelectedAndEdited,
+      MobXPolicies.newItemsAreConfirmedWhenSaved,
       MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed,
 
       // labelling

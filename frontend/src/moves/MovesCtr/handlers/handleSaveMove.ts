@@ -1,3 +1,4 @@
+import { Highlight } from 'facet-mobx/facets/highlight';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
@@ -12,7 +13,7 @@ export const handleSaveMove = (
   movesStore: MovesStore
 ) => {
   return (values: any) => {
-    const move = ctr.highlight.item;
+    const move = Highlight.get(ctr).item;
     const isNewMove = values.slug === newMoveSlug;
     const slug = isNewMove ? slugify(values.name) : values.slug;
 

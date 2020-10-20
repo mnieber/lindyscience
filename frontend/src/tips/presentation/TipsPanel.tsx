@@ -2,50 +2,30 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
+import { Addition } from 'facet-mobx/facets/addition';
 
-import { OwnedObjectT, UUID } from 'src/kernel/types';
-import { TipT } from 'src/tips/types';
-import { VoteByIdT, VoteT } from 'src/votes/types';
 import { UserProfileT } from 'src/profiles/types';
 import { mergeDefaultProps } from 'react-default-props-context';
-import {
-  useInsertTip,
-  useNewTip,
-  useSaveTip,
-} from 'src/tips/bvrs/TipCrudBehaviours';
 import { TipList } from 'src/tips/presentation/TipList';
 
 type PropsT = {
-  parentObject: OwnedObjectT;
-  tips: Array<TipT>;
-  voteByObjectId: VoteByIdT;
-  saveTip: (tip: TipT) => void;
-  deleteTip: (tip: TipT) => void;
-  voteTip: (id: UUID, vote: VoteT) => void;
   defaultProps?: any;
 };
 
 type DefaultPropsT = {
   userProfile?: UserProfileT;
+  tipsAddition: Addition;
 };
 
 export const TipsPanel: React.FC<PropsT> = (p: PropsT) => {
   const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
-
-  const insertTipBvr = useInsertTip(props.tips);
-  const newTipBvr = useNewTip(
-    props.userProfile ? props.userProfile.userId : -1,
-    insertTipBvr,
-    props.parentObject.id
-  );
-  const saveTipBvr = useSaveTip(newTipBvr, insertTipBvr.preview, props.saveTip);
 
   const addTipBtn = (
     <FontAwesomeIcon
       key={'edit'}
       className={classnames('ml-2', { 'opacity-50': !props.userProfile })}
       icon={faPlusSquare}
-      onClick={props.userProfile ? newTipBvr.add : undefined}
+      onClick={() => props.tipsAddition.add({})}
     />
   );
 
@@ -55,16 +35,7 @@ export const TipsPanel: React.FC<PropsT> = (p: PropsT) => {
         <h2 className="text-xl font-semibold">Tips</h2>
         {addTipBtn}
       </div>
-      <TipList
-        userProfile={props.userProfile}
-        parentObject={props.parentObject}
-        items={insertTipBvr.preview}
-        setVote={props.voteTip}
-        saveTip={saveTipBvr.save}
-        deleteTip={props.deleteTip}
-        cancelEditTip={saveTipBvr.discardChanges}
-        voteByObjectId={props.voteByObjectId}
-      />
+      <TipList />
     </div>
   );
 };

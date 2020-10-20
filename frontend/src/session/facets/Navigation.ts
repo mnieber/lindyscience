@@ -89,8 +89,6 @@ export const ensureSelected = (selection: Selection, id: any) => {
   if (!selection.ids.includes(id)) {
     selection.selectItem({
       itemId: id,
-      isShift: false,
-      isCtrl: false,
     });
   }
 };

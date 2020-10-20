@@ -22,8 +22,6 @@ import * as SessionCtrPolicies from 'src/session/policies';
 import * as MovesCtrPolicies from 'src/moves/MovesCtr/policies';
 import * as MovesCtrHandlers from 'src/moves/MovesCtr/handlers';
 
-const compareById = (lhs: any, rhs: any) => lhs.id === rhs.id;
-
 type PropsT = {
   moveListsStore: MoveListsStore;
   movesStore: MovesStore;
@@ -32,10 +30,10 @@ type PropsT = {
 
 export class MovesContainer {
   @facet addition: Addition;
+  @facet dragAndDrop: DragAndDrop;
   @facet editing: Editing;
   @facet filtering: Filtering;
   @facet highlight: Highlight;
-  @facet dragAndDrop: DragAndDrop;
   @facet inputs: Inputs;
   @facet outputs: Outputs;
   @facet selection: Selection;
@@ -82,11 +80,10 @@ export class MovesContainer {
       ]),
 
       // creation
-      MobXPolicies.newItemsAreCreatedBelowTheHighlight({
-        cancelOnHighlightChange: true,
-      }),
-      MobXPolicies.newItemsAreEdited,
-      MobXPolicies.newItemsAreConfirmedWhenSaved(compareById),
+      MobXPolicies.newItemsAreCreatedBelowTheHighlight,
+      MobXPolicies.cancelNewItemOnHighlightChange,
+      MobXPolicies.newItemsAreSelectedAndEdited,
+      MobXPolicies.newItemsAreConfirmedWhenSaved,
 
       // filtering
       MobXFacets.filteringActsOnItems(preview),
@@ -104,6 +101,7 @@ export class MovesContainer {
     this.addition = initAddition(new Addition(), {
       createItem: MovesCtrHandlers.handleCreateMove(this),
     });
+    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
     this.editing = initEditing(new Editing(), {
       saveItem: MovesCtrHandlers.handleSaveMove(
         this,
@@ -113,7 +111,6 @@ export class MovesContainer {
     });
     this.filtering = initFiltering(new Filtering());
     this.highlight = initHighlight(new Highlight());
-    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());

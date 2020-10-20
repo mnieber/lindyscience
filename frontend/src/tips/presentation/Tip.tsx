@@ -1,61 +1,74 @@
 import * as React from 'react';
 
+import { apiDeleteTip } from 'src/tips/api';
+import { createErrorHandler } from 'src/app/utils';
 import { TipT } from 'src/tips/types';
 import { VoteT } from 'src/votes/types';
-import { UUID } from 'src/kernel/types';
 import { TipForm } from 'src/tips/presentation/TipForm';
 import { VoteCount } from 'src/votes/presentation/VoteCount';
+import { mergeDefaultProps } from 'react-default-props-context';
+import { Editing } from 'facet-mobx/facets/editing';
+import { Highlight } from 'facet-mobx/facets/highlight';
+import { Selection } from 'facet-mobx/facets/selection';
+import { Addition } from 'facet-mobx/facets/addition';
+import { VotesStore } from 'src/votes/VotesStore';
+import { TipsStore } from 'src/tips/TipsStore';
 
 type PropsT = {
   allowEdit: boolean;
   allowDelete: boolean;
   item: TipT;
-  vote: VoteT;
-  setVote: (id: UUID, vote: VoteT) => void;
-  saveTip: Function;
-  deleteTip: Function;
-  cancelEditTip: Function;
 };
 
-export function Tip(props: PropsT) {
-  const [isEditing, setIsEditing] = React.useState(props.item.text === '');
+type DefaultPropsT = {
+  tipsHighlight: Highlight;
+  tipsSelection: Selection;
+  tipsEditing: Editing;
+  tipsAddition: Addition;
+  votesStore: VotesStore;
+  tipsStore: TipsStore;
+};
+
+export function Tip(p: PropsT) {
+  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
   const [armDelete, setArmDelete] = React.useState(false);
+  const tipId = props.item.id;
+  const isEditing =
+    props.tipsEditing.isEditing && props.tipsHighlight.id === tipId;
 
   if (isEditing) {
-    const _submitValues = (values: any) => {
-      props.saveTip(props.item.id, values);
-      setIsEditing(false);
-    };
-
-    const _onCancel = () => {
-      props.cancelEditTip(props.item.id);
-      setIsEditing(false);
-    };
-
-    const form = (
-      <TipForm
-        values={{
-          text: props.item.text,
-        }}
-        onSubmit={_submitValues}
-        onCancel={_onCancel}
-      />
+    return (
+      <div className="tip">
+        <TipForm
+          values={{
+            text: props.item.text,
+          }}
+          onSubmit={(values: any) => props.tipsEditing.save(values)}
+          onCancel={() => props.tipsEditing.cancel()}
+        />
+      </div>
     );
-
-    return <div className="tip">{form}</div>;
   } else {
     const voteCount = (
       <VoteCount
-        vote={props.vote}
+        vote={props.votesStore.voteByObjectId[tipId] || 0}
         count={props.item.voteCount}
-        setVote={(value: VoteT) => props.setVote(props.item.id, value)}
+        setVote={(value: VoteT) => props.votesStore.castVote(tipId, value)}
       />
     );
 
     const text = <div className="tip__text">{props.item.text}</div>;
 
     const editBtn = (
-      <div className="tip__editButton ml-2" onClick={() => setIsEditing(true)}>
+      <div
+        className="tip__editButton ml-2"
+        onClick={() => {
+          props.tipsSelection.selectItem({
+            itemId: tipId,
+          });
+          props.tipsEditing.setIsEditing(true);
+        }}
+      >
         edit
       </div>
     );
@@ -70,7 +83,10 @@ export function Tip(props: PropsT) {
       <div
         className="tip__editButton mx-1"
         onClick={() => {
-          props.deleteTip(props.item);
+          props.tipsStore.removeTips([tipId]);
+          apiDeleteTip(tipId).catch(
+            createErrorHandler('We could not delete the tip')
+          );
           setArmDelete(false);
         }}
       >

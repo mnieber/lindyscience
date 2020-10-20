@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { apiDeleteTip } from 'src/tips/api';
-import { createErrorHandler } from 'src/app/utils';
 import { TipT } from 'src/tips/types';
 import { VoteT } from 'src/votes/types';
 import { TipForm } from 'src/tips/presentation/TipForm';
@@ -11,8 +9,8 @@ import { Editing } from 'facet-mobx/facets/editing';
 import { Highlight } from 'facet-mobx/facets/highlight';
 import { Selection } from 'facet-mobx/facets/selection';
 import { Addition } from 'facet-mobx/facets/addition';
+import { Deletion } from 'facet-mobx/facets/deletion';
 import { VotesStore } from 'src/votes/VotesStore';
-import { TipsStore } from 'src/tips/TipsStore';
 
 type PropsT = {
   allowEdit: boolean;
@@ -26,7 +24,7 @@ type DefaultPropsT = {
   tipsEditing: Editing;
   tipsAddition: Addition;
   votesStore: VotesStore;
-  tipsStore: TipsStore;
+  tipsDeletion: Deletion;
 };
 
 export function Tip(p: PropsT) {
@@ -63,9 +61,7 @@ export function Tip(p: PropsT) {
       <div
         className="tip__editButton ml-2"
         onClick={() => {
-          props.tipsSelection.selectItem({
-            itemId: tipId,
-          });
+          props.tipsSelection.selectItem({ itemId: tipId });
           props.tipsEditing.setIsEditing(true);
         }}
       >
@@ -83,10 +79,7 @@ export function Tip(p: PropsT) {
       <div
         className="tip__editButton mx-1"
         onClick={() => {
-          props.tipsStore.removeTips([tipId]);
-          apiDeleteTip(tipId).catch(
-            createErrorHandler('We could not delete the tip')
-          );
+          props.tipsDeletion.delete([tipId]);
           setArmDelete(false);
         }}
       >

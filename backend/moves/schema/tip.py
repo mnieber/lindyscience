@@ -26,19 +26,20 @@ class SaveTip(graphene.Mutation):
         return SaveTip(tip=tip, ok=True)
 
 
-class DeleteTip(graphene.Mutation):
+class DeleteTips(graphene.Mutation):
     class Arguments:
-        pk = graphene.String()
+        pks = graphene.List(of_type=graphene.ID)
 
     ok = graphene.Boolean()
 
-    def mutate(self, info, pk, **inputs):
+    def mutate(self, info, pks, **inputs):
         user_id = info.context.user.id
-        tip = models.Tip.objects.get(pk=pk)
-        if tip.owner_id != user_id and tip.move.owner_id != user_id:
-            raise Exception("Not authorized to update object with id %s" % pk)
+        for pk in pks:
+            tip = models.Tip.objects.get(pk=pk)
+            if tip.owner_id != user_id and tip.move.owner_id != user_id:
+                raise Exception("Not authorized to update object with id %s" % pk)
+            tip.delete()
 
-        tip.delete()
         return DeleteTip(ok=True)
 
 

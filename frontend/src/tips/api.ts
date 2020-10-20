@@ -20,15 +20,15 @@ export function apiSaveTip(moveId: UUID, values: TipT) {
   });
 }
 
-export function apiDeleteTip(id: UUID) {
+export function apiDeleteTips(ids: UUID[]) {
   const query = `mutation deleteTip(
-      $id: String!,
+      $ids: [String]!,
     ) {
       deleteTip(
-        pk: $id,
+        pks: $ids,
       ) { ok }
     }`;
   return doQuery(query, {
-    id,
+    ids,
   });
 }

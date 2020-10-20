@@ -87,9 +87,7 @@ export function initNavigation(self: Navigation, props: PropsT): Navigation {
 
 export const ensureSelected = (selection: Selection, id: any) => {
   if (!selection.ids.includes(id)) {
-    selection.selectItem({
-      itemId: id,
-    });
+    selection.selectItem({ itemId: id });
   }
 };
 

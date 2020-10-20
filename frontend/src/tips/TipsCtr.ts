@@ -7,6 +7,7 @@ import { Addition, initAddition } from 'facet-mobx/facets/addition';
 import { Highlight, initHighlight } from 'facet-mobx/facets/highlight';
 import { Selection, initSelection } from 'facet-mobx/facets/selection';
 import { Editing, initEditing } from 'facet-mobx/facets/editing';
+import { Deletion, initDeletion } from 'facet-mobx/facets/deletion';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
@@ -18,6 +19,7 @@ type PropsT = {
 
 export class TipsCtr {
   @facet addition: Addition;
+  @facet deletion: Deletion;
   @facet dragAndDrop: DragAndDrop;
   @facet editing: Editing;
   @facet highlight: Highlight;
@@ -64,6 +66,9 @@ export class TipsCtr {
   constructor(props: PropsT) {
     this.addition = initAddition(new Addition(), {
       createItem: TipsCtrHandlers.handleCreateTip(this),
+    });
+    this.deletion = initDeletion(new Deletion(), {
+      deleteItems: TipsCtrHandlers.handleDeleteTips(this, props.tipsStore),
     });
     this.dragAndDrop = initDragAndDrop(new DragAndDrop());
     this.editing = initEditing(new Editing(), {

@@ -50,6 +50,7 @@ export const TipsCtrProvider: React.FC<PropsT> = compose(
       tipsAddition: () => ctr.addition,
       tipsHighlight: () => ctr.highlight,
       tipsSelection: () => ctr.selection,
+      tipsDeletion: () => ctr.deletion,
     };
   };
 

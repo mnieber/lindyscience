@@ -11,7 +11,9 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { helpUrl } from 'src/moves/utils';
 import { browseToMoveUrl } from 'src/app/containers';
 
-type PropsT = {};
+type PropsT = {
+  defaultProps: any;
+};
 
 type DefaultPropsT = {
   userProfile: UserProfileT;

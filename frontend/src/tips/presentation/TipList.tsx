@@ -1,42 +1,38 @@
 import React from 'react';
 
+import { MoveT } from 'src/moves/types';
+import { Addition } from 'facet-mobx/facets/addition';
+import { Editing } from 'facet-mobx/facets/editing';
 import { UserProfileT } from 'src/profiles/types';
-import { OwnedObjectT, UUID } from 'src/kernel/types';
 import { TipT } from 'src/tips/types';
-import { VoteByIdT, VoteT } from 'src/votes/types';
 import { Tip } from 'src/tips/presentation/Tip';
+import { mergeDefaultProps } from 'react-default-props-context';
 
-type TipListPropsT = {
+type PropsT = {};
+
+type DefaultPropsT = {
   userProfile?: UserProfileT;
-  parentObject: OwnedObjectT;
-  items: Array<TipT>;
-  voteByObjectId: VoteByIdT;
-  setVote: (id: UUID, vote: VoteT) => void;
-  saveTip: Function;
-  deleteTip: Function;
-  cancelEditTip: Function;
+  tipsAddition: Addition;
+  tipsEditing: Editing;
+  tips: TipT[];
+  move: MoveT;
 };
 
-export function TipList(props: TipListPropsT) {
-  const itemNodes: Array<any> = props.items.map((item, idx) => {
+export function TipList(p: PropsT) {
+  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+
+  const itemNodes: Array<any> = props.tips.map((tip, idx) => {
     const allowEdit =
-      !!props.userProfile && item.ownerId === props.userProfile.userId;
+      !!props.userProfile && tip.ownerId === props.userProfile.userId;
     const allowDelete =
       allowEdit ||
-      (!!props.userProfile &&
-        props.parentObject.ownerId === props.userProfile.userId);
-
+      (!!props.userProfile && props.move.ownerId === props.userProfile.userId);
     return (
       <Tip
-        key={item.id}
-        item={item}
+        key={tip.id}
+        item={tip}
         allowEdit={allowEdit}
         allowDelete={allowDelete}
-        vote={props.voteByObjectId[item.id] || 0}
-        setVote={props.setVote}
-        saveTip={props.saveTip}
-        deleteTip={props.deleteTip}
-        cancelEditTip={props.cancelEditTip}
       />
     );
   });

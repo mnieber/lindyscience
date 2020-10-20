@@ -10,6 +10,7 @@ import { MoveListFrame } from 'src/move_lists/containers/MoveListFrame';
 import { CutVideoCtrProvider } from 'src/video/CutVideoCtrProvider';
 import { MoveListDetailsPage } from 'src/move_lists/containers/MoveListDetailsPage';
 import { MoveCtrProvider } from 'src/moves/MoveCtr/MoveCtrProvider';
+import { TipsCtrProvider } from 'src/tips/TipsCtrProvider';
 import { MovePage } from 'src/moves/containers/MovePage';
 
 export const ListsSwitch = () => {
@@ -32,7 +33,9 @@ export const ListsSwitch = () => {
         >
           {compose(withMoveTarget)(() => (
             <MoveCtrProvider>
-              <MovePage />
+              <TipsCtrProvider>
+                <MovePage />
+              </TipsCtrProvider>
             </MoveCtrProvider>
           ))}
         </Route>

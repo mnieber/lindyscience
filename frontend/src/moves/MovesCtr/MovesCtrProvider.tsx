@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -11,14 +10,11 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-} from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 import { Editing } from 'facet-mobx/facets/editing';
 import { Highlight } from 'facet-mobx/facets/highlight';
 
-type PropsT = {};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   navigation: Navigation;
@@ -29,11 +25,8 @@ type DefaultPropsT = {
   moveListsPreview: Array<MoveListT>;
 };
 
-export const MovesCtrProvider: React.FC<PropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
   const createCtr = () => {
     return new MovesContainer({
       navigation: props.navigation,

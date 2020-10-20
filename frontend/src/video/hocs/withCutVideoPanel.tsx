@@ -5,10 +5,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-} from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { CutPoints } from 'src/video/facets/CutPoints';
@@ -30,10 +27,9 @@ type DefaultPropsT = {
 };
 
 export const withCutVideoPanel = compose(
-  withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const videoKeyHandlers = {
       ...createVideoKeyHandlers(props.cutPoints.videoController as any),

@@ -1,16 +1,11 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { compose } from 'lodash/fp';
 
 import { Navigation } from 'src/session/facets/Navigation';
 import { AuthSwitch } from 'src/app/containers/AuthSwitch';
 import { ListsSwitch } from 'src/app/containers/ListsSwitch';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { IndexPage } from 'src/app/containers/IndexPage';
 import { ProfilePage } from 'src/session/containers/ProfilePage';
@@ -23,11 +18,8 @@ type DefaultPropsT = {
   navigation: Navigation;
 };
 
-export const UrlRouter: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const UrlRouter: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   return (
     <Router history={props.navigation.history}>

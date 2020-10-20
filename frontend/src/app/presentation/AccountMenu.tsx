@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { Authentication } from 'src/session/facets/Authentication';
-import { mergeDefaultProps, FC } from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { helpUrl } from 'src/moves/utils';
 
 type PropsT = {};
@@ -17,7 +17,7 @@ type DefaultPropsT = {
 };
 
 export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const [expanded, setExpanded] = React.useState(false);
 

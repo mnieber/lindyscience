@@ -1,12 +1,7 @@
-import { compose } from 'lodash/fp';
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { helpUrl } from 'src/moves/utils';
@@ -19,11 +14,8 @@ type DefaultPropsT = {
   navigation: Navigation;
 };
 
-export const IndexPage: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const IndexPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const { userProfile, navigation } = props;
 

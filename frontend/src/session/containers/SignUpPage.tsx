@@ -1,13 +1,8 @@
 import React from 'react';
-import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
 import { RouterLink } from 'src/utils/RouterLink';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
@@ -19,11 +14,8 @@ type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const SignUpPage: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const SignUpPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
   const { errors, state } = useAuthStateContext(true);
 
   const confirmationDiv = (

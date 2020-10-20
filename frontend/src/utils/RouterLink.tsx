@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 type PropsT = {
-  children: any;
   to: string;
   className?: any;
 };

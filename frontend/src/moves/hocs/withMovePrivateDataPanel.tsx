@@ -4,10 +4,7 @@ import { observer } from 'mobx-react';
 import { keys } from 'lodash/fp';
 
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-} from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 import { MoveT } from 'src/moves/types';
 import { UserProfileT } from 'src/profiles/types';
 import { MovesStore } from 'src/moves/MovesStore';
@@ -25,10 +22,9 @@ type DefaultPropsT = {
 };
 
 export const withMovePrivateDataPanel = compose(
-  withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
     const movePrivateData = props.move
       ? props.movesStore.getOrCreatePrivateData(props.move.id)
       : undefined;

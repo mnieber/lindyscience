@@ -1,35 +1,25 @@
-import { compose } from 'lodash/fp';
 import React from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
 import { debounce } from 'debounce';
 import ReactResizeDetector from 'react-resize-detector';
 
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
 import { Profiling } from 'src/session/facets/Profiling';
 import { SearchMovesPage } from 'src/search/containers/SearchMovesPage';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
 
 // AppFrame
-type PropsT = {
-  children: any;
-};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   profiling: Profiling;
   display: Display;
 };
 
-export const AppFrame: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const cookieNotice = props.profiling.acceptsCookies ? undefined : (
     <div className="cookieNotice flexrow justify-around items-center">
@@ -77,9 +67,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = compose(
           </div>
           <SearchMovesPage />
         </div>
-        {!props.display.small && (
-          <AccountMenu defaultProps={props.defaultProps} />
-        )}
+        {!props.display.small && <AccountMenu />}
       </div>
       {props.children}
     </div>

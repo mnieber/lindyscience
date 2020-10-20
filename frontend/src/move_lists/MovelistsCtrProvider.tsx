@@ -9,18 +9,11 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Editing } from 'facet-mobx/facets/editing';
 import { Highlight } from 'facet-mobx/facets/highlight';
 
-type PropsT = {
-  defaultProps?: any;
-  children?: any;
-};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   profiling: Profiling;
@@ -29,10 +22,9 @@ type DefaultPropsT = {
 };
 
 export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const createCtr = () => {
     return new MoveListsContainer({

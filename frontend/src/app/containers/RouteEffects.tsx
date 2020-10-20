@@ -1,12 +1,10 @@
 import { compose } from 'lodash/fp';
 import React from 'react';
 
-import { withDefaultProps } from 'react-default-props-context';
 import { Navigation } from 'src/session/facets/Navigation';
 import { makeSlugid } from 'src/app/utils';
 
 export const withMoveTarget = compose(
-  withDefaultProps,
   (WrappedComponent: any) => (props: any) => {
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);
@@ -21,7 +19,6 @@ export const withMoveTarget = compose(
 );
 
 export const withMoveListTarget = compose(
-  withDefaultProps,
   (WrappedComponent: any) => (props: any) => {
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);

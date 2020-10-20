@@ -1,13 +1,8 @@
 import React from 'react';
-import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
-import {
-  mergeDefaultProps,
-  withDefaultProps,
-  FC,
-} from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { SignInForm } from 'src/session/presentation/SignInForm';
@@ -19,11 +14,8 @@ type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const SignInPage: FC<PropsT, DefaultPropsT> = compose(
-  withDefaultProps,
-  observer
-)((p: PropsT) => {
-  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+export const SignInPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
   const { errors } = useAuthStateContext(true);
 
   return (

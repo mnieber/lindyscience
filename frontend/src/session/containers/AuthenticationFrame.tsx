@@ -1,15 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { compose } from 'lodash/fp';
 
 // PasswordResetPage
 
-type PropsT = {
+type PropsT = React.PropsWithChildren<{
   header: string;
-  children: any;
-};
+}>;
 
-export const AuthenticationFrame = compose(observer)((props: PropsT) => {
+export const AuthenticationFrame = observer((props: PropsT) => {
   return (
     <div className="">
       <h1 className="text-lg">{props.header}</h1>

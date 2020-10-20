@@ -7,7 +7,7 @@ import { MoveListT } from 'src/move_lists/types';
 import { Addition } from 'facet-mobx/facets/addition';
 import { Highlight } from 'facet-mobx/facets/highlight';
 import { Selection } from 'facet-mobx/facets/selection';
-import { mergeDefaultProps, FC } from 'react-default-props-context';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
 import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 
@@ -26,13 +26,14 @@ type DefaultPropsT = {
 
 export const MoveListPicker: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const pickableValues = props.moveLists.filter(props.filter);
     const initialValues = {
       moveList:
-        pickableValues.find((x) => x.id === props.moveListsHighlight.id) ??
-        null,
+        pickableValues.find(
+          (x: MoveListT) => x.id === props.moveListsHighlight.id
+        ) ?? null,
     };
 
     const handleSubmit = ({ values }: HandleSubmitArgsT) => {
@@ -62,7 +63,7 @@ export const MoveListPicker: FC<PropsT, DefaultPropsT> = observer(
               isMulti={false}
               isCreatable={true}
               pickableValues={pickableValues}
-              labelFromValue={(x) => x.name}
+              labelFromValue={(x: MoveListT) => x.name}
               submitOnChange={true}
             />
           </div>

@@ -7,7 +7,7 @@ import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { action } from 'src/utils/mobx_wrapper';
 import { MoveForm } from 'src/moves/presentation/MoveForm';
 import { Editing } from 'facet-mobx/facets/editing';
-import { mergeDefaultProps } from 'react-default-props-context';
+import { useDefaultProps } from 'react-default-props-context';
 
 type PropsT = {};
 
@@ -20,7 +20,7 @@ type DefaultPropsT = {
 
 export const withMoveForm = (WrappedComponent: any) =>
   observer((p: PropsT) => {
-    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
+    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const _setAltLink = action((altLink: string | undefined) => {
       props.videoController.setPlayer(undefined);

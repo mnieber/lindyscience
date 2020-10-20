@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
 import { MoveListT } from 'src/move_lists/types';
@@ -16,10 +17,7 @@ import { cutVideoContainerProps } from 'src/video/CutVideoCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 
-type PropsT = {
-  children: any;
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   display: Display;
@@ -29,11 +27,11 @@ type DefaultPropsT = {
   movesStore: MovesStore;
 };
 
-export const CutVideoCtrProvider: React.FC<PropsT> = compose(
+export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const createCtr = () => {
     return new CutVideoContainer(

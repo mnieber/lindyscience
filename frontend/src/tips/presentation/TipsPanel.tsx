@@ -5,20 +5,18 @@ import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { Addition } from 'facet-mobx/facets/addition';
 
 import { UserProfileT } from 'src/profiles/types';
-import { mergeDefaultProps } from 'react-default-props-context';
+import { mergeDefaultProps, FC } from 'react-default-props-context';
 import { TipList } from 'src/tips/presentation/TipList';
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   userProfile?: UserProfileT;
   tipsAddition: Addition;
 };
 
-export const TipsPanel: React.FC<PropsT> = (p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+export const TipsPanel: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const addTipBtn = (
     <FontAwesomeIcon

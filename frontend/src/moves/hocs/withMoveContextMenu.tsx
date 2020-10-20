@@ -15,9 +15,7 @@ import { getId } from 'src/app/utils';
 //
 ///////////////////////////////////////////////////////////////////////
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   moveLists: Array<MoveListT>;
@@ -30,7 +28,7 @@ export const withMoveContextMenu = compose(
   withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
-    const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
     const moveListId = getId(props.moveList);
     const targetMoveLists = props.movesClipboard.targetMoveLists;

@@ -9,26 +9,25 @@ import { ListsSwitch } from 'src/app/containers/ListsSwitch';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { IndexPage } from 'src/app/containers/IndexPage';
 import { ProfilePage } from 'src/session/containers/ProfilePage';
 import { SearchResultsPage } from 'src/search/containers/SearchResultsPage';
 
-type PropsT = {
-  defaultProps: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   userProfile: UserProfileT;
   navigation: Navigation;
 };
 
-export const UrlRouter = compose(
+export const UrlRouter: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   return (
     <Router history={props.navigation.history}>

@@ -5,23 +5,22 @@ import { observer } from 'mobx-react';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { MoveTable } from 'src/search/presentation/MoveTable';
 import { MovesStore } from 'src/moves/MovesStore';
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   movesStore: MovesStore;
 };
 
-export const SearchResultsPage: React.FC<PropsT> = compose(
+export const SearchResultsPage: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
   return (
     <div className="flexcol">
       <h1>Search results</h1>

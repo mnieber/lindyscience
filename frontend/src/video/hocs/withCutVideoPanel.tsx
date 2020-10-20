@@ -20,9 +20,7 @@ import {
 import { CutVideoPanel } from 'src/video/presentation/CutVideoPanel';
 import { runInAction } from 'src/utils/mobx_wrapper';
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   cutPoints: CutPoints;
@@ -31,11 +29,11 @@ type DefaultPropsT = {
   movesStore: MovesStore;
 };
 
-export const withCutVideoPanel: React.FC<PropsT> = compose(
+export const withCutVideoPanel = compose(
   withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
-    const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
     const videoKeyHandlers = {
       ...createVideoKeyHandlers(props.cutPoints.videoController as any),

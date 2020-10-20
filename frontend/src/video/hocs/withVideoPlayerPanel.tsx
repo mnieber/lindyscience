@@ -7,9 +7,7 @@ import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { mergeDefaultProps } from 'react-default-props-context';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   display: Display;
@@ -19,7 +17,7 @@ type DefaultPropsT = {
 
 export const withVideoPlayerPanel = (WrappedComponent: any) =>
   observer((p: PropsT) => {
-    const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
     const videoPlayerPanel = (
       <VideoPlayerPanel

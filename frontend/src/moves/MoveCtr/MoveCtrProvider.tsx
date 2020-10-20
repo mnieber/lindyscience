@@ -12,10 +12,7 @@ import {
   withDefaultProps,
 } from 'react-default-props-context';
 
-type PropsT = {
-  children: any;
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   display: Display;
@@ -26,7 +23,7 @@ export const MoveCtrProvider: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const createCtr = () => {
     return new MoveContainer({ rootDivId: 'moveDiv' });

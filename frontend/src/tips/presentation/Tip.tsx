@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 
 import { TipT } from 'src/tips/types';
 import { VoteT } from 'src/votes/types';
 import { TipForm } from 'src/tips/presentation/TipForm';
 import { VoteCount } from 'src/votes/presentation/VoteCount';
-import { mergeDefaultProps } from 'react-default-props-context';
+import { mergeDefaultProps, FC } from 'react-default-props-context';
 import { Editing } from 'facet-mobx/facets/editing';
 import { Highlight } from 'facet-mobx/facets/highlight';
 import { Selection } from 'facet-mobx/facets/selection';
@@ -27,8 +28,8 @@ type DefaultPropsT = {
   tipsDeletion: Deletion;
 };
 
-export function Tip(p: PropsT) {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+export const Tip: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
   const [armDelete, setArmDelete] = React.useState(false);
   const tipId = props.item.id;
   const isEditing =
@@ -110,4 +111,4 @@ export function Tip(p: PropsT) {
       </div>
     );
   }
-}
+});

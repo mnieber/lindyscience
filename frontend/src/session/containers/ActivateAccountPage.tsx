@@ -7,6 +7,7 @@ import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
 import { RouterLink } from 'src/utils/RouterLink';
@@ -20,11 +21,11 @@ type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const ActivateAccountPage: React.FC<PropsT> = compose(
+export const ActivateAccountPage: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
   const params = useParams();
   const { errors, state } = useAuthStateContext(true);
 

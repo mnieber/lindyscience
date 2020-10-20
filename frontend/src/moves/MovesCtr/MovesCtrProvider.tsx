@@ -18,10 +18,7 @@ import {
 import { Editing } from 'facet-mobx/facets/editing';
 import { Highlight } from 'facet-mobx/facets/highlight';
 
-type PropsT = {
-  children: any;
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   navigation: Navigation;
@@ -36,7 +33,7 @@ export const MovesCtrProvider: React.FC<PropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
   const createCtr = () => {
     return new MovesContainer({
       navigation: props.navigation,

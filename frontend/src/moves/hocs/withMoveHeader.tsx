@@ -19,7 +19,6 @@ import { mergeDefaultProps } from 'react-default-props-context';
 type PropsT = {
   moveTags: Array<TagT>;
   videoController: VideoController;
-  defaultProps?: any;
 };
 
 type DefaultPropsT = {
@@ -33,7 +32,7 @@ type DefaultPropsT = {
 
 export const withMoveHeader = (WrappedComponent: any) =>
   observer((p: PropsT) => {
-    const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
     const moveListTitle = <MoveListTitle moveList={props.moveList} />;
 

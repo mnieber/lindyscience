@@ -6,25 +6,24 @@ import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { Authentication } from 'src/session/facets/Authentication';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { SignInForm } from 'src/session/presentation/SignInForm';
 import { RouterLink } from 'src/utils/RouterLink';
 
-type PropsT = {
-  defaultProps: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const SignInPage = compose(
+export const SignInPage: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
   const { errors } = useAuthStateContext(true);
 
   return (

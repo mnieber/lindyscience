@@ -9,22 +9,20 @@ import { CtrProvider } from 'src/app/CtrProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 
 export const SessionContainerContext = React.createContext({});
 
-type PropsT = {
-  children: any;
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {};
 
-export const SessionCtrProvider: React.FC<PropsT> = compose(
+export const SessionCtrProvider: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const createCtr = () => {
     const history = createBrowserHistory({

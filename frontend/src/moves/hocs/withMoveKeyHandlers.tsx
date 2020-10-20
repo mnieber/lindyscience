@@ -13,9 +13,7 @@ import {
 } from 'src/video/presentation/VideoKeyhandler';
 import { runInAction } from 'src/utils/mobx_wrapper';
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   timePoints: TimePoints;
@@ -26,7 +24,7 @@ type DefaultPropsT = {
 
 export const withMoveKeyHandlers = (WrappedComponent: any) =>
   observer((p: PropsT) => {
-    const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
     const timePoints = props.timePoints.timePoints;
     const move = props.move;

@@ -10,23 +10,21 @@ import { CtrProvider } from 'src/app/CtrProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 
-type PropsT = {
-  children: any;
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   move: MoveT;
   tipsStore: TipsStore;
 };
 
-export const TipsCtrProvider: React.FC<PropsT> = compose(
+export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
   const createCtr = () => {
     return new TipsCtr({ tipsStore: props.tipsStore });
   };

@@ -8,6 +8,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
 import { Profiling } from 'src/session/facets/Profiling';
@@ -17,7 +18,6 @@ import { AccountMenu } from 'src/app/presentation/AccountMenu';
 // AppFrame
 type PropsT = {
   children: any;
-  defaultProps?: any;
 };
 
 type DefaultPropsT = {
@@ -25,11 +25,11 @@ type DefaultPropsT = {
   display: Display;
 };
 
-export const AppFrame: React.FC<PropsT> = compose(
+export const AppFrame: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const cookieNotice = props.profiling.acceptsCookies ? undefined : (
     <div className="cookieNotice flexrow justify-around items-center">

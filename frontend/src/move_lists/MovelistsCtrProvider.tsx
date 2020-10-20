@@ -12,13 +12,14 @@ import { CtrProvider } from 'src/app/CtrProvider';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { Editing } from 'facet-mobx/facets/editing';
 import { Highlight } from 'facet-mobx/facets/highlight';
 
 type PropsT = {
-  children: any;
   defaultProps?: any;
+  children?: any;
 };
 
 type DefaultPropsT = {
@@ -27,11 +28,11 @@ type DefaultPropsT = {
   moveListsStore: MoveListsStore;
 };
 
-export const MoveListsCtrProvider: React.FC<PropsT> = compose(
+export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const createCtr = () => {
     return new MoveListsContainer({
@@ -74,7 +75,8 @@ export const MoveListsCtrProvider: React.FC<PropsT> = compose(
       createCtr={createCtr}
       updateCtr={updateCtr}
       getDefaultProps={getDefaultProps}
-      children={props.children}
-    />
+    >
+      {props.children}
+    </CtrProvider>
   );
 });

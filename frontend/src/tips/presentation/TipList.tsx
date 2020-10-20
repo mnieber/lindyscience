@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
 import { MoveT } from 'src/moves/types';
 import { Addition } from 'facet-mobx/facets/addition';
@@ -6,7 +7,7 @@ import { Editing } from 'facet-mobx/facets/editing';
 import { UserProfileT } from 'src/profiles/types';
 import { TipT } from 'src/tips/types';
 import { Tip } from 'src/tips/presentation/Tip';
-import { mergeDefaultProps } from 'react-default-props-context';
+import { mergeDefaultProps, FC } from 'react-default-props-context';
 
 type PropsT = {};
 
@@ -18,8 +19,8 @@ type DefaultPropsT = {
   move: MoveT;
 };
 
-export function TipList(p: PropsT) {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+export const TipList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const itemNodes: Array<any> = props.tips.map((tip, idx) => {
     const allowEdit =
@@ -38,4 +39,4 @@ export function TipList(p: PropsT) {
   });
 
   return <div className="TipList">{itemNodes}</div>;
-}
+});

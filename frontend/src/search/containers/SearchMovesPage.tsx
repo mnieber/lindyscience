@@ -6,6 +6,7 @@ import { keys } from 'lodash/fp';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { SearchMovesForm } from 'src/search/presentation/SearchMovesForm';
 import { UserProfileT } from 'src/profiles/types';
@@ -15,9 +16,7 @@ import { Navigation } from 'src/session/facets/Navigation';
 
 // SearchMovesPage
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   userProfile: UserProfileT;
@@ -25,11 +24,11 @@ type DefaultPropsT = {
   navigation: Navigation;
 };
 
-export const SearchMovesPage: React.FC<PropsT> = compose(
+export const SearchMovesPage: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const [latestOptions, setLatestOptions] = React.useState([]);
   const history = props.navigation.history;

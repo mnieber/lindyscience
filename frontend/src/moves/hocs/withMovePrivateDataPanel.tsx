@@ -16,7 +16,6 @@ import { apiSaveMovePrivateData } from 'src/moves/api';
 
 type PropsT = {
   videoController?: any;
-  defaultProps?: any;
 };
 
 type DefaultPropsT = {
@@ -29,7 +28,7 @@ export const withMovePrivateDataPanel = compose(
   withDefaultProps,
   observer,
   (WrappedComponent: any) => (p: PropsT) => {
-    const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+    const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
     const movePrivateData = props.move
       ? props.movesStore.getOrCreatePrivateData(props.move.id)
       : undefined;

@@ -5,26 +5,25 @@ import { observer } from 'mobx-react';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { helpUrl } from 'src/moves/utils';
 import { browseToMoveUrl } from 'src/app/containers';
 
-type PropsT = {
-  defaultProps: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   userProfile: UserProfileT;
   navigation: Navigation;
 };
 
-export const IndexPage = compose(
+export const IndexPage: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const { userProfile, navigation } = props;
 
@@ -34,7 +33,7 @@ export const IndexPage = compose(
         userProfile && userProfile.recentMoveUrl
           ? userProfile.recentMoveUrl
           : helpUrl.substr('/lists/'.length);
-      if (navigation?.history) {
+      if (navigation.history) {
         browseToMoveUrl(navigation.history.push, [url], false);
       }
     }

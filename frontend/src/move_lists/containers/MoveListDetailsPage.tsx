@@ -11,6 +11,7 @@ import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
@@ -20,9 +21,7 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { withCutVideoPanel } from 'src/video/hocs/withCutVideoPanel';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   profiling: Profiling;
@@ -34,12 +33,12 @@ type DefaultPropsT = {
   cutVideoPanel: any;
 };
 
-export const MoveListDetailsPage: React.FC<PropsT> = compose(
+export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   withCutVideoPanel,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   if (!props.moveList) {
     return <React.Fragment />;

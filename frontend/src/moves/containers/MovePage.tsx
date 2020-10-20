@@ -20,11 +20,10 @@ import { Editing } from 'facet-mobx/facets/editing';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 
-type PropsT = {
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   navigation: Navigation;
@@ -40,7 +39,7 @@ type DefaultPropsT = {
   moveKeyHandlers: any;
 };
 
-export const MovePage: React.FC<PropsT> = compose(
+export const MovePage: FC<PropsT, DefaultPropsT> = compose(
   withDefaultProps,
   withMoveForm,
   withMovePrivateDataPanel,
@@ -49,7 +48,7 @@ export const MovePage: React.FC<PropsT> = compose(
   withMoveKeyHandlers,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   if (!props.moveList) {
     const status = getStatus(props.navigation);

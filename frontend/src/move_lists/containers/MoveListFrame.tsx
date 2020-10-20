@@ -28,13 +28,11 @@ import { Filtering } from 'facet-mobx/facets/filtering';
 import {
   mergeDefaultProps,
   withDefaultProps,
+  FC,
 } from 'react-default-props-context';
 import { Addition } from 'facet-mobx/facets/addition';
 
-type PropsT = {
-  children: any;
-  defaultProps?: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   profiling: Profiling;
@@ -49,12 +47,12 @@ type DefaultPropsT = {
   moveContextMenu: any;
 };
 
-export const MoveListFrame: React.FC<PropsT> = compose(
+export const MoveListFrame: FC<PropsT, DefaultPropsT> = compose(
   withMoveContextMenu,
   withDefaultProps,
   observer
 )((p: PropsT) => {
-  const props: PropsT & DefaultPropsT = mergeDefaultProps(p);
+  const props = mergeDefaultProps<PropsT, DefaultPropsT>(p);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 

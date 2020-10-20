@@ -1,17 +1,13 @@
 import { compose } from 'lodash/fp';
 import React from 'react';
 
-import {
-  withDefaultProps,
-  mergeDefaultProps,
-} from 'react-default-props-context';
+import { withDefaultProps } from 'react-default-props-context';
 import { Navigation } from 'src/session/facets/Navigation';
 import { makeSlugid } from 'src/app/utils';
 
 export const withMoveTarget = compose(
   withDefaultProps,
-  (WrappedComponent: any) => (p: any) => {
-    const props = mergeDefaultProps(p);
+  (WrappedComponent: any) => (props: any) => {
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);
       const params = props.match.params;
@@ -20,14 +16,13 @@ export const withMoveTarget = compose(
         moveListUrl: params.ownerUsername + '/' + params.moveListSlug,
       });
     });
-    return <WrappedComponent {...p} />;
+    return <WrappedComponent {...props} />;
   }
 );
 
 export const withMoveListTarget = compose(
   withDefaultProps,
-  (WrappedComponent: any) => (p: any) => {
-    const props = mergeDefaultProps(p);
+  (WrappedComponent: any) => (props: any) => {
     React.useEffect(() => {
       const navigation = Navigation.get(props.sessionCtr);
       const params = props.match.params;
@@ -35,6 +30,6 @@ export const withMoveListTarget = compose(
         moveListUrl: params.ownerUsername + '/' + params.moveListSlug,
       });
     });
-    return <WrappedComponent {...p} />;
+    return <WrappedComponent {...props} />;
   }
 );

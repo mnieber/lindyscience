@@ -22,7 +22,7 @@ class SaveTip(graphene.Mutation):
     def mutate(self, info, pk, **inputs):
         assert_authorized(models.Tip, pk, info.context.user.id)
         inputs["owner_id"] = info.context.user.id
-        tip, created = models.Tip.objects.update_or_create(inputs, pk=pk)
+        (tip,) = models.Tip.objects.update_or_create(inputs, pk=pk)
         return SaveTip(tip=tip, ok=True)
 
 
@@ -40,7 +40,7 @@ class DeleteTips(graphene.Mutation):
                 raise Exception("Not authorized to update object with id %s" % pk)
             tip.delete()
 
-        return DeleteTip(ok=True)
+        return DeleteTips(ok=True)
 
 
 class TipQuery:
@@ -49,4 +49,4 @@ class TipQuery:
 
 class TipMutations:
     save_tip = SaveTip.Field()
-    delete_tip = DeleteTip.Field()
+    delete_tips = DeleteTips.Field()

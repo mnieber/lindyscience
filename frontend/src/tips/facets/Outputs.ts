@@ -3,10 +3,11 @@ import { TipT, TipByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import { listToItemById } from 'src/utils/utils';
 import { keys } from 'lodash/fp';
+import { data } from 'facet';
 
 export class Outputs {
-  @observable preview: Array<TipT> = [];
-  @observable display: Array<TipT> = [];
+  @observable @data preview: Array<TipT> = [];
+  @observable @data display: Array<TipT> = [];
 
   @computed get tipIds(): Array<UUID> {
     return keys(this.tipById);

@@ -42,7 +42,9 @@ export const Tip: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
           values={{
             text: props.item.text,
           }}
-          onSubmit={(values: any) => props.tipsEditing.save(values)}
+          onSubmit={(values: any) =>
+            props.tipsEditing.save({ ...props.item, ...values })
+          }
           onCancel={() => props.tipsEditing.cancel()}
         />
       </div>

@@ -1,11 +1,8 @@
 import React from 'react';
-import { compose } from 'lodash/fp';
 import { Route, Switch } from 'react-router-dom';
 
-import {
-  withMoveListTarget,
-  withMoveTarget,
-} from 'src/app/containers/RouteEffects';
+import { NavigateToMoveListEffect } from 'src/app/containers/NavigateToMoveListEffect';
+import { NavigateToMoveEffect } from 'src/app/containers/NavigateToMoveEffect';
 import { MoveListFrame } from 'src/move_lists/containers/MoveListFrame';
 import { CutVideoCtrProvider } from 'src/video/CutVideoCtrProvider';
 import { MoveListDetailsPage } from 'src/move_lists/containers/MoveListDetailsPage';
@@ -18,11 +15,10 @@ export const ListsSwitch = () => {
     <MoveListFrame>
       <Switch>
         <Route exact path="/lists/:ownerUsername/:moveListSlug">
-          {compose(withMoveListTarget)(() => (
-            <CutVideoCtrProvider>
-              <MoveListDetailsPage />
-            </CutVideoCtrProvider>
-          ))}
+          <NavigateToMoveListEffect />
+          <CutVideoCtrProvider>
+            <MoveListDetailsPage />
+          </CutVideoCtrProvider>
         </Route>
         <Route
           exact
@@ -31,13 +27,12 @@ export const ListsSwitch = () => {
             '/lists/:ownerUsername/:moveListSlug/:moveSlug/:moveId',
           ]}
         >
-          {compose(withMoveTarget)(() => (
-            <MoveCtrProvider>
-              <TipsCtrProvider>
-                <MovePage />
-              </TipsCtrProvider>
-            </MoveCtrProvider>
-          ))}
+          <NavigateToMoveEffect />
+          <MoveCtrProvider>
+            <TipsCtrProvider>
+              <MovePage />
+            </TipsCtrProvider>
+          </MoveCtrProvider>
         </Route>
       </Switch>
     </MoveListFrame>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
+import { UserProfileT } from 'src/profiles/types';
 import { TipsStore } from 'src/tips/TipsStore';
 import { MoveT } from 'src/moves/types';
 import { TipsCtr } from 'src/tips/TipsCtr';
@@ -12,6 +13,7 @@ type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   move: MoveT;
+  userProfile: UserProfileT;
   tipsStore: TipsStore;
 };
 
@@ -26,9 +28,13 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = observer(
       reaction(
         () => ({
           move: props.move,
+          tips: props.tipsStore.tipsByMoveId[props.move?.id] ?? [],
+          userProfile: props.userProfile,
         }),
-        ({ move }) => {
+        ({ move, tips, userProfile }) => {
           ctr.inputs.move = move;
+          ctr.inputs.tips = tips;
+          ctr.inputs.userProfile = userProfile;
         }
       );
     };

@@ -1,15 +1,17 @@
+import { TipT } from 'src/tips/types';
 import { MoveT } from 'src/moves/types';
 import { UserProfileT } from 'src/profiles/types';
-import { observable, runInAction } from 'src/utils/mobx_wrapper';
+import { observable } from 'src/utils/mobx_wrapper';
+import { input } from 'facet';
 
 export class Inputs {
-  @observable move?: MoveT;
-  @observable userProfile?: UserProfileT;
+  @observable @input move?: MoveT;
+  @observable @input tips?: TipT[];
+  @observable @input userProfile?: UserProfileT;
 
   static get = (ctr: any): Inputs => ctr.inputs;
 }
 
 export function initInputs(self: Inputs): Inputs {
-  runInAction('initInputs', () => {});
   return self;
 }

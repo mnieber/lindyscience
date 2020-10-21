@@ -40,7 +40,7 @@ class DeleteTips(graphene.Mutation):
                 raise Exception("Not authorized to update object with id %s" % pk)
             tip.delete()
 
-        return DeleteTip(ok=True)
+        return DeleteTips(ok=True)
 
 
 class TipQuery:
@@ -49,4 +49,4 @@ class TipQuery:
 
 class TipMutations:
     save_tip = SaveTip.Field()
-    delete_tip = DeleteTip.Field()
+    delete_tips = DeleteTips.Field()

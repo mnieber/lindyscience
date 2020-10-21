@@ -22,7 +22,7 @@ class SaveTip(graphene.Mutation):
     def mutate(self, info, pk, **inputs):
         assert_authorized(models.Tip, pk, info.context.user.id)
         inputs["owner_id"] = info.context.user.id
-        (tip,) = models.Tip.objects.update_or_create(inputs, pk=pk)
+        tip, created = models.Tip.objects.update_or_create(inputs, pk=pk)
         return SaveTip(tip=tip, ok=True)
 
 

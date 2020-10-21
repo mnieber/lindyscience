@@ -4,7 +4,7 @@ import { Addition } from 'facet-mobx/facets/addition';
 
 export const newItemsAreFollowedWhenConfirmed = (ctr: any) => {
   const addition = Addition.get(ctr);
-  listen(addition, 'confirm', function (data: any) {
+  listen(addition, 'confirm', function () {
     Labelling.get(ctr).setLabel({
       label: 'following',
       id: addition.item.id,

@@ -2,7 +2,7 @@ import { UUID } from 'src/kernel/types';
 import { TipT } from 'src/tips/types';
 import { doQuery } from 'src/app/client';
 
-export function apiSaveTip(moveId: UUID, values: TipT) {
+export function apiSaveTip(tip: TipT) {
   const query = `mutation saveTip(
       $id: String!,
       $moveId: String!,
@@ -14,21 +14,18 @@ export function apiSaveTip(moveId: UUID, values: TipT) {
         text: $text,
       ) { ok }
     }`;
-  return doQuery(query, {
-    ...values,
-    moveId,
-  });
+  return doQuery(query, { ...tip });
 }
 
 export function apiDeleteTips(ids: UUID[]) {
-  const query = `mutation deleteTip(
-      $ids: [String]!,
+  const query = `mutation deleteTips(
+      $pks: [ID]!,
     ) {
-      deleteTip(
-        pks: $ids,
+      deleteTips(
+        pks: $pks,
       ) { ok }
     }`;
   return doQuery(query, {
-    ids,
+    pks: ids,
   });
 }

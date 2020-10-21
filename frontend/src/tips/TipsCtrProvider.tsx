@@ -28,11 +28,12 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = observer(
       reaction(
         () => ({
           move: props.move,
+          tips: props.tipsStore.tipsByMoveId[props.move?.id] ?? [],
           userProfile: props.userProfile,
         }),
-        ({ move, userProfile }) => {
+        ({ move, tips, userProfile }) => {
           ctr.inputs.move = move;
-          ctr.inputs.tips = props.tipsStore.tipsByMoveId[move.id] ?? [];
+          ctr.inputs.tips = tips;
           ctr.inputs.userProfile = userProfile;
         }
       );

@@ -12,7 +12,7 @@ import { cutVideoContainerProps } from 'src/video/CutVideoCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 
-type PropsT = {};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   display: Display;

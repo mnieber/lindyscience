@@ -13,7 +13,7 @@ import { useDefaultProps, FC } from 'react-default-props-context';
 import { Editing } from 'facet-mobx/facets/editing';
 import { Highlight } from 'facet-mobx/facets/highlight';
 
-type PropsT = {};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   profiling: Profiling;

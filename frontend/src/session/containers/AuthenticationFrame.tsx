@@ -3,17 +3,15 @@ import { observer } from 'mobx-react';
 
 // PasswordResetPage
 
-type PropsT = {
+type PropsT = React.PropsWithChildren<{
   header: string;
-};
+}>;
 
-export const AuthenticationFrame = observer(
-  (props: React.PropsWithChildren<PropsT>) => {
-    return (
-      <div className="">
-        <h1 className="text-lg">{props.header}</h1>
-        {props.children}
-      </div>
-    );
-  }
-);
+export const AuthenticationFrame = observer((props: PropsT) => {
+  return (
+    <div className="">
+      <h1 className="text-lg">{props.header}</h1>
+      {props.children}
+    </div>
+  );
+});

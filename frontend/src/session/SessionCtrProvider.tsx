@@ -9,7 +9,7 @@ import { useDefaultProps, FC } from 'react-default-props-context';
 
 export const SessionContainerContext = React.createContext({});
 
-type PropsT = {};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {};
 

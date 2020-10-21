@@ -8,7 +8,7 @@ import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 import { useDefaultProps } from 'react-default-props-context';
 
-type PropsT = {};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   display: Display;

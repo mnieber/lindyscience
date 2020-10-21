@@ -28,7 +28,7 @@ import { Filtering } from 'facet-mobx/facets/filtering';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { Addition } from 'facet-mobx/facets/addition';
 
-type PropsT = {};
+type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   profiling: Profiling;

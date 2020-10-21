@@ -57,7 +57,8 @@
     "recase": "^1.0.4",
     "redtape": "^1.0.0",
     "scroll-into-view-if-needed": "^2.2.20",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "use-deep-compare-effect": "^1.4.0"
   },
   "scripts": {
     "build:tailwind": "postcss src/scss/app.scss -o src/scss/app.generated.css",

@@ -12,6 +12,7 @@ import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as TipsCtrHandlers from 'src/tips/handlers';
+import { getIds } from 'src/app/utils';
 
 type PropsT = {
   tipsStore: TipsStore;
@@ -58,6 +59,7 @@ export class TipsCtr {
 
       // display
       mapData([Outputs, 'preview'], [Outputs, 'display']),
+      mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
     ];
 
     installPolicies<TipsCtr>(policies, this);

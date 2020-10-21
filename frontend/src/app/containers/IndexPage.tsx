@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import React from 'react';
 import { observer } from 'mobx-react';
 
@@ -15,25 +14,23 @@ type DefaultPropsT = {
   navigation: Navigation;
 };
 
-export const IndexPage: FC<PropsT, DefaultPropsT> = compose(observer)(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const IndexPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-    const { userProfile, navigation } = props;
+  const { userProfile, navigation } = props;
 
-    React.useEffect(() => {
-      function _loadRecentMove() {
-        const url =
-          userProfile && userProfile.recentMoveUrl
-            ? userProfile.recentMoveUrl
-            : helpUrl.substr('/lists/'.length);
-        if (navigation.history) {
-          browseToMoveUrl(navigation.history.push, [url], false);
-        }
+  React.useEffect(() => {
+    function _loadRecentMove() {
+      const url =
+        userProfile && userProfile.recentMoveUrl
+          ? userProfile.recentMoveUrl
+          : helpUrl.substr('/lists/'.length);
+      if (navigation.history) {
+        browseToMoveUrl(navigation.history.push, [url], false);
       }
-      _loadRecentMove();
-    }, [userProfile, navigation]);
+    }
+    _loadRecentMove();
+  }, [userProfile, navigation]);
 
-    return <div className="h-full" />;
-  }
-);
+  return <div className="h-full" />;
+});

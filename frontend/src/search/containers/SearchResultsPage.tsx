@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -12,7 +11,7 @@ type DefaultPropsT = {
   movesStore: MovesStore;
 };
 
-export const SearchResultsPage: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const SearchResultsPage: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
     return (

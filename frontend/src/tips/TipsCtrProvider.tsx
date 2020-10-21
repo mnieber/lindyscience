@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -16,7 +15,7 @@ type DefaultPropsT = {
   tipsStore: TipsStore;
 };
 
-export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
     const createCtr = () => {

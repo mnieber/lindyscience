@@ -55,12 +55,7 @@ export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = compose(
     />
   );
 
-  const followMoveListBtn = (
-    <FollowMoveListBtn
-      key="followMoveListBtn"
-      defaultProps={props.defaultProps}
-    />
-  );
+  const followMoveListBtn = <FollowMoveListBtn key="followMoveListBtn" />;
   const space = <div key="space" className="flex flex-grow" />;
 
   return props.moveListsEditing.isEditing ? (

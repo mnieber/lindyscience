@@ -1,7 +1,6 @@
-import { compose } from 'lodash/fp';
+import { keys } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { keys } from 'lodash/fp';
 
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { SearchMovesForm } from 'src/search/presentation/SearchMovesForm';
@@ -20,7 +19,7 @@ type DefaultPropsT = {
   navigation: Navigation;
 };
 
-export const SearchMovesPage: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const SearchMovesPage: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
@@ -58,7 +57,6 @@ export const SearchMovesPage: FC<PropsT, DefaultPropsT> = compose(observer)(
         knownTags={keys(props.movesStore.tags)}
         latestOptions={latestOptions}
         onSubmit={_findMoves}
-        defaultProps={props.defaultProps}
       />
     );
   }

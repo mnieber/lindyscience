@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import { compose } from 'lodash/fp';
 
 import { Navigation } from 'src/session/facets/Navigation';
 import { AuthSwitch } from 'src/app/containers/AuthSwitch';
@@ -19,30 +18,28 @@ type DefaultPropsT = {
   navigation: Navigation;
 };
 
-export const UrlRouter: FC<PropsT, DefaultPropsT> = compose(observer)(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const UrlRouter: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-    return (
-      <Router history={props.navigation.history}>
-        <Switch>
-          <Route exact path="/">
-            <IndexPage userProfile={props.userProfile} />
-          </Route>
-          <Route exact path="/people/:username">
-            <ProfilePage />
-          </Route>
-          <Route exact path="/search">
-            <SearchResultsPage />
-          </Route>
-          <Route path="/lists/">
-            <ListsSwitch />
-          </Route>
-          <Route path="/">
-            <AuthSwitch />
-          </Route>
-        </Switch>
-      </Router>
-    );
-  }
-);
+  return (
+    <Router history={props.navigation.history}>
+      <Switch>
+        <Route exact path="/">
+          <IndexPage userProfile={props.userProfile} />
+        </Route>
+        <Route exact path="/people/:username">
+          <ProfilePage />
+        </Route>
+        <Route exact path="/search">
+          <SearchResultsPage />
+        </Route>
+        <Route path="/lists/">
+          <ListsSwitch />
+        </Route>
+        <Route path="/">
+          <AuthSwitch />
+        </Route>
+      </Switch>
+    </Router>
+  );
+});

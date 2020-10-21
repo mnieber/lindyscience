@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { createBrowserHistory } from 'history';
@@ -14,7 +13,7 @@ type PropsT = {};
 
 type DefaultPropsT = {};
 
-export const SessionCtrProvider: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const SessionCtrProvider: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 

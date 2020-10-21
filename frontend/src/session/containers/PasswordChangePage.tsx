@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import React from 'react';
-import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
@@ -10,15 +9,13 @@ import { RouterLink } from 'src/utils/RouterLink';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { PasswordChangeForm } from 'src/session/presentation/PasswordChangeForm';
 
-type PropsT = {
-  defaultProps: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const PasswordChangePage: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const PasswordChangePage: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
     const params = useParams();

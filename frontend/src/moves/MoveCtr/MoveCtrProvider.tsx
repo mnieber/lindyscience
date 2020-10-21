@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -16,40 +15,38 @@ type DefaultPropsT = {
   move: MoveT;
 };
 
-export const MoveCtrProvider: React.FC<PropsT> = compose(observer)(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const MoveCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-    const createCtr = () => {
-      return new MoveContainer({ rootDivId: 'moveDiv' });
-    };
+  const createCtr = () => {
+    return new MoveContainer({ rootDivId: 'moveDiv' });
+  };
 
-    const updateCtr = (ctr: MoveContainer) => {
-      reaction(
-        () => ({ move: props.move, display: props.display }),
-        ({ move, display }) => {
-          ctr.inputs.move = move;
-          ctr.inputs.sessionDisplay = display;
-        }
-      );
-    };
-
-    const getDefaultProps = (ctr: MoveContainer) => {
-      return {
-        moveCtr: () => ctr,
-        moveDisplay: () => ctr.display,
-        videoController: () => ctr.videoController,
-        timePoints: () => ctr.timePoints,
-      };
-    };
-
-    return (
-      <CtrProvider
-        createCtr={createCtr}
-        updateCtr={updateCtr}
-        getDefaultProps={getDefaultProps}
-        children={props.children}
-      />
+  const updateCtr = (ctr: MoveContainer) => {
+    reaction(
+      () => ({ move: props.move, display: props.display }),
+      ({ move, display }) => {
+        ctr.inputs.move = move;
+        ctr.inputs.sessionDisplay = display;
+      }
     );
-  }
-);
+  };
+
+  const getDefaultProps = (ctr: MoveContainer) => {
+    return {
+      moveCtr: () => ctr,
+      moveDisplay: () => ctr.display,
+      videoController: () => ctr.videoController,
+      timePoints: () => ctr.timePoints,
+    };
+  };
+
+  return (
+    <CtrProvider
+      createCtr={createCtr}
+      updateCtr={updateCtr}
+      getDefaultProps={getDefaultProps}
+      children={props.children}
+    />
+  );
+});

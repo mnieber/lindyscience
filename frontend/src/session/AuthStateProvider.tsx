@@ -32,12 +32,13 @@ export const AuthStateContext = React.createContext<AuthState | undefined>(
   undefined
 );
 
-interface IProps {
+interface PropsT {
   authentication: Authentication;
-  children: any;
 }
 
-export const AuthStateProvider: React.FC<IProps> = (props: IProps) => {
+export const AuthStateProvider: React.FC<PropsT> = (
+  props: React.PropsWithChildren<PropsT>
+) => {
   const [authState] = React.useState(() => new AuthState(props.authentication));
 
   return (

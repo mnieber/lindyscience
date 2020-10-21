@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -13,7 +12,7 @@ type DefaultPropsT = {
   moveListsLabelling: Labelling;
 };
 
-export const FollowMoveListBtn: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const FollowMoveListBtn: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 

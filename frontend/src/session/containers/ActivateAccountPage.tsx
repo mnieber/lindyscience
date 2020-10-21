@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
@@ -9,15 +8,13 @@ import { Authentication } from 'src/session/facets/Authentication';
 import { RouterLink } from 'src/utils/RouterLink';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 
-type PropsT = {
-  defaultProps: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const ActivateAccountPage: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const ActivateAccountPage: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
     const params = useParams();

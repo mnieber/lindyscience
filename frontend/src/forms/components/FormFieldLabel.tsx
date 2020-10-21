@@ -6,10 +6,11 @@ import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
 type PropsT = {
   classNames?: any;
   buttons?: any[];
-  children?: any;
 };
 
-export const FormFieldLabel: React.FC<PropsT> = (props: PropsT) => {
+export const FormFieldLabel: React.FC<PropsT> = (
+  props: React.PropsWithChildren<PropsT>
+) => {
   const fieldContext = useFormFieldContext();
 
   const ColWrapper =

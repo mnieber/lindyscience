@@ -19,7 +19,7 @@ type DefaultPropsT = {
   move: MoveT;
 };
 
-export const TipList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+export const TipList: FC<PropsT, DefaultPropsT> = observer((p: any) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const itemNodes: Array<any> = props.tips.map((tip: TipT, idx: number) => {

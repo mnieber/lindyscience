@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
@@ -26,63 +25,61 @@ type DefaultPropsT = {
   moveListsPreview: Array<MoveListT>;
 };
 
-export const MovesCtrProvider: React.FC<PropsT> = compose(observer)(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-    const createCtr = () => {
-      return new MovesContainer({
-        navigation: props.navigation,
-        moveListsStore: props.moveListsStore,
-        movesStore: props.movesStore,
-      });
-    };
+export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const createCtr = () => {
+    return new MovesContainer({
+      navigation: props.navigation,
+      moveListsStore: props.moveListsStore,
+      movesStore: props.movesStore,
+    });
+  };
 
-    const updateCtr = (ctr: MovesContainer) => {
-      reaction(
-        () => ({
-          inputMoves: props.moveList
-            ? lookUp(
-                props.moveList ? props.moveList.moves : [],
-                props.movesStore.moveById
-              ).filter((x) => !!x)
-            : [],
-          userProfile: props.profiling.userProfile,
-          moveList: props.moveList,
-          moveListsPreview: props.moveListsPreview,
-        }),
-        ({ inputMoves, userProfile, moveList, moveListsPreview }) => {
-          ctr.inputs.moves = inputMoves;
-          ctr.inputs.userProfile = userProfile;
-          ctr.inputs.moveList = moveList;
-          ctr.inputs.moveLists = moveListsPreview;
-        }
-      );
-    };
-
-    const getDefaultProps = (ctr: MovesContainer) => {
-      return {
-        movesCtr: () => ctr,
-        isEditingMove: () => Editing.get(ctr).isEditing,
-        move: () => Highlight.get(ctr).item,
-        moves: () => ctr.outputs.display,
-        movesPreview: () => ctr.outputs.preview,
-        movesEditing: () => ctr.editing,
-        movesHighlight: () => ctr.highlight,
-        movesSelection: () => ctr.selection,
-        movesClipboard: () => ctr.clipboard,
-        movesFiltering: () => ctr.filtering,
-        movesAddition: () => ctr.addition,
-        movesDragAndDrop: () => ctr.dragAndDrop,
-      };
-    };
-
-    return (
-      <CtrProvider
-        createCtr={createCtr}
-        updateCtr={updateCtr}
-        getDefaultProps={getDefaultProps}
-        children={props.children}
-      />
+  const updateCtr = (ctr: MovesContainer) => {
+    reaction(
+      () => ({
+        inputMoves: props.moveList
+          ? lookUp(
+              props.moveList ? props.moveList.moves : [],
+              props.movesStore.moveById
+            ).filter((x) => !!x)
+          : [],
+        userProfile: props.profiling.userProfile,
+        moveList: props.moveList,
+        moveListsPreview: props.moveListsPreview,
+      }),
+      ({ inputMoves, userProfile, moveList, moveListsPreview }) => {
+        ctr.inputs.moves = inputMoves;
+        ctr.inputs.userProfile = userProfile;
+        ctr.inputs.moveList = moveList;
+        ctr.inputs.moveLists = moveListsPreview;
+      }
     );
-  }
-);
+  };
+
+  const getDefaultProps = (ctr: MovesContainer) => {
+    return {
+      movesCtr: () => ctr,
+      isEditingMove: () => Editing.get(ctr).isEditing,
+      move: () => Highlight.get(ctr).item,
+      moves: () => ctr.outputs.display,
+      movesPreview: () => ctr.outputs.preview,
+      movesEditing: () => ctr.editing,
+      movesHighlight: () => ctr.highlight,
+      movesSelection: () => ctr.selection,
+      movesClipboard: () => ctr.clipboard,
+      movesFiltering: () => ctr.filtering,
+      movesAddition: () => ctr.addition,
+      movesDragAndDrop: () => ctr.dragAndDrop,
+    };
+  };
+
+  return (
+    <CtrProvider
+      createCtr={createCtr}
+      updateCtr={updateCtr}
+      getDefaultProps={getDefaultProps}
+      children={props.children}
+    />
+  );
+});

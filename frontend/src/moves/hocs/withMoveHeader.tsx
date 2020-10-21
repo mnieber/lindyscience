@@ -49,10 +49,7 @@ export const withMoveHeader = (WrappedComponent: any) =>
     );
 
     const followMoveListBtn = props.userProfile ? (
-      <FollowMoveListBtn
-        key="followMoveListBtn"
-        defaultProps={props.defaultProps}
-      />
+      <FollowMoveListBtn key="followMoveListBtn" />
     ) : undefined;
 
     const moveHeader = (

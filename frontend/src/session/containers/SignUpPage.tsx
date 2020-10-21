@@ -1,5 +1,4 @@
 import React from 'react';
-import { compose } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
@@ -15,42 +14,36 @@ type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const SignUpPage: FC<PropsT, DefaultPropsT> = compose(observer)(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-    const { errors, state } = useAuthStateContext(true);
+export const SignUpPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { errors, state } = useAuthStateContext(true);
 
-    const confirmationDiv = (
+  const confirmationDiv = (
+    <div>
+      You have been signed up. Please check your email for further instructions.
+    </div>
+  );
+
+  const goToSignInDiv = (
+    <div className="mt-4">
+      If you are signed up then you can{' '}
+      <RouterLink className="ml-2" to={'/sign-in/'}>
+        sign in
+      </RouterLink>
+    </div>
+  );
+
+  return (
+    <AuthenticationFrame header="Sign Up">
       <div>
-        You have been signed up. Please check your email for further
-        instructions.
+        {state === 'SignUp.Succeeded' && confirmationDiv}
+        {state !== 'SignUp.Succeeded' && (
+          <React.Fragment>
+            <SignUpForm signUp={props.authentication.signUp} errors={errors} />
+            {goToSignInDiv}
+          </React.Fragment>
+        )}
       </div>
-    );
-
-    const goToSignInDiv = (
-      <div className="mt-4">
-        If you are signed up then you can{' '}
-        <RouterLink className="ml-2" to={'/sign-in/'}>
-          sign in
-        </RouterLink>
-      </div>
-    );
-
-    return (
-      <AuthenticationFrame header="Sign Up">
-        <div>
-          {state === 'SignUp.Succeeded' && confirmationDiv}
-          {state !== 'SignUp.Succeeded' && (
-            <React.Fragment>
-              <SignUpForm
-                signUp={props.authentication.signUp}
-                errors={errors}
-              />
-              {goToSignInDiv}
-            </React.Fragment>
-          )}
-        </div>
-      </AuthenticationFrame>
-    );
-  }
-);
+    </AuthenticationFrame>
+  );
+});

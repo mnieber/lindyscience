@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import React from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
@@ -12,17 +11,15 @@ import { SearchMovesPage } from 'src/search/containers/SearchMovesPage';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
 
 // AppFrame
-type PropsT = {
-  children: any;
-};
+type PropsT = {};
 
 type DefaultPropsT = {
   profiling: Profiling;
   display: Display;
 };
 
-export const AppFrame: FC<PropsT, DefaultPropsT> = compose(observer)(
-  (p: PropsT) => {
+export const AppFrame: FC<PropsT, DefaultPropsT> = observer(
+  (p: React.PropsWithChildren<PropsT>) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const cookieNotice = props.profiling.acceptsCookies ? undefined : (
@@ -71,9 +68,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = compose(observer)(
             </div>
             <SearchMovesPage />
           </div>
-          {!props.display.small && (
-            <AccountMenu defaultProps={props.defaultProps} />
-          )}
+          {!props.display.small && <AccountMenu />}
         </div>
         {props.children}
       </div>

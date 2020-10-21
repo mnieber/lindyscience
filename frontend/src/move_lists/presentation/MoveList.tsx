@@ -1,4 +1,3 @@
-import { compose } from 'lodash/fp';
 import { MenuProvider } from 'react-contexify';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -33,82 +32,76 @@ type DefaultPropsT = {
   movesSelection: Selection;
 };
 
-export const MoveList: FC<PropsT, DefaultPropsT> = compose(observer)(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-    const hoverPosition = props.movesDragAndDrop.hoverPosition;
-    const selectionIds = props.movesSelection.ids || [];
-    const highlightId = props.movesHighlight.id;
+  const hoverPosition = props.movesDragAndDrop.hoverPosition;
+  const selectionIds = props.movesSelection.ids || [];
+  const highlightId = props.movesHighlight.id;
 
-    const moveNodes = (props.moves || []).map((move: MoveT, idx: number) => {
-      const hostedPanels = props.createHostedPanels(move);
-
-      return (
-        <div
-          className={classnames({
-            moveList__item: true,
-            'moveList__item--selected': move && selectionIds.includes(move.id),
-            'moveList__item--highlighted': move && move.id === highlightId,
-            'moveList__item--drag_before':
-              hoverPosition &&
-              hoverPosition.isBefore &&
-              hoverPosition.targetItemId === move.id,
-            'moveList__item--drag_after':
-              hoverPosition &&
-              !hoverPosition.isBefore &&
-              hoverPosition.targetItemId === move.id,
-          })}
-          id={move.id}
-          key={idx}
-          {...props.movesCtr.handlerClick.handle(
-            move.id,
-            move,
-            props.navigateTo
-          )}
-          {...(props.profiling.isOwner(props.moveList)
-            ? props.movesCtr.handlerDrag.handle(move.id)
-            : {})}
-        >
-          {move.name}
-          {hostedPanels}
-        </div>
-      );
-    });
+  const moveNodes = (props.moves || []).map((move: MoveT, idx: number) => {
+    const hostedPanels = props.createHostedPanels(move);
 
     return (
-      <React.Fragment>
-        <KeyboardEventHandler
-          handleKeys={['ctrl+.', 'ctrl+,']}
-          handleFocusableElements={true}
-          onKeyEvent={
-            props.movesCtr.handlerSelectWithKeys.handle(
-              ['ctrl+,'],
-              ['ctrl+.'],
-              props.navigateTo
-            ).onKeyDown
-          }
-        />
-        <KeyboardEventHandler
-          handleKeys={['up', 'down']}
-          onKeyEvent={
-            props.movesCtr.handlerSelectWithKeys.handle(
-              ['up'],
-              ['down'],
-              props.navigateTo
-            ).onKeyDown
-          }
-        >
-          <div
-            className={classnames(props.className, 'moveList')}
-            tabIndex={123}
-            id="moveList"
-          >
-            <MenuProvider id="moveContextMenu">{moveNodes}</MenuProvider>
-            {props.moveContextMenu}
-          </div>
-        </KeyboardEventHandler>
-      </React.Fragment>
+      <div
+        className={classnames({
+          moveList__item: true,
+          'moveList__item--selected': move && selectionIds.includes(move.id),
+          'moveList__item--highlighted': move && move.id === highlightId,
+          'moveList__item--drag_before':
+            hoverPosition &&
+            hoverPosition.isBefore &&
+            hoverPosition.targetItemId === move.id,
+          'moveList__item--drag_after':
+            hoverPosition &&
+            !hoverPosition.isBefore &&
+            hoverPosition.targetItemId === move.id,
+        })}
+        id={move.id}
+        key={idx}
+        {...props.movesCtr.handlerClick.handle(move.id, move, props.navigateTo)}
+        {...(props.profiling.isOwner(props.moveList)
+          ? props.movesCtr.handlerDrag.handle(move.id)
+          : {})}
+      >
+        {move.name}
+        {hostedPanels}
+      </div>
     );
-  }
-);
+  });
+
+  return (
+    <React.Fragment>
+      <KeyboardEventHandler
+        handleKeys={['ctrl+.', 'ctrl+,']}
+        handleFocusableElements={true}
+        onKeyEvent={
+          props.movesCtr.handlerSelectWithKeys.handle(
+            ['ctrl+,'],
+            ['ctrl+.'],
+            props.navigateTo
+          ).onKeyDown
+        }
+      />
+      <KeyboardEventHandler
+        handleKeys={['up', 'down']}
+        onKeyEvent={
+          props.movesCtr.handlerSelectWithKeys.handle(
+            ['up'],
+            ['down'],
+            props.navigateTo
+          ).onKeyDown
+        }
+      >
+        <div
+          className={classnames(props.className, 'moveList')}
+          tabIndex={123}
+          id="moveList"
+        >
+          <MenuProvider id="moveContextMenu">{moveNodes}</MenuProvider>
+          {props.moveContextMenu}
+        </div>
+      </KeyboardEventHandler>
+    </React.Fragment>
+  );
+});

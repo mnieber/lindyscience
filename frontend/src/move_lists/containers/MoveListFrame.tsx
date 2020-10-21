@@ -68,7 +68,6 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = compose(
       className=""
       filter={isFollowing}
       navigateTo={(x: MoveListT) => props.navigation.navigateToMoveList(x)}
-      defaultProps={props.defaultProps}
     />
   );
 
@@ -107,13 +106,12 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = compose(
       createHostedPanels={createHostedPanels}
       moveContextMenu={props.moveContextMenu}
       navigateTo={(x: MoveT) => props.navigation.navigateToMove(x)}
-      defaultProps={props.defaultProps}
     />
   );
 
   const accountMenu = (
     <div className="pt-4 pb-8 mx-auto">
-      <AccountMenu defaultProps={props.defaultProps} />
+      <AccountMenu />
     </div>
   );
 

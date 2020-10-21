@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { compose } from 'lodash/fp';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import { useDefaultProps, FC } from 'react-default-props-context';
@@ -15,7 +14,7 @@ type DefaultPropsT = {
   authentication: Authentication;
 };
 
-export const PasswordResetPage: FC<PropsT, DefaultPropsT> = compose(observer)(
+export const PasswordResetPage: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 

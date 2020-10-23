@@ -49,8 +49,10 @@ export function YoutubePlayer(props: PropsT) {
   const _onReady = (event: any) => {
     const player = event.target;
     runInAction(() => {
-      props.videoController.setPlayer(player);
-      props.videoController.pauseAt(startTime || 0);
+      setTimeout(() => {
+        props.videoController.setPlayer(player);
+        props.videoController.pauseAt(startTime || 0);
+      }, 100);
     });
     props.setIFrame(player.getIframe());
   };

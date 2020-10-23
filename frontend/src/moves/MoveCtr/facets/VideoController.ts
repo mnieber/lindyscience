@@ -28,8 +28,10 @@ export class VideoController {
 
   pauseAt(t: number) {
     if (this.player) {
-      this._pauseAt = t;
-      this.player.seekTo(t);
+      try {
+        this._pauseAt = t;
+        this.player.seekTo(t);
+      } catch {}
     }
   }
 
@@ -40,17 +42,21 @@ export class VideoController {
       this.player.getPlayerState() === notPlaying &&
       this._pauseAt >= 0
     ) {
-      setTimeout(() => this.player.pauseVideo(), 500);
+      try {
+        setTimeout(() => this.player.pauseVideo(), 500);
+      } catch {}
     }
   }
 
   _updatePlayer() {
     if (this.player && this.isPlaying !== isYoutubePlaying(this.player)) {
-      if (this.isPlaying) {
-        this.player.playVideo();
-      } else {
-        this.player.pauseVideo();
-      }
+      try {
+        if (this.isPlaying) {
+          this.player.playVideo();
+        } else {
+          this.player.pauseVideo();
+        }
+      } catch {}
     }
   }
 

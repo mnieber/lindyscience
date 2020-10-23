@@ -4,16 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { useFormStateContext } from 'react-form-state-context';
-import { strToPickerValue } from 'src/utils/value_picker';
 import { Display } from 'src/session/facets/Display';
 import { TagT } from 'src/tags/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import {
-  TagsAndKeywordsPicker,
-  splitTextIntoTagsAndKeywords,
-} from 'src/search/utils/TagsAndKeywordsPicker';
-import { makeUnique } from 'src/utils/utils';
-import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
+import { TagsAndKeywordsPicker } from 'src/search/utils/TagsAndKeywordsPicker';
 
 type PropsT = {
   onSubmit: (values: any) => any;
@@ -29,27 +23,19 @@ type DefaultPropsT = {
 export const SearchMovesForm: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-    const [defaults] = React.useState({});
 
-    const initialValues = {
-      tags: [],
-      searchText: '',
-      ...props.latestOptions,
-    };
-
-    const initialErrors = {};
-
-    const handleValidate = () => {};
-
-    const handleSubmit = ({ values }: HandleSubmitArgsT) => {
-      const splitResult = splitTextIntoTagsAndKeywords(values.searchText);
-      const allTags = makeUnique([...splitResult.tags, ...values.tags]);
+    function _onPickerChange({
+      tags,
+      keywords,
+    }: {
+      tags: string[];
+      keywords: string[];
+    }) {
       props.onSubmit({
-        ...values,
-        keywords: splitResult.keywords,
-        tags: allTags,
+        keywords,
+        tags,
       });
-    };
+    }
 
     const placeholder = props.display.small
       ? 'Search moves'
@@ -58,10 +44,10 @@ export const SearchMovesForm: FC<PropsT, DefaultPropsT> = observer(
     const tagsAndKeywordsField = (
       <div className="moveForm__tags mt-2 ml-2 w-full">
         <TagsAndKeywordsPicker
-          options={props.knownTags.map(strToPickerValue)}
+          knownTags={[...props.knownTags, 'one', 'two']}
           placeholder={placeholder}
           zIndex={10}
-          defaults={defaults}
+          onChange={_onPickerChange}
         />
       </div>
     );
@@ -82,23 +68,12 @@ export const SearchMovesForm: FC<PropsT, DefaultPropsT> = observer(
     };
 
     return (
-      <FormStateProvider
-        initialValues={initialValues}
-        initialErrors={initialErrors}
-        handleValidate={handleValidate}
-        handleSubmit={handleSubmit}
-      >
-        <form className="searchMovesForm w-full max-w-lg">
-          <div className={'flexcol'}>
-            <div className={'flexrow items-center'}>
-              {tagsAndKeywordsField}
-              <div className={'moveForm__buttonPanel flexrow mt-4'}>
-                <SearchBtn />
-              </div>
-            </div>
-          </div>
-        </form>
-      </FormStateProvider>
+      <div className={'SearchMovesField flexrow items-center'}>
+        {tagsAndKeywordsField}
+        <div className={'moveForm__buttonPanel flexrow mt-4'}>
+          <SearchBtn />
+        </div>
+      </div>
     );
   }
 );

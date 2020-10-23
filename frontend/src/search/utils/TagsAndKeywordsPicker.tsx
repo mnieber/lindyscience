@@ -1,6 +1,17 @@
-import { isNone, makeUnique } from 'src/utils/utils';
 import React from 'react';
-import Select from 'react-select';
+import * as _ from 'lodash/fp';
+import { observer } from 'mobx-react';
+
+import {
+  FormStateProvider,
+  HandleSubmitArgsT,
+  useFormStateContext,
+} from 'react-form-state-context';
+import { useMobXState } from 'src/forms/components/MobXFormState';
+import { ValuePicker } from 'src/utils/value_picker';
+import { TagT } from 'src/tags/types';
+import { isNone } from 'src/utils/utils';
+import { Field } from 'src/forms/components/Field';
 
 const _cache: { [input: string]: any } = {};
 
@@ -21,110 +32,91 @@ function _getSearchInput(input: string) {
   return result;
 }
 
-export function splitTextIntoTagsAndKeywords(inputValue: string) {
-  const words = inputValue.split(' ');
-  const chop = (x: string) => (x.endsWith(':') ? x.slice(0, x.length - 1) : x);
-  return {
-    keywords: makeUnique(words.filter((x) => !!x && !x.startsWith(':'))),
-    tags: makeUnique(
-      words
-        .filter((x) => x.startsWith(':'))
-        .map((x) => x.slice(1))
-        .map(chop)
-    ),
-  };
-}
-
-type PickerItem = {
-  value: string;
-  label: string;
+const _filterOption = (candidate: any, input: string) => {
+  const searchInput = _getSearchInput(input);
+  return (
+    !isNone(searchInput) &&
+    (searchInput === '' || candidate.label.includes(searchInput))
+  );
 };
 
 type PropsT = {
-  zIndex?: number;
   onChange?: Function;
-  onTextChange?: Function;
-  options?: any;
+  knownTags?: TagT[];
   placeholder?: string;
-  defaults: any;
+  zIndex?: number;
 };
 
-export function TagsAndKeywordsPicker(props: PropsT) {
-  const [hasEnter, setHasEnter] = React.useState(false);
-  const [textChanged, setTextChanged] = React.useState(false);
-  const [value, setValue] = React.useState(props.defaults.value || []);
-  const [inputValue, setInputValue] = React.useState(
-    props.defaults.inputValue || ''
-  );
+export const TagsAndKeywordsPicker = observer((props: PropsT) => {
+  const tags = _.map((x) => ':' + x, props.knownTags ?? []);
 
-  if (hasEnter) {
-    setHasEnter(false);
-    if (props.onChange) {
-      const tags = value.map((x: PickerItem) => x.value);
-      if (props.onChange) props.onChange(tags, inputValue);
-    }
-  }
+  const Picker = observer(() => {
+    const formState = useFormStateContext();
 
-  if (textChanged) {
-    setTextChanged(false);
-    if (props.onTextChange) {
-      const tags = value.map((x: PickerItem) => x.value);
-      if (props.onTextChange) props.onTextChange(tags, inputValue);
-    }
-  }
+    const onInputChange = (inputValue: any, { action }: any) => {
+      if (action === 'input-change') {
+        const terms = _.split(' ')(inputValue);
+        const keywords = _.filter((x) => !x.startsWith(':'), terms);
 
-  const saveChanges = (value: any) => {
-    const newInputValue = inputValue
-      .split(' ')
-      .filter((x: string) => !x.startsWith(':'))
-      .join(' ');
-    setInputValue(newInputValue);
-    props.defaults.inputValue = newInputValue;
+        formState.setValue('keywords', keywords);
+        formState.setValue('inputValue', inputValue);
+        formState.setValue(
+          'isEditingTag',
+          terms.length > 0 && terms[terms.length - 1].startsWith(':')
+        );
+      } else if (action === 'set-value') {
+        const newInputValue = _.join(' ')(formState.values.keywords);
+        formState.setValue('inputValue', newInputValue);
+      }
+    };
 
-    setValue(value);
-    props.defaults.value = value;
-  };
-
-  const onInputChange = (inputValue: any, { action }: any) => {
-    setTextChanged(true);
-    switch (action) {
-      case 'input-change':
-        setInputValue(inputValue);
-        props.defaults.inputValue = inputValue;
-        return;
-      default:
-        return;
-    }
-  };
-
-  const filterOption = (candidate: any, input: string) => {
-    const searchInput = _getSearchInput(input);
     return (
-      !isNone(searchInput) &&
-      (searchInput === '' || candidate.label.includes(searchInput))
+      <ValuePicker
+        zIndex={10}
+        isCreatable={false}
+        isMulti={true}
+        pickableValues={tags}
+        labelFromValue={(x: string) => x}
+        filterOption={_filterOption}
+        noOptionsMessage={() => null}
+        onInputChange={onInputChange}
+        tabOnEnter={false}
+        inputValue={formState.values.inputValue}
+        submitOnChange={false}
+        onKeyDown={(e: any) => {
+          if (e.keyCode === 13 && !formState.values.isEditingTag) {
+            formState.submit();
+          }
+        }}
+      />
     );
-  };
+  });
 
-  const onKeyDown = (event: any) => {
-    if (event.keyCode === 13) {
-      setHasEnter(true);
+  const handleSubmit = ({ values }: HandleSubmitArgsT) => {
+    if (props.onChange) {
+      props.onChange({
+        tags: (values.tags ?? []).map((x: string) => x.slice(1)),
+        keywords: values.keywords ?? [],
+      });
     }
   };
 
-  const pickerProps = {
-    isMulti: true, // yes, we need this
-    options: props.options,
-    value: value,
-    placeholder: props.placeholder,
-    onChange: saveChanges,
-    noOptionsMessage: () => null,
-    onKeyDown,
-    inputValue,
-    onInputChange,
-    filterOption,
-  };
-
-  const picker = <Select {...pickerProps} />;
-
-  return <div style={{ zIndex: props.zIndex }}>{picker}</div>;
-}
+  return (
+    <FormStateProvider
+      initialValues={{
+        tags: [],
+        keywords: [],
+        inputValue: '',
+        isEditingTag: false,
+      }}
+      handleSubmit={handleSubmit}
+      createState={useMobXState}
+    >
+      <Field fieldName="tags" label="">
+        <div style={{ zIndex: props.zIndex }}>
+          <Picker />
+        </div>
+      </Field>
+    </FormStateProvider>
+  );
+});

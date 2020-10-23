@@ -21,6 +21,17 @@ export class NewPickerValue {
   }
 }
 
+type CustomizationsT = {
+  filterOption?: any;
+  noOptionsMessage?: any;
+  onInputChange?: any;
+  tabOnEnter?: boolean;
+  onKeyDown?: Function;
+  onMenuOpen?: Function;
+  onMenuClose?: Function;
+  inputValue?: string;
+};
+
 type PropsT<ValueT> = {
   isMulti: boolean;
   isCreatable: boolean;
@@ -28,7 +39,7 @@ type PropsT<ValueT> = {
   submitOnChange?: boolean;
   pickableValues: ValueT[];
   labelFromValue: (value: ValueT) => string;
-};
+} & CustomizationsT;
 
 export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   const toPickerValue = (formValue: ValueT) => {
@@ -47,9 +58,9 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
     return isNil(value.value) ? new NewPickerValue(value.label) : value.value;
   };
 
-  const saveChanges = (value: any) => {
+  const saveChanges = (value: any, { action }: any) => {
     const formValue = props.isMulti
-      ? value.map(toFormValue)
+      ? (value || []).map(toFormValue)
       : toFormValue(value);
     formState.setValue(fieldContext.fieldName, formValue);
 
@@ -71,8 +82,23 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
       : toPickerValue(formValue),
     onChange: saveChanges,
     onKeyDown: (e: any) => {
-      handleEnterAsTabToNext(e, false);
+      if (props.tabOnEnter ?? true) {
+        handleEnterAsTabToNext(e, false);
+      }
+      if (props.onKeyDown) {
+        props.onKeyDown(e);
+      }
     },
+    filterOption: props.filterOption,
+    noOptionsMessage: props.noOptionsMessage,
+    onInputChange: props.onInputChange,
+    onMenuOpen: () => {
+      if (props.onMenuOpen) props.onMenuOpen();
+    },
+    onMenuClose: () => {
+      if (props.onMenuClose) props.onMenuClose();
+    },
+    ...(props.inputValue ? { inputValue: props.inputValue } : {}),
   };
 
   const picker = props.isCreatable ? (

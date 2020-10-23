@@ -7,6 +7,7 @@ import { handleEnterAsTabToNext } from 'src/utils/form_utils';
 import { stripQuotes } from 'src/utils/utils';
 import { useFormStateContext } from 'react-form-state-context';
 import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
+import { useScheduledCall } from 'src/utils/useScheduledCall';
 
 export interface PickerValueT {
   value: any;
@@ -53,6 +54,7 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   const fieldContext = useFormFieldContext();
   const formValue = formState.values[fieldContext.fieldName];
   const options = props.pickableValues.map(toPickerValue);
+  const scheduleSubmit = useScheduledCall(formState.submit);
 
   const toFormValue = (value: PickerValueT) => {
     return isNil(value.value) ? new NewPickerValue(value.label) : value.value;
@@ -65,8 +67,8 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
     formState.setValue(fieldContext.fieldName, formValue);
 
     if (!!props.submitOnChange) {
-      formState.values[fieldContext.fieldName] = formValue;
-      formState.submit();
+      formState.setValue(fieldContext.fieldName, formValue);
+      scheduleSubmit();
     }
   };
 

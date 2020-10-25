@@ -26,8 +26,14 @@ export class DragItems {
           };
         });
       },
-      onDragEnd: () => DragAndDrop.get(this.props.container).cancel(),
-      onDrop: () => DragAndDrop.get(this.props.container).drop(),
+      onDragEnd: () => {
+        DragAndDrop.get(this.props.container).cancel();
+        DragAndDrop.get(this.props.container).hoverPosition = undefined;
+      },
+      onDrop: () => {
+        DragAndDrop.get(this.props.container).drop();
+        DragAndDrop.get(this.props.container).hoverPosition = undefined;
+      },
     };
   }
 }

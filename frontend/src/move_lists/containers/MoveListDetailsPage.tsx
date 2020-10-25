@@ -11,7 +11,7 @@ import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
-import { Editing } from 'facet-mobx/facets/editing';
+import { Editing } from 'facet-mobx/facets/Editing';
 import { UserProfileT } from 'src/profiles/types';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { withCutVideoPanel } from 'src/video/hocs/withCutVideoPanel';

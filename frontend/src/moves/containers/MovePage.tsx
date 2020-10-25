@@ -16,7 +16,7 @@ import { withVideoPlayerPanel } from 'src/video/hocs/withVideoPlayerPanel';
 import { withMoveKeyHandlers } from 'src/moves/hocs/withMoveKeyHandlers';
 import { Move } from 'src/moves/presentation/Move';
 import { createKeyDownHandler } from 'src/video/presentation/VideoKeyhandler';
-import { Editing } from 'facet-mobx/facets/editing';
+import { Editing } from 'facet-mobx/facets/Editing';
 import { useDefaultProps, FC } from 'react-default-props-context';
 
 type PropsT = {};

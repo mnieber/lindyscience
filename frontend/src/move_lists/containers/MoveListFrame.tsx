@@ -23,10 +23,10 @@ import { MoveListFilter } from 'src/move_lists/presentation/MoveListFilter';
 import { MoveList } from 'src/move_lists/presentation/MoveList';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
 import { isNone } from 'src/utils/utils';
-import { Selection } from 'facet-mobx/facets/selection';
-import { Filtering } from 'facet-mobx/facets/filtering';
+import { Selection } from 'facet-mobx/facets/Selection';
+import { Filtering } from 'facet-mobx/facets/Filtering';
+import { Addition } from 'facet-mobx/facets/Addition';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Addition } from 'facet-mobx/facets/addition';
 
 type PropsT = React.PropsWithChildren<{}>;
 

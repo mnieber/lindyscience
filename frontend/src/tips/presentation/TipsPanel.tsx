@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
-import { Addition } from 'facet-mobx/facets/addition';
+import { Addition } from 'facet-mobx/facets/Addition';
 
 import { UserProfileT } from 'src/profiles/types';
 import { useDefaultProps, FC } from 'react-default-props-context';

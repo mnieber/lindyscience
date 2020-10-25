@@ -1,4 +1,4 @@
-import { Highlight } from 'facet-mobx/facets/highlight';
+import { Highlight } from 'facet-mobx/facets/Highlight';
 import { TipsCtr } from 'src/tips/TipsCtr';
 import { TipsStore } from 'src/tips/TipsStore';
 import { apiSaveTip } from 'src/tips/api';

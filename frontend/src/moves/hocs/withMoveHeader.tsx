@@ -13,7 +13,7 @@ import { MoveT } from 'src/moves/types';
 import { MoveListTitle } from 'src/move_lists/presentation/MoveListDetails';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 import { MoveHeader } from 'src/moves/presentation/MoveHeader';
-import { Editing } from 'facet-mobx/facets/editing';
+import { Editing } from 'facet-mobx/facets/Editing';
 import { useDefaultProps } from 'react-default-props-context';
 
 type PropsT = {

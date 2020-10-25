@@ -1,4 +1,4 @@
-import { Highlight } from 'facet-mobx/facets/highlight';
+import { Highlight } from 'facet-mobx/facets/Highlight';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';

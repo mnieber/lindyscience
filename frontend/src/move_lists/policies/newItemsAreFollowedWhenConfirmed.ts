@@ -1,6 +1,6 @@
-import { Labelling } from 'facet-mobx/facets/labelling';
 import { listen } from 'facet';
-import { Addition } from 'facet-mobx/facets/addition';
+import { Labelling } from 'facet-mobx/facets/Labelling';
+import { Addition } from 'facet-mobx/facets/Addition';
 
 export const newItemsAreFollowedWhenConfirmed = (ctr: any) => {
   const addition = Addition.get(ctr);

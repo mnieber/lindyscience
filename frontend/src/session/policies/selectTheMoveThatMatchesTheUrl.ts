@@ -4,8 +4,8 @@ import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { findMoveBySlugid } from 'src/app/utils';
 import { listen } from 'facet';
-import { Addition } from 'facet-mobx/facets/addition';
-import { Selection } from 'facet-mobx/facets/selection';
+import { Addition } from 'facet-mobx/facets/Addition';
+import { Selection } from 'facet-mobx/facets/Selection';
 
 export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
   function syncMoveWithCurrentUrl(movesCtr: MovesContainer) {

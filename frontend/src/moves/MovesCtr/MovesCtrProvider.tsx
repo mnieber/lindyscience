@@ -11,8 +11,8 @@ import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 import { useDefaultProps } from 'react-default-props-context';
-import { Editing } from 'facet-mobx/facets/editing';
-import { Highlight } from 'facet-mobx/facets/highlight';
+import { Editing } from 'facet-mobx/facets/Editing';
+import { Highlight } from 'facet-mobx/facets/Highlight';
 
 type PropsT = React.PropsWithChildren<{}>;
 

@@ -3,7 +3,7 @@ import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { data, operation } from 'facet';
 import { installHandlers } from 'facet-mobx';
-import { Selection } from 'facet-mobx/facets/selection';
+import { Selection } from 'facet-mobx/facets/Selection';
 
 export type DataRequestT = {
   moveSlugid?: string;

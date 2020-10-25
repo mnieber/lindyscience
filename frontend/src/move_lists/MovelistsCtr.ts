@@ -6,12 +6,12 @@ import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facet';
 import { ClassMemberT } from 'facet/types';
 import { mapData } from 'facet-mobx';
-import { Labelling, initLabelling } from 'facet-mobx/facets/labelling';
-import { Addition, initAddition } from 'facet-mobx/facets/addition';
-import { Editing, initEditing } from 'facet-mobx/facets/editing';
-import { Highlight, initHighlight } from 'facet-mobx/facets/highlight';
+import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
+import { Addition, initAddition } from 'facet-mobx/facets/Addition';
+import { Editing, initEditing } from 'facet-mobx/facets/Editing';
+import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
-import { Selection, initSelection } from 'facet-mobx/facets/selection';
+import { Selection, initSelection } from 'facet-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 
 import * as MobXFacets from 'facet-mobx/facets';

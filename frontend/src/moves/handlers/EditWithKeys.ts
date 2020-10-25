@@ -1,4 +1,4 @@
-import { Editing } from 'facet-mobx/facets/editing';
+import { Editing } from 'facet-mobx/facets/Editing';
 
 export type PropsT = {
   container: any;

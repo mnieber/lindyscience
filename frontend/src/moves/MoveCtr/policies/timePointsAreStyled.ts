@@ -9,9 +9,9 @@ function styleTimePoints(videoPlayer: any, timePoints: Array<number>) {
   timePoints.forEach((tp) => {
     const className = '.tp-' + (tp + '').replace('.', '-');
     const elms = jQuery(className);
-    elms.removeClass('bg-yellow');
+    elms.removeClass('bg-yellow-400');
     if (currentTime - 1 < tp && tp < currentTime + 1) {
-      elms.addClass('bg-yellow');
+      elms.addClass('bg-yellow-400');
       if (elms.length && !hasScrolled) {
         hasScrolled = true;
         scrollIntoView(elms[0], document.getElementById('move__description'));

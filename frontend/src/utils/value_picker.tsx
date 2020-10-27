@@ -56,14 +56,16 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   const options = props.pickableValues.map(toPickerValue);
   const scheduleSubmit = useScheduledCall(formState.submit);
 
-  const toFormValue = (value: PickerValueT) => {
-    return isNil(value.value) ? new NewPickerValue(value.label) : value.value;
-  };
-
   const saveChanges = (value: any, { action }: any) => {
+    const toFormValue =
+      action === 'create-option'
+        ? (value: PickerValueT) => new NewPickerValue(value.label)
+        : (value: PickerValueT) => value.value;
+
     const formValue = props.isMulti
       ? (value || []).map(toFormValue)
       : toFormValue(value);
+
     formState.setValue(fieldContext.fieldName, formValue);
 
     if (!!props.submitOnChange) {

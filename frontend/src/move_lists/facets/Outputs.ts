@@ -1,5 +1,5 @@
 import { keys } from 'lodash/fp';
-import { computed, observable } from 'src/utils/mobx_wrapper';
+import { computed } from 'src/utils/mobx_wrapper';
 import { UUID } from 'src/kernel/types';
 import { MoveListT, MoveListByIdT } from 'src/move_lists/types';
 import { listToItemById } from 'src/utils/utils';
@@ -10,9 +10,8 @@ export class Outputs {
     return keys(this.moveListById);
   }
   @computed get moveListById(): MoveListByIdT {
-    return listToItemById(this.preview);
+    return listToItemById(this.display);
   }
-  @observable preview: Array<MoveListT> = [];
   @output display: Array<MoveListT> = [];
 
   static get = (ctr: any): Outputs => ctr.outputs;

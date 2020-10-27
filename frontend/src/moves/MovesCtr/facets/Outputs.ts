@@ -4,7 +4,7 @@ import { listToItemById } from 'src/utils/utils';
 import { output } from 'facet';
 
 export class Outputs {
-  @observable preview: Array<MoveT> = [];
+  @observable @output preview: Array<MoveT> = [];
   @output display: Array<MoveT> = [];
 
   @computed get moveById(): MoveByIdT {

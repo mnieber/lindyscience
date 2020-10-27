@@ -14,7 +14,7 @@ import { Addition, initAddition } from 'facet-mobx/facets/Addition';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { Filtering, initFiltering } from 'facet-mobx/facets/Filtering';
 import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
-import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
+import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
 import { Selection, initSelection } from 'facet-mobx/facets/Selection';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
@@ -30,10 +30,10 @@ type PropsT = {
 
 export class MovesContainer {
   @facet addition: Addition;
-  @facet dragAndDrop: DragAndDrop;
   @facet editing: Editing;
   @facet filtering: Filtering;
   @facet highlight: Highlight;
+  @facet insertion: Insertion;
   @facet inputs: Inputs;
   @facet outputs: Outputs;
   @facet selection: Selection;
@@ -67,23 +67,19 @@ export class MovesContainer {
       SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
       SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
 
-      // dragAndDrop
-      MobXFacets.dragAndDropActsOnItems(inputItems),
-      MobXFacets.draggingCreatesThePreview({ preview }),
-      MovesCtrPolicies.handleSaveMoveOrderOnDrop(props.moveListsStore),
-      MobXPolicies.useDragSources([
-        new MobXPolicies.DragSourceFromNewItem({
-          showPreview: true,
-          performDropOnConfirmNewItem: true,
-        }),
-        new MobXPolicies.DragSourceFromSelection({ showPreview: false }),
-      ]),
+      // insertion
+      MobXFacets.insertionActsOnItems(inputItems),
+      MobXPolicies.createInsertionPreview(
+        [MobXPolicies.DragSourceFromNewItem],
+        [Outputs, 'preview']
+      ),
 
       // creation
-      MobXPolicies.newItemsAreCreatedBelowTheHighlight,
+      MobXPolicies.newItemsAreAddedBelowTheHighlight,
       MobXPolicies.cancelNewItemOnHighlightChange,
       MobXPolicies.newItemsAreSelectedAndEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
+      MobXPolicies.newItemsAreInsertedWhenConfirmed,
 
       // filtering
       MobXFacets.filteringActsOnItems(preview),
@@ -101,7 +97,12 @@ export class MovesContainer {
     this.addition = initAddition(new Addition(), {
       createItem: MovesCtrHandlers.handleCreateMove(this),
     });
-    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
+    this.insertion = initInsertion(new Insertion(), {
+      insertItems: MovesCtrHandlers.handleInsertMoves(
+        this,
+        props.moveListsStore
+      ),
+    });
     this.editing = initEditing(new Editing(), {
       saveItem: MovesCtrHandlers.handleSaveMove(
         this,

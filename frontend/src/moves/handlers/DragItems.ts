@@ -1,6 +1,8 @@
+import { observable } from 'mobx';
 import { runInAction } from 'src/utils/mobx_wrapper';
 import { isBefore } from 'src/utils/ui_utils';
-import { DragAndDrop } from 'facet-mobx/facets/DragAndDrop';
+import { Insertion } from 'facet-mobx/facets/Insertion';
+import { DragT } from 'facet-mobx/facets/Insertion';
 
 export type PropsT = {
   container: any;
@@ -13,6 +15,8 @@ export class DragItems {
     this.props = props;
   }
 
+  @observable drag?: DragT;
+
   handle(itemId: any) {
     return {
       draggable: true,
@@ -20,19 +24,21 @@ export class DragItems {
       onDragOver: (e: any) => {
         e.preventDefault();
         runInAction('onDragOver', () => {
-          DragAndDrop.get(this.props.container).hoverPosition = {
+          this.drag = {
+            payload: this.props.container.selection.items,
             targetItemId: itemId,
             isBefore: isBefore(e),
           };
         });
       },
       onDragEnd: () => {
-        DragAndDrop.get(this.props.container).cancel();
-        DragAndDrop.get(this.props.container).hoverPosition = undefined;
+        this.drag = undefined;
       },
       onDrop: () => {
-        DragAndDrop.get(this.props.container).drop();
-        DragAndDrop.get(this.props.container).hoverPosition = undefined;
+        if (this.drag) {
+          Insertion.get(this.props.container).insertItems(this.drag);
+          this.drag = undefined;
+        }
       },
     };
   }

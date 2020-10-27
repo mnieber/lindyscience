@@ -11,7 +11,7 @@ import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { Highlight } from 'facet-mobx/facets/Highlight';
 import { Selection } from 'facet-mobx/facets/Selection';
-import { DragAndDrop } from 'facet-mobx/facets/DragAndDrop';
+import { Insertion } from 'facet-mobx/facets/Insertion';
 
 // MoveList
 
@@ -27,7 +27,7 @@ type DefaultPropsT = {
   moveList: MoveListT;
   moves: Array<MoveT>;
   movesCtr: MovesContainer;
-  movesDragAndDrop: DragAndDrop;
+  movesInsertion: Insertion;
   movesHighlight: Highlight;
   movesSelection: Selection;
 };
@@ -35,7 +35,7 @@ type DefaultPropsT = {
 export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  const hoverPosition = props.movesDragAndDrop.hoverPosition;
+  const drag = props.movesCtr.handlerDrag.drag;
   const selectionIds = props.movesSelection.ids || [];
   const highlightId = props.movesHighlight.id;
 
@@ -49,13 +49,9 @@ export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
           'moveList__item--selected': move && selectionIds.includes(move.id),
           'moveList__item--highlighted': move && move.id === highlightId,
           'moveList__item--drag_before':
-            hoverPosition &&
-            hoverPosition.isBefore &&
-            hoverPosition.targetItemId === move.id,
+            drag && drag.isBefore && drag.targetItemId === move.id,
           'moveList__item--drag_after':
-            hoverPosition &&
-            !hoverPosition.isBefore &&
-            hoverPosition.targetItemId === move.id,
+            drag && !drag.isBefore && drag.targetItemId === move.id,
         })}
         id={move.id}
         key={idx}

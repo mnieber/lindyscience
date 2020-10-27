@@ -42,7 +42,6 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = observer(
     const getDefaultProps = (ctr: TipsCtr) => {
       return {
         tips: () => ctr.outputs.display,
-        tipsPreview: () => ctr.outputs.preview,
         tipsEditing: () => ctr.editing,
         tipsAddition: () => ctr.addition,
         tipsHighlight: () => ctr.highlight,

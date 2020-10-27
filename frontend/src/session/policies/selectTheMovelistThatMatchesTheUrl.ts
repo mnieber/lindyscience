@@ -14,7 +14,7 @@ export const selectTheMoveListThatMatchesTheUrl = (navigation: Navigation) =>
         const outputs = Outputs.get(moveListsCtr);
         return navigation.dataRequest.moveListUrl
           ? findMoveListByUrl(
-              outputs.preview,
+              outputs.display,
               navigation.dataRequest.moveListUrl
             )
           : undefined;

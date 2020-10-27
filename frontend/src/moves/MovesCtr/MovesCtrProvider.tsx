@@ -70,7 +70,7 @@ export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
       movesClipboard: () => ctr.clipboard,
       movesFiltering: () => ctr.filtering,
       movesAddition: () => ctr.addition,
-      movesDragAndDrop: () => ctr.dragAndDrop,
+      movesInsertion: () => ctr.insertion,
     };
   };
 

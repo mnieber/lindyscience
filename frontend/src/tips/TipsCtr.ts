@@ -8,22 +8,23 @@ import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
 import { Selection, initSelection } from 'facet-mobx/facets/Selection';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { Deletion, initDeletion } from 'facet-mobx/facets/Deletion';
-import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
+import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as TipsCtrHandlers from 'src/tips/handlers';
 import { getIds } from 'src/app/utils';
+import { TipT } from 'src/tips/types';
 
 type PropsT = {
   tipsStore: TipsStore;
 };
 
 export class TipsCtr {
-  @facet addition: Addition;
+  @facet addition: Addition<TipT>;
   @facet deletion: Deletion;
-  @facet dragAndDrop: DragAndDrop;
   @facet editing: Editing;
   @facet highlight: Highlight;
+  @facet insertion: Insertion;
   @facet inputs: Inputs;
   @facet outputs: Outputs;
   @facet selection: Selection;
@@ -41,14 +42,10 @@ export class TipsCtr {
       MobXFacets.highlightActsOnItems(itemById),
       MobXPolicies.highlightFollowsSelection,
 
-      // dragAndDrop
-      MobXFacets.dragAndDropActsOnItems(inputItems),
-      MobXFacets.draggingCreatesThePreview({ preview }),
-      MobXPolicies.useDragSources([
-        new MobXPolicies.DragSourceFromNewItem({
-          showPreview: true,
-          performDropOnConfirmNewItem: true,
-        }),
+      // insertion
+      MobXFacets.insertionActsOnItems(inputItems),
+      MobXPolicies.insertionPreviewUsesDragSources([
+        MobXPolicies.DragSourceFromNewItem,
       ]),
 
       // creation
@@ -72,7 +69,7 @@ export class TipsCtr {
     this.deletion = initDeletion(new Deletion(), {
       deleteItems: TipsCtrHandlers.handleDeleteTips(this, props.tipsStore),
     });
-    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
+    this.insertion = initInsertion(new Insertion(), { insertItems: () => {} });
     this.editing = initEditing(new Editing(), {
       saveItem: TipsCtrHandlers.handleSaveTip(this, props.tipsStore),
     });

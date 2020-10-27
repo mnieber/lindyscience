@@ -23,7 +23,7 @@ type DefaultPropsT = {
   profiling: Profiling;
   moveList: MoveListT;
   moveListsEditing: Editing;
-  moveListsPreview: Array<MoveListT>;
+  moveLists: Array<MoveListT>;
   userProfile: UserProfileT;
   moveListsStore: MoveListsStore;
   cutVideoPanel: any;
@@ -39,7 +39,7 @@ export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = compose(
     return <React.Fragment />;
   }
 
-  const bannedMoveListSlugs = props.moveListsPreview
+  const bannedMoveListSlugs = props.moveLists
     .filter((x: MoveListT) => props.profiling.isOwner(x))
     .filter((x: MoveListT) => x.id !== props.moveList.id)
     .map((x: MoveListT) => x.slug);

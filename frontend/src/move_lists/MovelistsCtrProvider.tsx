@@ -53,7 +53,6 @@ export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = compose(
       isEditingMoveList: () => Editing.get(ctr).isEditing,
       moveList: () => Highlight.get(ctr).item,
       moveLists: () => ctr.outputs.display,
-      moveListsPreview: () => ctr.outputs.preview,
       moveListsEditing: () => ctr.editing,
       moveListsHighlight: () => ctr.highlight,
       moveListsSelection: () => ctr.selection,

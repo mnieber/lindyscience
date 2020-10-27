@@ -1,3 +1,4 @@
+import { observable } from 'mobx';
 import { runInAction } from 'src/utils/mobx_wrapper';
 import { isBefore } from 'src/utils/ui_utils';
 import { Insertion } from 'facet-mobx/facets/Insertion';
@@ -14,7 +15,7 @@ export class DragItems {
     this.props = props;
   }
 
-  drag?: DragT;
+  @observable drag?: DragT;
 
   handle(itemId: any) {
     return {

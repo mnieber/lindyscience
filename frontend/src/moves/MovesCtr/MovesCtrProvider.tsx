@@ -22,7 +22,7 @@ type DefaultPropsT = {
   profiling: Profiling;
   movesStore: MovesStore;
   moveListsStore: MoveListsStore;
-  moveListsPreview: Array<MoveListT>;
+  moveLists: Array<MoveListT>;
 };
 
 export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
@@ -46,13 +46,13 @@ export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
           : [],
         userProfile: props.profiling.userProfile,
         moveList: props.moveList,
-        moveListsPreview: props.moveListsPreview,
+        moveLists: props.moveLists,
       }),
-      ({ inputMoves, userProfile, moveList, moveListsPreview }) => {
+      ({ inputMoves, userProfile, moveList, moveLists }) => {
         ctr.inputs.moves = inputMoves;
         ctr.inputs.userProfile = userProfile;
         ctr.inputs.moveList = moveList;
-        ctr.inputs.moveLists = moveListsPreview;
+        ctr.inputs.moveLists = moveLists;
       }
     );
   };

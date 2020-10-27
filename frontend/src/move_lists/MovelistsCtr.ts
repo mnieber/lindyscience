@@ -5,7 +5,6 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facet';
 import { ClassMemberT } from 'facet/types';
-import { mapData } from 'facet-mobx';
 import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
 import { Addition, initAddition } from 'facet-mobx/facets/Addition';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
@@ -14,6 +13,7 @@ import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
 import { Selection, initSelection } from 'facet-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 
+import { mapData } from 'facet-mobx';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';
@@ -60,7 +60,7 @@ export class MoveListsContainer {
       MobXFacets.insertionActsOnItems(inputItems),
       MobXPolicies.createInsertionPreview(
         [MobXPolicies.DragSourceFromNewItem],
-        [Outputs, 'preview']
+        [Outputs, 'display']
       ),
 
       // creation
@@ -75,7 +75,6 @@ export class MoveListsContainer {
       MobXFacets.labellingReceivesIds(moveListsFollowing, 'following', getIds),
 
       // display
-      mapData([Outputs, 'preview'], [Outputs, 'display']),
       mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
     ];
 

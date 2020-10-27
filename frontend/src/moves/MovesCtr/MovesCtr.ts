@@ -47,7 +47,7 @@ export class MovesContainer {
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'moves'];
     const itemById = [Outputs, 'moveById'];
-    const preview = [Insertion, 'preview'];
+    const preview = [Outputs, 'preview'];
 
     const policies = [
       // selection
@@ -69,9 +69,10 @@ export class MovesContainer {
 
       // insertion
       MobXFacets.insertionActsOnItems(inputItems),
-      MobXPolicies.insertionPreviewUsesDragSources([
-        MobXPolicies.DragSourceFromNewItem,
-      ]),
+      MobXPolicies.createInsertionPreview(
+        [MobXPolicies.DragSourceFromNewItem],
+        [Outputs, 'preview']
+      ),
 
       // creation
       MobXPolicies.newItemsAreAddedBelowTheHighlight,

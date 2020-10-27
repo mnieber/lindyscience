@@ -63,7 +63,6 @@ export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
       isEditingMove: () => Editing.get(ctr).isEditing,
       move: () => Highlight.get(ctr).item,
       moves: () => ctr.outputs.display,
-      movesPreview: () => ctr.outputs.preview,
       movesEditing: () => ctr.editing,
       movesHighlight: () => ctr.highlight,
       movesSelection: () => ctr.selection,

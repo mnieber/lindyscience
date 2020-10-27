@@ -58,9 +58,10 @@ export class MoveListsContainer {
 
       // insertion
       MobXFacets.insertionActsOnItems(inputItems),
-      MobXPolicies.insertionPreviewUsesDragSources([
-        MobXPolicies.DragSourceFromNewItem,
-      ]),
+      MobXPolicies.createInsertionPreview(
+        [MobXPolicies.DragSourceFromNewItem],
+        [Outputs, 'preview']
+      ),
 
       // creation
       MobXPolicies.newItemsAreAddedBelowTheHighlight,
@@ -74,7 +75,7 @@ export class MoveListsContainer {
       MobXFacets.labellingReceivesIds(moveListsFollowing, 'following', getIds),
 
       // display
-      mapData([Insertion, 'preview'], [Outputs, 'display']),
+      mapData([Outputs, 'preview'], [Outputs, 'display']),
       mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
     ];
 

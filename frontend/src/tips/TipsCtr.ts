@@ -32,7 +32,6 @@ export class TipsCtr {
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'tips'];
     const itemById = [Outputs, 'tipById'];
-    const preview = [Outputs, 'preview'];
 
     const policies = [
       // selection
@@ -44,9 +43,10 @@ export class TipsCtr {
 
       // insertion
       MobXFacets.insertionActsOnItems(inputItems),
-      MobXPolicies.insertionPreviewUsesDragSources([
-        MobXPolicies.DragSourceFromNewItem,
-      ]),
+      MobXPolicies.createInsertionPreview(
+        [MobXPolicies.DragSourceFromNewItem],
+        [Outputs, 'preview']
+      ),
 
       // creation
       MobXPolicies.newItemsAreCreatedAtTheTop,

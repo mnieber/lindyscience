@@ -23,7 +23,9 @@ export const withMoveForm = (WrappedComponent: any) =>
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const _setAltLink = action((altLink: string | undefined) => {
-      props.videoController.setPlayer(undefined);
+      if (altLink) {
+        props.videoController.setPlayer(undefined);
+      }
       props.moveCtr.inputs.altLink = altLink;
     });
 

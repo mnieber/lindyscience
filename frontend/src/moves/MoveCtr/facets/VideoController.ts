@@ -1,5 +1,5 @@
 import { input } from 'facet';
-import { autorun, observable, runInAction } from 'src/utils/mobx_wrapper';
+import { action, autorun, observable } from 'mobx';
 import { VideoT } from 'src/video/types';
 import { isYoutubePlaying } from 'src/video/utils';
 
@@ -16,10 +16,8 @@ export class VideoController {
     autorun(() => (this._player = this.player));
   }
 
-  setPlayer(x: any) {
-    runInAction(() => {
-      this.player = x;
-    });
+  @action setPlayer(x: any) {
+    this.player = x;
   }
 
   getPlayer() {

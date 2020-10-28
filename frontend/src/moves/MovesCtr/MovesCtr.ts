@@ -6,7 +6,7 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
-import { DragItems } from 'src/moves/handlers/DragItems';
+import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facet';
 import { mapData } from 'facet-mobx';
@@ -37,12 +37,12 @@ export class MovesContainer {
   @facet inputs: Inputs;
   @facet outputs: Outputs;
   @facet selection: Selection;
+  @facet dragAndDrop: DragAndDrop;
 
   clipboard: Clipboard;
 
   handlerSelectWithKeys = new SelectWithKeys({ container: this });
   handlerClick = new ClickToSelectItems({ container: this });
-  handlerDrag = new DragItems({ container: this });
 
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'moves'];
@@ -73,13 +73,14 @@ export class MovesContainer {
         [MobXPolicies.DragSourceFromNewItem],
         [Outputs, 'preview']
       ),
+      MobXPolicies.newItemsAreInsertedWhenConfirmed,
+      MobXPolicies.selectionIsInsertedOnDragAndDrop,
 
       // creation
       MobXPolicies.newItemsAreAddedBelowTheHighlight,
       MobXPolicies.cancelNewItemOnHighlightChange,
       MobXPolicies.newItemsAreSelectedAndEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
-      MobXPolicies.newItemsAreInsertedWhenConfirmed,
 
       // filtering
       MobXFacets.filteringActsOnItems(preview),
@@ -115,7 +116,7 @@ export class MovesContainer {
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
     this.selection = initSelection(new Selection());
-
+    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
     registerFacets(this);
     this._applyPolicies(props);
 

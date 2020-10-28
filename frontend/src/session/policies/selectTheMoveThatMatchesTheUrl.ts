@@ -11,9 +11,8 @@ export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
   function syncMoveWithCurrentUrl(movesCtr: MovesContainer) {
     reaction(
       () => {
-        const addition = Addition.get(movesCtr);
         const outputs = Outputs.get(movesCtr);
-        return navigation.dataRequest.moveSlugid && !addition.item
+        return navigation.dataRequest.moveSlugid
           ? findMoveBySlugid(outputs.preview, navigation.dataRequest.moveSlugid)
           : undefined;
       },

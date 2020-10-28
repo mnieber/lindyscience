@@ -51,7 +51,7 @@ export class TipsCtr {
       // creation
       MobXPolicies.newItemsAreCreatedAtTheTop,
       MobXPolicies.cancelNewItemOnHighlightChange,
-      MobXPolicies.newItemsAreSelectedAndEdited,
+      MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
       MobXPolicies.newItemsAreInsertedWhenConfirmed,
 

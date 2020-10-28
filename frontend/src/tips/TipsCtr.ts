@@ -53,6 +53,7 @@ export class TipsCtr {
       MobXPolicies.cancelNewItemOnHighlightChange,
       MobXPolicies.newItemsAreSelectedAndEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
+      MobXPolicies.newItemsAreInsertedWhenConfirmed,
 
       // display
       mapData([Outputs, 'preview'], [Outputs, 'display']),

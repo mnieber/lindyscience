@@ -8,7 +8,6 @@ import { VoteCount } from 'src/votes/presentation/VoteCount';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { Editing } from 'facet-mobx/facets/Editing';
 import { Highlight } from 'facet-mobx/facets/Highlight';
-import { Selection } from 'facet-mobx/facets/Selection';
 import { Addition } from 'facet-mobx/facets/Addition';
 import { Deletion } from 'facet-mobx/facets/Deletion';
 import { VotesStore } from 'src/votes/VotesStore';
@@ -21,7 +20,6 @@ type PropsT = {
 
 type DefaultPropsT = {
   tipsHighlight: Highlight;
-  tipsSelection: Selection;
   tipsEditing: Editing;
   tipsAddition: Addition;
   votesStore: VotesStore;
@@ -64,7 +62,7 @@ export const Tip: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
       <div
         className="tip__editButton ml-2"
         onClick={() => {
-          props.tipsSelection.selectItem({ itemId: tipId });
+          props.tipsHighlight.highlightItem(tipId);
           props.tipsEditing.setIsEditing(true);
         }}
       >

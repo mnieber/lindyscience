@@ -33,12 +33,12 @@ export class Profiling {
   static get = (ctr: any): Profiling => ctr.profiling;
 }
 
-const _handleAcceptCookies = (self: Profiling) => () => {
+function _handleAcceptCookies(this: Profiling) {
   Cookies.set('acceptCookies', '1');
   runInAction('acceptCookies', () => {
-    self.acceptsCookies = true;
+    this.acceptsCookies = true;
   });
-};
+}
 
 export function initProfiling(self: Profiling): Profiling {
   installHandlers(

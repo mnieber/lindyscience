@@ -3,7 +3,6 @@ import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { data, operation } from 'facet';
 import { installHandlers } from 'facet-mobx';
-import { Selection } from 'facet-mobx/facets/Selection';
 
 export type DataRequestT = {
   moveSlugid?: string;
@@ -40,19 +39,17 @@ export class Navigation {
   static get = (ctr: any): Navigation => ctr.navigation;
 }
 
-const _handleRequestData = (self: Navigation) => (
-  dataRequest: DataRequestT
-) => {
-  self.dataRequest = dataRequest;
-};
+function _handleRequestData(this: Navigation, dataRequest: DataRequestT) {
+  this.dataRequest = dataRequest;
+}
 
-const _handleStoreLocation = (self: Navigation) => () => {
-  self.locationMemo = window.location.pathname;
-};
+function _handleStoreLocation(this: Navigation) {
+  this.locationMemo = window.location.pathname;
+}
 
-const _handleRestoreLocation = (self: Navigation) => () => {
-  self.history.push(self.locationMemo);
-};
+function _handleRestoreLocation(this: Navigation) {
+  this.history.push(this.locationMemo);
+}
 
 const _setHistory = (self: Navigation, history: any) => {
   runInAction(() => {
@@ -78,7 +75,7 @@ export function initNavigation(self: Navigation, props: PropsT): Navigation {
       requestData: _handleRequestData,
       storeLocation: _handleStoreLocation,
       restoreLocation: _handleRestoreLocation,
-      navigateToMoveList: (self: Navigation) => props.navigateToMoveList,
+      navigateToMoveList: props.navigateToMoveList,
     },
     self
   );

@@ -1,11 +1,11 @@
 import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
-import { Navigation, ensureSelected } from 'src/session/facets/Navigation';
+import { Navigation } from 'src/session/facets/Navigation';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { findMoveBySlugid } from 'src/app/utils';
 import { listen } from 'facet';
 import { Addition } from 'facet-mobx/facets/Addition';
-import { Selection } from 'facet-mobx/facets/Selection';
+import { Highlight } from 'facet-mobx/facets/Highlight';
 
 export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
   function syncMoveWithCurrentUrl(movesCtr: MovesContainer) {
@@ -19,7 +19,7 @@ export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
       },
       (moveMatchingUrl) => {
         if (moveMatchingUrl) {
-          ensureSelected(Selection.get(movesCtr), moveMatchingUrl.id);
+          Highlight.get(movesCtr).highlightItem(moveMatchingUrl.id);
         }
       },
       {

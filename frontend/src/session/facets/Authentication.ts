@@ -32,13 +32,13 @@ export function initAuthentication(
 ): Authentication {
   installHandlers(
     {
-      signIn: (self: Authentication) => props.signIn,
-      signOut: (self: Authentication) => props.signOut,
-      signUp: (self: Authentication) => props.signUp,
-      loadUserId: (self: Authentication) => props.loadUserId,
-      resetPassword: (self: Authentication) => props.resetPassword,
-      changePassword: (self: Authentication) => props.changePassword,
-      activateAccount: (self: Authentication) => props.activateAccount,
+      signIn: props.signIn,
+      signOut: props.signOut,
+      signUp: props.signUp,
+      loadUserId: props.loadUserId,
+      resetPassword: props.resetPassword,
+      changePassword: props.changePassword,
+      activateAccount: props.activateAccount,
     },
     self
   );

@@ -20,9 +20,6 @@ export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
         if (moveMatchingUrl) {
           Highlight.get(movesCtr).highlightItem(moveMatchingUrl.id);
         }
-      },
-      {
-        name: 'syncMoveWithCurrentUrl',
       }
     );
   };

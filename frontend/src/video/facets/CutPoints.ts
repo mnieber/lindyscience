@@ -77,28 +77,28 @@ function _addCutPoints(self: CutPoints, cutPoints: Array<CutPointT>) {
   }, self.cutPoints);
 }
 
-const handleAdd = (self: CutPoints) => (cutPointType: 'start' | 'end') => {
+function handleAdd(this: CutPoints, cutPointType: 'start' | 'end') {
   const newCutPoint = _createNewCutPoint(
     cutPointType,
-    self.videoController.getPlayer().getCurrentTime()
+    this.videoController.getPlayer().getCurrentTime()
   );
-  _addCutPoints(self, [newCutPoint]);
-};
+  _addCutPoints(this, [newCutPoint]);
+}
 
-const handleSetVideoLink = (self: CutPoints) => (videoLink: string) => {
-  if (self.videoLink !== videoLink) {
-    self.cutPoints = [];
-    self.videoController = new VideoController();
-    self.videoController.video = {
+function handleSetVideoLink(this: CutPoints, videoLink: string) {
+  if (this.videoLink !== videoLink) {
+    this.cutPoints = [];
+    this.videoController = new VideoController();
+    this.videoController.video = {
       link: videoLink,
       startTimeMs: undefined,
       endTimeMs: undefined,
     };
   }
-};
+}
 
-const handleSave = (self: CutPoints) => (values: any) => {
-  const existingCutPoint = self.cutPoints.find(
+function handleSave(this: CutPoints, values: any) {
+  const existingCutPoint = this.cutPoints.find(
     (x: CutPointT) => x.id === values.id
   );
   const cutPoint: CutPointT = {
@@ -106,14 +106,14 @@ const handleSave = (self: CutPoints) => (values: any) => {
     ...values,
   };
 
-  _addCutPoints(self, [cutPoint]);
-};
+  _addCutPoints(this, [cutPoint]);
+}
 
-const handleRemove = (self: CutPoints) => (cutPointIds: Array<UUID>) => {
-  self.cutPoints = self.cutPoints.filter(
+function handleRemove(this: CutPoints, cutPointIds: Array<UUID>) {
+  this.cutPoints = this.cutPoints.filter(
     (x: CutPointT) => !cutPointIds.includes(x.id)
   );
-};
+}
 
 function _createMovesFromCutPoints(self: CutPoints) {
   const newMoves: Array<MoveT> = self.cutPoints.reduce(

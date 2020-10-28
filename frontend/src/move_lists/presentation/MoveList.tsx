@@ -35,7 +35,7 @@ type DefaultPropsT = {
 export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  const drag = props.movesCtr.handlerDrag.drag;
+  const hoverPosition = props.movesCtr.dragAndDrop.hoverPosition;
   const selectionIds = props.movesSelection.ids || [];
   const highlightId = props.movesHighlight.id;
 
@@ -49,15 +49,15 @@ export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
           'moveList__item--selected': move && selectionIds.includes(move.id),
           'moveList__item--highlighted': move && move.id === highlightId,
           'moveList__item--drag_before':
-            drag && drag.isBefore && drag.targetItemId === move.id,
+            hoverPosition?.isBefore && hoverPosition?.targetItemId === move.id,
           'moveList__item--drag_after':
-            drag && !drag.isBefore && drag.targetItemId === move.id,
+            !hoverPosition?.isBefore && hoverPosition?.targetItemId === move.id,
         })}
         id={move.id}
         key={idx}
         {...props.movesCtr.handlerClick.handle(move.id, move, props.navigateTo)}
         {...(props.profiling.isOwner(props.moveList)
-          ? props.movesCtr.handlerDrag.handle(move.id)
+          ? props.movesCtr.dragAndDrop.handle(move.id)
           : {})}
       >
         {move.name}

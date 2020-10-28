@@ -82,12 +82,6 @@ export function initNavigation(self: Navigation, props: PropsT): Navigation {
   return self;
 }
 
-export const ensureSelected = (selection: Selection, id: any) => {
-  if (!selection.ids.includes(id)) {
-    selection.selectItem({ itemId: id });
-  }
-};
-
 export const getStatus = (self: Navigation) => {
   const entries = Object.entries(self.dataRequest);
   return entries.reduce(

@@ -1,21 +1,21 @@
-import { MovesStore } from 'src/moves/MovesStore';
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
-import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
-import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
-import { Navigation } from 'src/session/facets/Navigation';
-import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
-import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
-import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
-import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
-import { getIds } from 'src/app/utils';
-import { facet, installPolicies, registerFacets } from 'facet';
-import { mapData } from 'facet-mobx';
 import { Addition, initAddition } from 'facet-mobx/facets/Addition';
+import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
+import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
+import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
+import { facet, installPolicies, registerFacets } from 'facet';
 import { Filtering, initFiltering } from 'facet-mobx/facets/Filtering';
+import { getIds } from 'src/app/utils';
 import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
+import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
+import { mapData } from 'facet-mobx';
+import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MovesStore } from 'src/moves/MovesStore';
+import { Navigation } from 'src/session/facets/Navigation';
+import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
 import { Selection, initSelection } from 'facet-mobx/facets/Selection';
+import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
@@ -33,8 +33,8 @@ export class MovesContainer {
   @facet editing: Editing;
   @facet filtering: Filtering;
   @facet highlight: Highlight;
-  @facet insertion: Insertion;
   @facet inputs: Inputs;
+  @facet insertion: Insertion;
   @facet outputs: Outputs;
   @facet selection: Selection;
   @facet dragAndDrop: DragAndDrop;
@@ -79,7 +79,7 @@ export class MovesContainer {
       // creation
       MobXPolicies.newItemsAreAddedBelowTheHighlight,
       MobXPolicies.cancelNewItemOnHighlightChange,
-      MobXPolicies.newItemsAreEdited,
+      MobXPolicies.newItemsAreHighlightedAndEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
 
       // filtering

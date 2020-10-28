@@ -66,7 +66,7 @@ export class MoveListsContainer {
       // creation
       MobXPolicies.newItemsAreAddedBelowTheHighlight,
       MobXPolicies.cancelNewItemOnHighlightChange,
-      MobXPolicies.newItemsAreEdited,
+      MobXPolicies.newItemsAreHighlightedAndEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
       MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed,

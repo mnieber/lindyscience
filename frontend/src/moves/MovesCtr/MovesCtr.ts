@@ -79,7 +79,7 @@ export class MovesContainer {
       // creation
       MobXPolicies.newItemsAreAddedBelowTheHighlight,
       MobXPolicies.cancelNewItemOnHighlightChange,
-      MobXPolicies.newItemsAreHighlightedAndEdited,
+      MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
 
       // filtering

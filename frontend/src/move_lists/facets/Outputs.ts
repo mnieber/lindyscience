@@ -6,10 +6,10 @@ import { listToItemById } from 'src/utils/utils';
 import { output } from 'facet';
 
 export class Outputs {
-  @computed get moveListIds(): Array<UUID> {
+  @output @computed get moveListIds(): Array<UUID> {
     return keys(this.moveListById);
   }
-  @computed get moveListById(): MoveListByIdT {
+  @output @computed get moveListById(): MoveListByIdT {
     return listToItemById(this.display);
   }
   @output display: Array<MoveListT> = [];

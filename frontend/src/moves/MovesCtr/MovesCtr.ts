@@ -3,10 +3,10 @@ import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
-import { facet, installPolicies, registerFacets } from 'facet';
+import { installActions, facet, installPolicies, registerFacets } from 'facet';
 import { Filtering, initFiltering } from 'facet-mobx/facets/Filtering';
 import { getIds } from 'src/app/utils';
-import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
+import { Highlight, handleHighlightItem } from 'facet-mobx/facets/Highlight';
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
 import { mapData } from 'facet-mobx';
@@ -14,7 +14,7 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { Navigation } from 'src/session/facets/Navigation';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
-import { Selection, initSelection } from 'facet-mobx/facets/Selection';
+import { Selection, handleSelectItem } from 'facet-mobx/facets/Selection';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
@@ -32,17 +32,35 @@ export class MovesContainer {
   @facet addition: Addition;
   @facet editing: Editing;
   @facet filtering: Filtering;
-  @facet highlight: Highlight;
+  @facet highlight: Highlight = new Highlight();
   @facet inputs: Inputs;
   @facet insertion: Insertion;
   @facet outputs: Outputs;
-  @facet selection: Selection;
+  @facet selection: Selection = new Selection();
   @facet dragAndDrop: DragAndDrop;
 
   clipboard: Clipboard;
 
   handlerSelectWithKeys = new SelectWithKeys({ container: this });
   handlerClick = new ClickToSelectItems({ container: this });
+
+  _installActions(props: PropsT) {
+    installActions(this.highlight, {
+      highlightItem: [
+        //
+        handleHighlightItem,
+        MobXPolicies.cancelNewItemOnHighlightChange(this),
+      ],
+    });
+
+    installActions(this.selection, {
+      selectItem: [
+        //
+        handleSelectItem,
+        MobXPolicies.highlightFollowsSelection(this),
+      ],
+    });
+  }
 
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'moves'];
@@ -55,7 +73,6 @@ export class MovesContainer {
 
       // highlight
       MobXFacets.highlightActsOnItems(itemById),
-      MobXPolicies.highlightFollowsSelection,
       MobXPolicies.highlightIsCorrectedOnFilterChange,
 
       // navigation
@@ -78,7 +95,6 @@ export class MovesContainer {
 
       // creation
       MobXPolicies.newItemsAreAddedBelowTheHighlight,
-      MobXPolicies.cancelNewItemOnHighlightChange,
       MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
 
@@ -112,12 +128,12 @@ export class MovesContainer {
       ),
     });
     this.filtering = initFiltering(new Filtering());
-    this.highlight = initHighlight(new Highlight());
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
-    this.selection = initSelection(new Selection());
     this.dragAndDrop = initDragAndDrop(new DragAndDrop());
+
     registerFacets(this);
+    this._installActions(props);
     this._applyPolicies(props);
 
     this.clipboard = new Clipboard({

@@ -1,18 +1,15 @@
+import { Editing } from 'facet-mobx/facets/Editing';
 import { Highlight } from 'facet-mobx/facets/Highlight';
-import { Navigation } from 'src/session/facets/Navigation';
 import { MovesStore } from 'src/moves/MovesStore';
-import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
+import { getCtr } from 'facet';
 import { newMoveSlug } from 'src/moves/utils';
 import { slugify } from 'src/utils/utils';
 import { apiSaveMove } from 'src/moves/api';
 import { createErrorHandler } from 'src/app/utils';
 
-export const handleSaveMove = (
-  ctr: MovesContainer,
-  navigation: Navigation,
-  movesStore: MovesStore
-) => {
-  return (values: any) => {
+export const handleSaveMove = (movesStore: MovesStore) =>
+  function (this: Editing, values: any) {
+    const ctr = getCtr(this);
     const move = Highlight.get(ctr).item;
     const isNewMove = values.slug === newMoveSlug;
     const slug = isNewMove ? slugify(values.name) : values.slug;
@@ -28,9 +25,4 @@ export const handleSaveMove = (
     apiSaveMove(newMove).catch(
       createErrorHandler('We could not save the move')
     );
-
-    if (isNewMove) {
-      navigation.navigateToMove(newMove);
-    }
   };
-};

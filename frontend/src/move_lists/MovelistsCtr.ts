@@ -3,15 +3,22 @@ import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
-import { facet, installPolicies, registerFacets } from 'facet';
+import {
+  lbl,
+  installActions,
+  facet,
+  installPolicies,
+  registerFacets,
+} from 'facet';
 import { ClassMemberT } from 'facet/types';
 import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
-import { Addition, initAddition } from 'facet-mobx/facets/Addition';
+import { Addition } from 'facet-mobx/facets/Addition';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
-import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
+import { Highlight } from 'facet-mobx/facets/Highlight';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
-import { Selection, initSelection } from 'facet-mobx/facets/Selection';
+import { Selection, handleSelectItem } from 'facet-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MoveListT } from 'src/move_lists/types';
 
 import { mapData } from 'facet-mobx';
 import * as MobXFacets from 'facet-mobx/facets';
@@ -27,14 +34,60 @@ type PropsT = {
 };
 
 export class MoveListsContainer {
-  @facet addition: Addition;
-  @facet editing: Editing;
-  @facet highlight: Highlight;
-  @facet insertion: Insertion;
+  @facet addition: Addition<MoveListT> = new Addition<MoveListT>();
+  @facet editing: Editing = initEditing(new Editing());
+  @facet highlight: Highlight = new Highlight();
+  @facet insertion: Insertion = initInsertion(new Insertion());
   @facet inputs: Inputs;
   @facet outputs: Outputs;
-  @facet selection: Selection;
+  @facet selection: Selection = new Selection();
   @facet labelling: Labelling;
+
+  _installActions(props: PropsT) {
+    installActions(this.addition, {
+      add: [
+        //
+        MobXPolicies.newItemsAreAddedBelowTheHighlight,
+        lbl('createItem', MoveListsCtrHandlers.handleCreateMoveList(this)),
+        MobXPolicies.editingSetEnabled,
+      ],
+      confirm: [],
+      cancel: [
+        //
+        MobXPolicies.editingSetDisabled,
+      ],
+    });
+
+    installActions(this.editing, {
+      save: [
+        //
+        lbl(
+          'saveItem',
+          MoveListsCtrHandlers.handleSaveMoveList(props.moveListsStore)
+        ),
+        MobXPolicies.newItemsAreConfirmedOnEditingSave,
+      ],
+      cancel: [
+        //
+        MobXPolicies.newItemsAreCancelledOnEditingCancel,
+      ],
+    });
+
+    installActions(this.highlight, {
+      highlightItem: [
+        //
+        MobXPolicies.cancelNewItemOnHighlightChange,
+      ],
+    });
+
+    installActions(this.selection, {
+      selectItem: [
+        //
+        lbl('selectItem', handleSelectItem),
+        MobXPolicies.highlightFollowsSelection,
+      ],
+    });
+  }
 
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'moveLists'];
@@ -48,7 +101,6 @@ export class MoveListsContainer {
 
       // highlight
       MobXFacets.highlightActsOnItems(itemById),
-      MobXPolicies.highlightFollowsSelection,
 
       // navigation
       MobXPolicies.locationIsRestoredOnCancelNewItem(
@@ -64,11 +116,6 @@ export class MoveListsContainer {
       ),
 
       // creation
-      MobXPolicies.newItemsAreAddedBelowTheHighlight,
-      MobXPolicies.cancelNewItemOnHighlightChange,
-      MobXPolicies.newItemsAreEdited,
-      MobXPolicies.newItemsAreConfirmedWhenSaved,
-      MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed,
 
       // labelling
@@ -82,27 +129,14 @@ export class MoveListsContainer {
   }
 
   constructor(props: PropsT) {
-    this.addition = initAddition(new Addition(), {
-      createItem: MoveListsCtrHandlers.handleCreateMoveList(this),
-    });
-    this.editing = initEditing(new Editing(), {
-      saveItem: MoveListsCtrHandlers.handleSaveMoveList(
-        this,
-        props.moveListsStore
-      ),
-    });
-    this.highlight = initHighlight(new Highlight());
-    this.insertion = initInsertion(new Insertion(), {
-      insertItems: () => {},
-    });
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
-    this.selection = initSelection(new Selection());
     this.labelling = initLabelling(new Labelling(), {
       saveIds: MoveListsCtrHandlers.handleSaveLabels(this, props.profiling),
     });
 
     registerFacets(this);
+    this._installActions(props);
     this._applyPolicies(props);
   }
 }

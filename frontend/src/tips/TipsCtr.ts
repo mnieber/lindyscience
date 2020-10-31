@@ -1,10 +1,16 @@
 import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
-import { facet, installPolicies, registerFacets } from 'facet';
+import {
+  lbl,
+  installActions,
+  facet,
+  installPolicies,
+  registerFacets,
+} from 'facet';
 import { mapData } from 'facet-mobx';
-import { Addition, initAddition } from 'facet-mobx/facets/Addition';
-import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
+import { Addition } from 'facet-mobx/facets/Addition';
+import { Highlight } from 'facet-mobx/facets/Highlight';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { Deletion, initDeletion } from 'facet-mobx/facets/Deletion';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
@@ -18,13 +24,53 @@ type PropsT = {
 };
 
 export class TipsCtr {
-  @facet addition: Addition<TipT>;
+  @facet addition: Addition<TipT> = new Addition<TipT>();
   @facet deletion: Deletion;
-  @facet editing: Editing;
-  @facet highlight: Highlight;
-  @facet insertion: Insertion;
+  @facet editing: Editing = initEditing(new Editing());
+  @facet highlight: Highlight = new Highlight();
+  @facet insertion: Insertion = initInsertion(new Insertion());
   @facet inputs: Inputs;
   @facet outputs: Outputs;
+
+  _installActions(props: PropsT) {
+    installActions(this.addition, {
+      add:
+        //
+        [
+          MobXPolicies.newItemsAreCreatedAtTheTop,
+          lbl('createItem', TipsCtrHandlers.handleCreateTip(this)),
+          MobXPolicies.highlightNewItem,
+          MobXPolicies.editingSetEnabled,
+        ],
+      confirm: [
+        //
+        MobXPolicies.newItemsAreInsertedWhenConfirmed,
+      ],
+      cancel: [
+        //
+        MobXPolicies.editingSetDisabled,
+      ],
+    });
+
+    installActions(this.editing, {
+      save: [
+        //
+        lbl('saveItem', TipsCtrHandlers.handleSaveTip(this, props.tipsStore)),
+        MobXPolicies.newItemsAreConfirmedOnEditingSave,
+      ],
+      cancel: [
+        //
+        MobXPolicies.newItemsAreCancelledOnEditingCancel,
+      ],
+    });
+
+    installActions(this.highlight, {
+      highlightItem: [
+        //
+        MobXPolicies.cancelNewItemOnHighlightChange,
+      ],
+    });
+  }
 
   _applyPolicies(props: PropsT) {
     const inputItems = [Inputs, 'tips'];
@@ -41,13 +87,6 @@ export class TipsCtr {
         [Outputs, 'preview']
       ),
 
-      // creation
-      MobXPolicies.newItemsAreCreatedAtTheTop,
-      MobXPolicies.cancelNewItemOnHighlightChange,
-      MobXPolicies.newItemsAreEdited,
-      MobXPolicies.newItemsAreConfirmedWhenSaved,
-      MobXPolicies.newItemsAreInsertedWhenConfirmed,
-
       // display
       mapData([Outputs, 'preview'], [Outputs, 'display']),
     ];
@@ -56,21 +95,14 @@ export class TipsCtr {
   }
 
   constructor(props: PropsT) {
-    this.addition = initAddition(new Addition(), {
-      createItem: TipsCtrHandlers.handleCreateTip(this),
-    });
     this.deletion = initDeletion(new Deletion(), {
       deleteItems: TipsCtrHandlers.handleDeleteTips(this, props.tipsStore),
     });
-    this.insertion = initInsertion(new Insertion(), { insertItems: () => {} });
-    this.editing = initEditing(new Editing(), {
-      saveItem: TipsCtrHandlers.handleSaveTip(this, props.tipsStore),
-    });
-    this.highlight = initHighlight(new Highlight());
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
 
     registerFacets(this);
+    this._installActions(props);
     this._applyPolicies(props);
   }
 }

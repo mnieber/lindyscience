@@ -1,14 +1,13 @@
 import { createErrorHandler, newMoveListSlug } from 'src/app/utils';
-import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
+import { Editing } from 'facet-mobx/facets/Editing';
+import { getCtr } from 'facet';
 import { apiSaveMoveList } from 'src/move_lists/api';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { listToItemById, slugify } from 'src/utils/utils';
 
-export const handleSaveMoveList = (
-  ctr: MoveListsContainer,
-  moveListsStore: MoveListsStore
-) => {
-  return (values: any) => {
+export const handleSaveMoveList = (moveListsStore: MoveListsStore) =>
+  function (this: Editing, values: any) {
+    const ctr = getCtr(this);
     const slug =
       values.slug === newMoveListSlug ? slugify(values.name) : values.slug;
 
@@ -23,4 +22,3 @@ export const handleSaveMoveList = (
       createErrorHandler('We could not save the movelist')
     );
   };
-};

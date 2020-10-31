@@ -21,6 +21,8 @@ export class MoveContainer {
   @facet timePoints: TimePoints;
   @facet videoController: VideoController;
 
+  _installActions(props: PropsT) {}
+
   _applyPolicies(props: PropsT) {
     const policies = [
       timePointsAreStyled,
@@ -38,6 +40,7 @@ export class MoveContainer {
     this.videoController = initVideoController(new VideoController());
 
     registerFacets(this);
+    this._installActions(props);
     this._applyPolicies(props);
   }
 }

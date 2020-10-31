@@ -1,9 +1,15 @@
-import { Addition, handleAdditionAdd } from 'facet-mobx/facets/Addition';
+import { Addition, handleResetNewItem } from 'facet-mobx/facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
-import { installActions, facet, installPolicies, registerFacets } from 'facet';
+import {
+  lbl,
+  installActions,
+  facet,
+  installPolicies,
+  registerFacets,
+} from 'facet';
 import { Filtering, initFiltering } from 'facet-mobx/facets/Filtering';
 import { getIds } from 'src/app/utils';
 import { Highlight, handleHighlightItem } from 'facet-mobx/facets/Highlight';
@@ -49,23 +55,35 @@ export class MovesContainer {
     installActions(this.highlight, {
       highlightItem: [
         //
-        handleHighlightItem,
-        MobXPolicies.cancelNewItemOnHighlightChange(this),
+        lbl('highlightItem', handleHighlightItem),
+        MobXPolicies.cancelNewItemOnHighlightChange,
       ],
     });
 
     installActions(this.selection, {
       selectItem: [
         //
-        handleSelectItem,
-        MobXPolicies.highlightFollowsSelection(this),
+        lbl('selectItem', handleSelectItem),
+        MobXPolicies.highlightFollowsSelection,
       ],
     });
 
     installActions(this.addition, {
       add: [
         //
-        handleAdditionAdd(MovesCtrHandlers.handleCreateMove(this)),
+        MobXPolicies.newItemsAreAddedBelowTheHighlight,
+        lbl('createItem', MovesCtrHandlers.handleCreateMove(this)),
+        MobXPolicies.editingSetEnabled,
+      ],
+      confirm: [
+        //
+        lbl('confirm', MobXPolicies.newItemsAreInsertedWhenConfirmed),
+        lbl('reset', handleResetNewItem),
+      ],
+      cancel: [
+        //
+        MobXPolicies.editingSetDisabled,
+        lbl('reset', handleResetNewItem),
       ],
     });
   }
@@ -98,12 +116,9 @@ export class MovesContainer {
         [MobXPolicies.DragSourceFromNewItem],
         [Outputs, 'preview']
       ),
-      MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MobXPolicies.selectionIsInsertedOnDragAndDrop,
 
       // creation
-      MobXPolicies.newItemsAreAddedBelowTheHighlight,
-      MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
 
       // filtering

@@ -3,10 +3,16 @@ import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
-import { installActions, facet, installPolicies, registerFacets } from 'facet';
+import {
+  lbl,
+  installActions,
+  facet,
+  installPolicies,
+  registerFacets,
+} from 'facet';
 import { ClassMemberT } from 'facet/types';
 import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
-import { Addition, handleAdditionAdd } from 'facet-mobx/facets/Addition';
+import { Addition, handleResetNewItem } from 'facet-mobx/facets/Addition';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { Highlight, handleHighlightItem } from 'facet-mobx/facets/Highlight';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
@@ -41,15 +47,15 @@ export class MoveListsContainer {
     installActions(this.highlight, {
       highlightItem: [
         //
-        handleHighlightItem,
-        MobXPolicies.cancelNewItemOnHighlightChange(this),
+        lbl('highlightItem', handleHighlightItem),
+        MobXPolicies.cancelNewItemOnHighlightChange,
       ],
     });
 
     installActions(this.selection, {
       selectItem: [
         //
-        handleSelectItem,
+        lbl('selectItem', handleSelectItem),
         MobXPolicies.highlightFollowsSelection,
       ],
     });
@@ -57,7 +63,19 @@ export class MoveListsContainer {
     installActions(this.addition, {
       add: [
         //
-        handleAdditionAdd(MoveListsCtrHandlers.handleCreateMoveList(this)),
+        MobXPolicies.newItemsAreAddedBelowTheHighlight,
+        lbl('createItem', MoveListsCtrHandlers.handleCreateMoveList(this)),
+        MobXPolicies.editingSetEnabled,
+      ],
+      confirm: [
+        //
+        lbl('confirm', MobXPolicies.newItemsAreInsertedWhenConfirmed),
+        lbl('reset', handleResetNewItem),
+      ],
+      cancel: [
+        //
+        MobXPolicies.editingSetDisabled,
+        lbl('reset', handleResetNewItem),
       ],
     });
   }
@@ -89,10 +107,7 @@ export class MoveListsContainer {
       ),
 
       // creation
-      MobXPolicies.newItemsAreAddedBelowTheHighlight,
-      MobXPolicies.newItemsAreEdited,
       MobXPolicies.newItemsAreConfirmedWhenSaved,
-      MobXPolicies.newItemsAreInsertedWhenConfirmed,
       MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed,
 
       // labelling

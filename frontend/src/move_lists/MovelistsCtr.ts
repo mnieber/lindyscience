@@ -6,12 +6,13 @@ import { getIds } from 'src/app/utils';
 import { installActions, facet, installPolicies, registerFacets } from 'facet';
 import { ClassMemberT } from 'facet/types';
 import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
-import { Addition, initAddition } from 'facet-mobx/facets/Addition';
+import { Addition, handleAdditionAdd } from 'facet-mobx/facets/Addition';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { Highlight, handleHighlightItem } from 'facet-mobx/facets/Highlight';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
 import { Selection, handleSelectItem } from 'facet-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MoveListT } from 'src/move_lists/types';
 
 import { mapData } from 'facet-mobx';
 import * as MobXFacets from 'facet-mobx/facets';
@@ -27,7 +28,7 @@ type PropsT = {
 };
 
 export class MoveListsContainer {
-  @facet addition: Addition;
+  @facet addition: Addition<MoveListT> = new Addition<MoveListT>();
   @facet editing: Editing;
   @facet highlight: Highlight = new Highlight();
   @facet insertion: Insertion;
@@ -50,6 +51,13 @@ export class MoveListsContainer {
         //
         handleSelectItem,
         MobXPolicies.highlightFollowsSelection,
+      ],
+    });
+
+    installActions(this.addition, {
+      add: [
+        //
+        handleAdditionAdd(MoveListsCtrHandlers.handleCreateMoveList(this)),
       ],
     });
   }
@@ -98,9 +106,6 @@ export class MoveListsContainer {
   }
 
   constructor(props: PropsT) {
-    this.addition = initAddition(new Addition(), {
-      createItem: MoveListsCtrHandlers.handleCreateMoveList(this),
-    });
     this.editing = initEditing(new Editing(), {
       saveItem: MoveListsCtrHandlers.handleSaveMoveList(
         this,
@@ -117,6 +122,7 @@ export class MoveListsContainer {
     });
 
     registerFacets(this);
+    this._installActions(props);
     this._applyPolicies(props);
   }
 }

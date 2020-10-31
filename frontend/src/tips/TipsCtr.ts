@@ -3,7 +3,7 @@ import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
 import { installActions, facet, installPolicies, registerFacets } from 'facet';
 import { mapData } from 'facet-mobx';
-import { Addition, initAddition } from 'facet-mobx/facets/Addition';
+import { Addition, handleAdditionAdd } from 'facet-mobx/facets/Addition';
 import { Highlight, handleHighlightItem } from 'facet-mobx/facets/Highlight';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { Deletion, initDeletion } from 'facet-mobx/facets/Deletion';
@@ -18,7 +18,7 @@ type PropsT = {
 };
 
 export class TipsCtr {
-  @facet addition: Addition<TipT>;
+  @facet addition: Addition<TipT> = new Addition<TipT>();
   @facet deletion: Deletion;
   @facet editing: Editing;
   @facet highlight: Highlight = new Highlight();
@@ -33,6 +33,12 @@ export class TipsCtr {
         handleHighlightItem,
         MobXPolicies.cancelNewItemOnHighlightChange(this),
       ],
+    });
+
+    installActions(this.addition, {
+      add:
+        //
+        [handleAdditionAdd(TipsCtrHandlers.handleCreateTip(this))],
     });
   }
 
@@ -65,9 +71,6 @@ export class TipsCtr {
   }
 
   constructor(props: PropsT) {
-    this.addition = initAddition(new Addition(), {
-      createItem: TipsCtrHandlers.handleCreateTip(this),
-    });
     this.deletion = initDeletion(new Deletion(), {
       deleteItems: TipsCtrHandlers.handleDeleteTips(this, props.tipsStore),
     });
@@ -79,6 +82,7 @@ export class TipsCtr {
     this.outputs = initOutputs(new Outputs());
 
     registerFacets(this);
+    this._installActions(props);
     this._applyPolicies(props);
   }
 }

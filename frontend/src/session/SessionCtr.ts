@@ -40,6 +40,8 @@ export class SessionContainer {
   @facet tipsStore: TipsStore;
   @facet votesStore: VotesStore;
 
+  _installActions(props: PropsT) {}
+
   _applyPolicies(props: PropsT) {
     const policies = [
       // profiling
@@ -76,6 +78,7 @@ export class SessionContainer {
     this.votesStore = new VotesStore();
 
     registerFacets(this);
+    this._installActions(props);
     this._applyPolicies(props);
   }
 }

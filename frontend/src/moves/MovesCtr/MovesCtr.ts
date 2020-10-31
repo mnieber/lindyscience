@@ -1,4 +1,4 @@
-import { Addition, initAddition } from 'facet-mobx/facets/Addition';
+import { Addition, handleAdditionAdd } from 'facet-mobx/facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
@@ -16,6 +16,7 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
 import { Selection, handleSelectItem } from 'facet-mobx/facets/Selection';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
+import { MoveT } from 'src/moves/types';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
@@ -29,7 +30,7 @@ type PropsT = {
 };
 
 export class MovesContainer {
-  @facet addition: Addition;
+  @facet addition: Addition<MoveT> = new Addition<MoveT>();
   @facet editing: Editing;
   @facet filtering: Filtering;
   @facet highlight: Highlight = new Highlight();
@@ -58,6 +59,13 @@ export class MovesContainer {
         //
         handleSelectItem,
         MobXPolicies.highlightFollowsSelection(this),
+      ],
+    });
+
+    installActions(this.addition, {
+      add: [
+        //
+        handleAdditionAdd(MovesCtrHandlers.handleCreateMove(this)),
       ],
     });
   }
@@ -111,9 +119,6 @@ export class MovesContainer {
   }
 
   constructor(props: PropsT) {
-    this.addition = initAddition(new Addition(), {
-      createItem: MovesCtrHandlers.handleCreateMove(this),
-    });
     this.insertion = initInsertion(new Insertion(), {
       insertItems: MovesCtrHandlers.handleInsertMoves(
         this,

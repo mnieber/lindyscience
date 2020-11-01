@@ -51,7 +51,7 @@ export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = compose(
         hidden: !props.profiling.isOwner(props.moveList),
       })}
       icon={faEdit}
-      onClick={() => props.moveListsEditing.setIsEditing(true)}
+      onClick={() => props.moveListsEditing.enable()}
     />
   );
 

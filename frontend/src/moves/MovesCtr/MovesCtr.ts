@@ -1,4 +1,4 @@
-import { Addition, handleResetNewItem } from 'facet-mobx/facets/Addition';
+import { Addition } from 'facet-mobx/facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
@@ -12,7 +12,7 @@ import {
 } from 'facet';
 import { Filtering, initFiltering } from 'facet-mobx/facets/Filtering';
 import { getIds } from 'src/app/utils';
-import { Highlight, handleHighlightItem } from 'facet-mobx/facets/Highlight';
+import { Highlight } from 'facet-mobx/facets/Highlight';
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
 import { mapData } from 'facet-mobx';
@@ -37,11 +37,11 @@ type PropsT = {
 
 export class MovesContainer {
   @facet addition: Addition<MoveT> = new Addition<MoveT>();
-  @facet editing: Editing;
-  @facet filtering: Filtering;
+  @facet editing: Editing = initEditing(new Editing());
+  @facet filtering: Filtering = initFiltering(new Filtering());
   @facet highlight: Highlight = new Highlight();
   @facet inputs: Inputs;
-  @facet insertion: Insertion;
+  @facet insertion: Insertion = initInsertion(new Insertion());
   @facet outputs: Outputs;
   @facet selection: Selection = new Selection();
   @facet dragAndDrop: DragAndDrop;
@@ -52,22 +52,6 @@ export class MovesContainer {
   handlerClick = new ClickToSelectItems({ container: this });
 
   _installActions(props: PropsT) {
-    installActions(this.highlight, {
-      highlightItem: [
-        //
-        lbl('highlightItem', handleHighlightItem),
-        MobXPolicies.cancelNewItemOnHighlightChange,
-      ],
-    });
-
-    installActions(this.selection, {
-      selectItem: [
-        //
-        lbl('selectItem', handleSelectItem),
-        MobXPolicies.highlightFollowsSelection,
-      ],
-    });
-
     installActions(this.addition, {
       add: [
         //
@@ -77,13 +61,56 @@ export class MovesContainer {
       ],
       confirm: [
         //
-        lbl('confirm', MobXPolicies.newItemsAreInsertedWhenConfirmed),
-        lbl('reset', handleResetNewItem),
+        MobXPolicies.newItemsAreInsertedWhenConfirmed,
       ],
       cancel: [
         //
         MobXPolicies.editingSetDisabled,
-        lbl('reset', handleResetNewItem),
+      ],
+    });
+
+    installActions(this.editing, {
+      save: [
+        //
+        lbl('saveItem', MovesCtrHandlers.handleSaveMove(props.movesStore)),
+        MobXPolicies.newItemsAreConfirmedOnEditingSave,
+      ],
+      cancel: [
+        //
+        MobXPolicies.newItemsAreCancelledOnEditingCancel,
+      ],
+    });
+
+    installActions(this.highlight, {
+      highlightItem: [
+        //
+        MobXPolicies.cancelNewItemOnHighlightChange,
+      ],
+    });
+
+    installActions(this.filtering, {
+      apply: [
+        //
+        MobXPolicies.highlightIsCorrectedOnFilterChange,
+      ],
+    });
+
+    installActions(this.insertion, {
+      insertItems: [
+        //
+        lbl(
+          'insertItems',
+          MovesCtrHandlers.handleInsertMoves(props.moveListsStore)
+        ),
+        MobXPolicies.highlightFollowsSelection,
+      ],
+    });
+
+    installActions(this.selection, {
+      selectItem: [
+        //
+        lbl('selectItem', handleSelectItem),
+        MobXPolicies.highlightFollowsSelection,
       ],
     });
   }
@@ -99,7 +126,6 @@ export class MovesContainer {
 
       // highlight
       MobXFacets.highlightActsOnItems(itemById),
-      MobXPolicies.highlightIsCorrectedOnFilterChange,
 
       // navigation
       MobXPolicies.locationIsRestoredOnCancelNewItem(
@@ -118,9 +144,6 @@ export class MovesContainer {
       ),
       MobXPolicies.selectionIsInsertedOnDragAndDrop,
 
-      // creation
-      MobXPolicies.newItemsAreConfirmedWhenSaved,
-
       // filtering
       MobXFacets.filteringActsOnItems(preview),
       MobXPolicies.filteringIsDisabledOnNewItem,
@@ -134,20 +157,6 @@ export class MovesContainer {
   }
 
   constructor(props: PropsT) {
-    this.insertion = initInsertion(new Insertion(), {
-      insertItems: MovesCtrHandlers.handleInsertMoves(
-        this,
-        props.moveListsStore
-      ),
-    });
-    this.editing = initEditing(new Editing(), {
-      saveItem: MovesCtrHandlers.handleSaveMove(
-        this,
-        props.navigation,
-        props.movesStore
-      ),
-    });
-    this.filtering = initFiltering(new Filtering());
     this.inputs = initInputs(new Inputs());
     this.outputs = initOutputs(new Outputs());
     this.dragAndDrop = initDragAndDrop(new DragAndDrop());

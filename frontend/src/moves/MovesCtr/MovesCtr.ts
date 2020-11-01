@@ -40,11 +40,11 @@ export class MovesContainer {
   @facet editing: Editing = initEditing(new Editing());
   @facet filtering: Filtering = initFiltering(new Filtering());
   @facet highlight: Highlight = new Highlight();
-  @facet inputs: Inputs;
+  @facet inputs: Inputs = initInputs(new Inputs());
   @facet insertion: Insertion = initInsertion(new Insertion());
-  @facet outputs: Outputs;
+  @facet outputs: Outputs = initOutputs(new Outputs());
   @facet selection: Selection = new Selection();
-  @facet dragAndDrop: DragAndDrop;
+  @facet dragAndDrop: DragAndDrop = initDragAndDrop(new DragAndDrop());
 
   clipboard: Clipboard;
 
@@ -55,8 +55,11 @@ export class MovesContainer {
     installActions(this.addition, {
       add: [
         //
+        props.navigation.storeLocation,
+        MobXPolicies.filteringIsDisabledOnNewItem,
         MobXPolicies.newItemsAreAddedBelowTheHighlight,
         lbl('createItem', MovesCtrHandlers.handleCreateMove(this)),
+        SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
         MobXPolicies.editingSetEnabled,
       ],
       confirm: [
@@ -66,6 +69,14 @@ export class MovesContainer {
       cancel: [
         //
         MobXPolicies.editingSetDisabled,
+        props.navigation.restoreLocation,
+      ],
+    });
+
+    installActions(this.dragAndDrop, {
+      drop: [
+        //
+        lbl('drop', MobXPolicies.selectionIsInsertedOnDragAndDrop),
       ],
     });
 
@@ -102,7 +113,6 @@ export class MovesContainer {
           'insertItems',
           MovesCtrHandlers.handleInsertMoves(props.moveListsStore)
         ),
-        MobXPolicies.highlightFollowsSelection,
       ],
     });
 
@@ -128,12 +138,7 @@ export class MovesContainer {
       MobXFacets.highlightActsOnItems(itemById),
 
       // navigation
-      MobXPolicies.locationIsRestoredOnCancelNewItem(
-        props.navigation.storeLocation,
-        props.navigation.restoreLocation
-      ),
       MovesCtrPolicies.handleNavigateToMove(props.navigation),
-      SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
       SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
 
       // insertion
@@ -142,11 +147,9 @@ export class MovesContainer {
         [MobXPolicies.DragSourceFromNewItem],
         [Outputs, 'preview']
       ),
-      MobXPolicies.selectionIsInsertedOnDragAndDrop,
 
       // filtering
       MobXFacets.filteringActsOnItems(preview),
-      MobXPolicies.filteringIsDisabledOnNewItem,
 
       // display
       mapData([Filtering, 'filteredItems'], [Outputs, 'display']),
@@ -157,10 +160,6 @@ export class MovesContainer {
   }
 
   constructor(props: PropsT) {
-    this.inputs = initInputs(new Inputs());
-    this.outputs = initOutputs(new Outputs());
-    this.dragAndDrop = initDragAndDrop(new DragAndDrop());
-
     registerFacets(this);
     this._installActions(props);
     this._applyPolicies(props);

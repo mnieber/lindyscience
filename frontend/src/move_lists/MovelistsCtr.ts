@@ -38,23 +38,27 @@ export class MoveListsContainer {
   @facet editing: Editing = initEditing(new Editing());
   @facet highlight: Highlight = new Highlight();
   @facet insertion: Insertion = initInsertion(new Insertion());
-  @facet inputs: Inputs;
-  @facet outputs: Outputs;
+  @facet inputs: Inputs = initInputs(new Inputs());
+  @facet outputs: Outputs = initOutputs(new Outputs());
   @facet selection: Selection = new Selection();
-  @facet labelling: Labelling;
+  @facet labelling: Labelling = initLabelling(new Labelling());
 
   _installActions(props: PropsT) {
     installActions(this.addition, {
       add: [
         //
+        props.navigation.storeLocation,
         MobXPolicies.newItemsAreAddedBelowTheHighlight,
         lbl('createItem', MoveListsCtrHandlers.handleCreateMoveList(this)),
         MobXPolicies.editingSetEnabled,
       ],
-      confirm: [],
+      confirm: [
+        lbl('confirm', MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed),
+      ],
       cancel: [
         //
         MobXPolicies.editingSetDisabled,
+        props.navigation.restoreLocation,
       ],
     });
 
@@ -80,6 +84,13 @@ export class MoveListsContainer {
       ],
     });
 
+    installActions(this.labelling, {
+      setLabel: [
+        //
+        lbl('saveIds', MoveListsCtrHandlers.handleSaveLabels(props.profiling)),
+      ],
+    });
+
     installActions(this.selection, {
       selectItem: [
         //
@@ -102,21 +113,12 @@ export class MoveListsContainer {
       // highlight
       MobXFacets.highlightActsOnItems(itemById),
 
-      // navigation
-      MobXPolicies.locationIsRestoredOnCancelNewItem(
-        props.navigation.storeLocation,
-        props.navigation.restoreLocation
-      ),
-
       // insertion
       MobXFacets.insertionActsOnItems(inputItems),
       MobXPolicies.createInsertionPreview(
         [MobXPolicies.DragSourceFromNewItem],
         [Outputs, 'display']
       ),
-
-      // creation
-      MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed,
 
       // labelling
       MobXFacets.labellingReceivesIds(moveListsFollowing, 'following', getIds),
@@ -129,12 +131,6 @@ export class MoveListsContainer {
   }
 
   constructor(props: PropsT) {
-    this.inputs = initInputs(new Inputs());
-    this.outputs = initOutputs(new Outputs());
-    this.labelling = initLabelling(new Labelling(), {
-      saveIds: MoveListsCtrHandlers.handleSaveLabels(this, props.profiling),
-    });
-
     registerFacets(this);
     this._installActions(props);
     this._applyPolicies(props);

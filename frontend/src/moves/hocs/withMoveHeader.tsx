@@ -44,7 +44,7 @@ export const withMoveHeader = (WrappedComponent: any) =>
         className={classnames('ml-2 text-lg', { hidden: !isOwnMove })}
         size="lg"
         icon={faEdit}
-        onClick={() => props.movesEditing.setIsEditing(true)}
+        onClick={() => props.movesEditing.enable()}
       />
     );
 

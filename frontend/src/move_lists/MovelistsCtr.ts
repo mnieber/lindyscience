@@ -12,11 +12,15 @@ import {
 } from 'facet';
 import { ClassMemberT } from 'facet/types';
 import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
-import { Addition } from 'facet-mobx/facets/Addition';
+import { Addition, initAddition } from 'facet-mobx/facets/Addition';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
-import { Highlight } from 'facet-mobx/facets/Highlight';
+import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
-import { Selection, handleSelectItem } from 'facet-mobx/facets/Selection';
+import {
+  Selection,
+  handleSelectItem,
+  initSelection,
+} from 'facet-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListT } from 'src/move_lists/types';
 
@@ -34,13 +38,15 @@ type PropsT = {
 };
 
 export class MoveListsContainer {
-  @facet addition: Addition<MoveListT> = new Addition<MoveListT>();
+  @facet addition: Addition<MoveListT> = initAddition(
+    new Addition<MoveListT>()
+  );
   @facet editing: Editing = initEditing(new Editing());
-  @facet highlight: Highlight = new Highlight();
+  @facet highlight: Highlight = initHighlight(new Highlight());
   @facet insertion: Insertion = initInsertion(new Insertion());
   @facet inputs: Inputs = initInputs(new Inputs());
   @facet outputs: Outputs = initOutputs(new Outputs());
-  @facet selection: Selection = new Selection();
+  @facet selection: Selection = initSelection(new Selection());
   @facet labelling: Labelling = initLabelling(new Labelling());
 
   _installActions(props: PropsT) {

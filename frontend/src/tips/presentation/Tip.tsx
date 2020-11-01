@@ -63,7 +63,7 @@ export const Tip: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         className="tip__editButton ml-2"
         onClick={() => {
           props.tipsHighlight.highlightItem(tipId);
-          props.tipsEditing.setIsEditing(true);
+          props.tipsEditing.enable();
         }}
       >
         edit

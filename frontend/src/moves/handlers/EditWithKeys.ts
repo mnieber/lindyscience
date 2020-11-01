@@ -18,7 +18,12 @@ export class EditWithKeys {
         if (key === keyEdit) {
           e.preventDefault();
           e.stopPropagation();
-          Editing.get(ctr).setIsEditing(!Editing.get(ctr).isEditing);
+          const editing = Editing.get(ctr);
+          if (editing.isEditing) {
+            editing.cancel();
+          } else {
+            editing.enable();
+          }
         }
       },
     };

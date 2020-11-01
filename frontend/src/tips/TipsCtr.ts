@@ -25,12 +25,12 @@ type PropsT = {
 
 export class TipsCtr {
   @facet addition: Addition<TipT> = new Addition<TipT>();
-  @facet deletion: Deletion;
+  @facet deletion: Deletion = initDeletion(new Deletion());
   @facet editing: Editing = initEditing(new Editing());
   @facet highlight: Highlight = new Highlight();
   @facet insertion: Insertion = initInsertion(new Insertion());
-  @facet inputs: Inputs;
-  @facet outputs: Outputs;
+  @facet inputs: Inputs = initInputs(new Inputs());
+  @facet outputs: Outputs = initOutputs(new Outputs());
 
   _installActions(props: PropsT) {
     installActions(this.addition, {
@@ -42,13 +42,17 @@ export class TipsCtr {
           MobXPolicies.highlightNewItem,
           MobXPolicies.editingSetEnabled,
         ],
-      confirm: [
-        //
-        MobXPolicies.newItemsAreInsertedWhenConfirmed,
-      ],
+      confirm: [],
       cancel: [
         //
         MobXPolicies.editingSetDisabled,
+      ],
+    });
+
+    installActions(this.deletion, {
+      delete: [
+        //
+        lbl('deleteItems', TipsCtrHandlers.handleDeleteTips(props.tipsStore)),
       ],
     });
 
@@ -95,12 +99,6 @@ export class TipsCtr {
   }
 
   constructor(props: PropsT) {
-    this.deletion = initDeletion(new Deletion(), {
-      deleteItems: TipsCtrHandlers.handleDeleteTips(this, props.tipsStore),
-    });
-    this.inputs = initInputs(new Inputs());
-    this.outputs = initOutputs(new Outputs());
-
     registerFacets(this);
     this._installActions(props);
     this._applyPolicies(props);

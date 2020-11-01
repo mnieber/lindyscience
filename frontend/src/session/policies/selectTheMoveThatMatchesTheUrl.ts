@@ -3,7 +3,6 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { findMoveBySlugid } from 'src/app/utils';
-import { listen } from 'facet';
 import { Addition } from 'facet-mobx/facets/Addition';
 import { Highlight } from 'facet-mobx/facets/Highlight';
 
@@ -24,14 +23,9 @@ export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
     );
   };
 
-export const syncUrlWithNewMove = (navigation: Navigation) => (
-  movesCtr: MovesContainer
-) => {
-  const addition = Addition.get(movesCtr);
-
-  listen(addition, 'add', () => {
-    if (addition.item) {
-      navigation.navigateToMove(addition.item);
+export const syncUrlWithNewMove = (navigation: Navigation) =>
+  function (this: Addition) {
+    if (this.item) {
+      navigation.navigateToMove(this.item);
     }
-  });
-};
+  };

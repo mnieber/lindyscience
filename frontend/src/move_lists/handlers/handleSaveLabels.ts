@@ -1,19 +1,17 @@
-import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
+import { Labelling } from 'facet-mobx/facets/Labelling';
 import { Profiling } from 'src/session/facets/Profiling';
 import { UUID } from 'src/kernel/types';
 import { apiSaveMoveListOrdering } from 'src/move_lists/api';
 import { createErrorHandler } from 'src/app/utils';
 
-export const handleSaveLabels = (
-  ctr: MoveListsContainer,
-  profiling: Profiling
-) => {
-  return (label: string, ids: Array<UUID>) => {
-    if (label === 'following') {
-      profiling.setFollowedMoveListIds(ids);
-      apiSaveMoveListOrdering(ids).catch(
-        createErrorHandler(`Could not update the user profile`)
-      );
-    }
+export const handleSaveLabels = (profiling: Profiling) =>
+  function (this: Labelling) {
+    return (label: string, ids: Array<UUID>) => {
+      if (label === 'following') {
+        profiling.setFollowedMoveListIds(ids);
+        apiSaveMoveListOrdering(ids).catch(
+          createErrorHandler(`Could not update the user profile`)
+        );
+      }
+    };
   };
-};

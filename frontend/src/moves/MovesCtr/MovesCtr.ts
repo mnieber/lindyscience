@@ -2,7 +2,8 @@ import { Addition } from 'facet-mobx/facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
-import { Editing, initEditing } from 'facet-mobx/facets/Editing';
+import { initEditing } from 'facet-mobx/facets/Editing';
+import { MovesEditing } from 'src/moves/MovesCtr/facets/MovesEditing';
 import {
   lbl,
   installActions,
@@ -37,7 +38,7 @@ type PropsT = {
 
 export class MovesContainer {
   @facet addition: Addition<MoveT> = new Addition<MoveT>();
-  @facet editing: Editing = initEditing(new Editing());
+  @facet editing: MovesEditing = initEditing(new MovesEditing());
   @facet filtering: Filtering = initFiltering(new Filtering());
   @facet highlight: Highlight = new Highlight();
   @facet inputs: Inputs = initInputs(new Inputs());
@@ -85,6 +86,13 @@ export class MovesContainer {
         //
         lbl('saveItem', MovesCtrHandlers.handleSaveMove(props.movesStore)),
         MobXPolicies.newItemsAreConfirmedOnEditingSave,
+      ],
+      savePrivateData: [
+        //
+        lbl(
+          'savePrivateData',
+          MovesCtrHandlers.handleSavePrivateData(props.movesStore)
+        ),
       ],
       cancel: [
         //

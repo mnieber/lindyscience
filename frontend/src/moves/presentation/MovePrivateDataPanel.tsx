@@ -1,27 +1,34 @@
 import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
+import { keys } from 'lodash/fp';
 
 import { UserProfileT } from 'src/profiles/types';
-import { MovePrivateDataT } from 'src/moves/types';
-import { TagT } from 'src/tags/types';
-import { UUID } from 'src/kernel/types';
-import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { Tags } from 'src/tags/presentation/Tags';
 import { MovePrivateDataForm } from 'src/moves/presentation/MovePrivateDataForm';
+import { useDefaultProps } from 'react-default-props-context';
+import { MovesEditing } from 'src/moves/MovesCtr/facets/MovesEditing';
+import { MoveT } from 'src/moves/types';
+import { MovesStore } from 'src/moves/MovesStore';
 
-type PropsT = {
+type PropsT = {};
+
+type DefaultPropsT = {
+  move: MoveT;
   userProfile: UserProfileT;
-  movePrivateData?: MovePrivateDataT;
-  onSave: (values: any) => void;
-  moveTags: Array<TagT>;
-  moveId: UUID;
-  videoController?: VideoController;
+  movesStore: MovesStore;
+  movesEditing: MovesEditing;
+  videoController?: any;
 };
 
-export const MovePrivateDataPanel = (props: PropsT) => {
+export const MovePrivateDataPanel = (p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
   const [isEditing, setIsEditing] = React.useState(false);
+
+  const movePrivateData = props.movesStore.getOrCreatePrivateData(
+    props.move.id
+  );
 
   const editBtn = (
     <FontAwesomeIcon
@@ -32,14 +39,14 @@ export const MovePrivateDataPanel = (props: PropsT) => {
     />
   );
 
-  const tags = (props.movePrivateData && props.movePrivateData.tags) || [];
+  const tags = movePrivateData?.tags ?? [];
 
   const staticDiv = (
     <div>
       <MoveDescriptionEditor
-        key={props?.movePrivateData?.notes}
-        editorId={'privateData_' + props.moveId}
-        description={props.movePrivateData ? props.movePrivateData.notes : ''}
+        key={movePrivateData?.notes}
+        editorId={'privateData_' + props.move.id}
+        description={movePrivateData?.notes ?? ''}
         readOnly={true}
         autoFocus={false}
         videoController={props.videoController}
@@ -57,13 +64,13 @@ export const MovePrivateDataPanel = (props: PropsT) => {
         setIsEditing(false);
       }}
       onSubmit={(values) => {
-        props.onSave(values);
+        props.movesEditing.savePrivateData(values);
         setIsEditing(false);
       }}
-      moveId={props.moveId}
+      moveId={props.move.id}
       videoController={props.videoController}
-      movePrivateData={props.movePrivateData}
-      knownTags={props.moveTags}
+      movePrivateData={movePrivateData}
+      knownTags={keys(props.movesStore.tags)}
     />
   );
 

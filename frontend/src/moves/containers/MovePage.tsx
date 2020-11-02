@@ -3,6 +3,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
+import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
 import { TipsPanel } from 'src/tips/presentation/TipsPanel';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { MoveT } from 'src/moves/types';
@@ -10,7 +11,6 @@ import { Navigation, getStatus } from 'src/session/facets/Navigation';
 import { MoveListT } from 'src/move_lists/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { withMoveForm } from 'src/moves/hocs/withMoveForm';
-import { withMovePrivateDataPanel } from 'src/moves/hocs/withMovePrivateDataPanel';
 import { withMoveHeader } from 'src/moves/hocs/withMoveHeader';
 import { withVideoPlayerPanel } from 'src/video/hocs/withVideoPlayerPanel';
 import { withMoveKeyHandlers } from 'src/moves/hocs/withMoveKeyHandlers';
@@ -29,7 +29,6 @@ type DefaultPropsT = {
   movesEditing: Editing;
   videoController: VideoController;
   moveForm: any;
-  movePrivateDataPanel: any;
   moveHeader: any;
   videoPlayerPanel: any;
   moveKeyHandlers: any;
@@ -37,7 +36,6 @@ type DefaultPropsT = {
 
 export const MovePage: FC<PropsT, DefaultPropsT> = compose(
   withMoveForm,
-  withMovePrivateDataPanel,
   withMoveHeader,
   withVideoPlayerPanel,
   withMoveKeyHandlers,
@@ -66,7 +64,7 @@ export const MovePage: FC<PropsT, DefaultPropsT> = compose(
       {props.moveHeader}
       {props.videoPlayerPanel}
       <Move move={props.move} videoController={props.videoController} />
-      {props.movePrivateDataPanel}
+      <MovePrivateDataPanel />
       <TipsPanel />
     </React.Fragment>
   );

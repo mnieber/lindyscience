@@ -2,8 +2,8 @@ import { Addition } from 'facet-mobx/facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
-import { initEditing } from 'facet-mobx/facets/Editing';
-import { MovesEditing } from 'src/moves/MovesCtr/facets/MovesEditing';
+import { Editing, initEditing } from 'facet-mobx/facets/Editing';
+import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import {
   lbl,
   installActions,
@@ -38,7 +38,10 @@ type PropsT = {
 
 export class MovesContainer {
   @facet addition: Addition<MoveT> = new Addition<MoveT>();
-  @facet editing: MovesEditing = initEditing(new MovesEditing());
+  @facet editing: Editing = initEditing(new Editing());
+  @facet editingPrivateData: EditingPrivateData = initEditing(
+    new EditingPrivateData()
+  );
   @facet filtering: Filtering = initFiltering(new Filtering());
   @facet highlight: Highlight = new Highlight();
   @facet inputs: Inputs = initInputs(new Inputs());
@@ -87,16 +90,16 @@ export class MovesContainer {
         lbl('saveItem', MovesCtrHandlers.handleSaveMove(props.movesStore)),
         MobXPolicies.newItemsAreConfirmedOnEditingSave,
       ],
-      savePrivateData: [
-        //
-        lbl(
-          'savePrivateData',
-          MovesCtrHandlers.handleSavePrivateData(props.movesStore)
-        ),
-      ],
       cancel: [
         //
         MobXPolicies.newItemsAreCancelledOnEditingCancel,
+      ],
+    });
+
+    installActions(this.editingPrivateData, {
+      save: [
+        //
+        lbl('save', MovesCtrHandlers.handleSavePrivateData(props.movesStore)),
       ],
     });
 

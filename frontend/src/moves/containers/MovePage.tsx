@@ -1,10 +1,10 @@
-import { compose, keys } from 'lodash/fp';
+import { compose } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
+import { MoveKeyHandlers } from 'src/moves/presentation/MoveKeyHandlers';
 import { MoveHeader } from 'src/moves/presentation/MoveHeader';
 import { TipsPanel } from 'src/tips/presentation/TipsPanel';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
@@ -13,9 +13,7 @@ import { Navigation, getStatus } from 'src/session/facets/Navigation';
 import { MoveListT } from 'src/move_lists/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { withMoveForm } from 'src/moves/hocs/withMoveForm';
-import { withMoveKeyHandlers } from 'src/moves/hocs/withMoveKeyHandlers';
 import { Move } from 'src/moves/presentation/Move';
-import { createKeyDownHandler } from 'src/video/presentation/VideoKeyhandler';
 import { Editing } from 'facet-mobx/facets/Editing';
 import { useDefaultProps, FC } from 'react-default-props-context';
 
@@ -34,7 +32,6 @@ type DefaultPropsT = {
 
 export const MovePage: FC<PropsT, DefaultPropsT> = compose(
   withMoveForm,
-  withMoveKeyHandlers,
   observer
 )((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
@@ -65,14 +62,11 @@ export const MovePage: FC<PropsT, DefaultPropsT> = compose(
     </React.Fragment>
   );
 
-  const videoKeys = keys(props.moveKeyHandlers);
-  const onKeyDown = createKeyDownHandler(props.moveKeyHandlers);
-
   return (
-    <KeyboardEventHandler handleKeys={videoKeys} onKeyEvent={onKeyDown}>
+    <MoveKeyHandlers>
       <div id={props.moveDisplay.rootDivId} tabIndex={123}>
         {moveDiv}
       </div>
-    </KeyboardEventHandler>
+    </MoveKeyHandlers>
   );
 });

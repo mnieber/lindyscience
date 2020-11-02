@@ -1,47 +1,82 @@
 import { observable } from 'mobx';
-import { installHandlers } from 'facet-mobx';
-import { data, operation } from 'facet';
+import { data, operation, exec, sendMsg } from 'facet';
 
 export class Authentication {
   @data @observable signedInUserId?: string;
 
-  @operation loadUserId() {}
-  @operation signIn(userId: string, password: string, rememberMe: boolean) {}
-  @operation signUp(email: string, username: string, password: string) {}
-  @operation resetPassword(email: string) {}
-  @operation changePassword(password: string, token: string) {}
-  @operation activateAccount(token: string) {}
-  @operation signOut() {}
+  @operation loadUserId() {
+    const response = exec('loadUserId');
+    if (response.errors) {
+      sendMsg(this, 'LoadUserId.Failed', { errors: response.errors });
+    } else {
+      this.signedInUserId = response.userId ? response.userId : 'anonymous';
+    }
+  }
+
+  @operation signIn(userId: string, password: string, rememberMe: boolean) {
+    const response = exec('signIn');
+    if (response.errors) {
+      sendMsg(this, 'SignIn.Failed', { errors: response.errors });
+    } else {
+      this.signedInUserId = response.userId;
+      sendMsg(this, 'SignUp.Success');
+      exec('goNext');
+    }
+  }
+
+  @operation signUp(email: string, username: string, password: string) {
+    const response = exec('signUp');
+    if (response.errors) {
+      sendMsg(this, 'SignUp.Failed', { errors: response.errors });
+    } else {
+      sendMsg(this, 'SignUp.Success');
+    }
+  }
+
+  @operation resetPassword(email: string) {
+    const response = exec('resetPassword');
+    if (response.errors) {
+      sendMsg(this, 'ResetPassword.Failed', {
+        errors: response.errors,
+      });
+    } else {
+      sendMsg(this, 'ResetPassword.Success');
+    }
+  }
+
+  @operation changePassword(password: string, token: string) {
+    const response = exec('changePassword');
+    if (response.errors) {
+      sendMsg(this, 'ChangePassword.Failed', {
+        errors: response.errors,
+      });
+    } else {
+      sendMsg(this, 'ChangePassword.Success');
+    }
+  }
+
+  @operation activateAccount(token: string) {
+    const response = exec('activateAccount');
+    if (response.errors) {
+      sendMsg(this, 'ActivateAccount.Failed', {
+        errors: response.errors,
+      });
+    } else {
+      sendMsg(this, 'ActivateAccount.Success');
+      exec('goNext');
+    }
+  }
+
+  @operation signOut() {
+    exec('signOut');
+    this.signedInUserId = 'anonymous';
+    exec('goNext');
+    sendMsg(this, 'SignOut.Success');
+  }
 
   static get = (ctr: any): Authentication => ctr.authentication;
 }
 
-interface PropsT {
-  signIn: Authentication['signIn'];
-  signOut: Authentication['signOut'];
-  signUp: Authentication['signUp'];
-  loadUserId: Authentication['loadUserId'];
-  resetPassword: Authentication['resetPassword'];
-  changePassword: Authentication['changePassword'];
-  activateAccount: Authentication['activateAccount'];
-}
-
-export function initAuthentication(
-  self: Authentication,
-  props: PropsT
-): Authentication {
-  installHandlers(
-    {
-      signIn: props.signIn,
-      signOut: props.signOut,
-      signUp: props.signUp,
-      loadUserId: props.loadUserId,
-      resetPassword: props.resetPassword,
-      changePassword: props.changePassword,
-      activateAccount: props.activateAccount,
-    },
-    self
-  );
-
+export function initAuthentication(self: Authentication): Authentication {
   return self;
 }

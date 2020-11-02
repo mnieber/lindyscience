@@ -3,6 +3,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
+import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
 import { MoveHeader } from 'src/moves/presentation/MoveHeader';
 import { TipsPanel } from 'src/tips/presentation/TipsPanel';
@@ -12,7 +13,6 @@ import { Navigation, getStatus } from 'src/session/facets/Navigation';
 import { MoveListT } from 'src/move_lists/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { withMoveForm } from 'src/moves/hocs/withMoveForm';
-import { withVideoPlayerPanel } from 'src/video/hocs/withVideoPlayerPanel';
 import { withMoveKeyHandlers } from 'src/moves/hocs/withMoveKeyHandlers';
 import { Move } from 'src/moves/presentation/Move';
 import { createKeyDownHandler } from 'src/video/presentation/VideoKeyhandler';
@@ -29,13 +29,11 @@ type DefaultPropsT = {
   movesEditing: Editing;
   videoController: VideoController;
   moveForm: any;
-  videoPlayerPanel: any;
   moveKeyHandlers: any;
 };
 
 export const MovePage: FC<PropsT, DefaultPropsT> = compose(
   withMoveForm,
-  withVideoPlayerPanel,
   withMoveKeyHandlers,
   observer
 )((p: PropsT) => {
@@ -54,13 +52,13 @@ export const MovePage: FC<PropsT, DefaultPropsT> = compose(
 
   const moveDiv = props.movesEditing.isEditing ? (
     <React.Fragment>
-      {props.videoPlayerPanel}
+      <VideoPlayerPanel />
       {props.moveForm}
     </React.Fragment>
   ) : (
     <React.Fragment>
       <MoveHeader />
-      {props.videoPlayerPanel}
+      <VideoPlayerPanel />
       <Move move={props.move} videoController={props.videoController} />
       <MovePrivateDataPanel />
       <TipsPanel />

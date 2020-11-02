@@ -7,10 +7,7 @@ import { keys } from 'lodash/fp';
 
 import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
-import { MovesStore } from 'src/moves/MovesStore';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Display as SessionDisplay } from 'src/session/facets/Display';
-import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { Editing } from 'facet-mobx/facets/Editing';
@@ -19,17 +16,12 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { CutVideoKeyHandler } from 'src/video/presentation/CutVideoKeyHandler';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 import { CutVideoPanel } from 'src/video/presentation/CutVideoPanel';
-import { CutPoints } from 'src/video/facets/CutPoints';
 
 type PropsT = {};
 
 type DefaultPropsT = {
-  cutPoints: CutPoints;
-  sessionDisplay: SessionDisplay;
-  moveDisplay: MoveDisplay;
   profiling: Profiling;
   moveList: MoveListT;
-  movesStore: MovesStore;
   moveListsEditing: Editing;
   moveLists: Array<MoveListT>;
   userProfile: UserProfileT;
@@ -64,17 +56,6 @@ export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = observer(
     const followMoveListBtn = <FollowMoveListBtn key="followMoveListBtn" />;
     const space = <div key="space" className="flex flex-grow" />;
 
-    const cutVideoPanel = (
-      <CutVideoKeyHandler>
-        <CutVideoPanel
-          sessionDisplay={props.sessionDisplay}
-          moveDisplay={props.moveDisplay}
-          moveTags={keys(props.movesStore.tags)}
-          cutPoints={props.cutPoints}
-        />
-      </CutVideoKeyHandler>
-    );
-
     return props.moveListsEditing.isEditing ? (
       <MoveListForm
         moveList={props.moveList}
@@ -90,7 +71,11 @@ export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = observer(
           moveList={props.moveList}
           buttons={[editBtn, space, followMoveListBtn]}
         />
-        {props.userProfile && cutVideoPanel}
+        {props.userProfile && (
+          <CutVideoKeyHandler>
+            <CutVideoPanel />
+          </CutVideoKeyHandler>
+        )}
       </div>
     );
   }

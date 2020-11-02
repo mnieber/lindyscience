@@ -12,8 +12,13 @@ import { Display, initDisplay } from 'src/session/facets/Display';
 import { Inputs, initInputs } from 'src/session/facets/Inputs';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import { facet, installPolicies, registerFacets } from 'facet';
-import * as authApi from 'src/session/apis/authApi';
+import {
+  lbl,
+  facet,
+  installPolicies,
+  installActions,
+  registerFacets,
+} from 'facet';
 
 export type AuthApiT = {
   loadUserId: Function;
@@ -40,7 +45,41 @@ export class SessionContainer {
   @facet tipsStore: TipsStore;
   @facet votesStore: VotesStore;
 
-  _installActions(props: PropsT) {}
+  _installActions(props: PropsT) {
+    installActions(this.authentication, {
+      loadUserId: [
+        //
+        lbl('loadUserId', SessionCtrHandlers.handleLoadUserId),
+      ],
+      signIn: [
+        //
+        lbl('signIn', SessionCtrHandlers.handleSignIn),
+        lbl('goNext', SessionCtrHandlers.handleGoNext),
+      ],
+      signOut: [
+        //
+        lbl('signOut', SessionCtrHandlers.handleSignOut),
+        lbl('goNext', SessionCtrHandlers.handleGoToSignIn),
+      ],
+      signUp: [
+        //
+        lbl('signUp', SessionCtrHandlers.handleSignUp),
+      ],
+      resetPassword: [
+        //
+        lbl('resetPassword', SessionCtrHandlers.handleResetPassword),
+      ],
+      changePassword: [
+        //
+        lbl('changePassword', SessionCtrHandlers.handleChangePassword),
+      ],
+      activateAccount: [
+        //
+        lbl('activateAccount', SessionCtrHandlers.handleActivateAccount),
+        lbl('goNext', SessionCtrHandlers.handleGoHome),
+      ],
+    });
+  }
 
   _applyPolicies(props: PropsT) {
     const policies = [
@@ -63,15 +102,7 @@ export class SessionContainer {
     });
     this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());
-    this.authentication = initAuthentication(new Authentication(), {
-      signIn: SessionCtrHandlers.handleSignIn(this, authApi),
-      signOut: SessionCtrHandlers.handleSignOut(this, authApi),
-      signUp: SessionCtrHandlers.handleSignUp(this, authApi),
-      loadUserId: SessionCtrHandlers.handleLoadUserId(this, authApi),
-      resetPassword: SessionCtrHandlers.handleResetPassword(this, authApi),
-      changePassword: SessionCtrHandlers.handleChangePassword(this, authApi),
-      activateAccount: SessionCtrHandlers.handleActivateAccount(this, authApi),
-    });
+    this.authentication = initAuthentication(new Authentication());
     this.moveListsStore = new MoveListsStore();
     this.movesStore = new MovesStore();
     this.tipsStore = new TipsStore();

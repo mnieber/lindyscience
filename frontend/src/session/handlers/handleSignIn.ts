@@ -1,26 +1,19 @@
-import { runInAction } from 'mobx';
-import { sendMsg } from 'facet';
-
-import { AuthApiT } from 'src/session/SessionCtr';
-import { Authentication } from 'src/session/facets/Authentication';
+import * as authApi from 'src/session/apis/authApi';
 import { Navigation } from 'src/session/facets/Navigation';
 import { urlParam } from 'src/utils/utils';
+import { getCtr } from 'facet';
 
-export const handleSignIn = (ctr: any, authApi: AuthApiT) => {
-  return async (email: string, password: string, rememberMe: boolean) => {
-    const authentication = Authentication.get(ctr);
-    const navigation = Navigation.get(ctr);
-    const response = await authApi.signIn(email, password, rememberMe);
-
-    runInAction(() => {
-      if (response.errors) {
-        sendMsg(authentication, 'SignIn.Failed', { errors: response.errors });
-      } else {
-        authentication.signedInUserId = response.userId;
-        const next = urlParam('next');
-        navigation.history.push(next ? next : '/');
-        sendMsg(authentication, 'SignUp.Success');
-      }
-    });
-  };
+export const handleSignIn = async (
+  email: string,
+  password: string,
+  rememberMe: boolean
+) => {
+  return await authApi.signIn(email, password, rememberMe);
 };
+
+export function handleGoNext(this: any) {
+  const ctr = getCtr(this);
+  const navigation = Navigation.get(ctr);
+  const next = urlParam('next');
+  navigation.history.push(next ? next : '/');
+}

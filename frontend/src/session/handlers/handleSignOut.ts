@@ -1,15 +1,13 @@
-import { sendMsg } from 'facet';
-import { AuthApiT } from 'src/session/SessionCtr';
-import { Authentication } from 'src/session/facets/Authentication';
+import { getCtr } from 'facet';
 import { Navigation } from 'src/session/facets/Navigation';
+import * as authApi from 'src/session/apis/authApi';
 
-export const handleSignOut = (ctr: any, authApi: AuthApiT) => {
-  return async () => {
-    const authentication = Authentication.get(ctr);
-    const navigation = Navigation.get(ctr);
-    await authApi.signOut();
-    authentication.signedInUserId = 'anonymous';
-    navigation.history.push('/sign-in/');
-    sendMsg(authentication, 'SignOut.Success');
-  };
+export const handleSignOut = async () => {
+  return await authApi.signOut();
 };
+
+export function handleGoToSignIn(this: any) {
+  const ctr = getCtr(this);
+  const navigation = Navigation.get(ctr);
+  navigation.history.push('/sign-in/');
+}

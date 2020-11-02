@@ -1,25 +1,13 @@
-import { runInAction } from 'mobx';
-
-import { AuthApiT } from 'src/session/SessionCtr';
-import { Authentication } from 'src/session/facets/Authentication';
 import { Navigation } from 'src/session/facets/Navigation';
-import { sendMsg } from 'facet';
+import * as authApi from 'src/session/apis/authApi';
+import { getCtr } from 'facet';
 
-export const handleActivateAccount = (ctr: any, authApi: AuthApiT) => {
-  return async (token: string) => {
-    const authentication = Authentication.get(ctr);
-    const navigation = Navigation.get(ctr);
-    const response = await authApi.activateAccount(token);
-
-    runInAction(() => {
-      if (response.errors) {
-        sendMsg(authentication, 'ActivateAccount.Failed', {
-          errors: response.errors,
-        });
-      } else {
-        navigation.history.push('/');
-        sendMsg(authentication, 'ActivateAccount.Success');
-      }
-    });
-  };
+export const handleActivateAccount = async (token: string) => {
+  return await authApi.activateAccount(token);
 };
+
+export function handleGoHome(this: any) {
+  const ctr = getCtr(this);
+  const navigation = Navigation.get(ctr);
+  navigation.history.push('/');
+}

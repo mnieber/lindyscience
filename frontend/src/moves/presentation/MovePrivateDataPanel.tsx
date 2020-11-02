@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { observer } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import { keys } from 'lodash/fp';
@@ -7,24 +8,25 @@ import { UserProfileT } from 'src/profiles/types';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { Tags } from 'src/tags/presentation/Tags';
 import { MovePrivateDataForm } from 'src/moves/presentation/MovePrivateDataForm';
-import { useDefaultProps } from 'react-default-props-context';
-import { MovesEditing } from 'src/moves/MovesCtr/facets/MovesEditing';
+import { useDefaultProps, FC } from 'react-default-props-context';
+import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { MoveT } from 'src/moves/types';
 import { MovesStore } from 'src/moves/MovesStore';
-
-type PropsT = {};
 
 type DefaultPropsT = {
   move: MoveT;
   userProfile: UserProfileT;
   movesStore: MovesStore;
-  movesEditing: MovesEditing;
+  movesEditingPD: EditingPrivateData;
   videoController?: any;
 };
 
-export const MovePrivateDataPanel = (p: PropsT) => {
+type PropsT = {};
+
+type C = FC<PropsT, DefaultPropsT>;
+
+export const MovePrivateDataPanel: C = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-  const [isEditing, setIsEditing] = React.useState(false);
 
   const movePrivateData = props.movesStore.getOrCreatePrivateData(
     props.move.id
@@ -35,7 +37,7 @@ export const MovePrivateDataPanel = (p: PropsT) => {
       key={'edit'}
       className="ml-2 text-lg"
       icon={faEdit}
-      onClick={() => setIsEditing(true)}
+      onClick={() => props.movesEditingPD.enable()}
     />
   );
 
@@ -55,17 +57,15 @@ export const MovePrivateDataPanel = (p: PropsT) => {
     </div>
   );
 
-  const buttons = isEditing || !props.userProfile ? [] : [editBtn];
+  const buttons =
+    props.movesEditingPD.isEditing || !props.userProfile ? [] : [editBtn];
 
   const formDiv = (
     <MovePrivateDataForm
       autoFocus={true}
-      onCancel={() => {
-        setIsEditing(false);
-      }}
+      onCancel={() => props.movesEditingPD.cancel()}
       onSubmit={(values) => {
-        props.movesEditing.savePrivateData(values);
-        setIsEditing(false);
+        props.movesEditingPD.save(values);
       }}
       moveId={props.move.id}
       videoController={props.videoController}
@@ -80,7 +80,7 @@ export const MovePrivateDataPanel = (p: PropsT) => {
         <h2 className="text-xl font-semibold">Private notes</h2>
         {buttons}
       </div>
-      {isEditing ? formDiv : staticDiv}
+      {props.movesEditingPD.isEditing ? formDiv : staticDiv}
     </div>
   );
-};
+});

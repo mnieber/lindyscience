@@ -11,7 +11,6 @@ import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 import { useDefaultProps } from 'react-default-props-context';
-import { Editing } from 'facet-mobx/facets/Editing';
 import { Highlight } from 'facet-mobx/facets/Highlight';
 
 type PropsT = React.PropsWithChildren<{}>;
@@ -60,10 +59,10 @@ export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
   const getDefaultProps = (ctr: MovesContainer) => {
     return {
       movesCtr: () => ctr,
-      isEditingMove: () => Editing.get(ctr).isEditing,
       move: () => Highlight.get(ctr).item,
       moves: () => ctr.outputs.display,
       movesEditing: () => ctr.editing,
+      movesEditingPD: () => ctr.editingPrivateData,
       movesHighlight: () => ctr.highlight,
       movesSelection: () => ctr.selection,
       movesClipboard: () => ctr.clipboard,

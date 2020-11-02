@@ -9,7 +9,6 @@ import { MovesStore } from 'src/moves/MovesStore';
 import { TipsStore } from 'src/tips/TipsStore';
 import { VotesStore } from 'src/votes/VotesStore';
 import { Display, initDisplay } from 'src/session/facets/Display';
-import { Inputs, initInputs } from 'src/session/facets/Inputs';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
 import {
@@ -25,7 +24,6 @@ type PropsT = {
 };
 
 export class SessionContainer {
-  @facet inputs: Inputs;
   @facet navigation: Navigation;
   @facet display: Display;
   @facet profiling: Profiling;
@@ -85,7 +83,6 @@ export class SessionContainer {
   }
 
   constructor(props: PropsT) {
-    this.inputs = initInputs(new Inputs());
     this.navigation = initNavigation(new Navigation(), {
       history: props.history,
       navigateToMoveList: SessionCtrHandlers.handleNavigateToMoveList(this),

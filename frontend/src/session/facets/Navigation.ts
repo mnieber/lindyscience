@@ -26,29 +26,26 @@ export class Navigation {
   @observable @data pathname = '';
   @observable @data params = {};
 
-  @operation requestData(dataRequest: DataRequestT) {}
+  @operation requestData(dataRequest: DataRequestT) {
+    this.dataRequest = dataRequest;
+  }
+
   @operation navigateToMove(move: MoveT) {}
   @operation navigateToMoveList(moveList: MoveListT) {}
-  @operation storeLocation() {}
-  @operation restoreLocation() {}
+
+  @operation storeLocation() {
+    this.locationMemo = window.location.pathname;
+  }
+
+  @operation restoreLocation() {
+    this.history.push(this.locationMemo);
+  }
 
   @action setParams = (params: any) => {
     this.params = params;
   };
 
   static get = (ctr: any): Navigation => ctr.navigation;
-}
-
-function _handleRequestData(this: Navigation, dataRequest: DataRequestT) {
-  this.dataRequest = dataRequest;
-}
-
-function _handleStoreLocation(this: Navigation) {
-  this.locationMemo = window.location.pathname;
-}
-
-function _handleRestoreLocation(this: Navigation) {
-  this.history.push(this.locationMemo);
 }
 
 const _setHistory = (self: Navigation, history: any) => {
@@ -72,9 +69,6 @@ export function initNavigation(self: Navigation, props: PropsT): Navigation {
   _setHistory(self, props.history);
   installHandlers(
     {
-      requestData: _handleRequestData,
-      storeLocation: _handleStoreLocation,
-      restoreLocation: _handleRestoreLocation,
       navigateToMoveList: props.navigateToMoveList,
     },
     self

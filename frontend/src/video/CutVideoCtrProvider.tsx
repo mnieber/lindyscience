@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
@@ -15,7 +15,7 @@ import { CtrProvider } from 'src/app/CtrProvider';
 type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
-  display: Display;
+  sessionDisplay: SessionDisplay;
   moveList: MoveListT;
   userProfile: UserProfileT;
   moveListsStore: MoveListsStore;
@@ -35,12 +35,12 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = observer(
     const updateCtr = (ctr: CutVideoContainer) => {
       reaction(
         () => ({
-          display: props.display,
+          sessionDisplay: props.sessionDisplay,
           userProfile: props.userProfile,
           moveList: props.moveList,
         }),
-        ({ display, userProfile, moveList }) => {
-          ctr.inputs.sessionDisplay = display;
+        ({ sessionDisplay, userProfile, moveList }) => {
+          ctr.inputs.sessionDisplay = sessionDisplay;
           ctr.inputs.userProfile = userProfile;
           ctr.inputs.moveList = moveList;
         }

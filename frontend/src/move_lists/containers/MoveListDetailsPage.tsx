@@ -9,7 +9,7 @@ import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
 import { MovesStore } from 'src/moves/MovesStore';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
@@ -25,7 +25,7 @@ type PropsT = {};
 
 type DefaultPropsT = {
   cutPoints: CutPoints;
-  display: Display;
+  sessionDisplay: SessionDisplay;
   moveDisplay: MoveDisplay;
   profiling: Profiling;
   moveList: MoveListT;
@@ -67,7 +67,7 @@ export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = observer(
     const cutVideoPanel = (
       <CutVideoKeyHandler>
         <CutVideoPanel
-          display={props.display}
+          sessionDisplay={props.sessionDisplay}
           moveDisplay={props.moveDisplay}
           moveTags={keys(props.movesStore.tags)}
           cutPoints={props.cutPoints}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { MovesStore } from 'src/moves/MovesStore';
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
@@ -12,7 +12,7 @@ import { useDefaultProps } from 'react-default-props-context';
 type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
-  display: Display;
+  sessionDisplay: SessionDisplay;
   move: MoveT;
   movesStore: MovesStore;
 };
@@ -29,12 +29,12 @@ export const MoveCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
       () => ({
         move: props.move,
         movePrivateData: props.movesStore.privateDataByMoveId[props.move?.id],
-        display: props.display,
+        sessionDisplay: props.sessionDisplay,
       }),
-      ({ move, movePrivateData, display }) => {
+      ({ move, movePrivateData, sessionDisplay }) => {
         ctr.inputs.move = move;
         ctr.inputs.movePrivateData = movePrivateData;
-        ctr.inputs.sessionDisplay = display;
+        ctr.inputs.sessionDisplay = sessionDisplay;
       }
     );
   };

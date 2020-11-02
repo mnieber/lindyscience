@@ -11,7 +11,7 @@ import { Tags } from 'src/tags/presentation/Tags';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveListTitle } from 'src/move_lists/presentation/MoveListDetails';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 
@@ -22,7 +22,7 @@ type PropsT = {};
 type DefaultPropsT = {
   userProfile?: UserProfileT;
   isOwner: (move: MoveT) => boolean;
-  display: Display;
+  sessionDisplay: SessionDisplay;
   movesEditing: Editing;
   moveList: MoveListT;
   move: MoveT;
@@ -32,7 +32,7 @@ type DefaultPropsT = {
 export const MoveHeader: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  const small = props.display.small;
+  const small = props.sessionDisplay.small;
   const moveListTitle = <MoveListTitle moveList={props.moveList} />;
 
   const isOwnMove = !!props.move && props.isOwner(props.move);

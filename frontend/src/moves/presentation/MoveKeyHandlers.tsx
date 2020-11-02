@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { keys } from 'lodash/fp';
 
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { TimePoints } from 'src/moves/MoveCtr/facets/TimePoints';
 import { MoveT } from 'src/moves/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
@@ -21,7 +21,7 @@ type PropsT = React.PropsWithChildren<{}>;
 type DefaultPropsT = {
   timePoints: TimePoints;
   move: MoveT;
-  display: Display;
+  sessionDisplay: SessionDisplay;
   videoController: VideoController;
 };
 
@@ -35,7 +35,9 @@ export const MoveKeyHandlers: FC<PropsT, DefaultPropsT> = observer(
     const moveKeyHandlers = {
       'ctrl+shift+space': () =>
         runInAction(() => {
-          props.display.setFullVideoWidth(!props.display.fullVideoWidth);
+          props.sessionDisplay.setFullVideoWidth(
+            !props.sessionDisplay.fullVideoWidth
+          );
         }),
 
       ...createVideoKeyHandlers(props.videoController),

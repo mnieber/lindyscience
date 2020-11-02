@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 import { useDefaultProps } from 'react-default-props-context';
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { CutPoints } from 'src/video/facets/CutPoints';
 import { MovesStore } from 'src/moves/MovesStore';
@@ -19,7 +19,7 @@ type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   cutPoints: CutPoints;
-  display: Display;
+  sessionDisplay: SessionDisplay;
   moveDisplay: MoveDisplay;
   movesStore: MovesStore;
 };
@@ -31,7 +31,9 @@ export const CutVideoKeyHandler = observer((p: PropsT) => {
     ...createVideoKeyHandlers(props.cutPoints.videoController as any),
     'ctrl+shift+space': () =>
       runInAction(() => {
-        props.display.setFullVideoWidth(!props.display.fullVideoWidth);
+        props.sessionDisplay.setFullVideoWidth(
+          !props.sessionDisplay.fullVideoWidth
+        );
       }),
     'ctrl+shift+insert': () => props.cutPoints.add('start'),
     'ctrl+shift+alt+insert': () => props.cutPoints.add('end'),

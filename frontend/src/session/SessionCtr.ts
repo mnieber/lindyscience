@@ -20,16 +20,6 @@ import {
   registerFacets,
 } from 'facet';
 
-export type AuthApiT = {
-  loadUserId: Function;
-  signUp: Function;
-  resetPassword: (email: string) => any;
-  changePassword: Function;
-  signIn: Function;
-  signOut: Function;
-  activateAccount: Function;
-};
-
 type PropsT = {
   history: any;
 };

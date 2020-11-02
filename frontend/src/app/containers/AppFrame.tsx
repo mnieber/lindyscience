@@ -15,7 +15,7 @@ type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   profiling: Profiling;
-  display: Display;
+  sessionDisplay: Display;
 };
 
 export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
@@ -37,14 +37,14 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   );
 
   const onResize = () => {
-    props.display.setWidth(window.innerWidth);
+    props.sessionDisplay.setWidth(window.innerWidth);
   };
 
   return (
     <div
       className={classnames('appFrame flexcol', {
-        'px-1': props.display.small,
-        'px-4': !props.display.small,
+        'px-1': props.sessionDisplay.small,
+        'px-4': !props.sessionDisplay.small,
       })}
     >
       <ReactResizeDetector handleWidth onResize={debounce(onResize, 10)} />
@@ -52,7 +52,10 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
       <div
         className={classnames(
           'appFrame__banner flexrow items-center justify-between h-16',
-          { 'mt-4 mb-4': !props.display.small, 'mb-1': props.display.small }
+          {
+            'mt-4 mb-4': !props.sessionDisplay.small,
+            'mb-1': props.sessionDisplay.small,
+          }
         )}
       >
         <div className="flexrow w-full">
@@ -67,7 +70,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
           </div>
           <SearchMovesPage />
         </div>
-        {!props.display.small && <AccountMenu />}
+        {!props.sessionDisplay.small && <AccountMenu />}
       </div>
       {props.children}
     </div>

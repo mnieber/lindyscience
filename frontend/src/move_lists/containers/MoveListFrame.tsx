@@ -9,7 +9,7 @@ import { keys } from 'lodash/fp';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
 import { Addition } from 'facet-mobx/facets/Addition';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { Filtering } from 'facet-mobx/facets/Filtering';
 import { getId } from 'src/app/utils';
 import { isNone } from 'src/utils/utils';
@@ -40,7 +40,7 @@ type DefaultPropsT = {
   movesFiltering: Filtering;
   movesAddition: Addition;
   navigation: Navigation;
-  display: Display;
+  sessionDisplay: SessionDisplay;
   movesStore: MovesStore;
   movesClipboard: Clipboard;
   isOwner: (obj: any) => boolean;
@@ -136,7 +136,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
           'moveListPanel__inner--expanded': true,
         })}
       >
-        {props.display.small && accountMenu}
+        {props.sessionDisplay.small && accountMenu}
         {moveListPicker}
         {moveListFilter}
         <div className="flexrow w-full my-4">
@@ -169,12 +169,12 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
 
     return (
       <div className="MoveListFrame flexrow">
-        {props.display.small ? shrunkContents : contents}
-        {props.display.small && !isMenuOpen && ribbon}
+        {props.sessionDisplay.small ? shrunkContents : contents}
+        {props.sessionDisplay.small && !isMenuOpen && ribbon}
         <div
           className={classnames('MoveListFrame__panel flex-auto', {
-            'pl-4': !props.display.small,
-            'pl-1': props.display.small,
+            'pl-4': !props.sessionDisplay.small,
+            'pl-1': props.sessionDisplay.small,
           })}
         >
           {props.children}

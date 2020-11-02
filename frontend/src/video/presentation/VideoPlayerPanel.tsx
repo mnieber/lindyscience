@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import ReactResizeDetector from 'react-resize-detector';
 import { useDefaultProps, FC } from 'react-default-props-context';
 
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { action } from 'src/utils/mobx_wrapper';
@@ -12,7 +12,7 @@ import { VideoPlayer } from 'src/video/presentation/VideoPlayer';
 type PropsT = {};
 
 type DefaultPropsT = {
-  display: Display;
+  sessionDisplay: SessionDisplay;
   moveDisplay: MoveDisplay;
   videoController: VideoController;
 };

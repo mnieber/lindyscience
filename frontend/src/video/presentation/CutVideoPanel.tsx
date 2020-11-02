@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { UUID } from 'src/kernel/types';
-import { Display } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { TagT } from 'src/tags/types';
 import { CutPoints } from 'src/video/facets/CutPoints';
@@ -12,7 +12,7 @@ import { CutPointList } from 'src/video/presentation/CutPointList';
 type PropsT = {
   moveTags: Array<TagT>;
   cutPoints: CutPoints;
-  display: Display;
+  sessionDisplay: SessionDisplay;
   moveDisplay: MoveDisplay;
 };
 
@@ -38,7 +38,7 @@ export const CutVideoPanel: React.FC<PropsT> = observer((props: PropsT) => {
     <VideoPlayerPanel
       key="videoPlayerPanel"
       videoController={props.cutPoints.videoController}
-      display={props.display}
+      sessionDisplay={props.sessionDisplay}
       moveDisplay={props.moveDisplay}
     />
   );

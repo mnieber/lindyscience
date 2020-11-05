@@ -1,5 +1,5 @@
 import { action, observable } from 'src/utils/mobx_wrapper';
-import { MoveListByIdT } from 'src/move_lists/types';
+import { MoveListByIdT, MoveListRSByIdT } from 'src/move_lists/types';
 import { TagMapT } from 'src/tags/types';
 import { UUID } from 'src/kernel/types';
 import { addTags } from 'src/tags/utils';
@@ -8,6 +8,7 @@ import { always, flow, map, values } from 'lodash/fp';
 
 export class MoveListsStore {
   @observable moveListById: MoveListByIdT = {};
+  @observable moveListRSByUrl: MoveListRSByIdT = {};
   @observable tags: TagMapT = {};
 
   @action addMoveLists(moveListById: MoveListByIdT) {

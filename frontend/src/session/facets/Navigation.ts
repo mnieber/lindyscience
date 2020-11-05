@@ -1,7 +1,7 @@
-import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
+import { observable, runInAction } from 'src/utils/mobx_wrapper';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { data, operation } from 'facet';
+import { operation } from 'facet';
 import { installHandlers } from 'facet-mobx';
 
 export type DataRequestT = {
@@ -10,21 +10,11 @@ export type DataRequestT = {
   profileUrl?: string;
 };
 
-const createDataRequestMap = (createValue: Function) => ({
-  moveSlugid: createValue(),
-  moveListUrl: createValue(),
-  profileUrl: createValue(),
-});
-
 export class Navigation {
   @observable history: any;
   @observable locationMemo?: string;
   // TODO: move data loading stuff out
   @observable dataRequest: DataRequestT = {};
-  @observable loadedData = createDataRequestMap(() => []);
-  @observable notFoundData = createDataRequestMap(() => []);
-  @observable @data pathname = '';
-  @observable @data params = {};
 
   @operation requestData(dataRequest: DataRequestT) {
     this.dataRequest = dataRequest;
@@ -41,22 +31,12 @@ export class Navigation {
     this.history.push(this.locationMemo);
   }
 
-  @action setParams = (params: any) => {
-    this.params = params;
-  };
-
   static get = (ctr: any): Navigation => ctr.navigation;
 }
 
 const _setHistory = (self: Navigation, history: any) => {
   runInAction(() => {
-    self.pathname = window.location.pathname;
     self.history = history;
-    self.history.listen(
-      action((location: any, action: any) => {
-        self.pathname = location.pathname;
-      })
-    );
   });
 };
 
@@ -75,19 +55,3 @@ export function initNavigation(self: Navigation, props: PropsT): Navigation {
   );
   return self;
 }
-
-export const getStatus = (self: Navigation) => {
-  const entries = Object.entries(self.dataRequest);
-  return entries.reduce(
-    (acc, [resourceName, url]) => {
-      return {
-        ...acc,
-        [resourceName]: {
-          hasLoaded: (self.loadedData as any)[resourceName].includes(url),
-          notFound: (self.notFoundData as any)[resourceName].includes(url),
-        },
-      };
-    },
-    createDataRequestMap(() => ({ hasLoaded: false, notFound: false }))
-  );
-};

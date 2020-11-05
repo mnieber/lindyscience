@@ -5,41 +5,41 @@ import { urlParam } from 'src/utils/utils';
 
 export { handleNavigateToMoveList } from './handleNavigateToMovelist';
 
-export const handleActivateAccount = async (token: string) => {
-  return await authApi.activateAccount(token);
-};
+export function handleActivateAccount(token: string) {
+  return authApi.activateAccount(token);
+}
 
-export const handleSignUp = async (
+export function handleSignUp(
   email: string,
   username: string,
   password: string
-) => {
-  return await authApi.signUp(email, username, password);
-};
+) {
+  return authApi.signUp(email, username, password);
+}
 
-export const handleSignOut = async () => {
-  return await authApi.signOut();
-};
+export function handleSignOut() {
+  return authApi.signOut();
+}
 
-export const handleSignIn = async (
+export function handleSignIn(
   email: string,
   password: string,
   rememberMe: boolean
-) => {
-  return await authApi.signIn(email, password, rememberMe);
-};
+) {
+  return authApi.signIn(email, password, rememberMe);
+}
 
-export const handleResetPassword = async (email: string) => {
-  return await authApi.resetPassword(email);
-};
+export function handleResetPassword(email: string) {
+  return authApi.resetPassword(email);
+}
 
-export const handleLoadUserId = async () => {
-  return await authApi.loadUserId();
-};
+export function handleLoadUserId() {
+  return authApi.loadUserId();
+}
 
-export const handleChangePassword = (newPassword: string, token: string) => {
+export function handleChangePassword(newPassword: string, token: string) {
   return authApi.changePassword(newPassword, token);
-};
+}
 
 export function handleGoHome(this: any) {
   const ctr = getCtr(this);

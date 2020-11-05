@@ -27,7 +27,6 @@ import { MoveT } from 'src/moves/types';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
-import * as MovesCtrPolicies from 'src/moves/MovesCtr/policies';
 import * as MovesCtrHandlers from 'src/moves/MovesCtr/handlers';
 
 type PropsT = {
@@ -63,7 +62,9 @@ export class MovesContainer {
         MobXPolicies.filteringIsDisabledOnNewItem,
         MobXPolicies.newItemsAreAddedBelowTheHighlight,
         lbl('createItem', MovesCtrHandlers.handleCreateMove(this)),
-        SessionCtrPolicies.syncUrlWithNewMove(props.navigation),
+        MovesCtrHandlers.handleNavigateToNewMove(
+          props.navigation.navigateToMove
+        ),
         MobXPolicies.editingSetEnabled,
       ],
       confirm: [
@@ -152,7 +153,6 @@ export class MovesContainer {
       MobXFacets.highlightActsOnItems(itemById),
 
       // navigation
-      MovesCtrPolicies.handleNavigateToMove(props.navigation),
       SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
 
       // insertion

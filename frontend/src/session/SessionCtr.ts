@@ -67,6 +67,17 @@ export class SessionContainer {
         lbl('goNext', SessionCtrHandlers.handleGoHome),
       ],
     });
+
+    installActions(this.navigation, {
+      navigateToMoveList: [
+        //
+        lbl('navigate', SessionCtrHandlers.handleNavigateToMoveList),
+      ],
+      navigateToMove: [
+        //
+        lbl('navigate', SessionCtrHandlers.handleNavigateToMove),
+      ],
+    });
   }
 
   _applyPolicies(props: PropsT) {
@@ -85,7 +96,6 @@ export class SessionContainer {
   constructor(props: PropsT) {
     this.navigation = initNavigation(new Navigation(), {
       history: props.history,
-      navigateToMoveList: SessionCtrHandlers.handleNavigateToMoveList(this),
     });
     this.display = initDisplay(new Display());
     this.profiling = initProfiling(new Profiling());

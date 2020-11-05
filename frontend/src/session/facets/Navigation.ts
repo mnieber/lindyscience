@@ -1,8 +1,7 @@
 import { observable, runInAction } from 'src/utils/mobx_wrapper';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { operation } from 'facet';
-import { installHandlers } from 'facet-mobx';
+import { operation, exec } from 'facet';
 
 export type DataRequestT = {
   moveSlugid?: string;
@@ -13,15 +12,19 @@ export type DataRequestT = {
 export class Navigation {
   @observable history: any;
   @observable locationMemo?: string;
-  // TODO: move data loading stuff out
   @observable dataRequest: DataRequestT = {};
 
   @operation requestData(dataRequest: DataRequestT) {
     this.dataRequest = dataRequest;
   }
 
-  @operation navigateToMove(move: MoveT) {}
-  @operation navigateToMoveList(moveList: MoveListT) {}
+  @operation navigateToMove(moveList: MoveListT, move: MoveT) {
+    exec('navigate');
+  }
+
+  @operation navigateToMoveList(moveList: MoveListT) {
+    exec('navigate');
+  }
 
   @operation storeLocation() {
     this.locationMemo = window.location.pathname;
@@ -34,24 +37,13 @@ export class Navigation {
   static get = (ctr: any): Navigation => ctr.navigation;
 }
 
-const _setHistory = (self: Navigation, history: any) => {
-  runInAction(() => {
-    self.history = history;
-  });
-};
-
 interface PropsT {
   history: any;
-  navigateToMoveList: (moveList: MoveListT) => void;
 }
 
 export function initNavigation(self: Navigation, props: PropsT): Navigation {
-  _setHistory(self, props.history);
-  installHandlers(
-    {
-      navigateToMoveList: props.navigateToMoveList,
-    },
-    self
-  );
+  runInAction(() => {
+    self.history = props.history;
+  });
   return self;
 }

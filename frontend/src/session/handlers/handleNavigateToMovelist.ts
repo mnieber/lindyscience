@@ -3,19 +3,12 @@ import { MoveListT } from 'src/move_lists/types';
 import { newMoveListSlug } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/containers';
 
-export const handleNavigateToMoveList = (ctr: any) => {
-  return (moveList: MoveListT) => {
-    const navigation = Navigation.get(ctr);
-    const updateProfile = moveList.slug !== newMoveListSlug;
-    const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
+export function handleNavigateToMoveList(
+  this: Navigation,
+  moveList: MoveListT
+) {
+  const updateProfile = moveList.slug !== newMoveListSlug;
+  const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
 
-    // We need this to prevent a stale value of
-    // navigation.moveListUrl (in this function, we are
-    // effectively setting a new value of navigation.moveListUrl)
-    navigation.requestData({
-      moveListUrl,
-    });
-
-    browseToMoveUrl(navigation.history.push, [moveListUrl], updateProfile);
-  };
-};
+  browseToMoveUrl(this.history.push, [moveListUrl], updateProfile);
+}

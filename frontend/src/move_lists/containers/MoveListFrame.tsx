@@ -120,7 +120,11 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
         className=""
         createHostedPanels={createHostedPanels}
         moveContextMenu={moveContextMenu}
-        navigateTo={(x: MoveT) => props.navigation.navigateToMove(x)}
+        navigateTo={(x: MoveT) => {
+          if (props.moveList) {
+            props.navigation.navigateToMove(props.moveList, x);
+          }
+        }}
       />
     );
 

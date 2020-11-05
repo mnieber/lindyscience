@@ -1,9 +1,6 @@
-///////////////////////////////////////////////////////////////////////
-// Types
-///////////////////////////////////////////////////////////////////////
-
 import { OwnedObjectT, UUID } from 'src/kernel/types';
 import { TagT } from 'src/tags/types';
+import { RST, LoadingT } from 'src/utils/RST';
 
 export type MoveT = OwnedObjectT & {
   description: string;
@@ -20,8 +17,12 @@ export type MoveByIdT = {
   [id: string]: MoveT;
 };
 
-export type MoveBySlugT = {
+export type MoveBySlugidT = {
   [id: string]: MoveT;
+};
+
+export type MoveRSBySlugidT = {
+  [id: string]: RST<LoadingT>;
 };
 
 export type MovePrivateDataT = {
@@ -32,3 +33,7 @@ export type MovePrivateDataT = {
 };
 
 export type MovePrivateDataByIdT = { [id: string]: MovePrivateDataT };
+
+export type MoveRSByIdT = {
+  [uuid: string]: RST<LoadingT>;
+};

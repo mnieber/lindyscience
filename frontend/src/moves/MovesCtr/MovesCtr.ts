@@ -99,7 +99,10 @@ export class MovesContainer {
     installActions(this.editingPrivateData, {
       save: [
         //
-        lbl('save', MovesCtrHandlers.handleSavePrivateData(props.movesStore)),
+        lbl(
+          'saveItem',
+          MovesCtrHandlers.handleSavePrivateData(props.movesStore)
+        ),
       ],
     });
 

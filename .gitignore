@@ -13,5 +13,5 @@ test_report.html
 django/assets/
 salt/website/bundles
 salt/website/css
-frontend/src/scss/app.generated.css
+frontend/src/scss/app.generated.scss
 .vscode

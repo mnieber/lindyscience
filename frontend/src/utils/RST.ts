@@ -62,7 +62,7 @@ export const loadingRS = (): UpdatingRST<LoadingT> =>
     type: LOADING,
   });
 
-export type RST<UpdatingT = undefined> =
+export type RST<UpdatingT = LoadingT> =
   | ResetRST
   | UpdatingRST<UpdatingT>
   | ErroredRST

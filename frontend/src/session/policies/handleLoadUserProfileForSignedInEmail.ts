@@ -1,4 +1,6 @@
 import * as _ from 'lodash/fp';
+
+import { updatedRS } from 'src/utils/RST';
 import { Profiling } from 'src/session/facets/Profiling';
 import { Authentication } from 'src/session/facets/Authentication';
 import { reaction } from 'src/utils/mobx_wrapper';
@@ -15,7 +17,7 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
     () => authentiation.signedInUserId,
     async (signedInUserId) => {
       if (signedInUserId === 'anonymous') {
-        profiling.setUserProfile(undefined);
+        profiling.setUserProfile(undefined, updatedRS());
         ctr.votesStore.setVotes({});
         ctr.movesStore.setPrivateDataByMoveId({});
       } else {
@@ -31,13 +33,13 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
           apiLoadMovePrivateDatas(),
         ]);
 
-        profiling.setUserProfile(profile);
+        profiling.setUserProfile(profile, updatedRS());
         ctr.votesStore.setVotes(votes);
         ctr.movesStore.setPrivateDataByMoveId(
           _.flow(
             _.always(movePrivateDatas.entities.movePrivateDatas || {}),
             _.values,
-            _.keyBy(_.property("moveId"))
+            _.keyBy(_.property('moveId'))
           )()
         );
 

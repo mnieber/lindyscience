@@ -2,8 +2,10 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
 
+import { isUpdatedRS } from 'src/utils/RST';
 import { UserProfileT } from 'src/profiles/types';
 import { Navigation } from 'src/session/facets/Navigation';
+import { Profiling } from 'src/session/facets/Profiling';
 import { Authentication } from 'src/session/facets/Authentication';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { helpUrl } from 'src/moves/utils';
@@ -14,6 +16,7 @@ type DefaultPropsT = {
   userProfile?: UserProfileT;
   navigation: Navigation;
   authentication: Authentication;
+  profiling: Profiling;
 };
 
 export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
@@ -25,11 +28,13 @@ export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
     setExpanded(!expanded);
   }
 
+  const greeting = isUpdatedRS(props.profiling.userProfileRS)
+    ? `Hello ${props.userProfile ? props.userProfile.username : 'stranger!'} ⛛`
+    : undefined;
+
   const node = (
     <React.Fragment>
-      <button onClick={toggle}>{`Hello ${
-        props.userProfile ? props.userProfile.username : 'stranger!'
-      } ⛛`}</button>
+      <button onClick={toggle}>{greeting}</button>
       {expanded && (
         <ul className="list-reset bg-white">
           <li className={classnames({ hidden: !props.userProfile })}>

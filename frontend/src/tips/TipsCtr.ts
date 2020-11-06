@@ -1,13 +1,7 @@
 import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
-import {
-  lbl,
-  installActions,
-  facet,
-  installPolicies,
-  registerFacets,
-} from 'facet';
+import { installActions, facet, installPolicies, registerFacets } from 'facet';
 import { mapData } from 'facet-mobx';
 import { Addition } from 'facet-mobx/facets/Addition';
 import { Highlight } from 'facet-mobx/facets/Highlight';
@@ -34,45 +28,41 @@ export class TipsCtr {
 
   _installActions(props: PropsT) {
     installActions(this.addition, {
-      add:
-        //
-        [
+      add: {
+        createItem: [
           MobXPolicies.newItemsAreCreatedAtTheTop,
-          lbl('createItem', TipsCtrHandlers.handleCreateTip(this)),
+          TipsCtrHandlers.handleCreateTip(this),
           MobXPolicies.highlightNewItem,
           MobXPolicies.editingSetEnabled,
         ],
-      confirm: [],
-      cancel: [
-        //
-        MobXPolicies.editingSetDisabled,
-      ],
+      },
+      cancel: {
+        enter: [MobXPolicies.editingSetDisabled],
+      },
     });
 
     installActions(this.deletion, {
-      delete: [
-        //
-        lbl('deleteItems', TipsCtrHandlers.handleDeleteTips(props.tipsStore)),
-      ],
+      delete: {
+        deleteItems: [TipsCtrHandlers.handleDeleteTips(props.tipsStore)],
+      },
     });
 
     installActions(this.editing, {
-      save: [
-        //
-        lbl('saveItem', TipsCtrHandlers.handleSaveTip(this, props.tipsStore)),
-        MobXPolicies.newItemsAreConfirmedOnEditingSave,
-      ],
-      cancel: [
-        //
-        MobXPolicies.newItemsAreCancelledOnEditingCancel,
-      ],
+      save: {
+        saveItem: [
+          TipsCtrHandlers.handleSaveTip(this, props.tipsStore),
+          MobXPolicies.newItemsAreConfirmedOnEditingSave,
+        ],
+      },
+      cancel: {
+        enter: [MobXPolicies.newItemsAreCancelledOnEditingCancel],
+      },
     });
 
     installActions(this.highlight, {
-      highlightItem: [
-        //
-        MobXPolicies.cancelNewItemOnHighlightChange,
-      ],
+      highlightItem: {
+        enter: [MobXPolicies.cancelNewItemOnHighlightChange],
+      },
     });
   }
 

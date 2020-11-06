@@ -4,13 +4,7 @@ import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
-import {
-  lbl,
-  installActions,
-  facet,
-  installPolicies,
-  registerFacets,
-} from 'facet';
+import { installActions, facet, installPolicies, registerFacets } from 'facet';
 import { Filtering, initFiltering } from 'facet-mobx/facets/Filtering';
 import { getIds } from 'src/app/utils';
 import { Highlight } from 'facet-mobx/facets/Highlight';
@@ -55,88 +49,79 @@ export class MovesContainer {
   handlerClick = new ClickToSelectItems({ container: this });
 
   _installActions(props: PropsT) {
+    const navigateToMove = props.navigation.navigateToMove;
+
     installActions(this.addition, {
-      add: [
-        //
-        props.navigation.storeLocation,
-        MobXPolicies.filteringIsDisabledOnNewItem,
-        MobXPolicies.newItemsAreAddedBelowTheHighlight,
-        lbl('createItem', MovesCtrHandlers.handleCreateMove(this)),
-        MovesCtrHandlers.handleNavigateToNewMove(
-          props.navigation.navigateToMove
-        ),
-        MobXPolicies.editingSetEnabled,
-      ],
-      confirm: [
-        //
-        MobXPolicies.newItemsAreInsertedWhenConfirmed,
-      ],
-      cancel: [
-        //
-        MobXPolicies.editingSetDisabled,
-        props.navigation.restoreLocation,
-      ],
+      add: {
+        enter: [
+          props.navigation.storeLocation,
+          MobXPolicies.filteringIsDisabledOnNewItem,
+        ],
+        createItem: [
+          MobXPolicies.newItemsAreAddedBelowTheHighlight,
+          MovesCtrHandlers.handleCreateMove,
+        ],
+        exit: [
+          MovesCtrHandlers.handleNavigateToNewMove(navigateToMove),
+          MobXPolicies.editingSetEnabled,
+        ],
+      },
+      confirm: {
+        confirm: [MobXPolicies.newItemsAreInsertedWhenConfirmed],
+      },
+      cancel: {
+        enter: [MobXPolicies.editingSetDisabled],
+        exit: [props.navigation.restoreLocation],
+      },
     });
 
     installActions(this.dragAndDrop, {
-      drop: [
-        //
-        lbl('drop', MobXPolicies.selectionIsInsertedOnDragAndDrop),
-      ],
+      drop: {
+        drop: [MobXPolicies.selectionIsInsertedOnDragAndDrop],
+      },
     });
 
     installActions(this.editing, {
-      save: [
-        //
-        lbl('saveItem', MovesCtrHandlers.handleSaveMove(props.movesStore)),
-        MobXPolicies.newItemsAreConfirmedOnEditingSave,
-      ],
-      cancel: [
-        //
-        MobXPolicies.newItemsAreCancelledOnEditingCancel,
-      ],
+      save: {
+        saveItem: [
+          MovesCtrHandlers.handleSaveMove(props.movesStore),
+          MobXPolicies.newItemsAreConfirmedOnEditingSave,
+          MovesCtrHandlers.handleNavigateToSavedMove(navigateToMove),
+        ],
+      },
+      cancel: {
+        enter: [MobXPolicies.newItemsAreCancelledOnEditingCancel],
+      },
     });
 
     installActions(this.editingPrivateData, {
-      save: [
-        //
-        lbl(
-          'saveItem',
-          MovesCtrHandlers.handleSavePrivateData(props.movesStore)
-        ),
-      ],
+      save: {
+        saveItem: [MovesCtrHandlers.handleSavePrivateData(props.movesStore)],
+      },
     });
 
     installActions(this.highlight, {
-      highlightItem: [
-        //
-        MobXPolicies.cancelNewItemOnHighlightChange,
-      ],
+      highlightItem: {
+        enter: [MobXPolicies.cancelNewItemOnHighlightChange],
+      },
     });
 
     installActions(this.filtering, {
-      apply: [
-        //
-        MobXPolicies.highlightIsCorrectedOnFilterChange,
-      ],
+      apply: {
+        exit: [MobXPolicies.highlightIsCorrectedOnFilterChange],
+      },
     });
 
     installActions(this.insertion, {
-      insertItems: [
-        //
-        lbl(
-          'insertItems',
-          MovesCtrHandlers.handleInsertMoves(props.moveListsStore)
-        ),
-      ],
+      insertItems: {
+        insertItems: [MovesCtrHandlers.handleInsertMoves(props.moveListsStore)],
+      },
     });
 
     installActions(this.selection, {
-      selectItem: [
-        //
-        lbl('selectItem', handleSelectItem),
-        MobXPolicies.highlightFollowsSelection,
-      ],
+      selectItem: {
+        selectItem: [handleSelectItem, MobXPolicies.highlightFollowsSelection],
+      },
     });
   }
 

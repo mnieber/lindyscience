@@ -1,9 +1,11 @@
+import { Addition } from 'facet-mobx/facets/Addition';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { UserProfileT } from 'src/profiles/types';
 import { UUID } from 'src/kernel/types';
 import { MoveT } from 'src/moves/types';
 import { createUUID } from 'src/utils/utils';
 import { newMoveSlug } from 'src/moves/utils';
+import { getCtr } from 'facet';
 
 function createNewMove(
   userProfile: UserProfileT,
@@ -25,14 +27,13 @@ function createNewMove(
   };
 }
 
-export const handleCreateMove = (ctr: MovesContainer) => {
-  return (values: any) => {
-    if (!ctr.inputs.userProfile) {
-      throw Error('No user profile');
-    }
-    if (!ctr.inputs.moveList) {
-      throw Error('No movelist');
-    }
-    return createNewMove(ctr.inputs.userProfile, ctr.inputs.moveList.id);
-  };
-};
+export function handleCreateMove(this: Addition, values: any) {
+  const ctr = getCtr<MovesContainer>(this);
+  if (!ctr.inputs.userProfile) {
+    throw Error('No user profile');
+  }
+  if (!ctr.inputs.moveList) {
+    throw Error('No movelist');
+  }
+  return createNewMove(ctr.inputs.userProfile, ctr.inputs.moveList.id);
+}

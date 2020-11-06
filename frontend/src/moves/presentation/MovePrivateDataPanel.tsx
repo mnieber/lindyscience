@@ -3,14 +3,14 @@ import { observer } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import { keys } from 'lodash/fp';
-import { useDefaultProps, FC } from 'react-default-props-context';
 
+import { MovePrivateDataT, MoveT } from 'src/moves/types';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { Tags } from 'src/tags/presentation/Tags';
 import { MovePrivateDataForm } from 'src/moves/presentation/MovePrivateDataForm';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
-import { MoveT } from 'src/moves/types';
 import { MovesStore } from 'src/moves/MovesStore';
 
 type DefaultPropsT = {
@@ -19,6 +19,7 @@ type DefaultPropsT = {
   movesStore: MovesStore;
   movesEditingPD: EditingPrivateData;
   videoController?: any;
+  movePrivateData: MovePrivateDataT;
 };
 
 type PropsT = {};
@@ -26,10 +27,6 @@ type PropsT = {};
 export const MovePrivateDataPanel: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-
-    const movePrivateData = props.movesStore.getOrCreatePrivateData(
-      props.move.id
-    );
 
     const editBtn = (
       <FontAwesomeIcon
@@ -40,14 +37,14 @@ export const MovePrivateDataPanel: FC<PropsT, DefaultPropsT> = observer(
       />
     );
 
-    const tags = movePrivateData?.tags ?? [];
+    const tags = props.movePrivateData?.tags ?? [];
 
     const staticDiv = (
       <div>
         <MoveDescriptionEditor
-          key={movePrivateData?.notes}
+          key={props.movePrivateData?.notes}
           editorId={'privateData_' + props.move.id}
-          description={movePrivateData?.notes ?? ''}
+          description={props.movePrivateData?.notes ?? ''}
           readOnly={true}
           autoFocus={false}
           videoController={props.videoController}
@@ -68,7 +65,7 @@ export const MovePrivateDataPanel: FC<PropsT, DefaultPropsT> = observer(
         }}
         moveId={props.move.id}
         videoController={props.videoController}
-        movePrivateData={movePrivateData}
+        movePrivateData={props.movePrivateData}
         knownTags={keys(props.movesStore.tags)}
       />
     );

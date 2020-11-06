@@ -11,13 +11,7 @@ import { VotesStore } from 'src/votes/VotesStore';
 import { Display, initDisplay } from 'src/session/facets/Display';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import {
-  lbl,
-  facet,
-  installPolicies,
-  installActions,
-  registerFacets,
-} from 'facet';
+import { facet, installPolicies, installActions, registerFacets } from 'facet';
 
 type PropsT = {
   history: any;
@@ -35,48 +29,39 @@ export class SessionContainer {
 
   _installActions(props: PropsT) {
     installActions(this.authentication, {
-      loadUserId: [
-        //
-        lbl('loadUserId', SessionCtrHandlers.handleLoadUserId),
-      ],
-      signIn: [
-        //
-        lbl('signIn', SessionCtrHandlers.handleSignIn),
-        lbl('goNext', SessionCtrHandlers.handleGoNext),
-      ],
-      signOut: [
-        //
-        lbl('signOut', SessionCtrHandlers.handleSignOut),
-        lbl('goNext', SessionCtrHandlers.handleGoToSignIn),
-      ],
-      signUp: [
-        //
-        lbl('signUp', SessionCtrHandlers.handleSignUp),
-      ],
-      resetPassword: [
-        //
-        lbl('resetPassword', SessionCtrHandlers.handleResetPassword),
-      ],
-      changePassword: [
-        //
-        lbl('changePassword', SessionCtrHandlers.handleChangePassword),
-      ],
-      activateAccount: [
-        //
-        lbl('activateAccount', SessionCtrHandlers.handleActivateAccount),
-        lbl('goNext', SessionCtrHandlers.handleGoHome),
-      ],
+      loadUserId: {
+        loadUserId: [SessionCtrHandlers.handleLoadUserId],
+      },
+      signIn: {
+        signIn: [SessionCtrHandlers.handleSignIn],
+        goNext: [SessionCtrHandlers.handleGoNext],
+      },
+      signOut: {
+        signOut: [SessionCtrHandlers.handleSignOut],
+        goNext: [SessionCtrHandlers.handleGoToSignIn],
+      },
+      signUp: {
+        signUp: [SessionCtrHandlers.handleSignUp],
+      },
+      resetPassword: {
+        resetPassword: [SessionCtrHandlers.handleResetPassword],
+      },
+      changePassword: {
+        changePassword: [SessionCtrHandlers.handleChangePassword],
+      },
+      activateAccount: {
+        activateAccount: [SessionCtrHandlers.handleActivateAccount],
+        goNext: [SessionCtrHandlers.handleGoHome],
+      },
     });
 
     installActions(this.navigation, {
-      navigateToMoveList: [
-        //
-        lbl('navigate', SessionCtrHandlers.handleNavigateToMoveList),
-      ],
-      navigateToMove: [
-        //
-        lbl('navigate', SessionCtrHandlers.handleNavigateToMove),
-      ],
+      navigateToMoveList: {
+        navigate: [SessionCtrHandlers.handleNavigateToMoveList],
+      },
+      navigateToMove: {
+        navigate: [SessionCtrHandlers.handleNavigateToMove],
+      },
     });
   }
 

@@ -1,11 +1,12 @@
 import { observable } from 'mobx';
-import { data, operation, exec, sendMsg } from 'facet';
+import { data, operation, getCallbacks, sendMsg } from 'facet';
 
 export class Authentication {
   @data @observable signedInUserId?: string;
 
   @operation loadUserId() {
-    exec('loadUserId') //
+    const cb = getCallbacks();
+    cb.exec('loadUserId') //
       .then((response: any) => {
         if (response.errors) {
           sendMsg(this, 'LoadUserId.Failed', { errors: response.errors });
@@ -16,20 +17,22 @@ export class Authentication {
   }
 
   @operation signIn(userId: string, password: string, rememberMe: boolean) {
-    exec('signIn') //
+    const cb = getCallbacks();
+    cb.exec('signIn') //
       .then((response: any) => {
         if (response.errors) {
           sendMsg(this, 'SignIn.Failed', { errors: response.errors });
         } else {
           this.signedInUserId = response.userId;
           sendMsg(this, 'SignUp.Success');
-          exec('goNext');
+          cb.exec('goNext');
         }
       });
   }
 
   @operation signUp(email: string, username: string, password: string) {
-    exec('signUp') //
+    const cb = getCallbacks();
+    cb.exec('signUp') //
       .then((response: any) => {
         if (response.errors) {
           sendMsg(this, 'SignUp.Failed', { errors: response.errors });
@@ -40,7 +43,8 @@ export class Authentication {
   }
 
   @operation resetPassword(email: string) {
-    exec('resetPassword') //
+    const cb = getCallbacks();
+    cb.exec('resetPassword') //
       .then((response: any) => {
         if (response.errors) {
           sendMsg(this, 'ResetPassword.Failed', {
@@ -53,7 +57,8 @@ export class Authentication {
   }
 
   @operation changePassword(password: string, token: string) {
-    exec('changePassword') //
+    const cb = getCallbacks();
+    cb.exec('changePassword') //
       .then((response: any) => {
         if (response.errors) {
           sendMsg(this, 'ChangePassword.Failed', {
@@ -66,7 +71,8 @@ export class Authentication {
   }
 
   @operation activateAccount(token: string) {
-    exec('activateAccount') //
+    const cb = getCallbacks();
+    cb.exec('activateAccount') //
       .then((response: any) => {
         if (response.errors) {
           sendMsg(this, 'ActivateAccount.Failed', {
@@ -74,16 +80,17 @@ export class Authentication {
           });
         } else {
           sendMsg(this, 'ActivateAccount.Success');
-          exec('goNext');
+          cb.exec('goNext');
         }
       });
   }
 
   @operation signOut() {
-    exec('signOut') //
+    const cb = getCallbacks();
+    cb.exec('signOut') //
       .then((response: any) => {
         this.signedInUserId = 'anonymous';
-        exec('goNext');
+        cb.exec('goNext');
         sendMsg(this, 'SignOut.Success');
       });
   }

@@ -3,13 +3,7 @@ import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
-import {
-  lbl,
-  installActions,
-  facet,
-  installPolicies,
-  registerFacets,
-} from 'facet';
+import { installActions, facet, installPolicies, registerFacets } from 'facet';
 import { ClassMemberT } from 'facet/types';
 import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
 import { Addition, initAddition } from 'facet-mobx/facets/Addition';
@@ -51,58 +45,53 @@ export class MoveListsContainer {
 
   _installActions(props: PropsT) {
     installActions(this.addition, {
-      add: [
-        //
-        props.navigation.storeLocation,
-        MobXPolicies.newItemsAreAddedBelowTheHighlight,
-        lbl('createItem', MoveListsCtrHandlers.handleCreateMoveList(this)),
-        MobXPolicies.editingSetEnabled,
-      ],
-      confirm: [
-        lbl('confirm', MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed),
-      ],
-      cancel: [
-        //
-        MobXPolicies.editingSetDisabled,
-        props.navigation.restoreLocation,
-      ],
+      add: {
+        enter: [props.navigation.storeLocation],
+        createItem: [
+          MobXPolicies.newItemsAreAddedBelowTheHighlight,
+          MoveListsCtrHandlers.handleCreateMoveList(this),
+        ],
+        exit: [MobXPolicies.editingSetEnabled],
+      },
+      confirm: {
+        confirm: [MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed],
+      },
+      cancel: {
+        exit: [
+          MobXPolicies.editingSetDisabled,
+          props.navigation.restoreLocation,
+        ],
+      },
     });
 
     installActions(this.editing, {
-      save: [
-        //
-        lbl(
-          'saveItem',
-          MoveListsCtrHandlers.handleSaveMoveList(props.moveListsStore)
-        ),
-        MobXPolicies.newItemsAreConfirmedOnEditingSave,
-      ],
-      cancel: [
-        //
-        MobXPolicies.newItemsAreCancelledOnEditingCancel,
-      ],
+      save: {
+        saveItem: [
+          MoveListsCtrHandlers.handleSaveMoveList(props.moveListsStore),
+          MobXPolicies.newItemsAreConfirmedOnEditingSave,
+        ],
+      },
+      cancel: {
+        enter: [MobXPolicies.newItemsAreCancelledOnEditingCancel],
+      },
     });
 
     installActions(this.highlight, {
-      highlightItem: [
-        //
-        MobXPolicies.cancelNewItemOnHighlightChange,
-      ],
+      highlightItem: {
+        enter: [MobXPolicies.cancelNewItemOnHighlightChange],
+      },
     });
 
     installActions(this.labelling, {
-      setLabel: [
-        //
-        lbl('saveIds', MoveListsCtrHandlers.handleSaveLabels(props.profiling)),
-      ],
+      setLabel: {
+        saveIds: [MoveListsCtrHandlers.handleSaveLabels(props.profiling)],
+      },
     });
 
     installActions(this.selection, {
-      selectItem: [
-        //
-        lbl('selectItem', handleSelectItem),
-        MobXPolicies.highlightFollowsSelection,
-      ],
+      selectItem: {
+        selectItem: [handleSelectItem, MobXPolicies.highlightFollowsSelection],
+      },
     });
   }
 

@@ -1,52 +1,50 @@
 import Cookies from 'js-cookie';
 
+import { RST, resetRS } from 'src/utils/RST';
 import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { UserProfileT } from 'src/profiles/types';
 import { OwnedT, UUID } from 'src/kernel/types';
 import { isOwner } from 'src/app/utils';
 import { data, operation } from 'facet';
-import { installHandlers } from 'facet-mobx';
 
 export class Profiling {
   @data @observable userProfile?: UserProfileT;
+  @observable userProfileRS: RST = resetRS();
   @data @observable acceptsCookies: boolean = false;
 
   @action setFollowedMoveListIds(moveListIds: Array<UUID>) {
     if (this.userProfile) {
-      this.setUserProfile({
-        ...this.userProfile,
-        moveListIds,
-      });
+      this.setUserProfile(
+        {
+          ...this.userProfile,
+          moveListIds,
+        },
+        this.userProfileRS
+      );
     }
   }
 
-  @action setUserProfile(userProfile?: UserProfileT) {
+  @action setUserProfile(
+    userProfile: UserProfileT | undefined,
+    userProfileRS: RST
+  ) {
     this.userProfile = userProfile;
+    this.userProfileRS = userProfileRS;
   }
 
   isOwner(x: OwnedT) {
     return this.userProfile && isOwner(this.userProfile, x.ownerId);
   }
 
-  @operation acceptCookies() {}
+  @operation acceptCookies() {
+    Cookies.set('acceptCookies', '1');
+    this.acceptsCookies = true;
+  }
 
   static get = (ctr: any): Profiling => ctr.profiling;
 }
 
-function _handleAcceptCookies(this: Profiling) {
-  Cookies.set('acceptCookies', '1');
-  runInAction('acceptCookies', () => {
-    this.acceptsCookies = true;
-  });
-}
-
 export function initProfiling(self: Profiling): Profiling {
-  installHandlers(
-    {
-      acceptCookies: _handleAcceptCookies,
-    },
-    self
-  );
   runInAction('initProfiling', () => {
     self.acceptsCookies = Cookies.get('acceptCookies') === '1';
   });

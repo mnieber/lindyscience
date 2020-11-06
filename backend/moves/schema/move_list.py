@@ -101,6 +101,8 @@ class MoveListQuery(object):
         MoveListType, owner_username=graphene.String(), slug=graphene.String()
     )
 
+    move_list_tags = graphene.List(of_type=graphene.String)
+
     def resolve_find_move_lists(
         self, info, owner_username="", followed_by_username="", **kwargs
     ):
@@ -132,6 +134,10 @@ class MoveListQuery(object):
             else Q(is_private=False) | Q(owner=info.context.user)
         )
         return models.MoveList.objects.get(head & tail)
+
+    def resolve_move_list_tags(self, info, **kwargs):
+        result = models.MoveList.tags.tag_model.objects.order_by("-count")
+        return [x.name for x in result]
 
 
 class MoveListMutations:

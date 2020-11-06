@@ -50,6 +50,8 @@ class MoveQuery(object):
         tags=graphene.List(graphene.String),
     )
 
+    move_tags = graphene.List(of_type=graphene.String)
+
     def resolve_find_moves(self, info, keywords, tags, owner_username="", **kwargs):
         result = models.Move.objects.select_related(
             "source_move_list", "source_move_list__owner"
@@ -65,6 +67,10 @@ class MoveQuery(object):
             result = result.filter(tags=tag)
 
         return gql_optimizer.query(result, info)
+
+    def resolve_move_tags(self, info, **kwargs):
+        result = models.Move.tags.tag_model.objects.order_by("-count")
+        return [x.name for x in result]
 
 
 class MoveMutations:

@@ -76,14 +76,14 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
       />
     );
 
-    const isFollowing = (ml: MoveListT) =>
-      !!props.userProfile && props.userProfile.moveListIds.includes(ml.id);
+    const showMoveList = (ml: MoveListT) =>
+      !props.userProfile || props.userProfile.moveListIds.includes(ml.id);
 
     const moveListPicker = (
       <MoveListPicker
         key={props.moveList ? props.moveList.id : ''}
         className=""
-        filter={isFollowing}
+        filter={showMoveList}
         navigateTo={(x: MoveListT) => props.navigation.navigateToMoveList(x)}
       />
     );

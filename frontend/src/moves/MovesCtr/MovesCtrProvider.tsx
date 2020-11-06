@@ -57,9 +57,17 @@ export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
   };
 
   const getDefaultProps = (ctr: MovesContainer) => {
+    const movePrivateData = () => {
+      const moveId = Highlight.get(ctr).id;
+      return moveId
+        ? props.movesStore.getOrCreatePrivateData(moveId)
+        : undefined;
+    };
+
     return {
       movesCtr: () => ctr,
       move: () => Highlight.get(ctr).item,
+      movePrivateData: () => movePrivateData(),
       moves: () => ctr.outputs.display,
       movesEditing: () => ctr.editing,
       movesEditingPD: () => ctr.editingPrivateData,

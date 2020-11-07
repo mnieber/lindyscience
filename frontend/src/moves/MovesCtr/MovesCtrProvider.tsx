@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 
 import { lookUp } from 'src/utils/utils';
 import { Navigation } from 'src/session/facets/Navigation';
@@ -24,7 +23,8 @@ type DefaultPropsT = {
   moveLists: Array<MoveListT>;
 };
 
-export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
+// Note: don't observe this with MobX
+export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
   const createCtr = () => {
     return new MovesContainer({
@@ -88,4 +88,4 @@ export const MovesCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
       children={props.children}
     />
   );
-});
+};

@@ -1,6 +1,5 @@
-import { compose, values } from 'lodash/fp';
+import { values } from 'lodash/fp';
 import * as React from 'react';
-import { observer } from 'mobx-react';
 
 import { Profiling } from 'src/session/facets/Profiling';
 import { Navigation } from 'src/session/facets/Navigation';
@@ -20,9 +19,8 @@ type DefaultPropsT = {
   moveListsStore: MoveListsStore;
 };
 
-export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = compose(
-  observer
-)((p: PropsT) => {
+// Note: don't observe this with MobX
+export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const createCtr = () => {
@@ -69,4 +67,4 @@ export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = compose(
       {props.children}
     </CtrProvider>
   );
-});
+};

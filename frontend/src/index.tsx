@@ -16,6 +16,8 @@ import { MoveListsCtrProvider } from 'src/move_lists/MovelistsCtrProvider';
 import { MovesCtrProvider } from 'src/moves/MovesCtr/MovesCtrProvider';
 import { AppFrame } from 'src/app/containers/AppFrame';
 import { UrlRouter } from 'src/app/containers/UrlRouter';
+import { MoveCtrProvider } from 'src/moves/MoveCtr/MoveCtrProvider';
+import { TipsCtrProvider } from 'src/tips/TipsCtrProvider';
 
 configureStore();
 
@@ -23,9 +25,13 @@ ReactDOM.render(
   <SessionCtrProvider>
     <MoveListsCtrProvider>
       <MovesCtrProvider>
-        <AppFrame>
-          <UrlRouter />
-        </AppFrame>
+        <MoveCtrProvider>
+          <TipsCtrProvider>
+            <AppFrame>
+              <UrlRouter />
+            </AppFrame>
+          </TipsCtrProvider>
+        </MoveCtrProvider>
       </MovesCtrProvider>
     </MoveListsCtrProvider>
   </SessionCtrProvider>,

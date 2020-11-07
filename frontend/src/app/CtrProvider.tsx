@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 
 import { NestedDefaultPropsProvider } from 'react-default-props-context';
 
-export const CtrProvider: React.FC<any> = observer((props: any) => {
+export const CtrProvider: React.FC<any> = (props: any) => {
   const [ctr] = React.useState(props.createCtr);
 
   React.useEffect(() => {
@@ -17,4 +16,4 @@ export const CtrProvider: React.FC<any> = observer((props: any) => {
       {props.children}
     </NestedDefaultPropsProvider>
   );
-});
+};

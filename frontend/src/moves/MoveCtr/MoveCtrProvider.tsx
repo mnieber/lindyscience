@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 
 import { MovesStore } from 'src/moves/MovesStore';
 import { Display as SessionDisplay } from 'src/session/facets/Display';
@@ -17,7 +16,8 @@ type DefaultPropsT = {
   movesStore: MovesStore;
 };
 
-export const MoveCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
+// Note: don't observe this with MobX
+export const MoveCtrProvider: React.FC<PropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
   const createCtr = () => {
@@ -56,4 +56,4 @@ export const MoveCtrProvider: React.FC<PropsT> = observer((p: PropsT) => {
       children={props.children}
     />
   );
-});
+};

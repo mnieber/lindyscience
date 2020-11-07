@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 
 import { UserProfileT } from 'src/profiles/types';
 import { TipsStore } from 'src/tips/TipsStore';
@@ -17,45 +16,44 @@ type DefaultPropsT = {
   tipsStore: TipsStore;
 };
 
-export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = observer(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-    const createCtr = () => {
-      return new TipsCtr({ tipsStore: props.tipsStore });
-    };
+// Note: don't observe this with MobX
+export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
+  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const createCtr = () => {
+    return new TipsCtr({ tipsStore: props.tipsStore });
+  };
 
-    const updateCtr = (ctr: TipsCtr) => {
-      reaction(
-        () => ({
-          move: props.move,
-          tips: props.tipsStore.tipsByMoveId[props.move?.id] ?? [],
-          userProfile: props.userProfile,
-        }),
-        ({ move, tips, userProfile }) => {
-          ctr.inputs.move = move;
-          ctr.inputs.tips = tips;
-          ctr.inputs.userProfile = userProfile;
-        }
-      );
-    };
-
-    const getDefaultProps = (ctr: TipsCtr) => {
-      return {
-        tips: () => ctr.outputs.display,
-        tipsEditing: () => ctr.editing,
-        tipsAddition: () => ctr.addition,
-        tipsHighlight: () => ctr.highlight,
-        tipsDeletion: () => ctr.deletion,
-      };
-    };
-
-    return (
-      <CtrProvider
-        createCtr={createCtr}
-        updateCtr={updateCtr}
-        getDefaultProps={getDefaultProps}
-        children={props.children}
-      />
+  const updateCtr = (ctr: TipsCtr) => {
+    reaction(
+      () => ({
+        move: props.move,
+        tips: props.tipsStore.tipsByMoveId[props.move?.id] ?? [],
+        userProfile: props.userProfile,
+      }),
+      ({ move, tips, userProfile }) => {
+        ctr.inputs.move = move;
+        ctr.inputs.tips = tips;
+        ctr.inputs.userProfile = userProfile;
+      }
     );
-  }
-);
+  };
+
+  const getDefaultProps = (ctr: TipsCtr) => {
+    return {
+      tips: () => ctr.outputs.display,
+      tipsEditing: () => ctr.editing,
+      tipsAddition: () => ctr.addition,
+      tipsHighlight: () => ctr.highlight,
+      tipsDeletion: () => ctr.deletion,
+    };
+  };
+
+  return (
+    <CtrProvider
+      createCtr={createCtr}
+      updateCtr={updateCtr}
+      getDefaultProps={getDefaultProps}
+      children={props.children}
+    />
+  );
+};

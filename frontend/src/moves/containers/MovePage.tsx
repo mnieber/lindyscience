@@ -54,9 +54,6 @@ export const MovePage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
     }
 
     const _setAltLink = action((altLink: string | undefined) => {
-      if (altLink) {
-        props.videoController.setPlayer(undefined);
-      }
       props.moveCtr.inputs.altLink = altLink;
     });
 

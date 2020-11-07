@@ -17,7 +17,6 @@ import {
 } from 'facet-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListT } from 'src/move_lists/types';
-
 import { mapData } from 'facet-mobx';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';

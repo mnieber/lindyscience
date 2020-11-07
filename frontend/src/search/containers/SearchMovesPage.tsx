@@ -1,7 +1,7 @@
-import { keys } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
+import { TagsStore } from 'src/tags/TagsStore';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { SearchMovesForm } from 'src/search/presentation/SearchMovesForm';
 import { UserProfileT } from 'src/profiles/types';
@@ -16,6 +16,7 @@ type PropsT = {};
 type DefaultPropsT = {
   userProfile: UserProfileT;
   movesStore: MovesStore;
+  tagsStore: TagsStore;
   navigation: Navigation;
 };
 
@@ -54,7 +55,7 @@ export const SearchMovesPage: FC<PropsT, DefaultPropsT> = observer(
     return (
       <SearchMovesForm
         autoFocus={false}
-        knownTags={keys(props.movesStore.tags)}
+        knownTags={props.tagsStore.moveTags}
         latestOptions={latestOptions}
         onSubmit={_findMoves}
       />

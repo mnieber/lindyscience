@@ -136,7 +136,7 @@ class MoveListQuery(object):
         return models.MoveList.objects.get(head & tail)
 
     def resolve_move_list_tags(self, info, **kwargs):
-        result = models.MoveList.tags.tag_model.objects.order_by("-count")
+        result = models.MoveList.tags.tag_model.objects.order_by("-count")[:200]
         return [x.name for x in result]
 
 

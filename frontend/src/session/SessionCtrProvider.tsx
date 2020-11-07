@@ -24,6 +24,7 @@ export const SessionCtrProvider: FC<PropsT, DefaultPropsT> = observer(
 
       const ctr = new SessionContainer({ history });
       ctr.authentication.loadUserId();
+      ctr.tagsStore.loadKnownTags();
       return ctr;
     };
 
@@ -47,6 +48,7 @@ export const SessionCtrProvider: FC<PropsT, DefaultPropsT> = observer(
         moveListsStore: () => ctr.moveListsStore,
         tipsStore: () => ctr.tipsStore,
         votesStore: () => ctr.votesStore,
+        tagsStore: () => ctr.tagsStore,
       };
     };
 

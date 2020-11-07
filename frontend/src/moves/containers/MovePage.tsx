@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
+import { TagsStore } from 'src/tags/TagsStore';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { action } from 'src/utils/mobx_wrapper';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
@@ -34,6 +35,7 @@ type DefaultPropsT = {
   videoController: VideoController;
   moveForm: any;
   moveKeyHandlers: any;
+  tagsStore: TagsStore;
 };
 
 export const MovePage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
@@ -70,7 +72,7 @@ export const MovePage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
           _setAltLink(undefined);
           props.movesEditing.cancel();
         }}
-        knownTags={props.move?.tags ?? []}
+        knownTags={props.tagsStore.moveTags}
         videoController={props.videoController}
         setAltLink={_setAltLink}
       />

@@ -44,7 +44,7 @@ export const SearchMovesForm: FC<PropsT, DefaultPropsT> = observer(
     const tagsAndKeywordsField = (
       <div className="moveForm__tags mt-2 ml-2 w-full">
         <TagsAndKeywordsPicker
-          knownTags={[...props.knownTags, 'one', 'two']}
+          knownTags={props.knownTags}
           placeholder={placeholder}
           zIndex={10}
           onChange={_onPickerChange}

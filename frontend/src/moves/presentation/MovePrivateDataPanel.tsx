@@ -2,8 +2,8 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
-import { keys } from 'lodash/fp';
 
+import { TagsStore } from 'src/tags/TagsStore';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
@@ -17,6 +17,7 @@ type DefaultPropsT = {
   move: MoveT;
   userProfile: UserProfileT;
   movesStore: MovesStore;
+  tagsStore: TagsStore;
   movesEditingPD: EditingPrivateData;
   videoController?: any;
   movePrivateData: MovePrivateDataT;
@@ -66,7 +67,7 @@ export const MovePrivateDataPanel: FC<PropsT, DefaultPropsT> = observer(
         moveId={props.move.id}
         videoController={props.videoController}
         movePrivateData={props.movePrivateData}
-        knownTags={keys(props.movesStore.tags)}
+        knownTags={props.tagsStore.moveTags}
       />
     );
 

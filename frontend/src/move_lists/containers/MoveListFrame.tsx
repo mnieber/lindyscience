@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import CheeseburgerMenu from 'cheeseburger-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
-import { keys } from 'lodash/fp';
 
+import { TagsStore } from 'src/tags/TagsStore';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
 import { Addition } from 'facet-mobx/facets/Addition';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
@@ -42,6 +42,7 @@ type DefaultPropsT = {
   navigation: Navigation;
   sessionDisplay: SessionDisplay;
   movesStore: MovesStore;
+  tagsStore: TagsStore;
   movesClipboard: Clipboard;
   isOwner: (obj: any) => boolean;
 };
@@ -98,7 +99,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
     const moveListFilter = (
       <MoveListFilter
         className=""
-        moveTags={keys(props.movesStore.tags)}
+        moveTags={props.tagsStore.moveTags}
         movesFiltering={props.movesFiltering}
       />
     );

@@ -12,14 +12,7 @@ import { useScheduledCall } from 'src/utils/useScheduledCall';
 export interface PickerValueT {
   value: any;
   label: string;
-}
-
-export class NewPickerValue {
-  label: string;
-
-  constructor(label: string) {
-    this.label = label;
-  }
+  __isNew__?: boolean;
 }
 
 type CustomizationsT = {
@@ -43,11 +36,13 @@ type PropsT<ValueT> = {
 } & CustomizationsT;
 
 export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
-  const toPickerValue = (formValue: ValueT) => {
-    return {
-      value: formValue,
-      label: props.labelFromValue(formValue),
-    };
+  const toPickerValue = (formValue: any) => {
+    return formValue.__isNew__
+      ? formValue
+      : {
+          value: formValue,
+          label: props.labelFromValue(formValue),
+        };
   };
 
   const formState = useFormStateContext();
@@ -57,10 +52,9 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
   const scheduleSubmit = useScheduledCall(formState.submit);
 
   const saveChanges = (value: any, { action }: any) => {
-    const toFormValue =
-      action === 'create-option'
-        ? (value: PickerValueT) => new NewPickerValue(value.label)
-        : (value: PickerValueT) => value.value;
+    const toFormValue = (value: PickerValueT) => {
+      return value.__isNew__ ? value : value.value;
+    };
 
     const formValue = props.isMulti
       ? (value || []).map(toFormValue)

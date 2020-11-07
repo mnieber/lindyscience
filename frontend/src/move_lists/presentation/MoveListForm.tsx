@@ -58,8 +58,11 @@ export function MoveListForm(props: PropsT) {
   };
 
   const handleSubmit = ({ values }: HandleSubmitArgsT) => {
+    const toFormValue = (x: any) => (x.__isNew__ ? x.label : x);
+
     props.onSubmit({
       ...values,
+      tags: values.tags.map(toFormValue),
       id: props.moveList.id,
       description: getContentFromEditor(descriptionEditorRef.current, ''),
     });

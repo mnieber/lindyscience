@@ -7,6 +7,7 @@ import * as SessionCtrHandlers from 'src/session/handlers';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { TipsStore } from 'src/tips/TipsStore';
+import { TagsStore } from 'src/tags/TagsStore';
 import { VotesStore } from 'src/votes/VotesStore';
 import { Display, initDisplay } from 'src/session/facets/Display';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
@@ -26,6 +27,7 @@ export class SessionContainer {
   @facet movesStore: MovesStore;
   @facet tipsStore: TipsStore;
   @facet votesStore: VotesStore;
+  @facet tagsStore: TagsStore;
 
   _installActions(props: PropsT) {
     installActions(this.authentication, {
@@ -63,6 +65,18 @@ export class SessionContainer {
         navigate: [SessionCtrHandlers.handleNavigateToMove],
       },
     });
+
+    installActions(this.movesStore, {
+      addMoves: {
+        exit: [SessionCtrHandlers.handleAddMoveTags],
+      },
+    });
+
+    installActions(this.moveListsStore, {
+      addMoveLists: {
+        exit: [SessionCtrHandlers.handleAddMoveListTags],
+      },
+    });
   }
 
   _applyPolicies(props: PropsT) {
@@ -89,6 +103,7 @@ export class SessionContainer {
     this.movesStore = new MovesStore();
     this.tipsStore = new TipsStore();
     this.votesStore = new VotesStore();
+    this.tagsStore = new TagsStore();
 
     registerFacets(this);
     this._installActions(props);

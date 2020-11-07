@@ -5,16 +5,14 @@ import {
   MovePrivateDataT,
   MoveT,
 } from 'src/moves/types';
-import { TagMapT } from 'src/tags/types';
 import { MoveSearchResultT } from 'src/search/types';
 import { UUID } from 'src/kernel/types';
 import { createUUID, listToItemById } from 'src/utils/utils';
-import { addTags } from 'src/tags/utils';
+import { operation } from 'facet';
 
 export class MovesStore {
   @observable privateDataByMoveId: MovePrivateDataByIdT = {};
   @observable moveById: MoveByIdT = {};
-  @observable tags: TagMapT = {};
   @observable searchResults: Array<MoveSearchResultT> = [];
 
   @action addMovePrivateDatas(privateDataByMoveId: MovePrivateDataByIdT) {
@@ -24,27 +22,15 @@ export class MovesStore {
     };
   }
 
-  @action addMoves(moves: Array<MoveT>) {
+  @operation addMoves(moves: Array<MoveT>) {
     this.moveById = {
       ...this.moveById,
       ...listToItemById(moves),
-    };
-
-    this.tags = {
-      ...this.tags,
-      ...addTags(
-        moves.map((x: MoveT) => x.tags),
-        this.tags
-      ),
     };
   }
 
   @action setPrivateDataByMoveId(privateDataByMoveId: MovePrivateDataByIdT) {
     this.privateDataByMoveId = privateDataByMoveId;
-  }
-
-  @action setTags(tags: TagMapT) {
-    this.tags = tags;
   }
 
   @action setSearchResults(searchResults: Array<MoveSearchResultT>) {

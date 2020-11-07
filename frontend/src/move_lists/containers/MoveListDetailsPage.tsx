@@ -3,8 +3,8 @@ import { observer } from 'mobx-react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
-import { keys } from 'lodash/fp';
 
+import { TagsStore } from 'src/tags/TagsStore';
 import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
 import { useDefaultProps, FC } from 'react-default-props-context';
@@ -27,6 +27,7 @@ type DefaultPropsT = {
   userProfile: UserProfileT;
   moveListsStore: MoveListsStore;
   cutVideoPanel: any;
+  tagsStore: TagsStore;
 };
 
 export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = observer(
@@ -60,7 +61,7 @@ export const MoveListDetailsPage: FC<PropsT, DefaultPropsT> = observer(
       <MoveListForm
         moveList={props.moveList}
         autoFocus={true}
-        knownTags={keys(props.moveListsStore.tags)}
+        knownTags={props.tagsStore.moveListTags}
         moveListSlugs={bannedMoveListSlugs}
         onSubmit={(values) => props.moveListsEditing.save(values)}
         onCancel={() => props.moveListsEditing.cancel()}

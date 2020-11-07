@@ -69,7 +69,7 @@ class MoveQuery(object):
         return gql_optimizer.query(result, info)
 
     def resolve_move_tags(self, info, **kwargs):
-        result = models.Move.tags.tag_model.objects.order_by("-count")
+        result = models.Move.tags.tag_model.objects.order_by("-count")[:200]
         return [x.name for x in result]
 
 

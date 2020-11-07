@@ -1,32 +1,17 @@
 import { action, observable } from 'src/utils/mobx_wrapper';
 import { MoveListByIdT, MoveListRSByIdT } from 'src/move_lists/types';
-import { TagMapT } from 'src/tags/types';
 import { UUID } from 'src/kernel/types';
-import { addTags } from 'src/tags/utils';
 import { insertIdsIntoList } from 'src/utils/utils';
-import { always, flow, map, values } from 'lodash/fp';
+import { operation } from 'facet';
 
 export class MoveListsStore {
   @observable moveListById: MoveListByIdT = {};
   @observable moveListRSByUrl: MoveListRSByIdT = {};
-  @observable tags: TagMapT = {};
 
-  @action addMoveLists(moveListById: MoveListByIdT) {
+  @operation addMoveLists(moveListById: MoveListByIdT) {
     this.moveListById = {
       ...this.moveListById,
       ...moveListById,
-    };
-
-    this.tags = {
-      ...this.tags,
-      ...addTags(
-        flow(
-          always(moveListById),
-          values,
-          map((x) => x.tags)
-        )(),
-        this.tags
-      ),
     };
   }
 
@@ -61,9 +46,5 @@ export class MoveListsStore {
       },
     };
     return moveIds;
-  }
-
-  @action setTags(tags: TagMapT) {
-    this.tags = tags;
   }
 }

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { useDefaultProps, FC } from 'react-default-props-context';
-import { keys } from 'lodash/fp';
 
+import { TagsStore } from 'src/tags/TagsStore';
+import { useDefaultProps, FC } from 'react-default-props-context';
 import { UUID } from 'src/kernel/types';
 import { CutPoints } from 'src/video/facets/CutPoints';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
@@ -14,6 +14,7 @@ type PropsT = {};
 type DefaultPropsT = {
   cutPoints: CutPoints;
   movesStore: MovesStore;
+  tagsStore: TagsStore;
 };
 
 export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
@@ -49,7 +50,7 @@ export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
 
     const cutPointList = (
       <CutPointList
-        moveTags={keys(props.movesStore.tags)}
+        moveTags={props.tagsStore.moveTags}
         cutPoints={props.cutPoints}
         highlightedCutPoint={undefined}
         selectCutPointById={selectCutPointById}

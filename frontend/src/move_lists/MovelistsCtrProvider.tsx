@@ -1,7 +1,6 @@
-import { compose } from 'lodash/fp';
+import { compose, values } from 'lodash/fp';
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { values } from 'lodash/fp';
 
 import { Profiling } from 'src/session/facets/Profiling';
 import { Navigation } from 'src/session/facets/Navigation';

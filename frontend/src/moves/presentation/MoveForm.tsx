@@ -63,6 +63,9 @@ export const MoveForm: React.FC<PropsT> = (props: PropsT) => {
   const handleSubmit = ({ values }: HandleSubmitArgsT) => {
     props.onSubmit({
       ...values,
+      tags: values.tags.map((x: any) => {
+        return x.__isNew__ ? x.label : x;
+      }),
       id: props.move.id,
       startTimeMs: Math.trunc((values.startTime as number) * 1000),
       endTimeMs: Math.trunc((values.endTime as number) * 1000),

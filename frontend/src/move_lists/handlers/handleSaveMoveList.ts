@@ -18,6 +18,7 @@ export const handleSaveMoveList = (moveListsStore: MoveListsStore) =>
     };
 
     moveListsStore.addMoveLists(listToItemById([newMoveList]));
+
     return apiSaveMoveList(newMoveList).catch(
       createErrorHandler('We could not save the movelist')
     );

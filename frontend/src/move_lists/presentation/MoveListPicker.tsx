@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react';
 
-import { ValuePicker, NewPickerValue } from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/value_picker';
 import { MoveListT } from 'src/move_lists/types';
 import { Addition } from 'facet-mobx/facets/Addition';
 import { Highlight } from 'facet-mobx/facets/Highlight';
@@ -37,7 +37,7 @@ export const MoveListPicker: FC<PropsT, DefaultPropsT> = observer(
     };
 
     const handleSubmit = ({ values }: HandleSubmitArgsT) => {
-      if (values.moveList instanceof NewPickerValue) {
+      if (values.moveList.__isNew__) {
         props.moveListsAddition.add({ name: values.moveList.label });
         props.navigateTo(props.moveListsAddition.item);
       } else if (!!values.moveList) {

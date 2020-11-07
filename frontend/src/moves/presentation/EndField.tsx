@@ -51,7 +51,11 @@ export const EndField = (props: PropsT) => {
         <GotoEndBtn key="gotoEndBtn" />,
       ]}
     >
-      <TextField className="w-full" placeholder="End time in seconds" />
+      <TextField
+        controlled={true}
+        className="w-full"
+        placeholder="End time in seconds"
+      />
     </Field>
   );
 };

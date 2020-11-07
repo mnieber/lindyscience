@@ -55,7 +55,11 @@ export const StartField = (props: PropsT) => {
         <GotoStartBtn key="gotoStartBtn" />,
       ]}
     >
-      <TextField className="w-full" placeholder="Start time in seconds" />
+      <TextField
+        controlled={true}
+        className="w-full"
+        placeholder="Start time in seconds"
+      />
     </Field>
   );
 };

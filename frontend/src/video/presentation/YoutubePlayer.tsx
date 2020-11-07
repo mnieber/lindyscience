@@ -15,20 +15,16 @@ type PropsT = {
 
 export function YoutubePlayer(props: PropsT) {
   const params = props.videoUrlProps.params;
+  const { videoController } = props;
+  const video = videoController.video;
+  const link = video ? video.link : '';
 
-  const video = props.videoController.video;
   const startTime =
     video && !isNone(video.startTimeMs)
       ? (video.startTimeMs || 0) / 1000
       : params && !isNone(params.start)
       ? params.start
       : null;
-
-  const link = props.videoController.video
-    ? props.videoController.video.link
-    : '';
-
-  const { videoController } = props;
 
   React.useEffect(() => {
     if (link) {
@@ -50,8 +46,8 @@ export function YoutubePlayer(props: PropsT) {
     const player = event.target;
     runInAction(() => {
       setTimeout(() => {
-        props.videoController.setPlayer(player);
-        props.videoController.pauseAt(startTime || 0);
+        videoController.setPlayer(player);
+        videoController.pauseAt(startTime || 0);
       }, 100);
     });
     props.setIFrame(player.getIframe());
@@ -59,12 +55,12 @@ export function YoutubePlayer(props: PropsT) {
 
   const _onPlay = () => {
     runInAction(() => {
-      props.videoController.isPlaying = true;
+      videoController.isPlaying = true;
     });
   };
   const _onPause = () => {
     runInAction(() => {
-      props.videoController.isPlaying = false;
+      videoController.isPlaying = false;
     });
   };
 
@@ -74,10 +70,7 @@ export function YoutubePlayer(props: PropsT) {
       // @ts-ignore
       opts={opts}
       onReady={_onReady}
-      onStateChange={(x) => {
-        // const state: any = x.target.getPlayerState();
-        props.videoController.setPlayerState(x.data);
-      }}
+      onStateChange={(x) => videoController.setPlayerState(x.data)}
       onPlay={_onPlay}
       onPause={_onPause}
     />

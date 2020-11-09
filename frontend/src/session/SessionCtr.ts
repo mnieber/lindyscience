@@ -12,7 +12,7 @@ import { VotesStore } from 'src/votes/VotesStore';
 import { Display, initDisplay } from 'src/session/facets/Display';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import { facet, installPolicies, installActions, registerFacets } from 'facet';
+import { facet, installPolicies, setCallbacks, registerFacets } from 'facet';
 
 type PropsT = {
   history: any;
@@ -29,8 +29,8 @@ export class SessionContainer {
   @facet votesStore: VotesStore;
   @facet tagsStore: TagsStore;
 
-  _installActions(props: PropsT) {
-    installActions(this.authentication, {
+  _setCallbacks(props: PropsT) {
+    setCallbacks(this.authentication, {
       loadUserId: {
         loadUserId: [SessionCtrHandlers.handleLoadUserId],
       },
@@ -57,7 +57,7 @@ export class SessionContainer {
       },
     });
 
-    installActions(this.navigation, {
+    setCallbacks(this.navigation, {
       navigateToMoveList: {
         navigate: [SessionCtrHandlers.handleNavigateToMoveList],
       },
@@ -66,13 +66,13 @@ export class SessionContainer {
       },
     });
 
-    installActions(this.movesStore, {
+    setCallbacks(this.movesStore, {
       addMoves: {
         exit: [SessionCtrHandlers.handleAddMoveTags],
       },
     });
 
-    installActions(this.moveListsStore, {
+    setCallbacks(this.moveListsStore, {
       addMoveLists: {
         exit: [SessionCtrHandlers.handleAddMoveListTags],
       },
@@ -106,7 +106,7 @@ export class SessionContainer {
     this.tagsStore = new TagsStore();
 
     registerFacets(this);
-    this._installActions(props);
+    this._setCallbacks(props);
     this._applyPolicies(props);
   }
 }

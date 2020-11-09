@@ -3,7 +3,7 @@ import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
-import { installActions, facet, installPolicies, registerFacets } from 'facet';
+import { setCallbacks, facet, installPolicies, registerFacets } from 'facet';
 import { ClassMemberT } from 'facet/types';
 import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
 import { Addition, initAddition } from 'facet-mobx/facets/Addition';
@@ -42,8 +42,8 @@ export class MoveListsContainer {
   @facet selection: Selection = initSelection(new Selection());
   @facet labelling: Labelling = initLabelling(new Labelling());
 
-  _installActions(props: PropsT) {
-    installActions(this.addition, {
+  _setCallbacks(props: PropsT) {
+    setCallbacks(this.addition, {
       add: {
         enter: [props.navigation.storeLocation],
         createItem: [
@@ -63,7 +63,7 @@ export class MoveListsContainer {
       },
     });
 
-    installActions(this.editing, {
+    setCallbacks(this.editing, {
       save: {
         saveItem: [
           MoveListsCtrHandlers.handleSaveMoveList(props.moveListsStore),
@@ -75,19 +75,19 @@ export class MoveListsContainer {
       },
     });
 
-    installActions(this.highlight, {
+    setCallbacks(this.highlight, {
       highlightItem: {
         enter: [MobXPolicies.cancelNewItemOnHighlightChange],
       },
     });
 
-    installActions(this.labelling, {
+    setCallbacks(this.labelling, {
       setLabel: {
         saveIds: [MoveListsCtrHandlers.handleSaveLabels(props.profiling)],
       },
     });
 
-    installActions(this.selection, {
+    setCallbacks(this.selection, {
       selectItem: {
         selectItem: [handleSelectItem, MobXPolicies.highlightFollowsSelection],
       },
@@ -126,7 +126,7 @@ export class MoveListsContainer {
 
   constructor(props: PropsT) {
     registerFacets(this);
-    this._installActions(props);
+    this._setCallbacks(props);
     this._applyPolicies(props);
   }
 }

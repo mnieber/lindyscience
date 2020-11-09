@@ -4,7 +4,7 @@ import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { DragAndDrop, initDragAndDrop } from 'facet-mobx/facets/DragAndDrop';
 import { Editing, initEditing } from 'facet-mobx/facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
-import { installActions, facet, installPolicies, registerFacets } from 'facet';
+import { setCallbacks, facet, installPolicies, registerFacets } from 'facet';
 import { Filtering, initFiltering } from 'facet-mobx/facets/Filtering';
 import { getIds } from 'src/app/utils';
 import { Highlight } from 'facet-mobx/facets/Highlight';
@@ -48,10 +48,10 @@ export class MovesContainer {
   handlerSelectWithKeys = new SelectWithKeys({ container: this });
   handlerClick = new ClickToSelectItems({ container: this });
 
-  _installActions(props: PropsT) {
+  _setCallbacks(props: PropsT) {
     const navigateToMove = props.navigation.navigateToMove;
 
-    installActions(this.addition, {
+    setCallbacks(this.addition, {
       add: {
         enter: [
           props.navigation.storeLocation,
@@ -75,13 +75,13 @@ export class MovesContainer {
       },
     });
 
-    installActions(this.dragAndDrop, {
+    setCallbacks(this.dragAndDrop, {
       drop: {
         drop: [MobXPolicies.selectionIsInsertedOnDragAndDrop],
       },
     });
 
-    installActions(this.editing, {
+    setCallbacks(this.editing, {
       save: {
         saveItem: [
           MovesCtrHandlers.handleSaveMove(props.movesStore),
@@ -94,31 +94,31 @@ export class MovesContainer {
       },
     });
 
-    installActions(this.editingPrivateData, {
+    setCallbacks(this.editingPrivateData, {
       save: {
         saveItem: [MovesCtrHandlers.handleSavePrivateData(props.movesStore)],
       },
     });
 
-    installActions(this.highlight, {
+    setCallbacks(this.highlight, {
       highlightItem: {
         enter: [MobXPolicies.cancelNewItemOnHighlightChange],
       },
     });
 
-    installActions(this.filtering, {
+    setCallbacks(this.filtering, {
       apply: {
         exit: [MobXPolicies.highlightIsCorrectedOnFilterChange],
       },
     });
 
-    installActions(this.insertion, {
+    setCallbacks(this.insertion, {
       insertItems: {
         insertItems: [MovesCtrHandlers.handleInsertMoves(props.moveListsStore)],
       },
     });
 
-    installActions(this.selection, {
+    setCallbacks(this.selection, {
       selectItem: {
         selectItem: [handleSelectItem, MobXPolicies.highlightFollowsSelection],
       },
@@ -160,7 +160,7 @@ export class MovesContainer {
 
   constructor(props: PropsT) {
     registerFacets(this);
-    this._installActions(props);
+    this._setCallbacks(props);
     this._applyPolicies(props);
 
     this.clipboard = new Clipboard({

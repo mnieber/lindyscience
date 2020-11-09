@@ -1,7 +1,7 @@
 import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
-import { installActions, facet, installPolicies, registerFacets } from 'facet';
+import { setCallbacks, facet, installPolicies, registerFacets } from 'facet';
 import { mapData } from 'facet-mobx';
 import { Addition } from 'facet-mobx/facets/Addition';
 import { Highlight } from 'facet-mobx/facets/Highlight';
@@ -26,8 +26,8 @@ export class TipsCtr {
   @facet inputs: Inputs = initInputs(new Inputs());
   @facet outputs: Outputs = initOutputs(new Outputs());
 
-  _installActions(props: PropsT) {
-    installActions(this.addition, {
+  _setCallbacks(props: PropsT) {
+    setCallbacks(this.addition, {
       add: {
         createItem: [
           MobXPolicies.newItemsAreCreatedAtTheTop,
@@ -41,13 +41,13 @@ export class TipsCtr {
       },
     });
 
-    installActions(this.deletion, {
+    setCallbacks(this.deletion, {
       delete: {
         deleteItems: [TipsCtrHandlers.handleDeleteTips(props.tipsStore)],
       },
     });
 
-    installActions(this.editing, {
+    setCallbacks(this.editing, {
       save: {
         saveItem: [
           TipsCtrHandlers.handleSaveTip(this, props.tipsStore),
@@ -59,7 +59,7 @@ export class TipsCtr {
       },
     });
 
-    installActions(this.highlight, {
+    setCallbacks(this.highlight, {
       highlightItem: {
         enter: [MobXPolicies.cancelNewItemOnHighlightChange],
       },
@@ -90,7 +90,7 @@ export class TipsCtr {
 
   constructor(props: PropsT) {
     registerFacets(this);
-    this._installActions(props);
+    this._setCallbacks(props);
     this._applyPolicies(props);
   }
 }

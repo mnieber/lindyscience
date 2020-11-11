@@ -10,7 +10,7 @@ import { Deletion, initDeletion } from 'facet-mobx/facets/Deletion';
 import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
-import * as TipsCtrHandlers from 'src/tips/handlers';
+import * as Handlers from 'src/tips/handlers';
 import { TipT } from 'src/tips/types';
 
 type PropsT = {
@@ -31,7 +31,9 @@ export class TipsCtr {
       add: {
         createItem: [
           MobXPolicies.newItemsAreCreatedAtTheTop,
-          TipsCtrHandlers.handleCreateTip(this),
+          Handlers.handleCreateTip(this),
+        ],
+        createItem_post: [
           MobXPolicies.highlightNewItem,
           MobXPolicies.editingSetEnabled,
         ],
@@ -43,14 +45,14 @@ export class TipsCtr {
 
     setCallbacks(this.deletion, {
       delete: {
-        deleteItems: [TipsCtrHandlers.handleDeleteTips(props.tipsStore)],
+        deleteItems: [Handlers.handleDeleteTips(props.tipsStore)],
       },
     });
 
     setCallbacks(this.editing, {
       save: {
         saveItem: [
-          TipsCtrHandlers.handleSaveTip(this, props.tipsStore),
+          Handlers.handleSaveTip(this, props.tipsStore),
           MobXPolicies.newItemsAreConfirmedOnEditingSave,
         ],
       },

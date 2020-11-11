@@ -21,7 +21,7 @@ import { mapData } from 'facet-mobx';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';
-import * as MoveListsCtrHandlers from 'src/move_lists/handlers';
+import * as Handlers from 'src/move_lists/handlers';
 import * as SessionCtrPolicies from 'src/session/policies';
 
 type PropsT = {
@@ -48,7 +48,7 @@ export class MoveListsContainer {
         enter: [props.navigation.storeLocation],
         createItem: [
           MobXPolicies.newItemsAreAddedBelowTheHighlight,
-          MoveListsCtrHandlers.handleCreateMoveList(this),
+          Handlers.handleCreateMoveList(this),
         ],
         exit: [MobXPolicies.editingSetEnabled],
       },
@@ -66,7 +66,7 @@ export class MoveListsContainer {
     setCallbacks(this.editing, {
       save: {
         saveItem: [
-          MoveListsCtrHandlers.handleSaveMoveList(props.moveListsStore),
+          Handlers.handleSaveMoveList(props.moveListsStore),
           MobXPolicies.newItemsAreConfirmedOnEditingSave,
         ],
       },
@@ -83,7 +83,7 @@ export class MoveListsContainer {
 
     setCallbacks(this.labelling, {
       setLabel: {
-        saveIds: [MoveListsCtrHandlers.handleSaveLabels(props.profiling)],
+        saveIds: [Handlers.handleSaveLabels(props.profiling)],
       },
     });
 

@@ -2,8 +2,8 @@ import {
   Authentication,
   initAuthentication,
 } from 'src/session/facets/Authentication';
-import * as SessionCtrPolicies from 'src/session/policies';
-import * as SessionCtrHandlers from 'src/session/handlers';
+import * as Policies from 'src/session/policies';
+import * as Handlers from 'src/session/handlers';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { TipsStore } from 'src/tips/TipsStore';
@@ -32,49 +32,49 @@ export class SessionContainer {
   _setCallbacks(props: PropsT) {
     setCallbacks(this.authentication, {
       loadUserId: {
-        loadUserId: [SessionCtrHandlers.handleLoadUserId],
+        loadUserId: [Handlers.handleLoadUserId],
       },
       signIn: {
-        signIn: [SessionCtrHandlers.handleSignIn],
-        goNext: [SessionCtrHandlers.handleGoNext],
+        signIn: [Handlers.handleSignIn],
+        goNext: [Handlers.handleGoNext],
       },
       signOut: {
-        signOut: [SessionCtrHandlers.handleSignOut],
-        goNext: [SessionCtrHandlers.handleGoToSignIn],
+        signOut: [Handlers.handleSignOut],
+        goNext: [Handlers.handleGoToSignIn],
       },
       signUp: {
-        signUp: [SessionCtrHandlers.handleSignUp],
+        signUp: [Handlers.handleSignUp],
       },
       resetPassword: {
-        resetPassword: [SessionCtrHandlers.handleResetPassword],
+        resetPassword: [Handlers.handleResetPassword],
       },
       changePassword: {
-        changePassword: [SessionCtrHandlers.handleChangePassword],
+        changePassword: [Handlers.handleChangePassword],
       },
       activateAccount: {
-        activateAccount: [SessionCtrHandlers.handleActivateAccount],
-        goNext: [SessionCtrHandlers.handleGoHome],
+        activateAccount: [Handlers.handleActivateAccount],
+        goNext: [Handlers.handleGoHome],
       },
     });
 
     setCallbacks(this.navigation, {
       navigateToMoveList: {
-        navigate: [SessionCtrHandlers.handleNavigateToMoveList],
+        navigate: [Handlers.handleNavigateToMoveList],
       },
       navigateToMove: {
-        navigate: [SessionCtrHandlers.handleNavigateToMove],
+        navigate: [Handlers.handleNavigateToMove],
       },
     });
 
     setCallbacks(this.movesStore, {
       addMoves: {
-        exit: [SessionCtrHandlers.handleAddMoveTags],
+        exit: [Handlers.handleAddMoveTags],
       },
     });
 
     setCallbacks(this.moveListsStore, {
       addMoveLists: {
-        exit: [SessionCtrHandlers.handleAddMoveListTags],
+        exit: [Handlers.handleAddMoveListTags],
       },
     });
   }
@@ -82,11 +82,11 @@ export class SessionContainer {
   _applyPolicies(props: PropsT) {
     const policies = [
       // profiling
-      SessionCtrPolicies.handleLoadUserProfileForSignedInEmail,
+      Policies.handleLoadUserProfileForSignedInEmail,
       // navigation
-      SessionCtrPolicies.handleLoadSelectedMoveListFromUrl,
+      Policies.handleLoadSelectedMoveListFromUrl,
       // tips
-      SessionCtrPolicies.handleVoteOnTip,
+      Policies.handleVoteOnTip,
     ];
 
     installPolicies<SessionContainer>(policies, this);

@@ -21,7 +21,7 @@ import { MoveT } from 'src/moves/types';
 import * as MobXFacets from 'facet-mobx/facets';
 import * as MobXPolicies from 'facet-mobx/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
-import * as MovesCtrHandlers from 'src/moves/MovesCtr/handlers';
+import * as Handlers from 'src/moves/MovesCtr/handlers';
 
 type PropsT = {
   moveListsStore: MoveListsStore;
@@ -59,10 +59,10 @@ export class MovesContainer {
         ],
         createItem: [
           MobXPolicies.newItemsAreAddedBelowTheHighlight,
-          MovesCtrHandlers.handleCreateMove,
+          Handlers.handleCreateMove,
         ],
         exit: [
-          MovesCtrHandlers.handleNavigateToNewMove(navigateToMove),
+          Handlers.handleNavigateToNewMove(navigateToMove),
           MobXPolicies.editingSetEnabled,
         ],
       },
@@ -84,9 +84,9 @@ export class MovesContainer {
     setCallbacks(this.editing, {
       save: {
         saveItem: [
-          MovesCtrHandlers.handleSaveMove(props.movesStore),
+          Handlers.handleSaveMove(props.movesStore),
           MobXPolicies.newItemsAreConfirmedOnEditingSave,
-          MovesCtrHandlers.handleNavigateToSavedMove(navigateToMove),
+          Handlers.handleNavigateToSavedMove(navigateToMove),
         ],
       },
       cancel: {
@@ -96,7 +96,7 @@ export class MovesContainer {
 
     setCallbacks(this.editingPrivateData, {
       save: {
-        saveItem: [MovesCtrHandlers.handleSavePrivateData(props.movesStore)],
+        saveItem: [Handlers.handleSavePrivateData(props.movesStore)],
       },
     });
 
@@ -114,13 +114,14 @@ export class MovesContainer {
 
     setCallbacks(this.insertion, {
       insertItems: {
-        insertItems: [MovesCtrHandlers.handleInsertMoves(props.moveListsStore)],
+        insertItems: [Handlers.handleInsertMoves(props.moveListsStore)],
       },
     });
 
     setCallbacks(this.selection, {
       selectItem: {
-        selectItem: [handleSelectItem, MobXPolicies.highlightFollowsSelection],
+        selectItem: [handleSelectItem],
+        selectItem_post: [MobXPolicies.highlightFollowsSelection],
       },
     });
   }
@@ -165,7 +166,7 @@ export class MovesContainer {
 
     this.clipboard = new Clipboard({
       ctr: this,
-      shareMovesToList: MovesCtrHandlers.handleShareMovesToList(
+      shareMovesToList: Handlers.handleShareMovesToList(
         this,
         props.navigation,
         props.moveListsStore

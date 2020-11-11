@@ -1,6 +1,6 @@
 import * as _ from 'lodash/fp';
 import { action, computed, observable } from 'src/utils/mobx_wrapper';
-import { operation, exec } from 'facet';
+import { output, operation, exec } from 'facet';
 import { CutPointByIdT, CutPointT } from 'src/video/types';
 import { listToItemById } from 'src/utils/utils';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
@@ -29,7 +29,7 @@ export class CutPointsStore {
     return this.videoController?.video?.link || '';
   }
 
-  @computed get cutPoints() {
+  @computed @output get cutPoints() {
     return _.flow(
       _.always(this.cutPointById),
       _.values,

@@ -37,8 +37,10 @@ export const CutVideoKeyHandler = observer((p: PropsT) => {
           !props.sessionDisplay.fullVideoWidth
         );
       }),
-    'ctrl+shift+insert': () => props.cutPointsAddition.add('start'),
-    'ctrl+shift+alt+insert': () => props.cutPointsAddition.add('end'),
+    'ctrl+shift+insert': () =>
+      props.cutPointsAddition.add({ cutPointType: 'start' }),
+    'ctrl+shift+alt+insert': () =>
+      props.cutPointsAddition.add({ cutPointType: 'end' }),
     'ctrl+shift+l': () => {
       jQuery('#linkPanelInput').focus();
     },

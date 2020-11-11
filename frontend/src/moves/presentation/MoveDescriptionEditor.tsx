@@ -32,6 +32,7 @@ type PropsT = {
   videoController?: VideoController;
   editorRef?: any;
   placeholder?: string;
+  onBlur?: (e: React.FocusEvent) => void;
 };
 
 export function MoveDescriptionEditor(props: PropsT) {
@@ -91,6 +92,7 @@ export function MoveDescriptionEditor(props: PropsT) {
       ref={props.editorRef}
       customStyleMap={styleMap}
       placeholder={props.placeholder}
+      onBlur={props.onBlur}
     />
   );
 }

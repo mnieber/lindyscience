@@ -24,7 +24,7 @@ type DefaultPropsT = {
 export const CutPointList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
-  const cutPointNodes = props.cutPoints.map((cutPoint, idx) => {
+  const cutPointNodes = props.cutPoints.map((cutPoint: CutPointT) => {
     const form = (
       <CutPointForm
         cutPoint={cutPoint}
@@ -36,11 +36,11 @@ export const CutPointList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
     );
     return (
       <div
+        key={cutPoint.id}
         className={classnames({
           cutPointList__item: true,
         })}
         id={cutPoint.id}
-        key={idx}
       >
         <CutPointHeader
           cutPoint={cutPoint}

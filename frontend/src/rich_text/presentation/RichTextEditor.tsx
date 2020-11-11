@@ -18,6 +18,7 @@ type PropsT = {
   customHandleKeyCommand?: Function;
   customKeyBindingFn?: Function;
   ref?: any;
+  onBlur?: (e: React.FocusEvent) => void;
 };
 
 // TODO: use Modifier.replaceText(selection, inlineStyle) to convert content to nicely styled readonly content
@@ -73,6 +74,7 @@ function RichTextEditorImpl(props: PropsT) {
       readOnly={props.readOnly}
       customStyleMap={props.customStyleMap}
       placeholder={props.placeholder}
+      onBlur={props.onBlur}
     />
   );
 }

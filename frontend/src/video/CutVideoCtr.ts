@@ -33,6 +33,7 @@ export class CutVideoContainer {
     setCallbacks(this.addition, {
       add: {
         createItem: [Handlers.handleCreateCutPoint],
+        createItem_post: [() => this.addition.confirm()],
       },
       confirm: {
         confirm: [Handlers.insertCutPointWhenConfirmed],

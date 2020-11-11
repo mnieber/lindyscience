@@ -46,8 +46,6 @@ export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
       />
     );
 
-    const cutPointList = <CutPointList />;
-
     const buttonCreateMoves = (
       <div className="mt-4">
         <button
@@ -71,7 +69,7 @@ export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
           {linkPanel}
           {videoPlayerPanel}
           {buttonCreateMoves}
-          {cutPointList}
+          <CutPointList />
         </div>
       </div>
     );

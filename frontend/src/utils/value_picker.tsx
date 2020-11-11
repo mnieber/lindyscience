@@ -24,6 +24,7 @@ type CustomizationsT = {
   onMenuOpen?: Function;
   onMenuClose?: Function;
   inputValue?: string;
+  onBlur?: (e: React.FocusEvent) => void;
 };
 
 type PropsT<ValueT> = {
@@ -79,6 +80,7 @@ export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
       ? formValue.map(toPickerValue)
       : toPickerValue(formValue),
     onChange: saveChanges,
+    onBlur: props.onBlur,
     onKeyDown: (e: any) => {
       if (props.tabOnEnter ?? true) {
         handleEnterAsTabToNext(e, false);

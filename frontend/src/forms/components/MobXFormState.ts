@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { clearObject } from 'src/utils/object';
 import { observable, action } from 'src/utils/mobx_wrapper';
 
 export class MobXFormState {
@@ -11,7 +10,6 @@ export class MobXFormState {
   }
 
   @action setValues = (values: any[]) => {
-    clearObject(this.values);
     for (const prop of Object.getOwnPropertyNames(values)) {
       this.values[prop as any] = values[prop as any];
     }

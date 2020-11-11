@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { isNil } from 'lodash/fp';
+import { observer } from 'mobx-react';
 
 import { handleEnterAsTabToNext } from 'src/utils/form_utils';
 import { stripQuotes } from 'src/utils/utils';
@@ -36,79 +37,79 @@ type PropsT<ValueT> = {
   labelFromValue: (value: ValueT) => string;
 } & CustomizationsT;
 
-export const ValuePicker = <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
-  const toPickerValue = (formValue: any) => {
-    return formValue.__isNew__
-      ? formValue
-      : {
-          value: formValue,
-          label: props.labelFromValue(formValue),
-        };
-  };
-
-  const formState = useFormStateContext();
-  const fieldContext = useFormFieldContext();
-  const formValue = formState.values[fieldContext.fieldName];
-  const options = props.pickableValues.map(toPickerValue);
-  const scheduleSubmit = useScheduledCall(formState.submit);
-
-  const saveChanges = (value: any, { action }: any) => {
-    const toFormValue = (value: PickerValueT) => {
-      return value.__isNew__ ? value : value.value;
+export const ValuePicker = observer(
+  <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
+    const toPickerValue = (formValue: any) => {
+      return formValue.__isNew__
+        ? formValue
+        : {
+            value: formValue,
+            label: props.labelFromValue(formValue),
+          };
     };
 
-    const formValue = props.isMulti
-      ? (value || []).map(toFormValue)
-      : toFormValue(value);
+    const formState = useFormStateContext();
+    const fieldContext = useFormFieldContext();
+    const formValue = formState.values[fieldContext.fieldName];
+    const options = props.pickableValues.map(toPickerValue);
+    const scheduleSubmit = useScheduledCall(formState.submit);
 
-    formState.setValue(fieldContext.fieldName, formValue);
+    const saveChanges = (value: any, { action }: any) => {
+      const toFormValue = (value: PickerValueT) => {
+        return value.__isNew__ ? value : value.value;
+      };
 
-    if (!!props.submitOnChange) {
+      const formValue = props.isMulti
+        ? (value || []).map(toFormValue)
+        : toFormValue(value);
+
       formState.setValue(fieldContext.fieldName, formValue);
-      scheduleSubmit();
-    }
-  };
-
-  const pickerProps = {
-    isMulti: props.isMulti,
-    name: fieldContext.fieldName,
-    options,
-    placeholder: fieldContext.label,
-    value: isNil(formValue)
-      ? undefined
-      : props.isMulti
-      ? formValue.map(toPickerValue)
-      : toPickerValue(formValue),
-    onChange: saveChanges,
-    onBlur: props.onBlur,
-    onKeyDown: (e: any) => {
-      if (props.tabOnEnter ?? true) {
-        handleEnterAsTabToNext(e, false);
+      if (!!props.submitOnChange) {
+        scheduleSubmit();
       }
-      if (props.onKeyDown) {
-        props.onKeyDown(e);
-      }
-    },
-    filterOption: props.filterOption,
-    noOptionsMessage: props.noOptionsMessage,
-    onInputChange: props.onInputChange,
-    onMenuOpen: () => {
-      if (props.onMenuOpen) props.onMenuOpen();
-    },
-    onMenuClose: () => {
-      if (props.onMenuClose) props.onMenuClose();
-    },
-    ...(props.inputValue ? { inputValue: props.inputValue } : {}),
-  };
+    };
 
-  const picker = props.isCreatable ? (
-    <CreatableSelect {...pickerProps} />
-  ) : (
-    <Select {...pickerProps} />
-  );
+    const pickerProps = {
+      isMulti: props.isMulti,
+      name: fieldContext.fieldName,
+      options,
+      placeholder: fieldContext.label,
+      value: isNil(formValue)
+        ? undefined
+        : props.isMulti
+        ? formValue.map(toPickerValue)
+        : toPickerValue(formValue),
+      onChange: saveChanges,
+      onBlur: props.onBlur,
+      onKeyDown: (e: any) => {
+        if (props.tabOnEnter ?? true) {
+          handleEnterAsTabToNext(e, false);
+        }
+        if (props.onKeyDown) {
+          props.onKeyDown(e);
+        }
+      },
+      filterOption: props.filterOption,
+      noOptionsMessage: props.noOptionsMessage,
+      onInputChange: props.onInputChange,
+      onMenuOpen: () => {
+        if (props.onMenuOpen) props.onMenuOpen();
+      },
+      onMenuClose: () => {
+        if (props.onMenuClose) props.onMenuClose();
+      },
+      ...(props.inputValue ? { inputValue: props.inputValue } : {}),
+    };
 
-  return <div style={{ zIndex: props.zIndex }}>{picker}</div>;
-};
+    const picker = props.isCreatable ? (
+      <CreatableSelect {...pickerProps} />
+    ) : (
+      <Select {...pickerProps} />
+    );
+
+    return <div style={{ zIndex: props.zIndex }}>{picker}</div>;
+  }
+);
 
 export function strToPickerValue(value: string) {
   return {

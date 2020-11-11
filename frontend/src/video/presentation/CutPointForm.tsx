@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
 import {
   FormStateProvider,
@@ -24,7 +25,7 @@ type PropsT = {
   autoFocus: boolean;
 };
 
-export function CutPointForm(props: PropsT) {
+export const CutPointForm = observer((props: PropsT) => {
   const editorRef = React.useRef(null);
 
   const initialValues = {
@@ -56,6 +57,7 @@ export function CutPointForm(props: PropsT) {
 
   const FormFields = () => {
     const formState = useFormStateContext();
+
     const onBlur = (e: React.FocusEvent) => {
       const target = e.relatedTarget as HTMLElement;
       const parentForm = target?.closest('#' + formId);
@@ -128,4 +130,4 @@ export function CutPointForm(props: PropsT) {
       </form>
     </FormStateProvider>
   );
-}
+});

@@ -22,8 +22,4 @@ export type CutPointT = {
   tags: Array<TagT>;
 };
 
-export type CutPointBvrsT = {
-  removeCutPoints: (uuids: Array<UUID>) => void;
-  saveCutPoint: (values: any) => void;
-  createMovesFromCutPoints: () => void;
-};
+export type CutPointByIdT = { [id: string]: CutPointT };

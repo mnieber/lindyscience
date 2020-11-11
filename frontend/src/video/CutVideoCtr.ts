@@ -1,12 +1,14 @@
+import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
-import { installPolicies } from 'facet';
+import { setCallbacks, facet, installPolicies, registerFacets } from 'facet';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { CutPoints, initCutPoints } from 'src/video/facets/CutPoints';
-import { CutPointT } from 'src/video/types';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
-import { createMoveFromCutPoint } from 'src/app/utils';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';
+import { Addition, initAddition } from 'facet-mobx/facets/Addition';
+import { Editing, initEditing } from 'facet-mobx/facets/Editing';
+import { Deletion, initDeletion } from 'facet-mobx/facets/Deletion';
+import * as Handlers from 'src/video/handlers';
 
 export type PropsT = {
   rootDivId: string;
@@ -14,9 +16,12 @@ export type PropsT = {
 };
 
 export class CutVideoContainer {
-  inputs: Inputs;
-  display: Display;
-  cutPoints: CutPoints;
+  @facet inputs: Inputs;
+  @facet display: Display;
+  @facet cutPointsStore: CutPointsStore = new CutPointsStore();
+  @facet addition: Addition = initAddition(new Addition());
+  @facet editing: Editing = initEditing(new Editing());
+  @facet deletion: Deletion = initDeletion(new Deletion());
 
   _applyPolicies(props: PropsT) {
     const policies = [updateVideoWidth];
@@ -24,25 +29,42 @@ export class CutVideoContainer {
     installPolicies<CutVideoContainer>(policies, this);
   }
 
+  _setCallbacks(props: PropsT) {
+    setCallbacks(this.addition, {
+      add: {
+        createItem: [Handlers.handleCreateCutPoint],
+      },
+      confirm: {
+        confirm: [Handlers.insertCutPointWhenConfirmed],
+      },
+    });
+
+    setCallbacks(this.editing, {
+      save: {
+        saveItem: [Handlers.handleSaveCutPoint],
+      },
+    });
+
+    setCallbacks(this.deletion, {
+      delete: {
+        deleteItems: [Handlers.handleDeleteCutPoints],
+      },
+    });
+
+    setCallbacks(this.cutPointsStore, {
+      createMoves: {
+        createMoves: [Handlers.handleCreateMoves(props.saveMoves)],
+        createMoves_post: [Handlers.removeAllCutPoints],
+      },
+    });
+  }
+
   constructor(props: PropsT) {
     this.inputs = initInputs(new Inputs());
-    this.cutPoints = initCutPoints(
-      new CutPoints(
-        (cutPoint: CutPointT, videoLink: string) => {
-          return createMoveFromCutPoint(
-            cutPoint,
-            videoLink,
-            this.inputs.userProfile as any,
-            this.inputs.moveList as any
-          );
-        },
-        (moves: Array<MoveT>) => {
-          props.saveMoves(moves, this.inputs.moveList as any);
-        }
-      )
-    );
     this.display = initDisplay(new Display(), props.rootDivId);
 
+    registerFacets(this);
+    this._setCallbacks(props);
     this._applyPolicies(props);
   }
 }

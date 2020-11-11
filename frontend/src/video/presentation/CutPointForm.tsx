@@ -26,6 +26,7 @@ export function CutPointForm(props: PropsT) {
   const editorRef = React.useRef(null);
 
   const initialValues = {
+    id: props.cutPoint.id,
     name: props.cutPoint.name,
     description: props.cutPoint.description,
     tags: props.cutPoint.tags,
@@ -45,7 +46,6 @@ export function CutPointForm(props: PropsT) {
   const handleSubmit = ({ values }: HandleSubmitArgsT) => {
     props.onSubmit({
       ...values,
-      id: props.cutPoint.id,
       description: getContentFromEditor(editorRef.current, ''),
     });
   };

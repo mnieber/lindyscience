@@ -26,10 +26,11 @@ export function cutVideoContainerProps(
       apiSaveMove(newMove).catch(
         createErrorHandler('We could not save the move')
       );
-      apiSaveMoveOrdering(moveList.id, moveIdsInMoveList).catch(
-        createErrorHandler('We could not update the movelist')
-      );
     });
+
+    apiSaveMoveOrdering(moveList.id, moveIdsInMoveList).catch(
+      createErrorHandler('We could not update the movelist')
+    );
   };
 
   return {

@@ -24,24 +24,32 @@ export const handleCreateMoves = (
 
     const newMoves: Array<MoveT> = this.cutPoints.reduce(
       (acc: any, cutPoint: CutPointT) => {
-        if (cutPoint.type === 'end') {
-          const lastMoveIdx = acc.length - 1;
-          const lastMove = acc.length ? acc[lastMoveIdx] : undefined;
-          return lastMove && isNone(lastMove.endTimeMs)
-            ? [
-                ...acc.slice(0, lastMoveIdx),
-                { ...lastMove, endTimeMs: cutPoint.t * 1000 },
-              ]
-            : acc;
-        } else {
-          const newMove = createMoveFromCutPoint(
-            cutPoint,
-            this.videoLink,
-            userProfile,
-            moveList
-          );
-          return [...acc, newMove];
-        }
+        const lastMoveIdx = acc.length - 1;
+        const lastMove = acc.length ? acc[lastMoveIdx] : undefined;
+        const lastMoveArray =
+          lastMove && isNone(lastMove.endTimeMs)
+            ? [{ ...lastMove, endTimeMs: cutPoint.t * 1000 }]
+            : lastMove
+            ? [lastMove]
+            : [];
+
+        const newMoveArray =
+          cutPoint.type === 'end'
+            ? []
+            : [
+                createMoveFromCutPoint(
+                  cutPoint,
+                  this.videoLink,
+                  userProfile,
+                  moveList
+                ),
+              ];
+
+        return [
+          ...acc.slice(0, lastMoveIdx),
+          ...lastMoveArray,
+          ...newMoveArray,
+        ];
       },
       []
     );

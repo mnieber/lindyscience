@@ -8,6 +8,7 @@ import { useDefaultProps, FC } from 'react-default-props-context';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { CutPointList } from 'src/video/presentation/CutPointList';
 import { MovesStore } from 'src/moves/MovesStore';
+import { useScheduledCall } from 'src/utils/useScheduledCall';
 
 type PropsT = {};
 
@@ -21,6 +22,9 @@ type DefaultPropsT = {
 export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+    const scheduleCreateMoves = useScheduledCall(
+      props.cutPointsStore.createMoves
+    );
 
     const onKeyDown = (e: any) => {
       if (e.keyCode === 13) {
@@ -51,7 +55,7 @@ export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
         <button
           className="button"
           onClick={() => {
-            props.cutPointsStore.createMoves();
+            scheduleCreateMoves();
           }}
         >
           Create moves

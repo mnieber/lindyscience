@@ -2,4 +2,3 @@ export { handleLoadSelectedMoveListFromUrl } from 'src/session/policies/handleLo
 export { handleLoadUserProfileForSignedInEmail } from 'src/session/policies/handleLoadUserProfileForSignedInEmail';
 export { syncMoveWithCurrentUrl } from 'src/session/policies/selectTheMoveThatMatchesTheUrl';
 export { selectTheMoveListThatMatchesTheUrl } from 'src/session/policies/selectTheMovelistThatMatchesTheUrl';
-export { handleVoteOnTip } from 'src/session/policies/handleVoteOnTip';

@@ -7,6 +7,7 @@ export { handleNavigateToMoveList } from './handleNavigateToMovelist';
 export { handleNavigateToMove } from './handleNavigateToMove';
 export { handleAddMoveTags } from './handleAddMoveTags';
 export { handleAddMoveListTags } from './handleAddMoveListTags';
+export { handleVoteOnTip } from './handleVoteOnTip';
 
 export function handleActivateAccount(token: string) {
   return authApi.activateAccount(token);

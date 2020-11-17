@@ -77,6 +77,12 @@ export class SessionContainer {
         exit: [Handlers.handleAddMoveListTags],
       },
     });
+
+    setCallbacks(this.votesStore, {
+      castVote: {
+        exit: [Handlers.handleVoteOnTip],
+      },
+    });
   }
 
   _applyPolicies(props: PropsT) {
@@ -85,8 +91,6 @@ export class SessionContainer {
       Policies.handleLoadUserProfileForSignedInEmail,
       // navigation
       Policies.handleLoadSelectedMoveListFromUrl,
-      // tips
-      Policies.handleVoteOnTip,
     ];
 
     installPolicies<SessionContainer>(policies, this);

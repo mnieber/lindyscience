@@ -5,8 +5,7 @@ import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/app/CtrProvider';
-import { useDefaultProps } from 'react-default-props-context';
+import { useDefaultProps, CtrProvider } from 'react-default-props-context';
 
 type PropsT = React.PropsWithChildren<{
   ctrKey?: string;

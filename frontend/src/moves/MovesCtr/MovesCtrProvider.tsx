@@ -8,8 +8,7 @@ import { MovesStore } from 'src/moves/MovesStore';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/app/CtrProvider';
-import { useDefaultProps } from 'react-default-props-context';
+import { useDefaultProps, CtrProvider } from 'react-default-props-context';
 import { Highlight } from 'facet-mobx/facets/Highlight';
 
 type PropsT = React.PropsWithChildren<{}>;

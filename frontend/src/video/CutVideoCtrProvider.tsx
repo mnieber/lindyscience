@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useDefaultProps, FC } from 'react-default-props-context';
+import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
 import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
@@ -9,7 +9,6 @@ import { MovesStore } from 'src/moves/MovesStore';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
 import { cutVideoContainerProps } from 'src/video/CutVideoCtrProps';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/app/CtrProvider';
 
 type PropsT = React.PropsWithChildren<{}>;
 

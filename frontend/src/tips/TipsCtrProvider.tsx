@@ -5,8 +5,7 @@ import { TipsStore } from 'src/tips/TipsStore';
 import { MoveT } from 'src/moves/types';
 import { TipsCtr } from 'src/tips/TipsCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
-import { CtrProvider } from 'src/app/CtrProvider';
-import { useDefaultProps, FC } from 'react-default-props-context';
+import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
 
 type PropsT = React.PropsWithChildren<{
   ctrKey?: string;

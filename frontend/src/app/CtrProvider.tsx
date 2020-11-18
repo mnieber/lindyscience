@@ -2,8 +2,31 @@ import * as React from 'react';
 
 import { NestedDefaultPropsProvider } from 'react-default-props-context';
 
-export const CtrProvider: React.FC<any> = (props: any) => {
-  const [ctr] = React.useState(props.createCtr);
+const ctrByKey: { [ctrKey: string]: any } = {};
+
+type PropsT = React.PropsWithChildren<{
+  ctrKey?: string;
+  createCtr: Function;
+  updateCtr: Function;
+  getDefaultProps: Function;
+}>;
+
+export const CtrProvider: React.FC<PropsT> = (props: PropsT) => {
+  const [ctr] = React.useState(() => {
+    const existingCtr =
+      props.ctrKey && ctrByKey[props.ctrKey]
+        ? ctrByKey[props.ctrKey]
+        : undefined;
+    if (existingCtr) {
+      return existingCtr;
+    }
+
+    const ctr = props.createCtr();
+    if (props.ctrKey) {
+      ctrByKey[props.ctrKey] = ctr;
+    }
+    return ctr;
+  });
 
   React.useEffect(() => {
     if (props.updateCtr) {

@@ -7,6 +7,8 @@ import { MoveListFrame } from 'src/move_lists/containers/MoveListFrame';
 import { CutVideoCtrProvider } from 'src/video/CutVideoCtrProvider';
 import { MoveListDetailsPage } from 'src/move_lists/containers/MoveListDetailsPage';
 import { MovePage } from 'src/moves/containers/MovePage';
+import { MoveCtrProvider } from 'src/moves/MoveCtr/MoveCtrProvider';
+import { TipsCtrProvider } from 'src/tips/TipsCtrProvider';
 
 export const ListsSwitch = () => {
   return (
@@ -26,7 +28,11 @@ export const ListsSwitch = () => {
           ]}
         >
           <NavigateToMoveEffect />
-          <MovePage />
+          <MoveCtrProvider ctrKey="globalMoveCtr">
+            <TipsCtrProvider ctrKey="globalTipsCtr">
+              <MovePage />
+            </TipsCtrProvider>
+          </MoveCtrProvider>
         </Route>
       </Switch>
     </MoveListFrame>

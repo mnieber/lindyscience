@@ -8,7 +8,9 @@ import { reaction } from 'src/utils/mobx_wrapper';
 import { CtrProvider } from 'src/app/CtrProvider';
 import { useDefaultProps, FC } from 'react-default-props-context';
 
-type PropsT = React.PropsWithChildren<{}>;
+type PropsT = React.PropsWithChildren<{
+  ctrKey?: string;
+}>;
 
 type DefaultPropsT = {
   move: MoveT;
@@ -50,6 +52,7 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
 
   return (
     <CtrProvider
+      ctrKey={props.ctrKey}
       createCtr={createCtr}
       updateCtr={updateCtr}
       getDefaultProps={getDefaultProps}

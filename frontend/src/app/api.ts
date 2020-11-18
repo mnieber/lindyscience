@@ -17,7 +17,10 @@ export async function apiSignIn(email: string, password: string) {
   }
   try {
     const response = toCamelCase(
-      await post('http://localhost:8000/auth/token/login', { email, password })
+      await post(`http://${window.location.hostname}:8000/auth/token/login`, {
+        email,
+        password,
+      })
     );
     if (response.authToken) {
       setToken(response.authToken);

@@ -4,7 +4,7 @@ import { GraphQLClient } from 'graphql-request';
 function _createClient() {
   const authToken = Cookies.get('authToken');
 
-  return new GraphQLClient(`http://localhost:8000/graphql/`, {
+  return new GraphQLClient(`http://${window.location.hostname}:8000/graphql/`, {
     headers: authToken
       ? {
           Authorization: 'JWT ' + authToken,

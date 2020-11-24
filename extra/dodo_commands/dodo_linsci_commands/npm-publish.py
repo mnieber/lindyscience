@@ -2,6 +2,7 @@ import os
 from argparse import ArgumentParser
 
 from dodo_commands import CommandError, ConfigArg, Dodo
+from dodo_commands.framework.choice_picker import ChoicePicker
 
 
 def _args():
@@ -30,19 +31,35 @@ if Dodo.is_main(__name__, safe=True):
     src_sub_dirs = [
         "react-form-state-context",
         "react-default-props-context",
-        "facet",
-        "facet-mobx",
+        "aspiration",
+        "facility",
+        "facility-mobx",
     ]
 
-    if args.login:
-        Dodo.run(["npm", "adduser", "--registry", "http://verdaccio:4873"])
-
+    choices = []
     for src_sub_dir in src_sub_dirs:
+        choices.append(dict(name=src_sub_dir, cid=src_sub_dir, image=src_sub_dir))
+
+    class Picker(ChoicePicker):
+        def print_choices(self, choices):
+            for idx, container in enumerate(choices):
+                print("%d - %s" % (idx + 1, container["name"]))
+
+        def question(self):
+            return "Select packages to publish: "
+
+    __import__("pudb").set_trace()
+    picker = Picker(choices)
+    picker.pick()
+
+    if args.login:
+        Dodo.run(["npm", "login"])
+
+    for choice in picker.get_choices():
+        src_sub_dir = choice["name"]
         src_dir = os.path.join(args.npm_dir, src_sub_dir)
         dist_dir = os.path.join(args.npm_dir, src_sub_dir, "dist")
         Dodo.run(["./node_modules/.bin/tsc", "--outDir", "dist"], cwd=src_dir)
         Dodo.run(["yarn", "version", "--patch"], cwd=src_dir)
-        Dodo.run(["cp", "package.json", "dist"], cwd=src_dir)
-        Dodo.run(
-            ["npm", "publish", "--registry", "http://verdaccio:4873"], cwd=dist_dir
-        )
+        Dodo.run(["cp", "package.json", "README.md", "dist"], cwd=src_dir)
+        Dodo.run(["npm", "publish"], cwd=dist_dir)

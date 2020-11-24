@@ -26,12 +26,11 @@ export const SessionCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
     return ctr;
   };
 
-  const updateCtr = (ctr: SessionContainer) => {
+  const updateCtr = (ctr: SessionContainer) =>
     reaction(
       () => [],
       () => {}
     );
-  };
 
   const getDefaultProps = (ctr: SessionContainer) => {
     return {

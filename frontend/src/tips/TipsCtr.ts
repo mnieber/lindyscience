@@ -37,7 +37,7 @@ export class TipsCtr {
       add: {
         createItem: [
           MobXPolicies.newItemsAreCreatedAtTheTop,
-          Handlers.handleCreateTip(this),
+          ret(Handlers.handleCreateTip(this)),
         ],
         createItem_post: [
           MobXPolicies.highlightNewItem,

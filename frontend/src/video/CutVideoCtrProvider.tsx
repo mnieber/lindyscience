@@ -30,7 +30,7 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
     );
   };
 
-  const updateCtr = (ctr: CutVideoContainer) => {
+  const updateCtr = (ctr: CutVideoContainer) =>
     reaction(
       () => ({
         sessionDisplay: props.sessionDisplay,
@@ -43,7 +43,6 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
         ctr.inputs.moveList = moveList;
       }
     );
-  };
 
   const getDefaultProps = (ctr: CutVideoContainer) => {
     return {

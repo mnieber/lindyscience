@@ -121,8 +121,10 @@ export class MovesContainer {
 
     setCallbacks(this.selection, {
       selectItem: {
-        selectItem: [handleSelectItem],
-        selectItem_post: [MobXPolicies.highlightFollowsSelection],
+        selectItem: [
+          ret(handleSelectItem),
+          MobXPolicies.highlightFollowsSelection,
+        ],
       },
     });
   }

@@ -30,7 +30,7 @@ export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
     });
   };
 
-  const updateCtr = (ctr: MoveListsContainer) => {
+  const updateCtr = (ctr: MoveListsContainer) =>
     reaction(
       () => ({
         moveListById: props.moveListsStore.moveListById,

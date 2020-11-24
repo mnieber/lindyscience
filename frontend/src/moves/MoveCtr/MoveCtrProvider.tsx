@@ -25,7 +25,7 @@ export const MoveCtrProvider: React.FC<PropsT> = (p: PropsT) => {
     return new MoveContainer({ rootDivId: 'moveDiv' });
   };
 
-  const updateCtr = (ctr: MoveContainer) => {
+  const updateCtr = (ctr: MoveContainer) =>
     reaction(
       () => ({
         move: props.move,
@@ -38,7 +38,6 @@ export const MoveCtrProvider: React.FC<PropsT> = (p: PropsT) => {
         ctr.inputs.sessionDisplay = sessionDisplay;
       }
     );
-  };
 
   const getDefaultProps = (ctr: MoveContainer) => {
     return {

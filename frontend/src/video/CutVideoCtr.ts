@@ -54,8 +54,10 @@ export class CutVideoContainer {
 
     setCallbacks(this.cutPointsStore, {
       createMoves: {
-        createMoves: [Handlers.handleCreateMoves(props.saveMoves)],
-        createMoves_post: [Handlers.removeAllCutPoints],
+        createMoves: [
+          Handlers.handleCreateMoves(props.saveMoves),
+          Handlers.removeAllCutPoints,
+        ],
       },
     });
   }

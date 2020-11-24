@@ -24,7 +24,7 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
     return new TipsCtr({ tipsStore: props.tipsStore });
   };
 
-  const updateCtr = (ctr: TipsCtr) => {
+  const updateCtr = (ctr: TipsCtr) =>
     reaction(
       () => ({
         move: props.move,
@@ -37,7 +37,6 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
         ctr.inputs.userProfile = userProfile;
       }
     );
-  };
 
   const getDefaultProps = (ctr: TipsCtr) => {
     return {

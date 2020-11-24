@@ -12,7 +12,7 @@ import { VotesStore } from 'src/votes/VotesStore';
 import { Display, initDisplay } from 'src/session/facets/Display';
 import { Navigation, initNavigation } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import { facet, installPolicies, setCallbacks, registerFacets } from 'facet';
+import { facet, installPolicies, setCallbacks, registerFacets } from 'facility';
 
 type PropsT = {
   history: any;

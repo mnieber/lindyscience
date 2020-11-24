@@ -7,8 +7,8 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
-import { Editing } from 'facet-mobx/facets/Editing';
-import { Highlight } from 'facet-mobx/facets/Highlight';
+import { Editing } from 'facility-mobx/facets/Editing';
+import { Highlight } from 'facility-mobx/facets/Highlight';
 
 type PropsT = React.PropsWithChildren<{}>;
 
@@ -41,7 +41,6 @@ export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
         ctr.inputs.setUserProfile(userProfile);
       }
     );
-  };
 
   const getDefaultProps = (ctr: MoveListsContainer) => {
     return {

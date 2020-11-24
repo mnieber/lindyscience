@@ -1,6 +1,6 @@
 import { pickNeighbour2, scrollIntoView } from 'src/app/utils';
-import { Highlight } from 'facet-mobx/facets/Highlight';
-import { Selection } from 'facet-mobx/facets/Selection';
+import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Selection } from 'facility-mobx/facets/Selection';
 
 export type PropsT = {
   container: any;

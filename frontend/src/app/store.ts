@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import jQuery from 'jquery';
 
 import { spy, toJS } from 'src/utils/mobx_wrapper';
-import { options as facetOptions } from 'facet';
+import { options as facetOptions } from 'facility';
 
 function csrfSafeMethod(method: string) {
   // these HTTP methods do not require CSRF protection

@@ -17,7 +17,7 @@ import { MoveForm } from 'src/moves/presentation/MoveForm';
 import { MoveListT } from 'src/move_lists/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { Move } from 'src/moves/presentation/Move';
-import { Editing } from 'facet-mobx/facets/Editing';
+import { Editing } from 'facility-mobx/facets/Editing';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { resetRS } from 'src/utils/RST';
 import { ResourceView } from 'src/utils/ResourceView';

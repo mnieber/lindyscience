@@ -8,7 +8,7 @@ import {
 import { MoveSearchResultT } from 'src/search/types';
 import { UUID } from 'src/kernel/types';
 import { createUUID, listToItemById } from 'src/utils/utils';
-import { operation } from 'facet';
+import { operation } from 'facility';
 
 export class MovesStore {
   @observable privateDataByMoveId: MovePrivateDataByIdT = {};

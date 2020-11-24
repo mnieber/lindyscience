@@ -9,9 +9,9 @@ import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Highlight } from 'facet-mobx/facets/Highlight';
-import { Selection } from 'facet-mobx/facets/Selection';
-import { Insertion } from 'facet-mobx/facets/Insertion';
+import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Selection } from 'facility-mobx/facets/Selection';
+import { Insertion } from 'facility-mobx/facets/Insertion';
 
 // MoveList
 

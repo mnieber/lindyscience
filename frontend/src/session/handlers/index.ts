@@ -1,6 +1,6 @@
 import { Navigation } from 'src/session/facets/Navigation';
 import * as authApi from 'src/session/apis/authApi';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 import { urlParam } from 'src/utils/utils';
 
 export { handleNavigateToMoveList } from './handleNavigateToMovelist';

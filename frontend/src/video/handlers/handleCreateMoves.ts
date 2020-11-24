@@ -2,7 +2,7 @@ import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { CutPointT } from 'src/video/types';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 import { isNone } from 'src/utils/utils';
 import { createMoveFromCutPoint } from 'src/app/utils';
 

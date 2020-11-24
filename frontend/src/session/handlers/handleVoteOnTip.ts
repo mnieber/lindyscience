@@ -4,7 +4,7 @@ import { SessionContainer } from 'src/session/SessionCtr';
 import { UUID } from 'src/kernel/types';
 import { VoteT } from 'src/votes/types';
 import { apiVoteTip } from 'src/votes/api';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 
 export function handleVoteOnTip(this: VotesStore, id: UUID, vote: VoteT) {
   const ctr = getCtr<SessionContainer>(this);

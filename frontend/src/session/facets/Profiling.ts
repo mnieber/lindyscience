@@ -5,7 +5,7 @@ import { action, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { UserProfileT } from 'src/profiles/types';
 import { OwnedT, UUID } from 'src/kernel/types';
 import { isOwner } from 'src/app/utils';
-import { data, operation } from 'facet';
+import { data, operation } from 'facility';
 
 export class Profiling {
   @data @observable userProfile?: UserProfileT;

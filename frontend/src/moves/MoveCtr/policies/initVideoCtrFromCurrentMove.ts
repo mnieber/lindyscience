@@ -2,7 +2,7 @@ import { Inputs } from 'src/video/facets/Inputs';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveT } from 'src/moves/types';
 import { getVideoFromMove } from 'src/moves/utils';
-import { mapDatas } from 'facet-mobx';
+import { mapDatas } from 'facility-mobx';
 
 export const initVideoCtrFromCurrentMove = mapDatas(
   [

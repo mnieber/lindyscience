@@ -3,7 +3,7 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { findMoveListByUrl } from 'src/app/utils';
-import { Highlight } from 'facet-mobx/facets/Highlight';
+import { Highlight } from 'facility-mobx/facets/Highlight';
 
 export const selectTheMoveListThatMatchesTheUrl = (navigation: Navigation) =>
   function selectTheMoveListThatMatchesTheUrl(

@@ -2,8 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 import { MoveT } from 'src/moves/types';
-import { Addition } from 'facet-mobx/facets/Addition';
-import { Editing } from 'facet-mobx/facets/Editing';
+import { Addition } from 'facility-mobx/facets/Addition';
+import { Editing } from 'facility-mobx/facets/Editing';
 import { UserProfileT } from 'src/profiles/types';
 import { TipT } from 'src/tips/types';
 import { Tip } from 'src/tips/presentation/Tip';

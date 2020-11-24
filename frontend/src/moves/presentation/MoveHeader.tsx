@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
-import { Editing } from 'facet-mobx/facets/Editing';
+import { Editing } from 'facility-mobx/facets/Editing';
 
 import { MoveT } from 'src/moves/types';
 import { Tags } from 'src/tags/presentation/Tags';

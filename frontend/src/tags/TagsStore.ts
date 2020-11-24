@@ -2,7 +2,7 @@ import { apiLoadKnownMoveListTags, apiLoadKnownMoveTags } from 'src/tags/api';
 import { TagMapT, TagT } from 'src/tags/types';
 import { observable, computed } from 'src/utils/mobx_wrapper';
 import { addTags } from 'src/tags/utils';
-import { operation } from 'facet';
+import { operation } from 'facility';
 import { keys } from 'lodash/fp';
 
 export class TagsStore {

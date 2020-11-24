@@ -11,7 +11,7 @@ import {
 import { timePointsAreStyled } from 'src/moves/MoveCtr/policies/timePointsAreStyled';
 import { initVideoCtrFromCurrentMove } from 'src/moves/MoveCtr/policies/initVideoCtrFromCurrentMove';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
-import { facet, installPolicies, registerFacets } from 'facet';
+import { facet, installPolicies, registerFacets } from 'facility';
 
 export type PropsT = { rootDivId: string };
 

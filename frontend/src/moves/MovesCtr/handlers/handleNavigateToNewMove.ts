@@ -1,8 +1,8 @@
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { Addition } from 'facet-mobx/facets/Addition';
+import { Addition } from 'facility-mobx/facets/Addition';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 
 export const handleNavigateToNewMove = (
   navigateToMove: (moveList: MoveListT, move: MoveT) => void

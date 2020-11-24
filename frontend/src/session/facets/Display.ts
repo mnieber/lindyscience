@@ -1,6 +1,6 @@
 import { computed, observable, runInAction } from 'src/utils/mobx_wrapper';
 import { createUUID } from 'src/utils/utils';
-import { operation } from 'facet';
+import { operation } from 'facility';
 
 export class Display {
   @observable width?: number;

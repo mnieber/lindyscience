@@ -3,7 +3,7 @@ import { computed } from 'src/utils/mobx_wrapper';
 import { UUID } from 'src/kernel/types';
 import { MoveListT, MoveListByIdT } from 'src/move_lists/types';
 import { listToItemById } from 'src/utils/utils';
-import { output } from 'facet';
+import { output } from 'facility';
 
 export class Outputs {
   @output @computed get moveListIds(): Array<UUID> {

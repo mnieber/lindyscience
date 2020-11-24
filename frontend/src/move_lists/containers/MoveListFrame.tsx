@@ -7,10 +7,10 @@ import { faVideo } from '@fortawesome/free-solid-svg-icons';
 
 import { TagsStore } from 'src/tags/TagsStore';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
-import { Addition } from 'facet-mobx/facets/Addition';
+import { Addition } from 'facility-mobx/facets/Addition';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { Display as SessionDisplay } from 'src/session/facets/Display';
-import { Filtering } from 'facet-mobx/facets/Filtering';
+import { Filtering } from 'facility-mobx/facets/Filtering';
 import { getId } from 'src/app/utils';
 import { isNone } from 'src/utils/utils';
 import { MoveContextMenu } from 'src/moves/presentation/MoveContextMenu';
@@ -25,7 +25,7 @@ import { MoveT } from 'src/moves/types';
 import { Navigation } from 'src/session/facets/Navigation';
 import { Profiling } from 'src/session/facets/Profiling';
 import { sayMove } from 'src/moves/MovesCtr/handlers/sayMove';
-import { Selection } from 'facet-mobx/facets/Selection';
+import { Selection } from 'facility-mobx/facets/Selection';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { UserProfileT } from 'src/profiles/types';
 

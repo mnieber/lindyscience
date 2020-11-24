@@ -1,7 +1,7 @@
-import { Editing } from 'facet-mobx/facets/Editing';
-import { Highlight } from 'facet-mobx/facets/Highlight';
+import { Editing } from 'facility-mobx/facets/Editing';
+import { Highlight } from 'facility-mobx/facets/Highlight';
 import { MovesStore } from 'src/moves/MovesStore';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 import { newMoveSlug } from 'src/moves/utils';
 import { slugify } from 'src/utils/utils';
 import { apiSaveMove } from 'src/moves/api';

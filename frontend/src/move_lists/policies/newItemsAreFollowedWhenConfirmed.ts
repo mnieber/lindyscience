@@ -1,6 +1,6 @@
-import { getCtr } from 'facet';
-import { Labelling } from 'facet-mobx/facets/Labelling';
-import { Addition } from 'facet-mobx/facets/Addition';
+import { getCtr } from 'facility';
+import { Labelling } from 'facility-mobx/facets/Labelling';
+import { Addition } from 'facility-mobx/facets/Addition';
 
 export function newItemsAreFollowedWhenConfirmed(this: Addition) {
   const ctr = getCtr(this);

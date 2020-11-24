@@ -1,7 +1,8 @@
 import { observable, runInAction } from 'src/utils/mobx_wrapper';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { operation, exec } from 'facet';
+import { operation } from 'facility';
+import { exec } from 'aspiration';
 
 export type DataRequestT = {
   moveSlugid?: string;

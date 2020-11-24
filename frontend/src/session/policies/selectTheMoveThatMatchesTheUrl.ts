@@ -3,7 +3,7 @@ import { Navigation } from 'src/session/facets/Navigation';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'src/utils/mobx_wrapper';
 import { findMoveBySlugid } from 'src/app/utils';
-import { Highlight } from 'facet-mobx/facets/Highlight';
+import { Highlight } from 'facility-mobx/facets/Highlight';
 
 export const syncMoveWithCurrentUrl = (navigation: Navigation) =>
   function syncMoveWithCurrentUrl(movesCtr: MovesContainer) {

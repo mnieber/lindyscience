@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, observable, computed } from 'mobx';
 import * as _ from 'lodash/fp';
-import { subscribe } from 'facet';
+import { subscribe } from 'facility';
 
 import { Authentication } from 'src/session/facets/Authentication';
 

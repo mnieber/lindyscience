@@ -1,7 +1,7 @@
 import { MovesStore } from 'src/moves/MovesStore';
 import { SessionContainer } from 'src/session/SessionCtr';
 import { MoveT } from 'src/moves/types';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 
 export function handleAddMoveTags(this: MovesStore, moves: MoveT[]) {
   const ctr = getCtr<SessionContainer>(this);

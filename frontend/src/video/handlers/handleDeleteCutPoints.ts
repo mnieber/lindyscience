@@ -1,6 +1,6 @@
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
-import { getCtr } from 'facet';
-import { Deletion } from 'facet-mobx/facets/Deletion';
+import { getCtr } from 'facility';
+import { Deletion } from 'facility-mobx/facets/Deletion';
 
 export function handleDeleteCutPoints(this: Deletion, ids: string[]) {
   const ctr = getCtr(this);

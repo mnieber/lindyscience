@@ -3,23 +3,23 @@ import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
-import { setCallbacks, facet, installPolicies, registerFacets } from 'facet';
-import { ClassMemberT } from 'facet/types';
-import { Labelling, initLabelling } from 'facet-mobx/facets/Labelling';
-import { Addition, initAddition } from 'facet-mobx/facets/Addition';
-import { Editing, initEditing } from 'facet-mobx/facets/Editing';
-import { Highlight, initHighlight } from 'facet-mobx/facets/Highlight';
-import { Insertion, initInsertion } from 'facet-mobx/facets/Insertion';
+import { setCallbacks, facet, installPolicies, registerFacets } from 'facility';
+import { ClassMemberT } from 'facility';
+import { Labelling, initLabelling } from 'facility-mobx/facets/Labelling';
+import { Addition, initAddition } from 'facility-mobx/facets/Addition';
+import { Editing, initEditing } from 'facility-mobx/facets/Editing';
+import { Highlight, initHighlight } from 'facility-mobx/facets/Highlight';
+import { Insertion, initInsertion } from 'facility-mobx/facets/Insertion';
 import {
   Selection,
   handleSelectItem,
   initSelection,
-} from 'facet-mobx/facets/Selection';
+} from 'facility-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListT } from 'src/move_lists/types';
-import { mapData } from 'facet-mobx';
-import * as MobXFacets from 'facet-mobx/facets';
-import * as MobXPolicies from 'facet-mobx/policies';
+import { mapData } from 'facility-mobx';
+import * as MobXFacets from 'facility-mobx/facets';
+import * as MobXPolicies from 'facility-mobx/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';
 import * as Handlers from 'src/move_lists/handlers';
 import * as SessionCtrPolicies from 'src/session/policies';

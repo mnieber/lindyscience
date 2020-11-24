@@ -1,13 +1,13 @@
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
-import { setCallbacks, facet, installPolicies, registerFacets } from 'facet';
+import { setCallbacks, facet, installPolicies, registerFacets } from 'facility';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';
-import { Addition, initAddition } from 'facet-mobx/facets/Addition';
-import { Editing, initEditing } from 'facet-mobx/facets/Editing';
-import { Deletion, initDeletion } from 'facet-mobx/facets/Deletion';
+import { Addition, initAddition } from 'facility-mobx/facets/Addition';
+import { Editing, initEditing } from 'facility-mobx/facets/Editing';
+import { Deletion, initDeletion } from 'facility-mobx/facets/Deletion';
 import * as Handlers from 'src/video/handlers';
 
 export type PropsT = {

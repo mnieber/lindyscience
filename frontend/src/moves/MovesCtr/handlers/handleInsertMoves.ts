@@ -1,10 +1,10 @@
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveT } from 'src/moves/types';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 import { createErrorHandler, getId } from 'src/app/utils';
 import { apiSaveMoveOrdering } from 'src/move_lists/api';
-import { DragT } from 'facet-mobx/facets/Insertion';
-import { Insertion } from 'facet-mobx/facets/Insertion';
+import { DragT } from 'facility-mobx/facets/Insertion';
+import { Insertion } from 'facility-mobx/facets/Insertion';
 
 export const handleInsertMoves = (moveListsStore: MoveListsStore) =>
   function (this: Insertion, drag: DragT) {

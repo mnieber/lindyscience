@@ -1,7 +1,7 @@
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
-import { operation, input } from 'facet';
+import { operation, input } from 'facility';
 
 export class Inputs {
   @observable @input moveLists: Array<MoveListT> = [];

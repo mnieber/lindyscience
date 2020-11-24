@@ -7,7 +7,7 @@ import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { TagT } from 'src/tags/types';
 import { TagsAndKeywordsPicker } from 'src/search/utils/TagsAndKeywordsPicker';
 import { createTagsAndKeywordsFilter } from 'src/app/utils';
-import { Filtering } from 'facet-mobx/facets/Filtering';
+import { Filtering } from 'facility-mobx/facets/Filtering';
 
 type PropsT = {
   moveTags: Array<TagT>;

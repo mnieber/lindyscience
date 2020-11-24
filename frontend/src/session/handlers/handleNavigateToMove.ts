@@ -5,7 +5,7 @@ import { lookUp } from 'src/utils/utils';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MoveT } from 'src/moves/types';
 import { browseToMoveUrl } from 'src/app/containers';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 
 export function handleNavigateToMove(
   this: Navigation,

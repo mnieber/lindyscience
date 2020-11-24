@@ -1,8 +1,8 @@
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { createUUID } from 'src/utils/utils';
 import { CutPointT } from 'src/video/types';
-import { getCtr } from 'facet';
-import { Addition } from 'facet-mobx/facets/Addition';
+import { getCtr } from 'facility';
+import { Addition } from 'facility-mobx/facets/Addition';
 
 type PropsT = {
   cutPointType: 'start' | 'end';

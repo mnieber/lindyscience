@@ -1,11 +1,11 @@
-import { Addition } from 'facet-mobx/facets/Addition';
+import { Addition } from 'facility-mobx/facets/Addition';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { UserProfileT } from 'src/profiles/types';
 import { UUID } from 'src/kernel/types';
 import { MoveT } from 'src/moves/types';
 import { createUUID } from 'src/utils/utils';
 import { newMoveSlug } from 'src/moves/utils';
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 
 function createNewMove(
   userProfile: UserProfileT,

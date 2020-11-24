@@ -1,6 +1,6 @@
-import { getCtr } from 'facet';
+import { getCtr } from 'facility';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
-import { Addition } from 'facet-mobx/facets/Addition';
+import { Addition } from 'facility-mobx/facets/Addition';
 
 export function insertCutPointWhenConfirmed(this: Addition) {
   const ctr = getCtr(this);

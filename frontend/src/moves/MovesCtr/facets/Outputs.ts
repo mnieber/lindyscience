@@ -1,7 +1,7 @@
 import { computed, observable } from 'src/utils/mobx_wrapper';
 import { MoveT, MoveByIdT } from 'src/moves/types';
 import { listToItemById } from 'src/utils/utils';
-import { output } from 'facet';
+import { output } from 'facility';
 
 export class Outputs {
   @observable @output preview: Array<MoveT> = [];

@@ -1,4 +1,4 @@
-import { Labelling } from 'facet-mobx/facets/Labelling';
+import { Labelling } from 'facility-mobx/facets/Labelling';
 import { Profiling } from 'src/session/facets/Profiling';
 import { UUID } from 'src/kernel/types';
 import { apiSaveMoveListOrdering } from 'src/move_lists/api';

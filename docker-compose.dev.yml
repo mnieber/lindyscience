@@ -1,6 +1,14 @@
 version: "3.7"
 
 services:
+  backend_build:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    image: linsci_backend
+    entrypoint: []
+    command: echo
+
   backend:
     build:
       context: .
@@ -22,7 +30,17 @@ services:
       - /opt/linsci/.config:/opt/linsci/.config
       - $HOME/.config/pudb:/root/.config/pudb
 
+  frontend_build:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    image: linsci_frontend
+    entrypoint: []
+    command: echo
+
   frontend:
+    depends_on:
+      - frontend_build
     build:
       context: .
       dockerfile: ./frontend/Dockerfile.dev
@@ -30,20 +48,20 @@ services:
     volumes:
       # map the src directory to opt/app-root/src
       - ./frontend:/opt/linsci/src
+      - /home/maarten/projects/aspiration/src:/opt/linsci/npm/aspiration
       - /home/maarten/projects/react-form-state-context/src:/opt/linsci/npm/react-form-state-context
       - /home/maarten/projects/react-default-props-context/src:/opt/linsci/npm/react-default-props-context
-      - /home/maarten/projects/facet/src:/opt/linsci/npm/facet
-      - /home/maarten/projects/facet-mobx/src:/opt/linsci/npm/facet-mobx
+      - /home/maarten/projects/facility/src:/opt/linsci/npm/facility
+      - /home/maarten/projects/facility-mobx/src:/opt/linsci/npm/facility-mobx
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /opt/linsci/frontend/fish_history:/root/.local/share/fish/fish_history
 
-  verdaccio:
-    image: verdaccio/verdaccio
-    ports:
-      - "4873:4873"
-    volumes:
-      - verdaccio_data:/verdaccio
-
-volumes:
-  verdaccio_data:
+  # verdaccio:
+  #   image: verdaccio/verdaccio
+  #   ports:
+  #     - "4873:4873"
+  #   volumes:
+  #     - verdaccio_data:/verdaccio
+# volumes:
+#   verdaccio_data:

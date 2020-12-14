@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/plugin-proposal-decorators": "^7.10.1",
+    "@craco/craco": "^6.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.5",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
     "@types/classnames": "^2.2.10",
     "@types/debounce": "^1.2.0",
     "@types/draft-js": "^0.10.44",
@@ -24,6 +24,7 @@
     "@types/sinon": "^9.0.7",
     "@types/uuid": "^8.3.0",
     "@types/yup": "^0.29.7",
+    "autoprefixer": "^9",
     "cheeseburger-menu": "^0.0.13",
     "classnames": "^2.2.5",
     "debounce": "1.2.0",
@@ -39,42 +40,43 @@
     "micro-signals": "^2.1.0",
     "mobx": "^5.14.0",
     "mobx-react": "^6.1.4",
-    "node-sass": "^4.14.1",
+    "node-sass": "^4.0.0",
     "normalizr": "^3.3.0",
     "parse-url": "^3.0.2",
-    "react": "^16.13.1",
+    "postcss": "^7",
+    "react": "^17.0.1",
     "react-app-polyfill": "^1.0.6",
     "react-contexify": "^4.0.1",
-    "react-dom": "^16.13.1",
+    "react-dom": "^17.0.1",
     "react-keyboard-event-handler": "^1.5.4",
     "react-player": "^1.9.3",
     "react-resize-detector": "^4.2.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "4.0.1",
     "react-select": "^3.1.0",
     "react-table": "^6.9.2",
     "react-youtube": "^7.13.0",
     "recase": "^1.0.4",
     "redtape": "^1.0.0",
     "scroll-into-view-if-needed": "^2.2.20",
-    "typescript": "^3.9.7",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "typescript": "^4.0.3",
     "use-deep-compare-effect": "^1.4.0"
   },
   "scripts": {
-    "build:tailwind": "postcss src/scss/app.scss -o src/scss/app.generated.scss",
-    "watch:tailwind": "postcss -w src/scss/app.scss -o src/scss/app.generated.scss",
-    "start": "run-p watch:tailwind start:react",
-    "start:react": "react-scripts start",
-    "prebuild": "npm run build:tailwind",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
     "prettier-all": "yarn prettier --list-different '**/*.js' '**/*.jsx'",
     "prettier-all-save": "yarn prettier --write '**/*.js' '**/*.jsx'"
   },
   "resolutions": {},
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -89,14 +91,8 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.8.0",
-    "customize-cra": "^0.9.1",
-    "npm-run-all": "^4.1.5",
     "nps": "^5.9.12",
-    "postcss-cli": "^7.1.1",
-    "postcss-scss": "^2.1.1",
     "prettier": "2.0.5",
-    "sinon": "^7.2.2",
-    "tailwindcss": "^1.4.6"
+    "sinon": "^7.2.2"
   }
 }

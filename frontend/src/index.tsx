@@ -1,9 +1,8 @@
 import 'react-app-polyfill/ie9';
-import 'mobx-react/batchingForReactDom';
 import 'draft-js/dist/Draft.css';
 import 'react-contexify/dist/ReactContexify.min.css';
 
-import 'src/scss/app.generated.scss';
+import 'src/scss/app.scss';
 import 'src/scss/modal.scss';
 import 'src/scss/react-table.scss';
 

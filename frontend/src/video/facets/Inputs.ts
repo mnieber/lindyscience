@@ -12,6 +12,6 @@ export class Inputs {
 }
 
 export function initInputs(self: Inputs): Inputs {
-  runInAction('initInputs', () => {});
+  runInAction(() => {});
   return self;
 }

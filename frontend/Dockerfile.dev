@@ -1,6 +1,14 @@
-FROM linsci_frontend
+FROM node:14-alpine as build-stage
 
 ENV CHOKIDAR_USEPOLLING=true
 
 RUN apk add make mlocate nano fish curl
-RUN yarn config set registry http://verdaccio:4873
+
+RUN mkdir -p /opt/linsci
+
+# fixes issue explained in https://github.com/yarnpkg/yarn/issues/6617
+RUN npm config set scripts-prepend-node-path true
+
+# the server is started in a separate shell
+CMD sleep infinity
+WORKDIR /opt/linsci/src

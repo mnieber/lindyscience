@@ -45,7 +45,7 @@ export class Profiling {
 }
 
 export function initProfiling(self: Profiling): Profiling {
-  runInAction('initProfiling', () => {
+  runInAction(() => {
     self.acceptsCookies = Cookies.get('acceptCookies') === '1';
   });
   return self;

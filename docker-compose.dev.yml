@@ -1,21 +1,20 @@
 version: "3.7"
 
 services:
-  backend_build:
-    build:
-      context: .
-      dockerfile: ./backend/Dockerfile
-    image: linsci_backend
-    entrypoint: []
-    command: echo
-
   backend:
     build:
       context: .
       dockerfile: ./backend/Dockerfile.dev
     image: linsci_backend_dev
-
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env/backend.env
+      - .env/postgres.env
     volumes:
+      - type: volume
+        source: backend_site_packages
+        target: /usr/local/lib/python3.8/site-packages
       # map the src directory to opt/app-root/src
       - ./backend:/opt/linsci/src
       # Preserve the following directories written by the docker container
@@ -30,21 +29,15 @@ services:
       - /opt/linsci/.config:/opt/linsci/.config
       - $HOME/.config/pudb:/root/.config/pudb
 
-  frontend_build:
-    build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
-    image: linsci_frontend
-    entrypoint: []
-    command: echo
-
   frontend:
-    depends_on:
-      - frontend_build
     build:
       context: .
       dockerfile: ./frontend/Dockerfile.dev
     image: linsci_frontend_dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env/frontend.env
     volumes:
       # map the src directory to opt/app-root/src
       - ./frontend:/opt/linsci/src
@@ -57,11 +50,15 @@ services:
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /opt/linsci/frontend/fish_history:/root/.local/share/fish/fish_history
 
-  # verdaccio:
-  #   image: verdaccio/verdaccio
-  #   ports:
-  #     - "4873:4873"
-  #   volumes:
-  #     - verdaccio_data:/verdaccio
-# volumes:
-#   verdaccio_data:
+  db:
+    image: postgres:11.5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env/postgres.env
+    ports:
+      - "5432:5432"
+
+volumes:
+  backend_site_packages:
+  postgres_data:

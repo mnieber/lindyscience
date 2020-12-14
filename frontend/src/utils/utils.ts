@@ -163,7 +163,7 @@ export function splitIntoKeywords(x: string): string[] {
 }
 
 export function range(start: number, stop: number) {
-  var ans = [];
+  var ans: number[] = [];
   for (let i = start; i < stop; i++) {
     ans.push(i);
   }

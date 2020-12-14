@@ -39,7 +39,7 @@ function RichTextEditorImpl(props: PropsT) {
   }, [forwardedRef, autoFocus]);
 
   const handleKeyCommand = (command: any, editorState: any) => {
-    let newState = null;
+    let newState: any = null;
 
     if (props.customHandleKeyCommand) {
       newState = props.customHandleKeyCommand(command, editorState);

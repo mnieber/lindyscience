@@ -15,7 +15,7 @@ export function parseVideoTimePoint(x: string): number | null {
 }
 
 export function extractTimePoints(text: string): Array<number> {
-  const result = [];
+  const result: number[] = [];
   const r = timePointRegex();
   let matchArr;
   while ((matchArr = r.exec(text)) !== null) {

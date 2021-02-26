@@ -2,7 +2,24 @@ import { observable, runInAction } from 'src/utils/mobx_wrapper';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { operation } from 'facility';
-import { exec } from 'aspiration';
+import { host, stub } from 'aspiration';
+
+export class Navigation_requestData {}
+
+export class Navigation_navigateToMove {
+  moveList: MoveListT = stub();
+  move: MoveT = stub();
+  navigate() {}
+}
+
+export class Navigation_navigateToMoveList {
+  moveList: MoveListT = stub();
+  navigate() {}
+}
+
+export class Navigation_storeLocation {}
+
+export class Navigation_restoreLocation {}
 
 export type DataRequestT = {
   moveSlugid?: string;
@@ -15,24 +32,34 @@ export class Navigation {
   @observable locationMemo?: string;
   @observable dataRequest: DataRequestT = {};
 
-  @operation requestData(dataRequest: DataRequestT) {
-    this.dataRequest = dataRequest;
+  @operation @host requestData(dataRequest: DataRequestT) {
+    return (cbs: Navigation_requestData) => {
+      this.dataRequest = dataRequest;
+    };
   }
 
-  @operation navigateToMove(moveList: MoveListT, move: MoveT) {
-    exec('navigate');
+  @operation @host navigateToMove(moveList: MoveListT, move: MoveT) {
+    return (cbs: Navigation_navigateToMove) => {
+      cbs.navigate();
+    };
   }
 
-  @operation navigateToMoveList(moveList: MoveListT) {
-    exec('navigate');
+  @operation @host navigateToMoveList(moveList: MoveListT) {
+    return (cbs: Navigation_navigateToMoveList) => {
+      cbs.navigate();
+    };
   }
 
-  @operation storeLocation() {
-    this.locationMemo = window.location.pathname;
+  @operation @host storeLocation() {
+    return (cbs: Navigation_storeLocation) => {
+      this.locationMemo = window.location.pathname;
+    };
   }
 
-  @operation restoreLocation() {
-    this.history.push(this.locationMemo);
+  @operation @host restoreLocation() {
+    return (cbs: Navigation_restoreLocation) => {
+      this.history.push(this.locationMemo);
+    };
   }
 
   static get = (ctr: any): Navigation => ctr.navigation;

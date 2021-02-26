@@ -9,10 +9,10 @@ type PropsT = {
 };
 
 export function handleCreateCutPoint(
-  this: Addition,
+  facet: Addition,
   { cutPointType }: PropsT
 ): CutPointT {
-  const ctr = getCtr(this);
+  const ctr = getCtr(facet);
   const t = CutPointsStore.get(ctr)
     .videoController.getPlayer()
     .getCurrentTime();

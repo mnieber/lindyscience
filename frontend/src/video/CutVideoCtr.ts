@@ -1,13 +1,29 @@
-import { CutPointsStore } from 'src/video/facets/CutPointsStore';
+import {
+  CutPointsStore,
+  CutPointsStore_createMoves,
+} from 'src/video/facets/CutPointsStore';
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
-import { setCallbacks, facet, installPolicies, registerFacets } from 'facility';
+import { facet, installPolicies, registerFacets } from 'facility';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';
-import { Addition, initAddition } from 'facility-mobx/facets/Addition';
-import { Editing, initEditing } from 'facility-mobx/facets/Editing';
-import { Deletion, initDeletion } from 'facility-mobx/facets/Deletion';
+import {
+  Addition,
+  initAddition,
+  Addition_add,
+} from 'facility-mobx/facets/Addition';
+import {
+  Editing,
+  initEditing,
+  Editing_save,
+} from 'facility-mobx/facets/Editing';
+import {
+  Deletion,
+  initDeletion,
+  Deletion_delete,
+} from 'facility-mobx/facets/Deletion';
+import { setCallbacks } from 'aspiration';
 import * as Handlers from 'src/video/handlers';
 
 export type PropsT = {
@@ -30,10 +46,16 @@ export class CutVideoContainer {
   }
 
   _setCallbacks(props: PropsT) {
+    const ctr = this;
+
     setCallbacks(this.addition, {
       add: {
-        createItem: [Handlers.handleCreateCutPoint],
-        createItem_post: [() => this.addition.confirm()],
+        createItem(this: Addition_add<any>) {
+          Handlers.handleCreateCutPoint(ctr.addition, this.values);
+        },
+        createItem_post(this: Addition_add<any>) {
+          ctr.addition.confirm();
+        },
       },
       confirm: {
         confirm: [Handlers.insertCutPointWhenConfirmed],
@@ -42,22 +64,26 @@ export class CutVideoContainer {
 
     setCallbacks(this.editing, {
       save: {
-        saveItem: [Handlers.handleSaveCutPoint],
+        saveItem(this: Editing_save) {
+          Handlers.handleSaveCutPoint(ctr.editing, this.values);
+        },
       },
     });
 
     setCallbacks(this.deletion, {
       delete: {
-        deleteItems: [Handlers.handleDeleteCutPoints],
+        deleteItems(this: Deletion_delete) {
+          Handlers.handleDeleteCutPoints(ctr.deletion, this.itemIds);
+        },
       },
     });
 
     setCallbacks(this.cutPointsStore, {
       createMoves: {
-        createMoves: [
-          Handlers.handleCreateMoves(props.saveMoves),
-          Handlers.removeAllCutPoints,
-        ],
+        createMoves(this: CutPointsStore_createMoves) {
+          Handlers.handleCreateMoves(props.saveMoves);
+          Handlers.removeAllCutPoints(ctr.cutPointsStore);
+        },
       },
     });
   }

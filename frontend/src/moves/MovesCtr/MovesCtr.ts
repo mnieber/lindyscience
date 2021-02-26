@@ -1,24 +1,53 @@
-import { Addition } from 'facility-mobx/facets/Addition';
+import {
+  Addition,
+  Addition_add,
+  Addition_cancel,
+  Addition_confirm,
+} from 'facility-mobx/facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
-import { DragAndDrop, initDragAndDrop } from 'facility-mobx/facets/DragAndDrop';
+import {
+  DragAndDrop,
+  initDragAndDrop,
+  DragAndDrop_drop,
+} from 'facility-mobx/facets/DragAndDrop';
 import { Editing, initEditing } from 'facility-mobx/facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
-import { setCallbacks, ret } from 'aspiration';
+import { setCallbacks } from 'aspiration';
 import { facet, installPolicies, registerFacets } from 'facility';
-import { Filtering, initFiltering } from 'facility-mobx/facets/Filtering';
+import {
+  Filtering,
+  initFiltering,
+  Filtering_apply,
+} from 'facility-mobx/facets/Filtering';
 import { getIds } from 'src/app/utils';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import {
+  Highlight,
+  Highlight_highlightItem,
+} from 'facility-mobx/facets/Highlight';
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
-import { Insertion, initInsertion } from 'facility-mobx/facets/Insertion';
+import {
+  Insertion,
+  initInsertion,
+  Insertion_insertItems,
+} from 'facility-mobx/facets/Insertion';
 import { mapData } from 'facility-mobx';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { Navigation } from 'src/session/facets/Navigation';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
-import { Selection, handleSelectItem } from 'facility-mobx/facets/Selection';
+import {
+  Selection,
+  handleSelectItem,
+  Selection_selectItem,
+} from 'facility-mobx/facets/Selection';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import { MoveT } from 'src/moves/types';
+import {
+  Editing_cancel,
+  Editing_save,
+  Editing_enable,
+} from 'facility-mobx/facets/Editing';
 import * as MobXFacets from 'facility-mobx/facets';
 import * as MobXPolicies from 'facility-mobx/policies';
 import * as SessionCtrPolicies from 'src/session/policies';
@@ -50,81 +79,120 @@ export class MovesContainer {
   handlerClick = new ClickToSelectItems({ container: this });
 
   _setCallbacks(props: PropsT) {
+    const ctr = this;
     const navigateToMove = props.navigation.navigateToMove;
 
     setCallbacks(this.addition, {
       add: {
-        enter: [
-          props.navigation.storeLocation,
-          MobXPolicies.filteringIsDisabledOnNewItem,
-        ],
-        createItem: [
-          MobXPolicies.newItemsAreAddedBelowTheHighlight,
-          Handlers.handleCreateMove,
-        ],
-        exit: [
-          Handlers.handleNavigateToNewMove(navigateToMove),
-          MobXPolicies.editingSetEnabled,
-        ],
+        enter(this: Addition_add<MoveT>) {
+          props.navigation.storeLocation();
+          MobXPolicies.filteringIsDisabledOnNewItem(ctr.addition);
+        },
+        createItem(this: Addition_add<MoveT>) {
+          MobXPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
+          Handlers.handleCreateMove(ctr.addition, this.values);
+        },
+        exit(this: Addition_add<MoveT>) {
+          Handlers.handleNavigateToNewMove(navigateToMove);
+          MobXPolicies.editingSetEnabled();
+        },
       },
       confirm: {
-        confirm: [MobXPolicies.newItemsAreInsertedWhenConfirmed],
+        confirm(this: Addition_confirm<MoveT>) {
+          MobXPolicies.newItemsAreInsertedWhenConfirmed(ctr.addition);
+        },
       },
       cancel: {
-        enter: [MobXPolicies.editingSetDisabled],
-        exit: [props.navigation.restoreLocation],
+        enter(this: Addition_cancel<MoveT>) {
+          MobXPolicies.editingSetDisabled();
+        },
+        exit(this: Addition_cancel<MoveT>) {
+          props.navigation.restoreLocation();
+        },
       },
     });
 
     setCallbacks(this.dragAndDrop, {
       drop: {
-        drop: [MobXPolicies.selectionIsInsertedOnDragAndDrop],
+        drop(this: DragAndDrop_drop) {
+          MobXPolicies.selectionIsInsertedOnDragAndDrop(
+            ctr.dragAndDrop,
+            this.dropPosition
+          );
+        },
       },
     });
 
     setCallbacks(this.editing, {
       save: {
-        saveItem: [
-          Handlers.handleSaveMove(props.movesStore),
-          MobXPolicies.newItemsAreConfirmedOnEditingSave,
-          Handlers.handleNavigateToSavedMove(navigateToMove),
-        ],
+        saveItem(this: Editing_save) {
+          Handlers.handleSaveMove(ctr.editing, props.movesStore, this.values);
+          MobXPolicies.newItemsAreConfirmedOnEditingSave(
+            ctr.editing,
+            this.values
+          );
+          Handlers.handleNavigateToSavedMove(navigateToMove)(ctr.editing);
+        },
       },
       cancel: {
-        enter: [MobXPolicies.newItemsAreCancelledOnEditingCancel],
+        enter(this: Editing_cancel) {
+          MobXPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
+        },
+      },
+      enable: {
+        enter(this: Editing_enable) {},
       },
     });
 
     setCallbacks(this.editingPrivateData, {
       save: {
-        saveItem: [Handlers.handleSavePrivateData(props.movesStore)],
+        saveItem(this: Editing_save) {
+          Handlers.handleSavePrivateData(
+            ctr.editing,
+            props.movesStore,
+            this.values
+          );
+        },
       },
     });
 
     setCallbacks(this.highlight, {
       highlightItem: {
-        enter: [MobXPolicies.cancelNewItemOnHighlightChange],
+        enter(this: Highlight_highlightItem) {
+          MobXPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
+        },
       },
     });
 
     setCallbacks(this.filtering, {
       apply: {
-        exit: [MobXPolicies.highlightIsCorrectedOnFilterChange],
+        exit(this: Filtering_apply) {
+          MobXPolicies.highlightIsCorrectedOnFilterChange(ctr.filtering);
+        },
       },
     });
 
     setCallbacks(this.insertion, {
       insertItems: {
-        insertItems: [Handlers.handleInsertMoves(props.moveListsStore)],
+        insertItems(this: Insertion_insertItems) {
+          Handlers.handleInsertMoves(props.moveListsStore);
+        },
       },
     });
 
     setCallbacks(this.selection, {
       selectItem: {
-        selectItem: [
-          ret(handleSelectItem),
-          MobXPolicies.highlightFollowsSelection,
-        ],
+        selectItem(this: Selection_selectItem) {
+          const result = handleSelectItem(
+            ctr.selection,
+            this.itemSelectedProps
+          );
+          MobXPolicies.highlightFollowsSelection(
+            ctr.selection,
+            this.itemSelectedProps
+          );
+          return result;
+        },
       },
     });
   }

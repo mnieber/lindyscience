@@ -3,8 +3,8 @@ import { CutPointT } from 'src/video/types';
 import { getCtr } from 'facility';
 import { Editing } from 'facility-mobx/facets/Editing';
 
-export function handleSaveCutPoint(this: Editing, values: any) {
-  const ctr = getCtr(this);
+export function handleSaveCutPoint(facet: Editing, values: any) {
+  const ctr = getCtr(facet);
   const cutPointsStore = CutPointsStore.get(ctr);
 
   const existingCutPoint = cutPointsStore.cutPoints.find(

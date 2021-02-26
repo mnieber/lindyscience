@@ -9,6 +9,11 @@ import { MoveSearchResultT } from 'src/search/types';
 import { UUID } from 'src/kernel/types';
 import { createUUID, listToItemById } from 'src/utils/utils';
 import { operation } from 'facility';
+import { host, stub } from 'aspiration';
+
+export class MovesStore_addMoves {
+  moves: Array<MoveT> = stub();
+}
 
 export class MovesStore {
   @observable privateDataByMoveId: MovePrivateDataByIdT = {};
@@ -22,10 +27,12 @@ export class MovesStore {
     };
   }
 
-  @operation addMoves(moves: Array<MoveT>) {
-    this.moveById = {
-      ...this.moveById,
-      ...listToItemById(moves),
+  @operation @host addMoves(moves: Array<MoveT>) {
+    return (cbs: MovesStore_addMoves) => {
+      this.moveById = {
+        ...this.moveById,
+        ...listToItemById(moves),
+      };
     };
   }
 

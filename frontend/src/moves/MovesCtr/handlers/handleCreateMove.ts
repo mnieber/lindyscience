@@ -27,8 +27,8 @@ function createNewMove(
   };
 }
 
-export function handleCreateMove(this: Addition, values: any) {
-  const ctr = getCtr<MovesContainer>(this);
+export function handleCreateMove(facet: Addition, values: any) {
+  const ctr = getCtr<MovesContainer>(facet);
   if (!ctr.inputs.userProfile) {
     throw Error('No user profile');
   }

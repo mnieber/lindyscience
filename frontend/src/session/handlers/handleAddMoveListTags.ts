@@ -6,9 +6,9 @@ import { SessionContainer } from 'src/session/SessionCtr';
 import { getCtr } from 'facility';
 
 export function handleAddMoveListTags(
-  this: MoveListsStore,
+  facet: MoveListsStore,
   moveListById: MoveListByIdT
 ) {
-  const ctr = getCtr<SessionContainer>(this);
+  const ctr = getCtr<SessionContainer>(facet);
   ctr.tagsStore.addMoveListTags(values(moveListById).map((x) => x.tags));
 }

@@ -1,18 +1,34 @@
 import {
   Authentication,
   initAuthentication,
+  Authentication_activateAccount,
+  Authentication_changePassword,
+  Authentication_loadUserId,
+  Authentication_resetPassword,
+  Authentication_signIn,
+  Authentication_signOut,
+  Authentication_signUp,
 } from 'src/session/facets/Authentication';
 import * as Policies from 'src/session/policies';
 import * as Handlers from 'src/session/handlers';
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
-import { MovesStore } from 'src/moves/MovesStore';
+import {
+  MoveListsStore,
+  MoveListsStore_addMoveLists,
+} from 'src/move_lists/MoveListsStore';
+import { MovesStore, MovesStore_addMoves } from 'src/moves/MovesStore';
 import { TipsStore } from 'src/tips/TipsStore';
 import { TagsStore } from 'src/tags/TagsStore';
-import { VotesStore } from 'src/votes/VotesStore';
+import { VotesStore, VotesStore_castVote } from 'src/votes/VotesStore';
 import { Display, initDisplay } from 'src/session/facets/Display';
-import { Navigation, initNavigation } from 'src/session/facets/Navigation';
+import {
+  Navigation,
+  initNavigation,
+  Navigation_navigateToMoveList,
+  Navigation_navigateToMove,
+} from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import { facet, installPolicies, setCallbacks, registerFacets } from 'facility';
+import { facet, installPolicies, registerFacets } from 'facility';
+import { setCallbacks } from 'aspiration';
 
 type PropsT = {
   history: any;
@@ -30,58 +46,100 @@ export class SessionContainer {
   @facet tagsStore: TagsStore;
 
   _setCallbacks(props: PropsT) {
+    const ctr = this;
+
     setCallbacks(this.authentication, {
       loadUserId: {
-        loadUserId: [Handlers.handleLoadUserId],
+        loadUserId(this: Authentication_loadUserId) {
+          return Handlers.handleLoadUserId();
+        },
       },
       signIn: {
-        signIn: [Handlers.handleSignIn],
-        goNext: [Handlers.handleGoNext],
+        signIn(this: Authentication_signIn) {
+          return Handlers.handleSignIn(
+            this.userId,
+            this.password,
+            this.rememberMe
+          );
+        },
+        goNext(this: Authentication_signIn) {
+          Handlers.handleGoNext();
+        },
       },
       signOut: {
-        signOut: [Handlers.handleSignOut],
-        goNext: [Handlers.handleGoToSignIn],
+        signOut(this: Authentication_signOut) {
+          return Handlers.handleSignOut();
+        },
+        goNext(this: Authentication_signOut) {
+          Handlers.handleGoToSignIn();
+        },
       },
       signUp: {
-        signUp: [Handlers.handleSignUp],
+        signUp(this: Authentication_signUp) {
+          return Handlers.handleSignUp(this.email, this.userId, this.password);
+        },
       },
       resetPassword: {
-        resetPassword: [Handlers.handleResetPassword],
+        resetPassword(this: Authentication_resetPassword) {
+          return Handlers.handleResetPassword(this.email);
+        },
       },
       changePassword: {
-        changePassword: [Handlers.handleChangePassword],
+        changePassword(this: Authentication_changePassword) {
+          return Handlers.handleChangePassword(this.password, this.token);
+        },
       },
       activateAccount: {
-        activateAccount: [Handlers.handleActivateAccount],
-        goNext: [Handlers.handleGoHome],
+        activateAccount(this: Authentication_activateAccount) {
+          return Handlers.handleActivateAccount(this.token);
+        },
+        goNext(this: Authentication_activateAccount) {
+          Handlers.handleGoHome();
+        },
       },
     });
 
     setCallbacks(this.navigation, {
       navigateToMoveList: {
-        navigate: [Handlers.handleNavigateToMoveList],
+        navigate(this: Navigation_navigateToMoveList) {
+          Handlers.handleNavigateToMoveList(ctr.navigation, this.moveList);
+        },
       },
       navigateToMove: {
-        navigate: [Handlers.handleNavigateToMove],
+        navigate(this: Navigation_navigateToMove) {
+          Handlers.handleNavigateToMove(
+            ctr.navigation,
+            this.moveList,
+            this.move
+          );
+        },
       },
+      requestData: {},
     });
 
     setCallbacks(this.movesStore, {
       addMoves: {
-        exit: [Handlers.handleAddMoveTags],
+        exit(this: MovesStore_addMoves) {
+          Handlers.handleAddMoveTags(ctr.movesStore, this.moves);
+        },
       },
     });
 
     setCallbacks(this.moveListsStore, {
       addMoveLists: {
-        exit: [Handlers.handleAddMoveListTags],
+        exit(this: MoveListsStore_addMoveLists) {
+          Handlers.handleAddMoveListTags(ctr.moveListsStore, this.moveListById);
+        },
       },
     });
 
     setCallbacks(this.votesStore, {
       castVote: {
-        exit: [Handlers.handleVoteOnTip],
+        exit(this: VotesStore_castVote) {
+          Handlers.handleVoteOnTip(ctr.votesStore, this.id, this.vote);
+        },
       },
+      setVotes: {},
     });
   }
 

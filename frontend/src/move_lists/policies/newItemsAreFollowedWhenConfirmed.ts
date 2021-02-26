@@ -2,11 +2,11 @@ import { getCtr } from 'facility';
 import { Labelling } from 'facility-mobx/facets/Labelling';
 import { Addition } from 'facility-mobx/facets/Addition';
 
-export function newItemsAreFollowedWhenConfirmed(this: Addition) {
-  const ctr = getCtr(this);
+export function newItemsAreFollowedWhenConfirmed(facet: Addition) {
+  const ctr = getCtr(facet);
   Labelling.get(ctr).setLabel({
     label: 'following',
-    id: this.item.id,
+    id: facet.item.id,
     flag: true,
   });
 }

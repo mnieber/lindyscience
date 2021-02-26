@@ -8,18 +8,18 @@ import { browseToMoveUrl } from 'src/app/containers';
 import { getCtr } from 'facility';
 
 export function handleNavigateToMove(
-  this: Navigation,
+  facet: Navigation,
   moveList: MoveListT,
   move: MoveT
 ) {
-  const ctr = getCtr<SessionContainer>(this);
+  const ctr = getCtr<SessionContainer>(facet);
   const moves = lookUp(moveList.moves, ctr.movesStore.moveById);
   const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
   const isSlugUnique = moves.filter(makeSlugidMatcher(move.slug)).length <= 1;
   const maybeMoveId = isSlugUnique ? '' : getId(move);
 
   browseToMoveUrl(
-    this.history.push,
+    facet.history.push,
     [moveListUrl, move.slug, maybeMoveId],
     true
   );

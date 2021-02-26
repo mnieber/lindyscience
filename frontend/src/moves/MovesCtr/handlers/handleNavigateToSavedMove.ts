@@ -8,8 +8,8 @@ import { MoveListT } from 'src/move_lists/types';
 export const handleNavigateToSavedMove = (
   navigateToMove: (moveList: MoveListT, move: MoveT) => void
 ) =>
-  function (this: Editing) {
-    const ctr = getCtr<MovesContainer>(this);
+  function (facet: Editing) {
+    const ctr = getCtr<MovesContainer>(facet);
     const item = Highlight.get(ctr).item;
     if (item && ctr.inputs.moveList) {
       navigateToMove(ctr.inputs.moveList, item);

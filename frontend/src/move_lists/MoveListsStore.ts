@@ -3,15 +3,22 @@ import { MoveListByIdT, MoveListRSByIdT } from 'src/move_lists/types';
 import { UUID } from 'src/kernel/types';
 import { insertIdsIntoList } from 'src/utils/utils';
 import { operation } from 'facility';
+import { host, stub } from 'aspiration';
+
+export class MoveListsStore_addMoveLists {
+  moveListById: MoveListByIdT = stub();
+}
 
 export class MoveListsStore {
   @observable moveListById: MoveListByIdT = {};
   @observable moveListRSByUrl: MoveListRSByIdT = {};
 
-  @operation addMoveLists(moveListById: MoveListByIdT) {
-    this.moveListById = {
-      ...this.moveListById,
-      ...moveListById,
+  @operation @host addMoveLists(moveListById: MoveListByIdT) {
+    return (cbs: MoveListsStore_addMoveLists) => {
+      this.moveListById = {
+        ...this.moveListById,
+        ...moveListById,
+      };
     };
   }
 

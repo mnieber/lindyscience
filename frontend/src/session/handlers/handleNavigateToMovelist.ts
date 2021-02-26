@@ -4,11 +4,11 @@ import { newMoveListSlug } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/containers';
 
 export function handleNavigateToMoveList(
-  this: Navigation,
+  facet: Navigation,
   moveList: MoveListT
 ) {
   const updateProfile = moveList.slug !== newMoveListSlug;
   const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
 
-  browseToMoveUrl(this.history.push, [moveListUrl], updateProfile);
+  browseToMoveUrl(facet.history.push, [moveListUrl], updateProfile);
 }

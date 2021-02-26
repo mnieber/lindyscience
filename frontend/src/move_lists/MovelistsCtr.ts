@@ -3,17 +3,38 @@ import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { getIds } from 'src/app/utils';
-import { setCallbacks, facet, installPolicies, registerFacets } from 'facility';
+import { facet, installPolicies, registerFacets } from 'facility';
+import { setCallbacks } from 'aspiration';
 import { ClassMemberT } from 'facility';
-import { Labelling, initLabelling } from 'facility-mobx/facets/Labelling';
-import { Addition, initAddition } from 'facility-mobx/facets/Addition';
-import { Editing, initEditing } from 'facility-mobx/facets/Editing';
-import { Highlight, initHighlight } from 'facility-mobx/facets/Highlight';
+import {
+  Labelling,
+  initLabelling,
+  Labelling_setLabel,
+} from 'facility-mobx/facets/Labelling';
+import {
+  Addition,
+  initAddition,
+  Addition_add,
+  Addition_cancel,
+  Addition_confirm,
+} from 'facility-mobx/facets/Addition';
+import {
+  Editing,
+  initEditing,
+  Editing_cancel,
+  Editing_save,
+} from 'facility-mobx/facets/Editing';
+import {
+  Highlight,
+  initHighlight,
+  Highlight_highlightItem,
+} from 'facility-mobx/facets/Highlight';
 import { Insertion, initInsertion } from 'facility-mobx/facets/Insertion';
 import {
   Selection,
   handleSelectItem,
   initSelection,
+  Selection_selectItem,
 } from 'facility-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListT } from 'src/move_lists/types';
@@ -43,53 +64,76 @@ export class MoveListsContainer {
   @facet labelling: Labelling = initLabelling(new Labelling());
 
   _setCallbacks(props: PropsT) {
+    const ctr = this;
+
     setCallbacks(this.addition, {
       add: {
-        enter: [props.navigation.storeLocation],
-        createItem: [
-          MobXPolicies.newItemsAreAddedBelowTheHighlight,
-          Handlers.handleCreateMoveList(this),
-        ],
-        exit: [MobXPolicies.editingSetEnabled],
+        enter(this: Addition_add<MoveListT>) {
+          props.navigation.storeLocation();
+        },
+        createItem(this: Addition_add<MoveListT>) {
+          MobXPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
+          Handlers.handleCreateMoveList(ctr);
+        },
+        exit(this: Addition_add<MoveListT>) {
+          MobXPolicies.editingSetEnabled();
+        },
       },
       confirm: {
-        confirm: [MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed],
+        confirm(this: Addition_confirm<MoveListT>) {
+          MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed(ctr.addition);
+        },
       },
       cancel: {
-        exit: [
-          MobXPolicies.editingSetDisabled,
-          props.navigation.restoreLocation,
-        ],
+        exit(this: Addition_cancel<MoveListT>) {
+          MobXPolicies.editingSetDisabled();
+          props.navigation.restoreLocation();
+        },
       },
     });
 
     setCallbacks(this.editing, {
       save: {
-        saveItem: [
-          Handlers.handleSaveMoveList(props.moveListsStore),
-          MobXPolicies.newItemsAreConfirmedOnEditingSave,
-        ],
+        saveItem(this: Editing_save) {
+          Handlers.handleSaveMoveList(props.moveListsStore);
+          MobXPolicies.newItemsAreConfirmedOnEditingSave(
+            ctr.editing,
+            this.values
+          );
+        },
       },
       cancel: {
-        enter: [MobXPolicies.newItemsAreCancelledOnEditingCancel],
+        enter(this: Editing_cancel) {
+          MobXPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
+        },
       },
     });
 
     setCallbacks(this.highlight, {
       highlightItem: {
-        enter: [MobXPolicies.cancelNewItemOnHighlightChange],
+        enter(this: Highlight_highlightItem) {
+          MobXPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
+        },
       },
     });
 
     setCallbacks(this.labelling, {
       setLabel: {
-        saveIds: [Handlers.handleSaveLabels(props.profiling)],
+        saveIds(this: Labelling_setLabel) {
+          Handlers.handleSaveLabels(ctr.labelling, props.profiling);
+        },
       },
     });
 
     setCallbacks(this.selection, {
       selectItem: {
-        selectItem: [handleSelectItem, MobXPolicies.highlightFollowsSelection],
+        selectItem(this: Selection_selectItem) {
+          handleSelectItem(ctr.selection, this.itemSelectedProps);
+          MobXPolicies.highlightFollowsSelection(
+            ctr.selection,
+            this.itemSelectedProps
+          );
+        },
       },
     });
   }

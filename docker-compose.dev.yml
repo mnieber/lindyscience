@@ -41,11 +41,11 @@ services:
     volumes:
       # map the src directory to opt/app-root/src
       - ./frontend:/opt/linsci/src
-      - /home/maarten/projects/aspiration/src:/opt/linsci/npm/aspiration
-      - /home/maarten/projects/react-form-state-context/src:/opt/linsci/npm/react-form-state-context
-      - /home/maarten/projects/react-default-props-context/src:/opt/linsci/npm/react-default-props-context
-      - /home/maarten/projects/facility/src:/opt/linsci/npm/facility
-      - /home/maarten/projects/facility-mobx/src:/opt/linsci/npm/facility-mobx
+      - /home/maarten/projects/aspiration/src:/npm/aspiration
+      - /home/maarten/projects/react-form-state-context/src:/npm/react-form-state-context
+      - /home/maarten/projects/react-default-props-context/src:/npm/react-default-props-context
+      - /home/maarten/projects/facility/src:/npm/facility
+      - /home/maarten/projects/facility-mobx/src:/npm/facility-mobx
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /opt/linsci/frontend/fish_history:/root/.local/share/fish/fish_history

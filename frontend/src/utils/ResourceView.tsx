@@ -43,10 +43,6 @@ export const ResourceView = observer(
     };
 
     const renderReset = () => {
-      // Have to use react fragment because component might
-      // display a table and we can't show divs/spans inside
-      // a table, React will complain. Initial state should
-      // be so brief (followed by loading) that this is ok.
       return <React.Fragment />;
     };
 

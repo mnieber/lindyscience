@@ -6,12 +6,12 @@ import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 
 export const handleNavigateToSavedMove = (
+  facet: Editing,
   navigateToMove: (moveList: MoveListT, move: MoveT) => void
-) =>
-  function (facet: Editing) {
-    const ctr = getCtr<MovesContainer>(facet);
-    const item = Highlight.get(ctr).item;
-    if (item && ctr.inputs.moveList) {
-      navigateToMove(ctr.inputs.moveList, item);
-    }
-  };
+) => {
+  const ctr = getCtr<MovesContainer>(facet);
+  const item = Highlight.get(ctr).item;
+  if (item && ctr.inputs.moveList) {
+    navigateToMove(ctr.inputs.moveList, item);
+  }
+};

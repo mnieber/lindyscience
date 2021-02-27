@@ -27,7 +27,7 @@ import {
   Navigation_navigateToMove,
 } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import { facet, installPolicies, registerFacets } from 'facility';
+import { facet, installPolicies, registerFacets, getCtr } from 'facility';
 import { setCallbacks } from 'aspiration';
 
 type PropsT = {

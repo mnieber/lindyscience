@@ -80,7 +80,9 @@ export class MovesContainer {
 
   _setCallbacks(props: PropsT) {
     const ctr = this;
-    const navigateToMove = props.navigation.navigateToMove;
+    const navigateToMove = props.navigation.navigateToMove.bind(
+      props.navigation
+    );
 
     setCallbacks(this.addition, {
       add: {
@@ -131,7 +133,7 @@ export class MovesContainer {
             ctr.editing,
             this.values
           );
-          Handlers.handleNavigateToSavedMove(navigateToMove)(ctr.editing);
+          Handlers.handleNavigateToSavedMove(ctr.editing, navigateToMove);
         },
       },
       cancel: {

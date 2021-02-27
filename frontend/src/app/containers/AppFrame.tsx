@@ -28,7 +28,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         continuing to use this site you agree with that.
         <button
           className="button button--wide ml-2"
-          onClick={props.profiling.acceptCookies}
+          onClick={props.profiling.acceptCookies.bind(props.profiling)}
         >
           Okay
         </button>

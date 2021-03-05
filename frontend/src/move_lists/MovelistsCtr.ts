@@ -76,7 +76,7 @@ export class MoveListsContainer {
           Handlers.handleCreateMoveList(ctr);
         },
         exit(this: Addition_add<MoveListT>) {
-          MobXPolicies.editingSetEnabled();
+          MobXPolicies.editingSetEnabled(ctr.addition);
         },
       },
       confirm: {
@@ -86,7 +86,7 @@ export class MoveListsContainer {
       },
       cancel: {
         exit(this: Addition_cancel<MoveListT>) {
-          MobXPolicies.editingSetDisabled();
+          MobXPolicies.editingSetDisabled(ctr.addition);
           props.navigation.restoreLocation();
         },
       },
@@ -94,8 +94,12 @@ export class MoveListsContainer {
 
     setCallbacks(this.editing, {
       save: {
-        saveItem(this: Editing_save) {
-          Handlers.handleSaveMoveList(props.moveListsStore);
+        saveItem(this: Editing_save, values: any) {
+          Handlers.handleSaveMoveList(
+            ctr.editing,
+            props.moveListsStore,
+            values
+          );
           MobXPolicies.newItemsAreConfirmedOnEditingSave(
             ctr.editing,
             this.values

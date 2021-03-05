@@ -45,21 +45,21 @@ export function handleChangePassword(newPassword: string, token: string) {
   return authApi.changePassword(newPassword, token);
 }
 
-export function handleGoHome(this: any) {
-  const ctr = getCtr(this);
+export function handleGoHome(facet: any) {
+  const ctr = getCtr(facet);
   const navigation = Navigation.get(ctr);
   navigation.history.push('/');
 }
 
-export function handleGoNext(this: any) {
-  const ctr = getCtr(this);
+export function handleGoNext(facet: any) {
+  const ctr = getCtr(facet);
   const navigation = Navigation.get(ctr);
   const next = urlParam('next');
   navigation.history.push(next ? next : '/');
 }
 
-export function handleGoToSignIn(this: any) {
-  const ctr = getCtr(this);
+export function handleGoToSignIn(facet: any) {
+  const ctr = getCtr(facet);
   const navigation = Navigation.get(ctr);
   navigation.history.push('/sign-in/');
 }

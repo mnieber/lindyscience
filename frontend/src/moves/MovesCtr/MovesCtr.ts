@@ -95,8 +95,8 @@ export class MovesContainer {
           Handlers.handleCreateMove(ctr.addition, this.values);
         },
         exit(this: Addition_add<MoveT>) {
-          Handlers.handleNavigateToNewMove(navigateToMove);
-          MobXPolicies.editingSetEnabled();
+          Handlers.handleNavigateToNewMove(ctr.addition, navigateToMove);
+          MobXPolicies.editingSetEnabled(ctr.addition);
         },
       },
       confirm: {
@@ -106,7 +106,7 @@ export class MovesContainer {
       },
       cancel: {
         enter(this: Addition_cancel<MoveT>) {
-          MobXPolicies.editingSetDisabled();
+          MobXPolicies.editingSetDisabled(ctr.addition);
         },
         exit(this: Addition_cancel<MoveT>) {
           props.navigation.restoreLocation();
@@ -176,8 +176,12 @@ export class MovesContainer {
 
     setCallbacks(this.insertion, {
       insertItems: {
-        insertItems(this: Insertion_insertItems) {
-          Handlers.handleInsertMoves(props.moveListsStore);
+        insertItems(this: Insertion_insertItems, moves: MoveT[]) {
+          Handlers.handleInsertMoves(
+            ctr.insertion,
+            props.moveListsStore,
+            moves
+          );
         },
       },
     });

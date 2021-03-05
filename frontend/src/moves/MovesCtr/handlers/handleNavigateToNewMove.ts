@@ -5,11 +5,11 @@ import { MoveListT } from 'src/move_lists/types';
 import { getCtr } from 'facility';
 
 export const handleNavigateToNewMove = (
+  facet: Addition,
   navigateToMove: (moveList: MoveListT, move: MoveT) => void
-) =>
-  function (this: Addition) {
-    const ctr = getCtr<MovesContainer>(this);
-    if (this.item && ctr.inputs.moveList) {
-      navigateToMove(ctr.inputs.moveList, this.item);
-    }
-  };
+) => {
+  const ctr = getCtr<MovesContainer>(facet);
+  if (facet.item && ctr.inputs.moveList) {
+    navigateToMove(ctr.inputs.moveList, facet.item);
+  }
+};

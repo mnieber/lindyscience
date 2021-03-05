@@ -12,6 +12,7 @@ import {
   Addition,
   initAddition,
   Addition_add,
+  Addition_confirm,
 } from 'facility-mobx/facets/Addition';
 import {
   Editing,
@@ -58,7 +59,9 @@ export class CutVideoContainer {
         },
       },
       confirm: {
-        confirm: [Handlers.insertCutPointWhenConfirmed],
+        confirm(this: Addition_confirm<any>) {
+          Handlers.insertCutPointWhenConfirmed(ctr.addition);
+        },
       },
     });
 
@@ -81,7 +84,7 @@ export class CutVideoContainer {
     setCallbacks(this.cutPointsStore, {
       createMoves: {
         createMoves(this: CutPointsStore_createMoves) {
-          Handlers.handleCreateMoves(props.saveMoves);
+          Handlers.handleCreateMoves(ctr.cutPointsStore, props.saveMoves);
           Handlers.removeAllCutPoints(ctr.cutPointsStore);
         },
       },

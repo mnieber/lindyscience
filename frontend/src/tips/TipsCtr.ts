@@ -3,7 +3,11 @@ import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
 import { facet, installPolicies, registerFacets } from 'facility';
 import { mapData } from 'facility-mobx';
-import { Addition, Addition_add } from 'facility-mobx/facets/Addition';
+import {
+  Addition,
+  Addition_add,
+  Addition_cancel,
+} from 'facility-mobx/facets/Addition';
 import {
   Highlight,
   Highlight_highlightItem,
@@ -12,6 +16,7 @@ import {
   Editing,
   initEditing,
   Editing_save,
+  Editing_cancel,
 } from 'facility-mobx/facets/Editing';
 import {
   Deletion,
@@ -47,13 +52,15 @@ export class TipsCtr {
           MobXPolicies.newItemsAreCreatedAtTheTop(ctr.addition);
           return Handlers.handleCreateTip(ctr);
         },
-        createItem_post: [
-          MobXPolicies.highlightNewItem,
-          MobXPolicies.editingSetEnabled,
-        ],
+        createItem_post(this: Addition_add<TipT>) {
+          MobXPolicies.highlightNewItem(ctr.addition);
+          MobXPolicies.editingSetEnabled(ctr.addition);
+        },
       },
       cancel: {
-        enter: [MobXPolicies.editingSetDisabled],
+        enter(this: Addition_cancel<TipT>) {
+          MobXPolicies.editingSetDisabled(ctr.addition);
+        },
       },
     });
 
@@ -76,7 +83,9 @@ export class TipsCtr {
         },
       },
       cancel: {
-        enter: [MobXPolicies.newItemsAreCancelledOnEditingCancel],
+        enter(this: Editing_cancel) {
+          MobXPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
+        },
       },
     });
 

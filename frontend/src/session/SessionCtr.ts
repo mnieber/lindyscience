@@ -27,7 +27,7 @@ import {
   Navigation_navigateToMove,
 } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
-import { facet, installPolicies, registerFacets, getCtr } from 'facility';
+import { facet, installPolicies, registerFacets } from 'facility';
 import { setCallbacks } from 'aspiration';
 
 type PropsT = {
@@ -63,7 +63,7 @@ export class SessionContainer {
           );
         },
         goNext(this: Authentication_signIn) {
-          Handlers.handleGoNext();
+          Handlers.handleGoNext(ctr.authentication);
         },
       },
       signOut: {
@@ -71,7 +71,7 @@ export class SessionContainer {
           return Handlers.handleSignOut();
         },
         goNext(this: Authentication_signOut) {
-          Handlers.handleGoToSignIn();
+          Handlers.handleGoToSignIn(ctr.authentication);
         },
       },
       signUp: {
@@ -94,7 +94,7 @@ export class SessionContainer {
           return Handlers.handleActivateAccount(this.token);
         },
         goNext(this: Authentication_activateAccount) {
-          Handlers.handleGoHome();
+          Handlers.handleGoHome(ctr.authentication);
         },
       },
     });

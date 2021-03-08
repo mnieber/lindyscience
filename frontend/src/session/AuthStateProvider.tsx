@@ -1,7 +1,6 @@
 import React from 'react';
 import { action, observable, computed } from 'mobx';
 import * as _ from 'lodash/fp';
-import { subscribe } from 'facility';
 
 import { Authentication } from 'src/session/facets/Authentication';
 
@@ -10,7 +9,7 @@ class AuthState {
   state: string = 'initial';
 
   constructor(authentication: Authentication) {
-    subscribe(authentication, '*', this.handleMsg);
+    authentication.signal.add((event) => this.handleMsg(event));
   }
 
   @computed get hasErrors() {
@@ -23,7 +22,7 @@ class AuthState {
   };
 
   handleMsg = (msg: any) => {
-    this.errors = msg.details.errors;
+    this.errors = msg.details?.errors ?? [];
     this.state = msg.topic;
   };
 }

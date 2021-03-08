@@ -1,6 +1,7 @@
 import { observable } from 'mobx';
-import { data, operation, sendMsg } from 'facility';
+import { data, operation } from 'facility';
 import { host, stub } from 'aspiration';
+import { Signal } from 'micro-signals';
 
 export class Authentication_loadUserId {
   loadUserId(): Promise<any> {
@@ -59,6 +60,7 @@ export class Authentication_signOut {
 
 export class Authentication {
   @data @observable signedInUserId?: string;
+  signal: Signal<any> = new Signal();
 
   @operation @host loadUserId() {
     return (cbs: Authentication_loadUserId) => {
@@ -66,7 +68,10 @@ export class Authentication {
         .loadUserId() //
         .then((response: any) => {
           if (response.errors) {
-            sendMsg(this, 'LoadUserId.Failed', { errors: response.errors });
+            this.signal.dispatch({
+              topic: 'LoadUserId.Failed',
+              details: { errors: response.errors },
+            });
           } else {
             this.signedInUserId = response.userId ?? 'anonymous';
           }
@@ -84,10 +89,13 @@ export class Authentication {
         .signIn() //
         .then((response: any) => {
           if (response.errors) {
-            sendMsg(this, 'SignIn.Failed', { errors: response.errors });
+            this.signal.dispatch({
+              topic: 'SignIn.Failed',
+              details: { errors: response.errors },
+            });
           } else {
             this.signedInUserId = response.userId;
-            sendMsg(this, 'SignUp.Success');
+            this.signal.dispatch({ topic: 'SignUp.Success' });
             cbs.goNext();
           }
         });
@@ -100,9 +108,12 @@ export class Authentication {
         .signUp() //
         .then((response: any) => {
           if (response.errors) {
-            sendMsg(this, 'SignUp.Failed', { errors: response.errors });
+            this.signal.dispatch({
+              topic: 'SignUp.Failed',
+              details: { errors: response.errors },
+            });
           } else {
-            sendMsg(this, 'SignUp.Success');
+            this.signal.dispatch({ topic: 'SignUp.Success' });
           }
         });
     };
@@ -114,11 +125,14 @@ export class Authentication {
         .resetPassword() //
         .then((response: any) => {
           if (response.errors) {
-            sendMsg(this, 'ResetPassword.Failed', {
-              errors: response.errors,
+            this.signal.dispatch({
+              topic: 'ResetPassword.Failed',
+              details: {
+                errors: response.errors,
+              },
             });
           } else {
-            sendMsg(this, 'ResetPassword.Success');
+            this.signal.dispatch({ topic: 'ResetPassword.Success' });
           }
         });
     };
@@ -130,11 +144,14 @@ export class Authentication {
         .changePassword() //
         .then((response: any) => {
           if (response.errors) {
-            sendMsg(this, 'ChangePassword.Failed', {
-              errors: response.errors,
+            this.signal.dispatch({
+              topic: 'ChangePassword.Failed',
+              details: {
+                errors: response.errors,
+              },
             });
           } else {
-            sendMsg(this, 'ChangePassword.Success');
+            this.signal.dispatch({ topic: 'ChangePassword.Success' });
           }
         });
     };
@@ -146,11 +163,14 @@ export class Authentication {
         .activateAccount() //
         .then((response: any) => {
           if (response.errors) {
-            sendMsg(this, 'ActivateAccount.Failed', {
-              errors: response.errors,
+            this.signal.dispatch({
+              topic: 'ActivateAccount.Failed',
+              details: {
+                errors: response.errors,
+              },
             });
           } else {
-            sendMsg(this, 'ActivateAccount.Success');
+            this.signal.dispatch({ topic: 'ActivateAccount.Success' });
             cbs.goNext();
           }
         });
@@ -164,7 +184,7 @@ export class Authentication {
         .then((response: any) => {
           this.signedInUserId = 'anonymous';
           cbs.goNext();
-          sendMsg(this, 'SignOut.Success');
+          this.signal.dispatch({ topic: 'SignOut.Success' });
         });
     };
   }

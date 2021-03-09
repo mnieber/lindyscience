@@ -7,7 +7,7 @@ import { Profiling } from 'src/session/facets/Profiling';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { reaction } from 'src/utils/mobx_wrapper';
+import { reaction } from 'mobx';
 import { useDefaultProps, CtrProvider } from 'react-default-props-context';
 import { Highlight } from 'facility-mobx/facets/Highlight';
 

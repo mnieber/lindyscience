@@ -3,14 +3,16 @@ import { values } from 'lodash/fp';
 import { SessionContainer } from 'src/session/SessionCtr';
 import { loadRes } from 'src/utils/RST';
 import { Navigation } from 'src/session/facets/Navigation';
-import { action, reaction } from 'src/utils/mobx_wrapper';
+import { action } from 'mobx';
+import { declareReaction } from 'facility-mobx';
 import { newMoveListSlug } from 'src/app/utils';
 import { apiLoadMoveList } from 'src/search/api';
 
 export const handleLoadSelectedMoveListFromUrl = (ctr: SessionContainer) => {
   const navigation = Navigation.get(ctr);
 
-  reaction(
+  declareReaction(
+    ctr,
     () => navigation.dataRequest.moveListUrl,
     action('loadSelectedMoveListFromUrl', async (selectedMoveListUrl) => {
       if (!!selectedMoveListUrl) {

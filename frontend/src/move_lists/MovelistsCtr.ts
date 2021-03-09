@@ -6,6 +6,8 @@ import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facility';
 import { setCallbacks } from 'aspiration';
 import { ClassMemberT } from 'facility';
+import { makeCtrObservable } from 'facility-mobx';
+import { UUID } from 'src/kernel/types';
 import {
   Labelling,
   initLabelling,
@@ -73,7 +75,7 @@ export class MoveListsContainer {
         },
         createItem(this: Addition_add<MoveListT>) {
           MobXPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
-          Handlers.handleCreateMoveList(ctr);
+          return Handlers.handleCreateMoveList(ctr, this.values);
         },
         exit(this: Addition_add<MoveListT>) {
           MobXPolicies.editingSetEnabled(ctr.addition);
@@ -123,8 +125,8 @@ export class MoveListsContainer {
 
     setCallbacks(this.labelling, {
       setLabel: {
-        saveIds(this: Labelling_setLabel) {
-          Handlers.handleSaveLabels(ctr.labelling, props.profiling);
+        saveIds(this: Labelling_setLabel, label: string, ids: Array<UUID>) {
+          Handlers.handleSaveLabels(ctr.labelling, props.profiling, label, ids);
         },
       },
     });
@@ -176,5 +178,6 @@ export class MoveListsContainer {
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);
+    makeCtrObservable(this);
   }
 }

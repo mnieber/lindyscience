@@ -21,7 +21,7 @@ export const TextField: React.FC<any> = ({
       type="text"
       {...createFormFieldProps({
         formState,
-        controlled,
+        controlled: controlled ?? true,
         fieldName: fieldContext.fieldName,
         fieldType: 'text',
         onChange: otherProps.onChange,

@@ -1,5 +1,5 @@
 import * as _ from 'lodash/fp';
-import { action, computed, observable } from 'src/utils/mobx_wrapper';
+import { action, computed, observable } from 'mobx';
 import { output, operation } from 'facility';
 import { CutPointByIdT, CutPointT } from 'src/video/types';
 import { listToItemById } from 'src/utils/utils';
@@ -27,9 +27,9 @@ export class CutPointsStore {
   }
 
   @operation @host createMoves() {
-    return (cbs: CutPointsStore_createMoves) => {
+    return action((cbs: CutPointsStore_createMoves) => {
       cbs.createMoves();
-    };
+    });
   }
 
   get videoLink() {

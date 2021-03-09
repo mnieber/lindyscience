@@ -5,7 +5,7 @@ import { Profiling } from 'src/session/facets/Profiling';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
-import { reaction } from 'src/utils/mobx_wrapper';
+import { reaction } from 'mobx';
 import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
 import { Editing } from 'facility-mobx/facets/Editing';
 import { Highlight } from 'facility-mobx/facets/Highlight';

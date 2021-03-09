@@ -18,12 +18,11 @@ function createNewMoveList(props: any): MoveListT {
   };
 }
 
-export const handleCreateMoveList = (ctr: MoveListsContainer) =>
-  function (values: any) {
-    const userProfile = ctr.inputs.userProfile as any;
-    return createNewMoveList({
-      ...values,
-      ownerId: userProfile.userId,
-      ownerUsername: userProfile.username,
-    });
-  };
+export const handleCreateMoveList = (ctr: MoveListsContainer, values: any) => {
+  const userProfile = ctr.inputs.userProfile as any;
+  return createNewMoveList({
+    ...values,
+    ownerId: userProfile.userId,
+    ownerUsername: userProfile.username,
+  });
+};

@@ -1,7 +1,7 @@
 import { keys } from 'lodash/fp';
 
 import { VoteT } from 'src/votes/types';
-import { action, computed, observable } from 'src/utils/mobx_wrapper';
+import { action, computed, observable } from 'mobx';
 import { TipT, TipByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import * as _ from 'lodash/fp';

@@ -1,4 +1,4 @@
-import { computed, observable } from 'src/utils/mobx_wrapper';
+import { computed, observable } from 'mobx';
 import { TipT, TipByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import { listToItemById } from 'src/utils/utils';

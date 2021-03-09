@@ -1,3 +1,5 @@
+import { action } from 'mobx';
+
 const RESET = 'RESET';
 const UPDATING = 'UPDATING';
 const ERRORED = 'ERRORED';
@@ -68,26 +70,32 @@ export type RST<UpdatingT = LoadingT> =
   | ErroredRST
   | UpdatedRST;
 
-export function loadRes(
-  rsMap: { [k: string]: any },
-  id: string,
-  load: Function,
-  then: Function,
-  getErrorMsg?: Function
-) {
-  const rs = rsMap[id];
-  if (rs && isUpdatedRS(rs)) {
-    return Promise.resolve(undefined);
-  }
-  rsMap[id] = loadingRS();
-  return load()
-    .then((result: any) => {
-      then(result);
-      rsMap[id] = updatedRS();
-    })
-    .catch((e: any) => {
-      rsMap[id] = erroredRS(
-        getErrorMsg ? getErrorMsg(e) : `Could not load ${id}`
+export const loadRes = action(
+  (
+    rsMap: { [k: string]: any },
+    id: string,
+    load: Function,
+    then: Function,
+    getErrorMsg?: Function
+  ) => {
+    const rs = rsMap[id];
+    if (rs && isUpdatedRS(rs)) {
+      return Promise.resolve(undefined);
+    }
+    rsMap[id] = loadingRS();
+    return load()
+      .then(
+        action((result: any) => {
+          then(result);
+          rsMap[id] = updatedRS();
+        })
+      )
+      .catch(
+        action((e: any) => {
+          rsMap[id] = erroredRS(
+            getErrorMsg ? getErrorMsg(e) : `Could not load ${id}`
+          );
+        })
       );
-    });
-}
+  }
+);

@@ -14,14 +14,12 @@ function createNewTip(userId: number, moveId: UUID): TipT {
   };
 }
 
-export const handleCreateTip = (ctr: TipsCtr) => {
-  return (values: any) => {
-    if (!ctr.inputs.userProfile) {
-      throw Error('No user profile');
-    }
-    if (!ctr.inputs.move) {
-      throw Error('No move');
-    }
-    return createNewTip(ctr.inputs.userProfile.userId, ctr.inputs.move.id);
-  };
+export const handleCreateTip = (ctr: TipsCtr, values: any) => {
+  if (!ctr.inputs.userProfile) {
+    throw Error('No user profile');
+  }
+  if (!ctr.inputs.move) {
+    throw Error('No move');
+  }
+  return createNewTip(ctr.inputs.userProfile.userId, ctr.inputs.move.id);
 };

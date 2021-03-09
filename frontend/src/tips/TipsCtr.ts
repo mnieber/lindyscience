@@ -2,6 +2,7 @@ import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
 import { facet, installPolicies, registerFacets } from 'facility';
+import { makeCtrObservable } from 'facility-mobx';
 import { mapData } from 'facility-mobx';
 import {
   Addition,
@@ -50,7 +51,7 @@ export class TipsCtr {
       add: {
         createItem(this: Addition_add<TipT>) {
           MobXPolicies.newItemsAreCreatedAtTheTop(ctr.addition);
-          return Handlers.handleCreateTip(ctr);
+          return Handlers.handleCreateTip(ctr, this.values);
         },
         createItem_post(this: Addition_add<TipT>) {
           MobXPolicies.highlightNewItem(ctr.addition);
@@ -58,7 +59,7 @@ export class TipsCtr {
         },
       },
       cancel: {
-        enter(this: Addition_cancel<TipT>) {
+        exit(this: Addition_cancel<TipT>) {
           MobXPolicies.editingSetDisabled(ctr.addition);
         },
       },
@@ -124,5 +125,6 @@ export class TipsCtr {
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);
+    makeCtrObservable(this);
   }
 }

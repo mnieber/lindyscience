@@ -1,7 +1,7 @@
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
-import { computed } from 'src/utils/mobx_wrapper';
+import { computed } from 'mobx';
 import { makeMoveListUrl } from 'src/app/utils';
 
 type PropsT = {

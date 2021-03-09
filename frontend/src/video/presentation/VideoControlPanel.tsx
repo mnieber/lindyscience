@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { runInAction } from 'src/utils/mobx_wrapper';
+import { runInAction } from 'mobx';
 
 type PropsT = {
   videoController: VideoController;

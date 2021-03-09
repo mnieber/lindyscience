@@ -12,6 +12,7 @@ import { timePointsAreStyled } from 'src/moves/MoveCtr/policies/timePointsAreSty
 import { initVideoCtrFromCurrentMove } from 'src/moves/MoveCtr/policies/initVideoCtrFromCurrentMove';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { facet, installPolicies, registerFacets } from 'facility';
+import { makeCtrObservable } from 'facility-mobx';
 
 export type PropsT = { rootDivId: string };
 
@@ -42,5 +43,6 @@ export class MoveContainer {
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);
+    makeCtrObservable(this);
   }
 }

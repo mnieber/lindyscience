@@ -1,9 +1,10 @@
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
-import { reaction } from 'src/utils/mobx_wrapper';
+import { declareReaction } from 'facility-mobx';
 
 export function updateVideoWidth(ctr: MoveContainer | CutVideoContainer) {
-  reaction(
+  declareReaction(
+    ctr,
     () => {
       const maxVideoWidth = ctr.inputs.sessionDisplay
         ? ctr.inputs.sessionDisplay.maxVideoWidth

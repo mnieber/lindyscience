@@ -1,4 +1,4 @@
-import { computed, observable } from 'src/utils/mobx_wrapper';
+import { action, computed, observable } from 'mobx';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { extractTimePoints } from 'src/video/utils';
 import { input } from 'facility';
@@ -6,7 +6,7 @@ import { input } from 'facility';
 export class TimePoints {
   @input @observable textWithTimePoints: string | undefined;
 
-  updateFrom(move?: MoveT, movePrivateData?: MovePrivateDataT) {
+  @action updateFrom(move?: MoveT, movePrivateData?: MovePrivateDataT) {
     const description = move ? move.description : '';
     const privateNotes = movePrivateData ? movePrivateData.notes : '';
     const newText = description + privateNotes;

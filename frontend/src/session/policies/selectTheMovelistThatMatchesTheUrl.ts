@@ -1,7 +1,7 @@
 import { Outputs } from 'src/move_lists/facets/Outputs';
 import { Navigation } from 'src/session/facets/Navigation';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
-import { reaction } from 'src/utils/mobx_wrapper';
+import { declareReaction } from 'facility-mobx';
 import { findMoveListByUrl } from 'src/app/utils';
 import { Highlight } from 'facility-mobx/facets/Highlight';
 
@@ -9,7 +9,8 @@ export const selectTheMoveListThatMatchesTheUrl = (navigation: Navigation) =>
   function selectTheMoveListThatMatchesTheUrl(
     moveListsCtr: MoveListsContainer
   ) {
-    reaction(
+    declareReaction(
+      moveListsCtr,
       () => {
         const outputs = Outputs.get(moveListsCtr);
         return navigation.dataRequest.moveListUrl

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createBrowserHistory } from 'history';
 
 import { SessionContainer } from 'src/session/SessionCtr';
-import { reaction } from 'src/utils/mobx_wrapper';
+import { reaction } from 'mobx';
 import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
 
 export const SessionContainerContext = React.createContext({});

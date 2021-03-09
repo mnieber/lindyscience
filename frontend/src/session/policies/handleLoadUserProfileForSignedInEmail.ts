@@ -3,18 +3,19 @@ import * as _ from 'lodash/fp';
 import { updatedRS } from 'src/utils/RST';
 import { Profiling } from 'src/session/facets/Profiling';
 import { Authentication } from 'src/session/facets/Authentication';
-import { reaction } from 'src/utils/mobx_wrapper';
 import { apiLoadUserProfile } from 'src/profiles/api';
 import { apiLoadUserVotes } from 'src/votes/api';
 import { apiLoadMovePrivateDatas } from 'src/moves/api';
 import { apiFindMoveLists } from 'src/search/api';
+import { declareReaction } from 'facility-mobx';
 
 export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
   const profiling = Profiling.get(ctr);
-  const authentiation = Authentication.get(ctr);
+  const authentication = Authentication.get(ctr);
 
-  reaction(
-    () => authentiation.signedInUserId,
+  declareReaction(
+    ctr,
+    () => authentication.signedInUserId,
     async (signedInUserId) => {
       if (signedInUserId === 'anonymous') {
         profiling.setUserProfile(undefined, updatedRS());

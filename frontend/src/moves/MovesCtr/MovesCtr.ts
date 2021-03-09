@@ -15,6 +15,7 @@ import { Editing, initEditing } from 'facility-mobx/facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
 import { facet, installPolicies, registerFacets } from 'facility';
+import { makeCtrObservable } from 'facility-mobx';
 import {
   Filtering,
   initFiltering,
@@ -92,7 +93,7 @@ export class MovesContainer {
         },
         createItem(this: Addition_add<MoveT>) {
           MobXPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
-          Handlers.handleCreateMove(ctr.addition, this.values);
+          return Handlers.handleCreateMove(ctr.addition, this.values);
         },
         exit(this: Addition_add<MoveT>) {
           Handlers.handleNavigateToNewMove(ctr.addition, navigateToMove);
@@ -105,10 +106,8 @@ export class MovesContainer {
         },
       },
       cancel: {
-        enter(this: Addition_cancel<MoveT>) {
-          MobXPolicies.editingSetDisabled(ctr.addition);
-        },
         exit(this: Addition_cancel<MoveT>) {
+          MobXPolicies.editingSetDisabled(ctr.addition);
           props.navigation.restoreLocation();
         },
       },
@@ -249,5 +248,7 @@ export class MovesContainer {
         props.moveListsStore
       ),
     });
+
+    makeCtrObservable(this);
   }
 }

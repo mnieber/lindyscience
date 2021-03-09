@@ -1,4 +1,4 @@
-import { observable, runInAction } from 'src/utils/mobx_wrapper';
+import { action, observable, runInAction } from 'mobx';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { operation } from 'facility';
@@ -33,33 +33,33 @@ export class Navigation {
   @observable dataRequest: DataRequestT = {};
 
   @operation @host requestData(dataRequest: DataRequestT) {
-    return (cbs: Navigation_requestData) => {
+    return action((cbs: Navigation_requestData) => {
       this.dataRequest = dataRequest;
-    };
+    });
   }
 
   @operation @host navigateToMove(moveList: MoveListT, move: MoveT) {
-    return (cbs: Navigation_navigateToMove) => {
+    return action((cbs: Navigation_navigateToMove) => {
       cbs.navigate();
-    };
+    });
   }
 
   @operation @host navigateToMoveList(moveList: MoveListT) {
-    return (cbs: Navigation_navigateToMoveList) => {
+    return action((cbs: Navigation_navigateToMoveList) => {
       cbs.navigate();
-    };
+    });
   }
 
   @operation @host storeLocation() {
-    return (cbs: Navigation_storeLocation) => {
+    return action((cbs: Navigation_storeLocation) => {
       this.locationMemo = window.location.pathname;
-    };
+    });
   }
 
   @operation @host restoreLocation() {
-    return (cbs: Navigation_restoreLocation) => {
+    return action((cbs: Navigation_restoreLocation) => {
       this.history.push(this.locationMemo);
-    };
+    });
   }
 
   static get = (ctr: any): Navigation => ctr.navigation;

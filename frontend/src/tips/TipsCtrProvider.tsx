@@ -4,7 +4,7 @@ import { UserProfileT } from 'src/profiles/types';
 import { TipsStore } from 'src/tips/TipsStore';
 import { MoveT } from 'src/moves/types';
 import { TipsCtr } from 'src/tips/TipsCtr';
-import { reaction } from 'src/utils/mobx_wrapper';
+import { reaction } from 'mobx';
 import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
 
 type PropsT = React.PropsWithChildren<{

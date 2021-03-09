@@ -1,4 +1,4 @@
-import { computed, observable } from 'src/utils/mobx_wrapper';
+import { computed, observable } from 'mobx';
 import { MoveT, MoveByIdT } from 'src/moves/types';
 import { listToItemById } from 'src/utils/utils';
 import { output } from 'facility';

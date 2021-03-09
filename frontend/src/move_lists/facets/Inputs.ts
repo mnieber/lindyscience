@@ -1,4 +1,4 @@
-import { computed, observable } from 'src/utils/mobx_wrapper';
+import { computed, observable } from 'mobx';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
 import { operation, input } from 'facility';

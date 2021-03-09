@@ -3,7 +3,7 @@
 import Cookies from 'js-cookie';
 import jQuery from 'jquery';
 
-import { spy, toJS } from 'src/utils/mobx_wrapper';
+import { spy, toJS } from 'mobx';
 import { options as facetOptions } from 'facility';
 
 function csrfSafeMethod(method: string) {

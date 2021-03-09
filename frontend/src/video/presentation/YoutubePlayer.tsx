@@ -4,7 +4,7 @@ import YouTube from 'react-youtube';
 import { VideoUrlPropsT } from 'src/video/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { isNone } from 'src/utils/utils';
-import { runInAction } from 'src/utils/mobx_wrapper';
+import { runInAction } from 'mobx';
 
 type PropsT = {
   videoUrlProps: VideoUrlPropsT;

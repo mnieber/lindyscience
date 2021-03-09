@@ -1,4 +1,4 @@
-import { computed, observable, runInAction } from 'src/utils/mobx_wrapper';
+import { computed, observable, runInAction } from 'mobx';
 import { createUUID } from 'src/utils/utils';
 import { operation } from 'facility';
 

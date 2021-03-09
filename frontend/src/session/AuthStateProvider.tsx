@@ -1,14 +1,15 @@
 import React from 'react';
-import { action, observable, computed } from 'mobx';
+import { makeObservable, action, observable, computed } from 'mobx';
 import * as _ from 'lodash/fp';
 
 import { Authentication } from 'src/session/facets/Authentication';
 
 class AuthState {
   @observable errors: string[] = [];
-  state: string = 'initial';
+  @observable state: string = 'initial';
 
   constructor(authentication: Authentication) {
+    makeObservable(this);
     authentication.signal.add((event) => this.handleMsg(event));
   }
 

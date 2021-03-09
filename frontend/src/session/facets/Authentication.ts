@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { action, observable } from 'mobx';
 import { data, operation } from 'facility';
 import { host, stub } from 'aspiration';
 import { Signal } from 'micro-signals';
@@ -63,20 +63,22 @@ export class Authentication {
   signal: Signal<any> = new Signal();
 
   @operation @host loadUserId() {
-    return (cbs: Authentication_loadUserId) => {
+    return action((cbs: Authentication_loadUserId) => {
       cbs
         .loadUserId() //
-        .then((response: any) => {
-          if (response.errors) {
-            this.signal.dispatch({
-              topic: 'LoadUserId.Failed',
-              details: { errors: response.errors },
-            });
-          } else {
-            this.signedInUserId = response.userId ?? 'anonymous';
-          }
-        });
-    };
+        .then(
+          action((response: any) => {
+            if (response.errors) {
+              this.signal.dispatch({
+                topic: 'LoadUserId.Failed',
+                details: { errors: response.errors },
+              });
+            } else {
+              this.signedInUserId = response.userId ?? 'anonymous';
+            }
+          })
+        );
+    });
   }
 
   @operation @host signIn(
@@ -84,26 +86,28 @@ export class Authentication {
     password: string,
     rememberMe: boolean
   ) {
-    return (cbs: Authentication_signIn) => {
+    return action((cbs: Authentication_signIn) => {
       cbs
         .signIn() //
-        .then((response: any) => {
-          if (response.errors) {
-            this.signal.dispatch({
-              topic: 'SignIn.Failed',
-              details: { errors: response.errors },
-            });
-          } else {
-            this.signedInUserId = response.userId;
-            this.signal.dispatch({ topic: 'SignUp.Success' });
-            cbs.goNext();
-          }
-        });
-    };
+        .then(
+          action((response: any) => {
+            if (response.errors) {
+              this.signal.dispatch({
+                topic: 'SignIn.Failed',
+                details: { errors: response.errors },
+              });
+            } else {
+              this.signedInUserId = response.userId;
+              this.signal.dispatch({ topic: 'SignUp.Success' });
+              cbs.goNext();
+            }
+          })
+        );
+    });
   }
 
   @operation @host signUp(email: string, userId: string, password: string) {
-    return (cbs: Authentication_signUp) => {
+    return action((cbs: Authentication_signUp) => {
       cbs
         .signUp() //
         .then((response: any) => {
@@ -116,11 +120,11 @@ export class Authentication {
             this.signal.dispatch({ topic: 'SignUp.Success' });
           }
         });
-    };
+    });
   }
 
   @operation @host resetPassword(email: string) {
-    return (cbs: Authentication_resetPassword) => {
+    return action((cbs: Authentication_resetPassword) => {
       cbs
         .resetPassword() //
         .then((response: any) => {
@@ -135,11 +139,11 @@ export class Authentication {
             this.signal.dispatch({ topic: 'ResetPassword.Success' });
           }
         });
-    };
+    });
   }
 
   @operation @host changePassword(password: string, token: string) {
-    return (cbs: Authentication_changePassword) => {
+    return action((cbs: Authentication_changePassword) => {
       cbs
         .changePassword() //
         .then((response: any) => {
@@ -154,11 +158,11 @@ export class Authentication {
             this.signal.dispatch({ topic: 'ChangePassword.Success' });
           }
         });
-    };
+    });
   }
 
   @operation @host activateAccount(token: string) {
-    return (cbs: Authentication_activateAccount) => {
+    return action((cbs: Authentication_activateAccount) => {
       cbs
         .activateAccount() //
         .then((response: any) => {
@@ -174,19 +178,21 @@ export class Authentication {
             cbs.goNext();
           }
         });
-    };
+    });
   }
 
   @operation @host signOut() {
-    return (cbs: Authentication_signOut) => {
+    return action((cbs: Authentication_signOut) => {
       cbs
         .signOut() //
-        .then((response: any) => {
-          this.signedInUserId = 'anonymous';
-          cbs.goNext();
-          this.signal.dispatch({ topic: 'SignOut.Success' });
-        });
-    };
+        .then(
+          action((response: any) => {
+            this.signedInUserId = 'anonymous';
+            cbs.goNext();
+            this.signal.dispatch({ topic: 'SignOut.Success' });
+          })
+        );
+    });
   }
 
   static get = (ctr: any): Authentication => ctr.authentication;

@@ -1,4 +1,4 @@
-import { action, observable } from 'src/utils/mobx_wrapper';
+import { action, observable } from 'mobx';
 import { MoveListByIdT, MoveListRSByIdT } from 'src/move_lists/types';
 import { UUID } from 'src/kernel/types';
 import { insertIdsIntoList } from 'src/utils/utils';
@@ -14,12 +14,12 @@ export class MoveListsStore {
   @observable moveListRSByUrl: MoveListRSByIdT = {};
 
   @operation @host addMoveLists(moveListById: MoveListByIdT) {
-    return (cbs: MoveListsStore_addMoveLists) => {
+    return action((cbs: MoveListsStore_addMoveLists) => {
       this.moveListById = {
         ...this.moveListById,
         ...moveListById,
       };
-    };
+    });
   }
 
   @action insertMoveIds(

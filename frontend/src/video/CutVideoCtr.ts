@@ -4,6 +4,7 @@ import {
 } from 'src/video/facets/CutPointsStore';
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { facet, installPolicies, registerFacets } from 'facility';
+import { makeCtrObservable } from 'facility-mobx';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
@@ -52,7 +53,7 @@ export class CutVideoContainer {
     setCallbacks(this.addition, {
       add: {
         createItem(this: Addition_add<any>) {
-          Handlers.handleCreateCutPoint(ctr.addition, this.values);
+          return Handlers.handleCreateCutPoint(ctr.addition, this.values);
         },
         createItem_post(this: Addition_add<any>) {
           ctr.addition.confirm();
@@ -98,5 +99,6 @@ export class CutVideoContainer {
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);
+    makeCtrObservable(this);
   }
 }

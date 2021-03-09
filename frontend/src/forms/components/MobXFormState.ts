@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { observable, action } from 'src/utils/mobx_wrapper';
+import { makeObservable, observable, action } from 'mobx';
 
 export class MobXFormState {
   @observable values: any[];
 
   constructor(values: any[]) {
+    makeObservable(this);
     this.values = values;
   }
 

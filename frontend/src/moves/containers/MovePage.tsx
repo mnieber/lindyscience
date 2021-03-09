@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 
 import { TagsStore } from 'src/tags/TagsStore';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
-import { action } from 'src/utils/mobx_wrapper';
+import { action } from 'mobx';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
 import { MoveKeyHandlers } from 'src/moves/presentation/MoveKeyHandlers';

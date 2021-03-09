@@ -14,7 +14,7 @@ import {
   createKeyDownHandler,
   createVideoKeyHandlers,
 } from 'src/video/presentation/VideoKeyhandler';
-import { runInAction } from 'src/utils/mobx_wrapper';
+import { runInAction } from 'mobx';
 
 type PropsT = React.PropsWithChildren<{}>;
 

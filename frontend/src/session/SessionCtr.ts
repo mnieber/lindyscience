@@ -28,6 +28,7 @@ import {
 } from 'src/session/facets/Navigation';
 import { Profiling, initProfiling } from 'src/session/facets/Profiling';
 import { facet, installPolicies, registerFacets } from 'facility';
+import { makeCtrObservable } from 'facility-mobx';
 import { setCallbacks } from 'aspiration';
 
 type PropsT = {
@@ -114,7 +115,6 @@ export class SessionContainer {
           );
         },
       },
-      requestData: {},
     });
 
     setCallbacks(this.movesStore, {
@@ -139,7 +139,6 @@ export class SessionContainer {
           Handlers.handleVoteOnTip(ctr.votesStore, this.id, this.vote);
         },
       },
-      setVotes: {},
     });
   }
 
@@ -170,5 +169,6 @@ export class SessionContainer {
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);
+    makeCtrObservable(this);
   }
 }

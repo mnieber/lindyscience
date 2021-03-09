@@ -1,4 +1,4 @@
-import { action, observable } from 'src/utils/mobx_wrapper';
+import { action, observable } from 'mobx';
 import {
   MoveByIdT,
   MovePrivateDataByIdT,
@@ -28,12 +28,12 @@ export class MovesStore {
   }
 
   @operation @host addMoves(moves: Array<MoveT>) {
-    return (cbs: MovesStore_addMoves) => {
+    return action((cbs: MovesStore_addMoves) => {
       this.moveById = {
         ...this.moveById,
         ...listToItemById(moves),
       };
-    };
+    });
   }
 
   @action setPrivateDataByMoveId(privateDataByMoveId: MovePrivateDataByIdT) {

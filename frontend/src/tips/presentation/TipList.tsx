@@ -28,6 +28,7 @@ export const TipList: FC<PropsT, DefaultPropsT> = observer((p: any) => {
     const allowDelete =
       allowEdit ||
       (!!props.userProfile && props.move.ownerId === props.userProfile.userId);
+
     return (
       <Tip
         key={tip.id}

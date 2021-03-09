@@ -1,4 +1,4 @@
-import { observable } from 'src/utils/mobx_wrapper';
+import { observable } from 'mobx';
 
 export class Display {
   @observable videoPanelWidth: number | undefined;

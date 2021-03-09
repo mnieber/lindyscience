@@ -1,6 +1,6 @@
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { splitKeyhandlerKeys } from 'src/video/utils';
-import { runInAction } from 'src/utils/mobx_wrapper';
+import { runInAction } from 'mobx';
 import { isNone } from 'src/utils/utils';
 
 export const createVideoKeyHandlers = (videoController: VideoController) => {

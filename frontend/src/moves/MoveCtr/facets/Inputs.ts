@@ -1,5 +1,5 @@
 import { Display } from 'src/session/facets/Display';
-import { observable, runInAction } from 'src/utils/mobx_wrapper';
+import { observable } from 'mobx';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 
 export class Inputs {
@@ -12,6 +12,5 @@ export class Inputs {
 }
 
 export function initInputs(self: Inputs): Inputs {
-  runInAction(() => {});
   return self;
 }

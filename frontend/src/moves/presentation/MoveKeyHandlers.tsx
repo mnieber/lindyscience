@@ -13,7 +13,7 @@ import {
   createVideoStartEndKeyHandlers,
   createVideoTimePointKeyHandlers,
 } from 'src/video/presentation/VideoKeyhandler';
-import { runInAction } from 'src/utils/mobx_wrapper';
+import { runInAction } from 'mobx';
 import { createKeyDownHandler } from 'src/video/presentation/VideoKeyhandler';
 
 type PropsT = React.PropsWithChildren<{}>;

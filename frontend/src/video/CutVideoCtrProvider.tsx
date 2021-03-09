@@ -8,7 +8,7 @@ import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
 import { cutVideoContainerProps } from 'src/video/CutVideoCtrProps';
-import { reaction } from 'src/utils/mobx_wrapper';
+import { reaction } from 'mobx';
 
 type PropsT = React.PropsWithChildren<{}>;
 

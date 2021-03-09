@@ -1,5 +1,5 @@
 import { keys } from 'lodash/fp';
-import { computed } from 'src/utils/mobx_wrapper';
+import { computed } from 'mobx';
 import { UUID } from 'src/kernel/types';
 import { MoveListT, MoveListByIdT } from 'src/move_lists/types';
 import { listToItemById } from 'src/utils/utils';

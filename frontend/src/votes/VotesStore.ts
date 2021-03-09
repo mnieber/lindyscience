@@ -1,5 +1,5 @@
 import { VoteByIdT, VoteT } from 'src/votes/types';
-import { observable } from 'src/utils/mobx_wrapper';
+import { action, observable } from 'mobx';
 import { operation, data } from 'facility';
 import { UUID } from 'src/kernel/types';
 import { host, stub } from 'aspiration';
@@ -17,17 +17,17 @@ export class VotesStore {
   @observable @data voteByObjectId: VoteByIdT = {};
 
   @operation @host setVotes(voteByObjectId: VoteByIdT) {
-    return (cbs: VotesStore_setVotes) => {
+    return action((cbs: VotesStore_setVotes) => {
       this.voteByObjectId = voteByObjectId;
-    };
+    });
   }
 
   @operation @host castVote(id: UUID, vote: VoteT) {
-    return (cbs: VotesStore_castVote) => {
+    return action((cbs: VotesStore_castVote) => {
       this.voteByObjectId = {
         ...this.voteByObjectId,
         [id]: vote,
       };
-    };
+    });
   }
 }

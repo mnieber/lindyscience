@@ -1,11 +1,10 @@
 import * as React from 'react';
 
-import { UserProfileT } from 'src/profiles/types';
-import { TipsStore } from 'src/tips/TipsStore';
 import { MoveT } from 'src/moves/types';
 import { TipsCtr } from 'src/tips/TipsCtr';
 import { reaction } from 'mobx';
 import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{
   ctrKey?: string;
@@ -13,23 +12,22 @@ type PropsT = React.PropsWithChildren<{
 
 type DefaultPropsT = {
   move: MoveT;
-  userProfile: UserProfileT;
-  tipsStore: TipsStore;
 };
 
 // Note: don't observe this with MobX
 export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { profilingStore, tipsStore } = useStore();
   const createCtr = () => {
-    return new TipsCtr({ tipsStore: props.tipsStore });
+    return new TipsCtr({ tipsStore: tipsStore });
   };
 
   const updateCtr = (ctr: TipsCtr) =>
     reaction(
       () => ({
         move: props.move,
-        tips: props.tipsStore.tipsByMoveId[props.move?.id] ?? [],
-        userProfile: props.userProfile,
+        tips: tipsStore.tipsByMoveId[props.move?.id] ?? [],
+        userProfile: profilingStore.userProfile,
       }),
       ({ move, tips, userProfile }) => {
         ctr.inputs.move = move;

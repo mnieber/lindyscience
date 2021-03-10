@@ -3,24 +3,11 @@ import { observer } from 'mobx-react';
 import classnames from 'classnames';
 
 import { isUpdatedRS } from 'src/utils/RST';
-import { UserProfileT } from 'src/profiles/types';
-import { Navigation } from 'src/session/facets/Navigation';
-import { Profiling } from 'src/session/facets/Profiling';
-import { Authentication } from 'src/session/facets/Authentication';
-import { useDefaultProps, FC } from 'react-default-props-context';
 import { helpUrl } from 'src/moves/utils';
+import { useStore } from 'src/app/components/StoreProvider';
 
-type PropsT = {};
-
-type DefaultPropsT = {
-  userProfile?: UserProfileT;
-  navigation: Navigation;
-  authentication: Authentication;
-  profiling: Profiling;
-};
-
-export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
-  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const AccountMenu: React.FC = observer(() => {
+  const { navigationStore, authenticationStore, profilingStore } = useStore();
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -28,8 +15,12 @@ export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
     setExpanded(!expanded);
   }
 
-  const greeting = isUpdatedRS(props.profiling.userProfileRS)
-    ? `Hello ${props.userProfile ? props.userProfile.username : 'stranger!'} ⛛`
+  const greeting = isUpdatedRS(profilingStore.userProfileRS)
+    ? `Hello ${
+        profilingStore.userProfile
+          ? profilingStore.userProfile.username
+          : 'stranger!'
+      } ⛛`
     : undefined;
 
   const node = (
@@ -37,12 +28,12 @@ export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
       <button onClick={toggle}>{greeting}</button>
       {expanded && (
         <ul className="list-reset bg-white">
-          <li className={classnames({ hidden: !props.userProfile })}>
+          <li className={classnames({ hidden: !profilingStore.userProfile })}>
             <div className="px-4 py-2 block text-black hover:bg-grey-light">
               My account
             </div>
           </li>
-          <li className={classnames({ hidden: !props.userProfile })}>
+          <li className={classnames({ hidden: !profilingStore.userProfile })}>
             <div className="px-4 py-2 block text-black hover:bg-grey-light">
               Notifications
             </div>
@@ -55,24 +46,24 @@ export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
                 setExpanded(false);
-                props.navigation.history.push(helpUrl);
+                navigationStore.history.push(helpUrl);
               }}
             >
               Help
             </div>
           </li>
-          <li className={classnames({ hidden: !props.userProfile })}>
+          <li className={classnames({ hidden: !profilingStore.userProfile })}>
             <div
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
                 setExpanded(false);
-                props.authentication.signOut();
+                authenticationStore.signOut();
               }}
             >
               Sign out
             </div>
           </li>
-          <li className={classnames({ hidden: !!props.userProfile })}>
+          <li className={classnames({ hidden: !!profilingStore.userProfile })}>
             <div
               className="px-4 py-2 block text-black hover:bg-grey-light"
               onClick={() => {
@@ -80,7 +71,7 @@ export const AccountMenu: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
                 const postfix = window.location.pathname.includes('/sign-in')
                   ? ''
                   : `?next=${window.location.pathname}`;
-                props.navigation.history.push('/sign-in/' + postfix);
+                navigationStore.history.push('/sign-in/' + postfix);
               }}
             >
               Sign in

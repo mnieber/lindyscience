@@ -1,36 +1,25 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { useDefaultProps, FC } from 'react-default-props-context';
-import { UserProfileT } from 'src/profiles/types';
-import { Navigation } from 'src/session/facets/Navigation';
 import { helpUrl } from 'src/moves/utils';
 import { browseToMoveUrl } from 'src/app/containers';
+import { useStore } from 'src/app/components/StoreProvider';
 
-type PropsT = {};
-
-type DefaultPropsT = {
-  userProfile: UserProfileT;
-  navigation: Navigation;
-};
-
-export const IndexPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
-  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-
-  const { userProfile, navigation } = props;
+export const IndexPage: React.FC = observer(() => {
+  const { profilingStore, navigationStore } = useStore();
 
   React.useEffect(() => {
     function _loadRecentMove() {
       const url =
-        userProfile && userProfile.recentMoveUrl
-          ? userProfile.recentMoveUrl
+        profilingStore.userProfile && profilingStore.userProfile.recentMoveUrl
+          ? profilingStore.userProfile.recentMoveUrl
           : helpUrl.substr('/lists/'.length);
-      if (navigation.history) {
-        browseToMoveUrl(navigation.history.push, [url], false);
+      if (navigationStore.history) {
+        browseToMoveUrl(navigationStore.history.push, [url], false);
       }
     }
     _loadRecentMove();
-  }, [userProfile, navigation]);
+  }, [profilingStore.userProfile, navigationStore]);
 
   return <div className="h-full" />;
 });

@@ -1,6 +1,5 @@
-import { computed, observable, runInAction } from 'mobx';
+import { computed, observable, action } from 'mobx';
 import { createUUID } from 'src/utils/utils';
-import { operation } from 'facility';
 
 export class Display {
   @observable width?: number;
@@ -15,23 +14,16 @@ export class Display {
   @observable smallBreakPoint: number = 1200;
   @observable id: string = createUUID();
 
-  @operation setWidth(x: number) {
+  constructor() {
+    this.id = createUUID();
+  }
+
+  @action setWidth(x: number) {
     if (x !== this.width) {
-      runInAction(() => {
-        this.width = x;
-      });
+      this.width = x;
     }
   }
-  @operation setFullVideoWidth(x: boolean) {
-    runInAction(() => {
-      this.fullVideoWidth = x;
-    });
+  @action setFullVideoWidth(x: boolean) {
+    this.fullVideoWidth = x;
   }
-
-  static get = (ctr: any): Display => ctr.display;
-}
-
-export function initDisplay(self: Display): Display {
-  self.id = createUUID();
-  return self;
 }

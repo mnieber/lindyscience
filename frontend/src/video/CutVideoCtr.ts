@@ -1,12 +1,6 @@
-import {
-  CutPointsStore,
-  CutPointsStore_createMoves,
-} from 'src/video/facets/CutPointsStore';
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { facet, installPolicies, registerFacets } from 'facility';
 import { makeCtrObservable } from 'facility-mobx';
-import { MoveT } from 'src/moves/types';
-import { MoveListT } from 'src/move_lists/types';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';
 import {
@@ -30,13 +24,11 @@ import * as Handlers from 'src/video/handlers';
 
 export type PropsT = {
   rootDivId: string;
-  saveMoves: (moves: Array<MoveT>, moveList: MoveListT) => any;
 };
 
 export class CutVideoContainer {
   @facet inputs: Inputs;
   @facet display: Display;
-  @facet cutPointsStore: CutPointsStore = new CutPointsStore();
   @facet addition: Addition = initAddition(new Addition());
   @facet editing: Editing = initEditing(new Editing());
   @facet deletion: Deletion = initDeletion(new Deletion());
@@ -78,15 +70,6 @@ export class CutVideoContainer {
       delete: {
         deleteItems(this: Deletion_delete) {
           Handlers.handleDeleteCutPoints(ctr.deletion, this.itemIds);
-        },
-      },
-    });
-
-    setCallbacks(this.cutPointsStore, {
-      createMoves: {
-        createMoves(this: CutPointsStore_createMoves) {
-          Handlers.handleCreateMoves(ctr.cutPointsStore, props.saveMoves);
-          Handlers.removeAllCutPoints(ctr.cutPointsStore);
         },
       },
     });

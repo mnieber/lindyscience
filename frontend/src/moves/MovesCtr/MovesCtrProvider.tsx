@@ -1,35 +1,35 @@
 import * as React from 'react';
 
 import { lookUp } from 'src/utils/utils';
-import { Navigation } from 'src/session/facets/Navigation';
 import { MoveListT } from 'src/move_lists/types';
-import { Profiling } from 'src/session/facets/Profiling';
-import { MovesStore } from 'src/moves/MovesStore';
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'mobx';
 import { useDefaultProps, CtrProvider } from 'react-default-props-context';
 import { Highlight } from 'facility-mobx/facets/Highlight';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
-  navigation: Navigation;
   moveList: MoveListT;
-  profiling: Profiling;
-  movesStore: MovesStore;
-  moveListsStore: MoveListsStore;
   moveLists: Array<MoveListT>;
 };
 
 // Note: don't observe this with MobX
 export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const {
+    navigationStore,
+    moveListsStore,
+    movesStore,
+    profilingStore,
+  } = useStore();
+
   const createCtr = () => {
     return new MovesContainer({
-      navigation: props.navigation,
-      moveListsStore: props.moveListsStore,
-      movesStore: props.movesStore,
+      navigationStore: navigationStore,
+      moveListsStore: moveListsStore,
+      movesStore: movesStore,
     });
   };
 
@@ -39,10 +39,10 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
         inputMoves: props.moveList
           ? lookUp(
               props.moveList ? props.moveList.moves : [],
-              props.movesStore.moveById
+              movesStore.moveById
             ).filter((x) => !!x)
           : [],
-        userProfile: props.profiling.userProfile,
+        userProfile: profilingStore.userProfile,
         moveList: props.moveList,
         moveLists: props.moveLists,
       }),
@@ -57,9 +57,7 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
   const getDefaultProps = (ctr: MovesContainer) => {
     const movePrivateData = () => {
       const moveId = Highlight.get(ctr).id;
-      return moveId
-        ? props.movesStore.getOrCreatePrivateData(moveId)
-        : undefined;
+      return moveId ? movesStore.getOrCreatePrivateData(moveId) : undefined;
     };
 
     return {

@@ -3,21 +3,16 @@ import { observer } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 
-import { TagsStore } from 'src/tags/TagsStore';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { UserProfileT } from 'src/profiles/types';
 import { MoveDescriptionEditor } from 'src/moves/presentation/MoveDescriptionEditor';
 import { Tags } from 'src/tags/presentation/Tags';
 import { MovePrivateDataForm } from 'src/moves/presentation/MovePrivateDataForm';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
-import { MovesStore } from 'src/moves/MovesStore';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type DefaultPropsT = {
   move: MoveT;
-  userProfile: UserProfileT;
-  movesStore: MovesStore;
-  tagsStore: TagsStore;
   movesEditingPD: EditingPrivateData;
   videoController?: any;
   movePrivateData: MovePrivateDataT;
@@ -28,6 +23,7 @@ type PropsT = {};
 export const MovePrivateDataPanel: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+    const { profilingStore, tagsStore } = useStore();
 
     const editBtn = (
       <FontAwesomeIcon
@@ -55,7 +51,9 @@ export const MovePrivateDataPanel: FC<PropsT, DefaultPropsT> = observer(
     );
 
     const buttons =
-      props.movesEditingPD.isEditing || !props.userProfile ? [] : [editBtn];
+      props.movesEditingPD.isEditing || !profilingStore.userProfile
+        ? []
+        : [editBtn];
 
     const formDiv = (
       <MovePrivateDataForm
@@ -67,7 +65,7 @@ export const MovePrivateDataPanel: FC<PropsT, DefaultPropsT> = observer(
         moveId={props.move.id}
         videoController={props.videoController}
         movePrivateData={props.movePrivateData}
-        knownTags={props.tagsStore.moveTags}
+        knownTags={tagsStore.moveTags}
       />
     );
 

@@ -2,20 +2,13 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
-import { useDefaultProps, FC } from 'react-default-props-context';
-import { Authentication } from 'src/session/facets/Authentication';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { SignInForm } from 'src/session/presentation/SignInForm';
 import { RouterLink } from 'src/utils/RouterLink';
+import { useStore } from 'src/app/components/StoreProvider';
 
-type PropsT = {};
-
-type DefaultPropsT = {
-  authentication: Authentication;
-};
-
-export const SignInPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
-  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const SignInPage: React.FC = observer(() => {
+  const { authenticationStore } = useStore();
   const { errors } = useAuthStateContext(true);
 
   return (
@@ -23,7 +16,7 @@ export const SignInPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
       <div className="">
         <SignInForm
           signIn={(email, password, rememberMe) => {
-            props.authentication.signIn(email, password, rememberMe);
+            authenticationStore.signIn(email, password, rememberMe);
           }}
           errors={errors}
         />

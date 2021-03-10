@@ -2,7 +2,6 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
 
-import { TagsStore } from 'src/tags/TagsStore';
 import { Editing } from 'facility-mobx/facets/Editing';
 import { Deletion } from 'facility-mobx/facets/Deletion';
 import { useDefaultProps, FC } from 'react-default-props-context';
@@ -10,11 +9,11 @@ import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { CutPointT } from 'src/video/types';
 import { CutPointForm } from 'src/video/presentation/CutPointForm';
 import { CutPointHeader } from 'src/video/presentation/CutPointHeader';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = {};
 
 type DefaultPropsT = {
-  tagsStore: TagsStore;
   cutPoints: CutPointT[];
   cutPointsEditing: Editing;
   cutPointsDeletion: Deletion;
@@ -23,13 +22,14 @@ type DefaultPropsT = {
 
 export const CutPointList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { tagsStore } = useStore();
 
   const cutPointNodes = props.cutPoints.map((cutPoint: CutPointT) => {
     const form = (
       <CutPointForm
         cutPoint={cutPoint}
         onSubmit={props.cutPointsEditing.save}
-        knownTags={props.tagsStore.moveTags}
+        knownTags={tagsStore.moveTags}
         videoController={props.videoController}
         autoFocus={true}
       />

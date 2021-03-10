@@ -6,29 +6,29 @@ import ReactResizeDetector from 'react-resize-detector';
 
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { Display } from 'src/session/facets/Display';
-import { Profiling } from 'src/session/facets/Profiling';
 import { SearchMovesPage } from 'src/search/containers/SearchMovesPage';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
+import { useStore } from 'src/app/components/StoreProvider';
 
 // AppFrame
 type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
-  profiling: Profiling;
   sessionDisplay: Display;
 };
 
 export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { profilingStore } = useStore();
 
-  const cookieNotice = props.profiling.acceptsCookies ? undefined : (
+  const cookieNotice = profilingStore.acceptsCookies ? undefined : (
     <div className="cookieNotice flexrow justify-around items-center">
       <div>
         This site uses cookies to store the settings for the logged in user. By
         continuing to use this site you agree with that.
         <button
           className="button button--wide ml-2"
-          onClick={props.profiling.acceptCookies.bind(props.profiling)}
+          onClick={profilingStore.acceptCookies.bind(profilingStore)}
         >
           Okay
         </button>

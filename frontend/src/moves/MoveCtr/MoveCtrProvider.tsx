@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { MovesStore } from 'src/moves/MovesStore';
 import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { reaction } from 'mobx';
 import { useDefaultProps, CtrProvider } from 'react-default-props-context';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{
   ctrKey?: string;
@@ -14,12 +14,12 @@ type PropsT = React.PropsWithChildren<{
 type DefaultPropsT = {
   sessionDisplay: SessionDisplay;
   move: MoveT;
-  movesStore: MovesStore;
 };
 
 // Note: don't observe this with MobX
 export const MoveCtrProvider: React.FC<PropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { movesStore } = useStore();
 
   const createCtr = () => {
     return new MoveContainer({ rootDivId: 'moveDiv' });
@@ -29,7 +29,7 @@ export const MoveCtrProvider: React.FC<PropsT> = (p: PropsT) => {
     reaction(
       () => ({
         move: props.move,
-        movePrivateData: props.movesStore.privateDataByMoveId[props.move?.id],
+        movePrivateData: movesStore.privateDataByMoveId[props.move?.id],
         sessionDisplay: props.sessionDisplay,
       }),
       ({ move, movePrivateData, sessionDisplay }) => {

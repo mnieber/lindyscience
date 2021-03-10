@@ -1,24 +1,15 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import { useDefaultProps, FC } from 'react-default-props-context';
 import { MoveTable } from 'src/search/presentation/MoveTable';
-import { MovesStore } from 'src/moves/MovesStore';
+import { useStore } from 'src/app/components/StoreProvider';
 
-type PropsT = {};
-
-type DefaultPropsT = {
-  movesStore: MovesStore;
-};
-
-export const SearchResultsPage: FC<PropsT, DefaultPropsT> = observer(
-  (p: PropsT) => {
-    const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-    return (
-      <div className="flexcol">
-        <h1>Search results</h1>
-        <MoveTable moveSearchResults={props.movesStore.searchResults} />
-      </div>
-    );
-  }
-);
+export const SearchResultsPage: React.FC = observer(() => {
+  const { movesStore } = useStore();
+  return (
+    <div className="flexcol">
+      <h1>Search results</h1>
+      <MoveTable moveSearchResults={movesStore.searchResults} />
+    </div>
+  );
+});

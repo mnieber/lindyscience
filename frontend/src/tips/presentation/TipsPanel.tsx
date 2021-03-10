@@ -4,24 +4,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { Addition } from 'facility-mobx/facets/Addition';
 
-import { UserProfileT } from 'src/profiles/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { TipList } from 'src/tips/presentation/TipList';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = {};
 
 type DefaultPropsT = {
-  userProfile?: UserProfileT;
   tipsAddition: Addition;
 };
 
 export const TipsPanel: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { profilingStore } = useStore();
 
   const addTipBtn = (
     <FontAwesomeIcon
       key={'edit'}
-      className={classnames('ml-2', { 'opacity-50': !props.userProfile })}
+      className={classnames('ml-2', {
+        'opacity-50': !profilingStore.userProfile,
+      })}
       icon={faPlusSquare}
       onClick={() => props.tipsAddition.add({})}
     />

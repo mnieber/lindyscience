@@ -10,7 +10,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { configureStore } from 'src/app/store';
-import { SessionCtrProvider } from 'src/session/SessionCtrProvider';
+import { DisplayProvider } from 'src/session/DisplayProvider';
 import { MoveListsCtrProvider } from 'src/move_lists/MovelistsCtrProvider';
 import { MovesCtrProvider } from 'src/moves/MovesCtr/MovesCtrProvider';
 import { AppFrame } from 'src/app/containers/AppFrame';
@@ -19,7 +19,7 @@ import { UrlRouter } from 'src/app/containers/UrlRouter';
 configureStore();
 
 ReactDOM.render(
-  <SessionCtrProvider>
+  <DisplayProvider>
     <MoveListsCtrProvider>
       <MovesCtrProvider>
         <AppFrame>
@@ -27,6 +27,6 @@ ReactDOM.render(
         </AppFrame>
       </MovesCtrProvider>
     </MoveListsCtrProvider>
-  </SessionCtrProvider>,
+  </DisplayProvider>,
   document.getElementById('root')
 );

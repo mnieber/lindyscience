@@ -1,40 +1,32 @@
 import { values } from 'lodash/fp';
 import * as React from 'react';
 
-import { Profiling } from 'src/session/facets/Profiling';
-import { Navigation } from 'src/session/facets/Navigation';
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
 import { reaction } from 'mobx';
-import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
+import { CtrProvider } from 'react-default-props-context';
 import { Editing } from 'facility-mobx/facets/Editing';
 import { Highlight } from 'facility-mobx/facets/Highlight';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;
 
-type DefaultPropsT = {
-  profiling: Profiling;
-  navigation: Navigation;
-  moveListsStore: MoveListsStore;
-};
-
 // Note: don't observe this with MobX
-export const MoveListsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
-  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const MoveListsCtrProvider: React.FC<PropsT> = (props: PropsT) => {
+  const { moveListsStore, navigationStore, profilingStore } = useStore();
 
   const createCtr = () => {
     return new MoveListsContainer({
-      navigation: props.navigation,
-      profiling: props.profiling,
-      moveListsStore: props.moveListsStore,
+      navigationStore: navigationStore,
+      profilingStore: profilingStore,
+      moveListsStore: moveListsStore,
     });
   };
 
   const updateCtr = (ctr: MoveListsContainer) =>
     reaction(
       () => ({
-        moveListById: props.moveListsStore.moveListById,
-        userProfile: props.profiling.userProfile,
+        moveListById: moveListsStore.moveListById,
+        userProfile: profilingStore.userProfile,
       }),
       ({ moveListById, userProfile }) => {
         ctr.inputs.setMoveLists(values(moveListById));

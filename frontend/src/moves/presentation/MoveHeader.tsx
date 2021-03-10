@@ -10,18 +10,16 @@ import { MoveT } from 'src/moves/types';
 import { Tags } from 'src/tags/presentation/Tags';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveListT } from 'src/move_lists/types';
-import { UserProfileT } from 'src/profiles/types';
 import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveListTitle } from 'src/move_lists/presentation/MoveListDetails';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
+import { useStore } from 'src/app/components/StoreProvider';
 
 // MoveHeader
 
 type PropsT = {};
 
 type DefaultPropsT = {
-  userProfile?: UserProfileT;
-  isOwner: (move: MoveT) => boolean;
   sessionDisplay: SessionDisplay;
   movesEditing: Editing;
   moveList: MoveListT;
@@ -31,11 +29,12 @@ type DefaultPropsT = {
 
 export const MoveHeader: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { profilingStore } = useStore();
 
   const small = props.sessionDisplay.small;
   const moveListTitle = <MoveListTitle moveList={props.moveList} />;
 
-  const isOwnMove = !!props.move && props.isOwner(props.move);
+  const isOwnMove = !!props.move && profilingStore.isOwner(props.move);
 
   const editMoveBtn = (
     <FontAwesomeIcon
@@ -47,7 +46,7 @@ export const MoveHeader: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
     />
   );
 
-  const followMoveListBtn = props.userProfile ? (
+  const followMoveListBtn = profilingStore.userProfile ? (
     <FollowMoveListBtn key="followMoveListBtn" />
   ) : undefined;
 

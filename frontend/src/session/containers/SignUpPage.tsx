@@ -2,20 +2,13 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
-import { useDefaultProps, FC } from 'react-default-props-context';
-import { Authentication } from 'src/session/facets/Authentication';
 import { RouterLink } from 'src/utils/RouterLink';
 import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame';
 import { SignUpForm } from 'src/session/presentation/SignUpForm';
+import { useStore } from 'src/app/components/StoreProvider';
 
-type PropsT = {};
-
-type DefaultPropsT = {
-  authentication: Authentication;
-};
-
-export const SignUpPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
-  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+export const SignUpPage: React.FC = observer(() => {
+  const { authenticationStore } = useStore();
   const { errors, state } = useAuthStateContext(true);
 
   const confirmationDiv = (
@@ -39,7 +32,7 @@ export const SignUpPage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         {state === 'SignUp.Succeeded' && confirmationDiv}
         {state !== 'SignUp.Succeeded' && (
           <React.Fragment>
-            <SignUpForm signUp={props.authentication.signUp} errors={errors} />
+            <SignUpForm signUp={authenticationStore.signUp} errors={errors} />
             {goToSignInDiv}
           </React.Fragment>
         )}

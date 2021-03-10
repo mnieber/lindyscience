@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 
-import { TagsStore } from 'src/tags/TagsStore';
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { action } from 'mobx';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { MovePrivateDataPanel } from 'src/moves/presentation/MovePrivateDataPanel';
@@ -12,7 +10,6 @@ import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { TipsPanel } from 'src/tips/presentation/TipsPanel';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { MoveT } from 'src/moves/types';
-import { Navigation } from 'src/session/facets/Navigation';
 import { MoveForm } from 'src/moves/presentation/MoveForm';
 import { MoveListT } from 'src/move_lists/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
@@ -21,30 +18,29 @@ import { Editing } from 'facility-mobx/facets/Editing';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { resetRS } from 'src/utils/RST';
 import { ResourceView } from 'src/utils/ResourceView';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = {};
 
 type DefaultPropsT = {
-  navigation: Navigation;
   moveList: MoveListT;
   move: MoveT;
-  moveListsStore: MoveListsStore;
   moveDisplay: MoveDisplay;
   movesEditing: Editing;
   moveCtr: MoveContainer;
   videoController: VideoController;
   moveForm: any;
   moveKeyHandlers: any;
-  tagsStore: TagsStore;
 };
 
 export const MovePage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { tagsStore, moveListsStore, navigationStore } = useStore();
 
   const getRS = () => {
-    const { moveListUrl } = props.navigation.dataRequest;
+    const { moveListUrl } = navigationStore.dataRequest;
     return moveListUrl
-      ? props.moveListsStore.moveListRSByUrl[moveListUrl] ?? resetRS()
+      ? moveListsStore.moveListRSByUrl[moveListUrl] ?? resetRS()
       : resetRS();
   };
 
@@ -69,7 +65,7 @@ export const MovePage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
           _setAltLink(undefined);
           props.movesEditing.cancel();
         }}
-        knownTags={props.tagsStore.moveTags}
+        knownTags={tagsStore.moveTags}
         videoController={props.videoController}
         setAltLink={_setAltLink}
       />

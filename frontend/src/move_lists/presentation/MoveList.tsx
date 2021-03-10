@@ -5,13 +5,13 @@ import classnames from 'classnames';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 import { MoveT } from 'src/moves/types';
-import { Profiling } from 'src/session/facets/Profiling';
 import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { Highlight } from 'facility-mobx/facets/Highlight';
 import { Selection } from 'facility-mobx/facets/Selection';
 import { Insertion } from 'facility-mobx/facets/Insertion';
+import { useStore } from 'src/app/components/StoreProvider';
 
 // MoveList
 
@@ -23,7 +23,6 @@ type PropsT = {
 };
 
 type DefaultPropsT = {
-  profiling: Profiling;
   moveList: MoveListT;
   moves: Array<MoveT>;
   movesCtr: MovesContainer;
@@ -34,6 +33,7 @@ type DefaultPropsT = {
 
 export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { profilingStore } = useStore();
 
   const hoverPosition = props.movesCtr.dragAndDrop.hoverPosition;
   const selectionIds = props.movesSelection.ids || [];
@@ -56,7 +56,7 @@ export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         id={move.id}
         key={idx}
         {...props.movesCtr.handlerClick.handle(move.id, move, props.navigateTo)}
-        {...(props.profiling.isOwner(props.moveList)
+        {...(profilingStore.isOwner(props.moveList)
           ? props.movesCtr.dragAndDrop.handle(move.id)
           : {})}
       >

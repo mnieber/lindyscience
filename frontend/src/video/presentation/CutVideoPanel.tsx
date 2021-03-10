@@ -2,33 +2,27 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { CutPointsStore } from 'src/video/facets/CutPointsStore';
-import { TagsStore } from 'src/tags/TagsStore';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { CutPointList } from 'src/video/presentation/CutPointList';
-import { MovesStore } from 'src/moves/MovesStore';
 import { useScheduledCall } from 'src/utils/useScheduledCall';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = {};
 
 type DefaultPropsT = {
-  movesStore: MovesStore;
-  tagsStore: TagsStore;
-  cutPointsStore: CutPointsStore;
   videoController: VideoController;
 };
 
 export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-    const scheduleCreateMoves = useScheduledCall(
-      props.cutPointsStore.createMoves
-    );
+    const { cutPointsStore } = useStore();
+    const scheduleCreateMoves = useScheduledCall(cutPointsStore.createMoves);
 
     const onKeyDown = (e: any) => {
       if (e.keyCode === 13) {
-        props.cutPointsStore.setVideoLink(e.target.value);
+        cutPointsStore.setVideoLink(e.target.value);
       }
     };
 

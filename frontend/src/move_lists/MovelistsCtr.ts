@@ -1,7 +1,7 @@
-import { Profiling } from 'src/session/facets/Profiling';
+import { ProfilingStore } from 'src/session/ProfilingStore';
 import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
-import { Navigation } from 'src/session/facets/Navigation';
+import { NavigationStore } from 'src/session/NavigationStore';
 import { getIds } from 'src/app/utils';
 import { facet, installPolicies, registerFacets } from 'facility';
 import { setCallbacks } from 'aspiration';
@@ -45,11 +45,10 @@ import * as MobXFacets from 'facility-mobx/facets';
 import * as MobXPolicies from 'facility-mobx/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';
 import * as Handlers from 'src/move_lists/handlers';
-import * as SessionCtrPolicies from 'src/session/policies';
 
 type PropsT = {
-  navigation: Navigation;
-  profiling: Profiling;
+  navigationStore: NavigationStore;
+  profilingStore: ProfilingStore;
   moveListsStore: MoveListsStore;
 };
 
@@ -71,7 +70,7 @@ export class MoveListsContainer {
     setCallbacks(this.addition, {
       add: {
         enter(this: Addition_add<MoveListT>) {
-          props.navigation.storeLocation();
+          props.navigationStore.storeLocation();
         },
         createItem(this: Addition_add<MoveListT>) {
           MobXPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
@@ -89,7 +88,7 @@ export class MoveListsContainer {
       cancel: {
         exit(this: Addition_cancel<MoveListT>) {
           MobXPolicies.editingSetDisabled(ctr.addition);
-          props.navigation.restoreLocation();
+          props.navigationStore.restoreLocation();
         },
       },
     });
@@ -126,7 +125,12 @@ export class MoveListsContainer {
     setCallbacks(this.labelling, {
       setLabel: {
         saveIds(this: Labelling_setLabel, label: string, ids: Array<UUID>) {
-          Handlers.handleSaveLabels(ctr.labelling, props.profiling, label, ids);
+          Handlers.handleSaveLabels(
+            ctr.labelling,
+            props.profilingStore,
+            label,
+            ids
+          );
         },
       },
     });
@@ -152,7 +156,6 @@ export class MoveListsContainer {
     const policies = [
       // selection
       MobXFacets.selectionActsOnItems(itemById),
-      SessionCtrPolicies.selectTheMoveListThatMatchesTheUrl(props.navigation),
 
       // highlight
       MobXFacets.highlightActsOnItems(itemById),

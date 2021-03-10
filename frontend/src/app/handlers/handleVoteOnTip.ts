@@ -1,20 +1,21 @@
 import { VotesStore } from 'src/votes/VotesStore';
+import { TipsStore } from 'src/tips/TipsStore';
 import { createErrorHandler } from 'src/app/utils';
-import { SessionContainer } from 'src/session/SessionCtr';
 import { UUID } from 'src/kernel/types';
 import { VoteT } from 'src/votes/types';
 import { apiVoteTip } from 'src/votes/api';
-import { getCtr } from 'facility';
 
-export function handleVoteOnTip(facet: VotesStore, id: UUID, vote: VoteT) {
-  const ctr = getCtr<SessionContainer>(facet);
-  const tipsStore = ctr.tipsStore;
-
+export function handleVoteOnTip(
+  votesStore: VotesStore,
+  tipsStore: TipsStore,
+  id: UUID,
+  vote: VoteT
+) {
   if (tipsStore.tipById[id] !== undefined) {
     apiVoteTip(id, vote).catch(
       createErrorHandler('We could not save your vote')
     );
-    const prevVote = facet.voteByObjectId[id] ?? 0;
+    const prevVote = votesStore.voteByObjectId[id] ?? 0;
     tipsStore.castVote(id, vote, prevVote);
   }
 }

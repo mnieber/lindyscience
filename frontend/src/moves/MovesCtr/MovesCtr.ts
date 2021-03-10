@@ -35,7 +35,7 @@ import {
 import { mapData } from 'facility-mobx';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
-import { Navigation } from 'src/session/facets/Navigation';
+import { NavigationStore } from 'src/session/NavigationStore';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
 import {
   Selection,
@@ -51,13 +51,12 @@ import {
 } from 'facility-mobx/facets/Editing';
 import * as MobXFacets from 'facility-mobx/facets';
 import * as MobXPolicies from 'facility-mobx/policies';
-import * as SessionCtrPolicies from 'src/session/policies';
 import * as Handlers from 'src/moves/MovesCtr/handlers';
 
 type PropsT = {
   moveListsStore: MoveListsStore;
   movesStore: MovesStore;
-  navigation: Navigation;
+  navigationStore: NavigationStore;
 };
 
 export class MovesContainer {
@@ -81,14 +80,14 @@ export class MovesContainer {
 
   _setCallbacks(props: PropsT) {
     const ctr = this;
-    const navigateToMove = props.navigation.navigateToMove.bind(
-      props.navigation
+    const navigateToMove = props.navigationStore.navigateToMove.bind(
+      props.navigationStore
     );
 
     setCallbacks(this.addition, {
       add: {
         enter(this: Addition_add<MoveT>) {
-          props.navigation.storeLocation();
+          props.navigationStore.storeLocation();
           MobXPolicies.filteringIsDisabledOnNewItem(ctr.addition);
         },
         createItem(this: Addition_add<MoveT>) {
@@ -108,7 +107,7 @@ export class MovesContainer {
       cancel: {
         exit(this: Addition_cancel<MoveT>) {
           MobXPolicies.editingSetDisabled(ctr.addition);
-          props.navigation.restoreLocation();
+          props.navigationStore.restoreLocation();
         },
       },
     });
@@ -214,9 +213,6 @@ export class MovesContainer {
       // highlight
       MobXFacets.highlightActsOnItems(itemById),
 
-      // navigation
-      SessionCtrPolicies.syncMoveWithCurrentUrl(props.navigation),
-
       // insertion
       MobXFacets.insertionActsOnItems(inputItems),
       MobXPolicies.createInsertionPreview(
@@ -244,7 +240,7 @@ export class MovesContainer {
       ctr: this,
       shareMovesToList: Handlers.handleShareMovesToList(
         this,
-        props.navigation,
+        props.navigationStore,
         props.moveListsStore
       ),
     });

@@ -1,13 +1,18 @@
 import * as _ from 'lodash/fp';
 import { action, computed, observable } from 'mobx';
 import { output, operation } from 'facility';
+import { stub } from 'aspiration';
 import { CutPointByIdT, CutPointT } from 'src/video/types';
+import { MoveListT } from 'src/move_lists/types';
+import { UserProfileT } from 'src/profiles/types';
 import { listToItemById } from 'src/utils/utils';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { host } from 'aspiration';
 
 export class CutPointsStore_createMoves {
   createMoves() {}
+  moveList: MoveListT = stub();
+  userProfile: UserProfileT = stub();
 }
 
 export class CutPointsStore {
@@ -26,7 +31,7 @@ export class CutPointsStore {
     }
   }
 
-  @operation @host createMoves() {
+  @operation @host createMoves(moveList: MoveListT, userProfile: UserProfileT) {
     return action((cbs: CutPointsStore_createMoves) => {
       cbs.createMoves();
     });

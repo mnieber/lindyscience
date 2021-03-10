@@ -10,7 +10,7 @@ import { Editing } from 'facility-mobx/facets/Editing';
 import { Highlight } from 'facility-mobx/facets/Highlight';
 import { Addition } from 'facility-mobx/facets/Addition';
 import { Deletion } from 'facility-mobx/facets/Deletion';
-import { VotesStore } from 'src/votes/VotesStore';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = {
   allowEdit: boolean;
@@ -22,12 +22,12 @@ type DefaultPropsT = {
   tipsHighlight: Highlight;
   tipsEditing: Editing;
   tipsAddition: Addition;
-  votesStore: VotesStore;
   tipsDeletion: Deletion;
 };
 
 export const Tip: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { votesStore } = useStore();
   const [armDelete, setArmDelete] = React.useState(false);
   const tipId = props.item.id;
   const isEditing =
@@ -50,9 +50,9 @@ export const Tip: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   } else {
     const voteCount = (
       <VoteCount
-        vote={props.votesStore.voteByObjectId[tipId] || 0}
+        vote={votesStore.voteByObjectId[tipId] || 0}
         count={props.item.voteCount}
-        setVote={(value: VoteT) => props.votesStore.castVote(tipId, value)}
+        setVote={(value: VoteT) => votesStore.castVote(tipId, value)}
       />
     );
 

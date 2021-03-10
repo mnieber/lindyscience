@@ -5,7 +5,6 @@ import CheeseburgerMenu from 'cheeseburger-menu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
 
-import { TagsStore } from 'src/tags/TagsStore';
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
 import { Addition } from 'facility-mobx/facets/Addition';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
@@ -20,35 +19,27 @@ import { MoveListHeader } from 'src/move_lists/presentation/MoveListHeader';
 import { MoveListPicker } from 'src/move_lists/presentation/MoveListPicker';
 import { MoveListPlayer } from 'src/move_lists/presentation/MoveListPlayer';
 import { MoveListT } from 'src/move_lists/types';
-import { MovesStore } from 'src/moves/MovesStore';
 import { MoveT } from 'src/moves/types';
-import { Navigation } from 'src/session/facets/Navigation';
-import { Profiling } from 'src/session/facets/Profiling';
 import { sayMove } from 'src/moves/MovesCtr/handlers/sayMove';
 import { Selection } from 'facility-mobx/facets/Selection';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { UserProfileT } from 'src/profiles/types';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
-  profiling: Profiling;
   moveLists: Array<MoveListT>;
   moveList?: MoveListT;
   movesSelection: Selection;
-  userProfile?: UserProfileT;
   movesFiltering: Filtering;
   movesAddition: Addition;
-  navigation: Navigation;
   sessionDisplay: SessionDisplay;
-  movesStore: MovesStore;
-  tagsStore: TagsStore;
   movesClipboard: Clipboard;
-  isOwner: (obj: any) => boolean;
 };
 
 export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
+    const { navigationStore, profilingStore, tagsStore } = useStore();
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -65,7 +56,9 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
         targetMoveLists={targetMoveLists || []}
         targetMoveListsForMoving={targetMoveListsForMoving}
         movesClipboard={props.movesClipboard}
-        isOwnerOfMoveList={!!props.moveList && !!props.isOwner(props.moveList)}
+        isOwnerOfMoveList={
+          !!props.moveList && !!profilingStore.isOwner(props.moveList)
+        }
       />
     );
 
@@ -78,14 +71,15 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
     );
 
     const showMoveList = (ml: MoveListT) =>
-      !props.userProfile || props.userProfile.moveListIds.includes(ml.id);
+      !profilingStore.userProfile ||
+      profilingStore.userProfile.moveListIds.includes(ml.id);
 
     const moveListPicker = (
       <MoveListPicker
         key={props.moveList ? props.moveList.id : ''}
         className=""
         filter={showMoveList}
-        navigateTo={(x: MoveListT) => props.navigation.navigateToMoveList(x)}
+        navigateTo={(x: MoveListT) => navigationStore.navigateToMoveList(x)}
       />
     );
 
@@ -99,7 +93,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
     const moveListFilter = (
       <MoveListFilter
         className=""
-        moveTags={props.tagsStore.moveTags}
+        moveTags={tagsStore.moveTags}
         movesFiltering={props.movesFiltering}
       />
     );
@@ -123,7 +117,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
         moveContextMenu={moveContextMenu}
         navigateTo={(x: MoveT) => {
           if (props.moveList) {
-            props.navigation.navigateToMove(props.moveList, x);
+            navigationStore.navigateToMove(props.moveList, x);
           }
         }}
       />
@@ -147,7 +141,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
         <div className="flexrow w-full my-4">
           {moveListPlayerBtns}
           {props.moveList &&
-            props.profiling.isOwner(props.moveList) &&
+            profilingStore.isOwner(props.moveList) &&
             moveListHeaderBtns}
         </div>
         {moveListWidget}

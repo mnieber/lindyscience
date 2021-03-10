@@ -3,38 +3,31 @@ import * as React from 'react';
 import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
 import { Display as SessionDisplay } from 'src/session/facets/Display';
 import { MoveListT } from 'src/move_lists/types';
-import { UserProfileT } from 'src/profiles/types';
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
-import { MovesStore } from 'src/moves/MovesStore';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
-import { cutVideoContainerProps } from 'src/video/CutVideoCtrProps';
 import { reaction } from 'mobx';
+import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
   sessionDisplay: SessionDisplay;
   moveList: MoveListT;
-  userProfile: UserProfileT;
-  moveListsStore: MoveListsStore;
-  movesStore: MovesStore;
 };
 
 // Note: don't observe this with MobX
 export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
+  const { profilingStore, cutPointsStore } = useStore();
 
   const createCtr = () => {
-    return new CutVideoContainer(
-      cutVideoContainerProps(props.moveListsStore, props.movesStore)
-    );
+    return new CutVideoContainer({ rootDivId: 'cutVideoPanel' });
   };
 
   const updateCtr = (ctr: CutVideoContainer) =>
     reaction(
       () => ({
         sessionDisplay: props.sessionDisplay,
-        userProfile: props.userProfile,
+        userProfile: profilingStore.userProfile,
         moveList: props.moveList,
       }),
       ({ sessionDisplay, userProfile, moveList }) => {
@@ -46,9 +39,8 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
 
   const getDefaultProps = (ctr: CutVideoContainer) => {
     return {
-      videoController: () => ctr.cutPointsStore.videoController,
-      cutPoints: () => ctr.cutPointsStore.cutPoints,
-      cutPointsStore: () => ctr.cutPointsStore,
+      videoController: () => cutPointsStore.videoController,
+      cutPoints: () => cutPointsStore.cutPoints,
       cutPointsAddition: () => ctr.addition,
       cutPointsEditing: () => ctr.editing,
       cutPointsDeletion: () => ctr.deletion,

@@ -1,16 +1,16 @@
 import React from 'react';
-import { makeObservable, action, observable, computed } from 'mobx';
+import { action, observable, computed } from 'mobx';
+import { useStore } from 'src/app/components/StoreProvider';
 import * as _ from 'lodash/fp';
 
-import { Authentication } from 'src/session/facets/Authentication';
+import { AuthenticationStore } from 'src/session/AuthenticationStore';
 
 class AuthState {
   @observable errors: string[] = [];
   @observable state: string = 'initial';
 
-  constructor(authentication: Authentication) {
-    makeObservable(this);
-    authentication.signal.add((event) => this.handleMsg(event));
+  constructor(authenticationStore: AuthenticationStore) {
+    authenticationStore.signal.add((event) => this.handleMsg(event));
   }
 
   @computed get hasErrors() {
@@ -32,12 +32,11 @@ export const AuthStateContext = React.createContext<AuthState | undefined>(
   undefined
 );
 
-type PropsT = React.PropsWithChildren<{
-  authentication: Authentication;
-}>;
+type PropsT = React.PropsWithChildren<{}>;
 
 export const AuthStateProvider: React.FC<PropsT> = (props: PropsT) => {
-  const [authState] = React.useState(() => new AuthState(props.authentication));
+  const { authenticationStore } = useStore();
+  const [authState] = React.useState(() => new AuthState(authenticationStore));
 
   return (
     <AuthStateContext.Provider value={authState}>

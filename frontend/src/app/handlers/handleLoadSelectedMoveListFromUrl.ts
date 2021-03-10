@@ -1,34 +1,33 @@
 import { values } from 'lodash/fp';
-
-import { SessionContainer } from 'src/session/SessionCtr';
-import { loadRes } from 'src/utils/RST';
-import { Navigation } from 'src/session/facets/Navigation';
-import { action } from 'mobx';
 import { declareReaction } from 'facility-mobx';
+
+import { loadRes } from 'src/utils/RST';
+import { AppStore } from 'src/app/AppStore';
+import { action } from 'mobx';
 import { newMoveListSlug } from 'src/app/utils';
 import { apiLoadMoveList } from 'src/search/api';
 
-export const handleLoadSelectedMoveListFromUrl = (ctr: SessionContainer) => {
-  const navigation = Navigation.get(ctr);
-
+export const handleLoadSelectedMoveListFromUrl = (appStore: AppStore) => {
   declareReaction(
-    ctr,
-    () => navigation.dataRequest.moveListUrl,
+    appStore,
+    () => appStore.navigationStore.dataRequest.moveListUrl,
     action('loadSelectedMoveListFromUrl', async (selectedMoveListUrl) => {
       if (!!selectedMoveListUrl) {
         const [ownerUsername, slug] = selectedMoveListUrl.split('/');
 
         if (slug !== newMoveListSlug) {
           loadRes(
-            ctr.moveListsStore.moveListRSByUrl,
+            appStore.moveListsStore.moveListRSByUrl,
             selectedMoveListUrl,
             () => apiLoadMoveList(ownerUsername, slug),
             (response: any) => {
-              ctr.movesStore.addMoves(values(response.entities.moves || {}));
-              ctr.moveListsStore.addMoveLists(
+              appStore.movesStore.addMoves(
+                values(response.entities.moves || {})
+              );
+              appStore.moveListsStore.addMoveLists(
                 response.entities.moveLists ?? []
               );
-              ctr.tipsStore.addTips(response.entities.tips || {});
+              appStore.tipsStore.addTips(response.entities.tips || {});
             }
           );
         }

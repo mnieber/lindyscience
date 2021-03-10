@@ -5,20 +5,10 @@ import { SignInPage } from 'src/session/containers/SignInPage';
 import { SignUpPage } from 'src/session/containers/SignUpPage';
 import { PasswordResetPage } from 'src/session/containers/PasswordResetPage';
 import { AuthStateProvider } from 'src/session/AuthStateProvider';
-import { Authentication } from 'src/session/facets/Authentication';
-import { useDefaultProps, FC } from 'react-default-props-context';
 
-type PropsT = {};
-
-type DefaultPropsT = {
-  authentication: Authentication;
-};
-
-export const AuthSwitch: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
-  const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-
+export const AuthSwitch: React.FC = () => {
   return (
-    <AuthStateProvider authentication={props.authentication}>
+    <AuthStateProvider>
       <Switch>
         <Route exact path="/sign-in">
           <SignInPage />

@@ -1,26 +1,22 @@
 import * as _ from 'lodash/fp';
+import { declareReaction } from 'facility-mobx';
 
+import { AppStore } from 'src/app/AppStore';
 import { updatedRS } from 'src/utils/RST';
-import { Profiling } from 'src/session/facets/Profiling';
-import { Authentication } from 'src/session/facets/Authentication';
 import { apiLoadUserProfile } from 'src/profiles/api';
 import { apiLoadUserVotes } from 'src/votes/api';
 import { apiLoadMovePrivateDatas } from 'src/moves/api';
 import { apiFindMoveLists } from 'src/search/api';
-import { declareReaction } from 'facility-mobx';
 
-export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
-  const profiling = Profiling.get(ctr);
-  const authentication = Authentication.get(ctr);
-
+export const handleLoadUserProfileForSignedInEmail = (appStore: AppStore) => {
   declareReaction(
-    ctr,
-    () => authentication.signedInUserId,
+    appStore,
+    () => appStore.authenticationStore.signedInUserId,
     async (signedInUserId) => {
       if (signedInUserId === 'anonymous') {
-        profiling.setUserProfile(undefined, updatedRS());
-        ctr.votesStore.setVotes({});
-        ctr.movesStore.setPrivateDataByMoveId({});
+        appStore.profilingStore.setUserProfile(undefined, updatedRS());
+        appStore.votesStore.setVotes({});
+        appStore.movesStore.setPrivateDataByMoveId({});
       } else {
         const [
           profile,
@@ -34,9 +30,9 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
           apiLoadMovePrivateDatas(),
         ]);
 
-        profiling.setUserProfile(profile, updatedRS());
-        ctr.votesStore.setVotes(votes);
-        ctr.movesStore.setPrivateDataByMoveId(
+        appStore.profilingStore.setUserProfile(profile, updatedRS());
+        appStore.votesStore.setVotes(votes);
+        appStore.movesStore.setPrivateDataByMoveId(
           _.flow(
             _.always(movePrivateDatas.entities.movePrivateDatas || {}),
             _.values,
@@ -47,9 +43,10 @@ export const handleLoadUserProfileForSignedInEmail = (ctr: any) => {
         const moveLists = await apiFindMoveLists({
           followedByUsername: profile.username,
         });
-        ctr.moveListsStore.addMoveLists(moveLists.entities.moveLists || {});
+        appStore.moveListsStore.addMoveLists(
+          moveLists.entities.moveLists || {}
+        );
       }
-    },
-    { name: 'handleLoadUserProfileForSignedInUserId' }
+    }
   );
 };

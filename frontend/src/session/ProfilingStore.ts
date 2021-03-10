@@ -7,10 +7,16 @@ import { OwnedT, UUID } from 'src/kernel/types';
 import { isOwner } from 'src/app/utils';
 import { data, operation } from 'facility';
 
-export class Profiling {
+export class ProfilingStore {
   @data @observable userProfile?: UserProfileT;
   @observable userProfileRS: RST = resetRS();
   @data @observable acceptsCookies: boolean = false;
+
+  constructor() {
+    runInAction(() => {
+      this.acceptsCookies = Cookies.get('acceptCookies') === '1';
+    });
+  }
 
   @action setFollowedMoveListIds(moveListIds: Array<UUID>) {
     if (this.userProfile) {
@@ -40,13 +46,4 @@ export class Profiling {
     Cookies.set('acceptCookies', '1');
     this.acceptsCookies = true;
   }
-
-  static get = (ctr: any): Profiling => ctr.profiling;
-}
-
-export function initProfiling(self: Profiling): Profiling {
-  runInAction(() => {
-    self.acceptsCookies = Cookies.get('acceptCookies') === '1';
-  });
-  return self;
 }

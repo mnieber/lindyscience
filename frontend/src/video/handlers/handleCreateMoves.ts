@@ -1,27 +1,52 @@
+import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MovesStore } from 'src/moves/MovesStore';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { CutPointT } from 'src/video/types';
 import { MoveT } from 'src/moves/types';
-import { getCtr } from 'facility';
 import { MoveListT } from 'src/move_lists/types';
 import { isNone } from 'src/utils/utils';
 import { createMoveFromCutPoint } from 'src/app/utils';
+import { apiSaveMove } from 'src/moves/api';
+import { createErrorHandler } from 'src/app/utils';
+import { apiSaveMoveOrdering } from 'src/move_lists/api';
+import { UserProfileT } from 'src/profiles/types';
+
+const saveMoves = (
+  moveListsStore: MoveListsStore,
+  movesStore: MovesStore,
+  newMoves: Array<MoveT>,
+  moveList: MoveListT
+) => {
+  const lastMoveIdx = moveList.moves.length - 1;
+  const lastMoveId = lastMoveIdx >= 0 ? moveList.moves[lastMoveIdx] : '';
+
+  movesStore.addMoves(newMoves);
+  const moveIdsInMoveList = moveListsStore.insertMoveIds(
+    moveList.id,
+    newMoves.map((x) => x.id),
+    lastMoveId,
+    false
+  );
+
+  newMoves.forEach((newMove) => {
+    apiSaveMove(newMove).catch(
+      createErrorHandler('We could not save the move')
+    );
+  });
+
+  apiSaveMoveOrdering(moveList.id, moveIdsInMoveList).catch(
+    createErrorHandler('We could not update the movelist')
+  );
+};
 
 export const handleCreateMoves = (
-  facet: CutPointsStore,
-  saveMoves: (moves: Array<MoveT>, moveList: MoveListT) => any
+  cutPointsStore: CutPointsStore,
+  moveListsStore: MoveListsStore,
+  movesStore: MovesStore,
+  moveList: MoveListT,
+  userProfile: UserProfileT
 ) => {
-  const ctr = getCtr(facet);
-  const moveList = ctr.inputs.moveList;
-  if (!moveList) {
-    throw Error('No movelist');
-  }
-
-  const userProfile = ctr.inputs.userProfile;
-  if (!userProfile) {
-    throw Error('No userProfile');
-  }
-
-  const newMoves: Array<MoveT> = facet.cutPoints.reduce(
+  const newMoves: Array<MoveT> = cutPointsStore.cutPoints.reduce(
     (acc: any, cutPoint: CutPointT) => {
       const lastMoveIdx = acc.length - 1;
       const lastMove = acc.length ? acc[lastMoveIdx] : undefined;
@@ -38,7 +63,7 @@ export const handleCreateMoves = (
           : [
               createMoveFromCutPoint(
                 cutPoint,
-                facet.videoLink,
+                cutPointsStore.videoLink,
                 userProfile,
                 moveList
               ),
@@ -48,5 +73,6 @@ export const handleCreateMoves = (
     },
     []
   );
-  return saveMoves(newMoves, moveList);
+
+  return saveMoves(moveListsStore, movesStore, newMoves, moveList);
 };

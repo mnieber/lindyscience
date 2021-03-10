@@ -161,6 +161,9 @@ export class MovesContainer {
         enter(this: Highlight_highlightItem) {
           MobXPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
+        exit(this: Highlight_highlightItem) {
+          Handlers.handleNavigateToHighlightedItem(ctr, props.navigationStore);
+        },
       },
     });
 

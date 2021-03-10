@@ -77,6 +77,7 @@ export class MoveListsContainer {
           return Handlers.handleCreateMoveList(ctr, this.values);
         },
         exit(this: Addition_add<MoveListT>) {
+          Handlers.handleHighlightNewMoveList(ctr.addition);
           MobXPolicies.editingSetEnabled(ctr.addition);
         },
       },
@@ -118,6 +119,12 @@ export class MoveListsContainer {
       highlightItem: {
         enter(this: Highlight_highlightItem) {
           MobXPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
+        },
+        exit(this: Highlight_highlightItem) {
+          Handlers.handleNavigateToHighlightedItem(
+            ctr.highlight,
+            props.navigationStore
+          );
         },
       },
     });

@@ -33,7 +33,7 @@ export const configureStore = () => {
 
   if (logFacet) {
     facetOptions.logging = true;
-    facetOptions.formatObject = (x) => toJS(x, { recurseEverything: true });
+    facetOptions.formatObject = (x) => toJS(x);
   }
 
   if (logMobX) {

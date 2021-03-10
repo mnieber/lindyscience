@@ -39,7 +39,7 @@ type DefaultPropsT = {
 
 export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
-    const { navigationStore, profilingStore, tagsStore } = useStore();
+    const { profilingStore, tagsStore } = useStore();
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -79,7 +79,6 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
         key={props.moveList ? props.moveList.id : ''}
         className=""
         filter={showMoveList}
-        navigateTo={(x: MoveListT) => navigationStore.navigateToMoveList(x)}
       />
     );
 
@@ -115,11 +114,6 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
         className=""
         createHostedPanels={createHostedPanels}
         moveContextMenu={moveContextMenu}
-        navigateTo={(x: MoveT) => {
-          if (props.moveList) {
-            navigationStore.navigateToMove(props.moveList, x);
-          }
-        }}
       />
     );
 

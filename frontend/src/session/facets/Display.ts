@@ -1,4 +1,4 @@
-import { computed, observable, action } from 'mobx';
+import { computed, observable, action, makeObservable } from 'mobx';
 import { createUUID } from 'src/utils/utils';
 
 export class Display {
@@ -15,6 +15,7 @@ export class Display {
   @observable id: string = createUUID();
 
   constructor() {
+    makeObservable(this);
     this.id = createUUID();
   }
 

@@ -12,7 +12,7 @@ type ArgsT = {
   moveId: string;
 };
 
-export const NavigateToMoveEffect: React.FC = () => {
+export const LoadMoveEffect: React.FC = () => {
   const { navigationStore } = useStore();
 
   return (

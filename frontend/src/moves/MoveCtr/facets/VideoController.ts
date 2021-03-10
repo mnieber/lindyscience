@@ -11,7 +11,7 @@ export class VideoController {
   _player: any;
   _pauseAt: number = -1;
 
-  constructor() {
+  hack() {
     autorun(() => this._updatePlayer());
     autorun(() => (this._player = this.player));
   }

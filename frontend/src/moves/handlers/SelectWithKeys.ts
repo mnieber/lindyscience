@@ -13,11 +13,7 @@ export class SelectWithKeys {
     this.props = props;
   }
 
-  handle(
-    keysUp: Array<string>,
-    keysDown: Array<string>,
-    navigateTo?: Function
-  ) {
+  handle(keysUp: Array<string>, keysDown: Array<string>) {
     return {
       onKeyDown: (key: string, e: any) => {
         const ctr = this.props.container;
@@ -35,7 +31,6 @@ export class SelectWithKeys {
                 isShift: e.shiftKey,
                 isCtrl: false,
               });
-              navigateTo && navigateTo(highlight.item);
             };
 
             pickNeighbour2(

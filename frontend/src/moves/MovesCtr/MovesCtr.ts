@@ -95,7 +95,7 @@ export class MovesContainer {
           return Handlers.handleCreateMove(ctr.addition, this.values);
         },
         exit(this: Addition_add<MoveT>) {
-          Handlers.handleNavigateToNewMove(ctr.addition, navigateToMove);
+          Handlers.handleHighlightNewMove(ctr.addition);
           MobXPolicies.editingSetEnabled(ctr.addition);
         },
       },

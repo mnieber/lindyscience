@@ -7,6 +7,7 @@ import { reaction } from 'mobx';
 import { useDefaultProps, CtrProvider } from 'react-default-props-context';
 import { Highlight } from 'facility-mobx/facets/Highlight';
 import { useStore } from 'src/app/components/StoreProvider';
+import { MoveT } from 'src/moves/types';
 
 type PropsT = React.PropsWithChildren<{}>;
 
@@ -33,7 +34,7 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
     });
   };
 
-  const updateCtr = (ctr: MovesContainer) =>
+  const updateCtr = (ctr: MovesContainer) => {
     reaction(
       () => ({
         inputMoves: props.moveList
@@ -53,6 +54,16 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
         ctr.inputs.moveLists = moveLists;
       }
     );
+
+    reaction(
+      () => ctr.highlight.item,
+      (highlightedMove: MoveT) => {
+        if (highlightedMove) {
+          navigationStore.navigateToMove(props.moveList, highlightedMove);
+        }
+      }
+    );
+  };
 
   const getDefaultProps = (ctr: MovesContainer) => {
     const movePrivateData = () => {

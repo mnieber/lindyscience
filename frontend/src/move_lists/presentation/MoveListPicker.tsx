@@ -14,7 +14,6 @@ import { FormFieldContext } from 'src/forms/components/FormFieldContext';
 type PropsT = {
   filter: (moveList: MoveListT) => boolean;
   className?: string;
-  navigateTo: (moveList: MoveListT) => any;
 };
 
 type DefaultPropsT = {
@@ -39,12 +38,10 @@ export const MoveListPicker: FC<PropsT, DefaultPropsT> = observer(
     const handleSubmit = ({ values }: HandleSubmitArgsT) => {
       if (values.moveList.__isNew__) {
         props.moveListsAddition.add({ name: values.moveList.label });
-        props.navigateTo(props.moveListsAddition.item);
       } else if (!!values.moveList) {
         props.moveListsSelection.selectItem({
           itemId: values.moveList.id,
         });
-        props.navigateTo(props.moveListsHighlight.item);
       }
     };
 

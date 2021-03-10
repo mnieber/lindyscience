@@ -8,7 +8,7 @@ type ArgsT = {
   moveListSlug: string;
 };
 
-export const NavigateToMoveListEffect: React.FC = () => {
+export const LoadMoveListEffect: React.FC = () => {
   const { navigationStore } = useStore();
 
   return (

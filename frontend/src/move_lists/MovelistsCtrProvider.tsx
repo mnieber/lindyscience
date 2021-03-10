@@ -7,6 +7,7 @@ import { CtrProvider } from 'react-default-props-context';
 import { Editing } from 'facility-mobx/facets/Editing';
 import { Highlight } from 'facility-mobx/facets/Highlight';
 import { useStore } from 'src/app/components/StoreProvider';
+import { MoveListT } from 'src/move_lists/types';
 
 type PropsT = React.PropsWithChildren<{}>;
 
@@ -22,7 +23,7 @@ export const MoveListsCtrProvider: React.FC<PropsT> = (props: PropsT) => {
     });
   };
 
-  const updateCtr = (ctr: MoveListsContainer) =>
+  const updateCtr = (ctr: MoveListsContainer) => {
     reaction(
       () => ({
         moveListById: moveListsStore.moveListById,
@@ -33,6 +34,21 @@ export const MoveListsCtrProvider: React.FC<PropsT> = (props: PropsT) => {
         ctr.inputs.setUserProfile(userProfile);
       }
     );
+
+    reaction(
+      () => ctr.highlight.item,
+      (moveList: MoveListT) => {
+        if (
+          moveList &&
+          !window.location.pathname.startsWith(
+            '/lists/' + moveList.ownerUsername + '/' + moveList.slug
+          )
+        ) {
+          navigationStore.navigateToMoveList(moveList);
+        }
+      }
+    );
+  };
 
   const getDefaultProps = (ctr: MoveListsContainer) => {
     return {

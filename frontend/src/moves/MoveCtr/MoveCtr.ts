@@ -44,5 +44,6 @@ export class MoveContainer {
     this._setCallbacks(props);
     this._applyPolicies(props);
     makeCtrObservable(this);
+    this.videoController.hack();
   }
 }

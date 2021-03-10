@@ -18,7 +18,6 @@ import { useStore } from 'src/app/components/StoreProvider';
 type PropsT = {
   createHostedPanels: (move: MoveT) => any;
   moveContextMenu: any;
-  navigateTo: (move: MoveT) => any;
   className?: string;
 };
 
@@ -55,7 +54,7 @@ export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         })}
         id={move.id}
         key={idx}
-        {...props.movesCtr.handlerClick.handle(move.id, move, props.navigateTo)}
+        {...props.movesCtr.handlerClick.handle(move.id, move)}
         {...(profilingStore.isOwner(props.moveList)
           ? props.movesCtr.dragAndDrop.handle(move.id)
           : {})}
@@ -72,21 +71,15 @@ export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         handleKeys={['ctrl+.', 'ctrl+,']}
         handleFocusableElements={true}
         onKeyEvent={
-          props.movesCtr.handlerSelectWithKeys.handle(
-            ['ctrl+,'],
-            ['ctrl+.'],
-            props.navigateTo
-          ).onKeyDown
+          props.movesCtr.handlerSelectWithKeys.handle(['ctrl+,'], ['ctrl+.'])
+            .onKeyDown
         }
       />
       <KeyboardEventHandler
         handleKeys={['up', 'down']}
         onKeyEvent={
-          props.movesCtr.handlerSelectWithKeys.handle(
-            ['up'],
-            ['down'],
-            props.navigateTo
-          ).onKeyDown
+          props.movesCtr.handlerSelectWithKeys.handle(['up'], ['down'])
+            .onKeyDown
         }
       >
         <div

@@ -17,12 +17,16 @@ import {
   handleAddMoveListTags,
   handleVoteOnTip,
   handleLoadUserProfileForSignedInEmail,
+  handleSignOut,
   handleLoadSelectedMoveListFromUrl,
 } from 'src/app/handlers';
 import { handleCreateMoves, removeAllCutPoints } from 'src/video/handlers';
 import { AuthenticationStore } from 'src/session/AuthenticationStore';
 import { ProfilingStore } from 'src/session/ProfilingStore';
-import { NavigationStore } from 'src/session/NavigationStore';
+import {
+  NavigationStore,
+  Navigation_requestData,
+} from 'src/session/NavigationStore';
 import { facet, registerFacets } from 'facility';
 import { makeCtrObservable } from 'facility-mobx';
 
@@ -53,7 +57,6 @@ export class AppStore {
 
     registerFacets(this);
     this._setCallbacks();
-    this._applyPolicies();
     makeCtrObservable(this);
   }
 
@@ -98,10 +101,27 @@ export class AppStore {
         },
       },
     });
-  }
 
-  _applyPolicies() {
-    handleLoadUserProfileForSignedInEmail(this);
-    handleLoadSelectedMoveListFromUrl(this);
+    setCallbacks(this.navigationStore, {
+      requestData: {
+        loadData(this: Navigation_requestData) {
+          handleLoadSelectedMoveListFromUrl(ctr, this.dataRequest);
+        },
+      },
+    });
+
+    this.authenticationStore.signal.add((event) => {
+      if (
+        event.topic === 'LoadUserId.Succeeded' ||
+        event.topic === 'SignIn.Succeeded' ||
+        event.topic === 'SignOut.Succeeded'
+      ) {
+        if (this.authenticationStore.signedInUserId === 'anonymous') {
+          handleSignOut(ctr);
+        } else {
+          handleLoadUserProfileForSignedInEmail(ctr);
+        }
+      }
+    });
   }
 }

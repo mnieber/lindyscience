@@ -1,5 +1,5 @@
 import React from 'react';
-import { action, observable, computed } from 'mobx';
+import { action, observable, computed, makeObservable } from 'mobx';
 import { useStore } from 'src/app/components/StoreProvider';
 import * as _ from 'lodash/fp';
 
@@ -10,6 +10,7 @@ class AuthState {
   @observable state: string = 'initial';
 
   constructor(authenticationStore: AuthenticationStore) {
+    makeObservable(this);
     authenticationStore.signal.add((event) => this.handleMsg(event));
   }
 

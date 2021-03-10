@@ -6,10 +6,15 @@ import { AuthenticationFrame } from 'src/session/containers/AuthenticationFrame'
 import { SignInForm } from 'src/session/presentation/SignInForm';
 import { RouterLink } from 'src/utils/RouterLink';
 import { useStore } from 'src/app/components/StoreProvider';
+import { useNextUrl } from 'src/utils/useNextUrl';
+import { getNextUrl } from 'src/utils/urlParams';
 
 export const SignInPage: React.FC = observer(() => {
   const { authenticationStore } = useStore();
-  const { errors } = useAuthStateContext(true);
+  const { state, errors } = useAuthStateContext(true);
+
+  // Change the url if sign in was successfull
+  useNextUrl(state === 'SignIn.Succeeded' ? getNextUrl('/') : undefined);
 
   return (
     <AuthenticationFrame header="Sign in">

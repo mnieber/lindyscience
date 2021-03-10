@@ -8,8 +8,12 @@ import { browseToMoveUrl } from 'src/app/containers';
 import { lookUp } from 'src/utils/utils';
 import { getId, makeSlugidMatcher } from 'src/app/utils';
 import { createBrowserHistory } from 'history';
+import { host, stub } from 'aspiration';
 
-export class Navigation_requestData {}
+export class Navigation_requestData {
+  dataRequest: DataRequestT = stub();
+  loadData() {}
+}
 
 export type DataRequestT = {
   moveSlugid?: string;
@@ -30,8 +34,11 @@ export class NavigationStore {
     });
   }
 
-  @action @operation requestData(dataRequest: DataRequestT) {
-    this.dataRequest = dataRequest;
+  @operation @host requestData(dataRequest: DataRequestT) {
+    return action((cbs: Navigation_requestData) => {
+      this.dataRequest = dataRequest;
+      cbs.loadData();
+    });
   }
 
   @operation navigateToMove(moveList: MoveListT, move: MoveT) {

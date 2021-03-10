@@ -11,7 +11,6 @@ import { TipsPanel } from 'src/tips/presentation/TipsPanel';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { MoveT } from 'src/moves/types';
 import { MoveForm } from 'src/moves/presentation/MoveForm';
-import { MoveListT } from 'src/move_lists/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { Move } from 'src/moves/presentation/Move';
 import { Editing } from 'facility-mobx/facets/Editing';
@@ -23,14 +22,11 @@ import { useStore } from 'src/app/components/StoreProvider';
 type PropsT = {};
 
 type DefaultPropsT = {
-  moveList: MoveListT;
   move: MoveT;
   moveDisplay: MoveDisplay;
   movesEditing: Editing;
   moveCtr: MoveContainer;
   videoController: VideoController;
-  moveForm: any;
-  moveKeyHandlers: any;
 };
 
 export const MovePage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {

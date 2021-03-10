@@ -19,6 +19,10 @@ export class AuthenticationStore {
             });
           } else {
             this.signedInUserId = response.userId ?? 'anonymous';
+            this.signal.dispatch({
+              topic: 'LoadUserId.Succeeded',
+              details: { errors: response.errors },
+            });
           }
         })
       );
@@ -36,7 +40,7 @@ export class AuthenticationStore {
             });
           } else {
             this.signedInUserId = response.userId;
-            this.signal.dispatch({ topic: 'SignUp.Success' });
+            this.signal.dispatch({ topic: 'SignIn.Succeeded' });
             // '/sign-in/'
             console.log('TODO: goSignIn ');
           }
@@ -54,7 +58,7 @@ export class AuthenticationStore {
             details: { errors: response.errors },
           });
         } else {
-          this.signal.dispatch({ topic: 'SignUp.Success' });
+          this.signal.dispatch({ topic: 'SignUp.Succeeded' });
         }
       });
   }
@@ -71,7 +75,7 @@ export class AuthenticationStore {
             },
           });
         } else {
-          this.signal.dispatch({ topic: 'ResetPassword.Success' });
+          this.signal.dispatch({ topic: 'ResetPassword.Succeeded' });
         }
       });
   }
@@ -88,7 +92,7 @@ export class AuthenticationStore {
             },
           });
         } else {
-          this.signal.dispatch({ topic: 'ChangePassword.Success' });
+          this.signal.dispatch({ topic: 'ChangePassword.Succeeded' });
         }
       });
   }
@@ -105,7 +109,7 @@ export class AuthenticationStore {
             },
           });
         } else {
-          this.signal.dispatch({ topic: 'ActivateAccount.Success' });
+          this.signal.dispatch({ topic: 'ActivateAccount.Succeeded' });
           // '/'
           console.log('TODO: goHome');
         }
@@ -120,7 +124,7 @@ export class AuthenticationStore {
           this.signedInUserId = 'anonymous';
           // '/sign-in/'
           console.log('TODO: goNext');
-          this.signal.dispatch({ topic: 'SignOut.Success' });
+          this.signal.dispatch({ topic: 'SignOut.Succeeded' });
         })
       );
   }

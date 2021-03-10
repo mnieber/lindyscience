@@ -96,16 +96,19 @@ export class MoveListsContainer {
 
     setCallbacks(this.editing, {
       save: {
-        saveItem(this: Editing_save, values: any) {
+        saveItem(this: Editing_save) {
           Handlers.handleSaveMoveList(
             ctr.editing,
             props.moveListsStore,
-            values
+            this.values
           );
           MobXPolicies.newItemsAreConfirmedOnEditingSave(
             ctr.editing,
             this.values
           );
+        },
+        exit(this: Editing_save) {
+          props.navigationStore.navigateToMoveList(ctr.highlight.item);
         },
       },
       cancel: {

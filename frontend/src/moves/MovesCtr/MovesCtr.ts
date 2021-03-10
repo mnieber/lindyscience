@@ -131,6 +131,8 @@ export class MovesContainer {
             ctr.editing,
             this.values
           );
+        },
+        exit(this: Editing_save) {
           Handlers.handleNavigateToSavedMove(ctr.editing, navigateToMove);
         },
       },
@@ -138,9 +140,6 @@ export class MovesContainer {
         enter(this: Editing_cancel) {
           MobXPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
         },
-      },
-      enable: {
-        enter(this: Editing_enable) {},
       },
     });
 

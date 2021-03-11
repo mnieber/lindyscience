@@ -44,11 +44,7 @@ import {
 } from 'facility-mobx/facets/Selection';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import { MoveT } from 'src/moves/types';
-import {
-  Editing_cancel,
-  Editing_save,
-  Editing_enable,
-} from 'facility-mobx/facets/Editing';
+import { Editing_cancel, Editing_save } from 'facility-mobx/facets/Editing';
 import * as MobXFacets from 'facility-mobx/facets';
 import * as MobXPolicies from 'facility-mobx/policies';
 import * as Handlers from 'src/moves/MovesCtr/handlers';

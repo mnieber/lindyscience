@@ -7,18 +7,24 @@ import { VideoPlayerPanel } from 'src/video/presentation/VideoPlayerPanel';
 import { CutPointList } from 'src/video/presentation/CutPointList';
 import { useScheduledCall } from 'src/utils/useScheduledCall';
 import { useStore } from 'src/app/components/StoreProvider';
+import { MoveListT } from 'src/move_lists/types';
 
 type PropsT = {};
 
 type DefaultPropsT = {
+  moveList: MoveListT;
   videoController: VideoController;
 };
 
 export const CutVideoPanel: FC<PropsT, DefaultPropsT> = observer(
   (p: PropsT) => {
     const props = useDefaultProps<PropsT, DefaultPropsT>(p);
-    const { cutPointsStore } = useStore();
-    const scheduleCreateMoves = useScheduledCall(cutPointsStore.createMoves);
+    const { cutPointsStore, profilingStore } = useStore();
+    const scheduleCreateMoves = useScheduledCall(() => {
+      if (profilingStore.userProfile) {
+        cutPointsStore.createMoves(props.moveList, profilingStore.userProfile);
+      }
+    });
 
     const onKeyDown = (e: any) => {
       if (e.keyCode === 13) {

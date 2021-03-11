@@ -58,7 +58,10 @@ export class CutVideoContainer {
       },
       confirm: {
         confirm(this: Addition_confirm<any>) {
-          Handlers.insertCutPointWhenConfirmed(ctr.addition);
+          Handlers.insertCutPointWhenConfirmed(
+            ctr.addition,
+            props.cutPointsStore
+          );
         },
       },
     });

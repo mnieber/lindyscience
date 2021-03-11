@@ -1,13 +1,11 @@
 import * as _ from 'lodash/fp';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { output, operation } from 'facility';
-import { stub } from 'aspiration';
+import { host, stub } from 'aspiration';
 import { CutPointByIdT, CutPointT } from 'src/video/types';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
 import { listToItemById } from 'src/utils/utils';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { host } from 'aspiration';
 
 export class CutPointsStore_createMoves {
   createMoves() {}
@@ -25,6 +23,7 @@ export class CutPointsStore {
 
       this.videoController = new VideoController();
       makeObservable(this.videoController); // hack
+      this.videoController.hack();
 
       this.videoController.video = {
         link: videoLink,
@@ -34,7 +33,7 @@ export class CutPointsStore {
     }
   }
 
-  @operation @host createMoves(moveList: MoveListT, userProfile: UserProfileT) {
+  @host createMoves(moveList: MoveListT, userProfile: UserProfileT) {
     return action((cbs: CutPointsStore_createMoves) => {
       cbs.createMoves();
     });
@@ -44,7 +43,7 @@ export class CutPointsStore {
     return this.videoController?.video?.link || '';
   }
 
-  @computed @output get cutPoints() {
+  @computed get cutPoints() {
     return _.flow(
       _.always(this.cutPointById),
       _.values,

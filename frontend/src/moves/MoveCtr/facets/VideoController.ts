@@ -1,5 +1,5 @@
 import { input } from 'facility';
-import { action, autorun, observable } from 'mobx';
+import { action, autorun, observable, makeObservable } from 'mobx';
 import { VideoT } from 'src/video/types';
 import { isYoutubePlaying } from 'src/video/utils';
 
@@ -10,14 +10,18 @@ export class VideoController {
   // We use _player to allow non-observer access to the player via getPlayer
   _player: any;
   _pauseAt: number = -1;
+  _disposeAutoRun: Function = () => {};
 
-  hack() {
-    autorun(() => this._updatePlayer());
-    autorun(() => (this._player = this.player));
+  constructor(isMakeObservable: boolean) {
+    if (isMakeObservable) {
+      makeObservable(this);
+    }
   }
 
   @action setPlayer(x: any) {
-    this.player = x;
+    this.player = this._player = x;
+    this._disposeAutoRun();
+    this._disposeAutoRun = autorun(() => this._updatePlayer());
   }
 
   getPlayer() {

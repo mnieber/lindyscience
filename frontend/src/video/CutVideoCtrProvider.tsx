@@ -20,7 +20,10 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
   const { profilingStore, cutPointsStore } = useStore();
 
   const createCtr = () => {
-    return new CutVideoContainer({ rootDivId: 'cutVideoPanel' });
+    return new CutVideoContainer({
+      rootDivId: 'cutVideoPanel',
+      cutPointsStore,
+    });
   };
 
   const updateCtr = (ctr: CutVideoContainer) =>

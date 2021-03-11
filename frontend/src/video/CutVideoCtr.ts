@@ -3,6 +3,7 @@ import { facet, installPolicies, registerFacets } from 'facility';
 import { makeCtrObservable } from 'facility-mobx';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';
+import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import {
   Addition,
   initAddition,
@@ -24,6 +25,7 @@ import * as Handlers from 'src/video/handlers';
 
 export type PropsT = {
   rootDivId: string;
+  cutPointsStore: CutPointsStore;
 };
 
 export class CutVideoContainer {
@@ -45,7 +47,10 @@ export class CutVideoContainer {
     setCallbacks(this.addition, {
       add: {
         createItem(this: Addition_add<any>) {
-          return Handlers.handleCreateCutPoint(ctr.addition, this.values);
+          return Handlers.handleCreateCutPoint(
+            props.cutPointsStore,
+            this.values
+          );
         },
         createItem_post(this: Addition_add<any>) {
           ctr.addition.confirm();
@@ -61,7 +66,7 @@ export class CutVideoContainer {
     setCallbacks(this.editing, {
       save: {
         saveItem(this: Editing_save) {
-          Handlers.handleSaveCutPoint(ctr.editing, this.values);
+          Handlers.handleSaveCutPoint(props.cutPointsStore, this.values);
         },
       },
     });
@@ -69,7 +74,7 @@ export class CutVideoContainer {
     setCallbacks(this.deletion, {
       delete: {
         deleteItems(this: Deletion_delete) {
-          Handlers.handleDeleteCutPoints(ctr.deletion, this.itemIds);
+          Handlers.handleDeleteCutPoints(props.cutPointsStore, this.itemIds);
         },
       },
     });

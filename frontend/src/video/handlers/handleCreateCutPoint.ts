@@ -1,21 +1,16 @@
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { createUUID } from 'src/utils/utils';
 import { CutPointT } from 'src/video/types';
-import { getCtr } from 'facility';
-import { Addition } from 'facility-mobx/facets/Addition';
 
 type PropsT = {
   cutPointType: 'start' | 'end';
 };
 
 export function handleCreateCutPoint(
-  facet: Addition,
+  cutPointsStore: CutPointsStore,
   { cutPointType }: PropsT
 ): CutPointT {
-  const ctr = getCtr(facet);
-  const t = CutPointsStore.get(ctr)
-    .videoController.getPlayer()
-    .getCurrentTime();
+  const t = cutPointsStore.videoController.getPlayer().getCurrentTime();
 
   return {
     id: createUUID(),

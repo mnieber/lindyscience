@@ -14,7 +14,7 @@ import {
 import { Editing, initEditing } from 'facility-mobx/facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
-import { facet, installPolicies, registerFacets } from 'facility';
+import { mapData, facet, installPolicies, registerFacets } from 'facility';
 import { makeCtrObservable } from 'facility-mobx';
 import {
   Filtering,
@@ -32,7 +32,6 @@ import {
   initInsertion,
   Insertion_insertItems,
 } from 'facility-mobx/facets/Insertion';
-import { mapData } from 'facility-mobx';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { NavigationStore } from 'src/session/NavigationStore';

@@ -1,5 +1,5 @@
 import { setCallbacks } from 'aspiration';
-import { observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 import {
   CutPointsStore,
   CutPointsStore_createMoves,
@@ -27,21 +27,21 @@ import {
   NavigationStore,
   Navigation_requestData,
 } from 'src/session/NavigationStore';
-import { facet, registerFacets } from 'facility';
-import { makeCtrObservable } from 'facility-mobx';
 
 export class AppStore {
-  @observable @facet movesStore: MovesStore;
-  @observable @facet moveListsStore: MoveListsStore;
-  @observable @facet tagsStore: TagsStore;
-  @observable @facet tipsStore: TipsStore;
-  @observable @facet votesStore: VotesStore;
-  @observable @facet cutPointsStore: CutPointsStore;
-  @observable @facet authenticationStore: AuthenticationStore;
-  @observable @facet profilingStore: ProfilingStore;
-  @observable @facet navigationStore: NavigationStore;
+  @observable movesStore: MovesStore;
+  @observable moveListsStore: MoveListsStore;
+  @observable tagsStore: TagsStore;
+  @observable tipsStore: TipsStore;
+  @observable votesStore: VotesStore;
+  @observable cutPointsStore: CutPointsStore;
+  @observable authenticationStore: AuthenticationStore;
+  @observable profilingStore: ProfilingStore;
+  @observable navigationStore: NavigationStore;
 
   constructor() {
+    makeObservable(this);
+
     this.authenticationStore = new AuthenticationStore();
     this.profilingStore = new ProfilingStore();
     this.movesStore = new MovesStore();
@@ -55,9 +55,7 @@ export class AppStore {
     this.tagsStore.loadKnownTags();
     this.authenticationStore.loadUserId();
 
-    registerFacets(this);
     this._setCallbacks();
-    makeCtrObservable(this);
   }
 
   _setCallbacks() {

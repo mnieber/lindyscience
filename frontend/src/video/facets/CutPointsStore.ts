@@ -1,5 +1,5 @@
 import * as _ from 'lodash/fp';
-import { action, computed, observable } from 'mobx';
+import { makeObservable, action, computed, observable } from 'mobx';
 import { host, stub } from 'aspiration';
 import { CutPointByIdT, CutPointT } from 'src/video/types';
 import { MoveListT } from 'src/move_lists/types';
@@ -16,6 +16,10 @@ export class CutPointsStore_createMoves {
 export class CutPointsStore {
   @observable cutPointById: CutPointByIdT = {};
   @observable videoController: VideoController = new VideoController(true);
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action setVideoLink(videoLink: string) {
     if (this.videoLink !== videoLink) {

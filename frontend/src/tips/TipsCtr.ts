@@ -1,9 +1,8 @@
 import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
-import { facet, installPolicies, registerFacets } from 'facility';
+import { mapData, facet, installPolicies, registerFacets } from 'facility';
 import { makeCtrObservable } from 'facility-mobx';
-import { mapData } from 'facility-mobx';
 import {
   Addition,
   Addition_add,

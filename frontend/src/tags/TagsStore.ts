@@ -1,15 +1,18 @@
 import { apiLoadKnownMoveListTags, apiLoadKnownMoveTags } from 'src/tags/api';
 import { TagMapT, TagT } from 'src/tags/types';
-import { action, observable, computed } from 'mobx';
+import { makeObservable, action, observable, computed } from 'mobx';
 import { addTags } from 'src/tags/utils';
-import { operation } from 'facility';
 import { keys } from 'lodash/fp';
 
 export class TagsStore {
   @observable moveTagsMap: TagMapT = {};
   @observable moveListTagsMap: TagMapT = {};
 
-  @operation loadKnownMoveTags() {
+  constructor() {
+    makeObservable(this);
+  }
+
+  loadKnownMoveTags() {
     apiLoadKnownMoveTags().then(
       action((tags: TagT[]) => {
         this.moveTagsMap = addTags([tags], this.moveTagsMap);
@@ -17,7 +20,7 @@ export class TagsStore {
     );
   }
 
-  @operation loadKnownMoveListTags() {
+  loadKnownMoveListTags() {
     apiLoadKnownMoveListTags().then(
       action((tags: TagT[]) => {
         this.moveListTagsMap = addTags([tags], this.moveListTagsMap);

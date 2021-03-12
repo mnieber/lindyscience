@@ -1,13 +1,16 @@
-import { action, observable } from 'mobx';
-import { data, operation } from 'facility';
+import { makeObservable, action, observable } from 'mobx';
 import { Signal } from 'micro-signals';
 import * as authApi from 'src/session/apis/authApi';
 
 export class AuthenticationStore {
-  @data @observable signedInUserId?: string;
+  @observable signedInUserId?: string;
   signal: Signal<any> = new Signal();
 
-  @operation loadUserId() {
+  constructor() {
+    makeObservable(this);
+  }
+
+  loadUserId() {
     authApi
       .loadUserId() //
       .then(
@@ -28,7 +31,7 @@ export class AuthenticationStore {
       );
   }
 
-  @operation signIn(userId: string, password: string, rememberMe: boolean) {
+  signIn(userId: string, password: string, rememberMe: boolean) {
     authApi
       .signIn(userId, password, rememberMe) //
       .then(
@@ -48,7 +51,7 @@ export class AuthenticationStore {
       );
   }
 
-  @operation signUp(email: string, userId: string, password: string) {
+  signUp(email: string, userId: string, password: string) {
     authApi
       .signUp(email, email, password) //
       .then((response: any) => {
@@ -63,7 +66,7 @@ export class AuthenticationStore {
       });
   }
 
-  @operation resetPassword(email: string) {
+  resetPassword(email: string) {
     authApi
       .resetPassword(email) //
       .then((response: any) => {
@@ -80,7 +83,7 @@ export class AuthenticationStore {
       });
   }
 
-  @operation changePassword(password: string, token: string) {
+  changePassword(password: string, token: string) {
     authApi
       .changePassword(password, token) //
       .then((response: any) => {
@@ -97,7 +100,7 @@ export class AuthenticationStore {
       });
   }
 
-  @operation activateAccount(token: string) {
+  activateAccount(token: string) {
     authApi
       .activateAccount(token) //
       .then((response: any) => {
@@ -116,7 +119,7 @@ export class AuthenticationStore {
       });
   }
 
-  @operation signOut() {
+  signOut() {
     authApi
       .signOut() //
       .then(

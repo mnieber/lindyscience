@@ -1,18 +1,18 @@
 import Cookies from 'js-cookie';
 
 import { RST, resetRS } from 'src/utils/RST';
-import { action, observable, runInAction } from 'mobx';
+import { makeObservable, action, observable, runInAction } from 'mobx';
 import { UserProfileT } from 'src/profiles/types';
 import { OwnedT, UUID } from 'src/kernel/types';
 import { isOwner } from 'src/app/utils';
-import { data, operation } from 'facility';
 
 export class ProfilingStore {
-  @data @observable userProfile?: UserProfileT;
+  @observable userProfile?: UserProfileT;
   @observable userProfileRS: RST = resetRS();
-  @data @observable acceptsCookies: boolean = false;
+  @observable acceptsCookies: boolean = false;
 
   constructor() {
+    makeObservable(this);
     runInAction(() => {
       this.acceptsCookies = Cookies.get('acceptCookies') === '1';
     });
@@ -42,7 +42,7 @@ export class ProfilingStore {
     return this.userProfile && isOwner(this.userProfile, x.ownerId);
   }
 
-  @operation acceptCookies() {
+  acceptCookies() {
     Cookies.set('acceptCookies', '1');
     this.acceptsCookies = true;
   }

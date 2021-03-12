@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import jQuery from 'jquery';
 
 import { spy, toJS } from 'mobx';
-import { options as facetOptions } from 'facility';
+import { setOptions } from 'facility';
 
 function csrfSafeMethod(method: string) {
   // these HTTP methods do not require CSRF protection
@@ -32,8 +32,10 @@ export const configureStore = () => {
   const logMobXBlackList = ['relayData'];
 
   if (logFacet) {
-    facetOptions.logging = true;
-    facetOptions.formatObject = (x) => toJS(x);
+    setOptions({
+      logging: true,
+      formatObject: (x) => toJS(x),
+    });
   }
 
   if (logMobX) {

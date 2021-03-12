@@ -1,11 +1,11 @@
-import { computed, observable } from 'mobx';
+import { computed } from 'mobx';
 import { MoveListT } from 'src/move_lists/types';
 import { UserProfileT } from 'src/profiles/types';
 import { operation, input } from 'facility';
 
 export class Inputs {
-  @observable @input moveLists: Array<MoveListT> = [];
-  @observable @input userProfile?: UserProfileT;
+  @input moveLists: Array<MoveListT> = [];
+  @input userProfile?: UserProfileT;
 
   @computed get moveListsFollowing(): Array<MoveListT> {
     const userProfile = this.userProfile;

@@ -1,8 +1,7 @@
-import { action, observable } from 'mobx';
+import { makeObservable, action, observable } from 'mobx';
 import { MoveT } from 'src/moves/types';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MoveListT } from 'src/move_lists/types';
-import { operation } from 'facility';
 import { newMoveListSlug } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/containers';
 import { lookUp } from 'src/utils/utils';
@@ -28,20 +27,21 @@ export class NavigationStore {
   _movesStore: MovesStore;
 
   constructor(movesStore: MovesStore) {
+    makeObservable(this);
     this._movesStore = movesStore;
     this.history = createBrowserHistory({
       basename: process.env.PUBLIC_URL,
     });
   }
 
-  @operation @host requestData(dataRequest: DataRequestT) {
+  @host requestData(dataRequest: DataRequestT) {
     return action((cbs: Navigation_requestData) => {
       this.dataRequest = dataRequest;
       cbs.loadData();
     });
   }
 
-  @operation navigateToMove(moveList: MoveListT, move: MoveT) {
+  navigateToMove(moveList: MoveListT, move: MoveT) {
     const moves = lookUp(moveList.moves, this._movesStore.moveById);
     const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
     const isSlugUnique = moves.filter(makeSlugidMatcher(move.slug)).length <= 1;
@@ -54,18 +54,18 @@ export class NavigationStore {
     );
   }
 
-  @operation navigateToMoveList(moveList: MoveListT) {
+  navigateToMoveList(moveList: MoveListT) {
     const updateProfile = moveList.slug !== newMoveListSlug;
     const moveListUrl = moveList.ownerUsername + '/' + moveList.slug;
 
     browseToMoveUrl(this.history.push, [moveListUrl], updateProfile);
   }
 
-  @action @operation storeLocation() {
+  @action storeLocation() {
     this.locationMemo = window.location.pathname;
   }
 
-  @operation restoreLocation() {
+  restoreLocation() {
     this.history.push(this.locationMemo);
   }
 }

@@ -3,7 +3,7 @@ import { Inputs, initInputs } from 'src/move_lists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/move_lists/facets/Outputs';
 import { NavigationStore } from 'src/session/NavigationStore';
 import { getIds } from 'src/app/utils';
-import { facet, installPolicies, registerFacets } from 'facility';
+import { mapData, facet, installPolicies, registerFacets } from 'facility';
 import { setCallbacks } from 'aspiration';
 import { ClassMemberT } from 'facility';
 import { makeCtrObservable } from 'facility-mobx';
@@ -40,7 +40,6 @@ import {
 } from 'facility-mobx/facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListT } from 'src/move_lists/types';
-import { mapData } from 'facility-mobx';
 import * as MobXFacets from 'facility-mobx/facets';
 import * as MobXPolicies from 'facility-mobx/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';

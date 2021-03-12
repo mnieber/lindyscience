@@ -1,13 +1,17 @@
 import { keys } from 'lodash/fp';
 
 import { VoteT } from 'src/votes/types';
-import { action, computed, observable } from 'mobx';
+import { makeObservable, action, computed, observable } from 'mobx';
 import { TipT, TipByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import * as _ from 'lodash/fp';
 
 export class TipsStore {
   @observable tipById: TipByIdT = {};
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action addTips(tipById: TipByIdT) {
     this.tipById = {

@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import {
   MoveByIdT,
   MovePrivateDataByIdT,
@@ -8,7 +8,6 @@ import {
 import { MoveSearchResultT } from 'src/search/types';
 import { UUID } from 'src/kernel/types';
 import { createUUID, listToItemById } from 'src/utils/utils';
-import { operation } from 'facility';
 import { host, stub } from 'aspiration';
 
 export class MovesStore_addMoves {
@@ -20,6 +19,10 @@ export class MovesStore {
   @observable moveById: MoveByIdT = {};
   @observable searchResults: Array<MoveSearchResultT> = [];
 
+  constructor() {
+    makeObservable(this);
+  }
+
   @action addMovePrivateDatas(privateDataByMoveId: MovePrivateDataByIdT) {
     this.privateDataByMoveId = {
       ...this.privateDataByMoveId,
@@ -27,7 +30,7 @@ export class MovesStore {
     };
   }
 
-  @operation @host addMoves(moves: Array<MoveT>) {
+  @host addMoves(moves: Array<MoveT>) {
     return action((cbs: MovesStore_addMoves) => {
       this.moveById = {
         ...this.moveById,

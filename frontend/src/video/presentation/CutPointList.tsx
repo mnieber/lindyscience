@@ -2,8 +2,8 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
 
-import { Editing } from 'facility-mobx/facets/Editing';
-import { Deletion } from 'facility-mobx/facets/Deletion';
+import { Editing } from 'facility-facets/Editing';
+import { Deletion } from 'facility-facets/Deletion';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { CutPointT } from 'src/video/types';

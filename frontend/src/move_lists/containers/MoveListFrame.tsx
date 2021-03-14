@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
 
 import { AccountMenu } from 'src/app/presentation/AccountMenu';
-import { Addition } from 'facility-mobx/facets/Addition';
+import { Addition } from 'facility-facets/Addition';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import { Display as SessionDisplay } from 'src/session/facets/Display';
-import { Filtering } from 'facility-mobx/facets/Filtering';
+import { Filtering } from 'facility-facets/Filtering';
 import { getId } from 'src/app/utils';
 import { isNone } from 'src/utils/utils';
 import { MoveContextMenu } from 'src/moves/presentation/MoveContextMenu';
@@ -21,7 +21,7 @@ import { MoveListPlayer } from 'src/move_lists/presentation/MoveListPlayer';
 import { MoveListT } from 'src/move_lists/types';
 import { MoveT } from 'src/moves/types';
 import { sayMove } from 'src/moves/MovesCtr/handlers/sayMove';
-import { Selection } from 'facility-mobx/facets/Selection';
+import { Selection } from 'facility-facets/Selection';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { useStore } from 'src/app/components/StoreProvider';
 

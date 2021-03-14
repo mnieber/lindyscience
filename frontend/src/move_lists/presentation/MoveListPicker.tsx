@@ -4,9 +4,9 @@ import { observer } from 'mobx-react';
 
 import { ValuePicker } from 'src/utils/value_picker';
 import { MoveListT } from 'src/move_lists/types';
-import { Addition } from 'facility-mobx/facets/Addition';
-import { Highlight } from 'facility-mobx/facets/Highlight';
-import { Selection } from 'facility-mobx/facets/Selection';
+import { Addition } from 'facility-facets/Addition';
+import { Highlight } from 'facility-facets/Highlight';
+import { Selection } from 'facility-facets/Selection';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { FormStateProvider, HandleSubmitArgsT } from 'react-form-state-context';
 import { FormFieldContext } from 'src/forms/components/FormFieldContext';

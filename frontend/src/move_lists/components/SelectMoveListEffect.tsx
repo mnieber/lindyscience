@@ -1,7 +1,7 @@
 import * as _ from 'lodash/fp';
 import { observer } from 'mobx-react';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Highlight } from 'facility-facets/Highlight';
 import { Effect } from 'src/app/containers/Effect';
 import { MoveListT } from 'src/move_lists/types';
 

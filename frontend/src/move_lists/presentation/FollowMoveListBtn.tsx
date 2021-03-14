@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 
 import { MoveListT } from 'src/move_lists/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Labelling } from 'facility-mobx/facets/Labelling';
+import { Labelling } from 'facility-facets/Labelling';
 
 type PropsT = {};
 

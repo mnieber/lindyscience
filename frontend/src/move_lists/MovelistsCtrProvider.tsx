@@ -4,8 +4,8 @@ import * as React from 'react';
 import { MoveListsContainer } from 'src/move_lists/MovelistsCtr';
 import { reaction } from 'mobx';
 import { CtrProvider } from 'react-default-props-context';
-import { Editing } from 'facility-mobx/facets/Editing';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Editing } from 'facility-facets/Editing';
+import { Highlight } from 'facility-facets/Highlight';
 import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;

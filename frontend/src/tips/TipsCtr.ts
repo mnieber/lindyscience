@@ -7,25 +7,22 @@ import {
   Addition,
   Addition_add,
   Addition_cancel,
-} from 'facility-mobx/facets/Addition';
-import {
-  Highlight,
-  Highlight_highlightItem,
-} from 'facility-mobx/facets/Highlight';
+} from 'facility-facets/Addition';
+import { Highlight, Highlight_highlightItem } from 'facility-facets/Highlight';
 import {
   Editing,
   initEditing,
   Editing_save,
   Editing_cancel,
-} from 'facility-mobx/facets/Editing';
+} from 'facility-facets/Editing';
 import {
   Deletion,
   initDeletion,
   Deletion_delete,
-} from 'facility-mobx/facets/Deletion';
-import { Insertion, initInsertion } from 'facility-mobx/facets/Insertion';
-import * as MobXFacets from 'facility-mobx/facets';
-import * as MobXPolicies from 'facility-mobx/policies';
+} from 'facility-facets/Deletion';
+import { Insertion, initInsertion } from 'facility-facets/Insertion';
+import * as Facets from 'facility-facets';
+import * as FacetPolicies from 'facility-facets/policies';
 import * as Handlers from 'src/tips/handlers';
 import { TipT } from 'src/tips/types';
 import { setCallbacks } from 'aspiration';
@@ -49,17 +46,17 @@ export class TipsCtr {
     setCallbacks(this.addition, {
       add: {
         createItem(this: Addition_add<TipT>) {
-          MobXPolicies.newItemsAreCreatedAtTheTop(ctr.addition);
+          FacetPolicies.newItemsAreCreatedAtTheTop(ctr.addition);
           return Handlers.handleCreateTip(ctr, this.values);
         },
         createItem_post(this: Addition_add<TipT>) {
-          MobXPolicies.highlightNewItem(ctr.addition);
-          MobXPolicies.editingSetEnabled(ctr.addition);
+          FacetPolicies.highlightNewItem(ctr.addition);
+          FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },
       cancel: {
         exit(this: Addition_cancel<TipT>) {
-          MobXPolicies.editingSetDisabled(ctr.addition);
+          FacetPolicies.editingSetDisabled(ctr.addition);
         },
       },
     });
@@ -76,7 +73,7 @@ export class TipsCtr {
       save: {
         saveItem(this: Editing_save) {
           Handlers.handleSaveTip(ctr, props.tipsStore);
-          MobXPolicies.newItemsAreConfirmedOnEditingSave(
+          FacetPolicies.newItemsAreConfirmedOnEditingSave(
             ctr.editing,
             this.values
           );
@@ -84,7 +81,7 @@ export class TipsCtr {
       },
       cancel: {
         enter(this: Editing_cancel) {
-          MobXPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
+          FacetPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
         },
       },
     });
@@ -92,7 +89,7 @@ export class TipsCtr {
     setCallbacks(this.highlight, {
       highlightItem: {
         enter(this: Highlight_highlightItem) {
-          MobXPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
+          FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
       },
     });
@@ -104,12 +101,12 @@ export class TipsCtr {
 
     const policies = [
       // highlight
-      MobXFacets.highlightActsOnItems(itemById),
+      Facets.highlightActsOnItems(itemById),
 
       // insertion
-      MobXFacets.insertionActsOnItems(inputItems),
-      MobXPolicies.createInsertionPreview(
-        [MobXPolicies.DragSourceFromNewItem],
+      Facets.insertionActsOnItems(inputItems),
+      FacetPolicies.createInsertionPreview(
+        [FacetPolicies.DragSourceFromNewItem],
         [Outputs, 'preview']
       ),
 

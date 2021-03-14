@@ -12,36 +12,36 @@ import {
   Labelling,
   initLabelling,
   Labelling_setLabel,
-} from 'facility-mobx/facets/Labelling';
+} from 'facility-facets/Labelling';
 import {
   Addition,
   initAddition,
   Addition_add,
   Addition_cancel,
   Addition_confirm,
-} from 'facility-mobx/facets/Addition';
+} from 'facility-facets/Addition';
 import {
   Editing,
   initEditing,
   Editing_cancel,
   Editing_save,
-} from 'facility-mobx/facets/Editing';
+} from 'facility-facets/Editing';
 import {
   Highlight,
   initHighlight,
   Highlight_highlightItem,
-} from 'facility-mobx/facets/Highlight';
-import { Insertion, initInsertion } from 'facility-mobx/facets/Insertion';
+} from 'facility-facets/Highlight';
+import { Insertion, initInsertion } from 'facility-facets/Insertion';
 import {
   Selection,
   handleSelectItem,
   initSelection,
   Selection_selectItem,
-} from 'facility-mobx/facets/Selection';
+} from 'facility-facets/Selection';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MoveListT } from 'src/move_lists/types';
-import * as MobXFacets from 'facility-mobx/facets';
-import * as MobXPolicies from 'facility-mobx/policies';
+import * as Facets from 'facility-facets';
+import * as FacetPolicies from 'facility-facets/policies';
 import * as MoveListsCtrPolicies from 'src/move_lists/policies';
 import * as Handlers from 'src/move_lists/handlers';
 
@@ -72,12 +72,12 @@ export class MoveListsContainer {
           props.navigationStore.storeLocation();
         },
         createItem(this: Addition_add<MoveListT>) {
-          MobXPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
+          FacetPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
           return Handlers.handleCreateMoveList(ctr, this.values);
         },
         exit(this: Addition_add<MoveListT>) {
           Handlers.handleHighlightNewMoveList(ctr.addition);
-          MobXPolicies.editingSetEnabled(ctr.addition);
+          FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },
       confirm: {
@@ -87,7 +87,7 @@ export class MoveListsContainer {
       },
       cancel: {
         exit(this: Addition_cancel<MoveListT>) {
-          MobXPolicies.editingSetDisabled(ctr.addition);
+          FacetPolicies.editingSetDisabled(ctr.addition);
           props.navigationStore.restoreLocation();
         },
       },
@@ -101,7 +101,7 @@ export class MoveListsContainer {
             props.moveListsStore,
             this.values
           );
-          MobXPolicies.newItemsAreConfirmedOnEditingSave(
+          FacetPolicies.newItemsAreConfirmedOnEditingSave(
             ctr.editing,
             this.values
           );
@@ -112,7 +112,7 @@ export class MoveListsContainer {
       },
       cancel: {
         enter(this: Editing_cancel) {
-          MobXPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
+          FacetPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
         },
       },
     });
@@ -120,7 +120,7 @@ export class MoveListsContainer {
     setCallbacks(this.highlight, {
       highlightItem: {
         enter(this: Highlight_highlightItem) {
-          MobXPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
+          FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
         exit(this: Highlight_highlightItem) {
           Handlers.handleNavigateToHighlightedItem(
@@ -148,7 +148,7 @@ export class MoveListsContainer {
       selectItem: {
         selectItem(this: Selection_selectItem) {
           handleSelectItem(ctr.selection, this.itemSelectedProps);
-          MobXPolicies.highlightFollowsSelection(
+          FacetPolicies.highlightFollowsSelection(
             ctr.selection,
             this.itemSelectedProps
           );
@@ -164,20 +164,24 @@ export class MoveListsContainer {
 
     const policies = [
       // selection
-      MobXFacets.selectionActsOnItems(itemById),
+      Facets.selectionActsOnItems(itemById),
 
       // highlight
-      MobXFacets.highlightActsOnItems(itemById),
+      Facets.highlightActsOnItems(itemById),
 
       // insertion
-      MobXFacets.insertionActsOnItems(inputItems),
-      MobXPolicies.createInsertionPreview(
-        [MobXPolicies.DragSourceFromNewItem],
+      Facets.insertionActsOnItems(inputItems),
+      FacetPolicies.createInsertionPreview(
+        [FacetPolicies.DragSourceFromNewItem],
         [Outputs, 'display']
       ),
 
       // labelling
-      MobXFacets.labellingReceivesIds(moveListsFollowing, 'following', getIds),
+      MoveListsCtrPolicies.labellingReceivesIds(
+        moveListsFollowing,
+        'following',
+        getIds
+      ),
 
       // display
       mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),

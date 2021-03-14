@@ -6,10 +6,10 @@ import { VoteT } from 'src/votes/types';
 import { TipForm } from 'src/tips/presentation/TipForm';
 import { VoteCount } from 'src/votes/presentation/VoteCount';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Editing } from 'facility-mobx/facets/Editing';
-import { Highlight } from 'facility-mobx/facets/Highlight';
-import { Addition } from 'facility-mobx/facets/Addition';
-import { Deletion } from 'facility-mobx/facets/Deletion';
+import { Editing } from 'facility-facets/Editing';
+import { Highlight } from 'facility-facets/Highlight';
+import { Addition } from 'facility-facets/Addition';
+import { Deletion } from 'facility-facets/Deletion';
 import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = {

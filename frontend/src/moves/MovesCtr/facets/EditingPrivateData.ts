@@ -1,4 +1,4 @@
-import { Editing } from 'facility-mobx/facets/Editing';
+import { Editing } from 'facility-facets/Editing';
 
 export class EditingPrivateData extends Editing {
   static get = (ctr: any): EditingPrivateData => ctr.editingPrivateData;

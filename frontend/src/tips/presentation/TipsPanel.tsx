@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
-import { Addition } from 'facility-mobx/facets/Addition';
+import { Addition } from 'facility-facets/Addition';
 
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { TipList } from 'src/tips/presentation/TipList';

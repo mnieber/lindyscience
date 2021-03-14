@@ -3,7 +3,7 @@ import { MoveT } from 'src/moves/types';
 import { getCtr } from 'facility';
 import { createErrorHandler, getId } from 'src/app/utils';
 import { apiSaveMoveOrdering } from 'src/move_lists/api';
-import { Insertion } from 'facility-mobx/facets/Insertion';
+import { Insertion } from 'facility-facets/Insertion';
 
 export const handleInsertMoves = (
   facet: Insertion,

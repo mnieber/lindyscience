@@ -1,5 +1,5 @@
 import { createErrorHandler, newMoveListSlug } from 'src/app/utils';
-import { Editing } from 'facility-mobx/facets/Editing';
+import { Editing } from 'facility-facets/Editing';
 import { getCtr } from 'facility';
 import { apiSaveMoveList } from 'src/move_lists/api';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';

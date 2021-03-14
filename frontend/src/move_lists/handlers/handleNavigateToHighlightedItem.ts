@@ -1,4 +1,4 @@
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Highlight } from 'facility-facets/Highlight';
 import { NavigationStore } from 'src/session/NavigationStore';
 
 export const handleNavigateToHighlightedItem = (

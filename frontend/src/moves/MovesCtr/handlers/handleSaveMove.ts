@@ -1,5 +1,5 @@
-import { Editing } from 'facility-mobx/facets/Editing';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Editing } from 'facility-facets/Editing';
+import { Highlight } from 'facility-facets/Highlight';
 import { MovesStore } from 'src/moves/MovesStore';
 import { getCtr } from 'facility';
 import { newMoveSlug } from 'src/moves/utils';

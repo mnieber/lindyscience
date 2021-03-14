@@ -1,4 +1,4 @@
-import { Addition } from 'facility-mobx/facets/Addition';
+import { Addition } from 'facility-facets/Addition';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { UserProfileT } from 'src/profiles/types';
 import { UUID } from 'src/kernel/types';

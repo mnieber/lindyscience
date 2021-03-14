@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Highlight } from 'facility-facets/Highlight';
 import { Effect } from 'src/app/containers/Effect';
 import { MoveT } from 'src/moves/types';
 import { findMoveBySlugid, makeSlugid } from 'src/app/utils';

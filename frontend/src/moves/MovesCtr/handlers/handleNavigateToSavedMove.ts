@@ -1,6 +1,6 @@
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { Editing } from 'facility-mobx/facets/Editing';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Editing } from 'facility-facets/Editing';
+import { Highlight } from 'facility-facets/Highlight';
 import { getCtr } from 'facility';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/move_lists/types';

@@ -13,7 +13,7 @@ import { MoveT } from 'src/moves/types';
 import { MoveForm } from 'src/moves/presentation/MoveForm';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { Move } from 'src/moves/presentation/Move';
-import { Editing } from 'facility-mobx/facets/Editing';
+import { Editing } from 'facility-facets/Editing';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { resetRS } from 'src/utils/RST';
 import { ResourceView } from 'src/utils/ResourceView';

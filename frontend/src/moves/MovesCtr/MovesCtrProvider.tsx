@@ -5,7 +5,7 @@ import { MoveListT } from 'src/move_lists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'mobx';
 import { useDefaultProps, CtrProvider } from 'react-default-props-context';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Highlight } from 'facility-facets/Highlight';
 import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;

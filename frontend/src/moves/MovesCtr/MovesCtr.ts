@@ -3,15 +3,15 @@ import {
   Addition_add,
   Addition_cancel,
   Addition_confirm,
-} from 'facility-mobx/facets/Addition';
+} from 'facility-facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import {
   DragAndDrop,
   initDragAndDrop,
   DragAndDrop_drop,
-} from 'facility-mobx/facets/DragAndDrop';
-import { Editing, initEditing } from 'facility-mobx/facets/Editing';
+} from 'facility-facets/DragAndDrop';
+import { Editing, initEditing } from 'facility-facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
 import { mapData, facet, installPolicies, registerFacets } from 'facility';
@@ -20,18 +20,15 @@ import {
   Filtering,
   initFiltering,
   Filtering_apply,
-} from 'facility-mobx/facets/Filtering';
+} from 'facility-facets/Filtering';
 import { getIds } from 'src/app/utils';
-import {
-  Highlight,
-  Highlight_highlightItem,
-} from 'facility-mobx/facets/Highlight';
+import { Highlight, Highlight_highlightItem } from 'facility-facets/Highlight';
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import {
   Insertion,
   initInsertion,
   Insertion_insertItems,
-} from 'facility-mobx/facets/Insertion';
+} from 'facility-facets/Insertion';
 import { MoveListsStore } from 'src/move_lists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { NavigationStore } from 'src/session/NavigationStore';
@@ -40,12 +37,12 @@ import {
   Selection,
   handleSelectItem,
   Selection_selectItem,
-} from 'facility-mobx/facets/Selection';
+} from 'facility-facets/Selection';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import { MoveT } from 'src/moves/types';
-import { Editing_cancel, Editing_save } from 'facility-mobx/facets/Editing';
-import * as MobXFacets from 'facility-mobx/facets';
-import * as MobXPolicies from 'facility-mobx/policies';
+import { Editing_cancel, Editing_save } from 'facility-facets/Editing';
+import * as Facets from 'facility-facets';
+import * as FacetPolicies from 'facility-facets/policies';
 import * as Handlers from 'src/moves/MovesCtr/handlers';
 
 type PropsT = {
@@ -83,25 +80,25 @@ export class MovesContainer {
       add: {
         enter(this: Addition_add<MoveT>) {
           props.navigationStore.storeLocation();
-          MobXPolicies.filteringIsDisabledOnNewItem(ctr.addition);
+          FacetPolicies.filteringIsDisabledOnNewItem(ctr.addition);
         },
         createItem(this: Addition_add<MoveT>) {
-          MobXPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
+          FacetPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
           return Handlers.handleCreateMove(ctr.addition, this.values);
         },
         exit(this: Addition_add<MoveT>) {
           Handlers.handleHighlightNewMove(ctr.addition);
-          MobXPolicies.editingSetEnabled(ctr.addition);
+          FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },
       confirm: {
         confirm(this: Addition_confirm<MoveT>) {
-          MobXPolicies.newItemsAreInsertedWhenConfirmed(ctr.addition);
+          FacetPolicies.newItemsAreInsertedWhenConfirmed(ctr.addition);
         },
       },
       cancel: {
         exit(this: Addition_cancel<MoveT>) {
-          MobXPolicies.editingSetDisabled(ctr.addition);
+          FacetPolicies.editingSetDisabled(ctr.addition);
           props.navigationStore.restoreLocation();
         },
       },
@@ -110,7 +107,7 @@ export class MovesContainer {
     setCallbacks(this.dragAndDrop, {
       drop: {
         drop(this: DragAndDrop_drop) {
-          MobXPolicies.selectionIsInsertedOnDragAndDrop(
+          FacetPolicies.selectionIsInsertedOnDragAndDrop(
             ctr.dragAndDrop,
             this.dropPosition
           );
@@ -122,7 +119,7 @@ export class MovesContainer {
       save: {
         saveItem(this: Editing_save) {
           Handlers.handleSaveMove(ctr.editing, props.movesStore, this.values);
-          MobXPolicies.newItemsAreConfirmedOnEditingSave(
+          FacetPolicies.newItemsAreConfirmedOnEditingSave(
             ctr.editing,
             this.values
           );
@@ -133,7 +130,7 @@ export class MovesContainer {
       },
       cancel: {
         enter(this: Editing_cancel) {
-          MobXPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
+          FacetPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
         },
       },
     });
@@ -153,7 +150,7 @@ export class MovesContainer {
     setCallbacks(this.highlight, {
       highlightItem: {
         enter(this: Highlight_highlightItem) {
-          MobXPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
+          FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
         exit(this: Highlight_highlightItem) {
           Handlers.handleNavigateToHighlightedItem(ctr, props.navigationStore);
@@ -164,7 +161,7 @@ export class MovesContainer {
     setCallbacks(this.filtering, {
       apply: {
         exit(this: Filtering_apply) {
-          MobXPolicies.highlightIsCorrectedOnFilterChange(ctr.filtering);
+          FacetPolicies.highlightIsCorrectedOnFilterChange(ctr.filtering);
         },
       },
     });
@@ -188,7 +185,7 @@ export class MovesContainer {
             ctr.selection,
             this.itemSelectedProps
           );
-          MobXPolicies.highlightFollowsSelection(
+          FacetPolicies.highlightFollowsSelection(
             ctr.selection,
             this.itemSelectedProps
           );
@@ -205,20 +202,20 @@ export class MovesContainer {
 
     const policies = [
       // selection
-      MobXFacets.selectionActsOnItems(itemById),
+      Facets.selectionActsOnItems(itemById),
 
       // highlight
-      MobXFacets.highlightActsOnItems(itemById),
+      Facets.highlightActsOnItems(itemById),
 
       // insertion
-      MobXFacets.insertionActsOnItems(inputItems),
-      MobXPolicies.createInsertionPreview(
-        [MobXPolicies.DragSourceFromNewItem],
+      Facets.insertionActsOnItems(inputItems),
+      FacetPolicies.createInsertionPreview(
+        [FacetPolicies.DragSourceFromNewItem],
         [Outputs, 'preview']
       ),
 
       // filtering
-      MobXFacets.filteringActsOnItems(preview),
+      Facets.filteringActsOnItems(preview),
 
       // display
       mapData([Filtering, 'filteredItems'], [Outputs, 'display']),

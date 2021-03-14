@@ -8,7 +8,7 @@ import { MoveListForm } from 'src/move_lists/presentation/MoveListForm';
 import { MoveListDetails } from 'src/move_lists/presentation/MoveListDetails';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { MoveListT } from 'src/move_lists/types';
-import { Editing } from 'facility-mobx/facets/Editing';
+import { Editing } from 'facility-facets/Editing';
 import { CutVideoKeyHandler } from 'src/video/presentation/CutVideoKeyHandler';
 import { FollowMoveListBtn } from 'src/move_lists/presentation/FollowMoveListBtn';
 import { CutVideoPanel } from 'src/video/presentation/CutVideoPanel';

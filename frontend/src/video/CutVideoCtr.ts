@@ -9,17 +9,13 @@ import {
   initAddition,
   Addition_add,
   Addition_confirm,
-} from 'facility-mobx/facets/Addition';
-import {
-  Editing,
-  initEditing,
-  Editing_save,
-} from 'facility-mobx/facets/Editing';
+} from 'facility-facets/Addition';
+import { Editing, initEditing, Editing_save } from 'facility-facets/Editing';
 import {
   Deletion,
   initDeletion,
   Deletion_delete,
-} from 'facility-mobx/facets/Deletion';
+} from 'facility-facets/Deletion';
 import { setCallbacks } from 'aspiration';
 import * as Handlers from 'src/video/handlers';
 

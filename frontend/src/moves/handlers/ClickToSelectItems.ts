@@ -1,4 +1,4 @@
-import { Selection } from 'facility-mobx/facets/Selection';
+import { Selection } from 'facility-facets/Selection';
 
 export type PropsT = {
   container: any;

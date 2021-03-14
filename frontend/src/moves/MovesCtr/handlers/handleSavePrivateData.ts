@@ -1,5 +1,5 @@
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
-import { Highlight } from 'facility-mobx/facets/Highlight';
+import { Highlight } from 'facility-facets/Highlight';
 import { MovesStore } from 'src/moves/MovesStore';
 import { getCtr } from 'facility';
 import { createErrorHandler } from 'src/app/utils';

@@ -25,7 +25,11 @@ export class MoveContainer {
   _setCallbacks(props: PropsT) {}
 
   _applyPolicies(props: PropsT) {
-    const policies = [timePointsAreStyled, initVideoCtrFromCurrentMove];
+    const policies = [
+      timePointsAreStyled,
+      initVideoCtrFromCurrentMove,
+      updateVideoWidth,
+    ];
 
     installPolicies<MoveContainer>(policies, this);
   }
@@ -40,8 +44,5 @@ export class MoveContainer {
     this._setCallbacks(props);
     this._applyPolicies(props);
     makeCtrObservable(this);
-
-    // hack
-    updateVideoWidth(this);
   }
 }

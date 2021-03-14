@@ -36,6 +36,9 @@ export const MoveCtrProvider: React.FC<PropsT> = (p: PropsT) => {
         ctr.inputs.move = move;
         ctr.inputs.movePrivateData = movePrivateData;
         ctr.inputs.sessionDisplay = sessionDisplay;
+      },
+      {
+        fireImmediately: true,
       }
     );
 

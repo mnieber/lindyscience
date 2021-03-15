@@ -31,6 +31,9 @@ export const MoveListsCtrProvider: React.FC<PropsT> = (props: PropsT) => {
       ({ moveListById, userProfile }) => {
         ctr.inputs.setMoveLists(values(moveListById));
         ctr.inputs.setUserProfile(userProfile);
+      },
+      {
+        fireImmediately: true,
       }
     );
   };

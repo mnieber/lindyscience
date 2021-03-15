@@ -1,19 +1,21 @@
-import { onMakeCtrObservable, relayData } from 'facility-mobx';
-import { ClassMemberT } from 'facility';
+import { onMakeCtrObservable } from 'facility-mobx';
+import { get, ClassMemberT } from 'facility';
 import { Labelling } from 'facility-facets/Labelling';
+import { reaction } from 'mobx';
+import { getIds } from 'src/app/utils';
 
 export const labellingReceivesIds = (
-  [Collection, ids]: ClassMemberT,
-  label: string,
-  transform?: Function
+  [Collection, itemsMember]: ClassMemberT,
+  label: string
 ) => (ctr: any) =>
   onMakeCtrObservable(ctr, () =>
-    relayData(
-      [Collection, ids],
-      [Labelling, 'idsByLabel'],
-      transform,
-      (ids: any, idsByLabel: any) => {
-        idsByLabel[label] = ids;
+    reaction(
+      () => get(Collection, ctr)[itemsMember],
+      (items) => {
+        Labelling.get(ctr).idsByLabel[label] = getIds(items);
+      },
+      {
+        fireImmediately: true,
       }
-    )(ctr)
+    )
   );

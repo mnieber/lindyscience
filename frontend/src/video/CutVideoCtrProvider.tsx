@@ -37,6 +37,9 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
         ctr.inputs.sessionDisplay = sessionDisplay;
         ctr.inputs.userProfile = userProfile;
         ctr.inputs.moveList = moveList;
+      },
+      {
+        fireImmediately: true,
       }
     );
 

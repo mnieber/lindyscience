@@ -51,6 +51,9 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
         ctr.inputs.userProfile = userProfile;
         ctr.inputs.moveList = moveList;
         ctr.inputs.moveLists = moveLists;
+      },
+      {
+        fireImmediately: true,
       }
     );
   };

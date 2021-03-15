@@ -33,6 +33,9 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
         ctr.inputs.move = move;
         ctr.inputs.tips = tips;
         ctr.inputs.userProfile = userProfile;
+      },
+      {
+        fireImmediately: true,
       }
     );
 

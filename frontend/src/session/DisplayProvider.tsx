@@ -18,7 +18,10 @@ export const DisplayProvider: React.FC<PropsT> = (props: PropsT) => {
   const updateCtr = (ctr: Display) =>
     reaction(
       () => [],
-      () => {}
+      () => {},
+      {
+        fireImmediately: true,
+      }
     );
 
   const getDefaultProps = (ctr: Display) => {

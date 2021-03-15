@@ -179,8 +179,7 @@ export class MoveListsContainer {
       // labelling
       MoveListsCtrPolicies.labellingReceivesIds(
         moveListsFollowing,
-        'following',
-        getIds
+        'following'
       ),
 
       // display

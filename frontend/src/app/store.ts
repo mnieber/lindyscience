@@ -29,7 +29,6 @@ export const configureStore = () => {
 
   const logFacet = true;
   const logMobX = false;
-  const logMobXBlackList = ['relayData'];
 
   if (logFacet) {
     setOptions({
@@ -40,10 +39,7 @@ export const configureStore = () => {
 
   if (logMobX) {
     spy((event) => {
-      if (
-        event.type === 'action' &&
-        !logMobXBlackList.includes(event.name.split(' ')[0])
-      ) {
+      if (event.type === 'action') {
         const args = event.arguments.length
           ? ` with args: ${event.arguments}`
           : '';

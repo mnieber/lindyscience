@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import jQuery from 'jquery';
 
 import { spy, toJS } from 'mobx';
-import { setOptions } from 'facility';
+import { setOptions } from 'skandha';
 
 function csrfSafeMethod(method: string) {
   // these HTTP methods do not require CSRF protection

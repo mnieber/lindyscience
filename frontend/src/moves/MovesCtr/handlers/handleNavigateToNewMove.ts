@@ -1,7 +1,7 @@
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { Addition } from 'facility-facets/Addition';
-import { Highlight } from 'facility-facets/Highlight';
-import { getCtr } from 'facility';
+import { Addition } from 'skandha-facets/Addition';
+import { Highlight } from 'skandha-facets/Highlight';
+import { getCtr } from 'skandha';
 
 export const handleHighlightNewMove = (facet: Addition) => {
   const ctr = getCtr<MovesContainer>(facet);

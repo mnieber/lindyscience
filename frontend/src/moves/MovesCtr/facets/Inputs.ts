@@ -1,7 +1,7 @@
 import { observable } from 'mobx';
 import { MoveT } from 'src/moves/types';
 import { UserProfileT } from 'src/profiles/types';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/movelists/types';
 
 export class Inputs {
   @observable moves: Array<MoveT> = [];

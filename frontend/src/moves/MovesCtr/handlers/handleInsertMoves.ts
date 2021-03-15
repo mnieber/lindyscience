@@ -1,9 +1,9 @@
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MoveT } from 'src/moves/types';
-import { getCtr } from 'facility';
+import { getCtr } from 'skandha';
 import { createErrorHandler, getId } from 'src/app/utils';
-import { apiSaveMoveOrdering } from 'src/move_lists/api';
-import { Insertion } from 'facility-facets/Insertion';
+import { apiSaveMoveOrdering } from 'src/movelists/api';
+import { Insertion } from 'skandha-facets/Insertion';
 
 export const handleInsertMoves = (
   facet: Insertion,

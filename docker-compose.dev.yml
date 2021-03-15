@@ -44,9 +44,9 @@ services:
       - /home/maarten/projects/aspiration/src:/npm/aspiration
       - /home/maarten/projects/react-form-state-context/src:/npm/react-form-state-context
       - /home/maarten/projects/react-default-props-context/src:/npm/react-default-props-context
-      - /home/maarten/projects/facility/src:/npm/facility
-      - /home/maarten/projects/facility-facets/src:/npm/facility-facets
-      - /home/maarten/projects/facility-mobx/src:/npm/facility-mobx
+      - /home/maarten/projects/skandha/src:/npm/skandha
+      - /home/maarten/projects/skandha-facets/src:/npm/skandha-facets
+      - /home/maarten/projects/skandha-mobx/src:/npm/skandha-mobx
       # Preserve the following directories written by the docker container
       # Note: first run `sudo python dev/configure.py` to create /srv/linsci
       - /opt/linsci/frontend/fish_history:/root/.local/share/fish/fish_history

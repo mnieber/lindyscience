@@ -1,4 +1,4 @@
-import { input } from 'facility';
+import { input } from 'skandha';
 import { action, autorun, observable, makeObservable } from 'mobx';
 import { VideoT } from 'src/video/types';
 import { isYoutubePlaying } from 'src/video/utils';

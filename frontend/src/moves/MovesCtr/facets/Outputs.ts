@@ -1,7 +1,7 @@
 import { computed, observable } from 'mobx';
 import { MoveT, MoveByIdT } from 'src/moves/types';
 import { listToItemById } from 'src/utils/utils';
-import { output } from 'facility';
+import { output } from 'skandha';
 
 export class Outputs {
   @observable @output preview: Array<MoveT> = [];

@@ -1,11 +1,11 @@
-import { Addition } from 'facility-facets/Addition';
+import { Addition } from 'skandha-facets/Addition';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { UserProfileT } from 'src/profiles/types';
 import { UUID } from 'src/kernel/types';
 import { MoveT } from 'src/moves/types';
 import { createUUID } from 'src/utils/utils';
 import { newMoveSlug } from 'src/moves/utils';
-import { getCtr } from 'facility';
+import { getCtr } from 'skandha';
 
 function createNewMove(
   userProfile: UserProfileT,

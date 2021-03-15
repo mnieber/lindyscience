@@ -3,33 +3,33 @@ import {
   Addition_add,
   Addition_cancel,
   Addition_confirm,
-} from 'facility-facets/Addition';
+} from 'skandha-facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import {
   DragAndDrop,
   initDragAndDrop,
   DragAndDrop_drop,
-} from 'facility-facets/DragAndDrop';
-import { Editing, initEditing } from 'facility-facets/Editing';
+} from 'skandha-facets/DragAndDrop';
+import { Editing, initEditing } from 'skandha-facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
-import { mapData, facet, installPolicies, registerFacets } from 'facility';
-import { makeCtrObservable } from 'facility-mobx';
+import { mapData, facet, installPolicies, registerFacets } from 'skandha';
+import { makeCtrObservable } from 'skandha-mobx';
 import {
   Filtering,
   initFiltering,
   Filtering_apply,
-} from 'facility-facets/Filtering';
+} from 'skandha-facets/Filtering';
 import { getIds } from 'src/app/utils';
-import { Highlight, Highlight_highlightItem } from 'facility-facets/Highlight';
+import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
 import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
 import {
   Insertion,
   initInsertion,
   Insertion_insertItems,
-} from 'facility-facets/Insertion';
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+} from 'skandha-facets/Insertion';
+import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { NavigationStore } from 'src/session/NavigationStore';
 import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
@@ -37,12 +37,12 @@ import {
   Selection,
   handleSelectItem,
   Selection_selectItem,
-} from 'facility-facets/Selection';
+} from 'skandha-facets/Selection';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import { MoveT } from 'src/moves/types';
-import { Editing_cancel, Editing_save } from 'facility-facets/Editing';
-import * as Facets from 'facility-facets';
-import * as FacetPolicies from 'facility-facets/policies';
+import { Editing_cancel, Editing_save } from 'skandha-facets/Editing';
+import * as Facets from 'skandha-facets';
+import * as FacetPolicies from 'skandha-facets/policies';
 import * as Handlers from 'src/moves/MovesCtr/handlers';
 
 type PropsT = {

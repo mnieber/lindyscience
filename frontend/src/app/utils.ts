@@ -2,7 +2,7 @@ import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed';
 
 import { ObjectT, OwnedObjectT, SlugidT, UUID } from 'src/kernel/types';
 import { slugify, stripQuotes } from 'src/utils/utils';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/movelists/types';
 import { MoveT } from 'src/moves/types';
 import { CutPointT } from 'src/video/types';
 import { UserProfileT } from 'src/profiles/types';

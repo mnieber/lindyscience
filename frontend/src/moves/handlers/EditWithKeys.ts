@@ -1,4 +1,4 @@
-import { Editing } from 'facility-facets/Editing';
+import { Editing } from 'skandha-facets/Editing';
 
 export type PropsT = {
   container: any;

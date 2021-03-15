@@ -1,4 +1,4 @@
-import { Selection } from 'facility-facets/Selection';
+import { Selection } from 'skandha-facets/Selection';
 
 export type PropsT = {
   container: any;

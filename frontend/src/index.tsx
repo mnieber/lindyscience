@@ -11,10 +11,10 @@ import ReactDOM from 'react-dom';
 
 import { configureStore } from 'src/app/store';
 import { DisplayProvider } from 'src/session/DisplayProvider';
-import { MoveListsCtrProvider } from 'src/move_lists/MovelistsCtrProvider';
-import { MovesCtrProvider } from 'src/moves/MovesCtr/MovesCtrProvider';
-import { AppFrame } from 'src/app/containers/AppFrame';
-import { UrlRouter } from 'src/app/containers/UrlRouter';
+import { MoveListsCtrProvider } from 'src/movelists/components/MovelistsCtrProvider';
+import { MovesCtrProvider } from 'src/moves/components/MovesCtrProvider';
+import { AppFrame } from 'src/app/components/AppFrame';
+import { UrlRouter } from 'src/app/components/UrlRouter';
 
 configureStore();
 

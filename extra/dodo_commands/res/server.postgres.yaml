@@ -3,9 +3,9 @@ DOCKER:
     run-postgres:
       name: pg
       volumes_from_list:
-      - ${/DOCKER/containers/pg}
+        - ${/DOCKER/components/pg}
   container_types:
     pg:
       image: ${/DOCKER/images/base/image}
       dirs:
-      - /var/lib/postgresql
+        - /var/lib/postgresql

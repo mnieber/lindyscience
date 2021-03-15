@@ -1,9 +1,9 @@
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { Editing } from 'facility-facets/Editing';
-import { Highlight } from 'facility-facets/Highlight';
-import { getCtr } from 'facility';
+import { Editing } from 'skandha-facets/Editing';
+import { Highlight } from 'skandha-facets/Highlight';
+import { getCtr } from 'skandha';
 import { MoveT } from 'src/moves/types';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/movelists/types';
 
 export const handleNavigateToSavedMove = (
   facet: Editing,

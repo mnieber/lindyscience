@@ -3,7 +3,7 @@ import { TipT, TipByIdT } from 'src/tips/types';
 import { UUID } from 'src/kernel/types';
 import { listToItemById } from 'src/utils/utils';
 import { keys } from 'lodash/fp';
-import { data } from 'facility';
+import { data } from 'skandha';
 
 export class Outputs {
   @observable @data preview: Array<TipT> = [];

@@ -1,6 +1,6 @@
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
-import { facet, installPolicies, registerFacets } from 'facility';
-import { makeCtrObservable } from 'facility-mobx';
+import { facet, installPolicies, registerFacets } from 'skandha';
+import { makeCtrObservable } from 'skandha-mobx';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
@@ -9,13 +9,13 @@ import {
   initAddition,
   Addition_add,
   Addition_confirm,
-} from 'facility-facets/Addition';
-import { Editing, initEditing, Editing_save } from 'facility-facets/Editing';
+} from 'skandha-facets/Addition';
+import { Editing, initEditing, Editing_save } from 'skandha-facets/Editing';
 import {
   Deletion,
   initDeletion,
   Deletion_delete,
-} from 'facility-facets/Deletion';
+} from 'skandha-facets/Deletion';
 import { setCallbacks } from 'aspiration';
 import * as Handlers from 'src/video/handlers';
 

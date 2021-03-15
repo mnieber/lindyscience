@@ -1,14 +1,14 @@
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { CutPointT } from 'src/video/types';
 import { MoveT } from 'src/moves/types';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/movelists/types';
 import { isNone } from 'src/utils/utils';
 import { createMoveFromCutPoint } from 'src/app/utils';
 import { apiSaveMove } from 'src/moves/api';
 import { createErrorHandler } from 'src/app/utils';
-import { apiSaveMoveOrdering } from 'src/move_lists/api';
+import { apiSaveMoveOrdering } from 'src/movelists/api';
 import { UserProfileT } from 'src/profiles/types';
 
 const saveMoves = (

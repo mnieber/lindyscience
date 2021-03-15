@@ -2,7 +2,7 @@ import * as _ from 'lodash/fp';
 import { makeObservable, action, computed, observable } from 'mobx';
 import { host, stub } from 'aspiration';
 import { CutPointByIdT, CutPointT } from 'src/video/types';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/movelists/types';
 import { UserProfileT } from 'src/profiles/types';
 import { listToItemById } from 'src/utils/utils';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';

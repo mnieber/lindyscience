@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Effect } from 'src/app/containers/Effect';
+import { Effect } from 'src/app/components/Effect';
 import { makeSlugid } from 'src/app/utils';
 import { useStore } from 'src/app/components/StoreProvider';
 

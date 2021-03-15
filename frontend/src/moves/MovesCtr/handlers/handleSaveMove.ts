@@ -1,7 +1,7 @@
-import { Editing } from 'facility-facets/Editing';
-import { Highlight } from 'facility-facets/Highlight';
+import { Editing } from 'skandha-facets/Editing';
+import { Highlight } from 'skandha-facets/Highlight';
 import { MovesStore } from 'src/moves/MovesStore';
-import { getCtr } from 'facility';
+import { getCtr } from 'skandha';
 import { newMoveSlug } from 'src/moves/utils';
 import { slugify } from 'src/utils/utils';
 import { apiSaveMove } from 'src/moves/api';

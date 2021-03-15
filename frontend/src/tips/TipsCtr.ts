@@ -1,28 +1,28 @@
 import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
-import { mapData, facet, installPolicies, registerFacets } from 'facility';
-import { makeCtrObservable } from 'facility-mobx';
+import { mapData, facet, installPolicies, registerFacets } from 'skandha';
+import { makeCtrObservable } from 'skandha-mobx';
 import {
   Addition,
   Addition_add,
   Addition_cancel,
-} from 'facility-facets/Addition';
-import { Highlight, Highlight_highlightItem } from 'facility-facets/Highlight';
+} from 'skandha-facets/Addition';
+import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
 import {
   Editing,
   initEditing,
   Editing_save,
   Editing_cancel,
-} from 'facility-facets/Editing';
+} from 'skandha-facets/Editing';
 import {
   Deletion,
   initDeletion,
   Deletion_delete,
-} from 'facility-facets/Deletion';
-import { Insertion, initInsertion } from 'facility-facets/Insertion';
-import * as Facets from 'facility-facets';
-import * as FacetPolicies from 'facility-facets/policies';
+} from 'skandha-facets/Deletion';
+import { Insertion, initInsertion } from 'skandha-facets/Insertion';
+import * as Facets from 'skandha-facets';
+import * as FacetPolicies from 'skandha-facets/policies';
 import * as Handlers from 'src/tips/handlers';
 import { TipT } from 'src/tips/types';
 import { setCallbacks } from 'aspiration';

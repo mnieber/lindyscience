@@ -1,7 +1,7 @@
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
 import { reaction } from 'mobx';
-import { onMakeCtrObservable } from 'facility-mobx';
+import { onMakeCtrObservable } from 'skandha-mobx';
 
 export function updateVideoWidth(ctr: MoveContainer | CutVideoContainer) {
   onMakeCtrObservable(ctr, () => {

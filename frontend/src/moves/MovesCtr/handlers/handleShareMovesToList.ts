@@ -1,12 +1,12 @@
-import { MoveListsStore } from 'src/move_lists/MoveListsStore';
+import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { NavigationStore } from 'src/session/NavigationStore';
 import { MoveT } from 'src/moves/types';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/movelists/types';
 import {
   apiSaveMoveOrdering,
   apiUpdateSourceMoveListId,
-} from 'src/move_lists/api';
+} from 'src/movelists/api';
 import { createErrorHandler } from 'src/app/utils';
 import { UUID } from 'src/kernel/types';
 

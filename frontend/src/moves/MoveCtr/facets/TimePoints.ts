@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 import { extractTimePoints } from 'src/video/utils';
-import { input } from 'facility';
+import { input } from 'skandha';
 
 export class TimePoints {
   @input @observable textWithTimePoints: string | undefined;

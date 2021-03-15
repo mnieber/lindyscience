@@ -1,9 +1,9 @@
 import { makeObservable, action, observable } from 'mobx';
 import { MoveT } from 'src/moves/types';
 import { MovesStore } from 'src/moves/MovesStore';
-import { MoveListT } from 'src/move_lists/types';
+import { MoveListT } from 'src/movelists/types';
 import { newMoveListSlug } from 'src/app/utils';
-import { browseToMoveUrl } from 'src/app/containers';
+import { browseToMoveUrl } from 'src/app/components';
 import { lookUp } from 'src/utils/utils';
 import { getId, makeSlugidMatcher } from 'src/app/utils';
 import { createBrowserHistory } from 'history';

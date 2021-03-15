@@ -7,7 +7,7 @@ import {
 import {
   MoveListsStore,
   MoveListsStore_addMoveLists,
-} from 'src/move_lists/MoveListsStore';
+} from 'src/movelists/MoveListsStore';
 import { MovesStore, MovesStore_addMoves } from 'src/moves/MovesStore';
 import { TipsStore } from 'src/tips/TipsStore';
 import { TagsStore } from 'src/tags/TagsStore';

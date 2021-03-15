@@ -10,4 +10,4 @@ This is the repository for the Lindy Science swing dancing [website](http://www.
 For reading the code, a good place to start is:
 
 - [django/app/schema.py](https://github.com/mnieber/lindyscience/blob/master/django/app/schema.py) (back-end)
-- [website/screens/containers/urlrouter.jsx](https://github.com/mnieber/lindyscience/blob/master/website/screens/containers/urlrouter.jsx) (front-end)
+- [website/screens/components/urlrouter.jsx](https://github.com/mnieber/lindyscience/blob/master/website/screens/components/urlrouter.jsx) (front-end)

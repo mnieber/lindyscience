@@ -1,6 +1,6 @@
 import { pickNeighbour2, scrollIntoView } from 'src/app/utils';
-import { Highlight } from 'facility-facets/Highlight';
-import { Selection } from 'facility-facets/Selection';
+import { Highlight } from 'skandha-facets/Highlight';
+import { Selection } from 'skandha-facets/Selection';
 
 export type PropsT = {
   container: any;

@@ -76,7 +76,7 @@ export class MovesContainer extends Container {
   clipboard: Clipboard;
 
   handlerSelectWithKeys = new SelectWithKeys({ container: this });
-  handlerClick = new ClickToSelectItems({ container: this });
+  handlerClick = new ClickToSelectItems({ selection: this.selection });
 
   _setCallbacks(props: PropsT) {
     const ctr = this;

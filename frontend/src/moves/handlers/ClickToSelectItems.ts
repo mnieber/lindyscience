@@ -1,7 +1,7 @@
 import { Selection } from 'skandha-facets/Selection';
 
 export type PropsT = {
-  container: any;
+  selection: Selection;
 };
 
 export class ClickToSelectItems {
@@ -12,14 +12,13 @@ export class ClickToSelectItems {
     this.props = props;
   }
 
-  handle(itemId: any, item?: any) {
+  handle(itemId: any) {
     return {
       onMouseDown: (e: any) => {
-        const ctr = this.props.container;
-        const isSelected = Selection.get(ctr).ids.includes(itemId);
+        const isSelected = this.props.selection.ids.includes(itemId);
         if (!isSelected) {
           this._selectOnMouseUp = undefined;
-          Selection.get(ctr).selectItem({
+          this.props.selection.selectItem({
             itemId: itemId,
             isShift: e.shiftKey,
             isCtrl: e.ctrlKey,
@@ -29,10 +28,9 @@ export class ClickToSelectItems {
         }
       },
       onMouseUp: (e: any) => {
-        const ctr = this.props.container;
-        const isSelected = Selection.get(ctr).ids.includes(itemId);
+        const isSelected = this.props.selection.ids.includes(itemId);
         if (this._selectOnMouseUp === itemId && (!e.ctrlKey || isSelected)) {
-          Selection.get(ctr).selectItem({
+          this.props.selection.selectItem({
             itemId: itemId,
             isShift: e.shiftKey,
             isCtrl: e.ctrlKey,

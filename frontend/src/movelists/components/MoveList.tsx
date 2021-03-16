@@ -54,7 +54,7 @@ export const MoveList: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         })}
         id={move.id}
         key={idx}
-        {...props.movesCtr.handlerClick.handle(move.id, move)}
+        {...props.movesCtr.handlerClick.handle(move.id)}
         {...(profilingStore.isOwner(props.moveList)
           ? props.movesCtr.dragAndDrop.handle(move.id)
           : {})}

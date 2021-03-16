@@ -1,6 +1,6 @@
 import { createErrorHandler, newMoveListSlug } from 'src/app/utils';
 import { Editing } from 'skandha-facets/Editing';
-import { getCtr } from 'skandha';
+import { getc } from 'skandha';
 import { apiSaveMoveList } from 'src/movelists/api';
 import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { listToItemById, slugify } from 'src/utils/utils';
@@ -10,7 +10,7 @@ export const handleSaveMoveList = (
   moveListsStore: MoveListsStore,
   values: any
 ) => {
-  const ctr = getCtr(facet);
+  const ctr = getc(facet);
   const slug =
     values.slug === newMoveListSlug ? slugify(values.name) : values.slug;
 

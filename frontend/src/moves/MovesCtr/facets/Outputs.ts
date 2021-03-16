@@ -10,8 +10,6 @@ export class Outputs {
   @computed get moveById(): MoveByIdT {
     return listToItemById(this.preview);
   }
-
-  static get = (ctr: any): Outputs => ctr.outputs;
 }
 
 export function initOutputs(self: Outputs): Outputs {

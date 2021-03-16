@@ -1,4 +1,5 @@
 import { Editing } from 'skandha-facets/Editing';
+import { getf } from 'skandha';
 
 export type PropsT = {
   container: any;
@@ -18,7 +19,7 @@ export class EditWithKeys {
         if (key === keyEdit) {
           e.preventDefault();
           e.stopPropagation();
-          const editing = Editing.get(ctr);
+          const editing = getf(Editing, ctr);
           if (editing.isEditing) {
             editing.cancel();
           } else {

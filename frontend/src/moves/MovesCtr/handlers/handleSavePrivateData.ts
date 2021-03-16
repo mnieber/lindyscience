@@ -1,7 +1,7 @@
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { Highlight } from 'skandha-facets/Highlight';
 import { MovesStore } from 'src/moves/MovesStore';
-import { getCtr } from 'skandha';
+import { getf, getc } from 'skandha';
 import { createErrorHandler } from 'src/app/utils';
 import { apiSaveMovePrivateData } from 'src/moves/api';
 
@@ -10,8 +10,8 @@ export const handleSavePrivateData = (
   movesStore: MovesStore,
   values: any
 ) => {
-  const ctr = getCtr(facet);
-  const move = Highlight.get(ctr).item;
+  const ctr = getc(facet);
+  const move = getf(Highlight, ctr).item;
   const movePrivateData = movesStore.getOrCreatePrivateData(move.id);
   const mpd = {
     ...movePrivateData,

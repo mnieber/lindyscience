@@ -16,8 +16,6 @@ export class TimePoints {
   @computed get timePoints() {
     return extractTimePoints(this.textWithTimePoints ?? '');
   }
-
-  static get = (ctr: any): TimePoints => ctr.timepoints;
 }
 
 export function initTimePoints(self: TimePoints): TimePoints {

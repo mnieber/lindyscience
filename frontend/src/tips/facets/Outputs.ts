@@ -15,8 +15,6 @@ export class Outputs {
   @computed get tipById(): TipByIdT {
     return listToItemById(this.preview);
   }
-
-  static get = (ctr: any): Outputs => ctr.outputs;
 }
 
 export function initOutputs(self: Outputs): Outputs {

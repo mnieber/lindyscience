@@ -1,5 +1,5 @@
 import { onMakeCtrObservable } from 'skandha-mobx';
-import { getm, ClassMemberT } from 'skandha';
+import { getf, getm, ClassMemberT } from 'skandha';
 import { Labelling } from 'skandha-facets/Labelling';
 import { reaction } from 'mobx';
 import { getIds } from 'src/app/utils';
@@ -13,7 +13,7 @@ export const labellingReceivesIds = (
     const cleanUpFunction = reaction(
       () => getm(Collection_items)(ctr),
       (items) => {
-        Labelling.get(ctr).idsByLabel[label] = getIds(items);
+        getf(Labelling, ctr).idsByLabel[label] = getIds(items);
       },
       {
         fireImmediately: true,

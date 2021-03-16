@@ -7,6 +7,4 @@ export class Inputs {
   @observable sessionDisplay?: Display;
   @observable userProfile?: UserProfileT;
   @observable moveList?: MoveListT;
-
-  static get = (ctr: any): Inputs => ctr.inputs;
 }

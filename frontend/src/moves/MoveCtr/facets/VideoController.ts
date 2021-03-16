@@ -55,8 +55,6 @@ export class VideoController {
       } catch {}
     }
   }
-
-  static get = (ctr: any): VideoController => ctr.videoController;
 }
 
 export function initVideoController(self: VideoController): VideoController {

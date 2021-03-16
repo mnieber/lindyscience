@@ -5,7 +5,7 @@ import { UUID } from 'src/kernel/types';
 import { MoveT } from 'src/moves/types';
 import { createUUID } from 'src/utils/utils';
 import { newMoveSlug } from 'src/moves/utils';
-import { getCtr } from 'skandha';
+import { getc } from 'skandha';
 
 function createNewMove(
   userProfile: UserProfileT,
@@ -28,7 +28,7 @@ function createNewMove(
 }
 
 export function handleCreateMove(facet: Addition, values: any) {
-  const ctr = getCtr<MovesContainer>(facet);
+  const ctr = getc<MovesContainer>(facet);
   if (!ctr.inputs.userProfile) {
     throw Error('No user profile');
   }

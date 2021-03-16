@@ -13,8 +13,6 @@ export class Outputs {
     return listToItemById(this.display);
   }
   @output display: Array<MoveListT> = [];
-
-  static get = (ctr: any): Outputs => ctr.outputs;
 }
 
 export function initOutputs(self: Outputs): Outputs {

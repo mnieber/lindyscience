@@ -1,7 +1,7 @@
 import { Editing } from 'skandha-facets/Editing';
 import { Highlight } from 'skandha-facets/Highlight';
 import { MovesStore } from 'src/moves/MovesStore';
-import { getCtr } from 'skandha';
+import { getf, getc } from 'skandha';
 import { newMoveSlug } from 'src/moves/utils';
 import { slugify } from 'src/utils/utils';
 import { apiSaveMove } from 'src/moves/api';
@@ -12,8 +12,8 @@ export const handleSaveMove = (
   movesStore: MovesStore,
   values: any
 ) => {
-  const ctr = getCtr(facet);
-  const move = Highlight.get(ctr).item;
+  const ctr = getc(facet);
+  const move = getf(Highlight, ctr).item;
   const isNewMove = values.slug === newMoveSlug;
   const slug = isNewMove ? slugify(values.name) : values.slug;
 

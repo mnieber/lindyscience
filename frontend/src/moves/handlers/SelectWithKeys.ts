@@ -1,6 +1,7 @@
 import { pickNeighbour2, scrollIntoView } from 'src/app/utils';
 import { Highlight } from 'skandha-facets/Highlight';
 import { Selection } from 'skandha-facets/Selection';
+import { getf } from 'skandha';
 
 export type PropsT = {
   container: any;
@@ -22,11 +23,11 @@ export class SelectWithKeys {
         if (keysUp || keysDown) {
           e.preventDefault();
           e.stopPropagation();
-          const highlight = Highlight.get(ctr);
+          const highlight = getf(Highlight, ctr);
           if (highlight.id) {
             const selectMoveById = (moveId: any) => {
               scrollIntoView(document.getElementById(moveId));
-              Selection.get(ctr).selectItem({
+              getf(Selection, ctr).selectItem({
                 itemId: moveId,
                 isShift: e.shiftKey,
                 isCtrl: false,
@@ -34,7 +35,7 @@ export class SelectWithKeys {
             };
 
             pickNeighbour2(
-              Selection.get(ctr).selectableIds || [],
+              getf(Selection, ctr).selectableIds || [],
               highlight.id,
               isDown,
               selectMoveById

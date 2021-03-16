@@ -4,8 +4,6 @@ import * as React from 'react';
 import { MoveListsContainer } from 'src/movelists/MovelistsCtr';
 import { reaction } from 'mobx';
 import { CtrProvider } from 'react-default-props-context';
-import { Editing } from 'skandha-facets/Editing';
-import { Highlight } from 'skandha-facets/Highlight';
 import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;
@@ -41,8 +39,8 @@ export const MoveListsCtrProvider: React.FC<PropsT> = (props: PropsT) => {
   const getDefaultProps = (ctr: MoveListsContainer) => {
     return {
       moveListsCtr: () => ctr,
-      isEditingMoveList: () => Editing.get(ctr).isEditing,
-      moveList: () => Highlight.get(ctr).item,
+      isEditingMoveList: () => ctr.editing.isEditing,
+      moveList: () => ctr.highlight.item,
       moveLists: () => ctr.outputs.display,
       moveListsEditing: () => ctr.editing,
       moveListsHighlight: () => ctr.highlight,

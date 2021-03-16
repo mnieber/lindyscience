@@ -4,10 +4,11 @@ import { TipsStore } from 'src/tips/TipsStore';
 import { apiSaveTip } from 'src/tips/api';
 import { createErrorHandler } from 'src/app/utils';
 import { TipT } from 'src/tips/types';
+import { getf } from 'skandha';
 
 export const handleSaveTip = (ctr: TipsCtr, tipsStore: TipsStore) =>
   function (values: any) {
-    const highlight = Highlight.get(ctr);
+    const highlight = getf(Highlight, ctr);
 
     const tip: TipT = {
       ...highlight.item,

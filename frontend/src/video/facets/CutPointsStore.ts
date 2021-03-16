@@ -51,6 +51,4 @@ export class CutPointsStore {
   @action deleteCutPointsById(cutPointIds: string[]) {
     this.cutPointById = _.omit(cutPointIds)(this.cutPointById) as CutPointByIdT;
   }
-
-  static get = (ctr: any): CutPointsStore => ctr.cutPointsStore;
 }

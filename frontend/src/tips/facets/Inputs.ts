@@ -8,8 +8,6 @@ export class Inputs {
   @observable @input move?: MoveT;
   @observable @input tips?: TipT[];
   @observable @input userProfile?: UserProfileT;
-
-  static get = (ctr: any): Inputs => ctr.inputs;
 }
 
 export function initInputs(self: Inputs): Inputs {

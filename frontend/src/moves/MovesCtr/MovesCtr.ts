@@ -95,7 +95,7 @@ export class MovesContainer extends Container {
           return Handlers.handleCreateMove(ctr.addition, this.values);
         },
         exit(this: Addition_add<MoveT>) {
-          Handlers.handleHighlightNewMove(ctr.addition);
+          FacetPolicies.highlightNewItem(ctr.addition);
           FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },

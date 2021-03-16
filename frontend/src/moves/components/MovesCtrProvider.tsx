@@ -5,7 +5,6 @@ import { MoveListT } from 'src/movelists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'mobx';
 import { useDefaultProps, CtrProvider } from 'react-default-props-context';
-import { Highlight } from 'skandha-facets/Highlight';
 import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = React.PropsWithChildren<{}>;
@@ -59,13 +58,13 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
 
   const getDefaultProps = (ctr: MovesContainer) => {
     const movePrivateData = () => {
-      const moveId = Highlight.get(ctr).id;
+      const moveId = ctr.highlight.id;
       return moveId ? movesStore.getOrCreatePrivateData(moveId) : undefined;
     };
 
     return {
       movesCtr: () => ctr,
-      move: () => Highlight.get(ctr).item,
+      move: () => ctr.highlight.item,
       movePrivateData: () => movePrivateData(),
       moves: () => ctr.outputs.display,
       movesEditing: () => ctr.editing,

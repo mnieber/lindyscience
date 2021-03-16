@@ -8,8 +8,6 @@ export class Inputs {
   @observable userProfile?: UserProfileT;
   @observable moveList?: MoveListT;
   @observable moveLists: Array<MoveListT> = [];
-
-  static get = (ctr: any): Inputs => ctr.inputs;
 }
 
 export function initInputs(self: Inputs): Inputs {

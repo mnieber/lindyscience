@@ -7,8 +7,6 @@ export class Inputs {
   @observable movePrivateData?: MovePrivateDataT;
   @observable sessionDisplay?: Display;
   @observable altLink?: string;
-
-  static get = (ctr: any): Inputs => ctr.inputs;
 }
 
 export function initInputs(self: Inputs): Inputs {

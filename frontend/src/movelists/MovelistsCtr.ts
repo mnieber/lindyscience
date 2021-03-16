@@ -77,7 +77,7 @@ export class MoveListsContainer extends Container {
           return Handlers.handleCreateMoveList(ctr, this.values);
         },
         exit(this: Addition_add<MoveListT>) {
-          Handlers.handleHighlightNewMoveList(ctr.addition);
+          FacetPolicies.highlightNewItem(ctr.addition);
           FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },

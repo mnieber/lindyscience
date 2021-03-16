@@ -21,8 +21,6 @@ export class Inputs {
   @operation setUserProfile(userProfile: Inputs['userProfile']) {
     this.userProfile = userProfile;
   }
-
-  static get = (ctr: any): Inputs => ctr.inputs;
 }
 
 export function initInputs(self: Inputs): Inputs {

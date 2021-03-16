@@ -14,6 +14,7 @@ import { MoveForm } from 'src/moves/components/MoveForm';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { Move } from 'src/moves/components/Move';
 import { Editing } from 'skandha-facets/Editing';
+import { Selection } from 'skandha-facets/Selection';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { resetRS } from 'src/utils/RST';
 import { ResourceView } from 'src/utils/components/ResourceView';
@@ -25,6 +26,7 @@ type DefaultPropsT = {
   move: MoveT;
   moveDisplay: MoveDisplay;
   movesEditing: Editing;
+  movesSelection: Selection;
   moveCtr: MoveContainer;
   videoController: VideoController;
 };
@@ -42,7 +44,11 @@ export const MovePage: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
 
   const renderUpdated = () => {
     if (!props.move) {
-      return <div>Oops, I cannot find this move</div>;
+      return (props.movesSelection.selectableIds ?? []).length > 0 ? (
+        <div>Oops, I cannot find this move</div>
+      ) : (
+        <React.Fragment />
+      );
     }
 
     const _setAltLink = action((altLink: string | undefined) => {

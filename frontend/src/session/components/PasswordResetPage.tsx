@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import { AuthenticationFrame } from 'src/session/components/AuthenticationFrame';
 import { PasswordResetForm } from 'src/session/components/PasswordResetForm';
-import { RouterLink } from 'src/utils/RouterLink';
+import { RouterLink } from 'src/utils/components/RouterLink';
 import { useStore } from 'src/app/components/StoreProvider';
 
 export const PasswordResetPage: React.FC = observer(() => {

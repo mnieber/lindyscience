@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTable from 'react-table';
 
 import { MoveSearchResultT } from 'src/search/types';
-import { RouterLink } from 'src/utils/RouterLink';
+import { RouterLink } from 'src/utils/components/RouterLink';
 
 type PropsT = {
   moveSearchResults: Array<MoveSearchResultT>;

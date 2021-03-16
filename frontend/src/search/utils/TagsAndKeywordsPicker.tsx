@@ -8,7 +8,7 @@ import {
   useFormStateContext,
 } from 'react-form-state-context';
 import { useMobXState } from 'src/forms/components/MobXFormState';
-import { ValuePicker } from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/components/ValuePicker';
 import { TagT } from 'src/tags/types';
 import { isNone } from 'src/utils/utils';
 import { Field } from 'src/forms/components/Field';

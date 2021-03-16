@@ -16,7 +16,7 @@ import { Move } from 'src/moves/components/Move';
 import { Editing } from 'skandha-facets/Editing';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { resetRS } from 'src/utils/RST';
-import { ResourceView } from 'src/utils/ResourceView';
+import { ResourceView } from 'src/utils/components/ResourceView';
 import { useStore } from 'src/app/components/StoreProvider';
 
 type PropsT = {};

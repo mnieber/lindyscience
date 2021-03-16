@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react';
 
-import { ValuePicker } from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/components/ValuePicker';
 import { MoveListT } from 'src/movelists/types';
 import { Addition } from 'skandha-facets/Addition';
 import { Highlight } from 'skandha-facets/Highlight';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'src/forms/components';
-import { ValuePicker } from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/components/ValuePicker';
 import { TagT } from 'src/tags/types';
 
 interface PropsT {

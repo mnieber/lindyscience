@@ -3,7 +3,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
-import { RouterLink } from 'src/utils/RouterLink';
+import { RouterLink } from 'src/utils/components/RouterLink';
 import { AuthenticationFrame } from 'src/session/components/AuthenticationFrame';
 import { PasswordChangeForm } from 'src/session/components/PasswordChangeForm';
 import { useStore } from 'src/app/components/StoreProvider';

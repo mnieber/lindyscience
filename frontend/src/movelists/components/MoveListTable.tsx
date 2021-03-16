@@ -3,7 +3,7 @@ import ReactTable from 'react-table';
 import classnames from 'classnames';
 
 import { MoveListT } from 'src/movelists/types';
-import { RouterLink } from 'src/utils/RouterLink';
+import { RouterLink } from 'src/utils/components/RouterLink';
 import { makeMoveListUrl } from 'src/app/utils';
 
 type LoadingComponentPropsT = {

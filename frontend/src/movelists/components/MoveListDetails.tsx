@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import { Tags } from 'src/tags/components/Tags';
 import { MoveListT } from 'src/movelists/types';
-import { RouterLink } from 'src/utils/RouterLink';
+import { RouterLink } from 'src/utils/components/RouterLink';
 import { RichTextEditor } from 'src/richtext/components/RichTextEditor';
 import { toReadOnlyEditorState } from 'src/richtext/utils/EditorState';
 

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { useAuthStateContext } from 'src/session/AuthStateProvider';
 import { AuthenticationFrame } from 'src/session/components/AuthenticationFrame';
 import { SignInForm } from 'src/session/components/SignInForm';
-import { RouterLink } from 'src/utils/RouterLink';
+import { RouterLink } from 'src/utils/components/RouterLink';
 import { useStore } from 'src/app/components/StoreProvider';
 import { useNextUrl } from 'src/utils/useNextUrl';
 import { getNextUrl } from 'src/utils/urlParams';

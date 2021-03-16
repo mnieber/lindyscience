@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 
 import { MoveT } from 'src/moves/types';
 import { MoveDescriptionEditor } from 'src/moves/components/MoveDescriptionEditor';
-import { RouterLink } from 'src/utils/RouterLink';
+import { RouterLink } from 'src/utils/components/RouterLink';
 
 // Move
 

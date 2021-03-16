@@ -13,7 +13,7 @@ import { TextField } from 'src/forms/components/TextField';
 import { Field } from 'src/forms/components/Field';
 import { TagT } from 'src/tags/types';
 import { CutPointT } from 'src/video/types';
-import { ValuePicker } from 'src/utils/value_picker';
+import { ValuePicker } from 'src/utils/components/ValuePicker';
 import { MoveDescriptionEditor } from 'src/moves/components/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/richtext/components/RichTextEditor';
 

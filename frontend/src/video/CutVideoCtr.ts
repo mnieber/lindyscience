@@ -1,8 +1,9 @@
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { facet, installPolicies, registerFacets } from 'skandha';
-import { makeCtrObservable, onMakeCtrObservable } from 'skandha-mobx';
+import { makeCtrObservable } from 'skandha-mobx';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
-import { Inputs, initInputs } from 'src/video/facets/Inputs';
+import { initVideoCtrFromCutPointsStr } from 'src/moves/MoveCtr/policies/initVideoCtrFromCutPointsStr';
+import { Inputs } from 'src/video/facets/Inputs';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import {
   Addition,
@@ -19,15 +20,15 @@ import {
 import { setCallbacks } from 'aspiration';
 import * as Handlers from 'src/video/handlers';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
-import { reaction } from 'mobx';
+import { Container } from 'src/utils/Container';
 
 export type PropsT = {
   rootDivId: string;
   cutPointsStore: CutPointsStore;
 };
 
-export class CutVideoContainer {
-  @facet inputs: Inputs;
+export class CutVideoContainer extends Container {
+  @facet inputs: Inputs = new Inputs();
   @facet display: Display;
   @facet addition: Addition = initAddition(new Addition());
   @facet editing: Editing = initEditing(new Editing());
@@ -35,22 +36,10 @@ export class CutVideoContainer {
   @facet videoController: VideoController = new VideoController();
 
   _applyPolicies(props: PropsT) {
-    const initVideoCtrFromCutPointsStr = (ctr) => {
-      onMakeCtrObservable(ctr, () => {
-        reaction(
-          () => props.cutPointsStore.videoLink,
-          (videoLink) => {
-            this.videoController.video = {
-              link: videoLink,
-              startTimeMs: undefined,
-              endTimeMs: undefined,
-            };
-          }
-        );
-      });
-    };
-
-    const policies = [updateVideoWidth, initVideoCtrFromCutPointsStr];
+    const policies = [
+      updateVideoWidth,
+      initVideoCtrFromCutPointsStr(props.cutPointsStore),
+    ];
 
     installPolicies<CutVideoContainer>(policies, this);
   }
@@ -98,7 +87,8 @@ export class CutVideoContainer {
   }
 
   constructor(props: PropsT) {
-    this.inputs = initInputs(new Inputs());
+    super();
+
     this.display = initDisplay(new Display(), props.rootDivId);
 
     registerFacets(this);

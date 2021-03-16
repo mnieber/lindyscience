@@ -10,7 +10,3 @@ export class Inputs {
 
   static get = (ctr: any): Inputs => ctr.inputs;
 }
-
-export function initInputs(self: Inputs): Inputs {
-  return self;
-}

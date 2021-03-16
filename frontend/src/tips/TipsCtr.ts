@@ -26,12 +26,13 @@ import * as FacetPolicies from 'skandha-facets/policies';
 import * as Handlers from 'src/tips/handlers';
 import { TipT } from 'src/tips/types';
 import { setCallbacks } from 'aspiration';
+import { Container } from 'src/utils/Container';
 
 type PropsT = {
   tipsStore: TipsStore;
 };
 
-export class TipsCtr {
+export class TipsCtr extends Container {
   @facet addition: Addition<TipT> = new Addition<TipT>();
   @facet deletion: Deletion = initDeletion(new Deletion());
   @facet editing: Editing = initEditing(new Editing());
@@ -118,6 +119,8 @@ export class TipsCtr {
   }
 
   constructor(props: PropsT) {
+    super();
+
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);

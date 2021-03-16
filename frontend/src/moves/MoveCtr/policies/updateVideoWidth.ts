@@ -5,7 +5,7 @@ import { onMakeCtrObservable } from 'skandha-mobx';
 
 export function updateVideoWidth(ctr: MoveContainer | CutVideoContainer) {
   onMakeCtrObservable(ctr, () => {
-    reaction(
+    const cleanUpFunction = reaction(
       () => {
         const maxVideoWidth = ctr.inputs.sessionDisplay
           ? ctr.inputs.sessionDisplay.maxVideoWidth
@@ -27,5 +27,6 @@ export function updateVideoWidth(ctr: MoveContainer | CutVideoContainer) {
         fireImmediately: true,
       }
     );
+    ctr.addCleanUpFunction(cleanUpFunction);
   });
 }

@@ -13,10 +13,11 @@ import { initVideoCtrFromCurrentMove } from 'src/moves/MoveCtr/policies/initVide
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { facet, installPolicies, registerFacets } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
+import { Container } from 'src/utils/Container';
 
 export type PropsT = { rootDivId: string };
 
-export class MoveContainer {
+export class MoveContainer extends Container {
   @facet inputs: Inputs;
   @facet display: Display;
   @facet timePoints: TimePoints;
@@ -35,6 +36,8 @@ export class MoveContainer {
   }
 
   constructor(props: PropsT) {
+    super();
+
     this.inputs = initInputs(new Inputs());
     this.display = initDisplay(new Display(), props.rootDivId);
     this.timePoints = initTimePoints(new TimePoints());

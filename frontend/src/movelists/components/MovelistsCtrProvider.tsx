@@ -56,6 +56,7 @@ export const MoveListsCtrProvider: React.FC<PropsT> = (props: PropsT) => {
     <CtrProvider
       createCtr={createCtr}
       updateCtr={updateCtr}
+      destroyCtr={(ctr) => ctr.destroy()}
       getDefaultProps={getDefaultProps}
     >
       {props.children}

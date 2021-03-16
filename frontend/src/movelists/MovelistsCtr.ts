@@ -3,6 +3,7 @@ import { Inputs, initInputs } from 'src/movelists/facets/Inputs';
 import { Outputs, initOutputs } from 'src/movelists/facets/Outputs';
 import { NavigationStore } from 'src/session/NavigationStore';
 import { getIds } from 'src/app/utils';
+import { Container } from 'src/utils/Container';
 import { mapData, facet, installPolicies, registerFacets } from 'skandha';
 import { setCallbacks } from 'aspiration';
 import { ClassMemberT } from 'skandha';
@@ -51,7 +52,7 @@ type PropsT = {
   moveListsStore: MoveListsStore;
 };
 
-export class MoveListsContainer {
+export class MoveListsContainer extends Container {
   @facet addition: Addition<MoveListT> = initAddition(
     new Addition<MoveListT>()
   );
@@ -190,6 +191,8 @@ export class MoveListsContainer {
   }
 
   constructor(props: PropsT) {
+    super();
+
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);

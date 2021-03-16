@@ -53,6 +53,7 @@ export const TipsCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
     <CtrProvider
       ctrKey={props.ctrKey}
       createCtr={createCtr}
+      destroyCtr={(ctr) => ctr.destroy()}
       updateCtr={updateCtr}
       getDefaultProps={getDefaultProps}
       children={props.children}

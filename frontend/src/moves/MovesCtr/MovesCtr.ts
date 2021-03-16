@@ -41,6 +41,7 @@ import {
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import { MoveT } from 'src/moves/types';
 import { Editing_cancel, Editing_save } from 'skandha-facets/Editing';
+import { Container } from 'src/utils/Container';
 import * as Facets from 'skandha-facets';
 import * as FacetPolicies from 'skandha-facets/policies';
 import * as Handlers from 'src/moves/MovesCtr/handlers';
@@ -51,7 +52,7 @@ type PropsT = {
   navigationStore: NavigationStore;
 };
 
-export class MovesContainer {
+export class MovesContainer extends Container {
   @facet addition: Addition<MoveT> = new Addition<MoveT>();
   @facet editing: Editing = initEditing(new Editing());
   @facet editingPrivateData: EditingPrivateData = initEditing(
@@ -226,6 +227,8 @@ export class MovesContainer {
   }
 
   constructor(props: PropsT) {
+    super();
+
     registerFacets(this);
     this._setCallbacks(props);
     this._applyPolicies(props);

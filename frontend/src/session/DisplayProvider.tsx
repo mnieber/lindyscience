@@ -33,6 +33,7 @@ export const DisplayProvider: React.FC<PropsT> = (props: PropsT) => {
   return (
     <CtrProvider
       createCtr={createCtr}
+      destroyCtr={(ctr) => ctr.destroy()}
       updateCtr={updateCtr}
       getDefaultProps={getDefaultProps}
       children={props.children}

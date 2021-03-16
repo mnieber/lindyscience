@@ -33,7 +33,7 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
     });
   };
 
-  const updateCtr = (ctr: MovesContainer) => {
+  const updateCtr = (ctr: MovesContainer) =>
     reaction(
       () => ({
         inputMoves: props.moveList
@@ -56,7 +56,6 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
         fireImmediately: true,
       }
     );
-  };
 
   const getDefaultProps = (ctr: MovesContainer) => {
     const movePrivateData = () => {
@@ -83,6 +82,7 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
   return (
     <CtrProvider
       createCtr={createCtr}
+      destroyCtr={(ctr) => ctr.destroy()}
       updateCtr={updateCtr}
       getDefaultProps={getDefaultProps}
       children={props.children}

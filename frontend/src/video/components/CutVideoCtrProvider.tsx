@@ -57,6 +57,7 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
   return (
     <CtrProvider
       createCtr={createCtr}
+      destroyCtr={(ctr) => ctr.destroy()}
       updateCtr={updateCtr}
       getDefaultProps={getDefaultProps}
       children={props.children}

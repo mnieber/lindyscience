@@ -1,7 +1,14 @@
 import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
-import { mapData, facet, installPolicies, registerFacets } from 'skandha';
+import {
+  cm,
+  getm,
+  mapData,
+  facet,
+  installPolicies,
+  registerFacets,
+} from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
 import {
   Addition,
@@ -97,22 +104,22 @@ export class TipsCtr extends Container {
   }
 
   _applyPolicies(props: PropsT) {
-    const inputItems = [Inputs, 'tips'];
-    const itemById = [Outputs, 'tipById'];
+    const Inputs_items = cm(Inputs, 'tips');
+    const Outputs_itemById = cm(Outputs, 'tipById');
 
     const policies = [
       // highlight
-      Facets.highlightActsOnItems(itemById),
+      Facets.highlightActsOnItems(getm(Outputs_itemById)),
 
       // insertion
-      Facets.insertionActsOnItems(inputItems),
+      Facets.insertionActsOnItems(getm(Inputs_items)),
       FacetPolicies.createInsertionPreview(
         [FacetPolicies.DragSourceFromNewItem],
         [Outputs, 'preview']
       ),
 
       // display
-      mapData([Outputs, 'preview'], [Outputs, 'display']),
+      mapData(getm([Outputs, 'preview']), [Outputs, 'display']),
     ];
 
     installPolicies<TipsCtr>(policies, this);

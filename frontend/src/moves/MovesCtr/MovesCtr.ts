@@ -14,7 +14,14 @@ import {
 import { Editing, initEditing } from 'skandha-facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
-import { mapData, facet, installPolicies, registerFacets } from 'skandha';
+import {
+  getm,
+  cm,
+  mapData,
+  facet,
+  installPolicies,
+  registerFacets,
+} from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
 import {
   Filtering,
@@ -197,30 +204,33 @@ export class MovesContainer extends Container {
   }
 
   _applyPolicies(props: PropsT) {
-    const inputItems = [Inputs, 'moves'];
-    const itemById = [Outputs, 'moveById'];
-    const preview = [Outputs, 'preview'];
+    const Inputs_items = cm(Inputs, 'moves');
+    const Outputs_itemById = cm(Outputs, 'moveById');
+    const Outputs_preview = cm(Outputs, 'preview');
+    const Outputs_display = cm(Outputs, 'display');
+    const Filtering_filteredItems = cm(Filtering, 'filteredItems');
+    const selectableIds = cm(Selection, 'selectableIds');
 
     const policies = [
       // selection
-      Facets.selectionActsOnItems(itemById),
+      Facets.selectionActsOnItems(getm(Outputs_itemById)),
 
       // highlight
-      Facets.highlightActsOnItems(itemById),
+      Facets.highlightActsOnItems(getm(Outputs_itemById)),
 
       // insertion
-      Facets.insertionActsOnItems(inputItems),
+      Facets.insertionActsOnItems(getm(Inputs_items)),
       FacetPolicies.createInsertionPreview(
         [FacetPolicies.DragSourceFromNewItem],
-        [Outputs, 'preview']
+        Outputs_preview
       ),
 
       // filtering
-      Facets.filteringActsOnItems(preview),
+      Facets.filteringActsOnItems(getm(Outputs_preview)),
 
       // display
-      mapData([Filtering, 'filteredItems'], [Outputs, 'display']),
-      mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
+      mapData(getm(Filtering_filteredItems), Outputs_display),
+      mapData(getm(Outputs_display), selectableIds, getIds),
     ];
 
     installPolicies<MovesContainer>(policies, this);

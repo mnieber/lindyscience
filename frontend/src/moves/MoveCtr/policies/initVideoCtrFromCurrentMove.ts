@@ -2,12 +2,13 @@ import { Inputs } from 'src/video/facets/Inputs';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveT } from 'src/moves/types';
 import { getVideoFromMove } from 'src/moves/utils';
-import { mapDatas } from 'skandha';
+import { getm, mapDatas } from 'skandha';
 
 export const initVideoCtrFromCurrentMove = mapDatas(
   [
-    [Inputs, 'move'],
-    [Inputs, 'altLink'],
+    //
+    getm([Inputs, 'move']),
+    getm([Inputs, 'altLink']),
   ],
   [VideoController, 'video'],
   (move: MoveT, altLink: string | undefined) => {

@@ -4,9 +4,9 @@ import { Outputs, initOutputs } from 'src/movelists/facets/Outputs';
 import { NavigationStore } from 'src/session/NavigationStore';
 import { getIds } from 'src/app/utils';
 import { Container } from 'src/utils/Container';
-import { mapData, facet, installPolicies, registerFacets } from 'skandha';
+import { getm, mapData, facet, installPolicies, registerFacets } from 'skandha';
 import { setCallbacks } from 'aspiration';
-import { ClassMemberT } from 'skandha';
+import { cm } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
 import { UUID } from 'src/kernel/types';
 import {
@@ -159,32 +159,34 @@ export class MoveListsContainer extends Container {
   }
 
   _applyPolicies(props: PropsT) {
-    const inputItems = [Inputs, 'moveLists'];
-    const itemById = [Outputs, 'moveListById'];
-    const moveListsFollowing: ClassMemberT = [Inputs, 'moveListsFollowing'];
+    const Inputs_items = cm(Inputs, 'moveLists');
+    const Outputs_itemById = cm(Outputs, 'moveListById');
+    const Outputs_display = cm(Outputs, 'display');
+    const Inputs_moveListsFollowing = cm(Inputs, 'moveListsFollowing');
+    const Selection_selectableIds = cm(Selection, 'selectableIds');
 
     const policies = [
       // selection
-      Facets.selectionActsOnItems(itemById),
+      Facets.selectionActsOnItems(getm(Outputs_itemById)),
 
       // highlight
-      Facets.highlightActsOnItems(itemById),
+      Facets.highlightActsOnItems(getm(Outputs_itemById)),
 
       // insertion
-      Facets.insertionActsOnItems(inputItems),
+      Facets.insertionActsOnItems(getm(Inputs_items)),
       FacetPolicies.createInsertionPreview(
         [FacetPolicies.DragSourceFromNewItem],
-        [Outputs, 'display']
+        Outputs_display
       ),
 
       // labelling
       MoveListsCtrPolicies.labellingReceivesIds(
-        moveListsFollowing,
+        Inputs_moveListsFollowing,
         'following'
       ),
 
       // display
-      mapData([Outputs, 'display'], [Selection, 'selectableIds'], getIds),
+      mapData(getm(Outputs_display), Selection_selectableIds, getIds),
     ];
 
     installPolicies<MoveListsContainer>(policies, this);

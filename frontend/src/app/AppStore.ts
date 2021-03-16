@@ -103,7 +103,7 @@ export class AppStore {
     setCallbacks(this.navigationStore, {
       requestData: {
         loadData(this: Navigation_requestData) {
-          handleLoadSelectedMoveListFromUrl(ctr, this.dataRequest);
+          handleLoadSelectedMoveListFromUrl(ctr, this.dataRequest.moveListUrl);
         },
       },
     });

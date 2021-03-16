@@ -1,6 +1,6 @@
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
 import { facet, installPolicies, registerFacets } from 'skandha';
-import { makeCtrObservable } from 'skandha-mobx';
+import { makeCtrObservable, onMakeCtrObservable } from 'skandha-mobx';
 import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { Inputs, initInputs } from 'src/video/facets/Inputs';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
@@ -18,6 +18,8 @@ import {
 } from 'skandha-facets/Deletion';
 import { setCallbacks } from 'aspiration';
 import * as Handlers from 'src/video/handlers';
+import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
+import { reaction } from 'mobx';
 
 export type PropsT = {
   rootDivId: string;
@@ -30,9 +32,25 @@ export class CutVideoContainer {
   @facet addition: Addition = initAddition(new Addition());
   @facet editing: Editing = initEditing(new Editing());
   @facet deletion: Deletion = initDeletion(new Deletion());
+  @facet videoController: VideoController = new VideoController();
 
   _applyPolicies(props: PropsT) {
-    const policies = [updateVideoWidth];
+    const initVideoCtrFromCutPointsStr = (ctr) => {
+      onMakeCtrObservable(ctr, () => {
+        reaction(
+          () => props.cutPointsStore.videoLink,
+          (videoLink) => {
+            this.videoController.video = {
+              link: videoLink,
+              startTimeMs: undefined,
+              endTimeMs: undefined,
+            };
+          }
+        );
+      });
+    };
+
+    const policies = [updateVideoWidth, initVideoCtrFromCutPointsStr];
 
     installPolicies<CutVideoContainer>(policies, this);
   }
@@ -44,7 +62,7 @@ export class CutVideoContainer {
       add: {
         createItem(this: Addition_add<any>) {
           return Handlers.handleCreateCutPoint(
-            props.cutPointsStore,
+            ctr.videoController,
             this.values
           );
         },

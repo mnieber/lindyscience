@@ -38,7 +38,7 @@ export class MoveContainer {
     this.inputs = initInputs(new Inputs());
     this.display = initDisplay(new Display(), props.rootDivId);
     this.timePoints = initTimePoints(new TimePoints());
-    this.videoController = initVideoController(new VideoController(false));
+    this.videoController = initVideoController(new VideoController());
 
     registerFacets(this);
     this._setCallbacks(props);

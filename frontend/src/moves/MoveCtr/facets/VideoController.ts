@@ -1,5 +1,5 @@
 import { input } from 'skandha';
-import { action, autorun, observable, makeObservable } from 'mobx';
+import { action, autorun, observable } from 'mobx';
 import { VideoT } from 'src/video/types';
 import { isYoutubePlaying } from 'src/video/utils';
 
@@ -11,12 +11,6 @@ export class VideoController {
   _player: any;
   _pauseAt: number = -1;
   _disposeAutoRun: Function = () => {};
-
-  constructor(isMakeObservable: boolean) {
-    if (isMakeObservable) {
-      makeObservable(this);
-    }
-  }
 
   @action setPlayer(x: any) {
     this.player = this._player = x;

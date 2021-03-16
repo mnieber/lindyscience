@@ -45,8 +45,8 @@ export const CutVideoCtrProvider: FC<PropsT, DefaultPropsT> = (p: PropsT) => {
 
   const getDefaultProps = (ctr: CutVideoContainer) => {
     return {
-      videoController: () => cutPointsStore.videoController,
       cutPoints: () => cutPointsStore.cutPoints,
+      videoController: () => ctr.videoController,
       cutPointsAddition: () => ctr.addition,
       cutPointsEditing: () => ctr.editing,
       cutPointsDeletion: () => ctr.deletion,

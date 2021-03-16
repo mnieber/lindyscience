@@ -1,16 +1,16 @@
-import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { createUUID } from 'src/utils/utils';
 import { CutPointT } from 'src/video/types';
+import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 
 type PropsT = {
   cutPointType: 'start' | 'end';
 };
 
 export function handleCreateCutPoint(
-  cutPointsStore: CutPointsStore,
+  videoController: VideoController,
   { cutPointType }: PropsT
 ): CutPointT {
-  const t = cutPointsStore.videoController.getPlayer().getCurrentTime();
+  const t = videoController.getPlayer().getCurrentTime();
 
   return {
     id: createUUID(),

@@ -1,6 +1,5 @@
 import { values } from 'lodash/fp';
 
-import { DataRequestT } from 'src/session/NavigationStore';
 import { loadRes } from 'src/utils/RST';
 import { AppStore } from 'src/app/AppStore';
 import { newMoveListSlug } from 'src/app/utils';
@@ -8,16 +7,15 @@ import { apiLoadMoveList } from 'src/search/api';
 
 export const handleLoadSelectedMoveListFromUrl = (
   appStore: AppStore,
-  dataRequest: DataRequestT
+  moveListUrl?: string
 ) => {
-  const selectedMoveListUrl = appStore.navigationStore.dataRequest.moveListUrl;
-  if (!!selectedMoveListUrl) {
-    const [ownerUsername, slug] = selectedMoveListUrl.split('/');
+  if (!!moveListUrl) {
+    const [ownerUsername, slug] = moveListUrl.split('/');
 
     if (slug !== newMoveListSlug) {
       loadRes(
         appStore.moveListsStore.moveListRSByUrl,
-        selectedMoveListUrl,
+        moveListUrl,
         () => apiLoadMoveList(ownerUsername, slug),
         (response: any) => {
           appStore.movesStore.addMoves(values(response.entities.moves || {}));

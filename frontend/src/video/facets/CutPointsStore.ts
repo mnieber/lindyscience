@@ -5,7 +5,6 @@ import { CutPointByIdT, CutPointT } from 'src/video/types';
 import { MoveListT } from 'src/movelists/types';
 import { UserProfileT } from 'src/profiles/types';
 import { listToItemById } from 'src/utils/utils';
-import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 
 export class CutPointsStore_createMoves {
   createMoves() {}
@@ -15,7 +14,7 @@ export class CutPointsStore_createMoves {
 
 export class CutPointsStore {
   @observable cutPointById: CutPointByIdT = {};
-  @observable videoController: VideoController = new VideoController(true);
+  @observable videoLink: string = '';
 
   constructor() {
     makeObservable(this);
@@ -24,14 +23,7 @@ export class CutPointsStore {
   @action setVideoLink(videoLink: string) {
     if (this.videoLink !== videoLink) {
       this.cutPointById = {};
-
-      this.videoController = new VideoController(true);
-
-      this.videoController.video = {
-        link: videoLink,
-        startTimeMs: undefined,
-        endTimeMs: undefined,
-      };
+      this.videoLink = videoLink;
     }
   }
 
@@ -39,10 +31,6 @@ export class CutPointsStore {
     return action((cbs: CutPointsStore_createMoves) => {
       cbs.createMoves();
     });
-  }
-
-  get videoLink() {
-    return this.videoController?.video?.link || '';
   }
 
   @computed get cutPoints() {

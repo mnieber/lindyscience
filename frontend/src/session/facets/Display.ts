@@ -1,5 +1,4 @@
 import { computed, observable, action, makeObservable } from 'mobx';
-import { createUUID } from 'src/utils/utils';
 
 export class Display {
   @observable width?: number;
@@ -12,11 +11,9 @@ export class Display {
   }
 
   @observable smallBreakPoint: number = 1200;
-  @observable id: string = createUUID();
 
   constructor() {
     makeObservable(this);
-    this.id = createUUID();
   }
 
   @action setWidth(x: number) {

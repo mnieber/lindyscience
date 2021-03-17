@@ -14,11 +14,7 @@ import {
   registerFacets,
 } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
-import {
-  Filtering,
-  initFiltering,
-  Filtering_apply,
-} from 'skandha-facets/Filtering';
+import { Filtering, Filtering_apply } from 'skandha-facets/Filtering';
 import { getIds } from 'src/app/utils';
 import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
 import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
@@ -50,7 +46,7 @@ export class MovesContainer extends Container {
   @facet addition: Addition<MoveT> = new Addition<MoveT>();
   @facet editing: Editing = new Editing();
   @facet editingPrivateData: EditingPrivateData = new EditingPrivateData();
-  @facet filtering: Filtering = initFiltering(new Filtering());
+  @facet filtering: Filtering = new Filtering();
   @facet highlight: Highlight = new Highlight();
   @facet inputs: Inputs = new Inputs();
   @facet insertion: Insertion = new Insertion();

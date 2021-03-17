@@ -20,13 +20,7 @@ import {
   initLabelling,
   Labelling_setLabel,
 } from 'skandha-facets/Labelling';
-import {
-  Addition,
-  initAddition,
-  Addition_add,
-  Addition_cancel,
-  Addition_confirm,
-} from 'skandha-facets/Addition';
+import { Addition, AdditionCbs } from 'skandha-facets/Addition';
 import {
   Editing,
   initEditing,
@@ -59,9 +53,7 @@ type PropsT = {
 };
 
 export class MoveListsContainer extends Container {
-  @facet addition: Addition<MoveListT> = initAddition(
-    new Addition<MoveListT>()
-  );
+  @facet addition: Addition<MoveListT> = new Addition<MoveListT>();
   @facet editing: Editing = initEditing(new Editing());
   @facet highlight: Highlight = initHighlight(new Highlight());
   @facet insertion: Insertion = initInsertion(new Insertion());
@@ -75,30 +67,30 @@ export class MoveListsContainer extends Container {
 
     setCallbacks(this.addition, {
       add: {
-        enter(this: Addition_add<MoveListT>) {
+        storeLocation() {
           props.navigationStore.storeLocation();
-        },
-        createItem(this: Addition_add<MoveListT>) {
           FacetPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
+        },
+        createItem(this: AdditionCbs<MoveListT>['add']) {
           return Handlers.handleCreateMoveList(ctr, this.values);
         },
-        exit(this: Addition_add<MoveListT>) {
+        highlightNewItem() {
           FacetPolicies.highlightNewItem(ctr.addition);
           FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },
       confirm: {
-        confirm(this: Addition_confirm<MoveListT>) {
+        confirm() {
           MoveListsCtrPolicies.newItemsAreFollowedWhenConfirmed(ctr.addition);
         },
       },
       cancel: {
-        exit(this: Addition_cancel<MoveListT>) {
+        restoreLocation() {
           FacetPolicies.editingSetDisabled(ctr.addition);
           props.navigationStore.restoreLocation();
         },
       },
-    });
+    } as AdditionCbs<MoveListT>);
 
     setCallbacks(this.editing, {
       save: {

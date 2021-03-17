@@ -1,9 +1,4 @@
-import {
-  Addition,
-  Addition_add,
-  Addition_cancel,
-  Addition_confirm,
-} from 'skandha-facets/Addition';
+import { Addition, AdditionCbs } from 'skandha-facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
 import {
@@ -86,31 +81,31 @@ export class MovesContainer extends Container {
 
     setCallbacks(this.addition, {
       add: {
-        enter(this: Addition_add<MoveT>) {
+        storeLocation() {
           props.navigationStore.storeLocation();
           FacetPolicies.filteringIsDisabledOnNewItem(ctr.addition);
         },
-        createItem(this: Addition_add<MoveT>) {
+        createItem(this: AdditionCbs<MoveT>['add']) {
           FacetPolicies.newItemsAreAddedBelowTheHighlight(ctr.addition);
           return Handlers.handleCreateMove(ctr.addition, this.values);
         },
-        exit(this: Addition_add<MoveT>) {
+        highlightNewItem() {
           FacetPolicies.highlightNewItem(ctr.addition);
           FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },
       confirm: {
-        confirm(this: Addition_confirm<MoveT>) {
+        confirm() {
           FacetPolicies.newItemsAreInsertedWhenConfirmed(ctr.addition);
         },
       },
       cancel: {
-        exit(this: Addition_cancel<MoveT>) {
+        restoreLocation() {
           FacetPolicies.editingSetDisabled(ctr.addition);
           props.navigationStore.restoreLocation();
         },
       },
-    });
+    } as AdditionCbs<MoveT>);
 
     setCallbacks(this.dragAndDrop, {
       drop: {

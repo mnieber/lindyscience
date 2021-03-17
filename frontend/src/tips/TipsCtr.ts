@@ -10,11 +10,7 @@ import {
   registerFacets,
 } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
-import {
-  Addition,
-  Addition_add,
-  Addition_cancel,
-} from 'skandha-facets/Addition';
+import { Addition, AdditionCbs } from 'skandha-facets/Addition';
 import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
 import {
   Editing,
@@ -53,21 +49,21 @@ export class TipsCtr extends Container {
 
     setCallbacks(this.addition, {
       add: {
-        createItem(this: Addition_add<TipT>) {
+        createItem(this: AdditionCbs<TipT>['add']) {
           FacetPolicies.newItemsAreCreatedAtTheTop(ctr.addition);
           return Handlers.handleCreateTip(ctr, this.values);
         },
-        createItem_post(this: Addition_add<TipT>) {
+        highlightNewItem() {
           FacetPolicies.highlightNewItem(ctr.addition);
           FacetPolicies.editingSetEnabled(ctr.addition);
         },
       },
       cancel: {
-        exit(this: Addition_cancel<TipT>) {
+        restoreLocation() {
           FacetPolicies.editingSetDisabled(ctr.addition);
         },
       },
-    });
+    } as AdditionCbs<TipT>);
 
     setCallbacks(this.deletion, {
       delete: {

@@ -5,12 +5,7 @@ import { updateVideoWidth } from 'src/moves/MoveCtr/policies/updateVideoWidth';
 import { initVideoCtrFromCutPointsStr } from 'src/moves/MoveCtr/policies/initVideoCtrFromCutPointsStr';
 import { Inputs } from 'src/video/facets/Inputs';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
-import {
-  Addition,
-  initAddition,
-  Addition_add,
-  Addition_confirm,
-} from 'skandha-facets/Addition';
+import { Addition, AdditionCbs } from 'skandha-facets/Addition';
 import { Editing, initEditing, Editing_save } from 'skandha-facets/Editing';
 import {
   Deletion,
@@ -30,7 +25,7 @@ export type PropsT = {
 export class CutVideoContainer extends Container {
   @facet inputs: Inputs = new Inputs();
   @facet display: Display;
-  @facet addition: Addition = initAddition(new Addition());
+  @facet addition: Addition = new Addition();
   @facet editing: Editing = initEditing(new Editing());
   @facet deletion: Deletion = initDeletion(new Deletion());
   @facet videoController: VideoController = new VideoController();
@@ -49,25 +44,25 @@ export class CutVideoContainer extends Container {
 
     setCallbacks(this.addition, {
       add: {
-        createItem(this: Addition_add<any>) {
+        createItem(this: AdditionCbs['add']) {
           return Handlers.handleCreateCutPoint(
             ctr.videoController,
             this.values
           );
         },
-        createItem_post(this: Addition_add<any>) {
+        highlightNewItem() {
           ctr.addition.confirm();
         },
       },
       confirm: {
-        confirm(this: Addition_confirm<any>) {
+        confirm() {
           Handlers.insertCutPointWhenConfirmed(
             ctr.addition,
             props.cutPointsStore
           );
         },
       },
-    });
+    } as AdditionCbs);
 
     setCallbacks(this.editing, {
       save: {

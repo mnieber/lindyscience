@@ -11,9 +11,9 @@ import {
 } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
-import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
-import { Editing, Editing_save, Editing_cancel } from 'skandha-facets/Editing';
-import { Deletion, Deletion_delete } from 'skandha-facets/Deletion';
+import { Highlight, HighlightCbs } from 'skandha-facets/Highlight';
+import { Editing, EditingCbs } from 'skandha-facets/Editing';
+import { Deletion, DeletionCbs } from 'skandha-facets/Deletion';
 import { Insertion } from 'skandha-facets/Insertion';
 import * as Facets from 'skandha-facets';
 import * as FacetPolicies from 'skandha-facets/policies';
@@ -58,15 +58,15 @@ export class TipsCtr extends Container {
 
     setCallbacks(this.deletion, {
       delete: {
-        deleteItems(this: Deletion_delete) {
+        deleteItems(this: DeletionCbs['delete']) {
           Handlers.handleDeleteTips(props.tipsStore, this.itemIds);
         },
       },
-    });
+    } as DeletionCbs);
 
     setCallbacks(this.editing, {
       save: {
-        saveItem(this: Editing_save) {
+        saveItem(this: EditingCbs['save']) {
           Handlers.handleSaveTip(ctr, props.tipsStore);
           FacetPolicies.newItemsAreConfirmedOnEditingSave(
             ctr.editing,
@@ -75,19 +75,19 @@ export class TipsCtr extends Container {
         },
       },
       cancel: {
-        enter(this: Editing_cancel) {
+        enter() {
           FacetPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
         },
       },
-    });
+    } as EditingCbs);
 
     setCallbacks(this.highlight, {
       highlightItem: {
-        enter(this: Highlight_highlightItem) {
+        enter(this: HighlightCbs['highlightItem']) {
           FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
       },
-    });
+    } as HighlightCbs);
   }
 
   _applyPolicies(props: PropsT) {

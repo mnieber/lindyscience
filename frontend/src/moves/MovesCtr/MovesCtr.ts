@@ -1,8 +1,8 @@
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
-import { DragAndDrop, DragAndDrop_drop } from 'skandha-facets/DragAndDrop';
-import { Editing } from 'skandha-facets/Editing';
+import { DragAndDrop, DragAndDropCbs } from 'skandha-facets/DragAndDrop';
+import { Editing, EditingCbs } from 'skandha-facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
 import {
@@ -14,11 +14,11 @@ import {
   registerFacets,
 } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
-import { Filtering, Filtering_apply } from 'skandha-facets/Filtering';
+import { Filtering, FilteringCbs } from 'skandha-facets/Filtering';
 import { getIds } from 'src/app/utils';
-import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
+import { Highlight, HighlightCbs } from 'skandha-facets/Highlight';
 import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
-import { Insertion, Insertion_insertItems } from 'skandha-facets/Insertion';
+import { Insertion, InsertionCbs } from 'skandha-facets/Insertion';
 import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { NavigationStore } from 'src/session/NavigationStore';
@@ -26,11 +26,10 @@ import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
 import {
   Selection,
   handleSelectItem,
-  Selection_selectItem,
+  SelectionCbs,
 } from 'skandha-facets/Selection';
 import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
 import { MoveT } from 'src/moves/types';
-import { Editing_cancel, Editing_save } from 'skandha-facets/Editing';
 import { Container } from 'src/utils/Container';
 import * as Facets from 'skandha-facets';
 import * as FacetPolicies from 'skandha-facets/policies';
@@ -95,38 +94,38 @@ export class MovesContainer extends Container {
 
     setCallbacks(this.dragAndDrop, {
       drop: {
-        drop(this: DragAndDrop_drop) {
+        drop(this: DragAndDropCbs['drop']) {
           FacetPolicies.selectionIsInsertedOnDragAndDrop(
             ctr.dragAndDrop,
             this.dropPosition
           );
         },
       },
-    });
+    } as DragAndDropCbs);
 
     setCallbacks(this.editing, {
       save: {
-        saveItem(this: Editing_save) {
+        saveItem(this: EditingCbs['save']) {
           Handlers.handleSaveMove(ctr.editing, props.movesStore, this.values);
           FacetPolicies.newItemsAreConfirmedOnEditingSave(
             ctr.editing,
             this.values
           );
         },
-        exit(this: Editing_save) {
+        exit() {
           Handlers.handleNavigateToSavedMove(ctr.editing, navigateToMove);
         },
       },
       cancel: {
-        enter(this: Editing_cancel) {
+        enter() {
           FacetPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
         },
       },
-    });
+    } as EditingCbs);
 
     setCallbacks(this.editingPrivateData, {
       save: {
-        saveItem(this: Editing_save) {
+        saveItem(this: EditingCbs['save']) {
           Handlers.handleSavePrivateData(
             ctr.editing,
             props.movesStore,
@@ -138,26 +137,26 @@ export class MovesContainer extends Container {
 
     setCallbacks(this.highlight, {
       highlightItem: {
-        enter(this: Highlight_highlightItem) {
+        enter(this: HighlightCbs['highlightItem']) {
           FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
-        exit(this: Highlight_highlightItem) {
+        exit() {
           Handlers.handleNavigateToHighlightedItem(ctr, props.navigationStore);
         },
       },
-    });
+    } as HighlightCbs);
 
     setCallbacks(this.filtering, {
       apply: {
-        exit(this: Filtering_apply) {
+        exit(this: FilteringCbs['apply']) {
           FacetPolicies.highlightIsCorrectedOnFilterChange(ctr.filtering);
         },
       },
-    });
+    } as FilteringCbs);
 
     setCallbacks(this.insertion, {
       insertItems: {
-        insertItems(this: Insertion_insertItems, moves: MoveT[]) {
+        insertItems(moves: MoveT[]) {
           Handlers.handleInsertMoves(
             ctr.insertion,
             props.moveListsStore,
@@ -165,11 +164,11 @@ export class MovesContainer extends Container {
           );
         },
       },
-    });
+    } as InsertionCbs);
 
     setCallbacks(this.selection, {
       selectItem: {
-        selectItem(this: Selection_selectItem) {
+        selectItem(this: SelectionCbs['selectItem']) {
           const result = handleSelectItem(
             ctr.selection,
             this.itemSelectedProps
@@ -181,7 +180,7 @@ export class MovesContainer extends Container {
           return result;
         },
       },
-    });
+    } as SelectionCbs);
   }
 
   _applyPolicies(props: PropsT) {

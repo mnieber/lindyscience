@@ -15,15 +15,15 @@ import {
 import { setCallbacks } from 'aspiration';
 import { makeCtrObservable } from 'skandha-mobx';
 import { UUID } from 'src/kernel/types';
-import { Labelling, Labelling_setLabel } from 'skandha-facets/Labelling';
+import { Labelling, LabellingCbs } from 'skandha-facets/Labelling';
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
-import { Editing, Editing_cancel, Editing_save } from 'skandha-facets/Editing';
-import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
+import { Editing, EditingCbs } from 'skandha-facets/Editing';
+import { Highlight, HighlightCbs } from 'skandha-facets/Highlight';
 import { Insertion } from 'skandha-facets/Insertion';
 import {
   Selection,
   handleSelectItem,
-  Selection_selectItem,
+  SelectionCbs,
 } from 'skandha-facets/Selection';
 import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MoveListT } from 'src/movelists/types';
@@ -80,7 +80,7 @@ export class MoveListsContainer extends Container {
 
     setCallbacks(this.editing, {
       save: {
-        saveItem(this: Editing_save) {
+        saveItem(this: EditingCbs['save']) {
           Handlers.handleSaveMoveList(
             ctr.editing,
             props.moveListsStore,
@@ -91,34 +91,34 @@ export class MoveListsContainer extends Container {
             this.values
           );
         },
-        exit(this: Editing_save) {
+        exit() {
           props.navigationStore.navigateToMoveList(ctr.highlight.item);
         },
       },
       cancel: {
-        enter(this: Editing_cancel) {
+        enter() {
           FacetPolicies.newItemsAreCancelledOnEditingCancel(ctr.editing);
         },
       },
-    });
+    } as EditingCbs);
 
     setCallbacks(this.highlight, {
       highlightItem: {
-        enter(this: Highlight_highlightItem) {
+        enter(this: HighlightCbs['highlightItem']) {
           FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
-        exit(this: Highlight_highlightItem) {
+        exit() {
           Handlers.handleNavigateToHighlightedItem(
             ctr.highlight,
             props.navigationStore
           );
         },
       },
-    });
+    } as HighlightCbs);
 
     setCallbacks(this.labelling, {
       setLabel: {
-        saveIds(this: Labelling_setLabel, label: string, ids: Array<UUID>) {
+        saveIds(label: string, ids: Array<UUID>) {
           Handlers.handleSaveLabels(
             ctr.labelling,
             props.profilingStore,
@@ -127,11 +127,11 @@ export class MoveListsContainer extends Container {
           );
         },
       },
-    });
+    } as LabellingCbs);
 
     setCallbacks(this.selection, {
       selectItem: {
-        selectItem(this: Selection_selectItem) {
+        selectItem(this: SelectionCbs['selectItem']) {
           handleSelectItem(ctr.selection, this.itemSelectedProps);
           FacetPolicies.highlightFollowsSelection(
             ctr.selection,
@@ -139,7 +139,7 @@ export class MoveListsContainer extends Container {
           );
         },
       },
-    });
+    } as SelectionCbs);
   }
 
   _applyPolicies(props: PropsT) {

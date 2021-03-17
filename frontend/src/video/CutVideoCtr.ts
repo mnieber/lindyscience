@@ -6,8 +6,8 @@ import { initVideoCtrFromCutPointsStr } from 'src/moves/MoveCtr/policies/initVid
 import { Inputs } from 'src/video/facets/Inputs';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
-import { Editing, Editing_save } from 'skandha-facets/Editing';
-import { Deletion, Deletion_delete } from 'skandha-facets/Deletion';
+import { Editing, EditingCbs } from 'skandha-facets/Editing';
+import { Deletion, DeletionCbs } from 'skandha-facets/Deletion';
 import { setCallbacks } from 'aspiration';
 import * as Handlers from 'src/video/handlers';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
@@ -62,19 +62,19 @@ export class CutVideoContainer extends Container {
 
     setCallbacks(this.editing, {
       save: {
-        saveItem(this: Editing_save) {
+        saveItem(this: EditingCbs['save']) {
           Handlers.handleSaveCutPoint(props.cutPointsStore, this.values);
         },
       },
-    });
+    } as EditingCbs);
 
     setCallbacks(this.deletion, {
       delete: {
-        deleteItems(this: Deletion_delete) {
+        deleteItems(this: DeletionCbs['delete']) {
           Handlers.handleDeleteCutPoints(props.cutPointsStore, this.itemIds);
         },
       },
-    });
+    } as DeletionCbs);
   }
 
   constructor(props: PropsT) {

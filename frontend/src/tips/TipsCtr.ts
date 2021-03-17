@@ -1,6 +1,6 @@
 import { TipsStore } from 'src/tips/TipsStore';
-import { Inputs, initInputs } from 'src/tips/facets/Inputs';
-import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
+import { Inputs } from 'src/tips/facets/Inputs';
+import { Outputs } from 'src/tips/facets/Outputs';
 import {
   ClassMemberT as CMT,
   getm,
@@ -12,18 +12,9 @@ import {
 import { makeCtrObservable } from 'skandha-mobx';
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
 import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
-import {
-  Editing,
-  initEditing,
-  Editing_save,
-  Editing_cancel,
-} from 'skandha-facets/Editing';
-import {
-  Deletion,
-  initDeletion,
-  Deletion_delete,
-} from 'skandha-facets/Deletion';
-import { Insertion, initInsertion } from 'skandha-facets/Insertion';
+import { Editing, Editing_save, Editing_cancel } from 'skandha-facets/Editing';
+import { Deletion, Deletion_delete } from 'skandha-facets/Deletion';
+import { Insertion } from 'skandha-facets/Insertion';
 import * as Facets from 'skandha-facets';
 import * as FacetPolicies from 'skandha-facets/policies';
 import * as Handlers from 'src/tips/handlers';
@@ -37,12 +28,12 @@ type PropsT = {
 
 export class TipsCtr extends Container {
   @facet addition: Addition<TipT> = new Addition<TipT>();
-  @facet deletion: Deletion = initDeletion(new Deletion());
-  @facet editing: Editing = initEditing(new Editing());
+  @facet deletion: Deletion = new Deletion();
+  @facet editing: Editing = new Editing();
   @facet highlight: Highlight = new Highlight();
-  @facet insertion: Insertion = initInsertion(new Insertion());
-  @facet inputs: Inputs = initInputs(new Inputs());
-  @facet outputs: Outputs = initOutputs(new Outputs());
+  @facet insertion: Insertion = new Insertion();
+  @facet inputs: Inputs = new Inputs();
+  @facet outputs: Outputs = new Outputs();
 
   _setCallbacks(props: PropsT) {
     const ctr = this;

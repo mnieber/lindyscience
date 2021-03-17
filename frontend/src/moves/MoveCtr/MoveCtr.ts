@@ -1,4 +1,4 @@
-import { Inputs, initInputs } from 'src/moves/MoveCtr/facets/Inputs';
+import { Inputs } from 'src/moves/MoveCtr/facets/Inputs';
 import { Display, initDisplay } from 'src/moves/MoveCtr/facets/Display';
 import {
   TimePoints,
@@ -38,7 +38,7 @@ export class MoveContainer extends Container {
   constructor(props: PropsT) {
     super();
 
-    this.inputs = initInputs(new Inputs());
+    this.inputs = new Inputs();
     this.display = initDisplay(new Display(), props.rootDivId);
     this.timePoints = initTimePoints(new TimePoints());
     this.videoController = initVideoController(new VideoController());

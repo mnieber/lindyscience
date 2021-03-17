@@ -9,7 +9,3 @@ export class Inputs {
   @observable moveList?: MoveListT;
   @observable moveLists: Array<MoveListT> = [];
 }
-
-export function initInputs(self: Inputs): Inputs {
-  return self;
-}

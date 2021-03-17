@@ -11,7 +11,3 @@ export class Outputs {
     return listToItemById(this.preview);
   }
 }
-
-export function initOutputs(self: Outputs): Outputs {
-  return self;
-}

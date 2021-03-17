@@ -1,6 +1,6 @@
 import { ProfilingStore } from 'src/session/ProfilingStore';
-import { Inputs, initInputs } from 'src/movelists/facets/Inputs';
-import { Outputs, initOutputs } from 'src/movelists/facets/Outputs';
+import { Inputs } from 'src/movelists/facets/Inputs';
+import { Outputs } from 'src/movelists/facets/Outputs';
 import { NavigationStore } from 'src/session/NavigationStore';
 import { getIds } from 'src/app/utils';
 import { Container } from 'src/utils/Container';
@@ -15,28 +15,14 @@ import {
 import { setCallbacks } from 'aspiration';
 import { makeCtrObservable } from 'skandha-mobx';
 import { UUID } from 'src/kernel/types';
-import {
-  Labelling,
-  initLabelling,
-  Labelling_setLabel,
-} from 'skandha-facets/Labelling';
+import { Labelling, Labelling_setLabel } from 'skandha-facets/Labelling';
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
-import {
-  Editing,
-  initEditing,
-  Editing_cancel,
-  Editing_save,
-} from 'skandha-facets/Editing';
-import {
-  Highlight,
-  initHighlight,
-  Highlight_highlightItem,
-} from 'skandha-facets/Highlight';
-import { Insertion, initInsertion } from 'skandha-facets/Insertion';
+import { Editing, Editing_cancel, Editing_save } from 'skandha-facets/Editing';
+import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
+import { Insertion } from 'skandha-facets/Insertion';
 import {
   Selection,
   handleSelectItem,
-  initSelection,
   Selection_selectItem,
 } from 'skandha-facets/Selection';
 import { MoveListsStore } from 'src/movelists/MoveListsStore';
@@ -54,13 +40,13 @@ type PropsT = {
 
 export class MoveListsContainer extends Container {
   @facet addition: Addition<MoveListT> = new Addition<MoveListT>();
-  @facet editing: Editing = initEditing(new Editing());
-  @facet highlight: Highlight = initHighlight(new Highlight());
-  @facet insertion: Insertion = initInsertion(new Insertion());
-  @facet inputs: Inputs = initInputs(new Inputs());
-  @facet outputs: Outputs = initOutputs(new Outputs());
-  @facet selection: Selection = initSelection(new Selection());
-  @facet labelling: Labelling = initLabelling(new Labelling());
+  @facet editing: Editing = new Editing();
+  @facet highlight: Highlight = new Highlight();
+  @facet insertion: Insertion = new Insertion();
+  @facet inputs: Inputs = new Inputs();
+  @facet outputs: Outputs = new Outputs();
+  @facet selection: Selection = new Selection();
+  @facet labelling: Labelling = new Labelling();
 
   _setCallbacks(props: PropsT) {
     const ctr = this;

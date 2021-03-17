@@ -14,7 +14,3 @@ export class Outputs {
   }
   @output display: Array<MoveListT> = [];
 }
-
-export function initOutputs(self: Outputs): Outputs {
-  return self;
-}

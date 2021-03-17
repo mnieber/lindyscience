@@ -8,7 +8,3 @@ export class Inputs {
   @observable sessionDisplay?: Display;
   @observable altLink?: string;
 }
-
-export function initInputs(self: Inputs): Inputs {
-  return self;
-}

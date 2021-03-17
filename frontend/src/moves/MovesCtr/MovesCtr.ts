@@ -1,12 +1,8 @@
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
 import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
-import {
-  DragAndDrop,
-  initDragAndDrop,
-  DragAndDrop_drop,
-} from 'skandha-facets/DragAndDrop';
-import { Editing, initEditing } from 'skandha-facets/Editing';
+import { DragAndDrop, DragAndDrop_drop } from 'skandha-facets/DragAndDrop';
+import { Editing } from 'skandha-facets/Editing';
 import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
 import {
@@ -25,16 +21,12 @@ import {
 } from 'skandha-facets/Filtering';
 import { getIds } from 'src/app/utils';
 import { Highlight, Highlight_highlightItem } from 'skandha-facets/Highlight';
-import { Inputs, initInputs } from 'src/moves/MovesCtr/facets/Inputs';
-import {
-  Insertion,
-  initInsertion,
-  Insertion_insertItems,
-} from 'skandha-facets/Insertion';
+import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
+import { Insertion, Insertion_insertItems } from 'skandha-facets/Insertion';
 import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MovesStore } from 'src/moves/MovesStore';
 import { NavigationStore } from 'src/session/NavigationStore';
-import { Outputs, initOutputs } from 'src/moves/MovesCtr/facets/Outputs';
+import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
 import {
   Selection,
   handleSelectItem,
@@ -56,17 +48,15 @@ type PropsT = {
 
 export class MovesContainer extends Container {
   @facet addition: Addition<MoveT> = new Addition<MoveT>();
-  @facet editing: Editing = initEditing(new Editing());
-  @facet editingPrivateData: EditingPrivateData = initEditing(
-    new EditingPrivateData()
-  );
+  @facet editing: Editing = new Editing();
+  @facet editingPrivateData: EditingPrivateData = new EditingPrivateData();
   @facet filtering: Filtering = initFiltering(new Filtering());
   @facet highlight: Highlight = new Highlight();
-  @facet inputs: Inputs = initInputs(new Inputs());
-  @facet insertion: Insertion = initInsertion(new Insertion());
-  @facet outputs: Outputs = initOutputs(new Outputs());
+  @facet inputs: Inputs = new Inputs();
+  @facet insertion: Insertion = new Insertion();
+  @facet outputs: Outputs = new Outputs();
   @facet selection: Selection = new Selection();
-  @facet dragAndDrop: DragAndDrop = initDragAndDrop(new DragAndDrop());
+  @facet dragAndDrop: DragAndDrop = new DragAndDrop();
 
   clipboard: Clipboard;
 

@@ -22,7 +22,3 @@ export class Inputs {
     this.userProfile = userProfile;
   }
 }
-
-export function initInputs(self: Inputs): Inputs {
-  return self;
-}

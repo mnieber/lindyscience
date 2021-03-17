@@ -6,12 +6,8 @@ import { initVideoCtrFromCutPointsStr } from 'src/moves/MoveCtr/policies/initVid
 import { Inputs } from 'src/video/facets/Inputs';
 import { CutPointsStore } from 'src/video/facets/CutPointsStore';
 import { Addition, AdditionCbs } from 'skandha-facets/Addition';
-import { Editing, initEditing, Editing_save } from 'skandha-facets/Editing';
-import {
-  Deletion,
-  initDeletion,
-  Deletion_delete,
-} from 'skandha-facets/Deletion';
+import { Editing, Editing_save } from 'skandha-facets/Editing';
+import { Deletion, Deletion_delete } from 'skandha-facets/Deletion';
 import { setCallbacks } from 'aspiration';
 import * as Handlers from 'src/video/handlers';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
@@ -26,8 +22,8 @@ export class CutVideoContainer extends Container {
   @facet inputs: Inputs = new Inputs();
   @facet display: Display;
   @facet addition: Addition = new Addition();
-  @facet editing: Editing = initEditing(new Editing());
-  @facet deletion: Deletion = initDeletion(new Deletion());
+  @facet editing: Editing = new Editing();
+  @facet deletion: Deletion = new Deletion();
   @facet videoController: VideoController = new VideoController();
 
   _applyPolicies(props: PropsT) {

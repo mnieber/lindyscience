@@ -9,7 +9,3 @@ export class Inputs {
   @observable @input tips?: TipT[];
   @observable @input userProfile?: UserProfileT;
 }
-
-export function initInputs(self: Inputs): Inputs {
-  return self;
-}

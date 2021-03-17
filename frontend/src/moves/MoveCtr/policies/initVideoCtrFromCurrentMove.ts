@@ -2,9 +2,9 @@ import { Inputs } from 'src/video/facets/Inputs';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveT } from 'src/moves/types';
 import { getVideoFromMove } from 'src/moves/utils';
-import { getm, mapDatas } from 'skandha';
+import { getm, mapDatasToFacet } from 'skandha';
 
-export const initVideoCtrFromCurrentMove = mapDatas(
+export const initVideoCtrFromCurrentMove = mapDatasToFacet(
   [
     //
     getm([Inputs, 'move']),

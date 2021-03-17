@@ -2,9 +2,9 @@ import { TipsStore } from 'src/tips/TipsStore';
 import { Inputs, initInputs } from 'src/tips/facets/Inputs';
 import { Outputs, initOutputs } from 'src/tips/facets/Outputs';
 import {
-  cm,
+  ClassMemberT as CMT,
   getm,
-  mapData,
+  mapDataToFacet,
   facet,
   installPolicies,
   registerFacets,
@@ -104,8 +104,8 @@ export class TipsCtr extends Container {
   }
 
   _applyPolicies(props: PropsT) {
-    const Inputs_items = cm(Inputs, 'tips');
-    const Outputs_itemById = cm(Outputs, 'tipById');
+    const Inputs_items = [Inputs, 'tips'] as CMT;
+    const Outputs_itemById = [Outputs, 'tipById'] as CMT;
 
     const policies = [
       // highlight
@@ -119,7 +119,7 @@ export class TipsCtr extends Container {
       ),
 
       // display
-      mapData(getm([Outputs, 'preview']), [Outputs, 'display']),
+      mapDataToFacet(getm([Outputs, 'preview']), [Outputs, 'display']),
     ];
 
     installPolicies<TipsCtr>(policies, this);

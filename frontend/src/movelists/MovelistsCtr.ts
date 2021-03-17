@@ -4,9 +4,15 @@ import { Outputs, initOutputs } from 'src/movelists/facets/Outputs';
 import { NavigationStore } from 'src/session/NavigationStore';
 import { getIds } from 'src/app/utils';
 import { Container } from 'src/utils/Container';
-import { getm, mapData, facet, installPolicies, registerFacets } from 'skandha';
+import {
+  getm,
+  mapDataToFacet,
+  facet,
+  installPolicies,
+  registerFacets,
+  ClassMemberT as CMT,
+} from 'skandha';
 import { setCallbacks } from 'aspiration';
-import { cm } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
 import { UUID } from 'src/kernel/types';
 import {
@@ -159,11 +165,11 @@ export class MoveListsContainer extends Container {
   }
 
   _applyPolicies(props: PropsT) {
-    const Inputs_items = cm(Inputs, 'moveLists');
-    const Outputs_itemById = cm(Outputs, 'moveListById');
-    const Outputs_display = cm(Outputs, 'display');
-    const Inputs_moveListsFollowing = cm(Inputs, 'moveListsFollowing');
-    const Selection_selectableIds = cm(Selection, 'selectableIds');
+    const Inputs_items = [Inputs, 'moveLists'] as CMT;
+    const Outputs_itemById = [Outputs, 'moveListById'] as CMT;
+    const Outputs_display = [Outputs, 'display'] as CMT;
+    const Inputs_moveListsFollowing = [Inputs, 'moveListsFollowing'] as CMT;
+    const Selection_selectableIds = [Selection, 'selectableIds'] as CMT;
 
     const policies = [
       // selection
@@ -186,7 +192,7 @@ export class MoveListsContainer extends Container {
       ),
 
       // display
-      mapData(getm(Outputs_display), Selection_selectableIds, getIds),
+      mapDataToFacet(getm(Outputs_display), Selection_selectableIds, getIds),
     ];
 
     installPolicies<MoveListsContainer>(policies, this);

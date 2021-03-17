@@ -13,8 +13,6 @@ import { Selection } from 'skandha-facets/Selection';
 import { Insertion } from 'skandha-facets/Insertion';
 import { useStore } from 'src/app/components/StoreProvider';
 
-// MoveList
-
 type PropsT = {
   createHostedPanels: (move: MoveT) => any;
   moveContextMenu: any;

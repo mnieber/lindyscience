@@ -16,8 +16,8 @@ import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData
 import { setCallbacks } from 'aspiration';
 import {
   getm,
-  cm,
-  mapData,
+  ClassMemberT as CMT,
+  mapDataToFacet,
   facet,
   installPolicies,
   registerFacets,
@@ -204,12 +204,12 @@ export class MovesContainer extends Container {
   }
 
   _applyPolicies(props: PropsT) {
-    const Inputs_items = cm(Inputs, 'moves');
-    const Outputs_itemById = cm(Outputs, 'moveById');
-    const Outputs_preview = cm(Outputs, 'preview');
-    const Outputs_display = cm(Outputs, 'display');
-    const Filtering_filteredItems = cm(Filtering, 'filteredItems');
-    const selectableIds = cm(Selection, 'selectableIds');
+    const Inputs_items = [Inputs, 'moves'] as CMT;
+    const Outputs_itemById = [Outputs, 'moveById'] as CMT;
+    const Outputs_preview = [Outputs, 'preview'] as CMT;
+    const Outputs_display = [Outputs, 'display'] as CMT;
+    const Filtering_filteredItems = [Filtering, 'filteredItems'] as CMT;
+    const Selection_selectableIds = [Selection, 'selectableIds'] as CMT;
 
     const policies = [
       // selection
@@ -229,8 +229,8 @@ export class MovesContainer extends Container {
       Facets.filteringActsOnItems(getm(Outputs_preview)),
 
       // display
-      mapData(getm(Filtering_filteredItems), Outputs_display),
-      mapData(getm(Outputs_display), selectableIds, getIds),
+      mapDataToFacet(getm(Filtering_filteredItems), Outputs_display),
+      mapDataToFacet(getm(Outputs_display), Selection_selectableIds, getIds),
     ];
 
     installPolicies<MovesContainer>(policies, this);

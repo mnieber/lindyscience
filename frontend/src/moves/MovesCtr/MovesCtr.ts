@@ -112,7 +112,7 @@ export class MovesContainer extends Container {
             this.values
           );
         },
-        exit() {
+        refreshView() {
           Handlers.handleNavigateToSavedMove(ctr.editing, navigateToMove);
         },
       },

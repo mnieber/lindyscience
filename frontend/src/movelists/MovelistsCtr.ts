@@ -91,7 +91,7 @@ export class MoveListsContainer extends Container {
             this.values
           );
         },
-        exit() {
+        refreshView() {
           props.navigationStore.navigateToMoveList(ctr.highlight.item);
         },
       },

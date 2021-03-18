@@ -169,15 +169,11 @@ export class MovesContainer extends Container {
     setCallbacks(this.selection, {
       selectItem: {
         selectItem(this: SelectionCbs['selectItem']) {
-          const result = handleSelectItem(
-            ctr.selection,
-            this.itemSelectedProps
-          );
+          handleSelectItem(ctr.selection, this.itemSelectedProps);
           FacetPolicies.highlightFollowsSelection(
             ctr.selection,
             this.itemSelectedProps
           );
-          return result;
         },
       },
     } as SelectionCbs);

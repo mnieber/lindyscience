@@ -6,13 +6,12 @@ import { keys } from 'lodash/fp';
 import { data } from 'skandha';
 
 export class Outputs {
-  @observable @data preview: Array<TipT> = [];
   @observable @data display: Array<TipT> = [];
 
   @computed get tipIds(): Array<UUID> {
     return keys(this.tipById);
   }
   @computed get tipById(): TipByIdT {
-    return listToItemById(this.preview);
+    return listToItemById(this.display);
   }
 }

@@ -2,7 +2,6 @@ import { ProfilingStore } from 'src/session/ProfilingStore';
 import { Inputs } from 'src/movelists/facets/Inputs';
 import { Outputs } from 'src/movelists/facets/Outputs';
 import { NavigationStore } from 'src/session/NavigationStore';
-import { getIds } from 'src/app/utils';
 import { Container } from 'src/utils/Container';
 import {
   getm,
@@ -144,33 +143,31 @@ export class MoveListsContainer extends Container {
 
   _applyPolicies(props: PropsT) {
     const Inputs_items = [Inputs, 'moveLists'] as CMT;
-    const Outputs_itemById = [Outputs, 'moveListById'] as CMT;
     const Outputs_display = [Outputs, 'display'] as CMT;
+    const Outputs_itemById = [Outputs, 'moveListById'] as CMT;
+    const Outputs_ids = [Outputs, 'moveListIds'] as CMT;
     const Inputs_moveListsFollowing = [Inputs, 'moveListsFollowing'] as CMT;
-    const Selection_selectableIds = [Selection, 'selectableIds'] as CMT;
 
     const policies = [
       // selection
-      Facets.selectionActsOnItems(getm(Outputs_itemById)),
+      Facets.selectionUsesSelectableIds(getm(Outputs_ids)),
+      Facets.selectionUsesItemLookUpTable(getm(Outputs_itemById)),
 
       // highlight
-      Facets.highlightActsOnItems(getm(Outputs_itemById)),
+      Facets.highlightUsesItemLookUpTable(getm(Outputs_itemById)),
 
       // insertion
-      Facets.insertionActsOnItems(getm(Inputs_items)),
-      FacetPolicies.createInsertionPreview(
-        [FacetPolicies.DragSourceFromNewItem],
-        Outputs_display
-      ),
+      Facets.insertionUsesInputItems(getm(Inputs_items)),
+      FacetPolicies.insertionPreviewUsesDragSources([
+        FacetPolicies.DragSourceFromNewItem,
+      ]),
+      mapDataToFacet(getm([Insertion, 'preview']), Outputs_display),
 
       // labelling
       MoveListsCtrPolicies.labellingReceivesIds(
         Inputs_moveListsFollowing,
         'following'
       ),
-
-      // display
-      mapDataToFacet(getm(Outputs_display), Selection_selectableIds, getIds),
     ];
 
     installPolicies<MoveListsContainer>(policies, this);

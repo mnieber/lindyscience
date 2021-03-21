@@ -96,17 +96,14 @@ export class TipsCtr extends Container {
 
     const policies = [
       // highlight
-      Facets.highlightActsOnItems(getm(Outputs_itemById)),
+      Facets.highlightUsesItemLookUpTable(getm(Outputs_itemById)),
 
       // insertion
-      Facets.insertionActsOnItems(getm(Inputs_items)),
-      FacetPolicies.createInsertionPreview(
-        [FacetPolicies.DragSourceFromNewItem],
-        [Outputs, 'preview']
-      ),
-
-      // display
-      mapDataToFacet(getm([Outputs, 'preview']), [Outputs, 'display']),
+      Facets.insertionUsesInputItems(getm(Inputs_items)),
+      FacetPolicies.insertionPreviewUsesDragSources([
+        FacetPolicies.DragSourceFromNewItem,
+      ]),
+      mapDataToFacet(getm([Insertion, 'preview']), [Outputs, 'display']),
     ];
 
     installPolicies<TipsCtr>(policies, this);

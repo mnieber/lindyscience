@@ -15,7 +15,6 @@ import {
 } from 'skandha';
 import { makeCtrObservable } from 'skandha-mobx';
 import { Filtering, FilteringCbs } from 'skandha-facets/Filtering';
-import { getIds } from 'src/app/utils';
 import { Highlight, HighlightCbs } from 'skandha-facets/Highlight';
 import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Insertion, InsertionCbs } from 'skandha-facets/Insertion';
@@ -180,33 +179,32 @@ export class MovesContainer extends Container {
   }
 
   _applyPolicies(props: PropsT) {
-    const Inputs_items = [Inputs, 'moves'] as CMT;
+    const Inputs_moves = [Inputs, 'moves'] as CMT;
     const Outputs_itemById = [Outputs, 'moveById'] as CMT;
-    const Outputs_preview = [Outputs, 'preview'] as CMT;
+    const Outputs_ids = [Outputs, 'moveIds'] as CMT;
+    const Insertion_preview = [Insertion, 'preview'] as CMT;
     const Outputs_display = [Outputs, 'display'] as CMT;
     const Filtering_filteredItems = [Filtering, 'filteredItems'] as CMT;
-    const Selection_selectableIds = [Selection, 'selectableIds'] as CMT;
 
     const policies = [
       // selection
-      Facets.selectionActsOnItems(getm(Outputs_itemById)),
+      Facets.selectionUsesSelectableIds(getm(Outputs_ids)),
+      Facets.selectionUsesItemLookUpTable(getm(Outputs_itemById)),
 
       // highlight
-      Facets.highlightActsOnItems(getm(Outputs_itemById)),
+      Facets.highlightUsesItemLookUpTable(getm(Outputs_itemById)),
 
       // insertion
-      Facets.insertionActsOnItems(getm(Inputs_items)),
-      FacetPolicies.createInsertionPreview(
-        [FacetPolicies.DragSourceFromNewItem],
-        Outputs_preview
-      ),
+      Facets.insertionUsesInputItems(getm(Inputs_moves)),
+      FacetPolicies.insertionPreviewUsesDragSources([
+        FacetPolicies.DragSourceFromNewItem,
+      ]),
 
       // filtering
-      Facets.filteringActsOnItems(getm(Outputs_preview)),
+      Facets.filteringUsesInputItems(getm(Insertion_preview)),
 
       // display
       mapDataToFacet(getm(Filtering_filteredItems), Outputs_display),
-      mapDataToFacet(getm(Outputs_display), Selection_selectableIds, getIds),
     ];
 
     installPolicies<MovesContainer>(policies, this);

@@ -40,7 +40,7 @@ services:
       - .env/frontend.env
     volumes:
       # map the src directory to opt/app-root/src
-      - ./frontend:/opt/linsci/src
+      - ./frontend:/app/src
       - /home/maarten/projects/aspiration/src:/npm/aspiration
       - /home/maarten/projects/react-form-state-context/src:/npm/react-form-state-context
       - /home/maarten/projects/react-default-props-context/src:/npm/react-default-props-context

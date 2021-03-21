@@ -1,17 +1,16 @@
-import { MenuProvider } from 'react-contexify';
+import classnames from 'classnames';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import classnames from 'classnames';
+import { MenuProvider } from 'react-contexify';
+import { FC, useDefaultProps } from 'react-default-props-context';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
-
-import { MoveT } from 'src/moves/types';
+import { Highlight } from 'skandha-facets/Highlight';
+import { Insertion } from 'skandha-facets/Insertion';
+import { Selection } from 'skandha-facets/Selection';
+import { useStore } from 'src/app/components/StoreProvider';
 import { MoveListT } from 'src/movelists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { useDefaultProps, FC } from 'react-default-props-context';
-import { Highlight } from 'skandha-facets/Highlight';
-import { Selection } from 'skandha-facets/Selection';
-import { Insertion } from 'skandha-facets/Insertion';
-import { useStore } from 'src/app/components/StoreProvider';
+import { MoveT } from 'src/moves/types';
 
 type PropsT = {
   createHostedPanels: (move: MoveT) => any;

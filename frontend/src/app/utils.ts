@@ -12,51 +12,6 @@ export function isOwner(userProfile: UserProfileT, ownerId: number) {
   return userProfile && userProfile.userId === ownerId;
 }
 
-export function pickNeighbour2(
-  allItems: Array<any>,
-  pickedItem: any,
-  isForward: boolean,
-  pickItem: (x: any) => void
-) {
-  const idx = allItems.findIndex((x) => x === pickedItem);
-
-  if (isForward && idx + 1 < allItems.length) {
-    pickItem(allItems[idx + 1]);
-    return true;
-  }
-  if (!isForward && idx - 1 >= 0) {
-    pickItem(allItems[idx - 1]);
-    return true;
-  }
-  return false;
-}
-
-export function handleSelectionKeys2(
-  key: string,
-  e: any,
-  allItems: Array<any>,
-  selectedItem: any,
-  selectItem: (x: any) => void
-) {
-  if (['up', 'down'].includes(key)) {
-    e.stopPropagation();
-    if (pickNeighbour2(allItems, selectedItem, key === 'down', selectItem)) {
-      e.preventDefault();
-    }
-    return true;
-  }
-
-  const pageUp = 33;
-  const pageDown = 34;
-  if ([pageUp, pageDown].includes(e.keyCode)) {
-    e.preventDefault();
-    e.stopPropagation();
-    return true;
-  }
-
-  return false;
-}
-
 export function scrollIntoView(elm: any, boundary?: any) {
   if (elm) {
     return scrollIntoViewIfNeeded(elm, {

@@ -6,6 +6,7 @@ import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { reaction } from 'mobx';
 import { useDefaultProps, CtrProvider } from 'react-default-props-context';
 import { useStore } from 'src/app/components/StoreProvider';
+import { scrollIntoView } from 'src/app/utils';
 
 type PropsT = React.PropsWithChildren<{}>;
 
@@ -29,6 +30,8 @@ export const MovesCtrProvider: React.FC<PropsT> = (p: PropsT) => {
       navigationStore: navigationStore,
       moveListsStore: moveListsStore,
       movesStore: movesStore,
+      scrollIntoView: (moveId: string) =>
+        scrollIntoView(document.getElementById(moveId)),
     });
   };
 

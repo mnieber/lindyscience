@@ -1,43 +1,43 @@
-import { Addition, AdditionCbs } from 'skandha-facets/Addition';
-import { ClickToSelectItems } from 'src/moves/handlers/ClickToSelectItems';
-import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
-import { DragAndDrop, DragAndDropCbs } from 'skandha-facets/DragAndDrop';
-import { Editing, EditingCbs } from 'skandha-facets/Editing';
-import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
 import { setCallbacks } from 'aspiration';
 import {
-  getm,
   ClassMemberT as CMT,
-  mapDataToFacet,
   facet,
+  getm,
   installPolicies,
+  mapDataToFacet,
   registerFacets,
 } from 'skandha';
-import { makeCtrObservable } from 'skandha-mobx';
+import * as Facets from 'skandha-facets';
+import { Addition, AdditionCbs } from 'skandha-facets/Addition';
+import { DragAndDrop, DragAndDropCbs } from 'skandha-facets/DragAndDrop';
+import { Editing, EditingCbs } from 'skandha-facets/Editing';
 import { Filtering, FilteringCbs } from 'skandha-facets/Filtering';
+import { ClickToSelectItems, SelectWithKeys } from 'skandha-facets/handlers';
 import { Highlight, HighlightCbs } from 'skandha-facets/Highlight';
-import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
 import { Insertion, InsertionCbs } from 'skandha-facets/Insertion';
-import { MoveListsStore } from 'src/movelists/MoveListsStore';
-import { MovesStore } from 'src/moves/MovesStore';
-import { NavigationStore } from 'src/session/NavigationStore';
-import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
+import * as FacetPolicies from 'skandha-facets/policies';
 import {
-  Selection,
   handleSelectItem,
+  Selection,
   SelectionCbs,
 } from 'skandha-facets/Selection';
-import { SelectWithKeys } from 'src/moves/handlers/SelectWithKeys';
-import { MoveT } from 'src/moves/types';
-import { Container } from 'src/utils/Container';
-import * as Facets from 'skandha-facets';
-import * as FacetPolicies from 'skandha-facets/policies';
+import { makeCtrObservable } from 'skandha-mobx';
+import { MoveListsStore } from 'src/movelists/MoveListsStore';
+import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
+import { EditingPrivateData } from 'src/moves/MovesCtr/facets/EditingPrivateData';
+import { Inputs } from 'src/moves/MovesCtr/facets/Inputs';
+import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
 import * as Handlers from 'src/moves/MovesCtr/handlers';
+import { MovesStore } from 'src/moves/MovesStore';
+import { MoveT } from 'src/moves/types';
+import { NavigationStore } from 'src/session/NavigationStore';
+import { Container } from 'src/utils/Container';
 
 type PropsT = {
   moveListsStore: MoveListsStore;
   movesStore: MovesStore;
   navigationStore: NavigationStore;
+  scrollIntoView: (moveId: string) => void;
 };
 
 export class MovesContainer extends Container {
@@ -139,8 +139,9 @@ export class MovesContainer extends Container {
         enter(this: HighlightCbs['highlightItem']) {
           FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
-        exit() {
+        exit(this: HighlightCbs['highlightItem']) {
           Handlers.handleNavigateToHighlightedItem(ctr, props.navigationStore);
+          props.scrollIntoView(this.id);
         },
       },
     } as HighlightCbs);
@@ -210,14 +211,8 @@ export class MovesContainer extends Container {
     installPolicies<MovesContainer>(policies, this);
   }
 
-  constructor(props: PropsT) {
-    super();
-
-    registerFacets(this);
-    this._setCallbacks(props);
-    this._applyPolicies(props);
-
-    this.clipboard = new Clipboard({
+  private _createClipboard(props: PropsT) {
+    return new Clipboard({
       ctr: this,
       shareMovesToList: Handlers.handleShareMovesToList(
         this,
@@ -225,7 +220,15 @@ export class MovesContainer extends Container {
         props.moveListsStore
       ),
     });
+  }
 
+  constructor(props: PropsT) {
+    super();
+
+    registerFacets(this);
+    this._setCallbacks(props);
+    this._applyPolicies(props);
+    this.clipboard = this._createClipboard(props);
     makeCtrObservable(this);
   }
 }

@@ -5,12 +5,12 @@ import { getVideoFromMove } from 'src/moves/utils';
 import { getm, mapDatasToFacet } from 'skandha';
 
 export const initVideoCtrFromCurrentMove = mapDatasToFacet(
+  [VideoController, 'video'],
   [
     //
     getm([Inputs, 'move']),
     getm([Inputs, 'altLink']),
   ],
-  [VideoController, 'video'],
   (move: MoveT, altLink: string | undefined) => {
     return altLink
       ? {

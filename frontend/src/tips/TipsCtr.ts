@@ -103,7 +103,7 @@ export class TipsCtr extends Container {
       FacetPolicies.insertionPreviewUsesDragSources([
         FacetPolicies.DragSourceFromNewItem,
       ]),
-      mapDataToFacet(getm([Insertion, 'preview']), [Outputs, 'display']),
+      mapDataToFacet([Outputs, 'display'], getm([Insertion, 'preview'])),
     ];
 
     installPolicies<TipsCtr>(policies, this);

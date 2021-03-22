@@ -131,10 +131,10 @@ export class MoveListsContainer extends Container {
     setCallbacks(this.selection, {
       selectItem: {
         selectItem(this: SelectionCbs['selectItem']) {
-          handleSelectItem(ctr.selection, this.itemSelectedProps);
+          handleSelectItem(ctr.selection, this.selectionParams);
           FacetPolicies.highlightFollowsSelection(
             ctr.selection,
-            this.itemSelectedProps
+            this.selectionParams
           );
         },
       },
@@ -161,7 +161,7 @@ export class MoveListsContainer extends Container {
       FacetPolicies.insertionPreviewUsesDragSources([
         FacetPolicies.DragSourceFromNewItem,
       ]),
-      mapDataToFacet(getm([Insertion, 'preview']), Outputs_display),
+      mapDataToFacet(Outputs_display, getm([Insertion, 'preview'])),
 
       // labelling
       MoveListsCtrPolicies.labellingReceivesIds(

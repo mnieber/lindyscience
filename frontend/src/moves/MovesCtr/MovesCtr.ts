@@ -169,10 +169,10 @@ export class MovesContainer extends Container {
     setCallbacks(this.selection, {
       selectItem: {
         selectItem(this: SelectionCbs['selectItem']) {
-          handleSelectItem(ctr.selection, this.itemSelectedProps);
+          handleSelectItem(ctr.selection, this.selectionParams);
           FacetPolicies.highlightFollowsSelection(
             ctr.selection,
-            this.itemSelectedProps
+            this.selectionParams
           );
         },
       },
@@ -205,7 +205,7 @@ export class MovesContainer extends Container {
       Facets.filteringUsesInputItems(getm(Insertion_preview)),
 
       // display
-      mapDataToFacet(getm(Filtering_filteredItems), Outputs_display),
+      mapDataToFacet(Outputs_display, getm(Filtering_filteredItems)),
     ];
 
     installPolicies<MovesContainer>(policies, this);

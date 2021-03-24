@@ -139,7 +139,7 @@ export class MovesContainer extends Container {
         enter(this: HighlightCbs['highlightItem']) {
           FacetPolicies.cancelNewItemOnHighlightChange(ctr.highlight, this.id);
         },
-        exit(this: HighlightCbs['highlightItem']) {
+        scrollItemIntoView(this: HighlightCbs['highlightItem']) {
           Handlers.handleNavigateToHighlightedItem(ctr, props.navigationStore);
           props.scrollIntoView(this.id);
         },

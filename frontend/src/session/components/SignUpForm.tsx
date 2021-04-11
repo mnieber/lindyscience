@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormStateProvider, IFormState } from 'react-form-state-context';
+import { FormStateProvider, FormState } from 'react-form-state-context';
 import { GlobalError } from 'src/session/components/form_fields/GlobalError';
 import { EmailField } from 'src/session/components/form_fields/EmailField';
 import { UsernameField } from 'src/session/components/form_fields/UsernameField';
@@ -36,15 +36,15 @@ export function SignUpForm(props: PropsT) {
     values,
     setError,
   }: {
-    values: IFormState['values'];
-    setError: IFormState['setError'];
+    values: FormState['values'];
+    setError: FormState['setError'];
   }) => {
     if (!values.password) {
       setError('password', 'Please provide a new password');
     }
   };
 
-  const handleSubmit = ({ values }: { values: IFormState['values'] }) => {
+  const handleSubmit = ({ values }: { values: FormState['values'] }) => {
     props.signUp(values.email, values.username, values.password);
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormStateProvider, IFormState } from 'react-form-state-context';
+import { FormStateProvider, FormState } from 'react-form-state-context';
 import { GlobalError } from 'src/session/components/form_fields/GlobalError';
 import { PasswordField } from 'src/session/components/form_fields/PasswordField';
 import { Field } from 'src/forms/components/Field';
@@ -31,15 +31,15 @@ export function PasswordChangeForm(props: PasswordResetFormPropsT) {
     values,
     setError,
   }: {
-    values: IFormState['values'];
-    setError: IFormState['setError'];
+    values: FormState['values'];
+    setError: FormState['setError'];
   }) => {
     if (!values.password) {
       setError('password', 'Please provide a new password');
     }
   };
 
-  const handleSubmit = ({ values }: { values: IFormState['values'] }) => {
+  const handleSubmit = ({ values }: { values: FormState['values'] }) => {
     props.changePassword(values.password);
   };
 

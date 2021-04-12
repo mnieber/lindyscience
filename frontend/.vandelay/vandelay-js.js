@@ -4,11 +4,13 @@
  * https://github.com/ericbiewener/vscode-vandelay#configuration
  */
 
+const baseDir = '/home/maarten/projects/linsci/src/frontend';
+
 module.exports = {
   // This is the only required property. At least one path must be included.
-  includePaths: ['/home/maarten/projects/linsci/src/frontend/src'],
+  includePaths: [baseDir + '/src'],
   processImportPath: (importPath, absImportPath, activeFilepath, projectRoot) =>
     absImportPath.startsWith(projectRoot)
-      ? absImportPath.slice((projectRoot + '/frontend').length + 1)
+      ? absImportPath.slice(baseDir.length + 1)
       : null,
 };

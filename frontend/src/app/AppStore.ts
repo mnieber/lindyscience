@@ -21,12 +21,13 @@ import {
   handleLoadSelectedMoveListFromUrl,
 } from 'src/app/handlers';
 import { handleCreateMoves, removeAllCutPoints } from 'src/video/handlers';
-import { AuthenticationStore } from 'src/session/AuthenticationStore';
+import { AuthenticationStore } from 'src/auth/AuthenticationStore';
 import { ProfilingStore } from 'src/session/ProfilingStore';
 import {
   NavigationStore,
   Navigation_requestData,
 } from 'src/session/NavigationStore';
+import { history } from 'src/session/history';
 
 export class AppStore {
   @observable movesStore: MovesStore;
@@ -50,7 +51,7 @@ export class AppStore {
     this.tipsStore = new TipsStore();
     this.votesStore = new VotesStore();
     this.cutPointsStore = new CutPointsStore();
-    this.navigationStore = new NavigationStore(this.movesStore);
+    this.navigationStore = new NavigationStore(this.movesStore, history);
 
     this.tagsStore.loadKnownTags();
     this.authenticationStore.loadUserId();

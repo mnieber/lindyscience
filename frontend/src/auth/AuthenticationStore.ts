@@ -1,6 +1,6 @@
 import { makeObservable, action, observable } from 'mobx';
 import { Signal } from 'micro-signals';
-import * as authApi from 'src/session/apis/authApi';
+import * as authApi from 'src/auth/apis/authApi';
 
 export class AuthenticationStore {
   @observable signedInUserId?: string;

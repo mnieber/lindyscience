@@ -3,7 +3,7 @@ import { action, observable, computed, makeObservable } from 'mobx';
 import { useStore } from 'src/app/components/StoreProvider';
 import * as _ from 'lodash/fp';
 
-import { AuthenticationStore } from 'src/session/AuthenticationStore';
+import { AuthenticationStore } from 'src/auth/AuthenticationStore';
 
 class AuthState {
   @observable errors: string[] = [];

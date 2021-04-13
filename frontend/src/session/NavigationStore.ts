@@ -6,7 +6,6 @@ import { newMoveListSlug } from 'src/app/utils';
 import { browseToMoveUrl } from 'src/app/components';
 import { lookUp } from 'src/utils/utils';
 import { getId, makeSlugidMatcher } from 'src/app/utils';
-import { createBrowserHistory } from 'history';
 import { host, stub } from 'aspiration';
 
 export class Navigation_requestData {
@@ -26,12 +25,10 @@ export class NavigationStore {
   @observable dataRequest: DataRequestT = {};
   _movesStore: MovesStore;
 
-  constructor(movesStore: MovesStore) {
+  constructor(movesStore: MovesStore, history: any) {
     makeObservable(this);
     this._movesStore = movesStore;
-    this.history = createBrowserHistory({
-      basename: process.env.PUBLIC_URL,
-    });
+    this.history = history;
   }
 
   @host requestData(dataRequest: DataRequestT) {

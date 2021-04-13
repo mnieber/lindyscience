@@ -2,9 +2,9 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react';
 
-import { useAuthStateContext } from 'src/session/AuthStateProvider';
+import { useAuthStateContext } from 'src/auth/AuthStateProvider';
 import { RouterLink } from 'src/utils/components/RouterLink';
-import { AuthenticationFrame } from 'src/session/components/AuthenticationFrame';
+import { AuthenticationFrame } from 'src/auth/components/AuthenticationFrame';
 import { useStore } from 'src/app/components/StoreProvider';
 
 export const ActivateAccountPage: React.FC = observer(() => {

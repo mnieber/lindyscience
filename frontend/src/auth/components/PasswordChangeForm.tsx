@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { FormStateProvider, FormState } from 'react-form-state-context';
-import { GlobalError } from 'src/session/components/form_fields/GlobalError';
-import { PasswordField } from 'src/session/components/form_fields/PasswordField';
+import { GlobalError } from 'src/auth/components/form_fields/GlobalError';
+import { PasswordField } from 'src/auth/components/form_fields/PasswordField';
 import { Field } from 'src/forms/components/Field';
-import { SubmitButton } from 'src/session/components/form_fields/SubmitButton';
+import { SubmitButton } from 'src/auth/components/form_fields/SubmitButton';
 
 const getExternalErrors = (errors: Array<string>) => {
   const fieldErrors: { [name: string]: string } = {};

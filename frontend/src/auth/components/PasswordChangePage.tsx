@@ -2,10 +2,10 @@ import { useParams } from 'react-router-dom';
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { useAuthStateContext } from 'src/session/AuthStateProvider';
+import { useAuthStateContext } from 'src/auth/AuthStateProvider';
 import { RouterLink } from 'src/utils/components/RouterLink';
-import { AuthenticationFrame } from 'src/session/components/AuthenticationFrame';
-import { PasswordChangeForm } from 'src/session/components/PasswordChangeForm';
+import { AuthenticationFrame } from 'src/auth/components/AuthenticationFrame';
+import { PasswordChangeForm } from 'src/auth/components/PasswordChangeForm';
 import { useStore } from 'src/app/components/StoreProvider';
 
 export const PasswordChangePage: React.FC = observer(() => {

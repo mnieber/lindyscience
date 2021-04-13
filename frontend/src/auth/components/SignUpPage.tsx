@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { useAuthStateContext } from 'src/session/AuthStateProvider';
+import { useAuthStateContext } from 'src/auth/AuthStateProvider';
 import { RouterLink } from 'src/utils/components/RouterLink';
-import { AuthenticationFrame } from 'src/session/components/AuthenticationFrame';
-import { SignUpForm } from 'src/session/components/SignUpForm';
+import { AuthenticationFrame } from 'src/auth/components/AuthenticationFrame';
+import { SignUpForm } from 'src/auth/components/SignUpForm';
 import { useStore } from 'src/app/components/StoreProvider';
 
 export const SignUpPage: React.FC = observer(() => {

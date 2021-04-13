@@ -15,7 +15,7 @@ import { TagT } from 'src/tags/types';
 import { MoveListT } from 'src/movelists/types';
 import { toEditorState } from 'src/richtext/utils/EditorState';
 import { newMoveListSlug } from 'src/app/utils';
-import { ControlledCheckbox } from 'src/session/components/form_fields/ControlledCheckbox';
+import { ControlledCheckbox } from 'src/auth/components/form_fields/ControlledCheckbox';
 import {
   Field,
   SaveButton,

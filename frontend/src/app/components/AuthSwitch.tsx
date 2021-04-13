@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { SignInPage } from 'src/session/components/SignInPage';
-import { SignUpPage } from 'src/session/components/SignUpPage';
-import { PasswordResetPage } from 'src/session/components/PasswordResetPage';
-import { AuthStateProvider } from 'src/session/AuthStateProvider';
+import { SignInPage } from 'src/auth/components/SignInPage';
+import { SignUpPage } from 'src/auth/components/SignUpPage';
+import { PasswordResetPage } from 'src/auth/components/PasswordResetPage';
+import { AuthStateProvider } from 'src/auth/AuthStateProvider';
 
 export const AuthSwitch: React.FC = () => {
   return (

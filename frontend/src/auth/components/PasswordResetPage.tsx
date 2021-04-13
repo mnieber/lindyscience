@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { useAuthStateContext } from 'src/session/AuthStateProvider';
-import { AuthenticationFrame } from 'src/session/components/AuthenticationFrame';
-import { PasswordResetForm } from 'src/session/components/PasswordResetForm';
+import { useAuthStateContext } from 'src/auth/AuthStateProvider';
+import { AuthenticationFrame } from 'src/auth/components/AuthenticationFrame';
+import { PasswordResetForm } from 'src/auth/components/PasswordResetForm';
 import { RouterLink } from 'src/utils/components/RouterLink';
 import { useStore } from 'src/app/components/StoreProvider';
 

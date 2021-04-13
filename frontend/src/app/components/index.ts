@@ -1,4 +1,5 @@
 import { apiUpdateProfile } from 'src/profiles/api';
+export { App } from './App';
 
 export function browseToMoveUrl(
   setUrl: Function,

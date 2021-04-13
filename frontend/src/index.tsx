@@ -10,23 +10,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { configureStore } from 'src/app/store';
-import { DisplayProvider } from 'src/session/DisplayProvider';
-import { MoveListsCtrProvider } from 'src/movelists/components/MovelistsCtrProvider';
-import { MovesCtrProvider } from 'src/moves/components/MovesCtrProvider';
-import { AppFrame } from 'src/app/components/AppFrame';
-import { UrlRouter } from 'src/app/components/UrlRouter';
+import { App } from 'src/app/components';
 
 configureStore();
 
 ReactDOM.render(
-  <DisplayProvider>
-    <MoveListsCtrProvider>
-      <MovesCtrProvider>
-        <AppFrame>
-          <UrlRouter />
-        </AppFrame>
-      </MovesCtrProvider>
-    </MoveListsCtrProvider>
-  </DisplayProvider>,
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,6 +1,6 @@
 import { values } from 'lodash/fp';
 
-import { loadRes } from 'src/utils/RST';
+import { updateRes } from 'src/utils/RST';
 import { AppStore } from 'src/app/AppStore';
 import { newMoveListSlug } from 'src/app/utils';
 import { apiLoadMoveList } from 'src/search/api';
@@ -13,7 +13,7 @@ export const handleLoadSelectedMoveListFromUrl = (
     const [ownerUsername, slug] = moveListUrl.split('/');
 
     if (slug !== newMoveListSlug) {
-      loadRes(
+      updateRes(
         appStore.moveListsStore.moveListRSByUrl,
         moveListUrl,
         () => apiLoadMoveList(ownerUsername, slug),

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { MoveListTable } from 'src/movelists/components/MoveListTable';
-import { useParams } from 'src/utils/react_router_dom_wrapper';
+import { useParams } from 'react-router-dom';
 import { MoveListT } from 'src/movelists/types';
 import { apiFindMoveLists } from 'src/search/api';
 import { values } from 'lodash/fp';

@@ -70,7 +70,7 @@ export type RST<UpdatingT = LoadingT> =
   | ErroredRST
   | UpdatedRST;
 
-export const loadRes = action(
+export const updateRes = action(
   (
     rsMap: { [k: string]: any },
     id: string,

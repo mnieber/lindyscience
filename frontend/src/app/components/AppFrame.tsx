@@ -9,6 +9,7 @@ import { Display } from 'src/app/Display';
 import { SearchMovesPage } from 'src/search/components/SearchMovesPage';
 import { AccountMenu } from 'src/app/components/AccountMenu';
 import { useStore } from 'src/app/components/StoreProvider';
+import { CookieNotice } from 'src/app/components/CookieNotice';
 
 // AppFrame
 type PropsT = React.PropsWithChildren<{}>;
@@ -20,21 +21,6 @@ type DefaultPropsT = {
 export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
   const props = useDefaultProps<PropsT, DefaultPropsT>(p);
   const { profilingStore } = useStore();
-
-  const cookieNotice = profilingStore.acceptsCookies ? undefined : (
-    <div className="cookieNotice flexrow justify-around items-center">
-      <div>
-        This site uses cookies to store the settings for the logged in user. By
-        continuing to use this site you agree with that.
-        <button
-          className="button button--wide ml-2"
-          onClick={profilingStore.acceptCookies.bind(profilingStore)}
-        >
-          Okay
-        </button>
-      </div>
-    </div>
-  );
 
   const onResize = () => {
     props.sessionDisplay.setWidth(window.innerWidth);
@@ -48,7 +34,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
       })}
     >
       <ReactResizeDetector handleWidth onResize={debounce(onResize, 10)} />
-      {cookieNotice}
+      {!profilingStore.acceptsCookies && <CookieNotice />}
       <div
         className={classnames(
           'appFrame__banner flexrow items-center justify-between h-16',

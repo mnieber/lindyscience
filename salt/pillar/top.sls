@@ -1,5 +1,0 @@
-base:
-  '*':
-    - env
-    - linsci
-    - version

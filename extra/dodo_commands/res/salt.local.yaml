@@ -1,7 +1,0 @@
-SALT:
-  target_docker_image: ${/DOCKER/images/base/image}
-  host_name: dev
-
-SSH:
-  key_name: id_docker_deploy_rsa
-

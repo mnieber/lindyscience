@@ -1,0 +1,17 @@
+.MoveListPanel__Inner {
+  // Style the keyboard event handler span
+  & > span {
+    display: flex;
+    min-height: 0;
+  }
+}
+
+.MoveListPanel__Inner--expanded {
+  min-width: 20rem;
+  max-width: 20rem;
+}
+
+.MoveListPanel__Inner--collapsed {
+  min-width: 2rem;
+  max-width: 2rem;
+}

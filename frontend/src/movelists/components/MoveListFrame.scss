@@ -12,21 +12,3 @@
   min-width: 0.5rem;
   max-width: 0.5rem;
 }
-
-.MoveListFrame__Inner {
-  // Style the keyboard event handler span
-  & > span {
-    display: flex;
-    min-height: 0;
-  }
-}
-
-.MoveListFrame__Inner--expanded {
-  min-width: 20rem;
-  max-width: 20rem;
-}
-
-.MoveListFrame__Inner--collapsed {
-  min-width: 2rem;
-  max-width: 2rem;
-}

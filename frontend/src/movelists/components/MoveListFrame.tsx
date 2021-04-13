@@ -25,6 +25,8 @@ import { Selection } from 'skandha-facets/Selection';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { useStore } from 'src/app/components/StoreProvider';
 
+import './MoveListFrame.scss';
+
 type PropsT = React.PropsWithChildren<{}>;
 
 type DefaultPropsT = {
@@ -125,8 +127,8 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
 
     const contents = (
       <div
-        className={classnames('moveListPanel__inner flexcol', {
-          'moveListPanel__inner--expanded': true,
+        className={classnames('MoveListFrame__Inner flexcol', {
+          'MoveListFrame__Inner--expanded': true,
         })}
       >
         {props.sessionDisplay.small && accountMenu}
@@ -155,7 +157,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
 
     const ribbon = (
       <div
-        className="moveListPanel__ribbon"
+        className="MoveListFrame__Ribbon"
         onClick={() => setIsMenuOpen(true)}
       />
     );
@@ -165,7 +167,7 @@ export const MoveListFrame: FC<PropsT, DefaultPropsT> = observer(
         {props.sessionDisplay.small ? shrunkContents : contents}
         {props.sessionDisplay.small && !isMenuOpen && ribbon}
         <div
-          className={classnames('MoveListFrame__panel flex-auto', {
+          className={classnames('MoveListFrame__Panel flex-auto', {
             'pl-4': !props.sessionDisplay.small,
             'pl-1': props.sessionDisplay.small,
           })}

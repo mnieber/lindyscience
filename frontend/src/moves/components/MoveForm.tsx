@@ -22,6 +22,8 @@ import {
   TagsField,
 } from 'src/forms/components';
 
+import './MoveForm.scss';
+
 type PropsT = {
   onCancel: () => void;
   onSubmit: (values: any) => void;

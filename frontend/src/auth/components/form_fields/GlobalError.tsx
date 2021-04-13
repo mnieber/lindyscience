@@ -1,6 +1,6 @@
-import React from 'react';
-
 import { useFormStateContext } from 'react-form-state-context';
+
+import './GlobalError.scss';
 
 export const GlobalError = () => {
   const formState = useFormStateContext();

@@ -6,7 +6,7 @@ import { MoveT } from 'src/moves/types';
 import { MoveDescriptionEditor } from 'src/moves/components/MoveDescriptionEditor';
 import { RouterLink } from 'src/utils/components/RouterLink';
 
-// Move
+import './Move.scss';
 
 type PropsT = {
   move: MoveT;

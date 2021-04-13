@@ -1,0 +1,23 @@
+.moveList {
+  @apply overflow-y-scroll flex-grow;
+}
+
+.moveList__item {
+  @apply py-1;
+}
+
+.moveList__item--highlighted {
+  @apply border-4 border-blue-300;
+}
+
+.moveList__item--selected {
+  @apply bg-blue-500;
+}
+
+.moveList__item--drag_before {
+  border-top: solid;
+}
+
+.moveList__item--drag_after {
+  border-bottom: solid;
+}

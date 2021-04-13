@@ -1,0 +1,23 @@
+.move__header {
+  @apply flex flex-row flex-wrap;
+}
+
+.move__description {
+  @apply text-lg overflow-y-scroll;
+  max-height: 350px;
+}
+
+.move__tags {
+  @apply flex;
+}
+
+.move__tag {
+  @apply mr-2 p-2 rounded;
+  @apply text-sm;
+  background-color: #e6e6e6;
+}
+
+.move__name {
+  word-wrap: break-word;
+  white-space: normal;
+}

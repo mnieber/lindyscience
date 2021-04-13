@@ -1,8 +1,9 @@
-import * as React from 'react';
 import classnames from 'classnames';
 
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { runInAction } from 'mobx';
+
+import './VideoControlPanel.scss';
 
 type PropsT = {
   videoController: VideoController;

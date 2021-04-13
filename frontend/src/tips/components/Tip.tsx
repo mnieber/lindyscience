@@ -12,6 +12,8 @@ import { Addition } from 'skandha-facets/Addition';
 import { Deletion } from 'skandha-facets/Deletion';
 import { useStore } from 'src/app/components/StoreProvider';
 
+import './Tip.scss';
+
 type PropsT = {
   allowEdit: boolean;
   allowDelete: boolean;

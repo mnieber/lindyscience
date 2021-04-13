@@ -12,6 +12,8 @@ import { MoveListT } from 'src/movelists/types';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
 import { MoveT } from 'src/moves/types';
 
+import './MoveList.scss';
+
 type PropsT = {
   createHostedPanels: (move: MoveT) => any;
   moveContextMenu: any;

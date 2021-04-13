@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-// MoveListHeader
+import './MoveListHeader.scss';
 
 type PropsT = {
   addNewMove: Function;

@@ -1,9 +1,8 @@
-import * as React from 'react';
 import classnames from 'classnames';
 
 import { VoteT } from 'src/votes/types';
 
-// VoteCount
+import './VoteCount.scss';
 
 export function VoteCount({
   vote,

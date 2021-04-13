@@ -8,6 +8,8 @@ import { TagT } from 'src/tags/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { TagsAndKeywordsPicker } from 'src/search/utils/TagsAndKeywordsPicker';
 
+import './SearchMovesForm.scss';
+
 type PropsT = {
   onSubmit: (values: any) => any;
   knownTags: Array<TagT>;

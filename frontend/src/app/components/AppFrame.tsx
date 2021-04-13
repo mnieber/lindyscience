@@ -11,6 +11,8 @@ import { AccountMenu } from 'src/app/components/AccountMenu';
 import { useStore } from 'src/app/components/StoreProvider';
 import { CookieNotice } from 'src/app/components/CookieNotice';
 
+import './AppFrame.scss';
+
 // AppFrame
 type PropsT = React.PropsWithChildren<{}>;
 
@@ -28,7 +30,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
 
   return (
     <div
-      className={classnames('appFrame flexcol', {
+      className={classnames('AppFrame flexcol', {
         'px-1': props.sessionDisplay.small,
         'px-4': !props.sessionDisplay.small,
       })}
@@ -37,7 +39,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
       {!profilingStore.acceptsCookies && <CookieNotice />}
       <div
         className={classnames(
-          'appFrame__banner flexrow items-center justify-between h-16',
+          'AppFrame__Banner flexrow items-center justify-between h-16',
           {
             'mt-4 mb-4': !props.sessionDisplay.small,
             'mb-1': props.sessionDisplay.small,
@@ -45,7 +47,7 @@ export const AppFrame: FC<PropsT, DefaultPropsT> = observer((p: PropsT) => {
         )}
       >
         <div className="flexrow w-full">
-          <div className="flexcol appFrame__home">
+          <div className="flexcol AppFrame__Home">
             <h1
               className="text-2xl font-semibold"
               onClick={() => alert('TODO')}

@@ -8,6 +8,8 @@ import {
 import { TextField } from 'src/forms/components/TextField';
 import { Field, CancelButton, SaveButton } from 'src/forms/components';
 
+import './TipForm.scss';
+
 export function TipForm({
   onSubmit,
   onCancel,

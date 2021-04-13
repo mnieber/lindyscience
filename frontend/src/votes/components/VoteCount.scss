@@ -1,0 +1,31 @@
+.voteCount {
+  @apply w-8;
+}
+
+.voteCountPanel {
+  @apply flex;
+}
+
+.upVoteBtn {
+  @apply mx-1 bg-cover w-6 h-6;
+}
+
+.upVoteBtn--voted {
+  background-image: url('http://localhost:8000/static/img/upvote_1.png');
+}
+
+.upVoteBtn--notVoted {
+  background-image: url('http://localhost:8000/static/img/upvote_0.png');
+}
+
+.downVoteBtn {
+  @apply mx-1 bg-cover w-6 h-6;
+}
+
+.downVoteBtn--voted {
+  background-image: url('http://localhost:8000/static/img/downvote_1.png');
+}
+
+.downVoteBtn--notVoted {
+  background-image: url('http://localhost:8000/static/img/downvote_0.png');
+}

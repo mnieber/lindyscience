@@ -1,6 +1,8 @@
 import { useStore } from 'src/app/components/StoreProvider';
 import { observer } from 'mobx-react';
 
+import './CookieNotice.scss';
+
 export const CookieNotice: React.FC = observer(() => {
   const { profilingStore } = useStore();
 

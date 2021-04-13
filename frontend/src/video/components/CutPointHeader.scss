@@ -1,0 +1,15 @@
+.CutPointHeader {
+  @apply flex flex-row w-full h-8 justify-between;
+}
+
+.CutPointHeader--start {
+  @apply bg-green-500;
+}
+
+.CutPointHeader--end {
+  @apply bg-blue-500;
+}
+
+.CutPointHeader__Button {
+  @apply self-center bg-gray-500 px-2 mr-2 cursor-pointer;
+}

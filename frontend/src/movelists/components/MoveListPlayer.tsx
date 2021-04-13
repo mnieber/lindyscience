@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MoveT } from 'src/moves/types';
 import { deepCopy } from 'src/utils/utils';
 
-// MoveListPlayer
+import './MoveListPlayer.scss';
 
 type PropsT = {
   moves: Array<MoveT>;

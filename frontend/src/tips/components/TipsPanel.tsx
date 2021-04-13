@@ -1,4 +1,3 @@
-import * as React from 'react';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
@@ -7,6 +6,8 @@ import { Addition } from 'skandha-facets/Addition';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { TipList } from 'src/tips/components/TipList';
 import { useStore } from 'src/app/components/StoreProvider';
+
+import './TipsPanel.scss';
 
 type PropsT = {};
 

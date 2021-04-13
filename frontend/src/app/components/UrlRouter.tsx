@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { AuthSwitch } from 'src/app/components/AuthSwitch';
 import { ListsSwitch } from 'src/app/components/ListsSwitch';
 import { IndexPage } from 'src/app/components/IndexPage';
-import { ProfilePage } from 'src/session/components/ProfilePage';
+import { ProfilePage } from 'src/profiles/components/ProfilePage';
 import { SearchResultsPage } from 'src/search/components/SearchResultsPage';
 import { useStore } from 'src/app/components/StoreProvider';
 

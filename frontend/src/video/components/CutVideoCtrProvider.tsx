@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useDefaultProps, FC, CtrProvider } from 'react-default-props-context';
-import { Display as SessionDisplay } from 'src/session/Display';
+import { Display as SessionDisplay } from 'src/app/Display';
 import { MoveListT } from 'src/movelists/types';
 import { CutVideoContainer } from 'src/video/CutVideoCtr';
 import { reaction } from 'mobx';

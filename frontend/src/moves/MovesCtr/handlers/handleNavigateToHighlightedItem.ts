@@ -1,5 +1,5 @@
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { NavigationStore } from 'src/session/NavigationStore';
+import { NavigationStore } from 'src/app/NavigationStore';
 
 export const handleNavigateToHighlightedItem = (
   ctr: MovesContainer,

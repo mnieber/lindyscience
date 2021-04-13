@@ -7,7 +7,7 @@ import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { Addition } from 'skandha-facets/Addition';
 import { useDefaultProps } from 'react-default-props-context';
-import { Display as SessionDisplay } from 'src/session/Display';
+import { Display as SessionDisplay } from 'src/app/Display';
 import { Display as MoveDisplay } from 'src/moves/MoveCtr/facets/Display';
 import {
   createKeyDownHandler,

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { useFormStateContext } from 'react-form-state-context';
-import { Display as SessionDisplay } from 'src/session/Display';
+import { Display as SessionDisplay } from 'src/app/Display';
 import { TagT } from 'src/tags/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { TagsAndKeywordsPicker } from 'src/search/utils/TagsAndKeywordsPicker';

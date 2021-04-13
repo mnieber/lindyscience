@@ -1,6 +1,6 @@
 import { MoveListsStore } from 'src/movelists/MoveListsStore';
 import { MovesContainer } from 'src/moves/MovesCtr/MovesCtr';
-import { NavigationStore } from 'src/session/NavigationStore';
+import { NavigationStore } from 'src/app/NavigationStore';
 import { MoveT } from 'src/moves/types';
 import { MoveListT } from 'src/movelists/types';
 import {

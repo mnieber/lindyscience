@@ -1,7 +1,7 @@
-import { ProfilingStore } from 'src/session/ProfilingStore';
+import { ProfilingStore } from 'src/profiles/ProfilingStore';
 import { Inputs } from 'src/movelists/facets/Inputs';
 import { Outputs } from 'src/movelists/facets/Outputs';
-import { NavigationStore } from 'src/session/NavigationStore';
+import { NavigationStore } from 'src/app/NavigationStore';
 import { Container } from 'src/utils/Container';
 import {
   getm,

@@ -1,5 +1,5 @@
 import { Highlight } from 'skandha-facets/Highlight';
-import { NavigationStore } from 'src/session/NavigationStore';
+import { NavigationStore } from 'src/app/NavigationStore';
 
 export const handleNavigateToHighlightedItem = (
   facet: Highlight,

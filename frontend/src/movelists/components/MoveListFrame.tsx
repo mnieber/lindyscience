@@ -8,7 +8,7 @@ import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import { AccountMenu } from 'src/app/components/AccountMenu';
 import { Addition } from 'skandha-facets/Addition';
 import { Clipboard } from 'src/moves/MovesCtr/facets/Clipboard';
-import { Display as SessionDisplay } from 'src/session/Display';
+import { Display as SessionDisplay } from 'src/app/Display';
 import { Filtering } from 'skandha-facets/Filtering';
 import { getId } from 'src/app/utils';
 import { isNone } from 'src/utils/utils';

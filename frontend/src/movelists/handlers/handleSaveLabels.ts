@@ -1,5 +1,5 @@
 import { Labelling } from 'skandha-facets/Labelling';
-import { ProfilingStore } from 'src/session/ProfilingStore';
+import { ProfilingStore } from 'src/profiles/ProfilingStore';
 import { UUID } from 'src/kernel/types';
 import { apiSaveMoveListOrdering } from 'src/movelists/api';
 import { createErrorHandler } from 'src/app/utils';

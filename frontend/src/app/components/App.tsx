@@ -1,4 +1,4 @@
-import { DisplayProvider } from 'src/session/DisplayProvider';
+import { DisplayProvider } from 'src/app/DisplayProvider';
 import { MoveListsCtrProvider } from 'src/movelists/components/MovelistsCtrProvider';
 import { MovesCtrProvider } from 'src/moves/components/MovesCtrProvider';
 import { AppFrame } from 'src/app/components/AppFrame';

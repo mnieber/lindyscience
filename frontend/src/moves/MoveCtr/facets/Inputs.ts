@@ -1,4 +1,4 @@
-import { Display } from 'src/session/Display';
+import { Display } from 'src/app/Display';
 import { observable } from 'mobx';
 import { MovePrivateDataT, MoveT } from 'src/moves/types';
 

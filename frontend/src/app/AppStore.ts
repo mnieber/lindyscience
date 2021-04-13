@@ -22,12 +22,12 @@ import {
 } from 'src/app/handlers';
 import { handleCreateMoves, removeAllCutPoints } from 'src/video/handlers';
 import { AuthenticationStore } from 'src/auth/AuthenticationStore';
-import { ProfilingStore } from 'src/session/ProfilingStore';
+import { ProfilingStore } from 'src/profiles/ProfilingStore';
 import {
   NavigationStore,
   Navigation_requestData,
-} from 'src/session/NavigationStore';
-import { history } from 'src/session/history';
+} from 'src/app/NavigationStore';
+import { history } from 'src/app/history';
 
 export class AppStore {
   @observable movesStore: MovesStore;

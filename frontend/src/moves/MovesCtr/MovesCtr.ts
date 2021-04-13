@@ -30,7 +30,7 @@ import { Outputs } from 'src/moves/MovesCtr/facets/Outputs';
 import * as Handlers from 'src/moves/MovesCtr/handlers';
 import { MovesStore } from 'src/moves/MovesStore';
 import { MoveT } from 'src/moves/types';
-import { NavigationStore } from 'src/session/NavigationStore';
+import { NavigationStore } from 'src/app/NavigationStore';
 import { Container } from 'src/utils/Container';
 
 type PropsT = {

@@ -1,10 +1,9 @@
-import React from 'react';
 import { observer } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import { useFormStateContext } from 'react-form-state-context';
-import { Display as SessionDisplay } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/Display';
 import { TagT } from 'src/tags/types';
 import { useDefaultProps, FC } from 'react-default-props-context';
 import { TagsAndKeywordsPicker } from 'src/search/utils/TagsAndKeywordsPicker';

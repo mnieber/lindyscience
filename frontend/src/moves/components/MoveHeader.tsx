@@ -10,7 +10,7 @@ import { MoveT } from 'src/moves/types';
 import { Tags } from 'src/tags/components/Tags';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';
 import { MoveListT } from 'src/movelists/types';
-import { Display as SessionDisplay } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/Display';
 import { MoveListTitle } from 'src/movelists/components/MoveListDetails';
 import { FollowMoveListBtn } from 'src/movelists/components/FollowMoveListBtn';
 import { useStore } from 'src/app/components/StoreProvider';

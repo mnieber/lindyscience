@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { keys } from 'lodash/fp';
 
-import { Display as SessionDisplay } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/Display';
 import { TimePoints } from 'src/moves/MoveCtr/facets/TimePoints';
 import { MoveT } from 'src/moves/types';
 import { VideoController } from 'src/moves/MoveCtr/facets/VideoController';

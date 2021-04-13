@@ -5,7 +5,7 @@ import { debounce } from 'debounce';
 import ReactResizeDetector from 'react-resize-detector';
 
 import { useDefaultProps, FC } from 'react-default-props-context';
-import { Display } from 'src/session/facets/Display';
+import { Display } from 'src/session/Display';
 import { SearchMovesPage } from 'src/search/components/SearchMovesPage';
 import { AccountMenu } from 'src/app/components/AccountMenu';
 import { useStore } from 'src/app/components/StoreProvider';

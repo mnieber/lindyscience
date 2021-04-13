@@ -1,4 +1,4 @@
-import { Display } from 'src/session/facets/Display';
+import { Display } from 'src/session/Display';
 import { observable } from 'mobx';
 import { UserProfileT } from 'src/profiles/types';
 import { MoveListT } from 'src/movelists/types';

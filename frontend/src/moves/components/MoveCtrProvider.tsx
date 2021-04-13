@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Display as SessionDisplay } from 'src/session/facets/Display';
+import { Display as SessionDisplay } from 'src/session/Display';
 import { MoveT } from 'src/moves/types';
 import { MoveContainer } from 'src/moves/MoveCtr/MoveCtr';
 import { reaction } from 'mobx';

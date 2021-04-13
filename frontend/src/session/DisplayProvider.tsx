@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Display } from 'src/session/facets/Display';
+import { Display } from 'src/session/Display';
 import { reaction } from 'mobx';
 import { CtrProvider } from 'react-default-props-context';
 

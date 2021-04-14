@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'src/forms/components';
-import { ValuePicker } from 'src/utils/components/ValuePicker';
+import { ValuePickerField } from 'src/forms/components/ValuePickerField';
 import { TagT } from 'src/tags/types';
 
 interface PropsT {
@@ -11,12 +11,12 @@ export const TagsField: React.FC<PropsT> = (props: PropsT) => {
   return (
     <Field fieldName="tags" label="Tags">
       <div className="moveListForm__tags">
-        <ValuePicker
+        <ValuePickerField
           zIndex={10}
           isCreatable={true}
           isMulti={true}
           pickableValues={props.knownTags}
-          labelFromValue={(x) => x}
+          labelFromValue={(x: any) => x}
         />
       </div>
     </Field>

@@ -1,14 +1,9 @@
-import React from 'react';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { isNil } from 'lodash/fp';
 import { observer } from 'mobx-react';
 
 import { handleEnterAsTabToNext } from 'src/utils/form_utils';
-import { stripQuotes } from 'src/utils/utils';
-import { useFormStateContext } from 'react-form-state-context';
-import { useFormFieldContext } from 'src/forms/components/FormFieldContext';
-import { useScheduledCall } from 'src/utils/useScheduledCall';
 
 export interface PickerValueT {
   value: any;
@@ -16,104 +11,64 @@ export interface PickerValueT {
   __isNew__?: boolean;
 }
 
-type CustomizationsT = {
-  filterOption?: any;
-  noOptionsMessage?: any;
-  onInputChange?: any;
-  tabOnEnter?: boolean;
-  onKeyDown?: Function;
-  onMenuOpen?: Function;
-  onMenuClose?: Function;
-  inputValue?: string;
-  onBlur?: (e: React.FocusEvent) => void;
-};
-
 type PropsT<ValueT> = {
   isMulti: boolean;
   isCreatable: boolean;
-  zIndex?: number;
-  submitOnChange?: boolean;
   pickableValues: ValueT[];
-  labelFromValue: (value: ValueT) => string;
-} & CustomizationsT;
+  pickableValue: ValueT;
+  labelFromValue: (value: any) => string;
+  [k: string]: any;
+};
 
 export const ValuePicker = observer(
-  <ValueT,>(props: PropsT<ValueT>): JSX.Element => {
-    const toPickerValue = (formValue: any) => {
-      return formValue.__isNew__
-        ? formValue
+  <ValueT, ConcretePropsT extends PropsT<ValueT>>(
+    props: ConcretePropsT
+  ): JSX.Element => {
+    const {
+      isMulti,
+      isCreatable,
+      pickableValue,
+      pickableValues,
+      labelFromValue,
+      ...others
+    } = props;
+
+    const toPickerValue = (pickableVal: any) => {
+      return pickableVal.__isNew__
+        ? pickableVal
         : {
-            value: formValue,
-            label: props.labelFromValue(formValue),
+            value: pickableVal,
+            label: labelFromValue(pickableVal),
           };
     };
 
-    const formState = useFormStateContext();
-    const fieldContext = useFormFieldContext();
-    const formValue = formState.values[fieldContext.fieldName];
-    const options = props.pickableValues.map(toPickerValue);
-    const scheduleSubmit = useScheduledCall(formState.submit);
-
-    const saveChanges = (value: any, { action }: any) => {
-      const toFormValue = (value: PickerValueT) => {
-        return value.__isNew__ ? value : value.value;
-      };
-
-      const formValue = props.isMulti
-        ? (value || []).map(toFormValue)
-        : toFormValue(value);
-
-      formState.setValue(fieldContext.fieldName, formValue);
-      if (!!props.submitOnChange) {
-        scheduleSubmit();
-      }
-    };
+    const options = pickableValues.map(toPickerValue);
 
     const pickerProps = {
-      isMulti: props.isMulti,
-      name: fieldContext.fieldName,
+      isMulti: isMulti,
       options,
-      placeholder: fieldContext.label,
-      value: isNil(formValue)
+      value: isNil(pickableValue)
         ? undefined
-        : props.isMulti
-        ? formValue.map(toPickerValue)
-        : toPickerValue(formValue),
-      onChange: saveChanges,
-      onBlur: props.onBlur,
+        : isMulti
+        ? (pickableValue as any).map(toPickerValue)
+        : toPickerValue(pickableValue),
       onKeyDown: (e: any) => {
         if (props.tabOnEnter ?? true) {
           handleEnterAsTabToNext(e, false);
         }
-        if (props.onKeyDown) {
-          props.onKeyDown(e);
+        if (others.onKeyDown) {
+          others.onKeyDown(e);
         }
       },
-      filterOption: props.filterOption,
-      noOptionsMessage: props.noOptionsMessage,
-      onInputChange: props.onInputChange,
-      onMenuOpen: () => {
-        if (props.onMenuOpen) props.onMenuOpen();
-      },
-      onMenuClose: () => {
-        if (props.onMenuClose) props.onMenuClose();
-      },
-      ...(props.inputValue ? { inputValue: props.inputValue } : {}),
+      ...others,
     };
 
-    const picker = props.isCreatable ? (
+    const picker = isCreatable ? (
       <CreatableSelect {...pickerProps} />
     ) : (
       <Select {...pickerProps} />
     );
 
-    return <div style={{ zIndex: props.zIndex }}>{picker}</div>;
+    return <div style={{ zIndex: others.zIndex }}>{picker}</div>;
   }
 );
-
-export function strToPickerValue(value: string) {
-  return {
-    value: stripQuotes(value),
-    label: stripQuotes(value),
-  };
-}

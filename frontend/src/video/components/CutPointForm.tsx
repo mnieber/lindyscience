@@ -13,7 +13,7 @@ import { TextField } from 'src/forms/components/TextField';
 import { Field } from 'src/forms/components/Field';
 import { TagT } from 'src/tags/types';
 import { CutPointT } from 'src/video/types';
-import { ValuePicker } from 'src/utils/components/ValuePicker';
+import { ValuePickerField } from 'src/forms/components/ValuePickerField';
 import { MoveDescriptionEditor } from 'src/moves/components/MoveDescriptionEditor';
 import { getContentFromEditor } from 'src/richtext/components/RichTextEditor';
 
@@ -95,12 +95,12 @@ export const CutPointForm = observer((props: PropsT) => {
       return (
         <Field fieldName="tags" label="Tags">
           <div className="cutPointForm__tags mt-4">
-            <ValuePicker
+            <ValuePickerField
               zIndex={10}
               isCreatable={true}
               isMulti={true}
               pickableValues={props.knownTags}
-              labelFromValue={(x) => x}
+              labelFromValue={(x: any) => x}
               onBlur={onBlur}
             />
           </div>

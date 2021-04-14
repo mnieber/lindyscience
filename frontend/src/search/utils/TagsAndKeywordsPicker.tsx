@@ -1,4 +1,3 @@
-import React from 'react';
 import * as _ from 'lodash/fp';
 import { observer } from 'mobx-react';
 
@@ -8,7 +7,7 @@ import {
   useFormStateContext,
 } from 'react-form-state-context';
 import { useMobXState } from 'src/forms/components/MobXFormState';
-import { ValuePicker } from 'src/utils/components/ValuePicker';
+import { ValuePickerField } from 'src/forms/components/ValuePickerField';
 import { TagT } from 'src/tags/types';
 import { isNone } from 'src/utils/utils';
 import { Field } from 'src/forms/components/Field';
@@ -71,12 +70,12 @@ export const TagsAndKeywordsPicker = observer((props: PropsT) => {
     };
 
     return (
-      <ValuePicker
+      <ValuePickerField
         zIndex={10}
         isCreatable={false}
         isMulti={true}
         pickableValues={tags}
-        labelFromValue={(x: string) => x}
+        labelFromValue={(x: any) => x}
         filterOption={_filterOption}
         noOptionsMessage={() => null}
         onInputChange={onInputChange}

@@ -14,9 +14,15 @@ import { App } from 'src/app/components';
 
 configureStore();
 
+const strict = false;
+
 ReactDOM.render(
-  <React.StrictMode>
+  strict ? (
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  ) : (
     <App />
-  </React.StrictMode>,
+  ),
   document.getElementById('root')
 );
